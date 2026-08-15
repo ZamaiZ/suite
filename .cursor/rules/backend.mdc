@@ -1,0 +1,36 @@
+---
+description: Server-side conventions for Route Handlers, Server Actions, and data access
+globs: app/actions/**/*,app/**/route.ts,lib/supabase/**/*
+alwaysApply: false
+---
+
+# Backend
+
+## Validation
+
+Validate all external input (form submissions, API payloads, URL params) at the boundary using `zod`. Never trust data that crosses a client/server boundary.
+
+## Authorization
+
+Perform all authorization checks server-side (`requireCommercialMember`, `requireAnyRole`). Never rely on client-provided role or user data.
+
+## Secrets
+
+Environment variables with service-level access (e.g. `SUPABASE_SERVICE_ROLE_KEY`) must never be imported in Client Components or exposed to the browser.
+
+## Route Handlers vs Server Actions
+
+- Use Server Actions (`"use server"` in `app/actions/`) for form mutations and user-initiated writes.
+- Use Route Handlers (`route.ts`, colocated or under `app/api/`) for binary downloads, webhooks, third-party callbacks, or endpoints consumed by external clients.
+- Do not mix the two for the same operation.
+
+## Supabase client boundary
+
+- `lib/supabase/server.ts` — server client for RSC, Route Handlers, and Server Actions.
+- `lib/supabase/proxy.ts` — Next.js 16 `proxy.ts` session refresh.
+- `lib/supabase/admin.ts` — `server-only` service role. Never import from Client Components.
+- Use `@supabase/ssr` helpers; never construct a service-role client in client code.
+
+## Dates
+
+Store timestamps as `timestamptz` (UTC). See `date-time.mdc` for the project-wide convention.

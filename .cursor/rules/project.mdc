@@ -1,0 +1,33 @@
+---
+description: Rankup Suite — project context, stack, and non-negotiable conventions
+alwaysApply: true
+---
+
+# Project
+
+This is Rankup Suite, an internal product built with Next.js 16 App Router, React 19, TypeScript strict, Tailwind CSS v4 (CSS-first, no `tailwind.config.*`), and pnpm 10. The app locale is `pt-BR`; all code identifiers (variables, functions, types, files, database fields, API keys) must be written in English.
+
+## Package manager
+
+Use `pnpm` exclusively. Never run `npm install` or `yarn`.
+
+## Next.js 16
+
+Next.js 16 has breaking changes. Before writing code that touches routing, caching, data fetching, or rendering, consult `node_modules/next/dist/docs/` for the current API. Do not rely on training data for Next.js-specific conventions.
+
+## Installed capabilities
+
+`@supabase/ssr`, `zod`, `react-hook-form`, `@hookform/resolvers`, `motion`, `dayjs`, `exceljs`.
+Reuse these packages when their capability is needed; do not add packages with overlapping responsibilities.
+
+## Code comments
+
+Do not add explanatory comments, block comments, section dividers, or comments that restate the code. Make the code self-explanatory through clear names, small functions, and explicit structure. Add a comment only when explicitly requested by the user or required by tooling.
+
+## Agent commands
+
+Do not run lint, typecheck, tests, build, or git unless the user explicitly asks for that command. After writing code, stop. Do not self-verify with `eslint`, `tsc`, `pnpm lint`, `pnpm build`, `next build`, or any git command.
+
+## Git
+
+Never run git commands unless the user explicitly asks. Never update git config. Never skip hooks (`--no-verify`). Never force-push to main/master.

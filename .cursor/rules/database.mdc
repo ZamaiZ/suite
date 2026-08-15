@@ -1,0 +1,35 @@
+---
+description: Supabase schema, migrations, RLS, and data conventions
+globs: supabase/**/*,**/*.sql
+alwaysApply: false
+---
+
+# Database
+
+## Supabase + PostgreSQL
+
+All schema changes are managed through Supabase migrations. Migrations are the source of truth; never mutate the schema directly in the dashboard in production.
+
+## Timestamps
+
+- Use `timestamptz` for all timestamp columns. Store in UTC — never with a local offset.
+- Standard audit columns: `created_at timestamptz not null default now()` and `updated_at timestamptz not null default now()`.
+- See `date-time.mdc` for how timestamps are handled in application code.
+
+## Naming
+
+- Tables: `snake_case`, plural (e.g. `lead_activities`).
+- Columns: `snake_case` in English.
+- Foreign keys: `<noun>_id` (e.g. `lead_id`, `assigned_sdr_id`).
+
+## Row Level Security
+
+Enable RLS on every table. Write explicit policies; do not rely on the absence of a policy to restrict access.
+
+## Types
+
+Until `supabase gen types` is part of the workflow, describe row shapes in `lib/` (e.g. `LeadRecord`). Do not invent a parallel database client or untyped `any` rows.
+
+## Query access
+
+Access the database only through the Supabase client helpers in `lib/supabase/`. Do not instantiate `@supabase/supabase-js` directly outside that module.

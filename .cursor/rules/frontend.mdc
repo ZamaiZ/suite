@@ -1,0 +1,41 @@
+---
+description: UI components, Tailwind tokens, forms, and animation conventions
+globs: app/**/*.{tsx,css},components/**/*.{tsx,ts},styles/**/*.css
+alwaysApply: false
+---
+
+# Frontend
+
+## Styling
+
+- Use semantic Tailwind utilities (`bg-canvas`, `text-fg`, `border-border`, etc.) generated via `@theme inline` in `app/globals.css`.
+- Never use raw hex values, `--p-*` primitive vars, or Tailwind color palette classes (e.g. `bg-blue-500`) in components.
+- Compose class names with `cn()` from `@/lib/cn` (clsx + tailwind-merge).
+- Use density tokens for control heights and spacing: `h-[var(--control-height)]`, `var(--space-*)`, `var(--page-padding-x)`.
+
+## Components
+
+- Primitives → `components/ui/`; app-specific composed components → `components/custom/`.
+- Follow the `ComponentName/` folder structure defined in `architecture.mdc`.
+- Declare variants as `Record<VariantName, string>` and merge with `cn(BASE, VARIANT_CLASSES[variant], className)`.
+- Export the component and its public types through `index.ts`.
+- Server Component by default; add `"use client"` only for interactivity.
+
+## Icons
+
+Use `react-icons` (package `react-icons`). Prefer the `ri` (Remix Icons) set for consistency.
+
+## Forms
+
+- Build forms with `react-hook-form` and `zodResolver` from `@hookform/resolvers/zod`.
+- Define schemas in `lib/validations/` using `zod`.
+- Reusable input primitives live in `components/ui/`; form compositions live in `components/custom/`.
+
+## Animation
+
+- Use `motion` (the `motion` package, not framer-motion) only for meaningful transitions.
+- Respect `prefers-reduced-motion`; gate animations behind the media query or Motion's `useReducedMotion`.
+
+## Dates in UI
+
+Import date helpers from `@/lib/date-time`. See `date-time.mdc` for the full convention.

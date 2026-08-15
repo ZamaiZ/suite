@@ -1,0 +1,55 @@
+---
+description: Directory responsibilities, dependency boundaries, and token flow
+alwaysApply: true
+---
+
+# Architecture
+
+## Directory responsibilities
+
+| Path | Owns |
+|------|------|
+| `app/` | App Router routes, layouts, loading/error boundaries |
+| `app/actions/` | Server Actions (`"use server"`) |
+| `components/ui/<Name>/` | Reusable, domain-agnostic UI primitives |
+| `components/custom/<Name>/` | App-specific composed components (pages, forms, shells) |
+| `components/providers/` | Application-wide React context wrappers |
+| `lib/` | Framework-agnostic shared utilities (no UI, no route dependencies) |
+| `styles/tokens/` | Design tokens — consumed centrally by `app/globals.css` |
+
+## Dependency boundaries
+
+- `app/` may import from `components/` and `lib/`.
+- `components/` may import from `lib/` and from Server Actions in `app/actions/` only. Must not import pages, layouts, or `lib/supabase/admin.ts`.
+- `lib/` must not import from `components/` or `app/`.
+- Import project modules via the `@/` alias (maps to repo root per `tsconfig.json`).
+
+## React rendering boundary
+
+- Use Server Components by default.
+- Add `"use client"` only when browser APIs, event handlers, state, effects, or client-only hooks are required.
+- Keep client boundaries as close as possible to the interactive element.
+
+## UI component structure
+
+Each component lives in `components/ui/<ComponentName>/` (primitives) or `components/custom/<ComponentName>/` (app-specific):
+
+```
+<ComponentName>.tsx        # implementation (Server Component by default)
+<ComponentName>.types.ts   # exported types
+index.ts                   # barrel re-export of component and types
+```
+
+## Design-token flow
+
+```
+styles/tokens/primitives/brand.css   (--p-*)
+        ↓
+styles/tokens/semantic.css           (--bg-*, --fg-*, component slots)
+        ↓  mapped in @theme inline
+app/globals.css                      (Tailwind utilities: bg-canvas, text-fg …)
+        ↓
+components — use Tailwind semantic utilities only
+```
+
+Components must never reference `--p-*` primitive tokens. Tokens are imported only through `app/globals.css`.

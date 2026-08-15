@@ -1,0 +1,48 @@
+---
+description: Project-wide date and time handling — Day.js, timezone, and display formats
+alwaysApply: true
+---
+
+# Date and time
+
+## Single import point
+
+Never import `dayjs` directly outside of `lib/date-time.ts`. Always use `@/lib/date-time`:
+
+```ts
+import { formatDate, formatDateTimeShort, endOfTodayIso } from "@/lib/date-time"
+```
+
+```ts
+import dayjs from "dayjs"
+```
+
+The second form is forbidden.
+
+## Storage vs display
+
+- **Timestamps** are stored as UTC ISO 8601 strings (e.g. from Supabase `timestamptz`).
+- **Display** always converts to `America/Sao_Paulo` at the last moment.
+- **Date-only values** (`YYYY-MM-DD`) are civil dates — never apply timezone conversion to them.
+
+## Formats
+
+| Helper | Output / role |
+|--------|----------------|
+| `formatDate(value)` | `DD/MM/YYYY` — date portion of a timestamp |
+| `formatDateTime(value)` | `DD/MM/YYYY - HH:mm:ss` — full timestamp |
+| `formatDateTimeShort(value)` | `DD/MM/YYYY · HH:mm` — lists and history |
+| `formatTime(value)` | `HH:mm:ss` |
+| `formatDateOnly(value)` | `DD/MM/YYYY` — civil date, no timezone shift |
+| `todayCivilDate()` | `YYYY-MM-DD` in `America/Sao_Paulo` |
+| `endOfTodayIso()` | UTC ISO of end of today in `America/Sao_Paulo` |
+| `datetimeLocalToIso(value)` | `datetime-local` / `YYYY-MM-DDTHH:mm` → UTC ISO |
+| `getTimestampUrgency(value)` | `overdue` \| `soon` \| `later` |
+
+## Invalid input
+
+Helpers reject `null`, `undefined`, and invalid values. Guard nullable values at call sites before formatting (`createdAt ? formatDate(createdAt) : "—"`).
+
+## Plugins active
+
+`utc`, `timezone`, `customParseFormat`, locale `pt-br`.
