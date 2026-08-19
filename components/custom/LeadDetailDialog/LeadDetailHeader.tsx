@@ -23,6 +23,7 @@ const STATUS_TONE: Record<LeadStatus, string> = {
 const TABS: { id: LeadDetailTab; label: string }[] = [
   { id: "activity", label: "Atividade" },
   { id: "record", label: "Cadastro" },
+  { id: "opportunity", label: "Oportunidade" },
 ]
 
 export function LeadDetailHeader({
@@ -96,19 +97,17 @@ export function LeadDetailHeader({
         aria-label="Seções do lead"
         className="flex items-stretch gap-5"
       >
-        {TABS.map((item) => {
+        {TABS.filter(
+          (item) => item.id !== "opportunity" || status === "interested",
+        ).map((item) => {
           const selected = tab === item.id
           return (
             <button
               key={item.id}
               type="button"
               role="tab"
-              id={item.id === "activity" ? "lead-tab-activity" : "lead-tab-record"}
-              aria-controls={
-                item.id === "activity"
-                  ? "lead-detail-activity"
-                  : "lead-detail-record"
-              }
+              id={`lead-tab-${item.id}`}
+              aria-controls={`lead-detail-${item.id}`}
               aria-selected={selected}
               onClick={() => onTabChange(item.id)}
               className={cn(

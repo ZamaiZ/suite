@@ -21,6 +21,12 @@ export function matchesPendingFilter(
   pendingOn: boolean,
 ): boolean {
   if (!pendingOn) return true
-  if (lead.status === "new" || lead.status === "denied") return true
+  if (
+    lead.status === "new" ||
+    lead.status === "denied" ||
+    lead.status === "interested"
+  ) {
+    return true
+  }
   return isPendingDailyActivity(lead)
 }

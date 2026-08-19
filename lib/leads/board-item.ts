@@ -17,6 +17,9 @@ export type LeadBoardItem = {
   created_at: string
   assigned_sdr_id: string | null
   assignee_name: string | null
+  assigned_closer_id: string | null
+  closer_name: string | null
+  closing_meeting_at: string | null
   from_denial: boolean
   last_activity_at: string | null
   activity_count: number
@@ -33,12 +36,15 @@ export type LeadBoardRow = {
   next_follow_up_at: string | null
   created_at: string
   assigned_sdr_id: string | null
+  assigned_closer_id: string | null
+  closing_meeting_at: string | null
 }
 
 export function toLeadBoardItem(
   row: LeadBoardRow,
   extras?: {
     assignee_name?: string | null
+    closer_name?: string | null
     from_denial?: boolean
     last_activity_at?: string | null
     activity_count?: number
@@ -57,6 +63,9 @@ export function toLeadBoardItem(
     created_at: row.created_at,
     assigned_sdr_id: row.assigned_sdr_id,
     assignee_name: extras?.assignee_name ?? null,
+    assigned_closer_id: row.assigned_closer_id ?? null,
+    closer_name: extras?.closer_name ?? null,
+    closing_meeting_at: row.closing_meeting_at ?? null,
     from_denial: extras?.from_denial ?? false,
     last_activity_at: extras?.last_activity_at ?? null,
     activity_count: extras?.activity_count ?? 0,

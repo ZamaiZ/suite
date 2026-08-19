@@ -7,9 +7,11 @@ import {
   LEAD_SPREADSHEET_MAX_BYTES,
   LEAD_SPREADSHEET_MAX_ROWS,
   rawValuesFromCells,
+  SPREADSHEET_CHANNEL_HEADER_NOTES,
   validateRawRows,
 } from "@/lib/leads/spreadsheet-model"
 import type { SpreadsheetEvaluatedRow } from "@/lib/leads/types"
+import type { DigitalChannelType } from "@/lib/leads/digital-channels"
 
 export {
   LEAD_SPREADSHEET_FILENAME,
@@ -61,6 +63,33 @@ export async function buildLeadTemplateBuffer(): Promise<Buffer> {
     header,
     width: header.length < 18 ? 22 : 32,
   }))
+  const notes: { index: number; type: DigitalChannelType }[] = [
+    { index: 2, type: "website" },
+    { index: 6, type: "instagram" },
+    { index: 7, type: "linkedin" },
+  ]
+  for (const item of notes) {
+    sheet.getRow(1).getCell(item.index).note =
+      SPREADSHEET_CHANNEL_HEADER_NOTES[item.type]
+  }
+
+  const instructions = workbook.addWorksheet("Instruções")
+  instructions.columns = [
+    { header: "Campo", width: 22 },
+    { header: "Como preencher", width: 72 },
+  ]
+  instructions.addRow([
+    "Site",
+    SPREADSHEET_CHANNEL_HEADER_NOTES.website,
+  ])
+  instructions.addRow([
+    "Instagram",
+    SPREADSHEET_CHANNEL_HEADER_NOTES.instagram,
+  ])
+  instructions.addRow([
+    "LinkedIn",
+    SPREADSHEET_CHANNEL_HEADER_NOTES.linkedin,
+  ])
   const buffer = await workbook.xlsx.writeBuffer()
   return Buffer.from(buffer)
 }

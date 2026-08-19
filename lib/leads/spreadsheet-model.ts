@@ -1,5 +1,15 @@
 import { leadFieldsSchema } from "@/lib/validations/lead"
-import { normalizeWebsiteDomain } from "@/lib/leads/website"
+import {
+  channelsFromSpreadsheetCells,
+  DIGITAL_CHANNEL_LABELS,
+  DIGITAL_CHANNEL_TYPES,
+  digitalChannelConflictKey,
+  normalizeDigitalChannelList,
+  SPREADSHEET_FIELD_BY_TYPE,
+  spreadsheetCellsFromChannels,
+  type DigitalChannelType,
+  type LeadDigitalChannelWrite,
+} from "@/lib/leads/digital-channels"
 import type {
   SpreadsheetEvaluatedRow,
   SpreadsheetIssue,
@@ -45,8 +55,34 @@ export const LEAD_SPREADSHEET_FILENAME = "modelo-leads.xlsx"
 export const LEAD_SPREADSHEET_ACCEPT =
   ".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
-export const SPREADSHEET_DB_CONFLICT_PREFIX = "Site já cadastrado"
-export const SPREADSHEET_SESSION_CONFLICT_PREFIX = "Site já existe em "
+export const SPREADSHEET_CHANNEL_HEADER_NOTES: Record<
+  DigitalChannelType,
+  string
+> = {
+  website:
+    "Vários sites: separe com ponto e vírgula (;). O primeiro é o principal.",
+  instagram:
+    "Vários Instagrams: separe com ponto e vírgula (;). O primeiro é o principal.",
+  linkedin:
+    "Vários LinkedIns: separe com ponto e vírgula (;). O primeiro é o principal.",
+}
+
+export function spreadsheetDbConflictPrefix(type: DigitalChannelType): string {
+  return `${DIGITAL_CHANNEL_LABELS[type]} já cadastrado`
+}
+
+export function spreadsheetSessionConflictPrefix(
+  type: DigitalChannelType,
+): string {
+  return `${DIGITAL_CHANNEL_LABELS[type]} já existe em `
+}
+
+export function spreadsheetRepeatMessage(
+  type: DigitalChannelType,
+  previousRow: number,
+): string {
+  return `${DIGITAL_CHANNEL_LABELS[type]} repetido na linha ${previousRow}.`
+}
 
 export function rawValuesFromCells(cells: string[]): SpreadsheetRawValues {
   return {
@@ -68,35 +104,60 @@ export function isSpreadsheetRowClean(row: SpreadsheetEvaluatedRow): boolean {
   return row.issues.length === 0 && row.payload !== null
 }
 
-export function rowDomain(row: SpreadsheetEvaluatedRow): string | null {
-  if (row.payload?.website_domain) return row.payload.website_domain
-  return normalizeWebsiteDomain(row.values.website)
+export function rowChannelKeys(
+  row: SpreadsheetEvaluatedRow,
+): LeadDigitalChannelWrite[] {
+  if (row.payload?.channels) return row.payload.channels
+  return normalizeDigitalChannelList(
+    channelsFromSpreadsheetCells(row.values),
+  ).channels
 }
 
 export function validateRawRows(
   input: { row: number; values: SpreadsheetRawValues }[],
 ): SpreadsheetEvaluatedRow[] {
-  const seenDomains = new Map<string, number>()
+  const seenKeys = new Map<string, { row: number; type: DigitalChannelType }>()
 
   return input.map((item) => {
     const issues: SpreadsheetIssue[] = []
+    const drafts = channelsFromSpreadsheetCells(item.values)
     const parsed = leadFieldsSchema.safeParse({
-      ...item.values,
+      company_name: item.values.company_name,
+      channels: drafts,
+      contact_name: item.values.contact_name,
+      phone: item.values.phone,
+      email: item.values.email,
       observations: "",
     })
 
     let payload = parsed.success ? parsed.data : null
     if (!parsed.success) {
-      const fieldErrors = parsed.error.flatten().fieldErrors
-      for (const [field, messages] of Object.entries(fieldErrors)) {
-        for (const message of messages ?? []) {
-          issues.push({
-            row: item.row,
-            field,
-            kind: "problem",
-            message,
-          })
+      for (const issue of parsed.error.issues) {
+        const path0 = issue.path[0]
+        let field: string | null =
+          typeof path0 === "string" ? path0 : null
+        if (path0 === "channels") {
+          const index = issue.path[1]
+          if (typeof index === "number" && drafts[index]) {
+            field = SPREADSHEET_FIELD_BY_TYPE[drafts[index].type]
+          } else {
+            field = "website"
+          }
         }
+        if (
+          issues.some(
+            (existing) =>
+              existing.field === field && existing.message === issue.message,
+          )
+        ) {
+          continue
+        }
+        issues.push({
+          row: item.row,
+          field,
+          kind: "problem",
+          message: issue.message,
+        })
       }
       if (issues.length === 0) {
         issues.push({
@@ -108,18 +169,22 @@ export function validateRawRows(
       }
     }
 
-    const domain = payload?.website_domain ?? normalizeWebsiteDomain(item.values.website)
-    if (domain) {
-      const previousRow = seenDomains.get(domain)
-      if (previousRow) {
+    const channels = payload?.channels ?? []
+    for (const channel of channels) {
+      const key = digitalChannelConflictKey(
+        channel.type,
+        channel.normalized_key,
+      )
+      const previous = seenKeys.get(key)
+      if (previous) {
         issues.push({
           row: item.row,
-          field: "website",
+          field: SPREADSHEET_FIELD_BY_TYPE[channel.type],
           kind: "conflict",
-          message: `Site repetido na linha ${previousRow}.`,
+          message: spreadsheetRepeatMessage(channel.type, previous.row),
         })
       } else {
-        seenDomains.set(domain, item.row)
+        seenKeys.set(key, { row: item.row, type: channel.type })
       }
     }
 
@@ -136,79 +201,99 @@ export function validateRawRows(
   })
 }
 
-export function applyExistingDomainConflicts(
+export type ExistingChannelConflict = {
+  company_name: string
+  type: DigitalChannelType
+}
+
+export function applyExistingChannelConflicts(
   rows: SpreadsheetEvaluatedRow[],
-  existing: Map<string, { company_name: string }>,
+  existing: Map<string, ExistingChannelConflict>,
 ): SpreadsheetEvaluatedRow[] {
   return rows.map((row) => {
-    const domain = rowDomain(row)
-    if (!domain) return row
-    const found = existing.get(domain)
-    if (!found) return row
-    if (
-      row.issues.some(
-        (issue) =>
-          issue.kind === "conflict" &&
-          issue.field === "website" &&
-          issue.message.startsWith(SPREADSHEET_DB_CONFLICT_PREFIX),
+    let next = row
+    for (const channel of rowChannelKeys(row)) {
+      const key = digitalChannelConflictKey(
+        channel.type,
+        channel.normalized_key,
       )
-    ) {
-      return row
+      const found = existing.get(key)
+      if (!found) continue
+      const prefix = spreadsheetDbConflictPrefix(found.type)
+      if (
+        next.issues.some(
+          (issue) =>
+            issue.kind === "conflict" &&
+            issue.field === SPREADSHEET_FIELD_BY_TYPE[found.type] &&
+            issue.message.startsWith(prefix),
+        )
+      ) {
+        continue
+      }
+      next = {
+        ...next,
+        issues: [
+          ...next.issues,
+          {
+            row: next.row,
+            field: SPREADSHEET_FIELD_BY_TYPE[found.type],
+            kind: "conflict",
+            message: `${prefix} (${found.company_name}).`,
+          },
+        ],
+      }
     }
-
-    return {
-      ...row,
-      issues: [
-        ...row.issues,
-        {
-          row: row.row,
-          field: "website",
-          kind: "conflict",
-          message: `${SPREADSHEET_DB_CONFLICT_PREFIX} (${found.company_name}).`,
-        },
-      ],
-    }
+    return next
   })
 }
 
 export function stripSessionConflicts(
   rows: SpreadsheetEvaluatedRow[],
 ): SpreadsheetEvaluatedRow[] {
+  const prefixes = DIGITAL_CHANNEL_TYPES.map(spreadsheetSessionConflictPrefix)
   return rows.map((row) => ({
     ...row,
     issues: row.issues.filter(
-      (issue) => !issue.message.startsWith(SPREADSHEET_SESSION_CONFLICT_PREFIX),
+      (issue) =>
+        !prefixes.some((prefix) => issue.message.startsWith(prefix)),
     ),
   }))
 }
 
-export function applySessionDomainConflicts(
+export function applySessionChannelConflicts(
   files: { id: string; name: string; rows: SpreadsheetEvaluatedRow[] }[],
 ): { id: string; rows: SpreadsheetEvaluatedRow[] }[] {
   const owned = new Map<string, string>()
 
   return files.map((file) => {
     const rows = stripSessionConflicts(file.rows).map((row) => {
-      const domain = rowDomain(row)
-      if (!domain) return row
-      const owner = owned.get(domain)
-      if (owner && owner !== file.id) {
-        const ownerFile = files.find((item) => item.id === owner)
-        return {
-          ...row,
-          issues: [
-            ...row.issues,
-            {
-              row: row.row,
-              field: "website",
-              kind: "conflict" as const,
-              message: `${SPREADSHEET_SESSION_CONFLICT_PREFIX}${ownerFile?.name ?? "outro arquivo"}.`,
-            },
-          ],
+      let next = row
+      for (const channel of rowChannelKeys(row)) {
+        const key = digitalChannelConflictKey(
+          channel.type,
+          channel.normalized_key,
+        )
+        const owner = owned.get(key)
+        if (owner && owner !== file.id) {
+          const ownerFile = files.find((item) => item.id === owner)
+          const prefix = spreadsheetSessionConflictPrefix(channel.type)
+          next = {
+            ...next,
+            issues: [
+              ...next.issues,
+              {
+                row: next.row,
+                field: SPREADSHEET_FIELD_BY_TYPE[channel.type],
+                kind: "conflict" as const,
+                message: `${prefix}${ownerFile?.name ?? "outro arquivo"}.`,
+              },
+            ],
+          }
+          continue
         }
+        if (!owned.has(key)) owned.set(key, file.id)
       }
-      if (!owned.has(domain)) owned.set(domain, file.id)
-      return row
+      return next
     })
     return { id: file.id, rows }
   })
@@ -219,16 +304,30 @@ export function preserveExternalConflicts(
   next: SpreadsheetEvaluatedRow[],
 ): SpreadsheetEvaluatedRow[] {
   const previousByRow = new Map(previous.map((row) => [row.row, row]))
+  const dbPrefixes = DIGITAL_CHANNEL_TYPES.map(spreadsheetDbConflictPrefix)
+  const sessionPrefixes = DIGITAL_CHANNEL_TYPES.map(
+    spreadsheetSessionConflictPrefix,
+  )
 
   return next.map((row) => {
     const old = previousByRow.get(row.row)
-    if (!old || old.values.website !== row.values.website) return row
-    const extra = old.issues.filter(
-      (issue) =>
-        issue.kind === "conflict" &&
-        (issue.message.startsWith(SPREADSHEET_DB_CONFLICT_PREFIX) ||
-          issue.message.startsWith(SPREADSHEET_SESSION_CONFLICT_PREFIX)),
-    )
+    if (!old) return row
+    const extra = old.issues.filter((issue) => {
+      if (issue.kind !== "conflict") return false
+      const isTracked =
+        dbPrefixes.some((prefix) => issue.message.startsWith(prefix)) ||
+        sessionPrefixes.some((prefix) => issue.message.startsWith(prefix))
+      if (!isTracked) return false
+      const field = issue.field
+      if (
+        field === "website" ||
+        field === "instagram" ||
+        field === "linkedin"
+      ) {
+        return old.values[field] === row.values[field]
+      }
+      return old.values.website === row.values.website
+    })
     if (extra.length === 0) return row
     const existing = new Set(row.issues.map((issue) => issue.message))
     const merged = extra.filter((issue) => !existing.has(issue.message))
@@ -246,3 +345,5 @@ export function summarizeEvaluatedRows(rows: SpreadsheetEvaluatedRow[]) {
   }
   return { found: rows.length, valid, problems }
 }
+
+export { spreadsheetCellsFromChannels }

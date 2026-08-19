@@ -296,3 +296,19 @@ export function suggestNextActionDueAt(from?: string): string {
   const base = from ? toAppDateTime(from) : dayjs().tz(APP_TIME_ZONE)
   return base.add(1, "day").utc().toISOString()
 }
+
+export function formatRelativeShort(value: DateTimeInput): string {
+  const target = toAppDateTime(value)
+  const now = dayjs().tz(APP_TIME_ZONE)
+  const diffMs = now.diff(target)
+  if (diffMs < 0) return formatDateTimeShort(value)
+  const minutes = Math.floor(diffMs / 60_000)
+  if (minutes < 1) return "agora"
+  if (minutes < 60) return `há ${minutes} min`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `há ${hours} h`
+  const days = Math.floor(hours / 24)
+  if (days === 1) return "há 1 dia"
+  if (days < 30) return `há ${days} dias`
+  return formatDateTimeShort(value)
+}

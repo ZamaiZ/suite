@@ -321,6 +321,7 @@ export function LeadBoard({
               kind: "follow_up",
               leadId,
               companyName: lead.company_name,
+              websiteDomain: lead.website_domain,
             })
             return
           }
@@ -330,6 +331,17 @@ export function LeadBoard({
               kind: "denied",
               leadId,
               companyName: lead.company_name,
+              websiteDomain: lead.website_domain,
+            })
+            return
+          }
+
+          if (to === "interested") {
+            setDropRequest({
+              kind: "interested",
+              leadId,
+              companyName: lead.company_name,
+              websiteDomain: lead.website_domain,
             })
           }
         }}
@@ -367,10 +379,7 @@ export function LeadBoard({
               >
                 <LeadBoardCardFace
                   lead={lead}
-                  showOwner={Boolean(
-                    lead.assigned_sdr_id &&
-                      lead.assigned_sdr_id !== currentUserId,
-                  )}
+                  currentUserId={currentUserId}
                 />
               </div>
             )

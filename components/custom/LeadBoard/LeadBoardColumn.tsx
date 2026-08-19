@@ -6,6 +6,7 @@ import { LeadCreate } from "@/components/custom/LeadCreate"
 import {
   RiCalendarEventLine,
   RiChat3Line,
+  RiCheckboxCircleLine,
   RiCloseCircleLine,
   RiDragMoveLine,
   RiInboxLine,
@@ -26,6 +27,7 @@ const EMPTY_ICON = {
   new: RiInboxLine,
   contacting: RiChat3Line,
   follow_up: RiCalendarEventLine,
+  interested: RiCheckboxCircleLine,
   denied: RiCloseCircleLine,
 } as const
 
@@ -124,9 +126,7 @@ export function LeadBoardColumn({
             selected={lead.id === selectedId}
             canDrag={canDrag}
             allowActions={allowActions}
-            showOwner={Boolean(
-              lead.assigned_sdr_id && lead.assigned_sdr_id !== currentUserId,
-            )}
+            currentUserId={currentUserId}
             onOpen={onOpen}
             onAssigned={onAssigned}
             onBoardError={onBoardError}

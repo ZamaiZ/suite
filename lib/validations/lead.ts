@@ -1,9 +1,13 @@
 import { z } from "zod"
 import { digitsOnly, isValidBrPhone, toStoredPhone } from "@/lib/br-documents"
 import {
-  canonicalWebsiteUrl,
-  normalizeWebsiteDomain,
-} from "@/lib/leads/website"
+  DIGITAL_CHANNEL_TYPES,
+  DIGITAL_CHANNELS_MAX,
+  isDigitalChannelType,
+  normalizeDigitalChannelList,
+  primaryWebsiteChannel,
+  type DigitalChannelDraft,
+} from "@/lib/leads/digital-channels"
 import { TAGS_PER_LEAD_MAX } from "@/lib/leads/tags"
 import type { LeadWritePayload } from "@/lib/leads/types"
 
@@ -20,6 +24,33 @@ function formText(formData: FormData, key: string): string {
   return typeof value === "string" ? value : ""
 }
 
+const digitalChannelDraftSchema = z.object({
+  type: z.enum(DIGITAL_CHANNEL_TYPES),
+  value: z.string(),
+  is_primary: z.boolean(),
+})
+
+function parseFormChannels(formData: FormData): DigitalChannelDraft[] {
+  const raw = formData.get("channels")
+  if (typeof raw !== "string" || raw.length === 0) return []
+  try {
+    const parsed = JSON.parse(raw) as unknown
+    if (!Array.isArray(parsed)) return []
+    const channels: DigitalChannelDraft[] = []
+    for (const item of parsed) {
+      if (!item || typeof item !== "object") continue
+      const type = "type" in item ? item.type : null
+      const value = "value" in item ? item.value : null
+      const is_primary = "is_primary" in item ? item.is_primary : false
+      if (!isDigitalChannelType(type) || typeof value !== "string") continue
+      channels.push({ type, value, is_primary: Boolean(is_primary) })
+    }
+    return channels
+  } catch {
+    return []
+  }
+}
+
 export const leadFieldsSchema = z
   .object({
     company_name: z
@@ -27,13 +58,9 @@ export const leadFieldsSchema = z
       .trim()
       .min(2, "Nome da empresa deve ter no mínimo 2 caracteres.")
       .max(200, "Nome da empresa deve ter no máximo 200 caracteres."),
-    website: z
-      .string()
-      .trim()
-      .min(1, "Site obrigatório.")
-      .max(500, "Site deve ter no máximo 500 caracteres."),
-    instagram: optionalText,
-    linkedin: optionalText,
+    channels: z
+      .array(digitalChannelDraftSchema)
+      .max(DIGITAL_CHANNELS_MAX, "No máximo 10 canais."),
     contact_name: optionalText,
     phone: z
       .string()
@@ -66,36 +93,29 @@ export const leadFieldsSchema = z
       .transform((value) => (value.length === 0 ? null : value)),
   })
   .superRefine((data, ctx) => {
-    if (!normalizeWebsiteDomain(data.website)) {
+    const result = normalizeDigitalChannelList(data.channels)
+    if (result.issues.length === 0) return
+    ctx.addIssue({
+      code: "custom",
+      path: ["channels"],
+      message: result.issues[0]?.message ?? "Canais inválidos.",
+    })
+    for (const issue of result.issues) {
       ctx.addIssue({
         code: "custom",
-        path: ["website"],
-        message: "Site inválido.",
+        path: ["channels", issue.index, "value"],
+        message: issue.message,
       })
     }
   })
   .transform((data): LeadWritePayload => {
-    const website_domain = normalizeWebsiteDomain(data.website)
-    if (!website_domain) {
-      return {
-        company_name: data.company_name,
-        website: data.website,
-        website_domain: "",
-        instagram: data.instagram,
-        linkedin: data.linkedin,
-        contact_name: data.contact_name,
-        phone: data.phone,
-        email: data.email,
-        observations: data.observations,
-      }
-    }
-
+    const result = normalizeDigitalChannelList(data.channels)
+    const primary = primaryWebsiteChannel(result.channels)
     return {
       company_name: data.company_name,
-      website: canonicalWebsiteUrl(website_domain),
-      website_domain,
-      instagram: data.instagram,
-      linkedin: data.linkedin,
+      website: primary?.value ?? "",
+      website_domain: primary?.normalized_key ?? "",
+      channels: result.channels,
       contact_name: data.contact_name,
       phone: data.phone,
       email: data.email,
@@ -103,25 +123,50 @@ export const leadFieldsSchema = z
     }
   })
 
-export const leadFormSchema = z.object({
+function refineDigitalChannels(
+  data: { channels: DigitalChannelDraft[] },
+  ctx: z.RefinementCtx,
+) {
+  const result = normalizeDigitalChannelList(data.channels)
+  if (result.issues.length === 0) return
+  ctx.addIssue({
+    code: "custom",
+    path: ["channels"],
+    message: result.issues[0]?.message ?? "Canais inválidos.",
+  })
+}
+
+export const leadFormObjectSchema = z.object({
   company_name: z
     .string()
     .trim()
     .min(2, "Nome da empresa deve ter no mínimo 2 caracteres.")
     .max(200, "Nome da empresa deve ter no máximo 200 caracteres."),
-  website: z
-    .string()
-    .trim()
-    .min(1, "Site obrigatório.")
-    .max(500, "Site deve ter no máximo 500 caracteres."),
-  instagram: z.string(),
-  linkedin: z.string(),
+  channels: z
+    .array(digitalChannelDraftSchema)
+    .max(DIGITAL_CHANNELS_MAX, "No máximo 10 canais."),
   contact_name: z.string(),
   phone: z.string(),
   email: z.string(),
-  tags: z
-    .array(z.string())
-    .max(TAGS_PER_LEAD_MAX, "No máximo 8 tags."),
+  tags: z.array(z.string()).max(TAGS_PER_LEAD_MAX, "No máximo 8 tags."),
+})
+
+export const leadFormSchema = leadFormObjectSchema.superRefine(
+  refineDigitalChannels,
+)
+
+export const leadCompanyFormSchema = leadFormObjectSchema
+  .pick({
+    company_name: true,
+    channels: true,
+    tags: true,
+  })
+  .superRefine(refineDigitalChannels)
+
+export const leadContactFormSchema = leadFormObjectSchema.pick({
+  contact_name: true,
+  phone: true,
+  email: true,
 })
 
 export type LeadFormValues = z.infer<typeof leadFormSchema>
@@ -133,9 +178,7 @@ export type LeadFieldName = keyof LeadWriteFormFields
 export function readLeadFormFields(formData: FormData): LeadWriteFormFields {
   return {
     company_name: formText(formData, "company_name"),
-    website: formText(formData, "website"),
-    instagram: formText(formData, "instagram"),
-    linkedin: formText(formData, "linkedin"),
+    channels: parseFormChannels(formData),
     contact_name: formText(formData, "contact_name"),
     phone: formText(formData, "phone"),
     email: formText(formData, "email"),

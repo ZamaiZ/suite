@@ -48,7 +48,7 @@ export function LeadActivityPanel({
           />
         ) : interested ? (
           <p className="font-sans text-body-sm text-fg-secondary">
-            Interesse registrado. Reunião e análise ficam para a próxima etapa.
+            Interesse registrado. Closer e reunião já foram definidos.
           </p>
         ) : readOnly ? null : (
           <p className="font-sans text-body-sm text-fg-secondary">

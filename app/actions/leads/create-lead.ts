@@ -2,13 +2,16 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { toLeadBoardItem, type LeadBoardItem } from "@/lib/leads/board-item"
+import { DIGITAL_CHANNEL_TAKEN_MESSAGE } from "@/lib/leads/digital-channels"
 import { parseTagNames } from "@/lib/leads/tags"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 import {
   leadFieldsSchema,
   readLeadFormFields,
   type LeadFieldName,
 } from "@/lib/validations/lead"
+import { findChannelConflict, syncLeadChannels } from "./sync-lead-channels"
 import { syncLeadTags } from "./sync-lead-tags"
 
 export type CreateLeadState =
@@ -40,14 +43,27 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
 
   const payload = parsed.data
   const supabase = await createClient()
+  const conflict = await findChannelConflict(supabase, payload.channels)
+  if (conflict.status === "error") {
+    return {
+      status: "error",
+      message: "Não foi possível cadastrar o lead. Tente novamente.",
+    }
+  }
+  if (conflict.status === "conflict") {
+    return {
+      status: "error",
+      message: DIGITAL_CHANNEL_TAKEN_MESSAGE[conflict.type],
+      existingLeadId: conflict.existingLeadId,
+    }
+  }
+
   const { data, error } = await supabase
     .from("leads")
     .insert({
       company_name: payload.company_name,
       website: payload.website,
       website_domain: payload.website_domain,
-      instagram: payload.instagram,
-      linkedin: payload.linkedin,
       contact_name: payload.contact_name,
       phone: payload.phone,
       email: payload.email,
@@ -56,7 +72,7 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
       created_by: user.id,
     })
     .select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id",
+      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at",
     )
     .single()
 
@@ -70,11 +86,29 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
 
       return {
         status: "error",
-        message: "Este site já está cadastrado.",
+        message: DIGITAL_CHANNEL_TAKEN_MESSAGE.website,
         existingLeadId: existing?.id,
       }
     }
 
+    return {
+      status: "error",
+      message: "Não foi possível cadastrar o lead. Tente novamente.",
+    }
+  }
+
+  const synced = await syncLeadChannels(supabase, data.id, payload.channels)
+  if (synced.status !== "ok") {
+    try {
+      await createAdminClient().from("leads").delete().eq("id", data.id)
+    } catch {}
+    if (synced.status === "conflict") {
+      return {
+        status: "error",
+        message: synced.message,
+        existingLeadId: synced.existingLeadId || undefined,
+      }
+    }
     return {
       status: "error",
       message: "Não foi possível cadastrar o lead. Tente novamente.",

@@ -22,7 +22,7 @@ export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
   contacting: "Em contato",
   follow_up: "Retorno",
   denied: "Negado",
-  interested: "Com interesse",
+  interested: "Oportunidade",
 }
 
 export const LEAD_ACTIVITY_TYPE_LABELS: Record<LeadActivityType, string> = {

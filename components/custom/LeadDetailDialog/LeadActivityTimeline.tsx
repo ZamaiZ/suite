@@ -160,7 +160,7 @@ export function LeadActivityTimeline({
                     {" · "}
                     {activity.created_by_name ?? "—"}
                     {activity.follow_up_at
-                      ? ` · retorno ${formatDateTimeShort(activity.follow_up_at)}`
+                      ? ` · ${activity.type === "interested" ? "reunião" : "retorno"} ${formatDateTimeShort(activity.follow_up_at)}`
                       : ""}
                   </p>
                   {activity.denied_reason ? (

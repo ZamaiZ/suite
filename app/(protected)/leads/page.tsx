@@ -15,7 +15,10 @@ import {
   toLeadBoardItem,
   type LeadBoardItem,
 } from "@/lib/leads/board-item"
+import { canListAllOpportunities } from "@/lib/leads/gbp"
 import { LeadBoard } from "@/components/custom/LeadBoard"
+
+export const maxDuration = 60
 
 function sanitizeSearch(value: string): string {
   return value.replace(/[%*,()\\]/g, " ").replace(/\s+/g, " ").trim()
@@ -48,10 +51,30 @@ async function leadIdsForTagSlug(
   return (links ?? []).map((row) => row.lead_id as string)
 }
 
+async function leadIdsForChannelQuery(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  query: string,
+): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("lead_digital_channels")
+    .select("lead_id")
+    .or(`normalized_key.ilike.%${query}%,value.ilike.%${query}%`)
+  if (error) {
+    throw new Error("Unable to search lead channels.", { cause: error })
+  }
+  return [
+    ...new Set(
+      (data ?? [])
+        .map((row) => row.lead_id)
+        .filter((id): id is string => typeof id === "string"),
+    ),
+  ]
+}
+
 export default async function LeadsPage({
   searchParams,
 }: PageProps<"/leads">) {
-  const { user } = await requireCommercialMember()
+  const { user, roles } = await requireCommercialMember()
   const params = await searchParams
   const rawQuery = firstSearchParam(params.q)
   const query = sanitizeSearch(rawQuery ?? "")
@@ -66,11 +89,15 @@ export default async function LeadsPage({
       : null
 
   const supabase = await createClient()
-  const [{ data: catalogRows, error: catalogError }, matchingIds] =
-    await Promise.all([
-      supabase.from("tags").select("name, slug").order("name"),
-      tag ? leadIdsForTagSlug(supabase, tag) : Promise.resolve(null),
-    ])
+  const [
+    { data: catalogRows, error: catalogError },
+    matchingIds,
+    channelMatchIds,
+  ] = await Promise.all([
+    supabase.from("tags").select("name, slug").order("name"),
+    tag ? leadIdsForTagSlug(supabase, tag) : Promise.resolve(null),
+    query ? leadIdsForChannelQuery(supabase, query) : Promise.resolve([]),
+  ])
 
   if (catalogError) {
     throw new Error("Unable to load tags.", { cause: catalogError })
@@ -84,11 +111,13 @@ export default async function LeadsPage({
 
   if (!matchingIds || matchingIds.length > 0) {
     const scope = team
-      ? "and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.not.is.null,status.neq.interested)"
-      : `and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.eq.${user.id},status.neq.interested)`
+      ? "and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.not.is.null)"
+      : canListAllOpportunities(roles)
+        ? `and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.eq.${user.id}),and(assigned_closer_id.eq.${user.id},status.eq.interested),and(status.eq.interested)`
+        : `and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.eq.${user.id}),and(assigned_closer_id.eq.${user.id},status.eq.interested)`
 
     let listQuery = supabase.from("leads").select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, users!assigned_sdr_id(name), lead_activities(type, channel, created_at), lead_tags(tags(id, name))",
+      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), lead_activities(type, channel, created_at), lead_tags(tags(id, name))",
     )
 
     if (matchingIds) {
@@ -96,8 +125,12 @@ export default async function LeadsPage({
     }
 
     if (query) {
+      const channelFilter =
+        channelMatchIds.length > 0
+          ? `,id.in.(${channelMatchIds.join(",")})`
+          : ""
       listQuery = listQuery.or(
-        `and(or(${scope}),or(company_name.ilike.%${query}%,website_domain.ilike.%${query}%))`,
+        `and(or(${scope}),or(company_name.ilike.%${query}%,website_domain.ilike.%${query}%${channelFilter}))`,
       )
     } else {
       listQuery = listQuery.or(scope)
@@ -126,6 +159,11 @@ export default async function LeadsPage({
       const item = toLeadBoardItem(row, {
         assignee_name: row.assigned_sdr_id
           ? readEmbeddedName(row.users as AssigneeEmbed)
+          : null,
+        closer_name: row.assigned_closer_id
+          ? readEmbeddedName(
+              (row as { closer?: AssigneeEmbed }).closer,
+            )
           : null,
         from_denial: Boolean(
           latest && isLeadActivityType(latest.type) && latest.type === "denied",

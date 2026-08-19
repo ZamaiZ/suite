@@ -1,6 +1,7 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
+import { DIGITAL_CHANNEL_TAKEN_MESSAGE } from "@/lib/leads/digital-channels"
 import { parseTagNames, type LeadTag } from "@/lib/leads/tags"
 import { createClient } from "@/lib/supabase/server"
 import type { LeadWritePayload } from "@/lib/leads/types"
@@ -10,6 +11,7 @@ import {
   updateLeadSchema,
   type LeadFieldName,
 } from "@/lib/validations/lead"
+import { findChannelConflict, syncLeadChannels } from "./sync-lead-channels"
 import { syncLeadTags } from "./sync-lead-tags"
 
 export type UpdateLeadState =
@@ -50,14 +52,27 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
   const payload = fieldsParsed.data
   const leadId = idParsed.data.lead_id
   const supabase = await createClient()
+  const conflict = await findChannelConflict(supabase, payload.channels, leadId)
+  if (conflict.status === "error") {
+    return {
+      status: "error",
+      message: "Não foi possível atualizar o lead. Tente novamente.",
+    }
+  }
+  if (conflict.status === "conflict") {
+    return {
+      status: "error",
+      message: DIGITAL_CHANNEL_TAKEN_MESSAGE[conflict.type],
+      existingLeadId: conflict.existingLeadId,
+    }
+  }
+
   const { error } = await supabase
     .from("leads")
     .update({
       company_name: payload.company_name,
       website: payload.website,
       website_domain: payload.website_domain,
-      instagram: payload.instagram,
-      linkedin: payload.linkedin,
       contact_name: payload.contact_name,
       phone: payload.phone,
       email: payload.email,
@@ -77,11 +92,26 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
 
       return {
         status: "error",
-        message: "Este site já está cadastrado.",
+        message: DIGITAL_CHANNEL_TAKEN_MESSAGE.website,
         existingLeadId: existing?.id,
       }
     }
 
+    return {
+      status: "error",
+      message: "Não foi possível atualizar o lead. Tente novamente.",
+    }
+  }
+
+  const synced = await syncLeadChannels(supabase, leadId, payload.channels)
+  if (synced.status === "conflict") {
+    return {
+      status: "error",
+      message: synced.message,
+      existingLeadId: synced.existingLeadId || undefined,
+    }
+  }
+  if (synced.status !== "ok") {
     return {
       status: "error",
       message: "Não foi possível atualizar o lead. Tente novamente.",
@@ -103,7 +133,7 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
   return {
     status: "success",
     message: "Lead atualizado.",
-    fields: payload,
+    fields: { ...payload, channels: synced.channels },
     tags,
   }
 }

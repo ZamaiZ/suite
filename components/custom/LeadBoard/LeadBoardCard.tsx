@@ -27,7 +27,7 @@ export function LeadBoardCard({
   selected,
   canDrag,
   allowActions,
-  showOwner,
+  currentUserId,
   onOpen,
   onAssigned,
   onBoardError,
@@ -38,7 +38,7 @@ export function LeadBoardCard({
   selected: boolean
   canDrag: boolean
   allowActions: boolean
-  showOwner: boolean
+  currentUserId: string
   onOpen: (id: string, href: string) => void
   onAssigned: (leadId: string, patch: LeadAssignmentPatch) => void
   onBoardError: (message: string | null) => void
@@ -87,7 +87,7 @@ export function LeadBoardCard({
             "active:scale-[0.97]",
           )}
         >
-          <LeadBoardCardFace lead={lead} showOwner={showOwner} />
+          <LeadBoardCardFace lead={lead} currentUserId={currentUserId} />
         </a>
         {showMenu ? (
           <div

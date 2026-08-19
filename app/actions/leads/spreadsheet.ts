@@ -5,14 +5,21 @@ import { z } from "zod"
 import { requireCommercialMember } from "@/lib/auth/session"
 import { createClient } from "@/lib/supabase/server"
 import {
-  applyExistingDomainConflicts,
+  DIGITAL_CHANNEL_TYPES,
+  digitalChannelConflictKey,
+  isDigitalChannelType,
+} from "@/lib/leads/digital-channels"
+import {
+  applyExistingChannelConflicts,
   isSpreadsheetRowClean,
   LEAD_SPREADSHEET_MAX_BYTES,
   LEAD_SPREADSHEET_MAX_FILES,
   LEAD_SPREADSHEET_MAX_ROWS,
-  rowDomain,
+  rowChannelKeys,
+  spreadsheetCellsFromChannels,
   summarizeEvaluatedRows,
   validateRawRows,
+  type ExistingChannelConflict,
 } from "@/lib/leads/spreadsheet-model"
 import { parseLeadSpreadsheet } from "@/lib/leads/spreadsheet"
 import type { LeadWritePayload, SpreadsheetEvaluatedRow } from "@/lib/leads/types"
@@ -40,12 +47,19 @@ const evaluateRowsInputSchema = z
     `A planilha pode ter no máximo ${LEAD_SPREADSHEET_MAX_ROWS} linhas.`,
   )
 
+const importChannelSchema = z.object({
+  type: z.enum(DIGITAL_CHANNEL_TYPES),
+  value: z.string().min(1).max(500),
+  normalized_key: z.string().min(1),
+  is_primary: z.boolean(),
+  sort_order: z.number().int().nonnegative(),
+})
+
 const importPayloadSchema = z.object({
   company_name: z.string().min(2).max(200),
   website: z.string().min(1).max(500),
   website_domain: z.string().min(1),
-  instagram: z.string().nullable(),
-  linkedin: z.string().nullable(),
+  channels: z.array(importChannelSchema).min(1),
   contact_name: z.string().nullable(),
   phone: z.string().nullable(),
   email: z.string().nullable(),
@@ -111,32 +125,42 @@ async function readSpreadsheetFile(formData: FormData): Promise<
 async function attachDatabaseConflicts(
   rows: SpreadsheetEvaluatedRow[],
 ): Promise<SpreadsheetEvaluatedRow[]> {
-  const domains = [
+  const keys = [
     ...new Set(
-      rows
-        .map((row) => rowDomain(row))
-        .filter((domain): domain is string => Boolean(domain)),
+      rows.flatMap((row) =>
+        rowChannelKeys(row).map((channel) => channel.normalized_key),
+      ),
     ),
   ]
-  if (domains.length === 0) return rows
+  if (keys.length === 0) return rows
 
   const supabase = await createClient()
   const { data, error } = await supabase
-    .from("leads")
-    .select("id, website_domain, company_name")
-    .in("website_domain", domains)
+    .from("lead_digital_channels")
+    .select("type, normalized_key, leads(company_name)")
+    .in("normalized_key", keys)
 
   if (error) {
-    throw new Error("Unable to check existing lead domains.", { cause: error })
+    throw new Error("Unable to check existing lead channels.", { cause: error })
   }
 
-  const existing = new Map(
-    (data ?? []).map((lead) => [
-      lead.website_domain as string,
-      { company_name: lead.company_name as string },
-    ]),
-  )
-  return applyExistingDomainConflicts(rows, existing)
+  const existing = new Map<string, ExistingChannelConflict>()
+  for (const row of data ?? []) {
+    if (!isDigitalChannelType(row.type)) continue
+    if (typeof row.normalized_key !== "string") continue
+    const embed = row.leads as
+      | { company_name: string }
+      | { company_name: string }[]
+      | null
+    const company_name = Array.isArray(embed)
+      ? (embed[0]?.company_name ?? "")
+      : (embed?.company_name ?? "")
+    existing.set(digitalChannelConflictKey(row.type, row.normalized_key), {
+      type: row.type,
+      company_name,
+    })
+  }
+  return applyExistingChannelConflicts(rows, existing)
 }
 
 function toEvaluateOk(rows: SpreadsheetEvaluatedRow[]): EvaluateLeadSpreadsheetState {
@@ -202,13 +226,20 @@ export async function importLeads(
 
   const unique = new Set<string>()
   for (const payload of parsed.data) {
-    if (unique.has(payload.website_domain)) {
-      return {
-        status: "error",
-        message: "Ainda há sites repetidos. Corrija e reavalie antes de importar.",
+    for (const channel of payload.channels) {
+      const key = digitalChannelConflictKey(
+        channel.type,
+        channel.normalized_key,
+      )
+      if (unique.has(key)) {
+        return {
+          status: "error",
+          message:
+            "Ainda há canais repetidos. Corrija e reavalie antes de importar.",
+        }
       }
+      unique.add(key)
     }
-    unique.add(payload.website_domain)
   }
 
   try {
@@ -217,12 +248,10 @@ export async function importLeads(
         row: index + 2,
         values: {
           company_name: payload.company_name,
-          website: payload.website,
+          ...spreadsheetCellsFromChannels(payload.channels),
           contact_name: payload.contact_name ?? "",
           phone: payload.phone ?? "",
           email: payload.email ?? "",
-          instagram: payload.instagram ?? "",
-          linkedin: payload.linkedin ?? "",
         },
       })),
     )
@@ -231,8 +260,6 @@ export async function importLeads(
       company_name: string
       website: string
       website_domain: string
-      instagram: string | null
-      linkedin: string | null
       contact_name: string | null
       phone: string | null
       email: string | null
@@ -253,8 +280,6 @@ export async function importLeads(
         company_name: row.payload.company_name,
         website: row.payload.website,
         website_domain: row.payload.website_domain,
-        instagram: row.payload.instagram,
-        linkedin: row.payload.linkedin,
         contact_name: row.payload.contact_name,
         phone: row.payload.phone,
         email: row.payload.email,
@@ -266,7 +291,10 @@ export async function importLeads(
     }
 
     const supabase = await createClient()
-    const { error } = await supabase.from("leads").insert(inserts)
+    const { data: inserted, error } = await supabase
+      .from("leads")
+      .insert(inserts)
+      .select("id, website_domain")
 
     if (error) {
       if (error.code === "23505") {
@@ -278,6 +306,44 @@ export async function importLeads(
       return {
         status: "error",
         message: "Não foi possível importar os leads. Tente novamente.",
+      }
+    }
+
+    const idByDomain = new Map(
+      (inserted ?? []).map((row) => [
+        row.website_domain as string,
+        row.id as string,
+      ]),
+    )
+    const channelRows = parsed.data.flatMap((payload) => {
+      const leadId = idByDomain.get(payload.website_domain)
+      if (!leadId) return []
+      return payload.channels.map((channel) => ({
+        lead_id: leadId,
+        type: channel.type,
+        value: channel.value,
+        normalized_key: channel.normalized_key,
+        is_primary: channel.is_primary,
+        sort_order: channel.sort_order,
+      }))
+    })
+
+    if (channelRows.length > 0) {
+      const { error: channelError } = await supabase
+        .from("lead_digital_channels")
+        .insert(channelRows)
+      if (channelError) {
+        if (channelError.code === "23505") {
+          return {
+            status: "error",
+            message:
+              "Um dos canais já foi cadastrado enquanto você avaliava o arquivo.",
+          }
+        }
+        return {
+          status: "error",
+          message: "Não foi possível importar os leads. Tente novamente.",
+        }
       }
     }
 

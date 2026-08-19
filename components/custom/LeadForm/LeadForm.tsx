@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useTransition, type ReactNode } from "react"
+import { useEffect, useRef, useState, useTransition, type FormEvent, type ReactNode } from "react"
 import Link from "next/link"
 import { Controller, useForm, type Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -8,20 +8,24 @@ import type { IconType } from "react-icons"
 import {
   RiBuilding4Line,
   RiGlobalLine,
-  RiInstagramLine,
-  RiLinkedinBoxLine,
   RiLoader4Line,
   RiMailLine,
   RiPhoneLine,
+  RiPriceTag3Line,
   RiSaveLine,
   RiUserLine,
 } from "react-icons/ri"
 import { createLead, updateLead } from "@/app/actions/leads"
+import {
+  LeadDigitalChannels,
+  type LeadDigitalChannelsHandle,
+} from "@/components/custom/LeadDigitalChannels"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { LeadTagField } from "@/components/custom/LeadTagField"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { cn } from "@/lib/cn"
+import { toDigitalChannelDrafts } from "@/lib/leads/digital-channels"
 import {
   leadFormSchema,
   type LeadFieldName,
@@ -46,11 +50,13 @@ function FormSection({
   icon,
   title,
   subtitle,
+  columns = "two",
   children,
 }: {
   icon: IconType
   title: string
   subtitle: string
+  columns?: "one" | "two"
   children: ReactNode
 }) {
   return (
@@ -64,7 +70,14 @@ function FormSection({
           <p className="font-sans text-caption text-fg-muted">{subtitle}</p>
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">{children}</div>
+      <div
+        className={cn(
+          "grid gap-4",
+          columns === "two" ? "sm:grid-cols-2" : "grid-cols-1",
+        )}
+      >
+        {children}
+      </div>
     </section>
   )
 }
@@ -82,6 +95,7 @@ export function LeadForm({
   readOnly = false,
 }: LeadFormProps) {
   const [isPending, startTransition] = useTransition()
+  const channelsRef = useRef<LeadDigitalChannelsHandle>(null)
   const [serverMessage, setServerMessage] = useState<{
     tone: "success" | "error"
     text: string
@@ -97,9 +111,9 @@ export function LeadForm({
     resolver: zodResolver(leadFormSchema) as Resolver<LeadFormValues>,
     defaultValues: {
       company_name: defaultValues?.company_name ?? lead?.company_name ?? "",
-      website: defaultValues?.website ?? lead?.website ?? "",
-      instagram: defaultValues?.instagram ?? lead?.instagram ?? "",
-      linkedin: defaultValues?.linkedin ?? lead?.linkedin ?? "",
+      channels:
+        defaultValues?.channels ??
+        (lead?.channels ? toDigitalChannelDrafts(lead.channels) : []),
       contact_name: defaultValues?.contact_name ?? lead?.contact_name ?? "",
       phone: defaultValues?.phone ?? lead?.phone ?? "",
       email: defaultValues?.email ?? lead?.email ?? "",
@@ -120,9 +134,7 @@ export function LeadForm({
     const formData = new FormData()
     if (mode === "edit" && leadId) formData.set("lead_id", leadId)
     formData.set("company_name", values.company_name)
-    formData.set("website", values.website)
-    formData.set("instagram", values.instagram)
-    formData.set("linkedin", values.linkedin)
+    formData.set("channels", JSON.stringify(values.channels))
     formData.set("contact_name", values.contact_name)
     formData.set("phone", values.phone)
     formData.set("email", values.email)
@@ -158,12 +170,20 @@ export function LeadForm({
     })
   }
 
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    if (channelsRef.current && !channelsRef.current.flush()) {
+      event.preventDefault()
+      return
+    }
+    void form.handleSubmit(onSubmit)(event)
+  }
+
   const fieldsDisabled = isPending || readOnly
 
   return (
     <form
       id={LEAD_FORM_ID}
-      onSubmit={form.handleSubmit(onSubmit)}
+      onSubmit={handleSubmit}
       noValidate
       className="flex flex-col gap-4"
     >
@@ -171,6 +191,7 @@ export function LeadForm({
         icon={RiBuilding4Line}
         title="Empresa"
         subtitle="Informações principais da empresa."
+        columns="one"
       >
         <Controller
           name="company_name"
@@ -189,73 +210,52 @@ export function LeadForm({
             />
           )}
         />
+      </FormSection>
+
+      <FormSection
+        icon={RiGlobalLine}
+        title="Canais digitais"
+        subtitle="Adicione os sites e perfis da empresa. Você pode incluir quantos canais forem necessários."
+        columns="one"
+      >
         <Controller
-          name="website"
+          name="channels"
           control={form.control}
           render={({ field, fieldState }) => (
-            <Input
-              id="lead-website"
-              label="Site"
+            <LeadDigitalChannels
+              ref={channelsRef}
+              id="lead-channels"
               value={field.value}
-              onChange={field.onChange}
+              onValueChange={field.onChange}
               onBlur={field.onBlur}
               error={fieldState.error?.message}
               disabled={fieldsDisabled}
-              placeholder="empresa.com.br"
-              autoComplete="url"
-              leadingIcon={<RiGlobalLine size={16} aria-hidden />}
             />
           )}
         />
+      </FormSection>
+
+      <FormSection
+        icon={RiPriceTag3Line}
+        title="Tags"
+        subtitle="Organize o lead com tags relevantes."
+        columns="one"
+      >
         <Controller
-          name="instagram"
+          name="tags"
           control={form.control}
           render={({ field, fieldState }) => (
-            <Input
-              id="lead-instagram"
-              label="Instagram"
+            <LeadTagField
+              id="lead-tags"
+              label="Adicionar tag"
               value={field.value}
-              onChange={field.onChange}
+              onValueChange={field.onChange}
               onBlur={field.onBlur}
               error={fieldState.error?.message}
               disabled={fieldsDisabled}
-              leadingIcon={<RiInstagramLine size={16} aria-hidden />}
             />
           )}
         />
-        <Controller
-          name="linkedin"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              id="lead-linkedin"
-              label="LinkedIn"
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              disabled={fieldsDisabled}
-              leadingIcon={<RiLinkedinBoxLine size={16} aria-hidden />}
-            />
-          )}
-        />
-        <div className="sm:col-span-2">
-          <Controller
-            name="tags"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <LeadTagField
-                id="lead-tags"
-                label="Tags"
-                value={field.value}
-                onValueChange={field.onChange}
-                onBlur={field.onBlur}
-                error={fieldState.error?.message}
-                disabled={fieldsDisabled}
-              />
-            )}
-          />
-        </div>
       </FormSection>
 
       <FormSection

@@ -7,11 +7,12 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { z } from "zod"
 import { RiEditBoxLine, RiLoader4Line, RiSendPlaneLine } from "react-icons/ri"
-import { logLeadActivity } from "@/app/actions/leads"
+import { logLeadActivity, listClosers, type CloserOption } from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
 import { Button } from "@/components/ui/Button"
 import { DateTimePicker } from "@/components/ui/DateTimePicker"
 import { Input } from "@/components/ui/Input"
+import { Select } from "@/components/ui/Select"
 import { cn } from "@/lib/cn"
 import {
   datetimeLocalToCivilDate,
@@ -35,6 +36,7 @@ const activityFormSchema = z.object({
   channel_detail: z.string(),
   note: z.string(),
   denied_reason: z.string(),
+  closer_id: z.string(),
   follow_up_date: z.string(),
   follow_up_time: z.string(),
 })
@@ -111,6 +113,9 @@ export function LeadActivityForm({
     text: string
   } | null>(null)
 
+  const [closers, setClosers] = useState<CloserOption[]>([])
+  const [closersLoading, setClosersLoading] = useState(false)
+
   useEffect(() => {
     onPendingChange?.(isPending)
     return () => onPendingChange?.(false)
@@ -124,6 +129,7 @@ export function LeadActivityForm({
       channel_detail: "",
       note: "",
       denied_reason: "",
+      closer_id: "",
       follow_up_date: "",
       follow_up_time: "",
     },
@@ -137,9 +143,25 @@ export function LeadActivityForm({
   )
     ? channel
     : ""
-  const showFollowUp = type === "call_later" || type === "denied"
+  const showFollowUp =
+    type === "call_later" || type === "denied" || type === "interested"
   const showDeniedReason = type === "denied"
+  const showCloser = type === "interested"
   const showChannelDetail = selectedChannel === "other"
+
+  useEffect(() => {
+    if (!showCloser) return
+    let cancelled = false
+    setClosersLoading(true)
+    void listClosers().then((rows) => {
+      if (cancelled) return
+      setClosers(rows)
+      setClosersLoading(false)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [showCloser])
 
   function onSubmit(values: ActivityFormValues) {
     setMessage(null)
@@ -153,6 +175,7 @@ export function LeadActivityForm({
     )
     formData.set("note", values.note)
     formData.set("denied_reason", showDeniedReason ? values.denied_reason : "")
+    formData.set("closer_id", showCloser ? values.closer_id : "")
     formData.set("follow_up_date", showFollowUp ? values.follow_up_date : "")
     formData.set("follow_up_time", showFollowUp ? values.follow_up_time : "")
 
@@ -162,6 +185,9 @@ export function LeadActivityForm({
         const fields = result.fieldErrors
         if (fields?.denied_reason?.[0]) {
           form.setError("denied_reason", { message: fields.denied_reason[0] })
+        }
+        if (fields?.closer_id?.[0]) {
+          form.setError("closer_id", { message: fields.closer_id[0] })
         }
         if (fields?.follow_up_date?.[0]) {
           form.setError("follow_up_date", { message: fields.follow_up_date[0] })
@@ -190,6 +216,7 @@ export function LeadActivityForm({
         channel_detail: "",
         note: "",
         denied_reason: "",
+        closer_id: "",
         follow_up_date: "",
         follow_up_time: "",
       })
@@ -290,6 +317,34 @@ export function LeadActivityForm({
         />
       </FieldReveal>
 
+      <FieldReveal show={showCloser} id="closer">
+        <div className="mb-3">
+          <Controller
+            name="closer_id"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Select
+                id="lead-activity-closer"
+                label="Closer"
+                placeholder="Selecione o closer"
+                items={closers.map((closer) => ({
+                  value: closer.id,
+                  label: closer.name,
+                }))}
+                value={field.value}
+                onValueChange={(next) => {
+                  field.onChange(typeof next === "string" ? next : "")
+                }}
+                onBlur={field.onBlur}
+                error={fieldState.error?.message}
+                disabled={isPending}
+                loading={closersLoading}
+              />
+            )}
+          />
+        </div>
+      </FieldReveal>
+
       <Controller
         name="note"
         control={form.control}
@@ -365,7 +420,9 @@ export function LeadActivityForm({
                         label={
                           type === "call_later"
                             ? "Data e horário para ligar"
-                            : "Retorno (opcional)"
+                            : type === "interested"
+                              ? "Data e horário da reunião"
+                              : "Retorno (opcional)"
                         }
                         placeholder="Data e hora"
                         value={joinDatetimeLocal(dateField.value, timeField.value)}

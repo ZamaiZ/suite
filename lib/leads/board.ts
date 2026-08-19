@@ -4,6 +4,7 @@ export const BOARD_COLUMNS = [
   "new",
   "contacting",
   "follow_up",
+  "interested",
   "denied",
 ] as const
 
@@ -13,6 +14,7 @@ export const BOARD_COLUMN_LABELS: Record<BoardColumnId, string> = {
   new: "Novo",
   contacting: "Em contato",
   follow_up: "Retorno",
+  interested: "Oportunidades",
   denied: "Negado",
 }
 
@@ -20,6 +22,7 @@ export const BOARD_COLUMN_DOT: Record<BoardColumnId, string> = {
   new: "bg-fg-muted",
   contacting: "bg-accent",
   follow_up: "bg-warning",
+  interested: "bg-success",
   denied: "bg-danger",
 }
 
@@ -38,6 +41,10 @@ export const BOARD_COLUMN_EMPTY: Record<
   follow_up: {
     title: "Nenhum retorno agendado",
     body: "Ligar depois aparece aqui, ordenado pelo horário",
+  },
+  interested: {
+    title: "Nenhuma oportunidade",
+    body: "Leads com interesse e reunião agendada aparecem aqui",
   },
   denied: {
     title: "Nenhum lead negado",
@@ -60,10 +67,10 @@ export function columnForStatus(status: LeadStatus): BoardColumnId | null {
       return "contacting"
     case "follow_up":
       return "follow_up"
+    case "interested":
+      return "interested"
     case "denied":
       return "denied"
-    case "interested":
-      return null
   }
 }
 
@@ -73,29 +80,40 @@ export function isLegalBoardMove(
 ): boolean {
   if (from === to) return false
   if (from === "new") return to === "contacting"
-  if (from === "contacting") return to === "follow_up" || to === "denied"
-  if (from === "follow_up") return to === "denied"
+  if (from === "contacting") {
+    return to === "follow_up" || to === "denied" || to === "interested"
+  }
+  if (from === "follow_up") return to === "denied" || to === "interested"
   return false
 }
 
 type GroupableLead = {
   status: LeadStatus
   next_follow_up_at: string | null
+  last_activity_at: string | null
   created_at: string
   company_name: string
 }
 
-function compareFollowUp<T extends GroupableLead>(left: T, right: T): number {
-  const leftTime = left.next_follow_up_at ?? ""
-  const rightTime = right.next_follow_up_at ?? ""
+function compareByTime<T extends GroupableLead>(
+  left: T,
+  right: T,
+  readTime: (lead: T) => string | null,
+): number {
+  const leftTime = readTime(left) ?? ""
+  const rightTime = readTime(right) ?? ""
   if (leftTime !== rightTime) return leftTime.localeCompare(rightTime)
   return left.company_name.localeCompare(right.company_name, "pt-BR")
 }
 
-function compareCreatedDesc<T extends GroupableLead>(left: T, right: T): number {
-  if (left.created_at !== right.created_at) {
-    return right.created_at.localeCompare(left.created_at)
-  }
+function recencyOf<T extends GroupableLead>(lead: T): string {
+  return lead.last_activity_at ?? lead.created_at
+}
+
+function compareRecencyDesc<T extends GroupableLead>(left: T, right: T): number {
+  const leftTime = recencyOf(left)
+  const rightTime = recencyOf(right)
+  if (leftTime !== rightTime) return rightTime.localeCompare(leftTime)
   return left.company_name.localeCompare(right.company_name, "pt-BR")
 }
 
@@ -106,6 +124,7 @@ export function groupLeadsByColumn<T extends GroupableLead>(
     new: [],
     contacting: [],
     follow_up: [],
+    interested: [],
     denied: [],
   }
 
@@ -115,10 +134,13 @@ export function groupLeadsByColumn<T extends GroupableLead>(
     grouped[column].push(lead)
   }
 
-  grouped.follow_up.sort(compareFollowUp)
-  grouped.new.sort(compareCreatedDesc)
-  grouped.contacting.sort(compareCreatedDesc)
-  grouped.denied.sort(compareCreatedDesc)
+  grouped.follow_up.sort((left, right) =>
+    compareByTime(left, right, (lead) => lead.next_follow_up_at),
+  )
+  grouped.new.sort(compareRecencyDesc)
+  grouped.contacting.sort(compareRecencyDesc)
+  grouped.interested.sort(compareRecencyDesc)
+  grouped.denied.sort(compareRecencyDesc)
 
   return grouped
 }

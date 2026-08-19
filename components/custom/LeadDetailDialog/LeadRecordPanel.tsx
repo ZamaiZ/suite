@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useRef, useState, useTransition } from "react"
 import Link from "next/link"
 import { Controller, useForm, type FieldValues, type Path, type Resolver, type UseFormReturn } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -10,43 +10,37 @@ import {
   RiBuilding4Line,
   RiChat3Line,
   RiFileTextLine,
-  RiGlobalLine,
-  RiInstagramLine,
-  RiLinkedinBoxLine,
   RiMailLine,
   RiPhoneLine,
   RiUserLine,
 } from "react-icons/ri"
 import { updateLead } from "@/app/actions/leads"
+import {
+  LeadDigitalChannelList,
+  LeadDigitalChannels,
+  type LeadDigitalChannelsHandle,
+} from "@/components/custom/LeadDigitalChannels"
 import { LeadTagChips, LeadTagField } from "@/components/custom/LeadTagField"
 import { Input } from "@/components/ui/Input"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
 import { cn } from "@/lib/cn"
+import { toDigitalChannelDrafts, type DigitalChannelDraft } from "@/lib/leads/digital-channels"
 import type { LeadDetail } from "@/app/actions/leads"
 import type { LeadTag } from "@/lib/leads/tags"
 import type { LeadRecord, LeadWritePayload } from "@/lib/leads/types"
 import {
   LEAD_OBSERVATIONS_MAX,
-  leadFormSchema,
+  leadCompanyFormSchema,
+  leadContactFormSchema,
   type LeadFieldName,
 } from "@/lib/validations/lead"
-import { hrefForWebsite, LeadRecordField } from "./LeadRecordField"
+import { LeadRecordField } from "./LeadRecordField"
 import { LeadRecordRail, type LeadRecordSection } from "./LeadRecordRail"
 import { LeadRecordSectionCard } from "./LeadRecordSectionCard"
 
-const companySchema = leadFormSchema.pick({
-  company_name: true,
-  website: true,
-  instagram: true,
-  linkedin: true,
-  tags: true,
-})
+const companySchema = leadCompanyFormSchema
 
-const contactSchema = leadFormSchema.pick({
-  contact_name: true,
-  phone: true,
-  email: true,
-})
+const contactSchema = leadContactFormSchema
 
 const notesSchema = z.object({
   observations: z
@@ -81,9 +75,7 @@ function fillLeadFormData(
   tags: string[],
   overlay: {
     company_name?: string
-    website?: string
-    instagram?: string
-    linkedin?: string
+    channels?: DigitalChannelDraft[]
     contact_name?: string
     phone?: string
     email?: string
@@ -92,9 +84,12 @@ function fillLeadFormData(
 ) {
   formData.set("lead_id", lead.id)
   formData.set("company_name", overlay.company_name ?? lead.company_name)
-  formData.set("website", overlay.website ?? lead.website)
-  formData.set("instagram", overlay.instagram ?? lead.instagram ?? "")
-  formData.set("linkedin", overlay.linkedin ?? lead.linkedin ?? "")
+  formData.set(
+    "channels",
+    JSON.stringify(
+      overlay.channels ?? toDigitalChannelDrafts(lead.channels ?? []),
+    ),
+  )
   formData.set("contact_name", overlay.contact_name ?? lead.contact_name ?? "")
   formData.set("phone", overlay.phone ?? lead.phone ?? "")
   formData.set("email", overlay.email ?? lead.email ?? "")
@@ -221,6 +216,8 @@ function CompanyCard({
 }) {
   const lead = detail.lead
   const [isPending, startTransition] = useTransition()
+  const channelsRef = useRef<LeadDigitalChannelsHandle>(null)
+  const [draftDirty, setDraftDirty] = useState(false)
   const [serverMessage, setServerMessage] = useState<{
     text: string
     existingLeadId?: string
@@ -247,9 +244,7 @@ function CompanyCard({
     const formData = new FormData()
     fillLeadFormData(formData, lead, values.tags, {
       company_name: values.company_name,
-      website: values.website,
-      instagram: values.instagram,
-      linkedin: values.linkedin,
+      channels: values.channels,
     })
 
     startTransition(async () => {
@@ -267,7 +262,16 @@ function CompanyCard({
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
+    <form
+      onSubmit={(event) => {
+        if (channelsRef.current && !channelsRef.current.flush()) {
+          event.preventDefault()
+          return
+        }
+        void form.handleSubmit(onSubmit)(event)
+      }}
+      noValidate
+    >
       <LeadRecordSectionCard
         icon={RiBuilding4Line}
         title="Empresa"
@@ -275,14 +279,14 @@ function CompanyCard({
         editLabel="Editar empresa"
         readOnly={readOnly}
         pending={isPending}
-        saveDisabled={!form.formState.isDirty}
+        saveDisabled={!form.formState.isDirty && !draftDirty}
         showActions={showActions}
         onEdit={onEdit}
         onCancel={onCancel}
       >
         {editing ? (
           <div className="flex flex-col gap-4">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="flex flex-col gap-4">
               <Controller
                 name="company_name"
                 control={form.control}
@@ -301,72 +305,36 @@ function CompanyCard({
                 )}
               />
               <Controller
-                name="website"
+                name="channels"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-website"
-                    label="Site"
+                  <LeadDigitalChannels
+                    ref={channelsRef}
+                    id="lead-record-channels"
                     value={field.value}
-                    onChange={field.onChange}
+                    onValueChange={field.onChange}
                     onBlur={field.onBlur}
+                    onDraftChange={setDraftDirty}
                     error={fieldState.error?.message}
                     disabled={isPending}
-                    placeholder="empresa.com.br"
-                    autoComplete="url"
-                    leadingIcon={<RiGlobalLine size={16} aria-hidden />}
                   />
                 )}
               />
               <Controller
-                name="instagram"
+                name="tags"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-instagram"
-                    label="Instagram"
+                  <LeadTagField
+                    id="lead-record-tags"
+                    label="Tags"
                     value={field.value}
-                    onChange={field.onChange}
+                    onValueChange={field.onChange}
                     onBlur={field.onBlur}
                     error={fieldState.error?.message}
                     disabled={isPending}
-                    leadingIcon={<RiInstagramLine size={16} aria-hidden />}
                   />
                 )}
               />
-              <Controller
-                name="linkedin"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-linkedin"
-                    label="LinkedIn"
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    error={fieldState.error?.message}
-                    disabled={isPending}
-                    leadingIcon={<RiLinkedinBoxLine size={16} aria-hidden />}
-                  />
-                )}
-              />
-              <div className="sm:col-span-2">
-                <Controller
-                  name="tags"
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <LeadTagField
-                      id="lead-record-tags"
-                      label="Tags"
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      onBlur={field.onBlur}
-                      error={fieldState.error?.message}
-                      disabled={isPending}
-                    />
-                  )}
-                />
-              </div>
             </div>
             {serverMessage ? (
               <ServerMessage
@@ -377,31 +345,14 @@ function CompanyCard({
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <LeadRecordField
-                icon={RiBuilding4Line}
-                label="Nome da empresa"
-                value={lead.company_name}
-              />
-              <LeadRecordField
-                icon={RiGlobalLine}
-                label="Site"
-                value={lead.website_domain}
-                href={hrefForWebsite(lead.website || lead.website_domain)}
-              />
-              <LeadRecordField
-                icon={RiInstagramLine}
-                label="Instagram"
-                value={lead.instagram}
-                href={hrefForWebsite(lead.instagram)}
-              />
-              <LeadRecordField
-                icon={RiLinkedinBoxLine}
-                label="LinkedIn"
-                value={lead.linkedin}
-                href={hrefForWebsite(lead.linkedin)}
-              />
-            </div>
+            <LeadRecordField
+              icon={RiBuilding4Line}
+              label="Nome da empresa"
+              value={lead.company_name}
+            />
+            <LeadDigitalChannelList
+              channels={toDigitalChannelDrafts(lead.channels ?? [])}
+            />
             <div className="border-t border-border-subtle pt-4">
               <p className="mb-2 font-sans text-caption text-fg-muted">Tags</p>
               <div className="flex flex-wrap items-center gap-1.5">
@@ -752,9 +703,7 @@ function NotesCard({
 function companyDefaults(detail: LeadDetail): CompanyValues {
   return {
     company_name: detail.lead.company_name,
-    website: detail.lead.website,
-    instagram: detail.lead.instagram ?? "",
-    linkedin: detail.lead.linkedin ?? "",
+    channels: toDigitalChannelDrafts(detail.lead.channels ?? []),
     tags: detail.tags.map((tag) => tag.name),
   }
 }

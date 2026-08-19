@@ -77,8 +77,12 @@ export function LeadContextRail({
   const isToday = lastAt ? toCivilDate(lastAt) === todayCivilDate() : false
   const followUpAt = detail.lead.next_follow_up_at
   const followUpUrgency = followUpAt ? getTimestampUrgency(followUpAt) : null
+  const meetingAt = detail.lead.closing_meeting_at
+  const meetingUrgency = meetingAt ? getTimestampUrgency(meetingAt) : null
   const assigneeName = detail.assigneeName
   const assigneeInitial = assigneeName?.trim().charAt(0).toUpperCase() ?? ""
+  const closerName = detail.closerName
+  const closerInitial = closerName?.trim().charAt(0).toUpperCase() ?? ""
 
   return (
     <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
@@ -151,6 +155,26 @@ export function LeadContextRail({
         </section>
       ) : null}
 
+      {meetingAt && meetingUrgency ? (
+        <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+          <SectionLabel>Reunião de fechamento</SectionLabel>
+          <div className="flex min-w-0 items-center gap-2">
+            <LeadIconWell
+              icon={RiCalendarEventLine}
+              className={FOLLOW_UP_WELL[meetingUrgency]}
+            />
+            <span
+              className={cn(
+                "min-w-0 truncate font-sans text-body-sm",
+                FOLLOW_UP_TONE[meetingUrgency],
+              )}
+            >
+              {formatDateTimeShort(meetingAt)}
+            </span>
+          </div>
+        </section>
+      ) : null}
+
       <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
         <SectionLabel>Responsável</SectionLabel>
         {assigneeName ? (
@@ -169,6 +193,23 @@ export function LeadContextRail({
           <p className="font-sans text-body-sm text-fg-muted">Sem responsável</p>
         )}
       </section>
+
+      {closerName ? (
+        <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+          <SectionLabel>Closer</SectionLabel>
+          <div className="flex min-w-0 items-center gap-2">
+            <span
+              aria-hidden
+              className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-success/10 font-sans text-caption font-semibold text-success"
+            >
+              {closerInitial}
+            </span>
+            <span className="min-w-0 truncate font-sans text-body-sm text-fg">
+              {closerName}
+            </span>
+          </div>
+        </section>
+      ) : null}
 
       {detail.tags.length > 0 ? (
         <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">

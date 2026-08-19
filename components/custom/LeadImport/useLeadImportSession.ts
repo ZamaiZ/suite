@@ -6,19 +6,20 @@ import {
   evaluateLeadSpreadsheet,
   importLeads,
 } from "@/app/actions/leads"
+import { formatWebsitePreviewLabel } from "@/lib/leads/digital-channels"
 import {
-  applySessionDomainConflicts,
+  applySessionChannelConflicts,
   isSpreadsheetRowClean,
   LEAD_SPREADSHEET_MAX_BYTES,
   LEAD_SPREADSHEET_MAX_FILES,
   preserveExternalConflicts,
   summarizeEvaluatedRows,
   validateRawRows,
+  type SpreadsheetValueKey,
 } from "@/lib/leads/spreadsheet-model"
 import type {
   LeadWritePayload,
   SpreadsheetEvaluatedRow,
-  SpreadsheetValueKey,
 } from "@/lib/leads/types"
 import type {
   ImportFileEntry,
@@ -33,7 +34,7 @@ const ISSUES_COLLAPSED = 8
 
 function syncSessionConflicts(entries: ImportFileEntry[]): ImportFileEntry[] {
   const ready = entries.filter((entry) => entry.status === "ready")
-  const updated = applySessionDomainConflicts(
+  const updated = applySessionChannelConflicts(
     ready.map((entry) => ({
       id: entry.id,
       name: entry.name,
@@ -394,7 +395,7 @@ export function useLeadImportSession() {
           fileId: entry.id,
           row: row.row,
           company_name: row.payload.company_name,
-          website: row.payload.website_domain,
+          website: formatWebsitePreviewLabel(row.payload.channels),
           contact_name: row.payload.contact_name ?? "",
           phone: row.payload.phone ?? "",
           email: row.payload.email ?? "",

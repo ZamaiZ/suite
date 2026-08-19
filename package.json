@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test \"lib/**/*.test.mjs\""
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -15,6 +16,7 @@
     "@hookform/resolvers": "^5.8.0",
     "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.112.3",
+    "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.21",
     "exceljs": "^4.4.0",

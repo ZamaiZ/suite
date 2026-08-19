@@ -1,7 +1,7 @@
 import type { LeadBoardItem } from "@/lib/leads/board-item"
 import type { LeadStatus } from "@/lib/leads/status"
 
-export type LeadDetailTab = "activity" | "record"
+export type LeadDetailTab = "activity" | "record" | "opportunity"
 
 export type LeadDetailPreview = {
   company_name: string

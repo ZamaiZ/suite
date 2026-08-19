@@ -30,6 +30,7 @@ export const logLeadActivitySchema = z
       .trim()
       .max(500, "Motivo deve ter no máximo 500 caracteres.")
       .transform((value) => (value.length === 0 ? null : value)),
+    closer_id: z.string().trim(),
     follow_up_date: z.string().trim(),
     follow_up_time: z.string().trim(),
   })
@@ -66,8 +67,35 @@ export const logLeadActivitySchema = z
       })
     }
 
+    if (data.type === "interested" && !data.closer_id) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["closer_id"],
+        message: "Selecione o closer.",
+      })
+    }
+
+    if (data.type === "interested" && data.closer_id) {
+      if (!z.uuid().safeParse(data.closer_id).success) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["closer_id"],
+          message: "Closer inválido.",
+        })
+      }
+    }
+
+    if (data.type !== "interested" && data.closer_id) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["closer_id"],
+        message: "Closer só se aplica a interesse.",
+      })
+    }
+
     const wantsFollowUp =
       data.type === "call_later" ||
+      data.type === "interested" ||
       (data.type === "denied" &&
         (data.follow_up_date.length > 0 || data.follow_up_time.length > 0))
 
@@ -76,6 +104,17 @@ export const logLeadActivitySchema = z
         code: "custom",
         path: ["follow_up_date"],
         message: "Informe data e horário para ligar depois.",
+      })
+    }
+
+    if (
+      data.type === "interested" &&
+      (!data.follow_up_date || !data.follow_up_time)
+    ) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["follow_up_date"],
+        message: "Informe data e horário da reunião.",
       })
     }
 
@@ -91,7 +130,7 @@ export const logLeadActivitySchema = z
     }
 
     if (
-      (data.type === "no_contact" || data.type === "interested") &&
+      data.type === "no_contact" &&
       (data.follow_up_date.length > 0 || data.follow_up_time.length > 0)
     ) {
       ctx.addIssue({
@@ -114,8 +153,11 @@ export const logLeadActivitySchema = z
       channel_detail: data.channel === "other" ? data.channel_detail : null,
       note: data.note,
       denied_reason: data.type === "denied" ? data.denied_reason : null,
+      closer_id: data.type === "interested" ? data.closer_id : null,
       follow_up_at:
-        data.type === "call_later" || (data.type === "denied" && followUpAt)
+        data.type === "call_later" ||
+        data.type === "interested" ||
+        (data.type === "denied" && followUpAt)
           ? followUpAt
           : null,
     }
@@ -131,6 +173,7 @@ export function readLeadActivityFormFields(formData: FormData) {
     channel_detail: formText(formData, "channel_detail"),
     note: formText(formData, "note"),
     denied_reason: formText(formData, "denied_reason"),
+    closer_id: formText(formData, "closer_id"),
     follow_up_date: formText(formData, "follow_up_date"),
     follow_up_time: formText(formData, "follow_up_time"),
   }

@@ -1,4 +1,10 @@
-import { RiHomeLine, RiSettings3Line, RiUserSearchLine } from "react-icons/ri"
+import {
+  RiGroupLine,
+  RiHomeLine,
+  RiSettings3Line,
+  RiToolsLine,
+  RiUserSearchLine,
+} from "react-icons/ri"
 import type { NavGroup, NavItem } from "./navigation.types"
 
 export function isHrefActive(pathname: string, href: string) {
@@ -29,10 +35,26 @@ export const NAV_ITEMS: NavItem[] = [
     description: "Cadastro, fila e primeiro contato",
   },
   {
-    kind: "leaf",
-    label: "Equipe",
-    href: "/settings/team",
+    kind: "group",
+    id: "settings",
+    label: "Configuração",
     icon: RiSettings3Line,
-    description: "Papéis e acesso",
+    description: "Equipe e ferramentas",
+    children: [
+      {
+        kind: "leaf",
+        label: "Equipe",
+        href: "/settings/team",
+        icon: RiGroupLine,
+        description: "Papéis e acesso",
+      },
+      {
+        kind: "leaf",
+        label: "Ferramentas",
+        href: "/settings/tools",
+        icon: RiToolsLine,
+        description: "Fontes de dados da análise",
+      },
+    ],
   },
 ]

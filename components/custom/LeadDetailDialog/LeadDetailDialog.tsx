@@ -7,12 +7,17 @@ import {
   getLeadDetail,
   type LeadAssignmentPatch,
   type LeadDetail,
+  type LeadGbpProfile,
+  type LeadWebsiteAudit,
   type LogLeadActivityState,
 } from "@/app/actions/leads"
+import { LeadGbpPanel } from "@/components/custom/LeadGbpPanel"
 import { Dialog } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import { leadAccessFlags } from "@/lib/leads/board-item"
 import { countActivitiesByChannel } from "@/lib/leads/channel"
+import { matchWebsiteKey, websiteKeysFromChannels } from "@/lib/leads/gbp"
+import { leadDetailDialogSize } from "@/lib/leads/detail-dialog-layout"
 import { isLeadStatus } from "@/lib/leads/status"
 import type { LeadTag } from "@/lib/leads/tags"
 import type { LeadWritePayload } from "@/lib/leads/types"
@@ -47,11 +52,12 @@ export function LeadDetailDialog({
   const [formPending, setFormPending] = useState(false)
   const [claimPending, setClaimPending] = useState(false)
   const [activityPending, setActivityPending] = useState(false)
+  const [gbpPending, setGbpPending] = useState(false)
   const [enteredActivityId, setEnteredActivityId] = useState<string | null>(
     null,
   )
 
-  const isBusy = formPending || claimPending || activityPending
+  const isBusy = formPending || claimPending || activityPending || gbpPending
   const paneTransition = {
     duration: reduced ? 0.12 : 0.18,
     ease: EASE,
@@ -75,6 +81,13 @@ export function LeadDetailDialog({
         setDetail(result.data)
         setErrorMessage(null)
         setLoadState("ready")
+        if (mode === "replace") {
+          setTab(
+            result.data.lead.status === "interested"
+              ? "opportunity"
+              : "activity",
+          )
+        }
         return
       }
 
@@ -94,12 +107,13 @@ export function LeadDetailDialog({
 
   useEffect(() => {
     if (!open || !leadId) return
-    setTab("activity")
+    setTab(preview?.status === "interested" ? "opportunity" : "activity")
     setEditing(false)
     setClaimError(null)
     setEnteredActivityId(null)
+    setGbpPending(false)
     void loadDetail(leadId, "replace")
-  }, [open, leadId, loadDetail])
+  }, [open, leadId, loadDetail, preview?.status])
 
   const companyName =
     preview?.company_name ?? detail?.lead.company_name ?? "Lead"
@@ -149,10 +163,19 @@ export function LeadDetailDialog({
   function applyFields(fields: LeadWritePayload, tags: LeadTag[]) {
     setDetail((current) => {
       if (!current) return current
+      const lead = { ...current.lead, ...fields }
+      const websiteKeys = websiteKeysFromChannels(lead.channels)
       return {
         ...current,
-        lead: { ...current.lead, ...fields },
+        lead,
         tags,
+        gbpProfiles: current.gbpProfiles.map((profile) => ({
+          ...profile,
+          matched_website_key: matchWebsiteKey(
+            profile.payload.websiteDomain,
+            websiteKeys,
+          ),
+        })),
       }
     })
     onMutated?.({
@@ -164,22 +187,44 @@ export function LeadDetailDialog({
     setEditing(false)
   }
 
+  function applyGbpProfiles(leadId: string, profiles: LeadGbpProfile[]) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, gbpProfiles: profiles }
+        : current,
+    )
+  }
+
+  function applyWebsiteAudits(leadId: string, audits: LeadWebsiteAudit[]) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, websiteAudits: audits }
+        : current,
+    )
+  }
+
   function handleActivitySuccess(
     result: Extract<LogLeadActivityState, { status: "success" }>,
   ) {
     setEnteredActivityId(result.activity.id)
+    const interested = result.patch.status === "interested"
+    if (interested) setTab("opportunity")
     setDetail((current) => {
       if (!current) return current
       const lead = {
         ...current.lead,
         status: result.patch.status,
         next_follow_up_at: result.patch.next_follow_up_at,
+        assigned_closer_id: result.patch.assigned_closer_id,
+        closing_meeting_at: result.patch.closing_meeting_at,
       }
       return {
         ...current,
         lead,
+        closerName: result.patch.closer_name,
         activities: [result.activity, ...current.activities],
         ...leadAccessFlags(lead),
+        canEditGbp: interested ? true : current.canEditGbp,
       }
     })
     onMutated?.({
@@ -204,7 +249,7 @@ export function LeadDetailDialog({
       onClose={handleRequestClose}
       title={companyName}
       description={domain || "Atividade e cadastro do lead"}
-      size="lg"
+      size={leadDetailDialogSize(tab)}
       header={
         <LeadDetailHeader
           tab={tab}
@@ -270,6 +315,28 @@ export function LeadDetailDialog({
                     enteredActivityId={enteredActivityId}
                     onActivitySuccess={handleActivitySuccess}
                     onPendingChange={setActivityPending}
+                  />
+                </m.div>
+              ) : null}
+              {tab === "opportunity" ? (
+                <m.div
+                  key="opportunity"
+                  role="tabpanel"
+                  id="lead-detail-opportunity"
+                  aria-labelledby="lead-tab-opportunity"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={paneTransition}
+                  className="absolute inset-0 overflow-hidden"
+                >
+                  <LeadGbpPanel
+                    detail={detail}
+                    loading={loadState === "loading"}
+                    readOnly={readOnly}
+                    onProfilesChange={applyGbpProfiles}
+                    onWebsiteAuditsChange={applyWebsiteAudits}
+                    onPendingChange={setGbpPending}
                   />
                 </m.div>
               ) : null}

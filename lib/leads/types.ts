@@ -1,20 +1,27 @@
+import type {
+  DigitalChannelDraft,
+  LeadDigitalChannel,
+  LeadDigitalChannelWrite,
+} from "@/lib/leads/digital-channels"
+
 export type LeadRecord = {
   id: string
   company_name: string
   website: string
   website_domain: string
-  instagram: string | null
-  linkedin: string | null
   contact_name: string | null
   phone: string | null
   email: string | null
   observations: string | null
   status: string
   assigned_sdr_id: string | null
+  assigned_closer_id: string | null
   next_follow_up_at: string | null
+  closing_meeting_at: string | null
   created_by: string
   created_at: string
   updated_at: string
+  channels: LeadDigitalChannel[]
 }
 
 export type LeadActivityRecord = {
@@ -47,8 +54,7 @@ export type LeadWritePayload = {
   company_name: string
   website: string
   website_domain: string
-  instagram: string | null
-  linkedin: string | null
+  channels: LeadDigitalChannelWrite[]
   contact_name: string | null
   phone: string | null
   email: string | null
@@ -80,3 +86,5 @@ export type SpreadsheetEvaluatedRow = {
   payload: LeadWritePayload | null
   issues: SpreadsheetIssue[]
 }
+
+export type { DigitalChannelDraft, LeadDigitalChannel, LeadDigitalChannelWrite }

@@ -33,24 +33,26 @@ export function getLeadInitials(name: string): string {
   return `${first}${last}`.toUpperCase()
 }
 
-function FollowUpMark({ at }: { at: string }) {
+function ScheduleMark({ at, label }: { at: string; label: string }) {
   const kind = getCivilFollowUpKind(at)
   const full = formatDateTimeShort(at)
   const time = formatTimeShort(at)
 
   if (kind === "later") {
     return (
-      <Tooltip content={full} side="right" tone="accent">
+      <Tooltip content={full} side="top" tone="accent">
         <span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent">
           <RiCalendarEventLine size={14} aria-hidden />
-          <span className="sr-only">Retorno {full}</span>
+          <span className="sr-only">
+            {label} {full}
+          </span>
         </span>
       </Tooltip>
     )
   }
 
   const overdue = kind === "overdue"
-  const label = overdue ? "Atrasado" : "Hoje"
+  const when = overdue ? "Atrasado" : "Hoje"
 
   return (
     <span
@@ -62,23 +64,33 @@ function FollowUpMark({ at }: { at: string }) {
       )}
     >
       <RiTimeLine size={13} aria-hidden />
-      {label} · {time}
-      <span className="sr-only">Retorno {full}</span>
+      {when} · {time}
+      <span className="sr-only">
+        {label} {full}
+      </span>
     </span>
   )
 }
 
 export function LeadBoardCardFace({
   lead,
-  showOwner,
+  currentUserId,
 }: {
   lead: LeadBoardItem
-  showOwner: boolean
+  currentUserId: string
 }) {
   const visibleChannels = CHIP_CHANNELS.filter(
     (channel) => lead.activity_counts[channel] > 0,
   )
   const pendingActivity = isPendingDailyActivity(lead)
+  const showSdr = Boolean(
+    lead.assignee_name && lead.assigned_sdr_id !== currentUserId,
+  )
+  const showCloser = Boolean(
+    lead.closer_name && lead.assigned_closer_id !== currentUserId,
+  )
+  const showPeople = showSdr || showCloser
+  const namedRoles = showSdr && showCloser
 
   return (
     <div className="flex min-w-0 items-start gap-3">
@@ -95,7 +107,10 @@ export function LeadBoardCardFace({
         <p className="truncate font-sans text-caption text-fg-muted">
           {lead.website_domain}
         </p>
-        {visibleChannels.length > 0 || lead.next_follow_up_at || pendingActivity ? (
+        {visibleChannels.length > 0 ||
+        lead.next_follow_up_at ||
+        lead.closing_meeting_at ||
+        pendingActivity ? (
           <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-2">
             {pendingActivity ? (
               <Tooltip content="Sem atividade hoje" side="right" tone="accent">
@@ -123,7 +138,10 @@ export function LeadBoardCardFace({
               )
             })}
             {lead.next_follow_up_at ? (
-              <FollowUpMark at={lead.next_follow_up_at} />
+              <ScheduleMark at={lead.next_follow_up_at} label="Retorno" />
+            ) : null}
+            {lead.closing_meeting_at ? (
+              <ScheduleMark at={lead.closing_meeting_at} label="Reunião" />
             ) : null}
           </div>
         ) : null}
@@ -137,10 +155,19 @@ export function LeadBoardCardFace({
             Negativa
           </span>
         ) : null}
-        {showOwner && lead.assignee_name ? (
-          <p className="mt-1 truncate font-sans text-caption text-fg-muted">
-            {lead.assignee_name}
-          </p>
+        {showPeople ? (
+          <div className="mt-1 flex flex-col gap-0.5">
+            {showSdr ? (
+              <p className="truncate font-sans text-caption text-fg-muted">
+                {namedRoles ? `SDR · ${lead.assignee_name}` : lead.assignee_name}
+              </p>
+            ) : null}
+            {showCloser ? (
+              <p className="truncate font-sans text-caption text-fg-muted">
+                {`Closer · ${lead.closer_name}`}
+              </p>
+            ) : null}
+          </div>
         ) : null}
       </div>
     </div>
