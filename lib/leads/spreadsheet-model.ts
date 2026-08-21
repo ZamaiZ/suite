@@ -4,6 +4,7 @@ import {
   DIGITAL_CHANNEL_LABELS,
   DIGITAL_CHANNEL_TYPES,
   digitalChannelConflictKey,
+  isDigitalChannelType,
   normalizeDigitalChannelList,
   SPREADSHEET_FIELD_BY_TYPE,
   spreadsheetCellsFromChannels,
@@ -16,37 +17,31 @@ import type {
   SpreadsheetRawValues,
 } from "@/lib/leads/types"
 
-export const LEAD_SPREADSHEET_HEADERS = [
-  "Nome da empresa",
-  "Site",
-  "Nome do contato",
-  "Telefone",
-  "E-mail",
-  "Instagram",
-  "LinkedIn",
-] as const
-
 export const SPREADSHEET_VALUE_KEYS = [
   "company_name",
   "website",
   "contact_name",
   "phone",
   "email",
-  "instagram",
-  "linkedin",
+  ...DIGITAL_CHANNEL_TYPES.filter(
+    (type): type is Exclude<DigitalChannelType, "website"> =>
+      type !== "website",
+  ),
 ] as const
 
 export type SpreadsheetValueKey = (typeof SPREADSHEET_VALUE_KEYS)[number]
 
 export const SPREADSHEET_FIELD_LABELS: Record<SpreadsheetValueKey, string> = {
   company_name: "Nome da empresa",
-  website: "Site",
   contact_name: "Nome do contato",
   phone: "Telefone",
   email: "E-mail",
-  instagram: "Instagram",
-  linkedin: "LinkedIn",
+  ...DIGITAL_CHANNEL_LABELS,
 }
+
+export const LEAD_SPREADSHEET_HEADERS = SPREADSHEET_VALUE_KEYS.map(
+  (key) => SPREADSHEET_FIELD_LABELS[key],
+)
 
 export const LEAD_SPREADSHEET_MAX_BYTES = 1 * 1024 * 1024
 export const LEAD_SPREADSHEET_MAX_ROWS = 500
@@ -65,6 +60,16 @@ export const SPREADSHEET_CHANNEL_HEADER_NOTES: Record<
     "Vários Instagrams: separe com ponto e vírgula (;). O primeiro é o principal.",
   linkedin:
     "Vários LinkedIns: separe com ponto e vírgula (;). O primeiro é o principal.",
+  facebook:
+    "Vários Facebooks: separe com ponto e vírgula (;). O primeiro é o principal.",
+  youtube:
+    "Vários YouTubes: separe com ponto e vírgula (;). O primeiro é o principal.",
+  tiktok:
+    "Vários TikToks: separe com ponto e vírgula (;). O primeiro é o principal.",
+  pinterest:
+    "Vários Pinterests: separe com ponto e vírgula (;). O primeiro é o principal.",
+  twitter:
+    "Vários X (Twitter): separe com ponto e vírgula (;). O primeiro é o principal.",
 }
 
 export function spreadsheetDbConflictPrefix(type: DigitalChannelType): string {
@@ -85,15 +90,9 @@ export function spreadsheetRepeatMessage(
 }
 
 export function rawValuesFromCells(cells: string[]): SpreadsheetRawValues {
-  return {
-    company_name: cells[0] ?? "",
-    website: cells[1] ?? "",
-    contact_name: cells[2] ?? "",
-    phone: cells[3] ?? "",
-    email: cells[4] ?? "",
-    instagram: cells[5] ?? "",
-    linkedin: cells[6] ?? "",
-  }
+  return Object.fromEntries(
+    SPREADSHEET_VALUE_KEYS.map((key, index) => [key, cells[index] ?? ""]),
+  ) as SpreadsheetRawValues
 }
 
 export function isEmptyRawValues(values: SpreadsheetRawValues): boolean {
@@ -319,11 +318,7 @@ export function preserveExternalConflicts(
         sessionPrefixes.some((prefix) => issue.message.startsWith(prefix))
       if (!isTracked) return false
       const field = issue.field
-      if (
-        field === "website" ||
-        field === "instagram" ||
-        field === "linkedin"
-      ) {
+      if (isDigitalChannelType(field)) {
         return old.values[field] === row.values[field]
       }
       return old.values.website === row.values.website

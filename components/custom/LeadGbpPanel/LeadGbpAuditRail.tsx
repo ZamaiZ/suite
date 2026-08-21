@@ -18,6 +18,9 @@ import {
   type GbpAuditRailStepId,
   type GbpAuditRailStatus,
   type GbpAuditRailWebsite,
+  type GbpAuditRailDigitalPresence,
+  type GbpAuditRailVisibility,
+  type GbpAuditRailDiagnosis,
 } from "@/lib/leads/gbp-audit-rail"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import { GBP_AUDIT_STATUS_LABEL } from "@/lib/leads/gbp-presenters"
@@ -49,6 +52,9 @@ const STEP_ICONS: Record<string, IconType> = {
 export function LeadGbpAuditRail({
   profile,
   website,
+  digitalPresence,
+  visibility,
+  diagnosis,
   selectedStep,
   googleAlertCount = 0,
   websiteAlertCount = 0,
@@ -57,6 +63,9 @@ export function LeadGbpAuditRail({
 }: {
   profile: LeadGbpProfile | null
   website: GbpAuditRailWebsite
+  digitalPresence?: GbpAuditRailDigitalPresence
+  visibility?: GbpAuditRailVisibility
+  diagnosis?: GbpAuditRailDiagnosis
   selectedStep: GbpAuditRailStepId
   googleAlertCount?: number
   websiteAlertCount?: number
@@ -72,12 +81,43 @@ export function LeadGbpAuditRail({
   const model = buildGbpAuditRailModel({
     profile,
     website,
+    digitalPresence: digitalPresence ?? null,
+    visibility: visibility ?? null,
+    diagnosis: diagnosis ?? null,
     selectedStep,
     googleAlertCount,
     websiteAlertCount,
   })
   const selected = model.steps.find((step) => step.selected) ?? model.steps[0]
   const SelectedIcon = STEP_ICONS[selected?.id ?? "google-profile"] ?? RiMapPin2Line
+
+  function mobileSubtitle(): string {
+    if (selected?.id === "diagnosis") {
+      if (!diagnosis?.unlocked) return "Conclua as etapas anteriores"
+      if (diagnosis.stale) return "Fatos desatualizados"
+      if (model.showAlerts && model.alertCount > 0) {
+        return "Recompile os fatos"
+      }
+      return diagnosis.hasExport
+        ? "PDF pronto para a reunião"
+        : "Aguardando diagnóstico"
+    }
+    if (model.showAlerts) {
+      return model.alertCount === 0
+        ? "Nenhum alerta encontrado"
+        : model.alertCount === 1
+          ? "1 alerta encontrado"
+          : `${model.alertCount.toLocaleString("pt-BR")} alertas encontrados`
+    }
+    if (selected?.id === "website") return "Aguardando coleta do site"
+    if (selected?.id === "digital-presence") {
+      return "Aguardando revisão das redes"
+    }
+    if (selected?.id === "visibility") {
+      return "Aguardando análise de visibilidade"
+    }
+    return "Aguardando perfil vinculado"
+  }
 
   return (
     <div className="flex h-auto min-h-0 flex-col px-3 py-4 sm:px-4 lg:h-full">
@@ -212,23 +252,9 @@ export function LeadGbpAuditRail({
               <p className="truncate font-sans text-caption font-semibold text-fg">
                 {selected?.label}
               </p>
-              {model.showAlerts ? (
-                <p className="mt-0.5 font-sans text-caption text-fg-muted">
-                  {model.alertCount === 0
-                    ? "Nenhum alerta encontrado"
-                    : model.alertCount === 1
-                      ? "1 alerta encontrado"
-                      : `${model.alertCount.toLocaleString("pt-BR")} alertas encontrados`}
-                </p>
-              ) : selected?.id === "website" ? (
-                <p className="mt-0.5 font-sans text-caption text-fg-muted">
-                  Aguardando coleta do site
-                </p>
-              ) : (
-                <p className="mt-0.5 font-sans text-caption text-fg-muted">
-                  Aguardando perfil vinculado
-                </p>
-              )}
+              <p className="mt-0.5 font-sans text-caption text-fg-muted">
+                {mobileSubtitle()}
+              </p>
             </div>
           </div>
         </div>

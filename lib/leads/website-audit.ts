@@ -1,3 +1,19 @@
+import {
+  SOCIAL_CHANNEL_TYPES,
+  type SocialChannelType,
+} from "./digital-channels.ts"
+import {
+  readWebsitePagespeed,
+  readWebsitePsiJobs,
+  websitePagespeedGaps,
+  type WebsitePagespeedSnapshot,
+  type WebsitePsiJob,
+} from "./website-pagespeed.ts"
+import {
+  readWebsiteReview,
+  type WebsiteReview,
+} from "./website-review.ts"
+
 export const WEBSITE_NOTES_MAX = 2000
 export const WEBSITE_THIN_CONTENT_WORDS = 300
 export const WEBSITE_FEW_PAGES_MAX = 4
@@ -34,6 +50,12 @@ export const WEBSITE_GAP_IDS = [
   "weak_cta",
   "contact_only_in_footer",
   "nap_mismatch",
+  "slow_performance",
+  "poor_cwv",
+  "not_responsive",
+  "a11y_issues",
+  "mixed_content",
+  "noindex",
 ] as const
 
 export type WebsiteGapId = (typeof WEBSITE_GAP_IDS)[number]
@@ -58,6 +80,12 @@ export const WEBSITE_GAP_LABELS: Record<WebsiteGapId, string> = {
   weak_cta: "CTA pouco evidente",
   contact_only_in_footer: "Contato só no rodapé",
   nap_mismatch: "NAP diferente do perfil no Google",
+  slow_performance: "Velocidade baixa no PageSpeed",
+  poor_cwv: "Core Web Vitals abaixo do ideal",
+  not_responsive: "Viewport não adaptado a mobile",
+  a11y_issues: "Problemas de acessibilidade",
+  mixed_content: "Recursos mistos sem HTTPS",
+  noindex: "Página inicial com noindex",
 }
 
 export type WebsiteSitemapSampleStatus = {
@@ -84,6 +112,35 @@ export type WebsitePageSnapshot = {
   contactInFooterOnly: boolean
   phones: string[]
   textExcerpt: string
+  indexable: boolean
+}
+
+export type WebsiteCrawlSocialUrls = Record<SocialChannelType, string | null>
+
+export type WebsiteCrawlSignals = {
+  hasGtm: boolean
+  hasGtag: boolean
+  hasFacebookPixel: boolean
+  hasInstagram: boolean
+  hasFacebook: boolean
+  hasLinkedin: boolean
+  hasYoutube: boolean
+  hasTiktok: boolean
+  hasPinterest: boolean
+  hasTwitter: boolean
+  socialUrls: WebsiteCrawlSocialUrls
+}
+
+export function emptyWebsiteCrawlSocialUrls(): WebsiteCrawlSocialUrls {
+  return {
+    instagram: null,
+    linkedin: null,
+    facebook: null,
+    youtube: null,
+    tiktok: null,
+    pinterest: null,
+    twitter: null,
+  }
 }
 
 export type WebsiteRobotsSnapshot = {
@@ -105,6 +162,51 @@ export type WebsiteCrawl = {
   pages: WebsitePageSnapshot[]
   robots: WebsiteRobotsSnapshot
   sitemap: WebsiteSitemapSnapshot
+  signals: WebsiteCrawlSignals
+}
+
+export const EMPTY_WEBSITE_CRAWL_SIGNALS: WebsiteCrawlSignals = {
+  hasGtm: false,
+  hasGtag: false,
+  hasFacebookPixel: false,
+  hasInstagram: false,
+  hasFacebook: false,
+  hasLinkedin: false,
+  hasYoutube: false,
+  hasTiktok: false,
+  hasPinterest: false,
+  hasTwitter: false,
+  socialUrls: emptyWebsiteCrawlSocialUrls(),
+}
+
+function mergeSocialUrls(
+  left: WebsiteCrawlSocialUrls,
+  right: WebsiteCrawlSocialUrls,
+): WebsiteCrawlSocialUrls {
+  const next = emptyWebsiteCrawlSocialUrls()
+  for (const type of SOCIAL_CHANNEL_TYPES) {
+    next[type] = left[type] ?? right[type]
+  }
+  return next
+}
+
+export function mergeWebsiteCrawlSignals(
+  left: WebsiteCrawlSignals,
+  right: WebsiteCrawlSignals,
+): WebsiteCrawlSignals {
+  return {
+    hasGtm: left.hasGtm || right.hasGtm,
+    hasGtag: left.hasGtag || right.hasGtag,
+    hasFacebookPixel: left.hasFacebookPixel || right.hasFacebookPixel,
+    hasInstagram: left.hasInstagram || right.hasInstagram,
+    hasFacebook: left.hasFacebook || right.hasFacebook,
+    hasLinkedin: left.hasLinkedin || right.hasLinkedin,
+    hasYoutube: left.hasYoutube || right.hasYoutube,
+    hasTiktok: left.hasTiktok || right.hasTiktok,
+    hasPinterest: left.hasPinterest || right.hasPinterest,
+    hasTwitter: left.hasTwitter || right.hasTwitter,
+    socialUrls: mergeSocialUrls(left.socialUrls, right.socialUrls),
+  }
 }
 
 export type LeadWebsiteAudit = {
@@ -116,6 +218,10 @@ export type LeadWebsiteAudit = {
   fetched_by: string
   crawl: WebsiteCrawl
   notes: string | null
+  review: WebsiteReview
+  pagespeed: WebsitePagespeedSnapshot | null
+  pagespeed_at: string | null
+  jobs: WebsitePsiJob[]
 }
 
 export type WebsiteNapInput = {
@@ -135,6 +241,14 @@ const GENERIC_TITLES = new Set([
   "welcome",
   "site oficial",
 ])
+
+const GENERIC_TITLE_FRAGMENTS = [
+  "página inicial",
+  "pagina inicial",
+  "site oficial",
+  "bem-vindo",
+  "bem vindo",
+] as const
 
 const ADDRESS_STOPWORDS = new Set([
   "rua",
@@ -274,6 +388,12 @@ function readPage(value: unknown): WebsitePageSnapshot | null {
     return null
   }
   if (typeof row.textExcerpt !== "string") return null
+  let indexable = true
+  if (row.indexable !== undefined && row.indexable !== null) {
+    const parsed = asBool(row.indexable)
+    if (parsed === null) return null
+    indexable = parsed
+  }
   return {
     url,
     status,
@@ -293,6 +413,7 @@ function readPage(value: unknown): WebsitePageSnapshot | null {
     contactInFooterOnly,
     phones,
     textExcerpt: row.textExcerpt.slice(0, WEBSITE_TEXT_EXCERPT_MAX),
+    indexable,
   }
 }
 
@@ -303,6 +424,75 @@ function readRobots(value: unknown): WebsiteRobotsSnapshot | null {
   const sitemapUrls = asStringList(row.sitemapUrls)
   if (found === null || !sitemapUrls) return null
   return { found, sitemapUrls }
+}
+
+function readOptionalBool(
+  row: Record<string, unknown>,
+  key: string,
+): boolean | null {
+  if (row[key] === undefined) return false
+  return asBool(row[key])
+}
+
+function readSocialUrls(value: unknown): WebsiteCrawlSocialUrls {
+  const urls = emptyWebsiteCrawlSocialUrls()
+  if (!value || typeof value !== "object" || Array.isArray(value)) return urls
+  const row = value as Record<string, unknown>
+  for (const type of SOCIAL_CHANNEL_TYPES) {
+    const item = row[type]
+    if (typeof item === "string" && item.trim().length > 0) {
+      urls[type] = item.trim()
+    }
+  }
+  return urls
+}
+
+function readSignals(value: unknown): WebsiteCrawlSignals | null {
+  if (value === undefined || value === null) {
+    return {
+      ...EMPTY_WEBSITE_CRAWL_SIGNALS,
+      socialUrls: emptyWebsiteCrawlSocialUrls(),
+    }
+  }
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null
+  const row = value as Record<string, unknown>
+  const hasGtm = readOptionalBool(row, "hasGtm")
+  const hasGtag = readOptionalBool(row, "hasGtag")
+  const hasFacebookPixel = readOptionalBool(row, "hasFacebookPixel")
+  const hasInstagram = readOptionalBool(row, "hasInstagram")
+  const hasFacebook = readOptionalBool(row, "hasFacebook")
+  const hasLinkedin = readOptionalBool(row, "hasLinkedin")
+  const hasYoutube = readOptionalBool(row, "hasYoutube")
+  const hasTiktok = readOptionalBool(row, "hasTiktok")
+  const hasPinterest = readOptionalBool(row, "hasPinterest")
+  const hasTwitter = readOptionalBool(row, "hasTwitter")
+  if (
+    hasGtm === null ||
+    hasGtag === null ||
+    hasFacebookPixel === null ||
+    hasInstagram === null ||
+    hasFacebook === null ||
+    hasLinkedin === null ||
+    hasYoutube === null ||
+    hasTiktok === null ||
+    hasPinterest === null ||
+    hasTwitter === null
+  ) {
+    return null
+  }
+  return {
+    hasGtm,
+    hasGtag,
+    hasFacebookPixel,
+    hasInstagram,
+    hasFacebook,
+    hasLinkedin,
+    hasYoutube,
+    hasTiktok,
+    hasPinterest,
+    hasTwitter,
+    socialUrls: readSocialUrls(row.socialUrls),
+  }
 }
 
 function readSitemap(value: unknown): WebsiteSitemapSnapshot | null {
@@ -350,8 +540,9 @@ export function readWebsiteCrawl(value: unknown): WebsiteCrawl | null {
   }
   const robots = readRobots(row.robots)
   const sitemap = readSitemap(row.sitemap)
-  if (!robots || !sitemap) return null
-  return { finalUrl, https, pages, robots, sitemap }
+  const signals = readSignals(row.signals)
+  if (!robots || !sitemap || !signals) return null
+  return { finalUrl, https, pages, robots, sitemap, signals }
 }
 
 export function readLeadWebsiteAuditRow(
@@ -369,6 +560,16 @@ export function readLeadWebsiteAuditRow(
   }
   if (!crawl) return null
   if (row.notes != null && typeof row.notes !== "string") return null
+  let pagespeed: WebsitePagespeedSnapshot | null = null
+  if (row.pagespeed != null) {
+    pagespeed = readWebsitePagespeed(row.pagespeed)
+    if (!pagespeed) return null
+  }
+  if (row.pagespeed_at != null && typeof row.pagespeed_at !== "string") {
+    return null
+  }
+  const pagespeed_at = asString(row.pagespeed_at)
+  if (pagespeed_at && !pagespeed) return null
   return {
     id,
     lead_id,
@@ -378,6 +579,10 @@ export function readLeadWebsiteAuditRow(
     fetched_by,
     crawl,
     notes: asString(row.notes),
+    review: readWebsiteReview(row.review, asString(row.notes)),
+    pagespeed,
+    pagespeed_at,
+    jobs: readWebsitePsiJobs(row.lead_website_jobs),
   }
 }
 
@@ -395,7 +600,9 @@ export function readLeadWebsiteAudits(embed: unknown): LeadWebsiteAudit[] {
   return audits
 }
 
-function homePage(crawl: WebsiteCrawl): WebsitePageSnapshot | null {
+export function websiteHomePage(
+  crawl: WebsiteCrawl,
+): WebsitePageSnapshot | null {
   if (crawl.pages.length === 0) return null
   const finalPath = pathOf(crawl.finalUrl)
   return (
@@ -448,10 +655,18 @@ export function isUnfriendlyUrl(urlOrPath: string): boolean {
   }
 }
 
-function isGenericTitle(title: string | null, companyName: string): boolean {
+export function websiteTitleIsGeneric(
+  title: string | null,
+  companyName: string,
+): boolean {
   if (!title) return true
   const folded = fold(title)
   if (GENERIC_TITLES.has(folded)) return true
+  if (
+    GENERIC_TITLE_FRAGMENTS.some((fragment) => folded.includes(fragment))
+  ) {
+    return true
+  }
   if (folded === fold(companyName)) return true
   return folded.length < 15
 }
@@ -503,18 +718,55 @@ function addressMatches(address: string, page: WebsitePageSnapshot): boolean {
   return hits.length >= needed
 }
 
+const SERVICE_TITLE_MIN = 4
+
+function foldToken(value: string): string {
+  return fold(value)
+    .normalize("NFD")
+    .replace(/\p{M}/gu, "")
+}
+
+function serviceNeedles(titles: readonly string[]): string[] {
+  return titles
+    .map((title) => foldToken(title))
+    .filter((title) => title.length >= SERVICE_TITLE_MIN)
+}
+
+function mentionsService(haystack: string, needles: readonly string[]): boolean {
+  if (needles.length === 0) return false
+  const folded = foldToken(haystack)
+  return needles.some((needle) => folded.includes(needle))
+}
+
+function hasServicePages(
+  crawl: WebsiteCrawl,
+  paths: readonly string[],
+  serviceTitles: readonly string[],
+): boolean {
+  if (paths.some((path) => SERVICE_PATH.test(path))) return true
+  const needles = serviceNeedles(serviceTitles)
+  if (needles.length === 0) return false
+  if (paths.some((path) => mentionsService(path, needles))) return true
+  return crawl.pages.some((page) =>
+    mentionsService([page.title ?? "", ...page.h1].join(" "), needles),
+  )
+}
+
 export function websiteGapsForAudit(
   crawl: WebsiteCrawl,
   companyName: string,
   nap?: WebsiteNapInput | null,
+  pagespeed?: WebsitePagespeedSnapshot | null,
+  serviceTitles: readonly string[] = [],
 ): WebsiteGapId[] {
   const gaps: WebsiteGapId[] = []
-  const home = homePage(crawl)
+  const home = websiteHomePage(crawl)
   if (!home) return gaps
 
   if (!crawl.https || !crawl.finalUrl.startsWith("https:")) {
     gaps.push("no_https")
   }
+  if (home.indexable === false) gaps.push("noindex")
   if (!crawl.sitemap.found) gaps.push("missing_sitemap")
   else if (
     crawl.sitemap.urlCount >= WEBSITE_SITEMAP_BLOAT_MIN_URLS &&
@@ -530,14 +782,22 @@ export function websiteGapsForAudit(
   if (crawl.pages.some((page) => isUnfriendlyUrl(page.url))) {
     gaps.push("unfriendly_urls")
   }
-  if (!paths.some((path) => SERVICE_PATH.test(path))) {
+  if (!hasServicePages(crawl, paths, serviceTitles)) {
     gaps.push("no_service_pages")
   }
   if (!paths.some((path) => BLOG_PATH.test(path))) gaps.push("no_blog")
 
-  if (isGenericTitle(home.title, companyName)) gaps.push("generic_title")
-  if (!home.metaDescription) gaps.push("missing_meta_description")
-  if (home.h1.length === 0) gaps.push("missing_h1")
+  if (
+    crawl.pages.some((page) => websiteTitleIsGeneric(page.title, companyName))
+  ) {
+    gaps.push("generic_title")
+  }
+  if (crawl.pages.some((page) => !page.metaDescription)) {
+    gaps.push("missing_meta_description")
+  }
+  if (crawl.pages.some((page) => page.h1.length === 0)) {
+    gaps.push("missing_h1")
+  }
 
   const h1Seen = new Map<string, number>()
   let duplicateOnPage = false
@@ -552,8 +812,20 @@ export function websiteGapsForAudit(
     gaps.push("duplicate_h1")
   }
 
-  if (home.wordCount < WEBSITE_THIN_CONTENT_WORDS) gaps.push("thin_content")
-  if (home.imageCount > 0 && home.imagesWithoutAlt > 0) {
+  const thinCount = crawl.pages.filter(
+    (page) => page.wordCount < WEBSITE_THIN_CONTENT_WORDS,
+  ).length
+  if (
+    home.wordCount < WEBSITE_THIN_CONTENT_WORDS ||
+    thinCount > crawl.pages.length / 2
+  ) {
+    gaps.push("thin_content")
+  }
+  if (
+    crawl.pages.some(
+      (page) => page.imageCount > 0 && page.imagesWithoutAlt > 0,
+    )
+  ) {
     gaps.push("images_missing_alt")
   }
   if (home.internalLinkCount === 0) gaps.push("no_internal_links")
@@ -571,10 +843,13 @@ export function websiteGapsForAudit(
   }
 
   if (nap && (nap.phone || nap.address)) {
-    const phoneOk = nap.phone ? phoneMatches(nap.phone, home) : true
-    const addressOk = nap.address ? addressMatches(nap.address, home) : true
-    if (!phoneOk || !addressOk) gaps.push("nap_mismatch")
+    if (nap.phone && digits(nap.phone).length >= 8) {
+      if (!phoneMatches(nap.phone, home)) gaps.push("nap_mismatch")
+    } else if (nap.address && !addressMatches(nap.address, home)) {
+      gaps.push("nap_mismatch")
+    }
   }
 
-  return gaps
+  gaps.push(...websitePagespeedGaps(crawl.https, pagespeed ?? null))
+  return [...new Set(gaps)]
 }

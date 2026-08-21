@@ -1,5 +1,6 @@
 import {
   RiCheckboxCircleLine,
+  RiCloseCircleLine,
   RiErrorWarningLine,
   RiTimeLine,
 } from "react-icons/ri"
@@ -11,12 +12,14 @@ const STATUS_ICON = {
   ok: RiCheckboxCircleLine,
   warn: RiErrorWarningLine,
   pending: RiTimeLine,
+  error: RiCloseCircleLine,
 } as const
 
 const STATUS_TONE = {
   ok: "text-success",
   warn: "text-warning",
   pending: "text-fg-muted",
+  error: "text-danger",
 } as const
 
 export function LeadWebsiteChecks({

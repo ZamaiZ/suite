@@ -1,6 +1,10 @@
 import "server-only"
 import { Workbook, type CellValue } from "exceljs"
 import {
+  DIGITAL_CHANNEL_LABELS,
+  DIGITAL_CHANNEL_TYPES,
+} from "@/lib/leads/digital-channels"
+import {
   isEmptyRawValues,
   LEAD_SPREADSHEET_FILENAME,
   LEAD_SPREADSHEET_HEADERS,
@@ -8,10 +12,10 @@ import {
   LEAD_SPREADSHEET_MAX_ROWS,
   rawValuesFromCells,
   SPREADSHEET_CHANNEL_HEADER_NOTES,
+  SPREADSHEET_VALUE_KEYS,
   validateRawRows,
 } from "@/lib/leads/spreadsheet-model"
 import type { SpreadsheetEvaluatedRow } from "@/lib/leads/types"
-import type { DigitalChannelType } from "@/lib/leads/digital-channels"
 
 export {
   LEAD_SPREADSHEET_FILENAME,
@@ -63,14 +67,11 @@ export async function buildLeadTemplateBuffer(): Promise<Buffer> {
     header,
     width: header.length < 18 ? 22 : 32,
   }))
-  const notes: { index: number; type: DigitalChannelType }[] = [
-    { index: 2, type: "website" },
-    { index: 6, type: "instagram" },
-    { index: 7, type: "linkedin" },
-  ]
-  for (const item of notes) {
-    sheet.getRow(1).getCell(item.index).note =
-      SPREADSHEET_CHANNEL_HEADER_NOTES[item.type]
+  for (const type of DIGITAL_CHANNEL_TYPES) {
+    const index = SPREADSHEET_VALUE_KEYS.findIndex((key) => key === type)
+    if (index < 0) continue
+    sheet.getRow(1).getCell(index + 1).note =
+      SPREADSHEET_CHANNEL_HEADER_NOTES[type]
   }
 
   const instructions = workbook.addWorksheet("Instruções")
@@ -78,18 +79,12 @@ export async function buildLeadTemplateBuffer(): Promise<Buffer> {
     { header: "Campo", width: 22 },
     { header: "Como preencher", width: 72 },
   ]
-  instructions.addRow([
-    "Site",
-    SPREADSHEET_CHANNEL_HEADER_NOTES.website,
-  ])
-  instructions.addRow([
-    "Instagram",
-    SPREADSHEET_CHANNEL_HEADER_NOTES.instagram,
-  ])
-  instructions.addRow([
-    "LinkedIn",
-    SPREADSHEET_CHANNEL_HEADER_NOTES.linkedin,
-  ])
+  for (const type of DIGITAL_CHANNEL_TYPES) {
+    instructions.addRow([
+      DIGITAL_CHANNEL_LABELS[type],
+      SPREADSHEET_CHANNEL_HEADER_NOTES[type],
+    ])
+  }
   const buffer = await workbook.xlsx.writeBuffer()
   return Buffer.from(buffer)
 }

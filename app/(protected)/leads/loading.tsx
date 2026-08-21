@@ -36,7 +36,7 @@ export default function LeadsLoading() {
             style={{ animationDelay: "40ms" }}
           />
         </div>
-        <div className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto pb-1">
+        <div className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto overflow-y-hidden pb-1">
           {BOARD_COLUMNS.map((columnId, index) => (
             <section
               key={columnId}

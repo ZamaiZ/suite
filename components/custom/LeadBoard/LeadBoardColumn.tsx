@@ -79,7 +79,7 @@ export function LeadBoardColumn({
     <section
       ref={ref}
       className={cn(
-        "flex h-full w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-surface",
+        "flex min-h-0 w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-surface",
         "transition-[border-color,background-color] duration-150 ease-out",
         isDropTarget && legalTarget
           ? "border-accent bg-accent/5"
@@ -103,7 +103,7 @@ export function LeadBoardColumn({
           ) : null}
         </div>
       </header>
-      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2">
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
         {leads.length === 0 && !showDrop ? (
           <div className="flex min-h-36 flex-1 flex-col items-center justify-center gap-1.5 px-3 py-6 text-center">
             <EmptyIcon

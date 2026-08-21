@@ -5,6 +5,7 @@ import {
   readLeadWebsiteAuditRow,
   type LeadWebsiteAudit,
 } from "@/lib/leads/website-audit"
+import { stampWebsiteReview } from "@/lib/leads/website-review"
 import {
   readUpdateWebsiteAuditFields,
   updateWebsiteAuditSchema,
@@ -50,7 +51,13 @@ export async function updateLeadWebsiteAudit(
 
   const { data, error } = await supabase
     .from("lead_website_audits")
-    .update({ notes: parsed.data.notes })
+    .update({
+      review: stampWebsiteReview(
+        parsed.data.review,
+        user.id,
+        new Date().toISOString(),
+      ),
+    })
     .eq("id", parsed.data.audit_id)
     .select(WEBSITE_SELECT)
     .single()

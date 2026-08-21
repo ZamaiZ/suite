@@ -16,12 +16,17 @@ import {
   RiAddLine,
   RiDeleteBinLine,
   RiEditLine,
+  RiFacebookCircleLine,
   RiGlobalLine,
   RiInstagramLine,
   RiLinkedinBoxLine,
   RiMore2Line,
+  RiPinterestLine,
   RiStarFill,
   RiStarLine,
+  RiTiktokLine,
+  RiTwitterXLine,
+  RiYoutubeLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { useDialogPortalContainer } from "@/components/ui/Dialog"
@@ -58,6 +63,11 @@ const CHANNEL_ICONS: Record<DigitalChannelType, IconType> = {
   website: RiGlobalLine,
   instagram: RiInstagramLine,
   linkedin: RiLinkedinBoxLine,
+  facebook: RiFacebookCircleLine,
+  youtube: RiYoutubeLine,
+  tiktok: RiTiktokLine,
+  pinterest: RiPinterestLine,
+  twitter: RiTwitterXLine,
 }
 
 const MENU_ITEM = cn(

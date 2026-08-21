@@ -15,20 +15,55 @@ import {
   readLeadWebsiteAudits,
   type LeadWebsiteAudit,
 } from "@/lib/leads/website-audit"
+import {
+  readLeadDigitalPresenceAuditRow,
+  type LeadDigitalPresenceAudit,
+} from "@/lib/leads/digital-presence"
+import {
+  readLeadVisibilityAuditRow,
+  type LeadVisibilityAudit,
+} from "@/lib/leads/visibility-audit"
+import type {
+  LeadDiagnosisDraft,
+  LeadDiagnosisExport,
+} from "@/lib/leads/diagnosis-document"
+import {
+  readLeadDiagnosisDraftRow,
+  readLeadDiagnosisExportRow,
+} from "@/lib/leads/diagnosis-read"
 import { isLeadStatus } from "@/lib/leads/status"
 import { readLeadTags, type LeadTag } from "@/lib/leads/tags"
 import type { LeadDetailActivity, LeadRecord } from "@/lib/leads/types"
 import { createClient } from "@/lib/supabase/server"
 import { GBP_SELECT } from "./gbp-access"
+import {
+  DIAGNOSIS_DRAFT_SELECT,
+  DIAGNOSIS_EXPORT_SELECT,
+} from "./diagnosis-access"
+import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
+import { VISIBILITY_SELECT } from "./visibility-access"
 import { WEBSITE_SELECT } from "./website-access"
 
-export type { LeadDetailActivity, LeadTag, LeadGbpProfile, LeadWebsiteAudit }
+export type {
+  LeadDetailActivity,
+  LeadTag,
+  LeadGbpProfile,
+  LeadWebsiteAudit,
+  LeadDigitalPresenceAudit,
+  LeadVisibilityAudit,
+  LeadDiagnosisDraft,
+  LeadDiagnosisExport,
+}
 
 export type LeadDetail = {
   lead: LeadRecord
   tags: LeadTag[]
   gbpProfiles: LeadGbpProfile[]
   websiteAudits: LeadWebsiteAudit[]
+  digitalPresenceAudit: LeadDigitalPresenceAudit | null
+  visibilityAudit: LeadVisibilityAudit | null
+  diagnosisDraft: LeadDiagnosisDraft | null
+  diagnosisExports: LeadDiagnosisExport[]
   assigneeName: string | null
   closerName: string | null
   createdByName: string | null
@@ -62,6 +97,10 @@ export async function getLeadDetail(
     { data: activities, error: activityError },
     { data: gbpRows, error: gbpError },
     { data: websiteRows, error: websiteError },
+    { data: digitalPresenceRow, error: digitalPresenceError },
+    { data: visibilityRow, error: visibilityError },
+    { data: diagnosisDraftRow, error: diagnosisDraftError },
+    { data: diagnosisExportRows, error: diagnosisExportError },
   ] = await Promise.all([
     supabase
       .from("leads")
@@ -86,6 +125,27 @@ export async function getLeadDetail(
       .from("lead_website_audits")
       .select(WEBSITE_SELECT)
       .eq("lead_id", id),
+    supabase
+      .from("lead_digital_presence_audits")
+      .select(DIGITAL_PRESENCE_SELECT)
+      .eq("lead_id", id)
+      .maybeSingle(),
+    supabase
+      .from("lead_visibility_audits")
+      .select(VISIBILITY_SELECT)
+      .eq("lead_id", id)
+      .maybeSingle(),
+    supabase
+      .from("lead_diagnosis_drafts")
+      .select(DIAGNOSIS_DRAFT_SELECT)
+      .eq("lead_id", id)
+      .maybeSingle(),
+    supabase
+      .from("lead_diagnosis_exports")
+      .select(DIAGNOSIS_EXPORT_SELECT)
+      .eq("lead_id", id)
+      .order("exported_at", { ascending: false })
+      .limit(12),
   ])
 
   if (leadError) {
@@ -115,6 +175,30 @@ export async function getLeadDetail(
     return {
       status: "error",
       message: "Não foi possível carregar a auditoria do site. Tente novamente.",
+    }
+  }
+
+  if (digitalPresenceError) {
+    return {
+      status: "error",
+      message:
+        "Não foi possível carregar a presença digital. Tente novamente.",
+    }
+  }
+
+  if (visibilityError) {
+    return {
+      status: "error",
+      message:
+        "Não foi possível carregar a visibilidade. Tente novamente.",
+    }
+  }
+
+  if (diagnosisDraftError || diagnosisExportError) {
+    return {
+      status: "error",
+      message:
+        "Não foi possível carregar o diagnóstico. Tente novamente.",
     }
   }
 
@@ -181,6 +265,27 @@ export async function getLeadDetail(
       tags,
       gbpProfiles,
       websiteAudits: readLeadWebsiteAudits(websiteRows),
+      digitalPresenceAudit: digitalPresenceRow
+        ? (readLeadDigitalPresenceAuditRow(
+            digitalPresenceRow as Record<string, unknown>,
+          ) ?? null)
+        : null,
+      visibilityAudit: visibilityRow
+        ? (readLeadVisibilityAuditRow(
+            visibilityRow as Record<string, unknown>,
+          ) ?? null)
+        : null,
+      diagnosisDraft: diagnosisDraftRow
+        ? (readLeadDiagnosisDraftRow(
+            diagnosisDraftRow as Record<string, unknown>,
+          ) ?? null)
+        : null,
+      diagnosisExports: (diagnosisExportRows ?? []).flatMap((row) => {
+        const parsed = readLeadDiagnosisExportRow(
+          row as Record<string, unknown>,
+        )
+        return parsed ? [parsed] : []
+      }),
       assigneeName: record.assigned_sdr_id
         ? (namesById.get(record.assigned_sdr_id) ?? null)
         : null,

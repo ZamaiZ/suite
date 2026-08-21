@@ -6,9 +6,13 @@ import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiAlertLine, RiMapPin2Line } from "react-icons/ri"
 import { linkLeadGbpProfile, type LeadGbpProfile } from "@/app/actions/leads"
+import { LeadDigitalPresencePanel } from "@/components/custom/LeadDigitalPresencePanel"
+import { LeadDiagnosisPanel } from "@/components/custom/LeadDiagnosisPanel"
+import { LeadVisibilityPanel } from "@/components/custom/LeadVisibilityPanel"
 import { LeadWebsitePanel } from "@/components/custom/LeadWebsitePanel"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/cn"
+import { todayCivilDate } from "@/lib/date-time"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
 import {
   gbpGapsForProfile,
@@ -16,7 +20,21 @@ import {
   websiteKeysFromChannels,
 } from "@/lib/leads/gbp"
 import { type GbpAuditRailStepId } from "@/lib/leads/gbp-audit-rail"
+import { diagnosisFactsFingerprint } from "@/lib/leads/diagnosis-document"
 import { websiteGapsForAudit } from "@/lib/leads/website-audit"
+import { mergeWebsiteOpportunities } from "@/lib/leads/website-opportunities"
+import { websiteMinPerformance } from "@/lib/leads/website-pagespeed"
+import {
+  digitalPresenceReviewForChannels,
+  isDigitalPresenceComplete,
+  socialChannelsFromLead,
+} from "@/lib/leads/digital-presence"
+import { emptyDigitalPresenceReview } from "@/lib/leads/digital-presence-review"
+import { mergeDigitalPresenceOpportunities } from "@/lib/leads/digital-presence-opportunities"
+import {
+  cityFromFormattedAddress,
+  visibilityGapsForSnapshot,
+} from "@/lib/leads/visibility-audit"
 import { LeadGbpAuditRail } from "./LeadGbpAuditRail"
 import { LeadGbpPlacePicker } from "./LeadGbpPlacePicker"
 import { LeadGbpProfileCard } from "./LeadGbpProfileCard"
@@ -30,6 +48,10 @@ export function LeadGbpPanel({
   readOnly,
   onProfilesChange,
   onWebsiteAuditsChange,
+  onDigitalPresenceChange,
+  onVisibilityChange,
+  onDiagnosisDraftChange,
+  onDiagnosisExportsChange,
   onPendingChange,
 }: LeadGbpPanelProps) {
   const reduced = !!useReducedMotion()
@@ -76,13 +98,16 @@ export function LeadGbpPanel({
     return (
       <div className="grid h-full min-h-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-1">
         <aside className="border-b border-border-subtle bg-elevated/70 lg:border-r lg:border-b-0">
-          <LeadGbpAuditRail
-            profile={null}
-            website={null}
-            selectedStep="google-profile"
-            loading
-            onSelectStep={() => undefined}
-          />
+        <LeadGbpAuditRail
+          profile={null}
+          website={null}
+          digitalPresence={null}
+          visibility={null}
+          diagnosis={null}
+          selectedStep="google-profile"
+          loading
+          onSelectStep={() => undefined}
+        />
         </aside>
         <div className="flex min-h-0 flex-col gap-3 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
           <Pulse className="h-16" delay={0} />
@@ -154,7 +179,7 @@ export function LeadGbpPanel({
     null
   const primaryGbp =
     profiles.find((item) => item.is_primary) ?? profiles[0] ?? null
-  const websiteAlertCount = websiteAudit
+  const websiteGaps = websiteAudit
     ? websiteGapsForAudit(
         websiteAudit.crawl,
         detail.lead.company_name,
@@ -164,8 +189,66 @@ export function LeadGbpPanel({
               address: primaryGbp.payload.formattedAddress,
             }
           : null,
+        websiteAudit.pagespeed,
+        primaryGbp?.enrichment?.services.map((item) => item.title) ?? [],
+      )
+    : []
+  const websiteAlertCount = websiteAudit
+    ? mergeWebsiteOpportunities(
+        websiteGaps,
+        { minPerformance: websiteMinPerformance(websiteAudit.pagespeed) },
+        websiteAudit.review,
       ).length
     : 0
+  const presenceReview = digitalPresenceReviewForChannels(
+    detail.digitalPresenceAudit?.review ?? emptyDigitalPresenceReview(),
+    detail.lead.channels,
+  )
+  const presenceToday = todayCivilDate()
+  const presenceAlertCount = mergeDigitalPresenceOpportunities({
+    signals: websiteAudit?.crawl.signals ?? null,
+    channels: detail.lead.channels,
+    review: presenceReview,
+    today: presenceToday,
+  }).length
+  const presenceComplete = isDigitalPresenceComplete(
+    presenceReview,
+    detail.lead.channels,
+  )
+  const hasPresenceWork =
+    detail.digitalPresenceAudit !== null ||
+    socialChannelsFromLead(detail.lead.channels).length > 0 ||
+    presenceReview.identity.verdict !== null
+  const visibilityCity = cityFromFormattedAddress(
+    primaryGbp?.payload.formattedAddress ?? null,
+  )
+  const visibilityAlertCount = detail.visibilityAudit
+    ? visibilityGapsForSnapshot({
+        snapshot: detail.visibilityAudit.snapshot,
+        companyName: detail.lead.company_name,
+        city: visibilityCity,
+      }).length
+    : 0
+  const diagnosisUnlocked =
+    Boolean(selected?.enrichment_at) &&
+    websiteAudit != null &&
+    presenceComplete &&
+    detail.visibilityAudit != null
+  const liveFingerprint = diagnosisFactsFingerprint({
+    gbpFetchedAt: primaryGbp?.fetched_at ?? null,
+    gbpEnrichmentAt: primaryGbp?.enrichment_at ?? null,
+    websiteFetchedAt: websiteAudit?.fetched_at ?? null,
+    websitePagespeedAt: websiteAudit?.pagespeed_at ?? null,
+    presenceUpdatedAt: detail.digitalPresenceAudit?.updated_at ?? null,
+    visibilityFetchedAt: detail.visibilityAudit?.fetched_at ?? null,
+  })
+  const diagnosisStale = Boolean(
+    detail.diagnosisDraft &&
+      detail.diagnosisDraft.facts_fingerprint !== liveFingerprint,
+  )
+  const hasDiagnosisExport = detail.diagnosisExports.some(
+    (item) => item.is_current,
+  )
 
   function replaceProfile(next: LeadGbpProfile) {
     const others = profiles.filter((item) => item.id !== next.id)
@@ -241,8 +324,44 @@ export function LeadGbpPanel({
         <LeadGbpAuditRail
           profile={selected}
           website={
-            websiteAudit ? { fetched_at: websiteAudit.fetched_at } : null
+            websiteAudit
+              ? {
+                  fetched_at: websiteAudit.fetched_at,
+                  pagespeed_at: websiteAudit.pagespeed_at,
+                  jobs: websiteAudit.jobs.map((job) => ({
+                    status: job.status,
+                  })),
+                }
+              : null
           }
+          digitalPresence={
+            hasPresenceWork || websiteAudit
+              ? {
+                  updatedAt: detail.digitalPresenceAudit?.updated_at ?? null,
+                  complete: presenceComplete,
+                  alertCount: presenceAlertCount,
+                  collectedAt: websiteAudit?.fetched_at ?? null,
+                }
+              : null
+          }
+          visibility={
+            detail.visibilityAudit
+              ? {
+                  fetchedAt: detail.visibilityAudit.fetched_at,
+                  alertCount: visibilityAlertCount,
+                }
+              : null
+          }
+          diagnosis={{
+            unlocked: diagnosisUnlocked,
+            hasExport: hasDiagnosisExport,
+            updatedAt:
+              detail.diagnosisDraft?.updated_at ??
+              detail.diagnosisExports.find((item) => item.is_current)
+                ?.exported_at ??
+              null,
+            stale: diagnosisStale,
+          }}
           selectedStep={selectedStep}
           googleAlertCount={alertCount}
           websiteAlertCount={websiteAlertCount}
@@ -262,6 +381,38 @@ export function LeadGbpPanel({
                 ),
                 audit,
               ])
+            }}
+            onPendingChange={onPendingChange}
+          />
+        ) : selectedStep === "digital-presence" ? (
+          <LeadDigitalPresencePanel
+            detail={detail}
+            canEdit={canEdit}
+            onAuditChange={(audit) => {
+              onDigitalPresenceChange(detail.lead.id, audit)
+            }}
+            onPendingChange={onPendingChange}
+          />
+        ) : selectedStep === "visibility" ? (
+          <LeadVisibilityPanel
+            detail={detail}
+            canEdit={canEdit}
+            onAuditChange={(audit) => {
+              onVisibilityChange(detail.lead.id, audit)
+            }}
+            onPendingChange={onPendingChange}
+          />
+        ) : selectedStep === "diagnosis" ? (
+          <LeadDiagnosisPanel
+            detail={detail}
+            canEdit={canEdit}
+            unlocked={diagnosisUnlocked}
+            liveFingerprint={liveFingerprint}
+            onDraftChange={(draft) => {
+              onDiagnosisDraftChange(detail.lead.id, draft)
+            }}
+            onExportsChange={(exports) => {
+              onDiagnosisExportsChange(detail.lead.id, exports)
             }}
             onPendingChange={onPendingChange}
           />

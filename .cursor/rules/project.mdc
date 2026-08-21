@@ -26,7 +26,7 @@ Do not add explanatory comments, block comments, section dividers, or comments t
 
 ## Agent commands
 
-Do not run lint, typecheck, tests, build, or git unless the user explicitly asks for that command. After writing code, stop. Do not self-verify with `eslint`, `tsc`, `pnpm lint`, `pnpm build`, `next build`, or any git command.
+Do not run lint, typecheck, tests, build, or git unless the user explicitly asks for that command. After writing code, stop. Do not self-verify with `eslint`, `tsc`, `pnpm lint`, `pnpm build`, `next build`, `pnpm test`, or any git command.
 
 ## Git
 

@@ -2,13 +2,19 @@ import {
   WEBSITE_FETCH_CONCURRENCY,
   WEBSITE_MAX_INTERNAL_PAGES,
   WEBSITE_MAX_SITEMAP_FILES,
+  mergeWebsiteCrawlSignals,
   type WebsiteCrawl,
+  type WebsiteCrawlSignals,
   type WebsitePageSnapshot,
   type WebsiteRobotsSnapshot,
   type WebsiteSitemapSampleStatus,
 } from "../leads/website-audit.ts"
 import { safeFetch, safeFetchStatus, WEBSITE_FETCH_FAILED } from "./fetch.ts"
-import { crawlTargetsFromHome, parseHtmlPage } from "./parse.ts"
+import {
+  crawlTargetsFromHome,
+  extractHtmlSignals,
+  parseHtmlPage,
+} from "./parse.ts"
 import {
   extractSitemapLocs,
   parseRobotsSitemaps,
@@ -44,13 +50,13 @@ async function mapPool<T, R>(
 
 async function fetchPage(
   url: string,
-): Promise<WebsitePageSnapshot | null> {
+): Promise<{ page: WebsitePageSnapshot; signals: WebsiteCrawlSignals } | null> {
   const fetched = await safeFetch(url, "GET")
   if (fetched.status === "error") return null
-  if (fetched.statusCode >= 400) {
-    return parseHtmlPage(fetched.body, fetched.url, fetched.statusCode)
+  return {
+    page: parseHtmlPage(fetched.body, fetched.url, fetched.statusCode),
+    signals: extractHtmlSignals(fetched.body, fetched.url),
   }
-  return parseHtmlPage(fetched.body, fetched.url, fetched.statusCode)
 }
 
 async function collectSitemapUrls(
@@ -107,6 +113,7 @@ export async function crawlWebsite(startUrl: string): Promise<CrawlWebsiteResult
   }
 
   const home = parseHtmlPage(homeFetch.body, homeFetch.url, homeFetch.statusCode)
+  const homeSignals = extractHtmlSignals(homeFetch.body, homeFetch.url)
   const targets = crawlTargetsFromHome(home, homeUrl).slice(
     0,
     WEBSITE_MAX_INTERNAL_PAGES,
@@ -118,10 +125,18 @@ export async function crawlWebsite(startUrl: string): Promise<CrawlWebsiteResult
     safeFetch(robotsUrl, "GET"),
   ])
 
+  const fetchedPages = internalPages.filter(
+    (item): item is { page: WebsitePageSnapshot; signals: WebsiteCrawlSignals } =>
+      item !== null,
+  )
   const pages: WebsitePageSnapshot[] = [
     home,
-    ...internalPages.filter((page): page is WebsitePageSnapshot => page !== null),
+    ...fetchedPages.map((item) => item.page),
   ]
+  const signals = fetchedPages.reduce(
+    (acc, item) => mergeWebsiteCrawlSignals(acc, item.signals),
+    homeSignals,
+  )
 
   const robots: WebsiteRobotsSnapshot =
     robotsFetch.status === "ok" && robotsFetch.statusCode < 400
@@ -154,6 +169,7 @@ export async function crawlWebsite(startUrl: string): Promise<CrawlWebsiteResult
         collected.urls.length,
         sampleRows,
       ),
+      signals,
     },
   }
 }

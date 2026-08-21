@@ -1,5 +1,6 @@
 import type {
   DigitalChannelDraft,
+  DigitalChannelType,
   LeadDigitalChannel,
   LeadDigitalChannelWrite,
 } from "@/lib/leads/digital-channels"
@@ -70,14 +71,11 @@ export type SpreadsheetIssue = {
   message: string
 }
 
-export type SpreadsheetRawValues = {
+export type SpreadsheetRawValues = Record<DigitalChannelType, string> & {
   company_name: string
-  website: string
   contact_name: string
   phone: string
   email: string
-  instagram: string
-  linkedin: string
 }
 
 export type SpreadsheetEvaluatedRow = {

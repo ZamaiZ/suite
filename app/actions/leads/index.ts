@@ -10,6 +10,10 @@ export {
   type LeadTag,
   type LeadGbpProfile,
   type LeadWebsiteAudit,
+  type LeadDigitalPresenceAudit,
+  type LeadVisibilityAudit,
+  type LeadDiagnosisDraft,
+  type LeadDiagnosisExport,
 } from "./get-lead"
 export {
   suggestPlaces,
@@ -52,9 +56,37 @@ export {
   type AnalyzeLeadWebsiteState,
 } from "./analyze-website"
 export {
+  pollLeadWebsiteJobs,
+  type PollLeadWebsiteJobsState,
+} from "./poll-website-jobs"
+export {
   updateLeadWebsiteAudit,
   type UpdateLeadWebsiteAuditState,
 } from "./update-website-audit"
+export {
+  upsertLeadDigitalPresence,
+  type UpsertLeadDigitalPresenceState,
+} from "./upsert-digital-presence"
+export {
+  analyzeLeadVisibility,
+  type AnalyzeLeadVisibilityState,
+} from "./analyze-visibility"
+export {
+  compileLeadDiagnosis,
+  type CompileLeadDiagnosisState,
+} from "./compile-lead-diagnosis"
+export {
+  updateLeadDiagnosisDraft,
+  type UpdateLeadDiagnosisDraftState,
+} from "./update-lead-diagnosis-draft"
+export {
+  exportLeadDiagnosisPdf,
+  type ExportLeadDiagnosisPdfState,
+} from "./export-lead-diagnosis-pdf"
+export {
+  getLeadDiagnosisPdfUrl,
+  type GetLeadDiagnosisPdfUrlState,
+} from "./get-lead-diagnosis-pdf-url"
 export { listLeadTags } from "./list-tags"
 export { listClosers, type CloserOption } from "./list-closers"
 export {

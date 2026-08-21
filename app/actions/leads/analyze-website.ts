@@ -14,6 +14,7 @@ import {
 import { createClient } from "@/lib/supabase/server"
 import {
   denyWebsiteEdit,
+  enqueueWebsitePagespeedJobs,
   loadWebsiteChannelRow,
   WEBSITE_SELECT,
 } from "./website-access"
@@ -67,10 +68,12 @@ export async function analyzeLeadWebsite(
   const payload = {
     lead_id: loaded.lead.id,
     channel_id: loaded.channel.id,
-    url: startUrl,
+    url: crawled.crawl.finalUrl,
     fetched_at: now,
     fetched_by: user.id,
     crawl: crawled.crawl,
+    pagespeed: null,
+    pagespeed_at: null,
   }
 
   const query = existing?.id
@@ -87,11 +90,25 @@ export async function analyzeLeadWebsite(
         .single()
 
   const { data, error } = await query
-  if (error || !data) {
+  if (error || !data || typeof data.id !== "string") {
     return { status: "error", message: ANALYZE_FAILED }
   }
 
-  const audit = readLeadWebsiteAuditRow(data as Record<string, unknown>)
+  const enqueued = await enqueueWebsitePagespeedJobs(supabase, data.id)
+  if (!enqueued) {
+    return { status: "error", message: ANALYZE_FAILED }
+  }
+
+  const { data: withJobs, error: jobsError } = await supabase
+    .from("lead_website_audits")
+    .select(WEBSITE_SELECT)
+    .eq("id", data.id)
+    .single()
+  if (jobsError || !withJobs) {
+    return { status: "error", message: ANALYZE_FAILED }
+  }
+
+  const audit = readLeadWebsiteAuditRow(withJobs as Record<string, unknown>)
   if (!audit) {
     return { status: "error", message: ANALYZE_FAILED }
   }

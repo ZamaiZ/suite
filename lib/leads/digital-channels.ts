@@ -1,15 +1,41 @@
 import {
   canonicalWebsiteUrl,
   normalizeWebsiteDomain,
-} from "@/lib/leads/website"
+} from "./website.ts"
 
 export const DIGITAL_CHANNEL_TYPES = [
   "website",
   "instagram",
   "linkedin",
+  "facebook",
+  "youtube",
+  "tiktok",
+  "pinterest",
+  "twitter",
 ] as const
 
 export type DigitalChannelType = (typeof DIGITAL_CHANNEL_TYPES)[number]
+
+export const SOCIAL_CHANNEL_TYPES = [
+  "instagram",
+  "linkedin",
+  "facebook",
+  "youtube",
+  "tiktok",
+  "pinterest",
+  "twitter",
+] as const satisfies readonly Exclude<DigitalChannelType, "website">[]
+
+export type SocialChannelType = (typeof SOCIAL_CHANNEL_TYPES)[number]
+
+export function isSocialChannelType(
+  value: unknown,
+): value is SocialChannelType {
+  return (
+    typeof value === "string" &&
+    (SOCIAL_CHANNEL_TYPES as readonly string[]).includes(value)
+  )
+}
 
 export const DIGITAL_CHANNELS_MAX = 10
 export const DIGITAL_CHANNEL_LIST_SEPARATOR = ";"
@@ -19,12 +45,22 @@ export const DIGITAL_CHANNEL_LABELS: Record<DigitalChannelType, string> = {
   website: "Site",
   instagram: "Instagram",
   linkedin: "LinkedIn",
+  facebook: "Facebook",
+  youtube: "YouTube",
+  tiktok: "TikTok",
+  pinterest: "Pinterest",
+  twitter: "X (Twitter)",
 }
 
 export const DIGITAL_CHANNEL_PLACEHOLDERS: Record<DigitalChannelType, string> = {
   website: "empresa.com.br",
   instagram: "@empresa",
   linkedin: "linkedin.com/company/empresa",
+  facebook: "facebook.com/empresa",
+  youtube: "youtube.com/@empresa",
+  tiktok: "@empresa",
+  pinterest: "pinterest.com/empresa",
+  twitter: "@empresa",
 }
 
 export const DIGITAL_CHANNEL_INVALID_MESSAGE: Record<DigitalChannelType, string> =
@@ -32,6 +68,11 @@ export const DIGITAL_CHANNEL_INVALID_MESSAGE: Record<DigitalChannelType, string>
     website: "Site inválido.",
     instagram: "Instagram inválido.",
     linkedin: "LinkedIn inválido.",
+    facebook: "Facebook inválido.",
+    youtube: "YouTube inválido.",
+    tiktok: "TikTok inválido.",
+    pinterest: "Pinterest inválido.",
+    twitter: "X (Twitter) inválido.",
   }
 
 export const DIGITAL_CHANNEL_DUPLICATE_MESSAGE: Record<
@@ -41,22 +82,27 @@ export const DIGITAL_CHANNEL_DUPLICATE_MESSAGE: Record<
   website: "Site repetido.",
   instagram: "Instagram repetido.",
   linkedin: "LinkedIn repetido.",
+  facebook: "Facebook repetido.",
+  youtube: "YouTube repetido.",
+  tiktok: "TikTok repetido.",
+  pinterest: "Pinterest repetido.",
+  twitter: "X (Twitter) repetido.",
 }
 
 export const DIGITAL_CHANNEL_TAKEN_MESSAGE: Record<DigitalChannelType, string> = {
   website: "Este site já está cadastrado.",
   instagram: "Este Instagram já está cadastrado.",
   linkedin: "Este LinkedIn já está cadastrado.",
+  facebook: "Este Facebook já está cadastrado.",
+  youtube: "Este YouTube já está cadastrado.",
+  tiktok: "Este TikTok já está cadastrado.",
+  pinterest: "Este Pinterest já está cadastrado.",
+  twitter: "Este X (Twitter) já está cadastrado.",
 }
 
-export const SPREADSHEET_FIELD_BY_TYPE: Record<
-  DigitalChannelType,
-  "website" | "instagram" | "linkedin"
-> = {
-  website: "website",
-  instagram: "instagram",
-  linkedin: "linkedin",
-}
+export const SPREADSHEET_FIELD_BY_TYPE = Object.fromEntries(
+  DIGITAL_CHANNEL_TYPES.map((type) => [type, type]),
+) as { [K in DigitalChannelType]: K }
 
 const INSTAGRAM_RESERVED = new Set([
   "p",
@@ -68,8 +114,86 @@ const INSTAGRAM_RESERVED = new Set([
   "tv",
 ])
 
+const FACEBOOK_RESERVED = new Set([
+  "watch",
+  "reel",
+  "reels",
+  "groups",
+  "events",
+  "login",
+  "share",
+  "sharer",
+  "profile.php",
+  "pages",
+  "stories",
+  "marketplace",
+  "gaming",
+  "live",
+  "photo.php",
+  "permalink.php",
+  "dialog",
+  "privacy",
+  "help",
+  "ads",
+  "friends",
+  "messages",
+  "notifications",
+  "settings",
+])
+
+const YOUTUBE_RESERVED = new Set([
+  "watch",
+  "shorts",
+  "playlist",
+  "embed",
+  "live",
+  "results",
+  "feed",
+])
+
+const TIKTOK_RESERVED = new Set([
+  "video",
+  "t",
+  "explore",
+  "live",
+  "login",
+  "signup",
+])
+
+const PINTEREST_RESERVED = new Set([
+  "pin",
+  "ideas",
+  "today",
+  "search",
+  "settings",
+  "login",
+  "signup",
+])
+
+const TWITTER_RESERVED = new Set([
+  "status",
+  "i",
+  "intent",
+  "home",
+  "explore",
+  "search",
+  "settings",
+  "compose",
+  "share",
+  "hashtag",
+  "login",
+  "signup",
+])
+
 const INSTAGRAM_HANDLE_PATTERN = /^[a-z0-9._]{1,30}$/
 const LINKEDIN_SLUG_PATTERN = /^[a-z0-9._%-]+$/i
+const FACEBOOK_SLUG_PATTERN = /^[a-z0-9._-]+$/
+const YOUTUBE_HANDLE_PATTERN = /^[a-z0-9._-]{3,30}$/
+const YOUTUBE_CHANNEL_ID_PATTERN = /^UC[\w-]{22}$/
+const YOUTUBE_CUSTOM_PATTERN = /^[a-z0-9._%-]+$/i
+const TIKTOK_HANDLE_PATTERN = /^[a-z0-9._]{2,24}$/
+const PINTEREST_USER_PATTERN = /^[a-z0-9._-]{1,30}$/
+const TWITTER_HANDLE_PATTERN = /^[a-z0-9_]{1,15}$/
 
 export type DigitalChannelDraft = {
   type: DigitalChannelType
@@ -128,13 +252,27 @@ export function normalizeDigitalChannel(
 ): { value: string; normalized_key: string } | null {
   const trimmed = raw.trim()
   if (!trimmed || trimmed.length > DIGITAL_CHANNEL_VALUE_MAX) return null
-  if (type === "website") {
-    const domain = normalizeWebsiteDomain(trimmed)
-    if (!domain) return null
-    return { value: canonicalWebsiteUrl(domain), normalized_key: domain }
+  switch (type) {
+    case "website": {
+      const domain = normalizeWebsiteDomain(trimmed)
+      if (!domain) return null
+      return { value: canonicalWebsiteUrl(domain), normalized_key: domain }
+    }
+    case "instagram":
+      return normalizeInstagram(trimmed)
+    case "linkedin":
+      return normalizeLinkedin(trimmed)
+    case "facebook":
+      return normalizeFacebook(trimmed)
+    case "youtube":
+      return normalizeYoutube(trimmed)
+    case "tiktok":
+      return normalizeTiktok(trimmed)
+    case "pinterest":
+      return normalizePinterest(trimmed)
+    case "twitter":
+      return normalizeTwitter(trimmed)
   }
-  if (type === "instagram") return normalizeInstagram(trimmed)
-  return normalizeLinkedin(trimmed)
 }
 
 export function hrefForDigitalChannel(
@@ -143,10 +281,16 @@ export function hrefForDigitalChannel(
 ): string | null {
   const normalized = normalizeDigitalChannel(type, value)
   if (!normalized) return null
-  if (type === "instagram") {
-    return `https://instagram.com/${normalized.normalized_key}`
+  switch (type) {
+    case "instagram":
+      return `https://instagram.com/${normalized.normalized_key}`
+    case "tiktok":
+      return `https://www.tiktok.com/@${normalized.normalized_key}`
+    case "twitter":
+      return `https://x.com/${normalized.normalized_key}`
+    default:
+      return normalized.value
   }
-  return normalized.value
 }
 
 export function digitalChannelDisplay(
@@ -155,8 +299,14 @@ export function digitalChannelDisplay(
 ): string {
   const normalized = normalizeDigitalChannel(type, value)
   if (!normalized) return value.trim()
-  if (type === "instagram") return normalized.value
-  return normalized.normalized_key
+  switch (type) {
+    case "instagram":
+    case "tiktok":
+    case "twitter":
+      return normalized.value
+    default:
+      return normalized.normalized_key
+  }
 }
 
 export function normalizeDigitalChannelList(
@@ -248,11 +398,9 @@ export function normalizeDigitalChannelList(
   return { channels, issues }
 }
 
-export function channelsFromSpreadsheetCells(values: {
-  website: string
-  instagram: string
-  linkedin: string
-}): DigitalChannelDraft[] {
+export function channelsFromSpreadsheetCells(
+  values: Record<DigitalChannelType, string>,
+): DigitalChannelDraft[] {
   const channels: DigitalChannelDraft[] = []
   for (const type of DIGITAL_CHANNEL_TYPES) {
     const tokens = parseChannelListCell(values[type])
@@ -269,7 +417,7 @@ export function channelsFromSpreadsheetCells(values: {
 
 export function spreadsheetCellsFromChannels(
   channels: LeadDigitalChannelWrite[],
-): { website: string; instagram: string; linkedin: string } {
+): Record<DigitalChannelType, string> {
   function cell(type: DigitalChannelType): string {
     const items = channels
       .filter((channel) => channel.type === type)
@@ -281,11 +429,11 @@ export function spreadsheetCellsFromChannels(
     return formatChannelListCell(items.map((item) => item.value))
   }
 
-  return {
-    website: cell("website"),
-    instagram: cell("instagram"),
-    linkedin: cell("linkedin"),
+  const cells = {} as Record<DigitalChannelType, string>
+  for (const type of DIGITAL_CHANNEL_TYPES) {
+    cells[type] = cell(type)
   }
+  return cells
 }
 
 export function primaryWebsiteChannel(
@@ -400,28 +548,66 @@ export function readLeadDigitalChannels(embed: unknown): LeadDigitalChannel[] {
   return channels
 }
 
+function hasScheme(input: string): boolean {
+  return /^[a-z][a-z0-9+.-]*:\/\//i.test(input)
+}
+
+function parseHttpUrl(input: string): URL | null {
+  const candidate = hasScheme(input) ? input : `https://${input}`
+  try {
+    return new URL(candidate)
+  } catch {
+    return null
+  }
+}
+
+function canonicalHost(hostname: string): string {
+  return hostname
+    .toLowerCase()
+    .replace(/^www\./, "")
+    .replace(/^m\./, "")
+    .replace(/^web\./, "")
+    .replace(/^mobile\./, "")
+}
+
+function firstPathSegment(url: URL): string {
+  const segment = url.pathname.split("/").filter(Boolean)[0] ?? ""
+  try {
+    return decodeURIComponent(segment).replace(/\/+$/, "")
+  } catch {
+    return segment.replace(/\/+$/, "")
+  }
+}
+
+function urlPathParts(url: URL): string[] {
+  return url.pathname.split("/").filter(Boolean).map((part) => {
+    try {
+      return decodeURIComponent(part)
+    } catch {
+      return part
+    }
+  })
+}
+
+function looksLikeHostedUrl(input: string, hostPattern: RegExp): boolean {
+  return hasScheme(input) || hostPattern.test(input)
+}
+
 function normalizeInstagram(
   input: string,
 ): { value: string; normalized_key: string } | null {
   let handle = input.trim()
   const urlLike =
-    /^[a-z][a-z0-9+.-]*:\/\//i.test(handle) ||
-    /instagram\.com|instagr\.am/i.test(handle)
+    looksLikeHostedUrl(handle, /instagram\.com|instagr\.am/i)
 
   if (urlLike) {
-    const candidate = /^[a-z][a-z0-9+.-]*:\/\//i.test(handle)
-      ? handle
-      : `https://${handle}`
-    try {
-      const url = new URL(candidate)
-      const host = url.hostname.replace(/^www\./, "").toLowerCase()
-      if (host !== "instagram.com" && host !== "instagr.am") return null
-      const segment = url.pathname.split("/").filter(Boolean)[0]
-      if (!segment || INSTAGRAM_RESERVED.has(segment.toLowerCase())) return null
-      handle = segment
-    } catch {
-      return null
-    }
+    const url = parseHttpUrl(handle)
+    if (!url) return null
+    const host = canonicalHost(url.hostname)
+    if (host !== "instagram.com" && host !== "instagr.am") return null
+    const segment = firstPathSegment(url)
+    if (!segment || INSTAGRAM_RESERVED.has(segment.toLowerCase())) return null
+    handle = segment
   }
 
   handle = handle.replace(/^@/, "").trim().toLowerCase()
@@ -433,24 +619,177 @@ function normalizeInstagram(
 function normalizeLinkedin(
   input: string,
 ): { value: string; normalized_key: string } | null {
-  const trimmed = input.trim()
-  const candidate = /^[a-z][a-z0-9+.-]*:\/\//i.test(trimmed)
-    ? trimmed
-    : `https://${trimmed}`
+  const url = parseHttpUrl(input.trim())
+  if (!url) return null
+  const host = canonicalHost(url.hostname)
+  if (host !== "linkedin.com" && !host.endsWith(".linkedin.com")) return null
+  const parts = urlPathParts(url)
+  if (parts.length < 2) return null
+  const kind = parts[0].toLowerCase()
+  if (kind !== "company" && kind !== "in") return null
+  const slug = parts[1].replace(/\/+$/, "")
+  if (!slug || !LINKEDIN_SLUG_PATTERN.test(slug)) return null
+  const normalized_key = `linkedin.com/${kind}/${slug.toLowerCase()}`
+  return { value: `https://${normalized_key}`, normalized_key }
+}
 
-  try {
-    const url = new URL(candidate)
-    const host = url.hostname.replace(/^www\./, "").toLowerCase()
-    if (host !== "linkedin.com" && !host.endsWith(".linkedin.com")) return null
-    const parts = url.pathname.split("/").filter(Boolean)
-    if (parts.length < 2) return null
-    const kind = parts[0].toLowerCase()
-    if (kind !== "company" && kind !== "in") return null
-    const slug = decodeURIComponent(parts[1]).replace(/\/+$/, "")
-    if (!slug || !LINKEDIN_SLUG_PATTERN.test(slug)) return null
-    const normalized_key = `linkedin.com/${kind}/${slug.toLowerCase()}`
-    return { value: `https://${normalized_key}`, normalized_key }
-  } catch {
+function normalizeFacebook(
+  input: string,
+): { value: string; normalized_key: string } | null {
+  const trimmed = input.trim()
+  const urlLike = looksLikeHostedUrl(trimmed, /facebook\.com|fb\.com/i)
+
+  if (!urlLike) {
+    return facebookFromSlug(trimmed.replace(/^@/, "").trim())
+  }
+
+  const url = parseHttpUrl(trimmed)
+  if (!url) return null
+  const host = canonicalHost(url.hostname)
+  if (
+    host !== "facebook.com" &&
+    host !== "fb.com" &&
+    !host.endsWith(".facebook.com") &&
+    !host.endsWith(".fb.com")
+  ) {
     return null
   }
+  return facebookFromSlug(firstPathSegment(url))
+}
+
+function facebookFromSlug(
+  slug: string,
+): { value: string; normalized_key: string } | null {
+  const normalized = slug.toLowerCase()
+  if (!normalized || FACEBOOK_RESERVED.has(normalized)) return null
+  if (!FACEBOOK_SLUG_PATTERN.test(normalized)) return null
+  if (!/[a-z0-9]/.test(normalized)) return null
+  const normalized_key = `facebook.com/${normalized}`
+  return { value: `https://${normalized_key}`, normalized_key }
+}
+
+function normalizeYoutube(
+  input: string,
+): { value: string; normalized_key: string } | null {
+  const trimmed = input.trim()
+  const urlLike = looksLikeHostedUrl(trimmed, /youtube\.com|youtu\.be/i)
+
+  if (!urlLike) {
+    const handle = trimmed.replace(/^@/, "").trim().toLowerCase()
+    if (!YOUTUBE_HANDLE_PATTERN.test(handle)) return null
+    const normalized_key = `youtube.com/@${handle}`
+    return { value: `https://${normalized_key}`, normalized_key }
+  }
+
+  const url = parseHttpUrl(trimmed)
+  if (!url) return null
+  const host = canonicalHost(url.hostname)
+  if (host !== "youtube.com") return null
+
+  const parts = urlPathParts(url)
+  if (parts.length === 0) return null
+  const first = parts[0]
+  if (YOUTUBE_RESERVED.has(first.toLowerCase())) return null
+
+  if (first.startsWith("@")) {
+    const handle = first.slice(1).toLowerCase()
+    if (!YOUTUBE_HANDLE_PATTERN.test(handle)) return null
+    const normalized_key = `youtube.com/@${handle}`
+    return { value: `https://${normalized_key}`, normalized_key }
+  }
+
+  const kind = first.toLowerCase()
+  if (kind === "channel") {
+    const id = parts[1]
+    if (!id || !YOUTUBE_CHANNEL_ID_PATTERN.test(id)) return null
+    const normalized_key = `youtube.com/channel/${id}`
+    return { value: `https://${normalized_key}`, normalized_key }
+  }
+  if (kind === "c" || kind === "user") {
+    const slug = (parts[1] ?? "").replace(/\/+$/, "")
+    if (!slug || !YOUTUBE_CUSTOM_PATTERN.test(slug)) return null
+    const normalized_key = `youtube.com/${kind}/${slug.toLowerCase()}`
+    return { value: `https://${normalized_key}`, normalized_key }
+  }
+
+  return null
+}
+
+function normalizeTiktok(
+  input: string,
+): { value: string; normalized_key: string } | null {
+  let handle = input.trim()
+  const urlLike = looksLikeHostedUrl(handle, /tiktok\.com/i)
+
+  if (urlLike) {
+    const url = parseHttpUrl(handle)
+    if (!url) return null
+    const host = canonicalHost(url.hostname)
+    if (host !== "tiktok.com") return null
+    const parts = urlPathParts(url)
+    if (parts.some((part) => TIKTOK_RESERVED.has(part.toLowerCase()))) {
+      return null
+    }
+    const first = parts[0]
+    if (!first || !first.startsWith("@")) return null
+    handle = first.slice(1)
+  }
+
+  handle = handle.replace(/^@/, "").trim().toLowerCase()
+  if (!TIKTOK_HANDLE_PATTERN.test(handle)) return null
+  if (!/[a-z0-9]/.test(handle)) return null
+  return { value: `@${handle}`, normalized_key: handle }
+}
+
+function normalizePinterest(
+  input: string,
+): { value: string; normalized_key: string } | null {
+  const trimmed = input.trim()
+  const urlLike = looksLikeHostedUrl(trimmed, /pinterest\.com|pin\.it/i)
+
+  if (!urlLike) {
+    return pinterestFromUser(trimmed.replace(/^@/, "").trim())
+  }
+
+  const url = parseHttpUrl(trimmed)
+  if (!url) return null
+  const host = canonicalHost(url.hostname)
+  if (host === "pin.it") return null
+  if (host !== "pinterest.com" && !host.endsWith(".pinterest.com")) return null
+  return pinterestFromUser(firstPathSegment(url))
+}
+
+function pinterestFromUser(
+  user: string,
+): { value: string; normalized_key: string } | null {
+  const normalized = user.toLowerCase()
+  if (!normalized || PINTEREST_RESERVED.has(normalized)) return null
+  if (!PINTEREST_USER_PATTERN.test(normalized)) return null
+  if (!/[a-z0-9]/.test(normalized)) return null
+  const normalized_key = `pinterest.com/${normalized}`
+  return { value: `https://${normalized_key}`, normalized_key }
+}
+
+function normalizeTwitter(
+  input: string,
+): { value: string; normalized_key: string } | null {
+  let handle = input.trim()
+  const urlLike = looksLikeHostedUrl(handle, /(?:^|\/\/|\.)(?:x|twitter)\.com/i)
+
+  if (urlLike) {
+    const url = parseHttpUrl(handle)
+    if (!url) return null
+    const host = canonicalHost(url.hostname)
+    if (host !== "x.com" && host !== "twitter.com") return null
+    const parts = urlPathParts(url)
+    if (parts.some((part) => part.toLowerCase() === "status")) return null
+    const first = parts[0]
+    if (!first || TWITTER_RESERVED.has(first.toLowerCase())) return null
+    handle = first
+  }
+
+  handle = handle.replace(/^@/, "").trim().toLowerCase()
+  if (!TWITTER_HANDLE_PATTERN.test(handle)) return null
+  if (TWITTER_RESERVED.has(handle)) return null
+  return { value: `@${handle}`, normalized_key: handle }
 }

@@ -7,6 +7,10 @@ import {
   getLeadDetail,
   type LeadAssignmentPatch,
   type LeadDetail,
+  type LeadDigitalPresenceAudit,
+  type LeadVisibilityAudit,
+  type LeadDiagnosisDraft,
+  type LeadDiagnosisExport,
   type LeadGbpProfile,
   type LeadWebsiteAudit,
   type LogLeadActivityState,
@@ -203,6 +207,50 @@ export function LeadDetailDialog({
     )
   }
 
+  function applyDigitalPresence(
+    leadId: string,
+    audit: LeadDigitalPresenceAudit | null,
+  ) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, digitalPresenceAudit: audit }
+        : current,
+    )
+  }
+
+  function applyVisibility(
+    leadId: string,
+    audit: LeadVisibilityAudit | null,
+  ) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, visibilityAudit: audit }
+        : current,
+    )
+  }
+
+  function applyDiagnosisDraft(
+    leadId: string,
+    draft: LeadDiagnosisDraft | null,
+  ) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, diagnosisDraft: draft }
+        : current,
+    )
+  }
+
+  function applyDiagnosisExports(
+    leadId: string,
+    exports: LeadDiagnosisExport[],
+  ) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, diagnosisExports: exports }
+        : current,
+    )
+  }
+
   function handleActivitySuccess(
     result: Extract<LogLeadActivityState, { status: "success" }>,
   ) {
@@ -336,6 +384,10 @@ export function LeadDetailDialog({
                     readOnly={readOnly}
                     onProfilesChange={applyGbpProfiles}
                     onWebsiteAuditsChange={applyWebsiteAudits}
+                    onDigitalPresenceChange={applyDigitalPresence}
+                    onVisibilityChange={applyVisibility}
+                    onDiagnosisDraftChange={applyDiagnosisDraft}
+                    onDiagnosisExportsChange={applyDiagnosisExports}
                     onPendingChange={setGbpPending}
                   />
                 </m.div>

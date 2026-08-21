@@ -1,7 +1,15 @@
 import { load } from "cheerio"
 import {
+  normalizeDigitalChannel,
+  SOCIAL_CHANNEL_TYPES,
+  type SocialChannelType,
+} from "../leads/digital-channels.ts"
+import {
+  EMPTY_WEBSITE_CRAWL_SIGNALS,
+  emptyWebsiteCrawlSocialUrls,
   WEBSITE_INTERNAL_PATHS_MAX,
   WEBSITE_TEXT_EXCERPT_MAX,
+  type WebsiteCrawlSignals,
   type WebsitePageSnapshot,
 } from "../leads/website-audit.ts"
 import { normalizeWebsiteDomain } from "../leads/website.ts"
@@ -86,6 +94,106 @@ function phonesFromTel(href: string): string | null {
   if (!href.toLowerCase().startsWith("tel:")) return null
   const number = href.slice(4).trim()
   return number || null
+}
+
+function metaContentByName(
+  $: ReturnType<typeof load>,
+  name: string,
+): string | undefined {
+  const expected = name.toLowerCase()
+  let found: string | undefined
+  $("meta[name]").each((_, node) => {
+    const current = $(node).attr("name")
+    if (current && current.toLowerCase() === expected) {
+      found = $(node).attr("content")
+      return false
+    }
+  })
+  return found
+}
+
+function pageIsIndexable($: ReturnType<typeof load>): boolean {
+  const robots = metaContentByName($, "robots")
+  const googlebot = metaContentByName($, "googlebot")
+  return ![robots, googlebot].some(
+    (content) => content && /noindex/i.test(content),
+  )
+}
+
+function absoluteHref(href: string, base: URL): string | null {
+  const parsed = decodeHref(href, base)
+  if (!parsed) return null
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return null
+  return parsed.href
+}
+
+export function extractHtmlSignals(
+  html: string,
+  pageUrl: string,
+): WebsiteCrawlSignals {
+  const $ = load(html)
+  let base: URL
+  try {
+    base = new URL(pageUrl)
+  } catch {
+    return {
+      ...EMPTY_WEBSITE_CRAWL_SIGNALS,
+      socialUrls: emptyWebsiteCrawlSocialUrls(),
+    }
+  }
+
+  const blobs: string[] = []
+  $("script").each((_, node) => {
+    blobs.push($(node).attr("src") ?? "")
+    blobs.push($(node).html() ?? "")
+  })
+  $("img, iframe").each((_, node) => {
+    blobs.push($(node).attr("src") ?? "")
+  })
+  $("noscript").each((_, node) => {
+    blobs.push($(node).html() ?? "")
+  })
+  const haystack = blobs.join(" ").toLowerCase()
+
+  const socialUrls = emptyWebsiteCrawlSocialUrls()
+  const flags: Record<SocialChannelType, boolean> = {
+    instagram: false,
+    linkedin: false,
+    facebook: false,
+    youtube: false,
+    tiktok: false,
+    pinterest: false,
+    twitter: false,
+  }
+
+  $("a[href]").each((_, node) => {
+    const href = $(node).attr("href")
+    if (!href) return
+    const absolute = absoluteHref(href, base)
+    if (!absolute) return
+    for (const type of SOCIAL_CHANNEL_TYPES) {
+      if (flags[type]) continue
+      if (!normalizeDigitalChannel(type, absolute)) continue
+      flags[type] = true
+      socialUrls[type] = absolute
+    }
+  })
+
+  return {
+    hasGtm: /googletagmanager\.com\/gtm\.js/i.test(haystack),
+    hasGtag:
+      /gtag\/js/i.test(haystack) ||
+      /googletagmanager\.com\/gtag/i.test(haystack),
+    hasFacebookPixel: /fbevents\.js/i.test(haystack),
+    hasInstagram: flags.instagram,
+    hasFacebook: flags.facebook,
+    hasLinkedin: flags.linkedin,
+    hasYoutube: flags.youtube,
+    hasTiktok: flags.tiktok,
+    hasPinterest: flags.pinterest,
+    hasTwitter: flags.twitter,
+    socialUrls,
+  }
 }
 
 export function parseHtmlPage(
@@ -209,6 +317,7 @@ export function parseHtmlPage(
     contactInFooterOnly,
     phones,
     textExcerpt,
+    indexable: pageIsIndexable($),
   }
 }
 

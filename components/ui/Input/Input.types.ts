@@ -5,6 +5,7 @@ export type InputVariant =
   | "email"
   | "password"
   | "number"
+  | "date"
   | "cpf"
   | "cnpj"
   | "cep"

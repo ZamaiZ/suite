@@ -174,6 +174,10 @@ export function shiftCivilDate(civilDate: string, days: number): string {
   return parseCivilDate(civilDate).add(days, "day").format("YYYY-MM-DD")
 }
 
+export function civilDateDiffDays(from: string, to: string): number {
+  return parseCivilDate(to).diff(parseCivilDate(from), "day")
+}
+
 export function getMonthGrid(yearMonth: string): string[] {
   const start = parseYearMonth(yearMonth)
   const offset = (start.day() + 6) % 7
@@ -311,4 +315,14 @@ export function formatRelativeShort(value: DateTimeInput): string {
   if (days === 1) return "há 1 dia"
   if (days < 30) return `há ${days} dias`
   return formatDateTimeShort(value)
+}
+
+export function formatStorageTimestamp(value?: DateTimeInput): string {
+  const stamp = value === undefined ? dayjs.utc() : dayjs.utc(value)
+  if (!stamp.isValid()) {
+    throw new Error(
+      `[date-time] invalid date value: ${String(value)}`,
+    )
+  }
+  return stamp.format("YYYYMMDD[T]HHmmss[Z]")
 }

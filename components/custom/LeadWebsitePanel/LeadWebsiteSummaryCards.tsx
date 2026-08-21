@@ -30,7 +30,7 @@ function MetricCard({
         <p className="font-sans text-caption text-fg-muted">{label}</p>
         <p className="font-sans text-caption font-semibold text-fg">
           {value ?? "—"}
-          {value ? (
+          {value && complement ? (
             <span className="ml-1 font-normal text-fg-muted">{complement}</span>
           ) : null}
         </p>
@@ -52,8 +52,8 @@ export function LeadWebsiteSummaryCards({ crawl }: { crawl: WebsiteCrawl }) {
       <MetricCard
         icon={RiPagesLine}
         label="Páginas"
-        value={crawl.pages.length.toLocaleString("pt-BR")}
-        complement="na amostra"
+        value={`${crawl.pages.length.toLocaleString("pt-BR")} na amostra`}
+        complement=""
       />
       <MetricCard
         icon={RiSearchLine}

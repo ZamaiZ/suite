@@ -17,22 +17,20 @@ import {
   LEAD_SPREADSHEET_MAX_ROWS,
   rowChannelKeys,
   spreadsheetCellsFromChannels,
+  SPREADSHEET_VALUE_KEYS,
   summarizeEvaluatedRows,
   validateRawRows,
   type ExistingChannelConflict,
+  type SpreadsheetValueKey,
 } from "@/lib/leads/spreadsheet-model"
 import { parseLeadSpreadsheet } from "@/lib/leads/spreadsheet"
 import type { LeadWritePayload, SpreadsheetEvaluatedRow } from "@/lib/leads/types"
 
-const rawValuesSchema = z.object({
-  company_name: z.string(),
-  website: z.string(),
-  contact_name: z.string(),
-  phone: z.string(),
-  email: z.string(),
-  instagram: z.string(),
-  linkedin: z.string(),
-})
+const rawValuesSchema = z.object(
+  Object.fromEntries(
+    SPREADSHEET_VALUE_KEYS.map((key) => [key, z.string()]),
+  ) as Record<SpreadsheetValueKey, z.ZodString>,
+)
 
 const evaluateRowsInputSchema = z
   .array(

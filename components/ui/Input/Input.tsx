@@ -101,6 +101,7 @@ export function Input({
   const isPassword = variant === "password"
   const isEmail = variant === "email"
   const isNumber = variant === "number"
+  const isDate = variant === "date"
   const isPhone = variant === "phone"
   const isNumeric = NUMERIC_VARIANTS.has(variant)
   const showStatus = !isPassword && status !== "idle"
@@ -119,7 +120,9 @@ export function Input({
       ? "email"
       : isPhone
         ? "tel"
-        : "text"
+        : isDate
+          ? "date"
+          : "text"
 
   const inputMode = isPhone ? "tel" : isNumeric ? "numeric" : undefined
 

@@ -254,7 +254,7 @@ export function LeadBoard({
       : `${optimisticLeads.length} leads`
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4">
+    <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
       <LeadBoardToolbar
         listParams={listParams}
         tagOptions={tagOptions}
@@ -346,45 +346,47 @@ export function LeadBoard({
           }
         }}
       >
-        <DraggingColumnReader onColumnChange={setDraggingFrom} />
-        <div className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto pb-1">
-          {BOARD_COLUMNS.map((columnId) => (
-            <LeadBoardColumn
-              key={columnId}
-              columnId={columnId}
-              leads={grouped[columnId]}
-              selectedId={selectedId}
-              canDrag={canDrag}
-              allowActions={!listParams.team}
-              currentUserId={currentUserId}
-              draggingFrom={draggingFrom}
-              hrefForLead={hrefForLead}
-              onOpen={openLead}
-              onAssigned={handleAssigned}
-              onBoardError={setBoardError}
-              onLeadCreated={addItem}
-            />
-          ))}
+        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+          <DraggingColumnReader onColumnChange={setDraggingFrom} />
+          <div className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto overflow-y-hidden scrollbar-none [&::-webkit-scrollbar]:hidden pb-1">
+            {BOARD_COLUMNS.map((columnId) => (
+              <LeadBoardColumn
+                key={columnId}
+                columnId={columnId}
+                leads={grouped[columnId]}
+                selectedId={selectedId}
+                canDrag={canDrag}
+                allowActions={!listParams.team}
+                currentUserId={currentUserId}
+                draggingFrom={draggingFrom}
+                hrefForLead={hrefForLead}
+                onOpen={openLead}
+                onAssigned={handleAssigned}
+                onBoardError={setBoardError}
+                onLeadCreated={addItem}
+              />
+            ))}
+          </div>
+          <DragOverlay dropAnimation={{ duration: 180, easing: "ease-out" }}>
+            {(source) => {
+              const lead = leadsById.get(String(source.id))
+              if (!lead) return null
+              return (
+                <div
+                  className={cn(
+                    "w-72 rounded-lg border border-border bg-elevated p-3 shadow-card",
+                    "scale-[1.02]",
+                  )}
+                >
+                  <LeadBoardCardFace
+                    lead={lead}
+                    currentUserId={currentUserId}
+                  />
+                </div>
+              )
+            }}
+          </DragOverlay>
         </div>
-        <DragOverlay dropAnimation={{ duration: 180, easing: "ease-out" }}>
-          {(source) => {
-            const lead = leadsById.get(String(source.id))
-            if (!lead) return null
-            return (
-              <div
-                className={cn(
-                  "w-72 rounded-lg border border-border bg-elevated p-3 shadow-card",
-                  "scale-[1.02]",
-                )}
-              >
-                <LeadBoardCardFace
-                  lead={lead}
-                  currentUserId={currentUserId}
-                />
-              </div>
-            )
-          }}
-        </DragOverlay>
       </DragDropProvider>
       <LeadDetailDialog
         open={selectedId !== null}

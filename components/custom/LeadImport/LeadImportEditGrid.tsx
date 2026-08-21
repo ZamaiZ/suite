@@ -14,6 +14,7 @@ const ROW_HEIGHT = 34
 const HEADER_HEIGHT = 34
 const OVERSCAN = 8
 const VIRTUALIZE_AFTER = 100
+const COLUMN_COUNT = SPREADSHEET_VALUE_KEYS.length + 1
 
 function fieldIssueKind(
   row: SpreadsheetEvaluatedRow,
@@ -87,7 +88,7 @@ export function LeadImportEditGrid({
         onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
         className="min-h-0 flex-1 overflow-auto rounded-lg border border-border"
       >
-        <table className="w-full min-w-[52rem] border-collapse text-left">
+        <table className="w-full min-w-[80rem] border-collapse text-left">
           <thead className="sticky top-0 z-10 bg-elevated">
             <tr className="border-b border-border-subtle">
               <th className="w-14 px-2 py-1.5 font-sans text-caption font-medium text-fg-muted">
@@ -106,7 +107,7 @@ export function LeadImportEditGrid({
           <tbody>
             {padTop > 0 ? (
               <tr>
-                <td colSpan={8} style={{ height: padTop }} />
+                <td colSpan={COLUMN_COUNT} style={{ height: padTop }} />
               </tr>
             ) : null}
             {slice.map((row) => (
@@ -159,7 +160,7 @@ export function LeadImportEditGrid({
             ))}
             {padBottom > 0 ? (
               <tr>
-                <td colSpan={8} style={{ height: padBottom }} />
+                <td colSpan={COLUMN_COUNT} style={{ height: padBottom }} />
               </tr>
             ) : null}
           </tbody>
