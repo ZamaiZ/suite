@@ -1,3 +1,4 @@
+import type { BrazilStateCode } from "@/lib/br-locations"
 import {
   DIAGNOSIS_PILLAR_LABELS,
   DIAGNOSIS_ROADMAP_CAP,
@@ -16,6 +17,7 @@ import {
 import { diagnosisFindingsFromThemes } from "./diagnosis-themes.ts"
 import { seedDiagnosisProse } from "./diagnosis-templates.ts"
 import type { LeadDigitalChannel } from "./digital-channels.ts"
+import { resolveLeadLocation } from "./resolve-location.ts"
 import {
   mergeDigitalPresenceOpportunities,
   type DigitalPresenceOpportunityItem,
@@ -30,7 +32,6 @@ import {
   bestMapsPosition,
 } from "./gbp-presenters.ts"
 import {
-  cityFromFormattedAddress,
   type LeadVisibilityAudit,
 } from "./visibility-audit.ts"
 import { mergeVisibilityOpportunities } from "./visibility-opportunities.ts"
@@ -56,6 +57,9 @@ export type DiagnosisCompileInput = {
   visibilityAudit: LeadVisibilityAudit | null
   generatedAt: string
   previousProse?: DiagnosisProse | null
+  leadCity: string | null
+  leadStateCode: BrazilStateCode | null
+  segmentName: string | null
 }
 
 function metric(id: string, label: string, value: string): DiagnosisKeyMetric {
@@ -251,9 +255,17 @@ function mergeRoadmap(
 export function compileDiagnosisFacts(
   input: DiagnosisCompileInput,
 ): DiagnosisFacts {
-  const city = cityFromFormattedAddress(
-    input.gbpProfile?.payload.formattedAddress ?? null,
+  const location = resolveLeadLocation(
+    {
+      city: input.leadCity,
+      state_code: input.leadStateCode,
+      segment: input.segmentName ? { name: input.segmentName } : null,
+    },
+    input.gbpProfile
+      ? { formattedAddress: input.gbpProfile.payload.formattedAddress ?? null }
+      : null,
   )
+  const city = location.city
 
   const googleItems: DiagnosisOpportunityRef[] = input.gbpProfile
     ? googleOpportunities(input.gbpProfile, input.companyName).map(toRef)
@@ -359,9 +371,17 @@ export function compileDiagnosisFacts(
 export function compileDiagnosisDocument(
   input: DiagnosisCompileInput,
 ): DiagnosisDocument {
-  const city = cityFromFormattedAddress(
-    input.gbpProfile?.payload.formattedAddress ?? null,
+  const location = resolveLeadLocation(
+    {
+      city: input.leadCity,
+      state_code: input.leadStateCode,
+      segment: input.segmentName ? { name: input.segmentName } : null,
+    },
+    input.gbpProfile
+      ? { formattedAddress: input.gbpProfile.payload.formattedAddress ?? null }
+      : null,
   )
+  const city = location.city
   const facts = compileDiagnosisFacts(input)
   const meta: DiagnosisMeta = {
     companyName: input.companyName,

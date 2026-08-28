@@ -1,4 +1,6 @@
 import { endOfTodayIso } from "@/lib/date-time"
+import { isBrazilStateCode } from "@/lib/br-locations"
+import { isSegmentSlug } from "@/lib/leads/segments"
 import { isTagSlug } from "@/lib/leads/tags"
 
 export type LeadsListParams = {
@@ -7,6 +9,9 @@ export type LeadsListParams = {
   today: boolean
   pending: boolean
   tag: string | null
+  segment: string | null
+  city: string | null
+  state: string | null
 }
 
 export function isLeadId(value: unknown): value is string {
@@ -38,6 +43,9 @@ export function leadsListHref(input: {
   today?: boolean
   pending?: boolean
   tag?: string | null
+  segment?: string | null
+  city?: string | null
+  state?: string | null
   lead?: string
 } = {}): string {
   const params = new URLSearchParams()
@@ -47,6 +55,15 @@ export function leadsListHref(input: {
   if (input.today) params.set("today", "1")
   if (input.pending === false) params.set("pending", "0")
   if (input.tag && isTagSlug(input.tag)) params.set("tag", input.tag)
+  if (input.segment && isSegmentSlug(input.segment)) {
+    params.set("segment", input.segment)
+  }
+  const city = input.city?.trim()
+  const state = input.state?.trim().toUpperCase()
+  if (city && state && isBrazilStateCode(state)) {
+    params.set("city", city)
+    params.set("state", state)
+  }
   if (input.lead && isLeadId(input.lead)) params.set("lead", input.lead)
   const search = params.toString()
   return search ? `/leads?${search}` : "/leads"

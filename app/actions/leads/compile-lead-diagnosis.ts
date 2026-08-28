@@ -173,6 +173,9 @@ export async function compileLeadDiagnosis(
     visibilityAudit,
     generatedAt,
     previousProse: loaded.draft?.document.prose ?? null,
+    leadCity: loaded.lead.city,
+    leadStateCode: loaded.lead.state_code,
+    segmentName: loaded.lead.segment?.name ?? null,
   })
 
   const facts_fingerprint = diagnosisFactsFingerprint({

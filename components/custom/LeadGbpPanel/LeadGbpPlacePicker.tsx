@@ -18,10 +18,12 @@ function newSessionToken() {
 export function LeadGbpPlacePicker({
   id,
   disabled,
+  locationHint,
   onPick,
 }: {
   id: string
   disabled?: boolean
+  locationHint?: string | null
   onPick: (placeId: string, sessionToken: string) => void
 }) {
   const portalContainer = useDialogPortalContainer()
@@ -48,6 +50,9 @@ export function LeadGbpPlacePicker({
       const formData = new FormData()
       formData.set("query", trimmed)
       formData.set("session_token", sessionTokenRef.current)
+      if (locationHint) {
+        formData.set("location_hint", locationHint)
+      }
       void suggestPlaces(formData).then((result) => {
         if (requestId !== requestIdRef.current) return
         setLoading(false)
@@ -62,7 +67,7 @@ export function LeadGbpPlacePicker({
     }, DEBOUNCE_MS)
 
     return () => window.clearTimeout(timer)
-  }, [query])
+  }, [query, locationHint])
 
   function handlePick(item: PlaceSuggestion | null) {
     if (!item) return

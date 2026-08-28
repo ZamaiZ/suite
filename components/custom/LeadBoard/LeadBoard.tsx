@@ -106,6 +106,7 @@ export function LeadBoard({
   currentUserId,
   listParams,
   tagOptions,
+  segmentOptions,
   initialLeadId = null,
 }: LeadBoardProps) {
   const finePointer = useFinePointer()
@@ -254,10 +255,11 @@ export function LeadBoard({
       : `${optimisticLeads.length} leads`
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-hidden">
       <LeadBoardToolbar
         listParams={listParams}
         tagOptions={tagOptions}
+        segmentOptions={segmentOptions}
         dueTodayCount={dueTodayCount}
         pendingCount={pendingCount}
       />
@@ -346,9 +348,9 @@ export function LeadBoard({
           }
         }}
       >
-        <div className="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+        <div className="relative flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
           <DraggingColumnReader onColumnChange={setDraggingFrom} />
-          <div className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto overflow-y-hidden scrollbar-none [&::-webkit-scrollbar]:hidden pb-1">
+          <div className="flex min-h-0 min-w-0 flex-1 items-stretch gap-3 overflow-x-auto overflow-y-hidden scrollbar-none [&::-webkit-scrollbar]:hidden pb-1">
             {BOARD_COLUMNS.map((columnId) => (
               <LeadBoardColumn
                 key={columnId}

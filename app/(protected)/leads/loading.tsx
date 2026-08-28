@@ -7,27 +7,43 @@ import { cn } from "@/lib/cn"
 
 export default function LeadsLoading() {
   return (
-    <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-[var(--page-padding-x)] py-4">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-[var(--page-padding-x)] py-4">
       <h1 className="sr-only">Leads</h1>
-      <div className="flex min-h-0 flex-1 flex-col gap-4">
-        <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
-          <span className="h-[var(--control-height)] w-full animate-pulse rounded-md bg-hover sm:w-52 sm:flex-none" />
-          <span
-            className="h-[var(--control-height)] w-44 animate-pulse rounded-md bg-hover"
-            style={{ animationDelay: "40ms" }}
-          />
-          <span
-            className="h-[var(--control-height)] w-28 animate-pulse rounded-md bg-hover"
-            style={{ animationDelay: "80ms" }}
-          />
-          <span
-            className="h-[var(--control-height)] w-40 animate-pulse rounded-md bg-hover"
-            style={{ animationDelay: "120ms" }}
-          />
-          <span
-            className="h-[var(--control-height)] w-36 animate-pulse rounded-md bg-hover sm:ml-auto"
-            style={{ animationDelay: "160ms" }}
-          />
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4">
+        <div className="flex min-w-0 shrink-0 flex-col gap-2">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border-subtle pb-2">
+            <span className="h-[var(--control-height)] min-w-0 flex-1 basis-48 max-w-xs animate-pulse rounded-md bg-hover" />
+            <span
+              className="h-[var(--control-height)] w-40 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "40ms" }}
+            />
+            <span
+              className="h-[var(--control-height)] w-28 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "80ms" }}
+            />
+            <span
+              className="h-[var(--control-height)] w-40 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "120ms" }}
+            />
+            <span
+              className="ml-auto h-[var(--control-height)] w-36 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "160ms" }}
+            />
+          </div>
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <span
+              className="h-[var(--control-height)] w-40 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "200ms" }}
+            />
+            <span
+              className="h-[var(--control-height)] w-40 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "240ms" }}
+            />
+            <span
+              className="h-[var(--control-height)] w-40 shrink-0 animate-pulse rounded-md bg-hover"
+              style={{ animationDelay: "280ms" }}
+            />
+          </div>
         </div>
         <div className="flex shrink-0 items-center justify-between gap-3">
           <span className="h-3 w-40 animate-pulse rounded-md bg-hover" />
@@ -36,7 +52,7 @@ export default function LeadsLoading() {
             style={{ animationDelay: "40ms" }}
           />
         </div>
-        <div className="flex min-h-0 flex-1 items-stretch gap-3 overflow-x-auto overflow-y-hidden pb-1">
+        <div className="flex min-h-0 min-w-0 flex-1 items-stretch gap-3 overflow-x-auto overflow-y-hidden pb-1">
           {BOARD_COLUMNS.map((columnId, index) => (
             <section
               key={columnId}

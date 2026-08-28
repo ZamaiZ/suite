@@ -12,6 +12,7 @@ import {
   RiFileTextLine,
   RiMailLine,
   RiPhoneLine,
+  RiStore2Line,
   RiUserLine,
 } from "react-icons/ri"
 import { updateLead } from "@/app/actions/leads"
@@ -20,6 +21,8 @@ import {
   LeadDigitalChannels,
   type LeadDigitalChannelsHandle,
 } from "@/components/custom/LeadDigitalChannels"
+import { LeadLocationField } from "@/components/custom/LeadLocationField"
+import { LeadSegmentField } from "@/components/custom/LeadSegmentField"
 import { LeadTagChips, LeadTagField } from "@/components/custom/LeadTagField"
 import { Input } from "@/components/ui/Input"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
@@ -76,6 +79,9 @@ function fillLeadFormData(
   overlay: {
     company_name?: string
     channels?: DigitalChannelDraft[]
+    segment?: string
+    state_code?: string
+    city?: string
     contact_name?: string
     phone?: string
     email?: string
@@ -84,6 +90,9 @@ function fillLeadFormData(
 ) {
   formData.set("lead_id", lead.id)
   formData.set("company_name", overlay.company_name ?? lead.company_name)
+  formData.set("segment", overlay.segment ?? lead.segment?.name ?? "")
+  formData.set("state_code", overlay.state_code ?? lead.state_code ?? "")
+  formData.set("city", overlay.city ?? lead.city ?? "")
   formData.set(
     "channels",
     JSON.stringify(
@@ -245,6 +254,9 @@ function CompanyCard({
     fillLeadFormData(formData, lead, values.tags, {
       company_name: values.company_name,
       channels: values.channels,
+      segment: values.segment,
+      state_code: values.state_code,
+      city: values.city,
     })
 
     startTransition(async () => {
@@ -321,6 +333,51 @@ function CompanyCard({
                 )}
               />
               <Controller
+                name="segment"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <LeadSegmentField
+                    id="lead-record-segment"
+                    label="Segmento"
+                    value={field.value}
+                    onValueChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={fieldState.error?.message}
+                    disabled={isPending}
+                  />
+                )}
+              />
+              <Controller
+                name="state_code"
+                control={form.control}
+                render={({ field: stateField, fieldState: stateState }) => (
+                  <Controller
+                    name="city"
+                    control={form.control}
+                    render={({ field: cityField, fieldState: cityState }) => (
+                      <LeadLocationField
+                        id="lead-record-location"
+                        value={{
+                          state_code: stateField.value,
+                          city: cityField.value,
+                        }}
+                        onValueChange={(next) => {
+                          stateField.onChange(next.state_code)
+                          cityField.onChange(next.city)
+                        }}
+                        onBlur={() => {
+                          stateField.onBlur()
+                          cityField.onBlur()
+                        }}
+                        stateError={stateState.error?.message}
+                        cityError={cityState.error?.message}
+                        disabled={isPending}
+                      />
+                    )}
+                  />
+                )}
+              />
+              <Controller
                 name="tags"
                 control={form.control}
                 render={({ field, fieldState }) => (
@@ -352,6 +409,20 @@ function CompanyCard({
             />
             <LeadDigitalChannelList
               channels={toDigitalChannelDrafts(lead.channels ?? [])}
+            />
+            <LeadRecordField
+              icon={RiStore2Line}
+              label="Segmento"
+              value={detail.segment?.name ?? "—"}
+            />
+            <LeadRecordField
+              icon={RiStore2Line}
+              label="Localização"
+              value={
+                lead.city && lead.state_code
+                  ? `${lead.city} · ${lead.state_code}`
+                  : "—"
+              }
             />
             <div className="border-t border-border-subtle pt-4">
               <p className="mb-2 font-sans text-caption text-fg-muted">Tags</p>
@@ -704,6 +775,9 @@ function companyDefaults(detail: LeadDetail): CompanyValues {
   return {
     company_name: detail.lead.company_name,
     channels: toDigitalChannelDrafts(detail.lead.channels ?? []),
+    segment: detail.segment?.name ?? "",
+    state_code: detail.lead.state_code ?? "",
+    city: detail.lead.city ?? "",
     tags: detail.tags.map((tag) => tag.name),
   }
 }

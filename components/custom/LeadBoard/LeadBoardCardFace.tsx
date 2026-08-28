@@ -107,6 +107,13 @@ export function LeadBoardCardFace({
         <p className="truncate font-sans text-caption text-fg-muted">
           {lead.website_domain}
         </p>
+        {lead.segment?.name || (lead.city && lead.state_code) ? (
+          <p className="truncate font-sans text-caption text-fg-secondary">
+            {[lead.segment?.name, lead.city && lead.state_code ? `${lead.city} · ${lead.state_code}` : null]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+        ) : null}
         {visibleChannels.length > 0 ||
         lead.next_follow_up_at ||
         lead.closing_meeting_at ||

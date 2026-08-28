@@ -1,5 +1,7 @@
 import type { AppRole } from "@/lib/auth/roles"
+import { isBrazilStateCode, type BrazilStateCode } from "@/lib/br-locations"
 import { readLeadDigitalChannels } from "@/lib/leads/digital-channels"
+import { readLeadSegment, type LeadSegment } from "@/lib/leads/segments"
 import {
   canEditLeadGbp,
   matchWebsiteKey,
@@ -28,6 +30,9 @@ export type GbpLeadContext = {
   assigned_sdr_id: string | null
   assigned_closer_id: string | null
   websiteKeys: string[]
+  city: string | null
+  state_code: BrazilStateCode | null
+  segment: LeadSegment | null
 }
 
 export function rowToGbpProfile(row: Record<string, unknown>): LeadGbpProfile | null {
@@ -41,7 +46,7 @@ export async function loadGbpLeadContext(
   const { data, error } = await supabase
     .from("leads")
     .select(
-      "id, status, company_name, assigned_sdr_id, assigned_closer_id, lead_digital_channels(type, normalized_key, value, is_primary, sort_order, id)",
+      "id, status, company_name, assigned_sdr_id, assigned_closer_id, state_code, city, segments(id, name), lead_digital_channels(type, normalized_key, value, is_primary, sort_order, id)",
     )
     .eq("id", leadId)
     .maybeSingle()
@@ -51,6 +56,7 @@ export async function loadGbpLeadContext(
   if (!isLeadStatus(data.status)) return "error"
 
   const channels = readLeadDigitalChannels(data.lead_digital_channels)
+  const stateCode = isBrazilStateCode(data.state_code) ? data.state_code : null
   return {
     id: data.id,
     status: data.status,
@@ -58,6 +64,9 @@ export async function loadGbpLeadContext(
     assigned_sdr_id: data.assigned_sdr_id,
     assigned_closer_id: data.assigned_closer_id,
     websiteKeys: websiteKeysFromChannels(channels),
+    city: typeof data.city === "string" && data.city.trim().length > 0 ? data.city : null,
+    state_code: stateCode,
+    segment: readLeadSegment(data),
   }
 }
 

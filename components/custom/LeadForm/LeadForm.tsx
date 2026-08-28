@@ -13,6 +13,7 @@ import {
   RiPhoneLine,
   RiPriceTag3Line,
   RiSaveLine,
+  RiStore2Line,
   RiUserLine,
 } from "react-icons/ri"
 import { createLead, updateLead } from "@/app/actions/leads"
@@ -21,6 +22,8 @@ import {
   type LeadDigitalChannelsHandle,
 } from "@/components/custom/LeadDigitalChannels"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
+import { LeadLocationField } from "@/components/custom/LeadLocationField"
+import { LeadSegmentField } from "@/components/custom/LeadSegmentField"
 import { LeadTagField } from "@/components/custom/LeadTagField"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
@@ -114,6 +117,11 @@ export function LeadForm({
       channels:
         defaultValues?.channels ??
         (lead?.channels ? toDigitalChannelDrafts(lead.channels) : []),
+      segment:
+        defaultValues?.segment ?? lead?.segment?.name ?? "",
+      state_code:
+        defaultValues?.state_code ?? lead?.state_code ?? "",
+      city: defaultValues?.city ?? lead?.city ?? "",
       contact_name: defaultValues?.contact_name ?? lead?.contact_name ?? "",
       phone: defaultValues?.phone ?? lead?.phone ?? "",
       email: defaultValues?.email ?? lead?.email ?? "",
@@ -134,6 +142,9 @@ export function LeadForm({
     const formData = new FormData()
     if (mode === "edit" && leadId) formData.set("lead_id", leadId)
     formData.set("company_name", values.company_name)
+    formData.set("segment", values.segment)
+    formData.set("state_code", values.state_code)
+    formData.set("city", values.city)
     formData.set("channels", JSON.stringify(values.channels))
     formData.set("contact_name", values.contact_name)
     formData.set("phone", values.phone)
@@ -207,6 +218,59 @@ export function LeadForm({
               disabled={fieldsDisabled}
               autoComplete="organization"
               leadingIcon={<RiBuilding4Line size={16} aria-hidden />}
+            />
+          )}
+        />
+      </FormSection>
+
+      <FormSection
+        icon={RiStore2Line}
+        title="Segmento e localização"
+        subtitle="Segmento do lead em potencial e região de atuação."
+        columns="one"
+      >
+        <Controller
+          name="segment"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <LeadSegmentField
+              id="lead-segment"
+              label="Segmento"
+              value={field.value}
+              onValueChange={field.onChange}
+              onBlur={field.onBlur}
+              error={fieldState.error?.message}
+              disabled={fieldsDisabled}
+            />
+          )}
+        />
+        <Controller
+          name="state_code"
+          control={form.control}
+          render={({ field: stateField, fieldState: stateState }) => (
+            <Controller
+              name="city"
+              control={form.control}
+              render={({ field: cityField, fieldState: cityState }) => (
+                <LeadLocationField
+                  id="lead-location"
+                  value={{
+                    state_code: stateField.value,
+                    city: cityField.value,
+                  }}
+                  onValueChange={(next) => {
+                    stateField.onChange(next.state_code)
+                    cityField.onChange(next.city)
+                  }}
+                  onBlur={() => {
+                    stateField.onBlur()
+                    cityField.onBlur()
+                  }}
+                  stateError={stateState.error?.message}
+                  cityError={cityState.error?.message}
+                  disabled={fieldsDisabled}
+                />
+              )}
             />
           )}
         />

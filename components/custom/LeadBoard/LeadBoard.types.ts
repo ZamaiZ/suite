@@ -8,10 +8,16 @@ export type LeadTagFilterOption = {
   name: string
 }
 
+export type LeadSegmentFilterOption = {
+  slug: string
+  name: string
+}
+
 export type LeadBoardProps = {
   leads: LeadBoardItem[]
   currentUserId: string
   listParams: LeadsListParams
   tagOptions: LeadTagFilterOption[]
+  segmentOptions: LeadSegmentFilterOption[]
   initialLeadId?: string | null
 }

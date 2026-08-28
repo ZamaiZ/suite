@@ -7,7 +7,7 @@ import {
   analyzeLeadVisibility,
 } from "@/app/actions/leads"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
-import { cityFromFormattedAddress } from "@/lib/leads/visibility-audit"
+import { resolveLeadLocation } from "@/lib/leads/resolve-location"
 import { mergeVisibilityOpportunities } from "@/lib/leads/visibility-opportunities"
 import { visibilityCheckSections } from "@/lib/leads/visibility-presenters"
 import { LeadVisibilityChecks } from "./LeadVisibilityChecks"
@@ -37,9 +37,16 @@ export function LeadVisibilityPanel({
     detail.gbpProfiles.find((profile) => profile.is_primary) ??
     detail.gbpProfiles[0] ??
     null
-  const city = cityFromFormattedAddress(
-    primaryGbp?.payload.formattedAddress ?? null,
-  )
+  const city = resolveLeadLocation(
+    {
+      city: detail.lead.city,
+      state_code: detail.lead.state_code,
+      segment: detail.lead.segment,
+    },
+    primaryGbp
+      ? { formattedAddress: primaryGbp.payload.formattedAddress ?? null }
+      : null,
+  ).city
   const opportunities = audit
     ? mergeVisibilityOpportunities({
         snapshot: audit.snapshot,

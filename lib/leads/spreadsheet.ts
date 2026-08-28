@@ -1,5 +1,6 @@
 import "server-only"
 import { Workbook, type CellValue } from "exceljs"
+import { BR_STATES } from "@/lib/br-locations"
 import {
   DIGITAL_CHANNEL_LABELS,
   DIGITAL_CHANNEL_TYPES,
@@ -12,6 +13,8 @@ import {
   LEAD_SPREADSHEET_MAX_ROWS,
   rawValuesFromCells,
   SPREADSHEET_CHANNEL_HEADER_NOTES,
+  SPREADSHEET_FIELD_LABELS,
+  SPREADSHEET_FIELD_NOTES,
   SPREADSHEET_VALUE_KEYS,
   validateRawRows,
 } from "@/lib/leads/spreadsheet-model"
@@ -27,6 +30,11 @@ export {
 export type ParsedLeadSpreadsheet =
   | { status: "ok"; rows: SpreadsheetEvaluatedRow[] }
   | { status: "error"; message: string }
+
+export type LeadTemplateCatalog = {
+  segments: string[]
+  tags: string[]
+}
 
 function cellText(value: CellValue): string {
   if (value == null) return ""
@@ -60,13 +68,42 @@ function normalizeHeader(value: string): string {
   return value.trim().toLocaleLowerCase("pt-BR")
 }
 
-export async function buildLeadTemplateBuffer(): Promise<Buffer> {
+function columnLetter(index: number): string {
+  let value = index
+  let letters = ""
+  while (value > 0) {
+    const remainder = (value - 1) % 26
+    letters = String.fromCharCode(65 + remainder) + letters
+    value = Math.floor((value - 1) / 26)
+  }
+  return letters
+}
+
+function listValidationFormula(values: string[]): string {
+  const escaped = values.map((value) =>
+    value.replace(/"/g, '""').replace(/,/g, ""),
+  )
+  return `"${escaped.join(",")}"`
+}
+
+export async function buildLeadTemplateBuffer(
+  catalog: LeadTemplateCatalog,
+): Promise<Buffer> {
   const workbook = new Workbook()
   const sheet = workbook.addWorksheet("Leads")
   sheet.columns = LEAD_SPREADSHEET_HEADERS.map((header) => ({
     header,
     width: header.length < 18 ? 22 : 32,
   }))
+
+  for (const key of SPREADSHEET_VALUE_KEYS) {
+    const index = SPREADSHEET_VALUE_KEYS.indexOf(key)
+    const note = SPREADSHEET_FIELD_NOTES[key]
+    if (note) {
+      sheet.getRow(1).getCell(index + 1).note = note
+    }
+  }
+
   for (const type of DIGITAL_CHANNEL_TYPES) {
     const index = SPREADSHEET_VALUE_KEYS.findIndex((key) => key === type)
     if (index < 0) continue
@@ -74,15 +111,59 @@ export async function buildLeadTemplateBuffer(): Promise<Buffer> {
       SPREADSHEET_CHANNEL_HEADER_NOTES[type]
   }
 
+  const lastRow = LEAD_SPREADSHEET_MAX_ROWS + 1
+  const segmentIndex =
+    SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "segment") + 1
+  const stateIndex =
+    SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "state_code") + 1
+  const tagsIndex = SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "tags") + 1
+
+  if (catalog.segments.length > 0 && segmentIndex > 0) {
+    sheet.dataValidations.add(`${columnLetter(segmentIndex)}2:${columnLetter(segmentIndex)}${lastRow}`, {
+      type: "list",
+      allowBlank: false,
+      formulae: [listValidationFormula(catalog.segments)],
+      showErrorMessage: true,
+      errorTitle: "Segmento inválido",
+      error: "Selecione um segmento existente ou baixe o modelo novamente.",
+    })
+  }
+
+  if (stateIndex > 0) {
+    sheet.dataValidations.add(`${columnLetter(stateIndex)}2:${columnLetter(stateIndex)}${lastRow}`, {
+      type: "list",
+      allowBlank: false,
+      formulae: [listValidationFormula(BR_STATES.map((state) => state.code))],
+      showErrorMessage: true,
+      errorTitle: "UF inválida",
+      error: "Selecione uma UF válida.",
+    })
+  }
+
+  if (catalog.tags.length > 0 && tagsIndex > 0) {
+    sheet.dataValidations.add(`${columnLetter(tagsIndex)}2:${columnLetter(tagsIndex)}${lastRow}`, {
+      type: "list",
+      allowBlank: true,
+      formulae: [listValidationFormula(catalog.tags)],
+      showErrorMessage: true,
+      errorTitle: "Tag inválida",
+      error: "Selecione tags existentes ou deixe em branco.",
+    })
+  }
+
   const instructions = workbook.addWorksheet("Instruções")
   instructions.columns = [
     { header: "Campo", width: 22 },
     { header: "Como preencher", width: 72 },
   ]
-  for (const type of DIGITAL_CHANNEL_TYPES) {
+  for (const key of SPREADSHEET_VALUE_KEYS) {
     instructions.addRow([
-      DIGITAL_CHANNEL_LABELS[type],
-      SPREADSHEET_CHANNEL_HEADER_NOTES[type],
+      SPREADSHEET_FIELD_LABELS[key],
+      SPREADSHEET_FIELD_NOTES[key] ??
+        SPREADSHEET_CHANNEL_HEADER_NOTES[
+          key as keyof typeof SPREADSHEET_CHANNEL_HEADER_NOTES
+        ] ??
+        "",
     ])
   }
   const buffer = await workbook.xlsx.writeBuffer()

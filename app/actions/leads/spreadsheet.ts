@@ -15,9 +15,9 @@ import {
   LEAD_SPREADSHEET_MAX_BYTES,
   LEAD_SPREADSHEET_MAX_FILES,
   LEAD_SPREADSHEET_MAX_ROWS,
+  parseSpreadsheetTags,
   rowChannelKeys,
-  spreadsheetCellsFromChannels,
-  SPREADSHEET_VALUE_KEYS,
+  spreadsheetValuesFromPayload,
   summarizeEvaluatedRows,
   validateRawRows,
   type ExistingChannelConflict,
@@ -25,10 +25,14 @@ import {
 } from "@/lib/leads/spreadsheet-model"
 import { parseLeadSpreadsheet } from "@/lib/leads/spreadsheet"
 import type { LeadWritePayload, SpreadsheetEvaluatedRow } from "@/lib/leads/types"
+import { ensureSegment } from "./sync-lead-segment"
+import { syncLeadTags } from "./sync-lead-tags"
 
 const rawValuesSchema = z.object(
   Object.fromEntries(
-    SPREADSHEET_VALUE_KEYS.map((key) => [key, z.string()]),
+    ["company_name", "segment", "state_code", "city", "tags", "website", "contact_name", "phone", "email", ...DIGITAL_CHANNEL_TYPES.filter((type) => type !== "website")].map(
+      (key) => [key, z.string()],
+    ),
   ) as Record<SpreadsheetValueKey, z.ZodString>,
 )
 
@@ -62,7 +66,13 @@ const importPayloadSchema = z.object({
   phone: z.string().nullable(),
   email: z.string().nullable(),
   observations: z.string().nullable(),
+  segment: z.string().min(1).max(64),
+  state_code: z.string().length(2),
+  city: z.string().min(1).max(200),
+  tags: z.array(z.string()).max(8).optional().default([]),
 })
+
+export type ImportLeadInput = z.infer<typeof importPayloadSchema>
 
 const importLeadsInputSchema = z
   .array(importPayloadSchema)
@@ -211,7 +221,7 @@ export async function evaluateLeadRows(
 }
 
 export async function importLeads(
-  payloads: LeadWritePayload[],
+  payloads: ImportLeadInput[],
 ): Promise<ImportLeadsState> {
   const { user } = await requireCommercialMember()
   const parsed = importLeadsInputSchema.safeParse(payloads)
@@ -244,16 +254,12 @@ export async function importLeads(
     const asRows = validateRawRows(
       parsed.data.map((payload, index) => ({
         row: index + 2,
-        values: {
-          company_name: payload.company_name,
-          ...spreadsheetCellsFromChannels(payload.channels),
-          contact_name: payload.contact_name ?? "",
-          phone: payload.phone ?? "",
-          email: payload.email ?? "",
-        },
+        values: spreadsheetValuesFromPayload(payload, payload.tags),
       })),
     )
     const evaluated = await attachDatabaseConflicts(asRows)
+
+    const supabase = await createClient()
     const inserts: Array<{
       company_name: string
       website: string
@@ -262,16 +268,34 @@ export async function importLeads(
       phone: string | null
       email: string | null
       observations: string | null
+      segment_id: string
+      state_code: string
+      city: string
       status: "new"
       assigned_sdr_id: null
       created_by: string
     }> = []
+    const importRows: ImportLeadInput[] = []
 
     for (const row of evaluated) {
       if (!isSpreadsheetRowClean(row) || !row.payload) {
         return {
           status: "error",
           message: "Ainda há problemas ou conflitos. Corrija e reavalie antes de importar.",
+        }
+      }
+      const source = parsed.data[importRows.length]
+      if (!source) {
+        return {
+          status: "error",
+          message: "Não foi possível importar os leads. Tente novamente.",
+        }
+      }
+      const segment = await ensureSegment(supabase, row.payload.segment)
+      if (!segment) {
+        return {
+          status: "error",
+          message: "Não foi possível salvar um segmento da planilha.",
         }
       }
       inserts.push({
@@ -282,13 +306,16 @@ export async function importLeads(
         phone: row.payload.phone,
         email: row.payload.email,
         observations: row.payload.observations,
+        segment_id: segment.id,
+        state_code: row.payload.state_code,
+        city: row.payload.city,
         status: "new",
         assigned_sdr_id: null,
         created_by: user.id,
       })
+      importRows.push(source)
     }
 
-    const supabase = await createClient()
     const { data: inserted, error } = await supabase
       .from("leads")
       .insert(inserts)
@@ -341,6 +368,20 @@ export async function importLeads(
         return {
           status: "error",
           message: "Não foi possível importar os leads. Tente novamente.",
+        }
+      }
+    }
+
+    for (const payload of parsed.data) {
+      const leadId = idByDomain.get(payload.website_domain)
+      if (!leadId) continue
+      if (payload.tags.length > 0) {
+        const tags = await syncLeadTags(supabase, leadId, payload.tags)
+        if (!tags) {
+          return {
+            status: "error",
+            message: "Leads importados, mas as tags não foram salvas.",
+          }
         }
       }
     }

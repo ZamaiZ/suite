@@ -1,6 +1,7 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
+import { applyLocationHintToQuery } from "@/lib/leads/resolve-location"
 import { autocompletePlaces, PLACES_SUGGEST_MIN_CHARS } from "@/lib/places"
 import type { PlaceSuggestion } from "@/lib/places"
 import {
@@ -26,8 +27,13 @@ export async function suggestPlaces(
     }
   }
 
-  const result = await autocompletePlaces(
+  const query = applyLocationHintToQuery(
     parsed.data.query,
+    parsed.data.location_hint,
+  )
+
+  const result = await autocompletePlaces(
+    query,
     parsed.data.session_token,
   )
   if (result.status === "error") {

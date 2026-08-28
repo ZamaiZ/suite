@@ -6,12 +6,14 @@ import {
   evaluateLeadSpreadsheet,
   importLeads,
 } from "@/app/actions/leads"
+import type { ImportLeadInput } from "@/app/actions/leads/spreadsheet"
 import { formatWebsitePreviewLabel } from "@/lib/leads/digital-channels"
 import {
   applySessionChannelConflicts,
   isSpreadsheetRowClean,
   LEAD_SPREADSHEET_MAX_BYTES,
   LEAD_SPREADSHEET_MAX_FILES,
+  parseSpreadsheetTags,
   preserveExternalConflicts,
   summarizeEvaluatedRows,
   validateRawRows,
@@ -330,12 +332,15 @@ export function useLeadImportSession() {
   }, [draftRows, editingId])
 
   const importAll = useCallback(async () => {
-    const payloads: LeadWritePayload[] = []
+    const payloads: ImportLeadInput[] = []
     for (const entry of filesRef.current) {
       if (entry.status !== "ready") return false
       for (const row of entry.rows) {
         if (!isSpreadsheetRowClean(row) || !row.payload) return false
-        payloads.push(row.payload)
+        payloads.push({
+          ...row.payload,
+          tags: parseSpreadsheetTags(row.values.tags),
+        })
       }
     }
     if (payloads.length === 0) return false

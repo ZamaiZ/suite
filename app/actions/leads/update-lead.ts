@@ -2,6 +2,7 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { DIGITAL_CHANNEL_TAKEN_MESSAGE } from "@/lib/leads/digital-channels"
+import type { LeadSegment } from "@/lib/leads/segments"
 import { parseTagNames, type LeadTag } from "@/lib/leads/tags"
 import { createClient } from "@/lib/supabase/server"
 import type { LeadWritePayload } from "@/lib/leads/types"
@@ -12,6 +13,7 @@ import {
   type LeadFieldName,
 } from "@/lib/validations/lead"
 import { findChannelConflict, syncLeadChannels } from "./sync-lead-channels"
+import { ensureSegment } from "./sync-lead-segment"
 import { syncLeadTags } from "./sync-lead-tags"
 
 export type UpdateLeadState =
@@ -20,6 +22,7 @@ export type UpdateLeadState =
       message: string
       fields: LeadWritePayload
       tags: LeadTag[]
+      segment: LeadSegment
     }
   | {
       status: "error"
@@ -67,6 +70,14 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
     }
   }
 
+  const segment = await ensureSegment(supabase, payload.segment)
+  if (!segment) {
+    return {
+      status: "error",
+      message: "Não foi possível salvar o segmento. Tente novamente.",
+    }
+  }
+
   const { error } = await supabase
     .from("leads")
     .update({
@@ -77,6 +88,9 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
       phone: payload.phone,
       email: payload.email,
       observations: payload.observations,
+      segment_id: segment.id,
+      state_code: payload.state_code,
+      city: payload.city,
       updated_at: new Date().toISOString(),
     })
     .eq("id", leadId)
@@ -135,5 +149,6 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
     message: "Lead atualizado.",
     fields: { ...payload, channels: synced.channels },
     tags,
+    segment,
   }
 }

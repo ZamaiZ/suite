@@ -32,7 +32,10 @@ import {
 import { emptyDigitalPresenceReview } from "@/lib/leads/digital-presence-review"
 import { mergeDigitalPresenceOpportunities } from "@/lib/leads/digital-presence-opportunities"
 import {
-  cityFromFormattedAddress,
+  leadLocationSearchHint,
+  resolveLeadLocation,
+} from "@/lib/leads/resolve-location"
+import {
   visibilityGapsForSnapshot,
 } from "@/lib/leads/visibility-audit"
 import { LeadGbpAuditRail } from "./LeadGbpAuditRail"
@@ -219,8 +222,24 @@ export function LeadGbpPanel({
     detail.digitalPresenceAudit !== null ||
     socialChannelsFromLead(detail.lead.channels).length > 0 ||
     presenceReview.identity.verdict !== null
-  const visibilityCity = cityFromFormattedAddress(
-    primaryGbp?.payload.formattedAddress ?? null,
+  const visibilityLocation = resolveLeadLocation(
+    {
+      city: detail.lead.city,
+      state_code: detail.lead.state_code,
+      segment: detail.lead.segment,
+    },
+    primaryGbp
+      ? { formattedAddress: primaryGbp.payload.formattedAddress ?? null }
+      : null,
+  )
+  const visibilityCity = visibilityLocation.city
+  const gbpLocationHint = leadLocationSearchHint(
+    {
+      city: detail.lead.city,
+      state_code: detail.lead.state_code,
+      segment: detail.lead.segment,
+    },
+    detail.lead.company_name,
   )
   const visibilityAlertCount = detail.visibilityAudit
     ? visibilityGapsForSnapshot({
@@ -452,6 +471,7 @@ export function LeadGbpPanel({
               <LeadGbpPlacePicker
                 id="lead-gbp-place"
                 disabled={linking}
+                locationHint={gbpLocationHint}
                 onPick={handlePick}
               />
             ) : null}

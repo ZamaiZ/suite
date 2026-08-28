@@ -3,9 +3,11 @@ import {
   type LeadChannelCounts,
 } from "@/lib/leads/channel"
 import { isLeadStatus, type LeadStatus } from "@/lib/leads/status"
+import type { BrazilStateCode } from "@/lib/br-locations"
+import type { LeadSegment } from "@/lib/leads/segments"
 import type { LeadTag } from "@/lib/leads/tags"
 
-export type { LeadChannelCounts, LeadTag }
+export type { LeadChannelCounts, LeadTag, LeadSegment }
 
 export type LeadBoardItem = {
   id: string
@@ -25,6 +27,9 @@ export type LeadBoardItem = {
   activity_count: number
   activity_counts: LeadChannelCounts
   tags: LeadTag[]
+  segment: LeadSegment | null
+  state_code: BrazilStateCode | null
+  city: string | null
 }
 
 export type LeadBoardRow = {
@@ -38,6 +43,9 @@ export type LeadBoardRow = {
   assigned_sdr_id: string | null
   assigned_closer_id: string | null
   closing_meeting_at: string | null
+  state_code?: BrazilStateCode | null
+  city?: string | null
+  segments?: LeadSegment | { name: string } | { name: string }[] | null
 }
 
 export function toLeadBoardItem(
@@ -50,9 +58,33 @@ export function toLeadBoardItem(
     activity_count?: number
     activity_counts?: LeadChannelCounts
     tags?: LeadTag[]
+    segment?: LeadSegment | null
+    state_code?: BrazilStateCode | null
+    city?: string | null
   },
 ): LeadBoardItem | null {
   if (!isLeadStatus(row.status)) return null
+  const embeddedSegment = row.segments
+  let segment = extras?.segment ?? null
+  if (!segment && embeddedSegment) {
+    if (Array.isArray(embeddedSegment)) {
+      const first = embeddedSegment[0]
+      if (first && typeof first.name === "string") {
+        segment = "id" in first && typeof first.id === "string"
+          ? { id: first.id, name: first.name }
+          : null
+      }
+    } else if (
+      typeof embeddedSegment === "object" &&
+      "name" in embeddedSegment &&
+      typeof embeddedSegment.name === "string"
+    ) {
+      segment =
+        "id" in embeddedSegment && typeof embeddedSegment.id === "string"
+          ? { id: embeddedSegment.id, name: embeddedSegment.name }
+          : null
+    }
+  }
   return {
     id: row.id,
     company_name: row.company_name,
@@ -71,6 +103,9 @@ export function toLeadBoardItem(
     activity_count: extras?.activity_count ?? 0,
     activity_counts: extras?.activity_counts ?? emptyChannelCounts(),
     tags: extras?.tags ?? [],
+    segment,
+    state_code: extras?.state_code ?? row.state_code ?? null,
+    city: extras?.city ?? row.city ?? null,
   }
 }
 

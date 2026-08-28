@@ -4,6 +4,8 @@ import type {
   LeadDigitalChannel,
   LeadDigitalChannelWrite,
 } from "@/lib/leads/digital-channels"
+import type { LeadSegment } from "@/lib/leads/segments"
+import type { BrazilStateCode } from "@/lib/br-locations"
 
 export type LeadRecord = {
   id: string
@@ -14,6 +16,9 @@ export type LeadRecord = {
   phone: string | null
   email: string | null
   observations: string | null
+  segment_id: string | null
+  state_code: BrazilStateCode | null
+  city: string | null
   status: string
   assigned_sdr_id: string | null
   assigned_closer_id: string | null
@@ -23,6 +28,7 @@ export type LeadRecord = {
   created_at: string
   updated_at: string
   channels: LeadDigitalChannel[]
+  segment: LeadSegment | null
 }
 
 export type LeadActivityRecord = {
@@ -60,6 +66,9 @@ export type LeadWritePayload = {
   phone: string | null
   email: string | null
   observations: string | null
+  segment: string
+  state_code: BrazilStateCode
+  city: string
 }
 
 export type SpreadsheetIssueKind = "problem" | "conflict"
@@ -73,6 +82,10 @@ export type SpreadsheetIssue = {
 
 export type SpreadsheetRawValues = Record<DigitalChannelType, string> & {
   company_name: string
+  segment: string
+  state_code: string
+  city: string
+  tags: string
   contact_name: string
   phone: string
   email: string

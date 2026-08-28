@@ -32,6 +32,7 @@ import {
   readLeadDiagnosisExportRow,
 } from "@/lib/leads/diagnosis-read"
 import { isLeadStatus } from "@/lib/leads/status"
+import { readLeadSegment, type LeadSegment } from "@/lib/leads/segments"
 import { readLeadTags, type LeadTag } from "@/lib/leads/tags"
 import type { LeadDetailActivity, LeadRecord } from "@/lib/leads/types"
 import { createClient } from "@/lib/supabase/server"
@@ -47,6 +48,7 @@ import { WEBSITE_SELECT } from "./website-access"
 export type {
   LeadDetailActivity,
   LeadTag,
+  LeadSegment,
   LeadGbpProfile,
   LeadWebsiteAudit,
   LeadDigitalPresenceAudit,
@@ -58,6 +60,7 @@ export type {
 export type LeadDetail = {
   lead: LeadRecord
   tags: LeadTag[]
+  segment: LeadSegment | null
   gbpProfiles: LeadGbpProfile[]
   websiteAudits: LeadWebsiteAudit[]
   digitalPresenceAudit: LeadDigitalPresenceAudit | null
@@ -105,7 +108,7 @@ export async function getLeadDetail(
     supabase
       .from("leads")
       .select(
-        "*, lead_tags(tags(id, name)), lead_digital_channels(id, type, value, normalized_key, is_primary, sort_order)",
+        "*, lead_tags(tags(id, name)), lead_digital_channels(id, type, value, normalized_key, is_primary, sort_order), segments(id, name)",
       )
       .eq("id", id)
       .maybeSingle(),
@@ -205,14 +208,18 @@ export async function getLeadDetail(
   const {
     lead_tags: tagEmbed,
     lead_digital_channels: channelEmbed,
+    segments: segmentEmbed,
     ...leadRow
   } = lead as LeadRecord & {
     lead_tags?: unknown
     lead_digital_channels?: unknown
+    segments?: unknown
   }
+  const segment = readLeadSegment(segmentEmbed)
   const record: LeadRecord = {
-    ...(leadRow as Omit<LeadRecord, "channels">),
+    ...(leadRow as Omit<LeadRecord, "channels" | "segment">),
     channels: readLeadDigitalChannels(channelEmbed),
+    segment,
   }
   const tags = readLeadTags(tagEmbed)
   if (!isLeadStatus(record.status)) {
@@ -263,6 +270,7 @@ export async function getLeadDetail(
     data: {
       lead: record,
       tags,
+      segment,
       gbpProfiles,
       websiteAudits: readLeadWebsiteAudits(websiteRows),
       digitalPresenceAudit: digitalPresenceRow

@@ -1,4 +1,5 @@
 import { leadFieldsSchema } from "@/lib/validations/lead"
+import { parseTagNames } from "@/lib/leads/tags"
 import {
   channelsFromSpreadsheetCells,
   DIGITAL_CHANNEL_LABELS,
@@ -19,6 +20,10 @@ import type {
 
 export const SPREADSHEET_VALUE_KEYS = [
   "company_name",
+  "segment",
+  "state_code",
+  "city",
+  "tags",
   "website",
   "contact_name",
   "phone",
@@ -33,10 +38,21 @@ export type SpreadsheetValueKey = (typeof SPREADSHEET_VALUE_KEYS)[number]
 
 export const SPREADSHEET_FIELD_LABELS: Record<SpreadsheetValueKey, string> = {
   company_name: "Nome da empresa",
+  segment: "Segmento",
+  state_code: "UF",
+  city: "Cidade",
+  tags: "Tags",
   contact_name: "Nome do contato",
   phone: "Telefone",
   email: "E-mail",
   ...DIGITAL_CHANNEL_LABELS,
+}
+
+export const SPREADSHEET_FIELD_NOTES: Partial<Record<SpreadsheetValueKey, string>> = {
+  segment: "Use um segmento existente ou digite um novo nome.",
+  state_code: "Sigla da UF com 2 letras (ex.: SP).",
+  city: "Cidade conforme a UF selecionada.",
+  tags: "Opcional. Separe múltiplas tags com ponto e vírgula (;).",
 }
 
 export const LEAD_SPREADSHEET_HEADERS = SPREADSHEET_VALUE_KEYS.map(
@@ -89,6 +105,42 @@ export function spreadsheetRepeatMessage(
   return `${DIGITAL_CHANNEL_LABELS[type]} repetido na linha ${previousRow}.`
 }
 
+export function parseSpreadsheetTags(raw: string): string[] {
+  if (raw.trim().length === 0) return []
+  return parseTagNames(
+    raw
+      .split(/[;,]/)
+      .map((part) => part.trim())
+      .filter(Boolean),
+  )
+}
+
+export function spreadsheetValuesFromPayload(
+  payload: {
+    company_name: string
+    segment: string
+    state_code: string
+    city: string
+    channels: LeadDigitalChannelWrite[]
+    contact_name: string | null
+    phone: string | null
+    email: string | null
+  },
+  tags: string[] = [],
+): SpreadsheetRawValues {
+  return {
+    company_name: payload.company_name,
+    segment: payload.segment,
+    state_code: payload.state_code,
+    city: payload.city,
+    tags: tags.join("; "),
+    contact_name: payload.contact_name ?? "",
+    phone: payload.phone ?? "",
+    email: payload.email ?? "",
+    ...spreadsheetCellsFromChannels(payload.channels),
+  }
+}
+
 export function rawValuesFromCells(cells: string[]): SpreadsheetRawValues {
   return Object.fromEntries(
     SPREADSHEET_VALUE_KEYS.map((key, index) => [key, cells[index] ?? ""]),
@@ -122,6 +174,9 @@ export function validateRawRows(
     const drafts = channelsFromSpreadsheetCells(item.values)
     const parsed = leadFieldsSchema.safeParse({
       company_name: item.values.company_name,
+      segment: item.values.segment,
+      state_code: item.values.state_code,
+      city: item.values.city,
       channels: drafts,
       contact_name: item.values.contact_name,
       phone: item.values.phone,

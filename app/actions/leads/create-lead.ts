@@ -12,6 +12,7 @@ import {
   type LeadFieldName,
 } from "@/lib/validations/lead"
 import { findChannelConflict, syncLeadChannels } from "./sync-lead-channels"
+import { ensureSegment } from "./sync-lead-segment"
 import { syncLeadTags } from "./sync-lead-tags"
 
 export type CreateLeadState =
@@ -58,6 +59,14 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
     }
   }
 
+  const segment = await ensureSegment(supabase, payload.segment)
+  if (!segment) {
+    return {
+      status: "error",
+      message: "Não foi possível salvar o segmento. Tente novamente.",
+    }
+  }
+
   const { data, error } = await supabase
     .from("leads")
     .insert({
@@ -67,12 +76,15 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
       contact_name: payload.contact_name,
       phone: payload.phone,
       email: payload.email,
+      segment_id: segment.id,
+      state_code: payload.state_code,
+      city: payload.city,
       status: "new",
       assigned_sdr_id: null,
       created_by: user.id,
     })
     .select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at",
+      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, state_code, city, segments(name)",
     )
     .single()
 
@@ -120,7 +132,12 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
     data.id,
     parseTagNames(fields.tags),
   )
-  const item = toLeadBoardItem(data, { tags: tags ?? [] })
+  const item = toLeadBoardItem(data, {
+    tags: tags ?? [],
+    segment: segment,
+    state_code: payload.state_code,
+    city: payload.city,
+  })
   if (!item) {
     return {
       status: "error",

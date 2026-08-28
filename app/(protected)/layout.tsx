@@ -14,7 +14,7 @@ export default async function ProtectedLayout({
       <div className="hidden md:flex">
         <Sidebar />
       </div>
-      <main className="flex min-h-0 flex-1 flex-col overflow-hidden pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0">
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0">
         {children}
       </main>
       <div className="md:hidden">

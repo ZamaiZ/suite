@@ -5,8 +5,8 @@ import { fetchRankedKeywordsLive } from "@/lib/dataforseo/ranked-keywords"
 import { resolveGbpDataProvider } from "@/lib/gbp-vendor/resolve"
 import { readLeadDigitalChannels } from "@/lib/leads/digital-channels"
 import { readLeadGbpProfiles } from "@/lib/leads/gbp"
+import { resolveLeadLocation } from "@/lib/leads/resolve-location"
 import {
-  cityFromFormattedAddress,
   readLeadVisibilityAuditRow,
   type LeadVisibilityAudit,
 } from "@/lib/leads/visibility-audit"
@@ -110,12 +110,20 @@ export async function analyzeLeadVisibility(
     const profiles = readLeadGbpProfiles(gbpRows)
     const primary =
       profiles.find((item) => item.is_primary) ?? profiles[0] ?? null
-    const city = cityFromFormattedAddress(
-      primary?.payload.formattedAddress ?? null,
+    const location = resolveLeadLocation(
+      {
+        city: loaded.lead.city,
+        state_code: loaded.lead.state_code,
+        segment: loaded.lead.segment,
+      },
+      primary
+        ? { formattedAddress: primary.payload.formattedAddress ?? null }
+        : null,
     )
     const category =
       primary?.enrichment?.category ??
       primary?.payload.primaryTypeDisplayName ??
+      location.segmentName ??
       null
 
     const fetched = await fetchSerpApiOrganicVisibility({
@@ -126,7 +134,7 @@ export async function analyzeLeadVisibility(
         domain: websiteDomain,
         displayName: primary?.payload.displayName ?? null,
         category,
-        city,
+        city: location.city,
         rankKeywords: primary?.rank_keywords ?? [],
       },
     })

@@ -18,6 +18,12 @@ export const suggestPlacesSchema = z.object({
     .min(PLACES_SUGGEST_MIN_CHARS, "Digite pelo menos 3 caracteres.")
     .max(200, "Busca deve ter no máximo 200 caracteres."),
   session_token: z.uuid("Sessão inválida."),
+  location_hint: z
+    .string()
+    .trim()
+    .max(200, "Localização inválida.")
+    .transform((value) => (value.length === 0 ? null : value))
+    .optional(),
 })
 
 export const linkLeadGbpSchema = z.object({
@@ -102,6 +108,7 @@ export function readSuggestPlacesFields(formData: FormData) {
   return {
     query: formText(formData, "query"),
     session_token: formText(formData, "session_token"),
+    location_hint: formText(formData, "location_hint"),
   }
 }
 
