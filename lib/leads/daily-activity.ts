@@ -24,7 +24,8 @@ export function matchesPendingFilter(
   if (
     lead.status === "new" ||
     lead.status === "denied" ||
-    lead.status === "interested"
+    lead.status === "interested" ||
+    lead.status === "converted"
   ) {
     return true
   }

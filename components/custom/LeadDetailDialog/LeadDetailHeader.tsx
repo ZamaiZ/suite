@@ -8,6 +8,10 @@ import { LeadClaimActions } from "@/components/custom/LeadClaimActions"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/cn"
 import { LEAD_STATUS_LABELS, type LeadStatus } from "@/lib/leads/status"
+import {
+  CLOSING_STAGE_LABELS,
+  type ClosingStage,
+} from "@/lib/leads/closing"
 import { canonicalWebsiteUrl } from "@/lib/leads/website"
 import type { LeadAssignmentPatch } from "@/app/actions/leads"
 import type { LeadDetailTab } from "./LeadDetailDialog.types"
@@ -18,6 +22,7 @@ const STATUS_TONE: Record<LeadStatus, string> = {
   follow_up: "bg-warning/10 text-warning",
   denied: "bg-danger/10 text-danger",
   interested: "bg-success/10 text-success",
+  converted: "bg-success/10 text-success",
 }
 
 const TABS: { id: LeadDetailTab; label: string }[] = [
@@ -32,6 +37,7 @@ export function LeadDetailHeader({
   companyName,
   domain,
   status,
+  closingStage,
   activityCount,
   leadId,
   canClaim,
@@ -49,6 +55,7 @@ export function LeadDetailHeader({
   companyName: string
   domain?: string
   status: LeadStatus | null
+  closingStage: ClosingStage | null
   activityCount: number
   leadId: string | null
   canClaim: boolean
@@ -98,7 +105,10 @@ export function LeadDetailHeader({
         className="flex items-stretch gap-5"
       >
         {TABS.filter(
-          (item) => item.id !== "opportunity" || status === "interested",
+          (item) =>
+            item.id !== "opportunity" ||
+            status === "interested" ||
+            status === "converted",
         ).map((item) => {
           const selected = tab === item.id
           return (
@@ -141,6 +151,11 @@ export function LeadDetailHeader({
             )}
           >
             {LEAD_STATUS_LABELS[status]}
+          </span>
+        ) : null}
+        {status === "interested" && closingStage ? (
+          <span className="inline-flex rounded-md bg-hover px-2 py-0.5 font-sans text-caption font-medium text-fg-secondary">
+            {CLOSING_STAGE_LABELS[closingStage]}
           </span>
         ) : null}
         <span

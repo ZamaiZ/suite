@@ -3,6 +3,12 @@
 import { z } from "zod"
 import { requireCommercialMember } from "@/lib/auth/session"
 import { leadAccessFlags } from "@/lib/leads/board-item"
+import {
+  canEditClosingChecklist,
+  canRecordClosingOutcome,
+  canRescheduleClosing,
+  isClosingStage,
+} from "@/lib/leads/closing"
 import { readLeadDigitalChannels } from "@/lib/leads/digital-channels"
 import {
   canEditLeadGbp,
@@ -75,6 +81,9 @@ export type LeadDetail = {
   canUnclaim: boolean
   canLogActivity: boolean
   canEditGbp: boolean
+  canRescheduleClosing: boolean
+  canRecordClosingOutcome: boolean
+  canEditClosingChecklist: boolean
 }
 
 export type GetLeadDetailState =
@@ -265,6 +274,16 @@ export async function getLeadDetail(
     }
   }
 
+  const flags = leadAccessFlags(record)
+  const closingActor = {
+    status: record.status,
+    assigned_sdr_id: record.assigned_sdr_id,
+    assigned_closer_id: record.assigned_closer_id,
+    closing_stage: isClosingStage(record.closing_stage)
+      ? record.closing_stage
+      : null,
+  }
+
   return {
     status: "success",
     data: {
@@ -313,8 +332,23 @@ export async function getLeadDetail(
         created_at: activity.created_at,
         created_by_name: namesById.get(activity.created_by) ?? null,
       })),
-      ...leadAccessFlags(record),
+      ...flags,
       canEditGbp: canEditLeadGbp(record, user.id, roles),
+      canRescheduleClosing: canRescheduleClosing(
+        closingActor,
+        user.id,
+        roles,
+      ),
+      canRecordClosingOutcome: canRecordClosingOutcome(
+        closingActor,
+        user.id,
+        roles,
+      ),
+      canEditClosingChecklist: canEditClosingChecklist(
+        closingActor,
+        user.id,
+        roles,
+      ),
     },
   }
 }

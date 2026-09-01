@@ -24,6 +24,16 @@ export type LeadRecord = {
   assigned_closer_id: string | null
   next_follow_up_at: string | null
   closing_meeting_at: string | null
+  closing_stage: string | null
+  legal_name: string | null
+  tax_id: string | null
+  signer_name: string | null
+  contract_ref: string | null
+  invoice_ref: string | null
+  contract_sent_at: string | null
+  contract_signed_at: string | null
+  invoice_sent_at: string | null
+  paid_at: string | null
   created_by: string
   created_at: string
   updated_at: string

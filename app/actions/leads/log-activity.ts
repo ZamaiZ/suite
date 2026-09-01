@@ -2,6 +2,7 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { readEmbeddedName, type LeadBoardItem } from "@/lib/leads/board-item"
+import { RESET_CHECKLIST_FIELDS } from "@/lib/leads/closing"
 import { deriveLeadStatus, isLeadStatus } from "@/lib/leads/status"
 import type { LeadDetailActivity } from "@/lib/leads/types"
 import { createClient } from "@/lib/supabase/server"
@@ -25,10 +26,12 @@ export type LeadActivityPatch = Pick<
   | "status"
   | "next_follow_up_at"
   | "from_denial"
+  | "from_closing_loss"
   | "last_activity_at"
   | "assigned_closer_id"
   | "closer_name"
   | "closing_meeting_at"
+  | "closing_stage"
 >
 
 export type LogLeadActivityState =
@@ -85,7 +88,7 @@ export async function logLeadActivity(
     return { status: "error", message: "Status do lead inválido." }
   }
 
-  if (lead.status === "interested") {
+  if (lead.status === "interested" || lead.status === "converted") {
     return {
       status: "error",
       message: "Este lead já tem interesse. Não há novas tentativas nesta etapa.",
@@ -171,6 +174,8 @@ export async function logLeadActivity(
           next_follow_up_at: next.nextFollowUpAt,
           assigned_closer_id: payload.closer_id,
           closing_meeting_at: payload.follow_up_at,
+          closing_stage: "open" as const,
+          ...RESET_CHECKLIST_FIELDS,
           updated_at: new Date().toISOString(),
         }
       : {
@@ -183,7 +188,7 @@ export async function logLeadActivity(
     .from("leads")
     .update(leadUpdate)
     .eq("id", payload.lead_id)
-    .neq("status", "interested")
+    .not("status", "in", "(interested,converted)")
     .not("assigned_sdr_id", "is", null)
 
   if (updateError) {
@@ -214,12 +219,14 @@ export async function logLeadActivity(
       status: next.status,
       next_follow_up_at: next.nextFollowUpAt,
       from_denial: payload.type === "denied" && next.status === "follow_up",
+      from_closing_loss: false,
       last_activity_at: activity.created_at,
       assigned_closer_id:
         next.status === "interested" ? payload.closer_id : null,
       closer_name: next.status === "interested" ? closerName : null,
       closing_meeting_at:
         next.status === "interested" ? payload.follow_up_at : null,
+      closing_stage: next.status === "interested" ? "open" : null,
     },
   }
 }

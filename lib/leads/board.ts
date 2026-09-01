@@ -71,6 +71,8 @@ export function columnForStatus(status: LeadStatus): BoardColumnId | null {
       return "interested"
     case "denied":
       return "denied"
+    case "converted":
+      return null
   }
 }
 
@@ -90,6 +92,7 @@ export function isLegalBoardMove(
 type GroupableLead = {
   status: LeadStatus
   next_follow_up_at: string | null
+  closing_meeting_at: string | null
   last_activity_at: string | null
   created_at: string
   company_name: string
@@ -137,9 +140,15 @@ export function groupLeadsByColumn<T extends GroupableLead>(
   grouped.follow_up.sort((left, right) =>
     compareByTime(left, right, (lead) => lead.next_follow_up_at),
   )
+  grouped.interested.sort((left, right) =>
+    compareByTime(
+      left,
+      right,
+      (lead) => lead.closing_meeting_at ?? lead.next_follow_up_at,
+    ),
+  )
   grouped.new.sort(compareRecencyDesc)
   grouped.contacting.sort(compareRecencyDesc)
-  grouped.interested.sort(compareRecencyDesc)
   grouped.denied.sort(compareRecencyDesc)
 
   return grouped

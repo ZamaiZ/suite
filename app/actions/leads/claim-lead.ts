@@ -97,10 +97,13 @@ export async function unclaimLead(formData: FormData): Promise<ClaimLeadState> {
     return { status: "error", message: "Lead não encontrado." }
   }
 
-  if (lead.status === "interested") {
+  if (lead.status === "interested" || lead.status === "converted") {
     return {
       status: "error",
-      message: "Lead com interesse não volta para a fila.",
+      message:
+        lead.status === "converted"
+          ? "Cliente consolidado não volta para a fila."
+          : "Lead com interesse não volta para a fila.",
     }
   }
 
@@ -119,6 +122,7 @@ export async function unclaimLead(formData: FormData): Promise<ClaimLeadState> {
     .eq("id", leadId)
     .not("assigned_sdr_id", "is", null)
     .neq("status", "interested")
+    .neq("status", "converted")
 
   if (error) {
     return {

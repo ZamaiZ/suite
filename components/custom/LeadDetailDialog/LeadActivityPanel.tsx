@@ -1,9 +1,15 @@
 "use client"
 
 import { LeadActivityForm } from "@/components/custom/LeadActivityForm"
+import { LeadClosingPanel } from "@/components/custom/LeadClosingPanel"
 import { isLeadStatus } from "@/lib/leads/status"
 import type { LeadDetail } from "@/app/actions/leads"
-import type { LogLeadActivityState } from "@/app/actions/leads"
+import type {
+  ClosingChecklistPatch,
+  LogClosingEventState,
+  LogLeadActivityState,
+} from "@/app/actions/leads"
+import type { ConvertLeadState } from "@/app/actions/clients"
 import { LeadActivityTimeline } from "./LeadActivityTimeline"
 import { LeadContextRail } from "./LeadContextRail"
 
@@ -13,6 +19,9 @@ export function LeadActivityPanel({
   readOnly,
   enteredActivityId,
   onActivitySuccess,
+  onClosingEventSuccess,
+  onChecklistSuccess,
+  onConvertSuccess,
   onPendingChange,
 }: {
   detail: LeadDetail | null
@@ -21,6 +30,13 @@ export function LeadActivityPanel({
   enteredActivityId: string | null
   onActivitySuccess: (
     result: Extract<LogLeadActivityState, { status: "success" }>,
+  ) => void
+  onClosingEventSuccess: (
+    result: Extract<LogClosingEventState, { status: "success" }>,
+  ) => void
+  onChecklistSuccess: (patch: ClosingChecklistPatch) => void
+  onConvertSuccess: (
+    result: Extract<ConvertLeadState, { status: "success" }>,
   ) => void
   onPendingChange: (pending: boolean) => void
 }) {
@@ -33,6 +49,9 @@ export function LeadActivityPanel({
   const canCompose = detail.canLogActivity && !readOnly
   const interested =
     isLeadStatus(detail.lead.status) && detail.lead.status === "interested"
+  const converted =
+    isLeadStatus(detail.lead.status) && detail.lead.status === "converted"
+  const showClosing = interested || converted
 
   return (
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
@@ -46,10 +65,15 @@ export function LeadActivityPanel({
             onSuccess={onActivitySuccess}
             onPendingChange={onPendingChange}
           />
-        ) : interested ? (
-          <p className="font-sans text-body-sm text-fg-secondary">
-            Interesse registrado. Closer e reunião já foram definidos.
-          </p>
+        ) : showClosing ? (
+          <LeadClosingPanel
+            detail={detail}
+            readOnly={readOnly}
+            onEventSuccess={onClosingEventSuccess}
+            onChecklistSuccess={onChecklistSuccess}
+            onConvertSuccess={onConvertSuccess}
+            onPendingChange={onPendingChange}
+          />
         ) : readOnly ? null : (
           <p className="font-sans text-body-sm text-fg-secondary">
             Somente o responsável registra tentativas.

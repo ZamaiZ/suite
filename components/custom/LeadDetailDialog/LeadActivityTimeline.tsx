@@ -30,6 +30,11 @@ const TYPE_DOT: Record<LeadActivityType, string> = {
   call_later: "bg-warning",
   denied: "bg-danger",
   interested: "bg-success",
+  meeting_rescheduled: "bg-accent",
+  meeting_no_show: "bg-warning",
+  closing_standby: "bg-warning",
+  closing_lost: "bg-danger",
+  closing_won: "bg-success",
 }
 
 type ChannelFilter = "all" | LeadActivityChannel
@@ -160,7 +165,14 @@ export function LeadActivityTimeline({
                     {" · "}
                     {activity.created_by_name ?? "—"}
                     {activity.follow_up_at
-                      ? ` · ${activity.type === "interested" ? "reunião" : "retorno"} ${formatDateTimeShort(activity.follow_up_at)}`
+                      ? ` · ${
+                          activity.type === "interested" ||
+                          activity.type === "meeting_rescheduled"
+                            ? "reunião"
+                            : activity.type === "closing_standby"
+                              ? "contato"
+                              : "retorno"
+                        } ${formatDateTimeShort(activity.follow_up_at)}`
                       : ""}
                   </p>
                   {activity.denied_reason ? (

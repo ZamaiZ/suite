@@ -84,7 +84,7 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
       created_by: user.id,
     })
     .select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, state_code, city, segments(name)",
+      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, segments(name)",
     )
     .single()
 

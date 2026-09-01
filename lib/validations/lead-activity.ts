@@ -1,6 +1,6 @@
 import { z } from "zod"
 import { LEAD_ACTIVITY_CHANNELS } from "@/lib/leads/channel"
-import { LEAD_ACTIVITY_TYPES } from "@/lib/leads/status"
+import { LEAD_SDR_ACTIVITY_TYPES } from "@/lib/leads/status"
 import { datetimeLocalToIso } from "@/lib/date-time"
 
 function formText(formData: FormData, key: string): string {
@@ -11,7 +11,7 @@ function formText(formData: FormData, key: string): string {
 export const logLeadActivitySchema = z
   .object({
     lead_id: z.uuid("Lead inválido."),
-    type: z.enum(LEAD_ACTIVITY_TYPES),
+    type: z.enum(LEAD_SDR_ACTIVITY_TYPES),
     channel: z.enum(LEAD_ACTIVITY_CHANNELS, {
       error: "Informe o canal do contato.",
     }),

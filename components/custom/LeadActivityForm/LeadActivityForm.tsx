@@ -25,13 +25,13 @@ import {
 } from "@/lib/leads/channel"
 import {
   LEAD_ACTIVITY_TYPE_LABELS,
-  LEAD_ACTIVITY_TYPES,
-  type LeadActivityType,
+  LEAD_SDR_ACTIVITY_TYPES,
+  type LeadSdrActivityType,
 } from "@/lib/leads/status"
 import type { LeadActivityFormProps } from "./LeadActivityForm.types"
 
 const activityFormSchema = z.object({
-  type: z.enum(LEAD_ACTIVITY_TYPES),
+  type: z.enum(LEAD_SDR_ACTIVITY_TYPES),
   channel: z.string(),
   channel_detail: z.string(),
   note: z.string(),
@@ -82,7 +82,7 @@ function FieldReveal({
   )
 }
 
-const TYPE_CHIP: Record<LeadActivityType, { selected: string; dot: string }> = {
+const TYPE_CHIP: Record<LeadSdrActivityType, { selected: string; dot: string }> = {
   no_contact: {
     selected: "border-accent bg-accent/10 text-accent",
     dot: "bg-accent",
@@ -135,7 +135,7 @@ export function LeadActivityForm({
     },
   })
 
-  const type = form.watch("type") as LeadActivityType
+  const type = form.watch("type") as LeadSdrActivityType
   const note = form.watch("note")
   const channel = form.watch("channel")
   const selectedChannel: LeadActivityChannel | "" = isLeadActivityChannel(
@@ -243,7 +243,7 @@ export function LeadActivityForm({
         aria-label="Tipo da tentativa"
         className="mb-3 flex flex-wrap gap-1.5"
       >
-        {LEAD_ACTIVITY_TYPES.map((item) => {
+        {LEAD_SDR_ACTIVITY_TYPES.map((item) => {
           const selected = type === item
           return (
             <button

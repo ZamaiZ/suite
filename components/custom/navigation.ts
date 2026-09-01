@@ -1,7 +1,9 @@
 import {
+  RiBriefcaseLine,
   RiGroupLine,
   RiHomeLine,
   RiSettings3Line,
+  RiStore2Line,
   RiToolsLine,
   RiUserSearchLine,
 } from "react-icons/ri"
@@ -28,11 +30,27 @@ export const NAV_ITEMS: NavItem[] = [
     description: "Visão geral e atividade recente",
   },
   {
-    kind: "leaf",
-    label: "Leads",
-    href: "/leads",
-    icon: RiUserSearchLine,
-    description: "Cadastro, fila e primeiro contato",
+    kind: "group",
+    id: "crm",
+    label: "CRM",
+    icon: RiBriefcaseLine,
+    description: "Leads e clientes",
+    children: [
+      {
+        kind: "leaf",
+        label: "Leads",
+        href: "/leads",
+        icon: RiUserSearchLine,
+        description: "Cadastro, fila e primeiro contato",
+      },
+      {
+        kind: "leaf",
+        label: "Clientes",
+        href: "/clients",
+        icon: RiStore2Line,
+        description: "Contas convertidas",
+      },
+    ],
   },
   {
     kind: "group",

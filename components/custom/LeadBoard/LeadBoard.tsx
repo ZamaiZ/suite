@@ -95,10 +95,16 @@ function applyLeadPatch(
   )
 }
 
-function isDueFollowUp(at: string | null): boolean {
-  if (!at) return false
-  const kind = getCivilFollowUpKind(at)
-  return kind === "overdue" || kind === "today"
+function isDueFollowUp(lead: {
+  next_follow_up_at: string | null
+  closing_meeting_at: string | null
+}): boolean {
+  const times = [lead.next_follow_up_at, lead.closing_meeting_at]
+  return times.some((at) => {
+    if (!at) return false
+    const kind = getCivilFollowUpKind(at)
+    return kind === "overdue" || kind === "today"
+  })
 }
 
 export function LeadBoard({
@@ -144,7 +150,7 @@ export function LeadBoard({
   const dueTodayCount = useMemo(
     () =>
       optimisticLeads.reduce(
-        (count, lead) => count + (isDueFollowUp(lead.next_follow_up_at) ? 1 : 0),
+        (count, lead) => count + (isDueFollowUp(lead) ? 1 : 0),
         0,
       ),
     [optimisticLeads],
@@ -195,6 +201,10 @@ export function LeadBoard({
   }
 
   function patchItem(leadId: string, patch: Partial<LeadBoardItem>) {
+    if (patch.status === "converted") {
+      setItems((current) => current.filter((lead) => lead.id !== leadId))
+      return
+    }
     if (
       listParams.tag &&
       patch.tags &&

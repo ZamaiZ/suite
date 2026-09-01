@@ -5,6 +5,7 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import {
   getLeadDetail,
+  type ClosingChecklistPatch,
   type LeadAssignmentPatch,
   type LeadDetail,
   type LeadDigitalPresenceAudit,
@@ -13,12 +14,15 @@ import {
   type LeadDiagnosisExport,
   type LeadGbpProfile,
   type LeadWebsiteAudit,
+  type LogClosingEventState,
   type LogLeadActivityState,
 } from "@/app/actions/leads"
+import type { ConvertLeadState } from "@/app/actions/clients"
 import { LeadGbpPanel } from "@/components/custom/LeadGbpPanel"
 import { Dialog } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import { leadAccessFlags } from "@/lib/leads/board-item"
+import { isClosingStage } from "@/lib/leads/closing"
 import { countActivitiesByChannel } from "@/lib/leads/channel"
 import { matchWebsiteKey, websiteKeysFromChannels } from "@/lib/leads/gbp"
 import { leadDetailDialogSize } from "@/lib/leads/detail-dialog-layout"
@@ -265,6 +269,7 @@ export function LeadDetailDialog({
         next_follow_up_at: result.patch.next_follow_up_at,
         assigned_closer_id: result.patch.assigned_closer_id,
         closing_meeting_at: result.patch.closing_meeting_at,
+        closing_stage: result.patch.closing_stage,
       }
       return {
         ...current,
@@ -273,6 +278,9 @@ export function LeadDetailDialog({
         activities: [result.activity, ...current.activities],
         ...leadAccessFlags(lead),
         canEditGbp: interested ? true : current.canEditGbp,
+        canRescheduleClosing: interested,
+        canRecordClosingOutcome: false,
+        canEditClosingChecklist: false,
       }
     })
     onMutated?.({
@@ -283,6 +291,92 @@ export function LeadDetailDialog({
         ...(detail?.activities ?? []),
       ]),
     })
+  }
+
+  function handleClosingEventSuccess(
+    result: Extract<LogClosingEventState, { status: "success" }>,
+  ) {
+    setEnteredActivityId(result.activity.id)
+    const stillOpportunity = result.patch.status === "interested"
+    setDetail((current) => {
+      if (!current) return current
+      const lead = {
+        ...current.lead,
+        status: result.patch.status,
+        next_follow_up_at: result.patch.next_follow_up_at,
+        assigned_closer_id: result.patch.assigned_closer_id,
+        closing_meeting_at: result.patch.closing_meeting_at,
+        closing_stage: result.patch.closing_stage,
+      }
+      const stage = isClosingStage(result.patch.closing_stage)
+        ? result.patch.closing_stage
+        : null
+      return {
+        ...current,
+        lead,
+        closerName: result.patch.closer_name,
+        activities: [result.activity, ...current.activities],
+        ...leadAccessFlags(lead),
+        canEditGbp: stillOpportunity,
+        canRescheduleClosing:
+          stillOpportunity &&
+          (stage === "open" || stage === "no_show" || stage === "standby") &&
+          current.canRescheduleClosing,
+        canRecordClosingOutcome:
+          stillOpportunity &&
+          stage !== "won_pending" &&
+          Boolean(stage) &&
+          current.canRecordClosingOutcome,
+        canEditClosingChecklist:
+          stillOpportunity &&
+          stage === "won_pending" &&
+          (current.canRecordClosingOutcome || current.canEditClosingChecklist),
+      }
+    })
+    onMutated?.({
+      ...result.patch,
+      activity_count: activityCount + 1,
+      activity_counts: countActivitiesByChannel([
+        result.activity,
+        ...(detail?.activities ?? []),
+      ]),
+    })
+  }
+
+  function handleChecklistSuccess(patch: ClosingChecklistPatch) {
+    setDetail((current) => {
+      if (!current) return current
+      return {
+        ...current,
+        lead: {
+          ...current.lead,
+          ...patch,
+        },
+      }
+    })
+  }
+
+  function handleConvertSuccess(
+    result: Extract<ConvertLeadState, { status: "success" }>,
+  ) {
+    setDetail((current) => {
+      if (!current) return current
+      const lead = {
+        ...current.lead,
+        status: result.patch.status,
+        closing_stage: result.patch.closing_stage,
+      }
+      return {
+        ...current,
+        lead,
+        ...leadAccessFlags(lead),
+        canEditGbp: false,
+        canRescheduleClosing: false,
+        canRecordClosingOutcome: false,
+        canEditClosingChecklist: false,
+      }
+    })
+    onMutated?.(result.patch)
   }
 
   const keepRecordMounted = tab === "record" || editing
@@ -305,6 +399,11 @@ export function LeadDetailDialog({
           companyName={companyName}
           domain={domain}
           status={status}
+          closingStage={
+            detail && isClosingStage(detail.lead.closing_stage)
+              ? detail.lead.closing_stage
+              : null
+          }
           activityCount={activityCount}
           leadId={leadId}
           canClaim={detail?.canClaim ?? false}
@@ -362,6 +461,9 @@ export function LeadDetailDialog({
                     readOnly={readOnly}
                     enteredActivityId={enteredActivityId}
                     onActivitySuccess={handleActivitySuccess}
+                    onClosingEventSuccess={handleClosingEventSuccess}
+                    onChecklistSuccess={handleChecklistSuccess}
+                    onConvertSuccess={handleConvertSuccess}
                     onPendingChange={setActivityPending}
                   />
                 </m.div>

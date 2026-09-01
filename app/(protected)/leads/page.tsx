@@ -152,8 +152,8 @@ export default async function LeadsPage({
         : `and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.eq.${user.id}),and(assigned_closer_id.eq.${user.id},status.eq.interested)`
 
     let listQuery = supabase.from("leads").select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, state_code, city, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), lead_activities(type, channel, created_at), lead_tags(tags(id, name)), segments(id, name)",
-    )
+      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), lead_activities(type, channel, created_at), lead_tags(tags(id, name)), segments(id, name)",
+    ).neq("status", "converted")
 
     if (matchingIds) {
       listQuery = listQuery.in("id", matchingIds)
@@ -182,7 +182,10 @@ export default async function LeadsPage({
     }
 
     if (today) {
-      listQuery = listQuery.lte("next_follow_up_at", endOfAppDayIso())
+      const until = endOfAppDayIso()
+      listQuery = listQuery.or(
+        `next_follow_up_at.lte.${until},closing_meeting_at.lte.${until}`,
+      )
     }
 
     const { data, error } = await listQuery
@@ -212,6 +215,11 @@ export default async function LeadsPage({
           : null,
         from_denial: Boolean(
           latest && isLeadActivityType(latest.type) && latest.type === "denied",
+        ),
+        from_closing_loss: Boolean(
+          latest &&
+            isLeadActivityType(latest.type) &&
+            latest.type === "closing_lost",
         ),
         last_activity_at: latest?.created_at ?? null,
         activity_count: activities.length,

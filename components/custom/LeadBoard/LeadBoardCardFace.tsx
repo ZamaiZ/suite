@@ -15,6 +15,10 @@ import {
   type LeadActivityChannel,
 } from "@/lib/leads/channel"
 import { isPendingDailyActivity } from "@/lib/leads/daily-activity"
+import {
+  CLOSING_STAGE_LABELS,
+  isClosingStage,
+} from "@/lib/leads/closing"
 import type { LeadBoardItem } from "./LeadBoard.types"
 
 const CHIP_CHANNELS: LeadActivityChannel[] = [
@@ -160,6 +164,34 @@ export function LeadBoardCardFace({
         {lead.from_denial ? (
           <span className="mt-1.5 inline-flex rounded-md bg-danger/10 px-2 py-0.5 font-sans text-caption font-medium text-danger">
             Negativa
+          </span>
+        ) : null}
+        {lead.from_closing_loss ? (
+          <span className="mt-1.5 inline-flex rounded-md bg-danger/10 px-2 py-0.5 font-sans text-caption font-medium text-danger">
+            Fechamento
+          </span>
+        ) : null}
+        {lead.status === "interested" && isClosingStage(lead.closing_stage) ? (
+          <span
+            className={cn(
+              "mt-1.5 mr-1.5 inline-flex rounded-md px-2 py-0.5 font-sans text-caption font-medium",
+              lead.closing_stage === "no_show" ||
+                (lead.closing_stage === "open" &&
+                  lead.closing_meeting_at &&
+                  getCivilFollowUpKind(lead.closing_meeting_at) === "overdue")
+                ? "bg-danger/10 text-danger"
+                : lead.closing_stage === "won_pending"
+                  ? "bg-success/10 text-success"
+                  : lead.closing_stage === "standby"
+                    ? "bg-warning/10 text-warning"
+                    : "bg-hover text-fg-secondary",
+            )}
+          >
+            {lead.closing_stage === "open" &&
+            lead.closing_meeting_at &&
+            getCivilFollowUpKind(lead.closing_meeting_at) === "overdue"
+              ? "Reunião vencida"
+              : CLOSING_STAGE_LABELS[lead.closing_stage]}
           </span>
         ) : null}
         {showPeople ? (

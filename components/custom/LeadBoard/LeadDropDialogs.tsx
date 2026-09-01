@@ -45,9 +45,11 @@ export type LeadDropCommit = {
     | "status"
     | "next_follow_up_at"
     | "from_denial"
+    | "from_closing_loss"
     | "assigned_closer_id"
     | "closer_name"
     | "closing_meeting_at"
+    | "closing_stage"
   >
 }
 
@@ -254,10 +256,12 @@ export function LeadDropDialogs({
         next_follow_up_at: next.nextFollowUpAt,
         from_denial:
           parsed.data.type === "denied" && next.status === "follow_up",
+        from_closing_loss: false,
         assigned_closer_id: parsed.data.closer_id,
         closer_name: closerName,
         closing_meeting_at:
           next.status === "interested" ? parsed.data.follow_up_at : null,
+        closing_stage: next.status === "interested" ? "open" : null,
       },
     })
   }

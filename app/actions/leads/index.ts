@@ -106,6 +106,18 @@ export {
   type LeadActivityPatch,
 } from "./log-activity"
 export {
+  logClosingEvent,
+  type LogClosingEventField,
+  type LogClosingEventState,
+  type LeadClosingPatch,
+} from "./log-closing-event"
+export {
+  updateClosingChecklist,
+  type UpdateClosingChecklistField,
+  type UpdateClosingChecklistState,
+  type ClosingChecklistPatch,
+} from "./update-closing-checklist"
+export {
   evaluateLeadRows,
   evaluateLeadSpreadsheet,
   importLeads,

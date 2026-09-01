@@ -137,7 +137,11 @@ export function LeadContextRail({
 
       {followUpAt && followUpUrgency ? (
         <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
-          <SectionLabel>Próximo retorno</SectionLabel>
+          <SectionLabel>
+            {detail.lead.closing_stage === "standby"
+              ? "Próximo contato"
+              : "Próximo retorno"}
+          </SectionLabel>
           <div className="flex min-w-0 items-center gap-2">
             <LeadIconWell
               icon={RiCalendarEventLine}

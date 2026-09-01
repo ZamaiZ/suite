@@ -1,3 +1,4 @@
+import { isClosingStage, type ClosingStage } from "@/lib/leads/closing"
 import {
   emptyChannelCounts,
   type LeadChannelCounts,
@@ -22,7 +23,9 @@ export type LeadBoardItem = {
   assigned_closer_id: string | null
   closer_name: string | null
   closing_meeting_at: string | null
+  closing_stage: ClosingStage | null
   from_denial: boolean
+  from_closing_loss: boolean
   last_activity_at: string | null
   activity_count: number
   activity_counts: LeadChannelCounts
@@ -43,6 +46,7 @@ export type LeadBoardRow = {
   assigned_sdr_id: string | null
   assigned_closer_id: string | null
   closing_meeting_at: string | null
+  closing_stage?: string | null
   state_code?: BrazilStateCode | null
   city?: string | null
   segments?: LeadSegment | { name: string } | { name: string }[] | null
@@ -54,6 +58,7 @@ export function toLeadBoardItem(
     assignee_name?: string | null
     closer_name?: string | null
     from_denial?: boolean
+    from_closing_loss?: boolean
     last_activity_at?: string | null
     activity_count?: number
     activity_counts?: LeadChannelCounts
@@ -98,7 +103,9 @@ export function toLeadBoardItem(
     assigned_closer_id: row.assigned_closer_id ?? null,
     closer_name: extras?.closer_name ?? null,
     closing_meeting_at: row.closing_meeting_at ?? null,
+    closing_stage: isClosingStage(row.closing_stage) ? row.closing_stage : null,
     from_denial: extras?.from_denial ?? false,
+    from_closing_loss: extras?.from_closing_loss ?? false,
     last_activity_at: extras?.last_activity_at ?? null,
     activity_count: extras?.activity_count ?? 0,
     activity_counts: extras?.activity_counts ?? emptyChannelCounts(),
@@ -114,11 +121,11 @@ export function leadAccessFlags(lead: {
   assigned_sdr_id: string | null
 }) {
   const assigned = Boolean(lead.assigned_sdr_id)
-  const interested = lead.status === "interested"
+  const closed = lead.status === "interested" || lead.status === "converted"
   return {
     canClaim: lead.status === "new" && !assigned,
-    canUnclaim: assigned && !interested,
-    canLogActivity: assigned && !interested,
+    canUnclaim: assigned && !closed,
+    canLogActivity: assigned && !closed,
   }
 }
 
