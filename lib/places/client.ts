@@ -4,6 +4,7 @@ export const PLACES_FIELD_MASK = [
   "id",
   "displayName",
   "formattedAddress",
+  "addressComponents",
   "types",
   "primaryType",
   "primaryTypeDisplayName",
@@ -20,16 +21,25 @@ export const PLACES_FIELD_MASK = [
 
 export const PLACES_SUGGEST_MIN_CHARS = 3
 
+export type PlacesAutocompleteIntent = "establishment" | "address"
+
 export type PlaceSuggestion = {
   placeId: string
   name: string
   address: string | null
 }
 
+export type PlaceAddressComponent = {
+  longText: string
+  shortText: string
+  types: string[]
+}
+
 export type PlacesPlace = {
   id: string
   displayName: string | null
   formattedAddress: string | null
+  addressComponents: PlaceAddressComponent[]
   types: string[]
   primaryType: string | null
   primaryTypeDisplayName: string | null
@@ -53,11 +63,17 @@ type LocalizedText = { text?: string }
 type PlacePhoto = { name?: string }
 type OpeningHours = { weekdayDescriptions?: string[] }
 type PlaceLocation = { latitude?: number; longitude?: number }
+type AddressComponentJson = {
+  longText?: string
+  shortText?: string
+  types?: string[]
+}
 
 type PlaceJson = {
   id?: string
   displayName?: LocalizedText
   formattedAddress?: string
+  addressComponents?: AddressComponentJson[]
   types?: string[]
   primaryType?: string
   primaryTypeDisplayName?: LocalizedText
@@ -115,10 +131,22 @@ function mapPlace(json: PlaceJson): PlacesPlace | null {
   if (!id) return null
   const photos = Array.isArray(json.photos) ? json.photos : []
   const descriptions = json.regularOpeningHours?.weekdayDescriptions
+  const components = Array.isArray(json.addressComponents)
+    ? json.addressComponents
+    : []
   return {
     id,
     displayName: readText(json.displayName),
     formattedAddress: asString(json.formattedAddress),
+    addressComponents: components.flatMap((item) => {
+      const longText = asString(item.longText) ?? ""
+      const shortText = asString(item.shortText) ?? ""
+      const types = Array.isArray(item.types)
+        ? item.types.filter((type): type is string => typeof type === "string")
+        : []
+      if (!longText && !shortText) return []
+      return [{ longText, shortText, types }]
+    }),
     types: Array.isArray(json.types)
       ? json.types.filter((item): item is string => typeof item === "string")
       : [],
@@ -163,6 +191,7 @@ async function readPlacesError(response: Response): Promise<string> {
 export async function autocompletePlaces(
   input: string,
   sessionToken: string,
+  intent: PlacesAutocompleteIntent = "establishment",
 ): Promise<PlacesResult<PlaceSuggestion[]>> {
   const key = placesApiKey()
   if (!key) return missingKeyResult()
@@ -200,7 +229,8 @@ export async function autocompletePlaces(
         sessionToken,
         languageCode: "pt-BR",
         includedRegionCodes: ["br"],
-        includedPrimaryTypes: ["establishment"],
+        includedPrimaryTypes:
+          intent === "address" ? ["geocode"] : ["establishment"],
       }),
     },
   )

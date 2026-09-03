@@ -1,0 +1,159 @@
+"use client"
+
+import type { ComponentType } from "react"
+import {
+  LazyMotion,
+  domAnimation,
+  useReducedMotion,
+} from "motion/react"
+import * as m from "motion/react-m"
+import {
+  RiArrowRightSLine,
+  RiBuilding2Line,
+  RiCheckLine,
+  RiGlobalLine,
+  RiHistoryLine,
+  RiKey2Line,
+  RiMapPinUserLine,
+  RiMoneyDollarCircleLine,
+  RiPaletteLine,
+  RiQuillPenLine,
+} from "react-icons/ri"
+import type { BriefingStepId } from "@/lib/briefing/steps"
+import { cn } from "@/lib/cn"
+import { formatDateTimeShort } from "@/lib/date-time"
+import type { BriefingReviewOverviewProps } from "./BriefingReviewOverview.types"
+
+const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
+
+const STEP_ICONS: Record<
+  BriefingStepId,
+  ComponentType<{ size?: number; className?: string }>
+> = {
+  company: RiBuilding2Line,
+  brand: RiPaletteLine,
+  audience: RiMapPinUserLine,
+  history: RiHistoryLine,
+  finance: RiMoneyDollarCircleLine,
+  website: RiGlobalLine,
+  accesses: RiKey2Line,
+  closing: RiQuillPenLine,
+}
+
+const STATE_LABEL: Record<string, string> = {
+  empty: "Não iniciado",
+  in_progress: "Em andamento",
+  completed: "Concluído",
+}
+
+export function BriefingReviewOverview({
+  steps,
+  onSelectStep,
+  loading = false,
+}: BriefingReviewOverviewProps) {
+  const reduced = !!useReducedMotion()
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 8 }, (_, index) => (
+          <div
+            key={index}
+            className="h-[7.5rem] animate-pulse rounded-2xl bg-hover"
+          />
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <LazyMotion features={domAnimation} strict>
+      <div className="flex flex-col gap-4">
+        {steps.every((step) => step.state === "empty") ? (
+          <p className="font-sans text-body-sm text-fg-secondary">
+            O cliente ainda não começou o briefing.
+          </p>
+        ) : null}
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step, index) => {
+            const Icon = STEP_ICONS[step.id]
+            return (
+              <m.li
+                key={step.id}
+                initial={reduced ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  duration: reduced ? 0.12 : 0.28,
+                  delay: reduced ? 0 : index * 0.035,
+                  ease: EASE,
+                }}
+              >
+                <button
+                  type="button"
+                  onClick={() => onSelectStep(step.id)}
+                  className={cn(
+                    "group flex h-full w-full flex-col gap-3 rounded-2xl border px-4 py-3.5 text-left",
+                    "transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out",
+                    "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+                    "[@media(hover:hover)_and_(pointer:fine)]:hover:-translate-y-0.5",
+                    "[@media(hover:hover)_and_(pointer:fine)]:hover:shadow-card",
+                    "active:scale-[0.98]",
+                    step.state === "completed" &&
+                      "border-success/25 bg-success/5",
+                    step.state === "in_progress" &&
+                      "border-warning/30 bg-warning/5",
+                    step.state === "empty" &&
+                      "border-border-subtle bg-surface/70",
+                  )}
+                >
+                  <span className="flex items-start justify-between gap-2">
+                    <span
+                      className={cn(
+                        "inline-flex size-9 items-center justify-center rounded-xl",
+                        step.state === "completed" && "bg-success/15 text-success",
+                        step.state === "in_progress" &&
+                          "bg-warning/15 text-warning",
+                        step.state === "empty" && "bg-canvas text-fg-muted",
+                      )}
+                    >
+                      {step.state === "completed" ? (
+                        <RiCheckLine size={18} aria-hidden />
+                      ) : (
+                        <Icon size={18} aria-hidden />
+                      )}
+                    </span>
+                    <RiArrowRightSLine
+                      size={18}
+                      aria-hidden
+                      className="text-fg-muted transition-transform duration-200 group-hover:translate-x-0.5"
+                    />
+                  </span>
+                  <span className="flex min-w-0 flex-col gap-1">
+                    <span className="truncate font-sans text-body-sm font-semibold text-fg">
+                      {step.label}
+                    </span>
+                    <span
+                      className={cn(
+                        "font-sans text-caption",
+                        step.state === "completed" && "text-success",
+                        step.state === "in_progress" && "text-warning",
+                        step.state === "empty" && "text-fg-muted",
+                      )}
+                    >
+                      {STATE_LABEL[step.state]}
+                    </span>
+                    <span className="font-sans text-caption text-fg-muted">
+                      {step.updatedAt
+                        ? formatDateTimeShort(step.updatedAt)
+                        : "Sem atividade"}
+                    </span>
+                  </span>
+                </button>
+              </m.li>
+            )
+          })}
+        </ul>
+      </div>
+    </LazyMotion>
+  )
+}

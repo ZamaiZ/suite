@@ -11,22 +11,13 @@ import {
 import { Menu } from "@base-ui/react/menu"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import type { IconType } from "react-icons"
 import {
   RiAddLine,
   RiDeleteBinLine,
   RiEditLine,
-  RiFacebookCircleLine,
-  RiGlobalLine,
-  RiInstagramLine,
-  RiLinkedinBoxLine,
   RiMore2Line,
-  RiPinterestLine,
   RiStarFill,
   RiStarLine,
-  RiTiktokLine,
-  RiTwitterXLine,
-  RiYoutubeLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { useDialogPortalContainer } from "@/components/ui/Dialog"
@@ -51,6 +42,7 @@ import {
   type DigitalChannelDraft,
   type DigitalChannelType,
 } from "@/lib/leads/digital-channels"
+import { CHANNEL_ICONS } from "@/lib/leads/digital-channel-icons"
 import type {
   LeadDigitalChannelListProps,
   LeadDigitalChannelsHandle,
@@ -58,17 +50,6 @@ import type {
 } from "./LeadDigitalChannels.types"
 
 const EASE = [0.23, 1, 0.32, 1] as const
-
-const CHANNEL_ICONS: Record<DigitalChannelType, IconType> = {
-  website: RiGlobalLine,
-  instagram: RiInstagramLine,
-  linkedin: RiLinkedinBoxLine,
-  facebook: RiFacebookCircleLine,
-  youtube: RiYoutubeLine,
-  tiktok: RiTiktokLine,
-  pinterest: RiPinterestLine,
-  twitter: RiTwitterXLine,
-}
 
 const MENU_ITEM = cn(
   "flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5",

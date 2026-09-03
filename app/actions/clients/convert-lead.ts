@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache"
 import { requireCommercialMember } from "@/lib/auth/session"
+import { createPortalAccess } from "@/lib/clients/access"
+import { buildPortalUrl } from "@/lib/clients/portal-session"
 import { canConvertClosing, isClosingStage } from "@/lib/leads/closing"
 import { isLeadStatus } from "@/lib/leads/status"
 import { createClient } from "@/lib/supabase/server"
@@ -16,6 +18,8 @@ export type ConvertLeadState =
       status: "success"
       message: string
       clientId: string
+      portalCode: string
+      portalUrl: string
       patch: {
         status: "converted"
         closing_stage: null
@@ -92,6 +96,18 @@ export async function convertLeadToClient(
     return { status: "error", message: "Marque a data de pagamento." }
   }
 
+  let issued: ReturnType<typeof createPortalAccess>
+  try {
+    issued = createPortalAccess()
+  } catch {
+    return {
+      status: "error",
+      message:
+        "Acesso do cliente não configurado. Defina CLIENT_PORTAL_PEPPER.",
+    }
+  }
+
+  const generatedAt = new Date().toISOString()
   const { data: client, error: insertError } = await supabase
     .from("clients")
     .insert({
@@ -99,6 +115,9 @@ export async function convertLeadToClient(
       company_name: lead.company_name,
       closer_id: lead.assigned_closer_id,
       stage: "initial",
+      portal_slug: issued.slug,
+      portal_code_hash: issued.hash,
+      portal_code_generated_at: generatedAt,
     })
     .select("id")
     .single()
@@ -139,6 +158,8 @@ export async function convertLeadToClient(
     status: "success",
     message: "Cliente consolidado.",
     clientId: client.id,
+    portalCode: issued.code,
+    portalUrl: await buildPortalUrl(issued.slug),
     patch: {
       status: "converted",
       closing_stage: null,

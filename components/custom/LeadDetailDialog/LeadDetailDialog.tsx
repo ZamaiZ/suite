@@ -18,6 +18,7 @@ import {
   type LogLeadActivityState,
 } from "@/app/actions/leads"
 import type { ConvertLeadState } from "@/app/actions/clients"
+import { ClientPortalCodeReveal } from "@/components/custom/ClientPortalCodeReveal"
 import { LeadGbpPanel } from "@/components/custom/LeadGbpPanel"
 import { Dialog } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
@@ -61,6 +62,10 @@ export function LeadDetailDialog({
   const [claimPending, setClaimPending] = useState(false)
   const [activityPending, setActivityPending] = useState(false)
   const [gbpPending, setGbpPending] = useState(false)
+  const [portalReveal, setPortalReveal] = useState<{
+    code: string
+    url: string
+  } | null>(null)
   const [enteredActivityId, setEnteredActivityId] = useState<string | null>(
     null,
   )
@@ -377,6 +382,10 @@ export function LeadDetailDialog({
       }
     })
     onMutated?.(result.patch)
+    setPortalReveal({
+      code: result.portalCode,
+      url: result.portalUrl,
+    })
   }
 
   const keepRecordMounted = tab === "record" || editing
@@ -386,6 +395,7 @@ export function LeadDetailDialog({
     (loadState === "error" && Boolean(detail))
 
   return (
+    <>
     <Dialog
       open={open}
       onClose={handleRequestClose}
@@ -527,5 +537,13 @@ export function LeadDetailDialog({
         ) : null}
       </div>
     </Dialog>
+      <ClientPortalCodeReveal
+        open={portalReveal !== null}
+        onClose={() => setPortalReveal(null)}
+        code={portalReveal?.code ?? ""}
+        url={portalReveal?.url ?? ""}
+        title="Cliente consolidado"
+      />
+    </>
   )
 }

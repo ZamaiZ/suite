@@ -1,6 +1,12 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
+import {
+  BRIEFING_LIST_STATUS_LABELS,
+  deriveBriefingListStatus,
+  type BriefingListStatus,
+} from "@/lib/briefing/status"
+import { canManageClientPortal } from "@/lib/clients/access"
 import { createClient } from "@/lib/supabase/server"
 
 export type ClientListItem = {
@@ -11,6 +17,9 @@ export type ClientListItem = {
   closer_name: string | null
   converted_at: string
   stage: "initial"
+  briefingStatus: BriefingListStatus
+  briefingStatusLabel: string
+  canManagePortal: boolean
 }
 
 export type ListClientsState =
@@ -18,11 +27,13 @@ export type ListClientsState =
   | { status: "error"; message: string }
 
 export async function listClients(): Promise<ListClientsState> {
-  await requireCommercialMember()
+  const { user, roles } = await requireCommercialMember()
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("clients")
-    .select("id, lead_id, company_name, closer_id, converted_at, stage")
+    .select(
+      "id, lead_id, company_name, closer_id, converted_at, stage, briefing_finalized_at, briefing_content_updated_at",
+    )
     .eq("stage", "initial")
     .order("converted_at", { ascending: false })
 
@@ -59,15 +70,28 @@ export async function listClients(): Promise<ListClientsState> {
 
   const clients: ClientListItem[] = (data ?? []).flatMap((row) => {
     if (row.stage !== "initial") return []
+    const briefingStatus = deriveBriefingListStatus(
+      typeof row.briefing_finalized_at === "string"
+        ? row.briefing_finalized_at
+        : null,
+      typeof row.briefing_content_updated_at === "string"
+        ? row.briefing_content_updated_at
+        : null,
+    )
     return [
       {
         id: row.id,
         lead_id: row.lead_id,
         company_name: row.company_name,
         closer_id: row.closer_id,
-        closer_name: row.closer_id ? (namesById.get(row.closer_id) ?? null) : null,
+        closer_name: row.closer_id
+          ? (namesById.get(row.closer_id) ?? null)
+          : null,
         converted_at: row.converted_at,
         stage: "initial",
+        briefingStatus,
+        briefingStatusLabel: BRIEFING_LIST_STATUS_LABELS[briefingStatus],
+        canManagePortal: canManageClientPortal(roles, user.id, row.closer_id),
       },
     ]
   })

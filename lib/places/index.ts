@@ -4,7 +4,13 @@ export {
   autocompletePlaces,
   fetchPlaceDetails,
   type PlaceSuggestion,
+  type PlaceAddressComponent,
   type PlacesPlace,
   type PlacesResult,
+  type PlacesAutocompleteIntent,
 } from "./client"
+export {
+  geocodeAddressText,
+  type GeocodeCoordinates,
+} from "./geocode"
 export { parsePlaceInput } from "./parse-input"

@@ -1,0 +1,48 @@
+import { cn } from "@/lib/cn"
+import type { BriefingSectionCardProps } from "./BriefingSectionCard.types"
+
+export function BriefingSectionCard({
+  icon,
+  title,
+  description,
+  children,
+  index,
+  className,
+}: BriefingSectionCardProps) {
+  return (
+    <section
+      className={cn(
+        "relative overflow-hidden rounded-xl border border-border bg-surface p-5 shadow-card",
+        className,
+      )}
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
+        style={{
+          background:
+            "linear-gradient(to right, transparent, var(--accent-subtle), transparent)",
+        }}
+      />
+      <div className="mb-4 flex items-start gap-3">
+        <span className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+          {icon}
+          {typeof index === "number" ? (
+            <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-accent font-sans text-[10px] font-semibold text-accent-fg">
+              {index}
+            </span>
+          ) : null}
+        </span>
+        <div className="min-w-0">
+          <h2 className="font-sans text-body-sm font-semibold text-fg">
+            {title}
+          </h2>
+          <p className="mt-0.5 font-sans text-caption text-fg-muted">
+            {description}
+          </p>
+        </div>
+      </div>
+      <div className="flex flex-col gap-3">{children}</div>
+    </section>
+  )
+}

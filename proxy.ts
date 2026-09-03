@@ -3,6 +3,10 @@ import { createProxyClient } from "@/lib/supabase/proxy"
 
 const PUBLIC_AUTH_PATHS = new Set(["/login", "/sign-up"])
 
+function isClientPortalPath(pathname: string): boolean {
+  return pathname === "/b" || pathname.startsWith("/b/")
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
   const response = NextResponse.next({ request })
@@ -13,13 +17,14 @@ export async function proxy(request: NextRequest) {
   const user = data?.claims
 
   const isPublicAuth = PUBLIC_AUTH_PATHS.has(pathname)
+  const isClientPortal = isClientPortalPath(pathname)
   const isApiRoute = pathname.startsWith("/api/")
 
   if (user && isPublicAuth) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
-  if (!user && !isPublicAuth) {
+  if (!user && !isPublicAuth && !isClientPortal) {
     if (isApiRoute) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 })
     }
