@@ -9,8 +9,6 @@ import {
 } from "motion/react"
 import * as m from "motion/react-m"
 import {
-  RiArrowLeftLine,
-  RiCloseLine,
   RiErrorWarningLine,
   RiLoader4Line,
 } from "react-icons/ri"
@@ -29,11 +27,35 @@ import { BriefingReviewFinance } from "@/components/custom/BriefingReviewFinance
 import { BriefingReviewHistory } from "@/components/custom/BriefingReviewHistory"
 import { BriefingReviewOverview } from "@/components/custom/BriefingReviewOverview"
 import { BriefingReviewWebsite } from "@/components/custom/BriefingReviewWebsite"
+import { ClientBriefingExport } from "@/components/custom/ClientBriefingExport"
+import {
+  BriefingWriterProvider,
+  type BriefingWriterFlush,
+} from "@/components/custom/BriefingWriter"
+import { ClientBriefingAccessesForm } from "@/components/custom/ClientBriefingAccessesForm"
+import { ClientBriefingAudienceForm } from "@/components/custom/ClientBriefingAudienceForm"
+import { ClientBriefingBrandForm } from "@/components/custom/ClientBriefingBrandForm"
+import { ClientBriefingClosingForm } from "@/components/custom/ClientBriefingClosingForm"
+import { ClientBriefingCompanyForm } from "@/components/custom/ClientBriefingCompanyForm"
+import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFinanceForm"
+import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
+import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
+import { ClientKickoffPanel } from "@/components/custom/ClientKickoffPanel"
 import { Button } from "@/components/ui/Button"
 import { Dialog } from "@/components/ui/Dialog"
+import {
+  companyAddressFingerprint,
+  companyFormattedAddress,
+} from "@/lib/briefing/geocode-address"
+import { emptyCompanyPayload } from "@/lib/briefing/company"
+import { briefingStepsToInvalidateAfterStaffEdit } from "@/lib/briefing/staff-step-cache"
 import type { BriefingStepId } from "@/lib/briefing/steps"
-import { cn } from "@/lib/cn"
-import { formatDateTimeShort } from "@/lib/date-time"
+import { ClientBriefingContentHeader } from "./ClientBriefingContentHeader"
+import { ClientBriefingDialogHeader } from "./ClientBriefingDialogHeader"
+import {
+  ClientBriefingNavigationRail,
+  type ClientBriefingArea,
+} from "./ClientBriefingNavigationRail"
 import type { ClientBriefingReviewDialogProps } from "./ClientBriefingReviewDialog.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -57,12 +79,6 @@ type StepLoadState =
       data: Extract<StaffBriefingStepResult, { status: "success" }>
     }
 
-const STATE_LABEL: Record<string, string> = {
-  empty: "Não iniciado",
-  in_progress: "Em andamento",
-  completed: "Concluído",
-}
-
 export function ClientBriefingReviewDialog({
   open,
   onClose,
@@ -72,6 +88,7 @@ export function ClientBriefingReviewDialog({
   const reduced = !!useReducedMotion()
   const requestIdRef = useRef(0)
   const stepRequestIdRef = useRef(0)
+  const editorFlushRef = useRef<BriefingWriterFlush | null>(null)
   const [overviewState, setOverviewState] = useState<OverviewState>({
     status: "idle",
   })
@@ -79,6 +96,9 @@ export function ClientBriefingReviewDialog({
   const [stepCache, setStepCache] = useState<StepCache>({})
   const [stepLoad, setStepLoad] = useState<StepLoadState>({ status: "idle" })
   const [direction, setDirection] = useState(1)
+  const [editing, setEditing] = useState(false)
+  const [isFinishingEdit, setIsFinishingEdit] = useState(false)
+  const [area, setArea] = useState<ClientBriefingArea>("briefing")
 
   const reset = useCallback(() => {
     setOverviewState({ status: "idle" })
@@ -86,6 +106,10 @@ export function ClientBriefingReviewDialog({
     setStepCache({})
     setStepLoad({ status: "idle" })
     setDirection(1)
+    setEditing(false)
+    setIsFinishingEdit(false)
+    setArea("briefing")
+    editorFlushRef.current = null
   }, [])
 
   const loadOverview = useCallback(async (id: string) => {
@@ -109,6 +133,10 @@ export function ClientBriefingReviewDialog({
     setStepCache({})
     setStepLoad({ status: "idle" })
     setDirection(1)
+    setEditing(false)
+    setIsFinishingEdit(false)
+    setArea("briefing")
+    editorFlushRef.current = null
     void loadOverview(clientId)
   }, [open, clientId, loadOverview, reset])
 
@@ -116,6 +144,7 @@ export function ClientBriefingReviewDialog({
     if (!clientId) return
     setDirection(1)
     setActiveStep(stepId)
+    setEditing(false)
     const cached = stepCache[stepId]
     if (cached) {
       setStepLoad({ status: "ready", data: cached })
@@ -133,10 +162,73 @@ export function ClientBriefingReviewDialog({
     setStepLoad({ status: "ready", data: result })
   }
 
-  function backToOverview() {
+  async function backToOverview() {
+    if (editing && !(await stopEdit())) return
     setDirection(-1)
     setActiveStep(null)
     setStepLoad({ status: "idle" })
+    setEditing(false)
+  }
+
+  async function startEdit() {
+    if (!clientId || !activeStep) return
+    if (activeStep === "audience" && !stepCache.company) {
+      const result = await loadStaffBriefingStep(clientId, "company")
+      if (result.status === "success") {
+        setStepCache((current) => ({ ...current, company: result }))
+      }
+    }
+    editorFlushRef.current = null
+    setEditing(true)
+  }
+
+  async function stopEdit(): Promise<boolean> {
+    if (!clientId || !activeStep) {
+      setEditing(false)
+      return true
+    }
+    setIsFinishingEdit(true)
+    const saved = await (editorFlushRef.current?.() ?? Promise.resolve(true))
+    setIsFinishingEdit(false)
+    if (!saved) {
+      return false
+    }
+    setEditing(false)
+    const invalidatedSteps = briefingStepsToInvalidateAfterStaffEdit(activeStep)
+    setStepCache((current) => {
+      const next = { ...current }
+      for (const step of invalidatedSteps) delete next[step]
+      return next
+    })
+    const requestId = ++stepRequestIdRef.current
+    setStepLoad({ status: "loading" })
+    const result = await loadStaffBriefingStep(clientId, activeStep)
+    if (requestId !== stepRequestIdRef.current) return false
+    if (result.status === "error") {
+      setStepLoad({ status: "error", message: result.message })
+      return false
+    }
+    setStepCache((current) => ({ ...current, [activeStep]: result }))
+    setStepLoad({ status: "ready", data: result })
+    void loadOverview(clientId)
+    return true
+  }
+
+  async function closeDialog() {
+    if (isFinishingEdit) return
+    if (editing && !(await stopEdit())) return
+    onClose()
+  }
+
+  function selectArea(next: ClientBriefingArea) {
+    if (editing || isFinishingEdit || (next === "contact" && !canUseContact)) {
+      return
+    }
+    setArea(next)
+    if (next === "contact") {
+      setActiveStep(null)
+      setStepLoad({ status: "idle" })
+    }
   }
 
   const overview =
@@ -144,89 +236,66 @@ export function ClientBriefingReviewDialog({
   const title = overview?.companyName ?? companyName ?? "Briefing"
   const stepMeta = overview?.steps.find((step) => step.id === activeStep)
 
-  const statusBadgeClass =
+  const canEditBriefing =
+    overview?.status === "finalized" ||
+    overview?.status === "edited_after_submit"
+  const canUseContact = canEditBriefing
+  const statusTone =
     overview?.status === "finalized"
-      ? "bg-success/10 text-success"
+      ? "success"
       : overview?.status === "edited_after_submit"
-        ? "bg-warning/10 text-warning"
-        : "bg-fg-muted/10 text-fg-muted"
+        ? "warning"
+        : "muted"
 
   return (
     <Dialog
       open={open}
-      onClose={onClose}
+      onClose={() => void closeDialog()}
       title={title}
       description="Acompanhamento do briefing do cliente"
       size="xl"
       header={
-        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border-subtle px-4 py-4 sm:px-5">
-          <div className="min-w-0 flex-1">
-            {activeStep && stepMeta ? (
-              <div className="flex items-start gap-2">
-                <Button
-                  type="button"
-                  variant="ghost"
-                  aria-label="Voltar"
-                  onClick={backToOverview}
-                  className="mt-0.5 size-9 shrink-0 px-0"
-                >
-                  <RiArrowLeftLine size={18} aria-hidden />
-                </Button>
-                <div className="min-w-0">
-                  <p className="truncate font-display text-title font-semibold text-fg">
-                    {stepMeta.label}
-                  </p>
-                  <p className="mt-1 font-sans text-body-sm text-fg-muted">
-                    {STATE_LABEL[stepMeta.state]}
-                    {stepMeta.updatedAt
-                      ? ` · ${formatDateTimeShort(stepMeta.updatedAt)}`
-                      : ""}
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="min-w-0">
-                <div className="flex min-w-0 flex-wrap items-center gap-2">
-                  <h2 className="truncate font-display text-title font-semibold text-fg">
-                    {title}
-                  </h2>
-                  {overview ? (
-                    <>
-                      <span
-                        className={cn(
-                          "inline-flex rounded-md px-2 py-0.5 font-sans text-caption font-medium",
-                          statusBadgeClass,
-                        )}
-                      >
-                        {overview.statusLabel}
-                      </span>
-                      <span className="inline-flex rounded-md bg-canvas px-2 py-0.5 font-sans text-caption font-medium text-fg-secondary">
-                        {overview.completedCount}/8
-                      </span>
-                    </>
-                  ) : null}
-                </div>
-                <p className="mt-1 font-sans text-body-sm text-fg-muted">
-                  Acompanhamento do briefing
-                </p>
-              </div>
-            )}
-          </div>
-          <Button
-            type="button"
-            variant="ghost"
-            aria-label="Fechar"
-            onClick={onClose}
-            className="size-9 shrink-0 px-0"
-          >
-            <RiCloseLine size={18} aria-hidden />
-          </Button>
-        </div>
+        <ClientBriefingDialogHeader
+          companyName={title}
+          statusLabel={overview?.statusLabel}
+          statusTone={statusTone}
+          completedCount={overview?.completedCount}
+          closeDisabled={isFinishingEdit}
+          onClose={() => void closeDialog()}
+        />
       }
-      bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden px-4 py-4 sm:px-5"
+      bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden p-0"
     >
-      <LazyMotion features={domAnimation} strict>
-        <div className="relative min-h-0 flex-1 overflow-y-auto">
+      <BriefingWriterProvider clientId={clientId} flushRef={editorFlushRef}>
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+          <ClientBriefingNavigationRail
+            companyName={title}
+            completedCount={overview?.completedCount ?? 0}
+            area={area}
+            activeStep={activeStep}
+            steps={overview?.steps ?? []}
+            contactEnabled={canUseContact}
+            disabled={editing || isFinishingEdit}
+            onAreaChange={selectArea}
+            onStepSelect={openStep}
+          />
+          <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+            <ClientBriefingContentHeader
+              area={area}
+              step={stepMeta}
+              editing={editing}
+              editAvailable={Boolean(activeStep && canEditBriefing && stepLoad.status === "ready")}
+              busy={isFinishingEdit}
+              onBackToOverview={() => void backToOverview()}
+              onEditToggle={() => {
+                if (editing) void stopEdit()
+                else void startEdit()
+              }}
+            />
+            <div className="relative min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
+          {area === "contact" ? (
+            <div className="mx-auto w-full max-w-3xl"><ClientKickoffPanel clientId={clientId!} /></div>
+          ) : (
           <AnimatePresence mode="wait" custom={direction} initial={false}>
             {overviewState.status === "loading" ||
             overviewState.status === "idle" ? (
@@ -288,6 +357,11 @@ export function ClientBriefingReviewDialog({
                 }
                 transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
               >
+                <ClientBriefingExport
+                  clientId={overviewState.overview.clientId}
+                  finalizedAt={overviewState.overview.finalizedAt}
+                  contentUpdatedAt={overviewState.overview.contentUpdatedAt}
+                />
                 <BriefingReviewOverview
                   steps={overviewState.overview.steps}
                   completedCount={overviewState.overview.completedCount}
@@ -342,12 +416,22 @@ export function ClientBriefingReviewDialog({
                   </div>
                 ) : null}
                 {stepLoad.status === "ready" ? (
-                  stepLoad.data.meta.state === "empty" ? (
+                  stepLoad.data.meta.state === "empty" && !editing ? (
                     <p className="rounded-xl border border-border-subtle bg-surface/60 px-4 py-8 text-center font-sans text-body-sm text-fg-muted">
                       O cliente ainda não preencheu esta etapa.
                     </p>
                   ) : (
-                    <StepBody clientId={clientId!} data={stepLoad.data} />
+                    <StepBody
+                      clientId={clientId!}
+                      data={stepLoad.data}
+                      editing={editing}
+                      companyPayload={
+                        stepCache.company &&
+                        stepCache.company.step === "company"
+                          ? stepCache.company.payload
+                          : emptyCompanyPayload()
+                      }
+                    />
                   )
                 ) : null}
                 {stepLoad.status === "idle" ? (
@@ -363,8 +447,11 @@ export function ClientBriefingReviewDialog({
               </m.div>
             ) : null}
           </AnimatePresence>
+          )}
+            </div>
+          </section>
         </div>
-      </LazyMotion>
+      </BriefingWriterProvider>
     </Dialog>
   )
 }
@@ -372,10 +459,97 @@ export function ClientBriefingReviewDialog({
 function StepBody({
   clientId,
   data,
+  editing,
+  companyPayload,
 }: {
   clientId: string
   data: Extract<StaffBriefingStepResult, { status: "success" }>
+  editing: boolean
+  companyPayload: ReturnType<typeof emptyCompanyPayload>
 }) {
+  if (editing) {
+    switch (data.step) {
+      case "company":
+        return (
+          <ClientBriefingCompanyForm
+            initialPayload={data.payload}
+            sourceSnapshot={data.sourceSnapshot}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            variant="staff"
+          />
+        )
+      case "brand":
+        return (
+          <ClientBriefingBrandForm
+            initialPayload={data.payload}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            variant="staff"
+          />
+        )
+      case "audience":
+        return (
+          <ClientBriefingAudienceForm
+            initialPayload={data.payload}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            companyCity={companyPayload.city}
+            companyFormattedAddress={companyFormattedAddress(companyPayload)}
+            companyAddressKey={companyAddressFingerprint(companyPayload)}
+            variant="staff"
+          />
+        )
+      case "history":
+        return (
+          <ClientBriefingHistoryForm
+            initialPayload={data.payload}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            variant="staff"
+          />
+        )
+      case "finance":
+        return (
+          <ClientBriefingFinanceForm
+            initialPayload={data.payload}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            productsAndServices={data.productsAndServices}
+            variant="staff"
+          />
+        )
+      case "website":
+        return (
+          <ClientBriefingWebsiteForm
+            initialPayload={data.payload}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            variant="staff"
+          />
+        )
+      case "accesses":
+        return (
+          <ClientBriefingAccessesForm
+            initialPayload={data.payload}
+            initialSecretFlags={data.secretFlags}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            variant="staff"
+          />
+        )
+      case "closing":
+        return (
+          <ClientBriefingClosingForm
+            initialPayload={data.payload}
+            initialUpdatedAt={data.meta.updatedAt}
+            initialCompletedAt={data.meta.completedAt}
+            variant="staff"
+          />
+        )
+    }
+  }
+
   switch (data.step) {
     case "company":
       return <BriefingReviewCompany payload={data.payload} />

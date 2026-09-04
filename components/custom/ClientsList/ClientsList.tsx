@@ -1,13 +1,12 @@
 "use client"
 
-import { useEffect, useState, type MouseEvent } from "react"
+import { useEffect, useState } from "react"
 import { ClientBriefingReviewDialog } from "@/components/custom/ClientBriefingReviewDialog"
-import { ClientCardMenu } from "@/components/custom/ClientCardMenu"
-import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { clientsListHref, isClientId } from "@/lib/clients/href"
-import { cn } from "@/lib/cn"
-import { formatDateTimeShort } from "@/lib/date-time"
 import type { ClientsListProps } from "./ClientsList.types"
+import { ClientsListToolbar } from "./ClientsListToolbar"
+import { ClientsSummary } from "./ClientsSummary"
+import { ClientListRow } from "./ClientListRow"
 
 function readClientIdFromLocation(): string | null {
   if (typeof window === "undefined") return null
@@ -15,19 +14,12 @@ function readClientIdFromLocation(): string | null {
   return isClientId(value) ? value : null
 }
 
-function isModifiedClick(event: MouseEvent) {
-  return (
-    event.button !== 0 ||
-    event.metaKey ||
-    event.ctrlKey ||
-    event.shiftKey ||
-    event.altKey
-  )
-}
-
 export function ClientsList({
   clients,
   initialClientId = null,
+  listParams,
+  summary,
+  closerOptions,
 }: ClientsListProps) {
   const [clientId, setClientId] = useState<string | null>(() => {
     if (typeof window !== "undefined") return readClientIdFromLocation()
@@ -50,122 +42,24 @@ export function ClientsList({
     const item = clients.find((entry) => entry.id === clientId)
     if (!item || !item.canManagePortal) {
       setClientId(null)
-      window.history.replaceState(null, "", clientsListHref())
+      window.history.replaceState(null, "", clientsListHref(listParams))
     }
   }, [clientId, clients])
 
   function openClient(id: string) {
     setClientId(id)
-    window.history.pushState(null, "", clientsListHref({ client: id }))
+    window.history.pushState(null, "", clientsListHref({ ...listParams, client: id }))
   }
 
   function closeClient() {
     setClientId(null)
-    window.history.pushState(null, "", clientsListHref())
+    window.history.pushState(null, "", clientsListHref(listParams))
   }
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
       <div className="min-h-0 flex-1 overflow-y-auto px-[var(--page-padding-x)] py-4">
-        <div className="mx-auto flex w-full max-w-3xl flex-col gap-3">
-          <div>
-            <h1 className="font-display text-title font-semibold text-fg">
-              Clientes
-            </h1>
-            <p className="mt-1 font-sans text-body-sm text-fg-secondary">
-              Contas convertidas após assinatura e pagamento.
-            </p>
-          </div>
-          {clients.length === 0 ? (
-            <p className="rounded-xl bg-surface px-4 py-8 text-center font-sans text-body-sm text-fg-muted shadow-card">
-              Nenhum cliente consolidado ainda.
-            </p>
-          ) : (
-            <ul className="flex flex-col gap-2">
-              {clients.map((client) => {
-                const interactive = client.canManagePortal
-                const face = (
-                  <>
-                    <span
-                      aria-hidden
-                      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-success/10 font-sans text-caption font-semibold text-success"
-                    >
-                      {getLeadInitials(client.company_name)}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="flex min-w-0 flex-wrap items-center gap-2">
-                        <span className="truncate font-sans text-body-sm font-semibold text-fg">
-                          {client.company_name}
-                        </span>
-                        <span className="inline-flex shrink-0 rounded-md bg-success/10 px-2 py-0.5 font-sans text-caption font-medium text-success">
-                          Início
-                        </span>
-                        <span
-                          className={
-                            client.briefingStatus === "finalized"
-                              ? "inline-flex shrink-0 rounded-md bg-success/10 px-2 py-0.5 font-sans text-caption font-medium text-success"
-                              : client.briefingStatus === "edited_after_submit"
-                                ? "inline-flex shrink-0 rounded-md bg-warning/10 px-2 py-0.5 font-sans text-caption font-medium text-warning"
-                                : "inline-flex shrink-0 rounded-md bg-fg-muted/10 px-2 py-0.5 font-sans text-caption font-medium text-fg-muted"
-                          }
-                        >
-                          {client.briefingStatusLabel}
-                        </span>
-                      </span>
-                      <span className="mt-0.5 block truncate font-sans text-caption text-fg-muted">
-                        {client.closer_name
-                          ? `Closer · ${client.closer_name}`
-                          : "Sem closer"}
-                        {" · "}
-                        {formatDateTimeShort(client.converted_at)}
-                      </span>
-                    </span>
-                  </>
-                )
-
-                return (
-                  <li key={client.id}>
-                    <div
-                      className={cn(
-                        "flex w-full min-w-0 items-start gap-1 rounded-xl bg-surface shadow-card",
-                        interactive &&
-                          "transition-colors duration-150 ease-out hover:bg-hover",
-                        clientId === client.id && interactive && "bg-hover",
-                      )}
-                    >
-                      {interactive ? (
-                        <a
-                          href={clientsListHref({ client: client.id })}
-                          onClick={(event) => {
-                            if (isModifiedClick(event)) return
-                            event.preventDefault()
-                            openClient(client.id)
-                          }}
-                          className={cn(
-                            "flex min-w-0 flex-1 items-start gap-3 px-4 py-3 text-left",
-                            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                            "active:scale-[0.99]",
-                          )}
-                        >
-                          {face}
-                        </a>
-                      ) : (
-                        <div className="flex min-w-0 flex-1 items-start gap-3 px-4 py-3">
-                          {face}
-                        </div>
-                      )}
-                      {interactive ? (
-                        <div className="shrink-0 self-center pr-2">
-                          <ClientCardMenu clientId={client.id} />
-                        </div>
-                      ) : null}
-                    </div>
-                  </li>
-                )
-              })}
-            </ul>
-          )}
-        </div>
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-6"><header><p className="font-sans text-caption font-semibold uppercase tracking-[0.18em] text-accent">Relacionamento</p><div className="mt-2 flex flex-wrap items-end justify-between gap-3"><div><h1 className="font-display text-3xl font-semibold tracking-tight text-fg">Clientes</h1><p className="mt-1 max-w-xl font-sans text-body-sm text-fg-secondary">Contas convertidas após assinatura e pagamento.</p></div><span className="rounded-full border border-border-subtle bg-surface px-3 py-1 font-sans text-caption text-fg-muted">{summary.total} {summary.total === 1 ? "conta" : "contas"}</span></div></header><ClientsListToolbar listParams={listParams} closerOptions={closerOptions} clientId={clientId} /><ClientsSummary summary={summary} />{clients.length === 0 ? <div className="rounded-xl border border-dashed border-border bg-surface px-6 py-14 text-center shadow-card"><p className="font-display text-lg font-semibold text-fg">Nenhum cliente encontrado</p><p className="mt-1 font-sans text-body-sm text-fg-muted">Ajuste os filtros ou aguarde novas conversões.</p></div> : <ul className="divide-border-subtle overflow-hidden rounded-xl border border-border-subtle bg-surface shadow-card divide-y">{clients.map((client) => <ClientListRow key={client.id} client={client} onOpen={() => openClient(client.id)} />)}</ul>}</div>
       </div>
 
       <ClientBriefingReviewDialog

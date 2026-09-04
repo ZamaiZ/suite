@@ -23,6 +23,12 @@ import {
   BriefingChoiceCardGroup,
 } from "@/components/custom/BriefingChoiceCard"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Textarea } from "@/components/ui/Textarea"
 import {
@@ -57,9 +63,12 @@ export function ClientBriefingWebsiteForm({
   initialPayload,
   initialUpdatedAt,
   initialCompletedAt,
+  variant = "portal",
   onBack,
   onContinue,
 }: ClientBriefingWebsiteFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingWebsite)
   const [payload, setPayload] = useState<BriefingWebsitePayload>(() =>
     sanitizeWebsitePayload(initialPayload),
   )
@@ -84,8 +93,9 @@ export function ClientBriefingWebsiteForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingWebsite,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
     (partial: Partial<BriefingWebsitePayload>) => {
@@ -110,7 +120,10 @@ export function ClientBriefingWebsiteForm({
       const additions: Record<string, string> = {}
       for (const asset of assets) {
         if (previewUrlsRef.current[asset.id]) continue
-        const result = await signBriefingWebsiteAsset(asset.storagePath)
+        const result = await signBriefingWebsiteAsset(
+          asset.storagePath,
+          writerClientId ?? undefined,
+        )
         if (cancelled) return
         if (result.status === "success") {
           additions[asset.id] = result.url
@@ -122,7 +135,7 @@ export function ClientBriefingWebsiteForm({
     return () => {
       cancelled = true
     }
-  }, [payload.logos, payload.brandBook, payload.iconKit])
+  }, [payload.logos, payload.brandBook, payload.iconKit, writerClientId])
 
   const ready = isWebsiteReadyToComplete(payload)
   const missingLabels = useMemo(
@@ -201,8 +214,10 @@ export function ClientBriefingWebsiteForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingWebsite(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingWebsite(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -472,6 +487,7 @@ export function ClientBriefingWebsiteForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || !ready}
@@ -488,6 +504,7 @@ export function ClientBriefingWebsiteForm({
                       ? "Etapa concluída"
                       : "Continuar"}
                 </Button>
+                )}
               </div>
             </div>
           </div>

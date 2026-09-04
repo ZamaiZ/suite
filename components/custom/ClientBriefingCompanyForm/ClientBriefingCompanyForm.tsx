@@ -12,6 +12,12 @@ import { BriefingAddressSearch } from "@/components/custom/BriefingAddressSearch
 import { BriefingChipField } from "@/components/custom/BriefingChipField"
 import { BriefingHoursEditor } from "@/components/custom/BriefingHoursEditor"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Select } from "@/components/ui/Select"
@@ -89,8 +95,11 @@ export function ClientBriefingCompanyForm({
   sourceSnapshot,
   initialUpdatedAt,
   initialCompletedAt,
+  variant = "portal",
   onContinue,
 }: ClientBriefingCompanyFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingCompany)
   const [payload, setPayload] = useState<BriefingCompanyPayload>(() => ({
     ...initialPayload,
     channels: ensureWebsiteChannel(initialPayload.channels),
@@ -114,8 +123,9 @@ export function ClientBriefingCompanyForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingCompany,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
     (partial: Partial<BriefingCompanyPayload>) => {
@@ -175,7 +185,10 @@ export function ClientBriefingCompanyForm({
     }
     setPostalStatus("loading")
     setPostalError(null)
-    const result = await lookupBriefingPostalCode(digits)
+    const result = await lookupBriefingPostalCode(
+      digits,
+      writerClientId ?? undefined,
+    )
     if (result.status === "unauthenticated") {
       setPostalStatus("error")
       setPostalError("Sessão expirada. Atualize a página.")
@@ -202,6 +215,7 @@ export function ClientBriefingCompanyForm({
       sessionToken,
       currentHours: payload.hoursLines,
       snapshotHours: sourceSnapshot.hoursLines,
+      clientId: writerClientId ?? undefined,
     })
     if (result.status === "unauthenticated") {
       setError("Sessão expirada. Atualize a página.")
@@ -267,8 +281,10 @@ export function ClientBriefingCompanyForm({
     }
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingCompany(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingCompany(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -632,6 +648,7 @@ export function ClientBriefingCompanyForm({
                 </p>
               ) : null}
             </div>
+            {variant === "staff" ? null : (
             <Button
               type="button"
               disabled={isCompleting || !ready}
@@ -648,6 +665,7 @@ export function ClientBriefingCompanyForm({
                   ? "Continuar"
                   : "Continuar"}
             </Button>
+            )}
           </div>
         </div>
       </div>

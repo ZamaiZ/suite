@@ -1,6 +1,6 @@
 "use server"
 
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import { requireBriefingWriter } from "@/lib/briefing/writer"
 import {
   autocompletePlaces,
   fetchPlaceDetails,
@@ -50,9 +50,10 @@ const applySchema = z.object({
 export async function suggestBriefingAddresses(input: {
   query: string
   sessionToken: string
+  clientId?: string
 }): Promise<SuggestBriefingAddressesState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(input.clientId)
+  if (loaded.status !== "ok") return loaded
 
   const parsed = suggestSchema.safeParse({
     query: input.query,
@@ -81,9 +82,10 @@ export async function applyBriefingPlace(input: {
   sessionToken: string
   currentHours: string[]
   snapshotHours: string[]
+  clientId?: string
 }): Promise<ApplyBriefingPlaceState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(input.clientId)
+  if (loaded.status !== "ok") return loaded
 
   const parsed = applySchema.safeParse({
     place_id: input.placeId,

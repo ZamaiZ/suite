@@ -48,6 +48,7 @@ const STATE_LABEL: Record<string, string> = {
 
 export function BriefingReviewOverview({
   steps,
+  completedCount,
   onSelectStep,
   loading = false,
 }: BriefingReviewOverviewProps) {
@@ -55,7 +56,7 @@ export function BriefingReviewOverview({
 
   if (loading) {
     return (
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 8 }, (_, index) => (
           <div
             key={index}
@@ -69,12 +70,22 @@ export function BriefingReviewOverview({
   return (
     <LazyMotion features={domAnimation} strict>
       <div className="flex flex-col gap-4">
-        {steps.every((step) => step.state === "empty") ? (
-          <p className="font-sans text-body-sm text-fg-secondary">
-            O cliente ainda não começou o briefing.
-          </p>
-        ) : null}
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="font-sans text-body-sm font-semibold text-fg">
+              Etapas do briefing
+            </p>
+            <p className="mt-1 font-sans text-caption text-fg-muted">
+              {steps.every((step) => step.state === "empty")
+                ? "O cliente ainda não começou o briefing."
+                : "Abra uma etapa para consultar respostas e materiais."}
+            </p>
+          </div>
+          <span className="rounded-md bg-canvas px-2 py-1 font-sans text-caption font-medium tabular-nums text-fg-secondary">
+            {completedCount}/8 concluídas
+          </span>
+        </div>
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {steps.map((step, index) => {
             const Icon = STEP_ICONS[step.id]
             return (

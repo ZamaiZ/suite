@@ -14,6 +14,12 @@ import {
 } from "@/app/actions/briefing"
 import { useBriefingAutosave } from "@/components/custom/BriefingAutosave"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
 import { Textarea } from "@/components/ui/Textarea"
@@ -33,9 +39,12 @@ export function ClientBriefingClosingForm({
   initialPayload,
   initialUpdatedAt,
   initialCompletedAt,
+  variant = "portal",
   onBack,
   onFinalize,
 }: ClientBriefingClosingFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingClosing)
   const [payload, setPayload] = useState<BriefingClosingPayload>(() =>
     sanitizeClosingPayload(initialPayload),
   )
@@ -54,8 +63,9 @@ export function ClientBriefingClosingForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingClosing,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
     (partial: Partial<BriefingClosingPayload>) => {
@@ -84,8 +94,10 @@ export function ClientBriefingClosingForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingClosing(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingClosing(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -207,6 +219,7 @@ export function ClientBriefingClosingForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || !ready}
@@ -223,6 +236,7 @@ export function ClientBriefingClosingForm({
                       ? "Etapa concluída"
                       : "Finalizar briefing"}
                 </Button>
+                )}
               </div>
             </div>
           </div>

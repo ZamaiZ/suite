@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { Combobox } from "@base-ui/react/combobox"
 import { RiLoader4Line, RiSearchLine } from "react-icons/ri"
 import { suggestBriefingAddresses } from "@/app/actions/briefing"
+import { useBriefingWriterClientId } from "@/components/custom/BriefingWriter"
 import { cn } from "@/lib/cn"
 import { PLACES_SUGGEST_MIN_CHARS, type PlaceSuggestion } from "@/lib/places"
 import type { BriefingAddressSearchProps } from "./BriefingAddressSearch.types"
@@ -22,6 +23,7 @@ export function BriefingAddressSearch({
   disabled,
   error,
 }: BriefingAddressSearchProps) {
+  const writerClientId = useBriefingWriterClientId()
   const sessionTokenRef = useRef(newSessionToken())
   const requestIdRef = useRef(0)
   const [open, setOpen] = useState(false)
@@ -44,6 +46,7 @@ export function BriefingAddressSearch({
       void suggestBriefingAddresses({
         query: trimmed,
         sessionToken: sessionTokenRef.current,
+        clientId: writerClientId ?? undefined,
       }).then((result) => {
         if (requestId !== requestIdRef.current) return
         setLoading(false)
@@ -63,7 +66,7 @@ export function BriefingAddressSearch({
     }, DEBOUNCE_MS)
 
     return () => window.clearTimeout(timer)
-  }, [value])
+  }, [value, writerClientId])
 
   function handlePick(item: PlaceSuggestion | null) {
     if (!item) return

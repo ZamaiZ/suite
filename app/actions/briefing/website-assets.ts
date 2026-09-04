@@ -12,7 +12,7 @@ import {
   type BriefingAssetRef,
 } from "@/lib/briefing/website"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import { requireBriefingWriter } from "@/lib/briefing/writer"
 
 const SIGNED_TTL_SECONDS = 60 * 30
 
@@ -76,8 +76,13 @@ function belongsToClient(clientId: string, path: string): boolean {
 export async function uploadBriefingWebsiteAsset(
   formData: FormData,
 ): Promise<UploadBriefingWebsiteAssetState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const clientIdRaw = formData.get("client_id")
+  const loaded = await requireBriefingWriter(
+    typeof clientIdRaw === "string" && clientIdRaw.length > 0
+      ? clientIdRaw
+      : undefined,
+  )
+  if (loaded.status !== "ok") return loaded
 
   const kindRaw = formData.get("kind")
   if (!isAssetKind(kindRaw)) {
@@ -157,9 +162,10 @@ export async function uploadBriefingWebsiteAsset(
 
 export async function removeBriefingWebsiteAsset(
   storagePath: string,
+  clientId?: string,
 ): Promise<RemoveBriefingWebsiteAssetState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(clientId)
+  if (loaded.status !== "ok") return loaded
 
   if (typeof storagePath !== "string" || storagePath.trim().length === 0) {
     return { status: "error", message: "Arquivo inválido." }
@@ -180,9 +186,10 @@ export async function removeBriefingWebsiteAsset(
 
 export async function signBriefingWebsiteAsset(
   storagePath: string,
+  clientId?: string,
 ): Promise<SignBriefingWebsiteAssetState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(clientId)
+  if (loaded.status !== "ok") return loaded
 
   if (typeof storagePath !== "string" || storagePath.trim().length === 0) {
     return { status: "error", message: "Arquivo inválido." }

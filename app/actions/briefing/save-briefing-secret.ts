@@ -6,7 +6,11 @@ import {
   isSecretsKeyConfigured,
 } from "@/lib/briefing/secrets"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import {
+  readBriefingClientId,
+  requireBriefingWriter,
+  stripBriefingClientId,
+} from "@/lib/briefing/writer"
 import {
   briefingSecretDeleteSchema,
   briefingSecretUpsertSchema,
@@ -20,8 +24,8 @@ export type SaveBriefingSecretState =
 export async function upsertBriefingSecret(
   input: unknown,
 ): Promise<SaveBriefingSecretState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(readBriefingClientId(input))
+  if (loaded.status !== "ok") return loaded
 
   if (!isSecretsKeyConfigured()) {
     return {
@@ -30,7 +34,9 @@ export async function upsertBriefingSecret(
     }
   }
 
-  const parsed = briefingSecretUpsertSchema.safeParse(input)
+  const parsed = briefingSecretUpsertSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -102,10 +108,12 @@ export async function upsertBriefingSecret(
 export async function deleteBriefingSecret(
   input: unknown,
 ): Promise<SaveBriefingSecretState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(readBriefingClientId(input))
+  if (loaded.status !== "ok") return loaded
 
-  const parsed = briefingSecretDeleteSchema.safeParse(input)
+  const parsed = briefingSecretDeleteSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",

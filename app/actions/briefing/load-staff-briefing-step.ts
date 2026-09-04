@@ -16,7 +16,7 @@ import {
 import {
   emptyBrandPayload,
   parseBrandPayload,
-  type BriefingBrandPayload,
+  type ProductOrService,
 } from "@/lib/briefing/brand"
 import {
   emptyClosingPayload,
@@ -73,6 +73,7 @@ export type StaffBriefingStepResult =
       status: "success"
       step: "company"
       payload: BriefingCompanyPayload
+      sourceSnapshot: BriefingCompanyPayload
       meta: StepMeta
     }
   | {
@@ -99,6 +100,7 @@ export type StaffBriefingStepResult =
       payload: BriefingFinancePayload
       productName: string | null
       serviceName: string | null
+      productsAndServices: ProductOrService[]
       meta: StepMeta
     }
   | {
@@ -146,7 +148,7 @@ export async function loadStaffBriefingStep(
 
   const { data, error } = await admin
     .from("client_briefing_steps")
-    .select("payload, completed_at, updated_at")
+    .select("payload, source_snapshot, completed_at, updated_at")
     .eq("client_id", client.id)
     .eq("step", stepId)
     .maybeSingle()
@@ -176,7 +178,16 @@ export async function loadStaffBriefingStep(
       const payload = data
         ? hydrateStructuredAddress(parseCompanyPayload(data.payload))
         : emptyCompanyPayload()
-      return { status: "success", step: "company", payload, meta }
+      const sourceSnapshot = data
+        ? hydrateStructuredAddress(parseCompanyPayload(data.source_snapshot))
+        : emptyCompanyPayload()
+      return {
+        status: "success",
+        step: "company",
+        payload,
+        sourceSnapshot,
+        meta,
+      }
     }
     case "brand": {
       const payload = data
@@ -223,6 +234,7 @@ export async function loadStaffBriefingStep(
         payload,
         productName,
         serviceName,
+        productsAndServices: brand.productsAndServices,
         meta,
       }
     }

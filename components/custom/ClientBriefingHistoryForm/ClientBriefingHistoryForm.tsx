@@ -15,6 +15,12 @@ import {
 } from "@/app/actions/briefing"
 import { useBriefingAutosave } from "@/components/custom/BriefingAutosave"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
 import { Textarea } from "@/components/ui/Textarea"
@@ -34,9 +40,12 @@ export function ClientBriefingHistoryForm({
   initialPayload,
   initialUpdatedAt,
   initialCompletedAt,
+  variant = "portal",
   onBack,
   onContinue,
 }: ClientBriefingHistoryFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingHistory)
   const [payload, setPayload] = useState<BriefingHistoryPayload>(() =>
     sanitizeHistoryPayload(initialPayload),
   )
@@ -55,8 +64,9 @@ export function ClientBriefingHistoryForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingHistory,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
     (partial: Partial<BriefingHistoryPayload>) => {
@@ -87,8 +97,10 @@ export function ClientBriefingHistoryForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingHistory(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingHistory(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -273,6 +285,7 @@ export function ClientBriefingHistoryForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || !ready}
@@ -289,6 +302,7 @@ export function ClientBriefingHistoryForm({
                       ? "Etapa concluída"
                       : "Continuar"}
                 </Button>
+                )}
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { digitsOnly } from "@/lib/br-documents"
 import { isBrazilStateCode } from "@/lib/br-locations"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import { requireBriefingWriter } from "@/lib/briefing/writer"
 
 export type LookupPostalCodeState =
   | {
@@ -27,9 +27,10 @@ type ViaCepResponse = {
 
 export async function lookupBriefingPostalCode(
   postalCode: string,
+  clientId?: string,
 ): Promise<LookupPostalCodeState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(clientId)
+  if (loaded.status !== "ok") return loaded
 
   const digits = digitsOnly(postalCode)
   if (digits.length !== 8) {

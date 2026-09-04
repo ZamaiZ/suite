@@ -9,9 +9,12 @@ import {
 import { BRIEFING_STEP_ACCESSES } from "@/lib/briefing/steps"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
 import {
-  requirePortalClient,
-  type PortalClientContext,
-} from "@/lib/clients/portal-session"
+  readBriefingClientId,
+  requireBriefingWriter,
+  stripBriefingClientId,
+  withBriefingClientId,
+  type BriefingWriterContext,
+} from "@/lib/briefing/writer"
 import {
   briefingAccessesPayloadSchema,
   toAccessesPayload,
@@ -23,7 +26,7 @@ export type SaveBriefingAccessesState =
   | { status: "unauthenticated" }
 
 async function loadSecretFlags(
-  admin: PortalClientContext["admin"],
+  admin: BriefingWriterContext["admin"],
   clientId: string,
 ): Promise<BriefingSecretFlags | null> {
   const { data, error } = await admin
@@ -43,7 +46,7 @@ async function loadSecretFlags(
 }
 
 async function purgeOrphanSecrets(
-  admin: PortalClientContext["admin"],
+  admin: BriefingWriterContext["admin"],
   clientId: string,
   keep: Set<string>,
 ): Promise<boolean> {
@@ -74,10 +77,12 @@ async function purgeOrphanSecrets(
 export async function saveBriefingAccesses(
   input: unknown,
 ): Promise<SaveBriefingAccessesState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(readBriefingClientId(input))
+  if (loaded.status !== "ok") return loaded
 
-  const parsed = briefingAccessesPayloadSchema.safeParse(input)
+  const parsed = briefingAccessesPayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -150,10 +155,13 @@ export async function saveBriefingAccesses(
 export async function completeBriefingAccesses(
   input: unknown,
 ): Promise<SaveBriefingAccessesState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const clientId = readBriefingClientId(input)
+  const loaded = await requireBriefingWriter(clientId)
+  if (loaded.status !== "ok") return loaded
 
-  const parsed = briefingAccessesPayloadSchema.safeParse(input)
+  const parsed = briefingAccessesPayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -177,11 +185,13 @@ export async function completeBriefingAccesses(
     }
   }
 
-  const saved = await saveBriefingAccesses(payload)
+  const saved = await saveBriefingAccesses(
+    withBriefingClientId(payload, clientId),
+  )
   if (saved.status !== "success") return saved
 
-  const again = await requirePortalClient()
-  if (again.status === "unauthenticated") return again
+  const again = await requireBriefingWriter(clientId)
+  if (again.status !== "ok") return again
 
   const now = new Date().toISOString()
   const { error } = await again.context.admin

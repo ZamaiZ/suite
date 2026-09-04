@@ -6,6 +6,7 @@ export type ClientBriefingFinanceFormProps = {
   initialUpdatedAt: string | null
   initialCompletedAt: string | null
   productsAndServices: ProductOrService[]
+  variant?: "portal" | "staff"
   onBack?: () => void
   onContinue?: (completedAt: string) => void
 }

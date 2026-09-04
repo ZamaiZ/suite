@@ -1,4 +1,5 @@
 export type ClientStage = "initial"
+export type ClientKickoffStage = "none" | "scheduled" | "no_show" | "completed"
 
 export type ClientRecord = {
   id: string
@@ -7,6 +8,8 @@ export type ClientRecord = {
   closer_id: string | null
   converted_at: string
   stage: ClientStage
+  kickoff_stage: ClientKickoffStage
+  kickoff_meeting_at: string | null
   portal_slug: string | null
   portal_code_hash: string | null
   portal_code_generated_at: string | null
@@ -24,6 +27,8 @@ export const CLIENT_PORTAL_SELECT = [
   "closer_id",
   "converted_at",
   "stage",
+  "kickoff_stage",
+  "kickoff_meeting_at",
   "portal_slug",
   "portal_code_hash",
   "portal_code_generated_at",

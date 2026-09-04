@@ -3,7 +3,12 @@
 import { isCompanyReadyToComplete } from "@/lib/briefing/company"
 import { BRIEFING_STEP_COMPANY } from "@/lib/briefing/steps"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import {
+  readBriefingClientId,
+  requireBriefingWriter,
+  stripBriefingClientId,
+  withBriefingClientId,
+} from "@/lib/briefing/writer"
 import {
   briefingCompanyPayloadSchema,
   toCompanyPayload,
@@ -18,10 +23,12 @@ export type SaveBriefingCompanyState =
 export async function saveBriefingCompany(
   input: unknown,
 ): Promise<SaveBriefingCompanyState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(readBriefingClientId(input))
+  if (loaded.status !== "ok") return loaded
 
-  const parsed = briefingCompanyPayloadSchema.safeParse(input)
+  const parsed = briefingCompanyPayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -88,7 +95,10 @@ export async function saveBriefingCompany(
 export async function completeBriefingCompany(
   input: unknown,
 ): Promise<SaveBriefingCompanyState> {
-  const parsed = briefingCompanyPayloadSchema.safeParse(input)
+  const clientId = readBriefingClientId(input)
+  const parsed = briefingCompanyPayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -104,11 +114,13 @@ export async function completeBriefingCompany(
     }
   }
 
-  const saved = await saveBriefingCompany(payload)
+  const saved = await saveBriefingCompany(
+    withBriefingClientId(payload, clientId),
+  )
   if (saved.status !== "success") return saved
 
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(clientId)
+  if (loaded.status !== "ok") return loaded
 
   const now = new Date().toISOString()
   const { error } = await loaded.context.admin

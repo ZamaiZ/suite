@@ -7,7 +7,7 @@ import {
   resolveAudienceMapCoordinates,
 } from "@/lib/briefing/geocode-address"
 import { BRIEFING_STEP_COMPANY } from "@/lib/briefing/steps"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import { requireBriefingWriter } from "@/lib/briefing/writer"
 import { readGbpSnapshot } from "@/lib/leads/gbp"
 
 export type GeocodeBriefingAddressState =
@@ -22,9 +22,11 @@ export type GeocodeBriefingAddressState =
   | { status: "error"; message: string }
   | { status: "unauthenticated" }
 
-export async function geocodeBriefingAddress(): Promise<GeocodeBriefingAddressState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+export async function geocodeBriefingAddress(
+  clientId?: string,
+): Promise<GeocodeBriefingAddressState> {
+  const loaded = await requireBriefingWriter(clientId)
+  if (loaded.status !== "ok") return loaded
 
   const { client, admin } = loaded.context
 

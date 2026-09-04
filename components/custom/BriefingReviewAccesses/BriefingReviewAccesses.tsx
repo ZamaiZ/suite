@@ -58,24 +58,44 @@ export function BriefingReviewAccesses({
           value={payload.gbp.inviteEmail}
         />
       </BriefingReviewSection>
-      <BriefingReviewSection title="Hospedagem e domínio">
+      <BriefingReviewSection title="Hospedagem">
         <BriefingReviewField
           label="Possui?"
-          value={formatYesNo(payload.hostingDomain.status)}
+          value={formatYesNo(payload.hosting.status)}
         />
         <BriefingReviewField
           label="URL do painel"
-          value={payload.hostingDomain.panelUrl}
+          value={payload.hosting.panelUrl}
         />
         <BriefingReviewField
           label="Usuário"
-          value={payload.hostingDomain.username}
+          value={payload.hosting.username}
         />
         <BriefingReviewSecretField
           clientId={clientId}
           kind="hosting_domain"
           label="Senha"
           hasSecret={Boolean(secretFlags.hosting_domain)}
+        />
+      </BriefingReviewSection>
+      <BriefingReviewSection title="Domínio">
+        <BriefingReviewField
+          label="Possui?"
+          value={formatYesNo(payload.domain.status)}
+        />
+        <BriefingReviewField
+          label="URL do painel"
+          value={payload.domain.panelUrl}
+        />
+        <BriefingReviewField
+          label="Usuário"
+          value={payload.domain.username}
+        />
+        <BriefingReviewSecretField
+          clientId={clientId}
+          kind="domain"
+          label="Senha"
+          hasSecret={Boolean(secretFlags.domain)}
         />
       </BriefingReviewSection>
       <BriefingReviewSection title="Outras ferramentas">

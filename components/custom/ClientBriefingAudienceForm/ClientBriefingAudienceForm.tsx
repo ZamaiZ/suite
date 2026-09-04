@@ -26,6 +26,12 @@ import { useBriefingAutosave } from "@/components/custom/BriefingAutosave"
 import { BriefingChipField } from "@/components/custom/BriefingChipField"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
 import { BriefingServiceRadiusMap } from "@/components/custom/BriefingServiceRadiusMap"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Checkbox } from "@/components/ui/Checkbox"
 import { Input } from "@/components/ui/Input"
@@ -61,9 +67,12 @@ export function ClientBriefingAudienceForm({
   companyCity,
   companyFormattedAddress,
   companyAddressKey,
+  variant = "portal",
   onBack,
   onContinue,
 }: ClientBriefingAudienceFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingAudience)
   const [payload, setPayload] = useState<BriefingAudiencePayload>(initialPayload)
   const [primaryDraft, setPrimaryDraft] = useState(initialPayload.primaryKeyword)
   const [mapLoading, setMapLoading] = useState(false)
@@ -86,8 +95,9 @@ export function ClientBriefingAudienceForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingAudience,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const payloadRef = useRef(payload)
   payloadRef.current = payload
@@ -109,7 +119,7 @@ export function ClientBriefingAudienceForm({
     if (payloadRef.current.serviceRadiusNotApplicable) return
     setMapLoading(true)
     setMapError(null)
-    const result = await geocodeBriefingAddress()
+    const result = await geocodeBriefingAddress(writerClientId ?? undefined)
     setMapLoading(false)
 
     if (result.status === "unauthenticated") {
@@ -136,7 +146,7 @@ export function ClientBriefingAudienceForm({
       mapLongitude: result.longitude,
       mapAddressKey: result.addressKey,
     })
-  }, [patch])
+  }, [patch, writerClientId])
 
   useEffect(() => {
     if (payload.serviceRadiusNotApplicable) {
@@ -226,8 +236,10 @@ export function ClientBriefingAudienceForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingAudience(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingAudience(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -581,6 +593,7 @@ export function ClientBriefingAudienceForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || !ready}
@@ -597,6 +610,7 @@ export function ClientBriefingAudienceForm({
                       ? "Etapa concluída"
                       : "Continuar"}
                 </Button>
+                )}
               </div>
             </div>
           </div>

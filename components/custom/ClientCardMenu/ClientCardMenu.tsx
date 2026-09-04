@@ -200,11 +200,9 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
                     </Menu.Item>
                   ) : (
                     <Menu.Item
+                      closeOnClick={false}
                       disabled={isPending}
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setConfirmRotate(true)
-                      }}
+                      onClick={() => setConfirmRotate(true)}
                       className={MENU_ITEM}
                     >
                       <RiRefreshLine size={16} aria-hidden />

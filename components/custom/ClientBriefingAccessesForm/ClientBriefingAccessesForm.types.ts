@@ -8,6 +8,7 @@ export type ClientBriefingAccessesFormProps = {
   initialSecretFlags: BriefingSecretFlags
   initialUpdatedAt: string | null
   initialCompletedAt: string | null
+  variant?: "portal" | "staff"
   onBack?: () => void
   onContinue?: (completedAt: string) => void
 }

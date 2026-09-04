@@ -3,5 +3,6 @@ export type ClientBriefingCompanyFormProps = {
   sourceSnapshot: import("@/lib/briefing/company").BriefingCompanyPayload
   initialUpdatedAt: string | null
   initialCompletedAt: string | null
+  variant?: "portal" | "staff"
   onContinue?: (completedAt: string) => void
 }

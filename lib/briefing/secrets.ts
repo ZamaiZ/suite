@@ -1,6 +1,10 @@
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from "crypto"
 
-export const FIXED_SECRET_KINDS = ["wordpress", "hosting_domain"] as const
+export const FIXED_SECRET_KINDS = [
+  "wordpress",
+  "hosting_domain",
+  "domain",
+] as const
 
 export type FixedSecretKind = (typeof FIXED_SECRET_KINDS)[number]
 

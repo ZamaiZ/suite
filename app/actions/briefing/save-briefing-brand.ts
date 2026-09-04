@@ -6,7 +6,12 @@ import {
 } from "@/lib/briefing/brand"
 import { BRIEFING_STEP_BRAND } from "@/lib/briefing/steps"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import {
+  readBriefingClientId,
+  requireBriefingWriter,
+  stripBriefingClientId,
+  withBriefingClientId,
+} from "@/lib/briefing/writer"
 import {
   briefingBrandPayloadSchema,
   toBrandPayload,
@@ -20,10 +25,12 @@ export type SaveBriefingBrandState =
 export async function saveBriefingBrand(
   input: unknown,
 ): Promise<SaveBriefingBrandState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(readBriefingClientId(input))
+  if (loaded.status !== "ok") return loaded
 
-  const parsed = briefingBrandPayloadSchema.safeParse(input)
+  const parsed = briefingBrandPayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -89,10 +96,10 @@ export async function saveBriefingBrand(
 export async function completeBriefingBrand(
   input: unknown,
 ): Promise<SaveBriefingBrandState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
-
-  const parsed = briefingBrandPayloadSchema.safeParse(input)
+  const clientId = readBriefingClientId(input)
+  const parsed = briefingBrandPayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -108,11 +115,11 @@ export async function completeBriefingBrand(
     }
   }
 
-  const saved = await saveBriefingBrand(payload)
+  const saved = await saveBriefingBrand(withBriefingClientId(payload, clientId))
   if (saved.status !== "success") return saved
 
-  const again = await requirePortalClient()
-  if (again.status === "unauthenticated") return again
+  const again = await requireBriefingWriter(clientId)
+  if (again.status !== "ok") return again
 
   const now = new Date().toISOString()
   const { error } = await again.context.admin

@@ -6,7 +6,12 @@ import {
 } from "@/lib/briefing/audience"
 import { BRIEFING_STEP_AUDIENCE } from "@/lib/briefing/steps"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
-import { requirePortalClient } from "@/lib/clients/portal-session"
+import {
+  readBriefingClientId,
+  requireBriefingWriter,
+  stripBriefingClientId,
+  withBriefingClientId,
+} from "@/lib/briefing/writer"
 import {
   briefingAudiencePayloadSchema,
   toAudiencePayload,
@@ -20,10 +25,12 @@ export type SaveBriefingAudienceState =
 export async function saveBriefingAudience(
   input: unknown,
 ): Promise<SaveBriefingAudienceState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
+  const loaded = await requireBriefingWriter(readBriefingClientId(input))
+  if (loaded.status !== "ok") return loaded
 
-  const parsed = briefingAudiencePayloadSchema.safeParse(input)
+  const parsed = briefingAudiencePayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -89,10 +96,10 @@ export async function saveBriefingAudience(
 export async function completeBriefingAudience(
   input: unknown,
 ): Promise<SaveBriefingAudienceState> {
-  const loaded = await requirePortalClient()
-  if (loaded.status === "unauthenticated") return loaded
-
-  const parsed = briefingAudiencePayloadSchema.safeParse(input)
+  const clientId = readBriefingClientId(input)
+  const parsed = briefingAudiencePayloadSchema.safeParse(
+    stripBriefingClientId(input),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -108,11 +115,13 @@ export async function completeBriefingAudience(
     }
   }
 
-  const saved = await saveBriefingAudience(payload)
+  const saved = await saveBriefingAudience(
+    withBriefingClientId(payload, clientId),
+  )
   if (saved.status !== "success") return saved
 
-  const again = await requirePortalClient()
-  if (again.status === "unauthenticated") return again
+  const again = await requireBriefingWriter(clientId)
+  if (again.status !== "ok") return again
 
   const now = new Date().toISOString()
   const { error } = await again.context.admin

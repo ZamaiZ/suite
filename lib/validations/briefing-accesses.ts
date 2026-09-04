@@ -42,7 +42,8 @@ export const briefingAccessesPayloadSchema = z.object({
   searchConsole: inviteBlockSchema,
   analytics: inviteBlockSchema,
   gbp: inviteBlockSchema,
-  hostingDomain: hostingBlockSchema,
+  hosting: hostingBlockSchema,
+  domain: hostingBlockSchema,
   otherTools: z.object({
     status: accessAnswer,
     items: z.array(otherItemSchema).max(ACCESS_OTHER_ITEMS_MAX),
@@ -59,7 +60,8 @@ export function toAccessesPayload(
     searchConsole: data.searchConsole,
     analytics: data.analytics,
     gbp: data.gbp,
-    hostingDomain: data.hostingDomain,
+    hosting: data.hosting,
+    domain: data.domain,
     otherTools: data.otherTools,
   })
 }

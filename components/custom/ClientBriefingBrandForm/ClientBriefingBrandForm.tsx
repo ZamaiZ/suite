@@ -39,6 +39,12 @@ import { useBriefingAutosave } from "@/components/custom/BriefingAutosave"
 import { BriefingCatalogEditor } from "@/components/custom/BriefingCatalogEditor"
 import { BriefingChipField } from "@/components/custom/BriefingChipField"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Checkbox } from "@/components/ui/Checkbox"
 import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
@@ -125,9 +131,12 @@ export function ClientBriefingBrandForm({
   initialPayload,
   initialUpdatedAt,
   initialCompletedAt,
+  variant = "portal",
   onBack,
   onContinue,
 }: ClientBriefingBrandFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingBrand)
   const reduced = !!useReducedMotion()
   const [payload, setPayload] = useState<BriefingBrandPayload>(initialPayload)
   const [showOtherTools, setShowOtherTools] = useState(
@@ -148,8 +157,9 @@ export function ClientBriefingBrandForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingBrand,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
     (partial: Partial<BriefingBrandPayload>) => {
@@ -204,8 +214,10 @@ export function ClientBriefingBrandForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingBrand(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingBrand(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -551,6 +563,7 @@ export function ClientBriefingBrandForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || !ready}
@@ -567,6 +580,7 @@ export function ClientBriefingBrandForm({
                       ? "Etapa concluída"
                       : "Continuar"}
                 </Button>
+                )}
               </div>
             </div>
           </div>

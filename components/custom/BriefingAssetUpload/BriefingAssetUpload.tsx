@@ -6,6 +6,7 @@ import {
   removeBriefingWebsiteAsset,
   uploadBriefingWebsiteAsset,
 } from "@/app/actions/briefing"
+import { useBriefingWriterClientId } from "@/components/custom/BriefingWriter"
 import { cn } from "@/lib/cn"
 import type { BriefingAssetUploadProps } from "./BriefingAssetUpload.types"
 
@@ -29,6 +30,7 @@ export function BriefingAssetUpload({
   onUploaded,
   onRemoved,
 }: BriefingAssetUploadProps) {
+  const writerClientId = useBriefingWriterClientId()
   const inputRef = useRef<HTMLInputElement>(null)
   const [error, setError] = useState<string | null>(null)
   const [isUploading, startUpload] = useTransition()
@@ -46,6 +48,7 @@ export function BriefingAssetUpload({
         const formData = new FormData()
         formData.set("kind", kind)
         formData.set("file", file)
+        if (writerClientId) formData.set("client_id", writerClientId)
         const result = await uploadBriefingWebsiteAsset(formData)
         if (result.status === "unauthenticated") {
           setError("Sessão expirada. Atualize a página.")
@@ -63,7 +66,10 @@ export function BriefingAssetUpload({
   function handleRemove(asset: BriefingAssetUploadProps["assets"][number]) {
     setError(null)
     startUpload(async () => {
-      const result = await removeBriefingWebsiteAsset(asset.storagePath)
+      const result = await removeBriefingWebsiteAsset(
+        asset.storagePath,
+        writerClientId ?? undefined,
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return

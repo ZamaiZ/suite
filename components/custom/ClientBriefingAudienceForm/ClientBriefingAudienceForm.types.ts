@@ -5,6 +5,7 @@ export type ClientBriefingAudienceFormProps = {
   companyCity: string
   companyFormattedAddress: string
   companyAddressKey: string
+  variant?: "portal" | "staff"
   onBack?: () => void
   onContinue?: (completedAt: string) => void
 }

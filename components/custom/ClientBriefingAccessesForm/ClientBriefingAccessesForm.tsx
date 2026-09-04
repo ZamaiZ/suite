@@ -5,6 +5,7 @@ import { LazyMotion, domAnimation } from "motion/react"
 import {
   RiCheckLine,
   RiCloseLine,
+  RiEarthLine,
   RiGlobalLine,
   RiGoogleLine,
   RiKey2Line,
@@ -21,6 +22,12 @@ import {
 import { useBriefingAutosave } from "@/components/custom/BriefingAutosave"
 import { BriefingChipField } from "@/components/custom/BriefingChipField"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
@@ -83,9 +90,12 @@ export function ClientBriefingAccessesForm({
   initialSecretFlags,
   initialUpdatedAt,
   initialCompletedAt,
+  variant = "portal",
   onBack,
   onContinue,
 }: ClientBriefingAccessesFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingAccesses)
   const [payload, setPayload] = useState<BriefingAccessesPayload>(() =>
     sanitizeAccessesPayload(initialPayload),
   )
@@ -93,6 +103,7 @@ export function ClientBriefingAccessesForm({
     useState<BriefingSecretFlags>(initialSecretFlags)
   const [wordpressPassword, setWordpressPassword] = useState("")
   const [hostingPassword, setHostingPassword] = useState("")
+  const [domainPassword, setDomainPassword] = useState("")
   const [otherPasswords, setOtherPasswords] = useState<Record<string, string>>(
     {},
   )
@@ -112,7 +123,7 @@ export function ClientBriefingAccessesForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingAccesses,
+    persist,
   )
 
   const patch = useCallback(
@@ -131,11 +142,18 @@ export function ClientBriefingAccessesForm({
     const flags: BriefingSecretFlags = { ...secretFlags }
     if (wordpressPassword.trim()) flags.wordpress = true
     if (hostingPassword.trim()) flags.hosting_domain = true
+    if (domainPassword.trim()) flags.domain = true
     for (const [itemId, password] of Object.entries(otherPasswords)) {
       if (password.trim()) flags[otherSecretKind(itemId)] = true
     }
     return flags
-  }, [hostingPassword, otherPasswords, secretFlags, wordpressPassword])
+  }, [
+    domainPassword,
+    hostingPassword,
+    otherPasswords,
+    secretFlags,
+    wordpressPassword,
+  ])
 
   const ready = isAccessesReadyToComplete(payload, effectiveFlags)
   const missingLabels = useMemo(
@@ -151,7 +169,9 @@ export function ClientBriefingAccessesForm({
     const trimmed = password.trim()
     if (!trimmed) return true
     setIsSavingSecret(true)
-    const result = await upsertBriefingSecret({ kind, password: trimmed })
+    const result = await upsertBriefingSecret(
+      attachBriefingClientId({ kind, password: trimmed }, writerClientId),
+    )
     setIsSavingSecret(false)
     if (result.status === "unauthenticated") {
       setError("Sessão expirada. Atualize a página.")
@@ -171,10 +191,15 @@ export function ClientBriefingAccessesForm({
       if (!ok) return false
       setWordpressPassword("")
     }
-    if (payload.hostingDomain.status === "yes" && hostingPassword.trim()) {
+    if (payload.hosting.status === "yes" && hostingPassword.trim()) {
       const ok = await persistSecret("hosting_domain", hostingPassword)
       if (!ok) return false
       setHostingPassword("")
+    }
+    if (payload.domain.status === "yes" && domainPassword.trim()) {
+      const ok = await persistSecret("domain", domainPassword)
+      if (!ok) return false
+      setDomainPassword("")
     }
     if (payload.otherTools.status === "yes") {
       for (const item of payload.otherTools.items) {
@@ -192,6 +217,13 @@ export function ClientBriefingAccessesForm({
     return true
   }
 
+  const flushForStaff = useCallback(async () => {
+    if (!(await flushPending())) return false
+    return flushSecrets()
+  }, [flushPending, flushSecrets])
+
+  useBriefingWriterFlushRegistration(flushForStaff)
+
   function handleWordpressStatus(next: string) {
     const status = parseAnswer(next)
     if (status !== "yes") {
@@ -201,7 +233,9 @@ export function ClientBriefingAccessesForm({
         delete nextFlags.wordpress
         return nextFlags
       })
-      void deleteBriefingSecret({ kind: "wordpress" })
+      void deleteBriefingSecret(
+        attachBriefingClientId({ kind: "wordpress" }, writerClientId),
+      )
     }
     patch({
       wordpress: {
@@ -222,14 +256,39 @@ export function ClientBriefingAccessesForm({
         delete nextFlags.hosting_domain
         return nextFlags
       })
-      void deleteBriefingSecret({ kind: "hosting_domain" })
+      void deleteBriefingSecret(
+        attachBriefingClientId({ kind: "hosting_domain" }, writerClientId),
+      )
     }
     patch({
-      hostingDomain: {
-        ...payload.hostingDomain,
+      hosting: {
+        ...payload.hosting,
         status,
-        panelUrl: status === "yes" ? payload.hostingDomain.panelUrl : "",
-        username: status === "yes" ? payload.hostingDomain.username : "",
+        panelUrl: status === "yes" ? payload.hosting.panelUrl : "",
+        username: status === "yes" ? payload.hosting.username : "",
+      },
+    })
+  }
+
+  function handleDomainStatus(next: string) {
+    const status = parseAnswer(next)
+    if (status !== "yes") {
+      setDomainPassword("")
+      setSecretFlags((current) => {
+        const nextFlags = { ...current }
+        delete nextFlags.domain
+        return nextFlags
+      })
+      void deleteBriefingSecret(
+        attachBriefingClientId({ kind: "domain" }, writerClientId),
+      )
+    }
+    patch({
+      domain: {
+        ...payload.domain,
+        status,
+        panelUrl: status === "yes" ? payload.domain.panelUrl : "",
+        username: status === "yes" ? payload.domain.username : "",
       },
     })
   }
@@ -238,7 +297,12 @@ export function ClientBriefingAccessesForm({
     const status = parseAnswer(next)
     if (status !== "yes") {
       for (const item of payload.otherTools.items) {
-        void deleteBriefingSecret({ kind: otherSecretKind(item.id) })
+        void deleteBriefingSecret(
+          attachBriefingClientId(
+            { kind: otherSecretKind(item.id) },
+            writerClientId,
+          ),
+        )
       }
       setOtherPasswords({})
       setSecretFlags((current) => {
@@ -264,7 +328,12 @@ export function ClientBriefingAccessesForm({
       (item) => !items.some((next) => next.id === item.id),
     )
     for (const item of removed) {
-      void deleteBriefingSecret({ kind: otherSecretKind(item.id) })
+      void deleteBriefingSecret(
+          attachBriefingClientId(
+            { kind: otherSecretKind(item.id) },
+            writerClientId,
+          ),
+        )
       setSecretFlags((current) => {
         const nextFlags = { ...current }
         delete nextFlags[otherSecretKind(item.id)]
@@ -288,10 +357,12 @@ export function ClientBriefingAccessesForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
+      if (!(await flushPending())) return
       const secretsOk = await flushSecrets()
       if (!secretsOk) return
-      const result = await completeBriefingAccesses(payload)
+      const result = await completeBriefingAccesses(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -515,83 +586,158 @@ export function ClientBriefingAccessesForm({
           ) : null}
         </BriefingSectionCard>
 
-        <BriefingSectionCard
-          index={5}
-          icon={<RiServerLine size={18} aria-hidden />}
-          title="Hospedagem e domínio"
-          description="Painel onde o site e o domínio são gerenciados."
-        >
-          <RadioGroup
-            label="Tem acesso à hospedagem e domínio?"
-            orientation="horizontal"
-            value={payload.hostingDomain.status ?? ""}
-            onValueChange={handleHostingStatus}
+        <div className="grid items-start gap-4 lg:grid-cols-2">
+          <BriefingSectionCard
+            index={5}
+            icon={<RiServerLine size={18} aria-hidden />}
+            title="Hospedagem"
+            description="Painel onde o site está hospedado."
           >
-            <Radio value="yes" label="Sim" />
-            <Radio value="no" label="Não" />
-          </RadioGroup>
-          {payload.hostingDomain.status === "yes" ? (
-            <>
-              <Input
-                id="briefing-hosting-url"
-                label="URL do painel"
-                value={payload.hostingDomain.panelUrl}
-                onChange={(event) =>
-                  patch({
-                    hostingDomain: {
-                      ...payload.hostingDomain,
-                      panelUrl: event.target.value,
-                    },
-                  })
-                }
-                placeholder="https://painel.provedor.com"
-              />
-              <Input
-                id="briefing-hosting-username"
-                label="Usuário"
-                value={payload.hostingDomain.username}
-                onChange={(event) =>
-                  patch({
-                    hostingDomain: {
-                      ...payload.hostingDomain,
-                      username: event.target.value,
-                    },
-                  })
-                }
-                placeholder="Usuário do painel"
-                autoComplete="username"
-              />
-              <Input
-                id="briefing-hosting-password"
-                variant="password"
-                label="Senha"
-                value={hostingPassword}
-                onChange={(event) => {
-                  setHostingPassword(event.target.value)
-                  clearError()
-                }}
-                onBlur={() => {
-                  void persistSecret("hosting_domain", hostingPassword).then(
-                    (ok) => {
-                      if (ok && hostingPassword.trim()) {
-                        setHostingPassword("")
+            <RadioGroup
+              label="Tem acesso à hospedagem?"
+              orientation="horizontal"
+              value={payload.hosting.status ?? ""}
+              onValueChange={handleHostingStatus}
+            >
+              <Radio value="yes" label="Sim" />
+              <Radio value="no" label="Não" />
+            </RadioGroup>
+            {payload.hosting.status === "yes" ? (
+              <>
+                <Input
+                  id="briefing-hosting-url"
+                  label="URL do painel"
+                  value={payload.hosting.panelUrl}
+                  onChange={(event) =>
+                    patch({
+                      hosting: {
+                        ...payload.hosting,
+                        panelUrl: event.target.value,
+                      },
+                    })
+                  }
+                  placeholder="https://painel.provedor.com"
+                />
+                <Input
+                  id="briefing-hosting-username"
+                  label="Usuário"
+                  value={payload.hosting.username}
+                  onChange={(event) =>
+                    patch({
+                      hosting: {
+                        ...payload.hosting,
+                        username: event.target.value,
+                      },
+                    })
+                  }
+                  placeholder="Usuário do painel"
+                  autoComplete="username"
+                />
+                <Input
+                  id="briefing-hosting-password"
+                  variant="password"
+                  label="Senha"
+                  value={hostingPassword}
+                  onChange={(event) => {
+                    setHostingPassword(event.target.value)
+                    clearError()
+                  }}
+                  onBlur={() => {
+                    void persistSecret("hosting_domain", hostingPassword).then(
+                      (ok) => {
+                        if (ok && hostingPassword.trim()) {
+                          setHostingPassword("")
+                        }
+                      },
+                    )
+                  }}
+                  placeholder={
+                    secretFlags.hosting_domain
+                      ? "Senha salva — digite para trocar"
+                      : "Senha do painel"
+                  }
+                  autoComplete="new-password"
+                />
+              </>
+            ) : null}
+          </BriefingSectionCard>
+
+          <BriefingSectionCard
+            index={6}
+            icon={<RiEarthLine size={18} aria-hidden />}
+            title="Domínio"
+            description="Painel onde o domínio está registrado (Registro.br, provedor, etc.)."
+          >
+            <RadioGroup
+              label="Tem acesso ao domínio?"
+              orientation="horizontal"
+              value={payload.domain.status ?? ""}
+              onValueChange={handleDomainStatus}
+            >
+              <Radio value="yes" label="Sim" />
+              <Radio value="no" label="Não" />
+            </RadioGroup>
+            {payload.domain.status === "yes" ? (
+              <>
+                <Input
+                  id="briefing-domain-url"
+                  label="URL do painel"
+                  value={payload.domain.panelUrl}
+                  onChange={(event) =>
+                    patch({
+                      domain: {
+                        ...payload.domain,
+                        panelUrl: event.target.value,
+                      },
+                    })
+                  }
+                  placeholder="https://registro.br"
+                />
+                <Input
+                  id="briefing-domain-username"
+                  label="Usuário"
+                  value={payload.domain.username}
+                  onChange={(event) =>
+                    patch({
+                      domain: {
+                        ...payload.domain,
+                        username: event.target.value,
+                      },
+                    })
+                  }
+                  placeholder="Usuário do registro"
+                  autoComplete="username"
+                />
+                <Input
+                  id="briefing-domain-password"
+                  variant="password"
+                  label="Senha"
+                  value={domainPassword}
+                  onChange={(event) => {
+                    setDomainPassword(event.target.value)
+                    clearError()
+                  }}
+                  onBlur={() => {
+                    void persistSecret("domain", domainPassword).then((ok) => {
+                      if (ok && domainPassword.trim()) {
+                        setDomainPassword("")
                       }
-                    },
-                  )
-                }}
-                placeholder={
-                  secretFlags.hosting_domain
-                    ? "Senha salva — digite para trocar"
-                    : "Senha do painel"
-                }
-                autoComplete="new-password"
-              />
-            </>
-          ) : null}
-        </BriefingSectionCard>
+                    })
+                  }}
+                  placeholder={
+                    secretFlags.domain
+                      ? "Senha salva — digite para trocar"
+                      : "Senha do painel"
+                  }
+                  autoComplete="new-password"
+                />
+              </>
+            ) : null}
+          </BriefingSectionCard>
+        </div>
 
         <BriefingSectionCard
-          index={6}
+          index={7}
           icon={<RiToolsLine size={18} aria-hidden />}
           title="Outras ferramentas"
           description="CRM, e-mail marketing, chat ou qualquer outra ferramenta relevante."
@@ -746,6 +892,7 @@ export function ClientBriefingAccessesForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || isSavingSecret || !ready}
@@ -762,6 +909,7 @@ export function ClientBriefingAccessesForm({
                       ? "Etapa concluída"
                       : "Continuar"}
                 </Button>
+                )}
               </div>
             </div>
           </div>

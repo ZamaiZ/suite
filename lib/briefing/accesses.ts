@@ -45,7 +45,8 @@ export type BriefingAccessesPayload = {
   searchConsole: AccessInviteBlock
   analytics: AccessInviteBlock
   gbp: AccessInviteBlock
-  hostingDomain: AccessHostingBlock
+  hosting: AccessHostingBlock
+  domain: AccessHostingBlock
   otherTools: AccessOtherToolsBlock
 }
 
@@ -73,7 +74,8 @@ export function emptyAccessesPayload(): BriefingAccessesPayload {
     searchConsole: emptyInviteBlock(),
     analytics: emptyInviteBlock(),
     gbp: emptyInviteBlock(),
-    hostingDomain: emptyHostingBlock(),
+    hosting: emptyHostingBlock(),
+    domain: emptyHostingBlock(),
     otherTools: emptyOtherToolsBlock(),
   }
 }
@@ -122,6 +124,21 @@ function parseHostingBlock(value: unknown): AccessHostingBlock {
     status: isAccessAnswerId(row.status) ? row.status : null,
     panelUrl: asString(row.panelUrl).slice(0, ACCESS_URL_MAX),
     username: asString(row.username).slice(0, ACCESS_USERNAME_MAX),
+  }
+}
+
+function sanitizeHostingBlock(block: AccessHostingBlock): AccessHostingBlock {
+  if (block.status === "yes") {
+    return {
+      status: "yes",
+      panelUrl: block.panelUrl.trim().slice(0, ACCESS_URL_MAX),
+      username: block.username.trim().slice(0, ACCESS_USERNAME_MAX),
+    }
+  }
+  return {
+    status: block.status === "no" ? "no" : null,
+    panelUrl: "",
+    username: "",
   }
 }
 
@@ -199,22 +216,8 @@ export function sanitizeAccessesPayload(
             status: payload.gbp.status === "no" ? "no" : null,
             inviteEmail: "",
           },
-    hostingDomain:
-      payload.hostingDomain.status === "yes"
-        ? {
-            status: "yes",
-            panelUrl: payload.hostingDomain.panelUrl
-              .trim()
-              .slice(0, ACCESS_URL_MAX),
-            username: payload.hostingDomain.username
-              .trim()
-              .slice(0, ACCESS_USERNAME_MAX),
-          }
-        : {
-            status: payload.hostingDomain.status === "no" ? "no" : null,
-            panelUrl: "",
-            username: "",
-          },
+    hosting: sanitizeHostingBlock(payload.hosting),
+    domain: sanitizeHostingBlock(payload.domain),
     otherTools:
       payload.otherTools.status === "yes"
         ? {
@@ -247,7 +250,8 @@ export function parseAccessesPayload(value: unknown): BriefingAccessesPayload {
     searchConsole: parseInviteBlock(row.searchConsole),
     analytics: parseInviteBlock(row.analytics),
     gbp: parseInviteBlock(row.gbp),
-    hostingDomain: parseHostingBlock(row.hostingDomain),
+    hosting: parseHostingBlock(row.hosting ?? row.hostingDomain),
+    domain: parseHostingBlock(row.domain),
     otherTools: parseOtherToolsBlock(row.otherTools),
   })
 }
@@ -258,7 +262,8 @@ export function secretKindsAllowedToKeep(
   const sanitized = sanitizeAccessesPayload(payload)
   const keep = new Set<string>()
   if (sanitized.wordpress.status === "yes") keep.add("wordpress")
-  if (sanitized.hostingDomain.status === "yes") keep.add("hosting_domain")
+  if (sanitized.hosting.status === "yes") keep.add("hosting_domain")
+  if (sanitized.domain.status === "yes") keep.add("domain")
   if (sanitized.otherTools.status === "yes") {
     for (const item of sanitized.otherTools.items) {
       keep.add(otherSecretKind(item.id))
@@ -282,6 +287,10 @@ export type AccessesMissingGroup =
   | "hostingPanelUrl"
   | "hostingUsername"
   | "hostingPassword"
+  | "domainStatus"
+  | "domainPanelUrl"
+  | "domainUsername"
+  | "domainPassword"
   | "otherToolsStatus"
   | "otherToolsItems"
 
@@ -296,10 +305,14 @@ export const ACCESSES_MISSING_LABELS: Record<AccessesMissingGroup, string> = {
   analyticsEmail: "e-mail do convite Analytics",
   gbpStatus: "acesso ao Google Meu Negócio",
   gbpEmail: "e-mail do convite Google Meu Negócio",
-  hostingStatus: "acesso à hospedagem e domínio",
+  hostingStatus: "acesso à hospedagem",
   hostingPanelUrl: "URL do painel de hospedagem",
   hostingUsername: "usuário da hospedagem",
   hostingPassword: "senha da hospedagem",
+  domainStatus: "acesso ao domínio",
+  domainPanelUrl: "URL do painel do domínio",
+  domainUsername: "usuário do domínio",
+  domainPassword: "senha do domínio",
   otherToolsStatus: "outras ferramentas",
   otherToolsItems: "nome de outra ferramenta",
 }
@@ -343,12 +356,20 @@ export function getAccessesMissingGroups(
     }
   }
 
-  if (sanitized.hostingDomain.status === null) {
+  if (sanitized.hosting.status === null) {
     missing.push("hostingStatus")
-  } else if (sanitized.hostingDomain.status === "yes") {
-    if (!sanitized.hostingDomain.panelUrl) missing.push("hostingPanelUrl")
-    if (!sanitized.hostingDomain.username) missing.push("hostingUsername")
+  } else if (sanitized.hosting.status === "yes") {
+    if (!sanitized.hosting.panelUrl) missing.push("hostingPanelUrl")
+    if (!sanitized.hosting.username) missing.push("hostingUsername")
     if (!secretFlags.hosting_domain) missing.push("hostingPassword")
+  }
+
+  if (sanitized.domain.status === null) {
+    missing.push("domainStatus")
+  } else if (sanitized.domain.status === "yes") {
+    if (!sanitized.domain.panelUrl) missing.push("domainPanelUrl")
+    if (!sanitized.domain.username) missing.push("domainUsername")
+    if (!secretFlags.domain) missing.push("domainPassword")
   }
 
   if (sanitized.otherTools.status === null) {

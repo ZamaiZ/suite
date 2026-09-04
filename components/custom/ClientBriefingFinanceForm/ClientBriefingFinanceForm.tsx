@@ -19,6 +19,12 @@ import {
   BriefingChoiceCardGroup,
 } from "@/components/custom/BriefingChoiceCard"
 import { BriefingSectionCard } from "@/components/custom/BriefingSectionCard"
+import {
+  attachBriefingClientId,
+  useBriefingWriterClientId,
+  useBriefingWriterFlushRegistration,
+  useWrappedBriefingSave,
+} from "@/components/custom/BriefingWriter"
 import { Button } from "@/components/ui/Button"
 import { Textarea } from "@/components/ui/Textarea"
 import {
@@ -44,9 +50,12 @@ export function ClientBriefingFinanceForm({
   initialUpdatedAt,
   initialCompletedAt,
   productsAndServices,
+  variant = "portal",
   onBack,
   onContinue,
 }: ClientBriefingFinanceFormProps) {
+  const writerClientId = useBriefingWriterClientId()
+  const persist = useWrappedBriefingSave(saveBriefingFinance)
   const [payload, setPayload] = useState<BriefingFinancePayload>(() =>
     sanitizeFinanceCatalogIds(initialPayload, productsAndServices),
   )
@@ -65,8 +74,9 @@ export function ClientBriefingFinanceForm({
   } = useBriefingAutosave(
     initialUpdatedAt,
     initialCompletedAt,
-    saveBriefingFinance,
+    persist,
   )
+  useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
     (partial: Partial<BriefingFinancePayload>) => {
@@ -127,8 +137,10 @@ export function ClientBriefingFinanceForm({
     if (!ready) return
     clearError()
     startComplete(async () => {
-      flushPending()
-      const result = await completeBriefingFinance(payload)
+      if (!(await flushPending())) return
+      const result = await completeBriefingFinance(
+        attachBriefingClientId(payload, writerClientId),
+      )
       if (result.status === "unauthenticated") {
         setError("Sessão expirada. Atualize a página.")
         return
@@ -404,6 +416,7 @@ export function ClientBriefingFinanceForm({
                     Voltar
                   </Button>
                 ) : null}
+                {variant === "staff" ? null : (
                 <Button
                   type="button"
                   disabled={isCompleting || !ready}
@@ -420,6 +433,7 @@ export function ClientBriefingFinanceForm({
                       ? "Etapa concluída"
                       : "Continuar"}
                 </Button>
+                )}
               </div>
             </div>
           </div>
