@@ -7,4 +7,5 @@ export type BriefingReviewAccessesProps = {
   clientId: string
   payload: BriefingAccessesPayload
   secretFlags: BriefingSecretFlags
+  canRevealSecrets?: boolean
 }

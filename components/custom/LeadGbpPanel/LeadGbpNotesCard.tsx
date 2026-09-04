@@ -20,6 +20,7 @@ export function LeadGbpNotesCard({
   onRetry,
   className,
   placeholder = "Posts, Q&A, respostas, ranking — o que a API não vê",
+  title = "Notas da etapa",
 }: {
   id: string
   profileId: string
@@ -31,6 +32,7 @@ export function LeadGbpNotesCard({
   onRetry: () => void
   className?: string
   placeholder?: string
+  title?: string
 }) {
   const [value, setValue] = useState(initialValue)
 
@@ -45,14 +47,14 @@ export function LeadGbpNotesCard({
 
   if (!canEdit) {
     return (
-      <LeadGbpCard title="Notas da etapa" className={className}>
+      <LeadGbpCard title={title} className={className}>
         {initialValue ? (
           <p className="whitespace-pre-wrap font-sans text-caption text-fg-secondary">
             {initialValue}
           </p>
         ) : (
           <p className="font-sans text-caption text-fg-muted">
-            Nenhuma nota nesta etapa.
+            Nada registrado nesta etapa.
           </p>
         )}
       </LeadGbpCard>
@@ -60,9 +62,9 @@ export function LeadGbpNotesCard({
   }
 
   return (
-    <LeadGbpCard title="Notas da etapa" className={className}>
+    <LeadGbpCard title={title} className={className}>
       <label htmlFor={id} className="sr-only">
-        Notas da etapa
+        {title}
       </label>
       <textarea
         id={id}

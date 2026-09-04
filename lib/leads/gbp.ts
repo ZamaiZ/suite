@@ -22,6 +22,10 @@ import {
   type GbpRankCheck,
   type GbpReviewSummary,
 } from "@/lib/leads/gbp-audit"
+import {
+  pickLatestGbpSnapshotRow,
+  type LeadGbpSnapshot,
+} from "@/lib/leads/gbp-snapshot"
 import { normalizeWebsiteDomain } from "@/lib/leads/website"
 import type { PlacesPlace } from "@/lib/places"
 
@@ -57,6 +61,8 @@ export const GBP_GAP_IDS = [
   "stale_posts",
   "weak_review_replies",
   "not_in_map_top3",
+  "unanswered_questions",
+  "unreplied_negative_reviews",
 ] as const
 
 export type GbpGapId = (typeof GBP_GAP_IDS)[number]
@@ -80,6 +86,8 @@ export const GBP_GAP_LABELS: Record<GbpGapId, string> = {
   stale_posts: "Última postagem há mais de 90 dias",
   weak_review_replies: "Menos de 80% das avaliações recentes respondidas",
   not_in_map_top3: "Fora do top 3 no Maps",
+  unanswered_questions: "Perguntas sem resposta no perfil",
+  unreplied_negative_reviews: "Avaliação negativa sem resposta",
 }
 
 export type GbpSnapshot = {
@@ -115,6 +123,8 @@ export type LeadGbpProfile = {
   payload: GbpSnapshot
   matched_website_key: string | null
   notes: string | null
+  /** Leitura humana da reputação: sentimento, temas e o que os números não contam. */
+  reputation_note: string | null
   cid: string | null
   enrichment: GbpEnrichment | null
   enrichment_at: string | null
@@ -124,6 +134,8 @@ export type LeadGbpProfile = {
   reviews_at: string | null
   qna: GbpQna | null
   qna_at: string | null
+  /** Snapshot append-only que originou os campos variaveis acima. */
+  snapshot: LeadGbpSnapshot<GbpSnapshot> | null
   jobs: GbpJob[]
   rank_keywords: string[]
   rankChecks: GbpRankCheck[]
@@ -237,6 +249,7 @@ export function gbpGapsForProfile(
     postsReady: boolean
     reviews: GbpReviewSummary | null
     reviewsReady: boolean
+    qna?: GbpQna | null
     rankKeywords?: string[]
     rankChecks?: GbpRankCheck[]
   },
@@ -310,6 +323,17 @@ export function gbpGapsForProfile(
     ) {
       gaps.push("weak_review_replies")
     }
+    // Negativa sem resposta ja era contada e gravada, mas nunca virava
+    // oportunidade. Fica dormente no SerpAPI, que nao devolve owner_answer.
+    if (audit.reviews.unrepliedLowRating > 0) {
+      gaps.push("unreplied_negative_reviews")
+    }
+  }
+
+  // Q&A ja era coletado e exibido nos dois provedores, mas nao chegava ao
+  // roadmap nem ao PDF do diagnostico.
+  if (audit?.qna && audit.qna.unansweredCount > 0) {
+    gaps.push("unanswered_questions")
   }
   const rankKeywords = audit?.rankKeywords ?? []
   const rankChecks = audit?.rankChecks ?? []
@@ -397,14 +421,34 @@ export function readLeadGbpProfileRow(
     return null
   }
   if (!payload) return null
-  const enrichment = readGbpEnrichment(row.enrichment)
+  // Os dados variaveis vivem em lead_gbp_snapshots, append-only. O perfil
+  // continua expondo os campos achatados para nao propagar a mudanca de
+  // contrato por gaps, rail, diagnostico e componentes; eles passam a vir do
+  // snapshot mais recente em vez de colunas mutaveis.
+  const snapshotRow = pickLatestGbpSnapshotRow(row.lead_gbp_snapshots)
+  const captured_at = snapshotRow ? asString(snapshotRow.captured_at) : null
+  const enrichment = readGbpEnrichment(snapshotRow?.enrichment)
   const enrichment_at = enrichment
-    ? (asString(row.enrichment_at) ?? enrichment.fetchedAt)
+    ? (captured_at ?? enrichment.fetchedAt)
     : null
-  const posts = readGbpPosts(row.posts)
-  const reviews = readGbpReviews(row.reviews)
-  const qna = readGbpQna(row.qna)
+  const posts = readGbpPosts(snapshotRow?.posts)
+  const reviews = readGbpReviews(snapshotRow?.reviews)
+  const qna = readGbpQna(snapshotRow?.qna)
+  const snapshot: LeadGbpSnapshot<GbpSnapshot> | null =
+    snapshotRow && typeof snapshotRow.id === "string" && captured_at
+      ? {
+          id: snapshotRow.id,
+          profile_id: id,
+          captured_at,
+          payload: readGbpSnapshot(snapshotRow.payload) ?? payload,
+          enrichment,
+          reviews,
+          posts,
+          qna,
+        }
+      : null
   return {
+    snapshot,
     id,
     lead_id,
     place_id,
@@ -416,15 +460,16 @@ export function readLeadGbpProfileRow(
     payload,
     matched_website_key: asString(matched_website_key),
     notes: asString(notes),
+    reputation_note: asString(row.reputation_note),
     cid: asCid(row.cid),
     enrichment,
     enrichment_at,
     posts,
-    posts_at: posts ? asString(row.posts_at) : null,
+    posts_at: posts ? captured_at : null,
     reviews,
-    reviews_at: reviews ? asString(row.reviews_at) : null,
+    reviews_at: reviews ? captured_at : null,
     qna,
-    qna_at: qna ? asString(row.qna_at) : null,
+    qna_at: qna ? captured_at : null,
     jobs: readGbpJobs(row.lead_gbp_jobs),
     rank_keywords: readGbpRankKeywords(row.rank_keywords),
     rankChecks: readGbpRankChecks(row.lead_gbp_rank_checks),

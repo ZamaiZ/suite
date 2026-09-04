@@ -34,6 +34,8 @@ export function parseClientRow(value: unknown): ClientRecord | null {
     company_name: row.company_name,
     closer_id: typeof row.closer_id === "string" ? row.closer_id : null,
     converted_at: row.converted_at,
+    baseline_at:
+      typeof row.baseline_at === "string" ? row.baseline_at : null,
     stage: row.stage,
     kickoff_stage: row.kickoff_stage,
     kickoff_meeting_at: typeof row.kickoff_meeting_at === "string" ? row.kickoff_meeting_at : null,

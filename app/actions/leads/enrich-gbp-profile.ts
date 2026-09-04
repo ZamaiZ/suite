@@ -24,6 +24,7 @@ import {
   denyGbpEdit,
   deleteGbpJobs,
   GBP_SELECT,
+  insertGbpSnapshot,
   loadGbpProfileRow,
   matchedKeyForSnapshot,
   rowToGbpProfile,
@@ -115,19 +116,27 @@ export async function enrichLeadGbpProfile(
     }
 
     const now = pack.pack.enrichment.fetchedAt
+    // O snapshot precisa existir antes da releitura, porque GBP_SELECT o embeda.
+    const snapshotted = await insertGbpSnapshot(
+      supabase,
+      parsed.data.profile_id,
+      {
+        enrichment: pack.pack.enrichment,
+        posts: pack.pack.posts,
+        reviews: pack.pack.reviews,
+        qna: pack.pack.qna,
+      },
+      now,
+    )
+    if (!snapshotted) {
+      return { status: "error", message: ENRICH_FAILED }
+    }
+
     const { data, error } = await supabase
       .from("lead_gbp_profiles")
       .update({
         ...payloadPatch,
         cid: pack.pack.enrichment.cid,
-        enrichment: pack.pack.enrichment,
-        enrichment_at: now,
-        posts: pack.pack.posts,
-        posts_at: pack.pack.posts ? now : null,
-        reviews: pack.pack.reviews,
-        reviews_at: pack.pack.reviews ? now : null,
-        qna: pack.pack.qna,
-        qna_at: pack.pack.qna ? now : null,
       })
       .eq("id", parsed.data.profile_id)
       .select(GBP_SELECT)
@@ -177,7 +186,6 @@ export async function enrichLeadGbpProfile(
   ])
 
   const qna = qnaResult.status === "ok" ? qnaResult.qna : null
-  const now = new Date().toISOString()
 
   const reviewsOk = await upsertGbpJob(
     supabase,
@@ -215,15 +223,22 @@ export async function enrichLeadGbpProfile(
     return { status: "error", message: ENRICH_FAILED }
   }
 
+  // Reviews e posts continuam vindo dos jobs; o snapshot herda os do anterior.
+  const snapshotted = await insertGbpSnapshot(
+    supabase,
+    parsed.data.profile_id,
+    { enrichment: info.enrichment, qna },
+    info.enrichment.fetchedAt,
+  )
+  if (!snapshotted) {
+    return { status: "error", message: ENRICH_FAILED }
+  }
+
   const { data, error } = await supabase
     .from("lead_gbp_profiles")
     .update({
       ...payloadPatch,
       cid: info.enrichment.cid,
-      enrichment: info.enrichment,
-      enrichment_at: info.enrichment.fetchedAt,
-      qna,
-      qna_at: qna ? now : null,
     })
     .eq("id", parsed.data.profile_id)
     .select(GBP_SELECT)

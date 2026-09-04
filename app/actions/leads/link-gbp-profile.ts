@@ -16,6 +16,7 @@ import {
   denyGbpEdit,
   findGbpPlaceConflict,
   GBP_SELECT,
+  insertGbpSnapshot,
   loadGbpLeadContext,
   matchedKeyForSnapshot,
   nextGbpSortOrder,
@@ -92,7 +93,8 @@ export async function linkLeadGbpProfile(
   const snapshot = snapshotFromPlace(details.data)
   const existingCount = await countGbpProfiles(supabase, payload.lead_id)
   const sortOrder = await nextGbpSortOrder(supabase, payload.lead_id)
-  const { data, error } = await supabase
+  const fetchedAt = new Date().toISOString()
+  const { data: created, error } = await supabase
     .from("lead_gbp_profiles")
     .insert({
       lead_id: payload.lead_id,
@@ -100,7 +102,7 @@ export async function linkLeadGbpProfile(
       is_primary: existingCount === 0,
       sort_order: sortOrder,
       google_maps_uri: snapshot.googleMapsUri,
-      fetched_at: new Date().toISOString(),
+      fetched_at: fetchedAt,
       fetched_by: user.id,
       payload: snapshot,
       matched_website_key: matchedKeyForSnapshot(
@@ -109,10 +111,10 @@ export async function linkLeadGbpProfile(
       ),
       notes: null,
     })
-    .select(GBP_SELECT)
+    .select("id")
     .single()
 
-  if (error || !data) {
+  if (error || !created) {
     if (error?.code === "23505") {
       const raced = await findGbpPlaceConflict(supabase, snapshot.placeId)
       if (raced.status === "taken" && raced.leadId !== payload.lead_id) {
@@ -123,6 +125,34 @@ export async function linkLeadGbpProfile(
         }
       }
     }
+    return {
+      status: "error",
+      message: "Não foi possível vincular o perfil. Tente novamente.",
+    }
+  }
+
+  // O perfil precisa existir antes do snapshot por causa da chave estrangeira,
+  // e o snapshot antes da releitura, porque GBP_SELECT o embeda.
+  const stored = await insertGbpSnapshot(
+    supabase,
+    created.id as string,
+    { payload: snapshot },
+    fetchedAt,
+  )
+  if (!stored) {
+    return {
+      status: "error",
+      message: "Não foi possível vincular o perfil. Tente novamente.",
+    }
+  }
+
+  const { data, error: reloadError } = await supabase
+    .from("lead_gbp_profiles")
+    .select(GBP_SELECT)
+    .eq("id", created.id)
+    .single()
+
+  if (reloadError || !data) {
     return {
       status: "error",
       message: "Não foi possível vincular o perfil. Tente novamente.",

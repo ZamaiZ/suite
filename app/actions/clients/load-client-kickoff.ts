@@ -2,7 +2,7 @@
 
 import { z } from "zod"
 import { canLogKickoff, isClientKickoffActivityType, type ClientKickoffActivityType } from "@/lib/clients/kickoff"
-import { denyUnlessCanManage, loadStaffClient } from "@/lib/clients/staff"
+import { denyUnlessCanView, loadStaffClient } from "@/lib/clients/staff"
 
 export type ClientKickoffActivity = { id: string; type: ClientKickoffActivityType; channel: string | null; channelDetail: string | null; note: string | null; meetingAt: string | null; createdAt: string; createdByName: string | null }
 export type ClientKickoffDetail = { stage: "none" | "scheduled" | "no_show" | "completed"; meetingAt: string | null; canLog: boolean; activities: ClientKickoffActivity[] }
@@ -13,7 +13,7 @@ export async function loadClientKickoff(clientId: string): Promise<LoadClientKic
   if (!parsed.success) return { status: "error", message: "Cliente inválido." }
   const loaded = await loadStaffClient(parsed.data)
   if (loaded.status === "error") return loaded
-  const denied = denyUnlessCanManage(loaded.context)
+  const denied = denyUnlessCanView(loaded.context)
   if (denied) return denied
   const { data, error } = await loaded.context.supabase.from("clients").select("kickoff_stage, kickoff_meeting_at, briefing_finalized_at").eq("id", parsed.data).maybeSingle()
   if (error || !data) return { status: "error", message: "Não foi possível carregar o kickoff." }

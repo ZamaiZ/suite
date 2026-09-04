@@ -1,7 +1,10 @@
 import "server-only"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import { canManageClientPortal } from "@/lib/clients/access"
+import {
+  canManageClientPortal,
+  canViewClient,
+} from "@/lib/clients/access"
 import { parseClientRow } from "@/lib/clients/parse"
 import { CLIENT_PORTAL_SELECT, type ClientRecord } from "@/lib/clients/types"
 import { createClient } from "@/lib/supabase/server"
@@ -62,5 +65,17 @@ export function denyUnlessCanManage(
   return {
     status: "error",
     message: "Você não pode gerenciar o acesso deste cliente.",
+  }
+}
+
+export function denyUnlessCanView(
+  context: StaffClientContext,
+): { status: "error"; message: string } | null {
+  if (canViewClient(context.roles, context.user.id, context.client.closer_id)) {
+    return null
+  }
+  return {
+    status: "error",
+    message: "Você não pode visualizar este cliente.",
   }
 }

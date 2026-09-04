@@ -152,22 +152,7 @@ export async function analyzeLeadVisibility(
     fetched_by: user.id,
   }
 
-  if (loaded.audit) {
-    const { data, error } = await supabase
-      .from("lead_visibility_audits")
-      .update(payload)
-      .eq("id", loaded.audit.id)
-      .select(VISIBILITY_SELECT)
-      .single()
-
-    if (error || !data) {
-      return { status: "error", message: ANALYZE_FAILED }
-    }
-    const audit = readLeadVisibilityAuditRow(data as Record<string, unknown>)
-    if (!audit) return { status: "error", message: ANALYZE_FAILED }
-    return { status: "success", audit }
-  }
-
+  // Append-only: cada analise cria um snapshot novo e preserva os anteriores.
   const { data, error } = await supabase
     .from("lead_visibility_audits")
     .insert(payload)

@@ -47,15 +47,18 @@ export const gbpProfileIdSchema = z.object({
   profile_id: z.uuid("Perfil inválido."),
 })
 
+const analystNote = z
+  .string()
+  .max(GBP_NOTES_MAX, `Nota deve ter no máximo ${GBP_NOTES_MAX} caracteres.`)
+  .transform((value) => {
+    const trimmed = value.trim()
+    return trimmed.length === 0 ? null : trimmed
+  })
+
 export const updateLeadGbpSchema = z.object({
   profile_id: z.uuid("Perfil inválido."),
-  notes: z
-    .string()
-    .max(GBP_NOTES_MAX, `Nota deve ter no máximo ${GBP_NOTES_MAX} caracteres.`)
-    .transform((value) => {
-      const trimmed = value.trim()
-      return trimmed.length === 0 ? null : trimmed
-    }),
+  notes: analystNote,
+  reputation_note: analystNote,
   set_primary: z.boolean(),
 })
 
@@ -130,6 +133,7 @@ export function readUpdateLeadGbpFields(formData: FormData) {
   return {
     profile_id: formText(formData, "profile_id"),
     notes: formText(formData, "notes"),
+    reputation_note: formText(formData, "reputation_note"),
     set_primary: formText(formData, "set_primary") === "true",
   }
 }

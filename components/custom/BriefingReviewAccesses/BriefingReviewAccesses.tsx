@@ -11,6 +11,7 @@ export function BriefingReviewAccesses({
   clientId,
   payload,
   secretFlags,
+  canRevealSecrets = true,
 }: BriefingReviewAccessesProps) {
   return (
     <div className="flex flex-col gap-3">
@@ -26,6 +27,7 @@ export function BriefingReviewAccesses({
           kind="wordpress"
           label="Senha"
           hasSecret={Boolean(secretFlags.wordpress)}
+          canReveal={canRevealSecrets}
         />
       </BriefingReviewSection>
       <BriefingReviewSection title="Search Console">
@@ -76,6 +78,7 @@ export function BriefingReviewAccesses({
           kind="hosting_domain"
           label="Senha"
           hasSecret={Boolean(secretFlags.hosting_domain)}
+          canReveal={canRevealSecrets}
         />
       </BriefingReviewSection>
       <BriefingReviewSection title="Domínio">
@@ -96,6 +99,7 @@ export function BriefingReviewAccesses({
           kind="domain"
           label="Senha"
           hasSecret={Boolean(secretFlags.domain)}
+          canReveal={canRevealSecrets}
         />
       </BriefingReviewSection>
       <BriefingReviewSection title="Outras ferramentas">
@@ -115,6 +119,7 @@ export function BriefingReviewAccesses({
                 kind={otherSecretKind(item.id)}
                 label="Senha"
                 hasSecret={Boolean(secretFlags[otherSecretKind(item.id)])}
+                canReveal={canRevealSecrets}
               />
             </div>
           ))

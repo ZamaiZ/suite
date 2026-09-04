@@ -22,7 +22,10 @@ import {
 import { type GbpAuditRailStepId } from "@/lib/leads/gbp-audit-rail"
 import { diagnosisFactsFingerprint } from "@/lib/leads/diagnosis-document"
 import { websiteGapsForAudit } from "@/lib/leads/website-audit"
-import { mergeWebsiteOpportunities } from "@/lib/leads/website-opportunities"
+import {
+  mergeWebsiteOpportunities,
+  missingSecurityHeaderLabels,
+} from "@/lib/leads/website-opportunities"
 import { websiteMinPerformance } from "@/lib/leads/website-pagespeed"
 import {
   digitalPresenceReviewForChannels,
@@ -160,6 +163,7 @@ export function LeadGbpPanel({
           reviewsReady:
             selected.reviews !== null &&
             !gbpJobQueued(selected.jobs, "reviews"),
+          qna: selected.qna,
           rankKeywords: selected.rank_keywords,
           rankChecks: selected.rankChecks,
         },
@@ -199,7 +203,10 @@ export function LeadGbpPanel({
   const websiteAlertCount = websiteAudit
     ? mergeWebsiteOpportunities(
         websiteGaps,
-        { minPerformance: websiteMinPerformance(websiteAudit.pagespeed) },
+        {
+          minPerformance: websiteMinPerformance(websiteAudit.pagespeed),
+          missingSecurityHeaders: missingSecurityHeaderLabels(websiteAudit.crawl),
+        },
         websiteAudit.review,
       ).length
     : 0

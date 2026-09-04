@@ -6,7 +6,12 @@ import {
   deriveBriefingListStatus,
   type BriefingListStatus,
 } from "@/lib/briefing/status"
-import { canManageClientPortal } from "@/lib/clients/access"
+import {
+  canManageClientPortal,
+  canViewAllClients,
+  canViewClient,
+  canViewOwnClients,
+} from "@/lib/clients/access"
 import { CLIENT_KICKOFF_STAGE_LABELS } from "@/lib/clients/kickoff"
 import type { ClientKickoffStage } from "@/lib/clients/types"
 import { createClient } from "@/lib/supabase/server"
@@ -23,6 +28,7 @@ export type ClientListItem = {
   briefingStatus: BriefingListStatus
   briefingStatusLabel: string
   canManagePortal: boolean
+  canViewClient: boolean
   kickoffStage: ClientKickoffStage
   kickoffStageLabel: string
   kickoffMeetingAt: string | null
@@ -38,6 +44,16 @@ export type ListClientsState =
 
 export async function listClients(params: ClientsListParams = { q: "", briefing: null, kickoff: null, closer: null }): Promise<ListClientsState> {
   const { user, roles } = await requireCommercialMember()
+  const canViewAll = canViewAllClients(roles)
+  if (!canViewAll && !canViewOwnClients(roles)) {
+    return {
+      status: "success",
+      clients: [],
+      summary: { total: 0, inProgress: 0, edited: 0, kickoffPending: 0 },
+      closerOptions: [],
+    }
+  }
+
   const supabase = await createClient()
   const search = params.q.trim().replace(/[%*,()\\]/g, "")
   let matchingLeadIds: string[] = []
@@ -53,6 +69,7 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
     .eq("stage", "initial")
     .order("converted_at", { ascending: false })
   if (params.closer) query = query.eq("closer_id", params.closer)
+  if (!canViewAll) query = query.eq("closer_id", user.id)
   if (params.kickoff) query = query.eq("kickoff_stage", params.kickoff)
   if (search) {
     query = matchingLeadIds.length > 0
@@ -123,6 +140,7 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
         briefingStatus,
         briefingStatusLabel: BRIEFING_LIST_STATUS_LABELS[briefingStatus],
         canManagePortal: canManageClientPortal(roles, user.id, row.closer_id),
+        canViewClient: canViewClient(roles, user.id, row.closer_id),
         kickoffStage: row.kickoff_stage,
         kickoffStageLabel: CLIENT_KICKOFF_STAGE_LABELS[row.kickoff_stage],
         kickoffMeetingAt: typeof row.kickoff_meeting_at === "string" ? row.kickoff_meeting_at : null,

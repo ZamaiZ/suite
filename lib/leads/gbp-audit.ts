@@ -3,7 +3,6 @@ export const GBP_UPDATES_DEPTH = 10
 export const GBP_QNA_DEPTH = 20
 export const GBP_STALE_POSTS_DAYS = 90
 export const GBP_WEAK_REVIEW_REPLY_RATIO = 0.8
-export const GBP_REVIEW_PREVIEW = 5
 export const GBP_RANK_KEYWORDS_MAX = 3
 export const GBP_RANK_KEYWORD_MAX_LEN = 80
 export const GBP_MAPS_DEPTH = 20
@@ -437,17 +436,18 @@ function readRankCheck(value: unknown): GbpRankCheck | null {
 
 export function readGbpRankChecks(value: unknown): GbpRankCheck[] {
   if (!Array.isArray(value)) return []
-  const checks: GbpRankCheck[] = []
-  const seen = new Set<string>()
+  // A tabela e append-only, entao a mesma keyword traz varias checagens.
+  // Mantem a mais recente, sem depender da ordem da consulta.
+  const latest = new Map<string, GbpRankCheck>()
   for (const item of value) {
     const parsed = readRankCheck(item)
     if (!parsed) continue
     const folded = parsed.keyword.toLowerCase()
-    if (seen.has(folded)) continue
-    seen.add(folded)
-    checks.push(parsed)
+    const current = latest.get(folded)
+    if (current && current.checked_at >= parsed.checked_at) continue
+    latest.set(folded, parsed)
   }
-  return checks
+  return [...latest.values()]
 }
 
 type MapsRankItem = {

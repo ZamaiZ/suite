@@ -3,4 +3,5 @@ export type BriefingReviewSecretFieldProps = {
   kind: string
   label: string
   hasSecret: boolean
+  canReveal?: boolean
 }

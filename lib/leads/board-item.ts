@@ -33,6 +33,9 @@ export type LeadBoardItem = {
   segment: LeadSegment | null
   state_code: BrazilStateCode | null
   city: string | null
+  client_id: string | null
+  converted_at: string | null
+  can_view_client: boolean
 }
 
 export type LeadBoardRow = {
@@ -66,6 +69,9 @@ export function toLeadBoardItem(
     segment?: LeadSegment | null
     state_code?: BrazilStateCode | null
     city?: string | null
+    client_id?: string | null
+    converted_at?: string | null
+    can_view_client?: boolean
   },
 ): LeadBoardItem | null {
   if (!isLeadStatus(row.status)) return null
@@ -113,6 +119,9 @@ export function toLeadBoardItem(
     segment,
     state_code: extras?.state_code ?? row.state_code ?? null,
     city: extras?.city ?? row.city ?? null,
+    client_id: extras?.client_id ?? null,
+    converted_at: extras?.converted_at ?? null,
+    can_view_client: extras?.can_view_client ?? false,
   }
 }
 

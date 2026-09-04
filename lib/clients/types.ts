@@ -7,6 +7,8 @@ export type ClientRecord = {
   company_name: string
   closer_id: string | null
   converted_at: string
+  /** Âncora do "antes" da auditoria; nulo em clientes anteriores à mudança. */
+  baseline_at: string | null
   stage: ClientStage
   kickoff_stage: ClientKickoffStage
   kickoff_meeting_at: string | null
@@ -26,6 +28,7 @@ export const CLIENT_PORTAL_SELECT = [
   "company_name",
   "closer_id",
   "converted_at",
+  "baseline_at",
   "stage",
   "kickoff_stage",
   "kickoff_meeting_at",

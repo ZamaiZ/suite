@@ -24,7 +24,10 @@ import {
   type LeadDigitalChannel,
 } from "@/lib/leads/digital-channels"
 import { websiteGapsForAudit } from "@/lib/leads/website-audit"
-import { mergeWebsiteOpportunities } from "@/lib/leads/website-opportunities"
+import {
+  mergeWebsiteOpportunities,
+  missingSecurityHeaderLabels,
+} from "@/lib/leads/website-opportunities"
 import {
   websiteMinPerformance,
   websitePsiJobsActive,
@@ -187,7 +190,10 @@ export function LeadWebsitePanel({
   const opportunities = audit
     ? mergeWebsiteOpportunities(
         gaps,
-        { minPerformance: websiteMinPerformance(audit.pagespeed) },
+        {
+          minPerformance: websiteMinPerformance(audit.pagespeed),
+          missingSecurityHeaders: missingSecurityHeaderLabels(audit.crawl),
+        },
         review ?? audit.review,
       )
     : []

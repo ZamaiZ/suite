@@ -96,9 +96,11 @@ function applyLeadPatch(
 }
 
 function isDueFollowUp(lead: {
+  status: string
   next_follow_up_at: string | null
   closing_meeting_at: string | null
 }): boolean {
+  if (lead.status === "converted") return false
   const times = [lead.next_follow_up_at, lead.closing_meeting_at]
   return times.some((at) => {
     if (!at) return false
@@ -113,6 +115,7 @@ export function LeadBoard({
   listParams,
   tagOptions,
   segmentOptions,
+  canViewTeamLeads,
   initialLeadId = null,
 }: LeadBoardProps) {
   const finePointer = useFinePointer()
@@ -201,10 +204,6 @@ export function LeadBoard({
   }
 
   function patchItem(leadId: string, patch: Partial<LeadBoardItem>) {
-    if (patch.status === "converted") {
-      setItems((current) => current.filter((lead) => lead.id !== leadId))
-      return
-    }
     if (
       listParams.tag &&
       patch.tags &&
@@ -258,7 +257,8 @@ export function LeadBoard({
   }
 
   const selected = selectedId ? (leadsById.get(selectedId) ?? null) : null
-  const scopeLabel = listParams.team ? "Todos" : "Minha carteira"
+  const scopeLabel =
+    listParams.team && canViewTeamLeads ? "Todos" : "Minha carteira"
   const countLabel =
     optimisticLeads.length === 1
       ? "1 lead"
@@ -270,6 +270,7 @@ export function LeadBoard({
         listParams={listParams}
         tagOptions={tagOptions}
         segmentOptions={segmentOptions}
+        canViewTeamLeads={canViewTeamLeads}
         dueTodayCount={dueTodayCount}
         pendingCount={pendingCount}
       />
@@ -404,7 +405,7 @@ export function LeadBoard({
         open={selectedId !== null}
         onClose={closeLead}
         leadId={selectedId}
-        readOnly={listParams.team}
+        readOnly={listParams.team || selected?.status === "converted"}
         onMutated={(patch) => {
           if (!selectedId) return
           patchItem(selectedId, patch)

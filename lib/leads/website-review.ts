@@ -221,6 +221,48 @@ export function readWebsiteReview(
   return review
 }
 
+/**
+ * Revisao do analista vive em `lead_website_reviews`, por canal, e nao dentro
+ * do snapshot da auditoria. O julgamento e sobre o lead, nao sobre a coleta:
+ * uma nova analise nao deve zera-lo nem duplica-lo por snapshot.
+ */
+export type LeadWebsiteReview = {
+  channel_id: string
+  review: WebsiteReview
+  notes: string | null
+  updated_at: string | null
+  updated_by: string | null
+}
+
+export function readLeadWebsiteReviewRow(
+  row: Record<string, unknown>,
+): LeadWebsiteReview | null {
+  const channel_id = asString(row.channel_id)
+  if (!channel_id) return null
+  return {
+    channel_id,
+    review: readWebsiteReview(row.review, asString(row.notes)),
+    notes: asString(row.notes),
+    updated_at: asString(row.updated_at),
+    updated_by: asString(row.updated_by),
+  }
+}
+
+/** Indexa as revisoes por canal para hidratar varias auditorias de uma vez. */
+export function websiteReviewsByChannel(
+  rows: unknown,
+): Map<string, WebsiteReview> {
+  const map = new Map<string, WebsiteReview>()
+  if (!Array.isArray(rows)) return map
+  for (const item of rows) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) continue
+    const parsed = readLeadWebsiteReviewRow(item as Record<string, unknown>)
+    if (!parsed) continue
+    map.set(parsed.channel_id, parsed.review)
+  }
+  return map
+}
+
 export function websiteReviewDraft(review: WebsiteReview): WebsiteReview {
   const next = emptyWebsiteReview()
   for (const id of WEBSITE_REVIEW_CRITERION_IDS) {

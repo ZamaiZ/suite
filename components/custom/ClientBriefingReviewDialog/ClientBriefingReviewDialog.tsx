@@ -84,6 +84,7 @@ export function ClientBriefingReviewDialog({
   onClose,
   clientId,
   companyName,
+  readOnly = false,
 }: ClientBriefingReviewDialogProps) {
   const reduced = !!useReducedMotion()
   const requestIdRef = useRef(0)
@@ -171,6 +172,7 @@ export function ClientBriefingReviewDialog({
   }
 
   async function startEdit() {
+    if (readOnly) return
     if (!clientId || !activeStep) return
     if (activeStep === "audience" && !stepCache.company) {
       const result = await loadStaffBriefingStep(clientId, "company")
@@ -237,9 +239,10 @@ export function ClientBriefingReviewDialog({
   const stepMeta = overview?.steps.find((step) => step.id === activeStep)
 
   const canEditBriefing =
-    overview?.status === "finalized" ||
-    overview?.status === "edited_after_submit"
-  const canUseContact = canEditBriefing
+    !readOnly &&
+    (overview?.status === "finalized" ||
+      overview?.status === "edited_after_submit")
+  const canUseContact = true
   const statusTone =
     overview?.status === "finalized"
       ? "success"
@@ -357,11 +360,13 @@ export function ClientBriefingReviewDialog({
                 }
                 transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
               >
-                <ClientBriefingExport
-                  clientId={overviewState.overview.clientId}
-                  finalizedAt={overviewState.overview.finalizedAt}
-                  contentUpdatedAt={overviewState.overview.contentUpdatedAt}
-                />
+                {!readOnly ? (
+                  <ClientBriefingExport
+                    clientId={overviewState.overview.clientId}
+                    finalizedAt={overviewState.overview.finalizedAt}
+                    contentUpdatedAt={overviewState.overview.contentUpdatedAt}
+                  />
+                ) : null}
                 <BriefingReviewOverview
                   steps={overviewState.overview.steps}
                   completedCount={overviewState.overview.completedCount}
@@ -425,6 +430,7 @@ export function ClientBriefingReviewDialog({
                       clientId={clientId!}
                       data={stepLoad.data}
                       editing={editing}
+                      readOnly={readOnly}
                       companyPayload={
                         stepCache.company &&
                         stepCache.company.step === "company"
@@ -460,11 +466,13 @@ function StepBody({
   clientId,
   data,
   editing,
+  readOnly,
   companyPayload,
 }: {
   clientId: string
   data: Extract<StaffBriefingStepResult, { status: "success" }>
   editing: boolean
+  readOnly: boolean
   companyPayload: ReturnType<typeof emptyCompanyPayload>
 }) {
   if (editing) {
@@ -569,7 +577,11 @@ function StepBody({
       )
     case "website":
       return (
-        <BriefingReviewWebsite clientId={clientId} payload={data.payload} />
+        <BriefingReviewWebsite
+          clientId={clientId}
+          payload={data.payload}
+          canOpenAssets={!readOnly}
+        />
       )
     case "accesses":
       return (
@@ -577,6 +589,7 @@ function StepBody({
           clientId={clientId}
           payload={data.payload}
           secretFlags={data.secretFlags}
+          canRevealSecrets={!readOnly}
         />
       )
     case "closing":

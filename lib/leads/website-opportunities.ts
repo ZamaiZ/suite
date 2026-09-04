@@ -1,7 +1,12 @@
 import {
   WEBSITE_GAP_LABELS,
+  type WebsiteCrawl,
   type WebsiteGapId,
 } from "./website-audit.ts"
+import {
+  missingSecurityHeaders,
+  SECURITY_HEADER_LABELS,
+} from "./website-headers.ts"
 import { PSI_PERFORMANCE_POOR } from "./website-pagespeed.ts"
 import {
   WEBSITE_REVIEW_CATALOG,
@@ -23,6 +28,25 @@ export type WebsiteOpportunityItem = {
 
 export type WebsiteOpportunityContext = {
   minPerformance?: number | null
+  /** Rótulos dos headers ausentes, para o detalhe de weak_security_headers. */
+  missingSecurityHeaders?: string[]
+}
+
+/**
+ * Reúne os headers que faltam em qualquer página lida com sucesso. Fica aqui
+ * para que os três pontos que montam oportunidades usem a mesma regra.
+ */
+export function missingSecurityHeaderLabels(
+  crawl: WebsiteCrawl,
+): string[] {
+  const missing = new Set<string>()
+  for (const page of crawl.pages) {
+    if (page.status <= 0 || page.status >= 400) continue
+    for (const key of missingSecurityHeaders(page.headers)) {
+      missing.add(SECURITY_HEADER_LABELS[key])
+    }
+  }
+  return [...missing]
 }
 
 const HIGH_IMPACT = new Set<WebsiteGapId>([
@@ -41,6 +65,10 @@ const HIGH_IMPACT = new Set<WebsiteGapId>([
   "a11y_issues",
   "mixed_content",
   "noindex",
+  "canonical_external",
+  "canonical_vs_noindex",
+  "noindex_internal_pages",
+  "robots_blocks_search",
 ])
 
 const OPPORTUNITY_TITLES: Partial<Record<WebsiteGapId, string>> = {
@@ -69,6 +97,18 @@ const OPPORTUNITY_TITLES: Partial<Record<WebsiteGapId, string>> = {
   a11y_issues: "Corrigir contraste e acessibilidade",
   mixed_content: "Servir todos os recursos em HTTPS",
   noindex: "Remover noindex da página inicial",
+  canonical_missing: "Declarar a URL canônica das páginas",
+  canonical_points_elsewhere: "Corrigir canonical apontando para outra URL",
+  canonical_external: "Remover canonical para domínio externo",
+  canonical_insecure: "Apontar o canonical para HTTPS",
+  canonical_vs_noindex: "Resolver conflito entre canonical e noindex",
+  canonical_non_indexable: "Apontar o canonical para uma URL indexável",
+  host_canonicalization: "Unificar www e sem www",
+  slash_canonicalization: "Unificar URLs com e sem barra final",
+  weak_security_headers: "Configurar headers de segurança",
+  heading_hierarchy: "Corrigir a hierarquia de títulos",
+  noindex_internal_pages: "Remover noindex das páginas internas",
+  robots_blocks_search: "Liberar o rastreamento no robots.txt",
 }
 
 function impactFor(
@@ -87,11 +127,15 @@ export function websiteOpportunitiesFromGaps(
   gaps: WebsiteGapId[],
   context: WebsiteOpportunityContext = {},
 ): WebsiteOpportunityItem[] {
+  const missing = context.missingSecurityHeaders ?? []
   const items = gaps.map((id) => ({
     id,
     title: OPPORTUNITY_TITLES[id] ?? WEBSITE_GAP_LABELS[id],
     impact: impactFor(id, context),
     source: "machine" as const,
+    ...(id === "weak_security_headers" && missing.length > 0
+      ? { detail: `Ausentes: ${missing.join(", ")}` }
+      : {}),
   }))
   items.sort((left, right) => {
     if (left.impact !== right.impact) return left.impact === "high" ? -1 : 1

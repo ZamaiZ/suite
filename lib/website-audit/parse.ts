@@ -7,11 +7,19 @@ import {
 import {
   EMPTY_WEBSITE_CRAWL_SIGNALS,
   emptyWebsiteCrawlSocialUrls,
+  emptyWebsiteMeasurementIds,
   WEBSITE_INTERNAL_PATHS_MAX,
   WEBSITE_TEXT_EXCERPT_MAX,
   type WebsiteCrawlSignals,
   type WebsitePageSnapshot,
 } from "../leads/website-audit.ts"
+import { normalizeCanonical } from "../leads/website-canonical.ts"
+import { headerBlocksIndexing } from "../leads/website-headers.ts"
+import {
+  HEADING_TEXT_MAX,
+  headingsAtLevel,
+  type WebsiteHeading,
+} from "../leads/website-headings.ts"
 import { normalizeWebsiteDomain } from "../leads/website.ts"
 
 const SKIP_ASSET =
@@ -139,6 +147,7 @@ export function extractHtmlSignals(
     return {
       ...EMPTY_WEBSITE_CRAWL_SIGNALS,
       socialUrls: emptyWebsiteCrawlSocialUrls(),
+      measurementIds: emptyWebsiteMeasurementIds(),
     }
   }
 
@@ -179,7 +188,21 @@ export function extractHtmlSignals(
     }
   })
 
+  // O mesmo haystack ja casado pelos booleanos carrega os identificadores.
+  const first = (pattern: RegExp): string | null => {
+    const match = pattern.exec(haystack)
+    return match?.[0]?.toUpperCase() ?? null
+  }
+
   return {
+    measurementIds: {
+      ga4: first(/g-[a-z0-9]{6,}/i),
+      gtm: first(/gtm-[a-z0-9]{5,}/i),
+      googleAds: first(/aw-\d{6,}/i),
+      metaPixel: /fbq\(\s*['"]init['"]\s*,\s*['"](\d{8,})['"]/i.exec(
+        haystack,
+      )?.[1] ?? null,
+    },
     hasGtm: /googletagmanager\.com\/gtm\.js/i.test(haystack),
     hasGtag:
       /gtag\/js/i.test(haystack) ||
@@ -196,13 +219,56 @@ export function extractHtmlSignals(
   }
 }
 
+/**
+ * Snapshot minimo de uma pagina da amostra que nao pode ser lida.
+ *
+ * Com a amostra fixa, uma pagina que passou a responder erro e informacao do
+ * comparativo — "essa pagina sumiu" — e nao pode simplesmente desaparecer da
+ * lista, senao a contagem muda sem que ninguem saiba por que.
+ */
+export function emptyPageSnapshot(
+  url: string,
+  status: number,
+): WebsitePageSnapshot {
+  return {
+    url,
+    status,
+    title: null,
+    metaDescription: null,
+    h1: [],
+    h2: [],
+    wordCount: 0,
+    imageCount: 0,
+    imagesWithoutAlt: 0,
+    internalLinkCount: 0,
+    internalPaths: [],
+    schemaTypes: [],
+    hasTel: false,
+    hasWhatsapp: false,
+    hasMailto: false,
+    contactInFooterOnly: false,
+    phones: [],
+    textExcerpt: "",
+    canonical: null,
+    headings: [],
+    headers: {},
+    indexable: true,
+  }
+}
+
 export function parseHtmlPage(
   html: string,
   pageUrl: string,
   status: number,
+  headers: Record<string, string> = {},
 ): WebsitePageSnapshot {
   const url = new URL(pageUrl)
   const $ = load(html)
+
+  const canonical = normalizeCanonical(
+    $('link[rel="canonical"]').first().attr("href"),
+    url,
+  )
 
   const types = new Set<string>()
   $('script[type="application/ld+json"]').each((_, node) => {
@@ -223,14 +289,19 @@ export function parseHtmlPage(
     $('meta[property="og:description"]').attr("content")?.trim() ||
     null
 
-  const h1 = $("h1")
-    .toArray()
-    .map((node) => $(node).text().replace(/\s+/g, " ").trim())
-    .filter(Boolean)
-  const h2 = $("h2")
-    .toArray()
-    .map((node) => $(node).text().replace(/\s+/g, " ").trim())
-    .filter(Boolean)
+  // Lista unica na ordem do documento: e o que permite validar hierarquia.
+  // h1 e h2 continuam no snapshot, derivados dela, para nao quebrar leitores.
+  const headings: WebsiteHeading[] = []
+  $("h1, h2, h3, h4, h5, h6").each((_, node) => {
+    const tag = (node as { tagName?: string }).tagName?.toLowerCase() ?? ""
+    const level = Number.parseInt(tag.slice(1), 10)
+    if (!Number.isFinite(level) || level < 1 || level > 6) return
+    const text = $(node).text().replace(/\s+/g, " ").trim()
+    if (!text) return
+    headings.push({ level, text: text.slice(0, HEADING_TEXT_MAX) })
+  })
+  const h1 = headingsAtLevel(headings, 1)
+  const h2 = headingsAtLevel(headings, 2)
 
   const bodyText = $("body").text().replace(/\s+/g, " ").trim()
   const words = bodyText ? bodyText.split(" ").filter(Boolean) : []
@@ -317,7 +388,11 @@ export function parseHtmlPage(
     contactInFooterOnly,
     phones,
     textExcerpt,
-    indexable: pageIsIndexable($),
+    canonical,
+    headings,
+    headers,
+    // O header X-Robots-Tag pesa tanto quanto a meta robots para indexacao.
+    indexable: pageIsIndexable($) && !headerBlocksIndexing(headers),
   }
 }
 

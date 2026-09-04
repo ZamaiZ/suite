@@ -2,9 +2,13 @@
 
 import { z } from "zod"
 import { requireCommercialMember } from "@/lib/auth/session"
-import { canManageClientPortal } from "@/lib/clients/access"
+import { canManageClientPortal, canViewClient } from "@/lib/clients/access"
 import { buildPortalUrl } from "@/lib/clients/portal-session"
 import { CLIENT_PORTAL_SELECT } from "@/lib/clients/types"
+import {
+  resolveAuditBaseline,
+  type AuditBaseline,
+} from "@/lib/leads/audit-baseline"
 import { createClient } from "@/lib/supabase/server"
 import { parseClientRow } from "@/lib/clients/parse"
 
@@ -21,6 +25,14 @@ export type ClientDetail = {
   portalGeneratedAt: string | null
   portalRotatedAt: string | null
   canManagePortal: boolean
+  canViewClient: boolean
+  /**
+   * Snapshots que servem de "antes". Um id nulo significa que aquela dimensão
+   * não tinha coleta até a conversão — a interface diz isso em vez de exibir
+   * um comparativo falso.
+   */
+  baselineAt: string | null
+  baseline: AuditBaseline
 }
 
 export type GetClientState =
@@ -73,6 +85,10 @@ export async function getClient(clientId: string): Promise<GetClientState> {
   }
 
   const hasPortalAccess = Boolean(record.portal_slug && record.portal_code_hash)
+  const canView = canViewClient(roles, user.id, record.closer_id)
+  if (!canView) {
+    return { status: "error", message: "Cliente não encontrado." }
+  }
   const canManagePortal = canManageClientPortal(
     roles,
     user.id,
@@ -97,6 +113,13 @@ export async function getClient(clientId: string): Promise<GetClientState> {
       portalGeneratedAt: record.portal_code_generated_at,
       portalRotatedAt: record.portal_code_rotated_at,
       canManagePortal,
+      canViewClient: canView,
+      baselineAt: record.baseline_at,
+      baseline: await resolveAuditBaseline(
+        supabase,
+        record.lead_id,
+        record.baseline_at,
+      ),
     },
   }
 }

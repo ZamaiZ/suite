@@ -13,6 +13,7 @@ import {
   type ClosingStage,
 } from "@/lib/leads/closing"
 import { canonicalWebsiteUrl } from "@/lib/leads/website"
+import { clientsListHref } from "@/lib/clients/href"
 import type { LeadAssignmentPatch } from "@/app/actions/leads"
 import type { LeadDetailTab } from "./LeadDetailDialog.types"
 
@@ -43,6 +44,8 @@ export function LeadDetailHeader({
   canClaim,
   canUnclaim,
   createdByName,
+  clientId,
+  canViewClient,
   readOnly,
   closeDisabled,
   onClose,
@@ -61,6 +64,8 @@ export function LeadDetailHeader({
   canClaim: boolean
   canUnclaim: boolean
   createdByName: string | null
+  clientId: string | null
+  canViewClient: boolean
   readOnly: boolean
   closeDisabled: boolean
   onClose: () => void
@@ -81,6 +86,14 @@ export function LeadDetailHeader({
         >
           {getLeadInitials(companyName)}
         </span>
+        {clientId && canViewClient ? (
+          <a
+            href={clientsListHref({ client: clientId })}
+            className="inline-flex h-7 items-center rounded-md bg-success/10 px-2 font-sans text-caption font-medium text-success transition-colors hover:bg-success/15 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
+            Abrir cliente
+          </a>
+        ) : null}
         <div className="min-w-0">
           <p className="truncate font-sans text-body-sm font-semibold text-fg">
             {companyName}

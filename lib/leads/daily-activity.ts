@@ -21,11 +21,11 @@ export function matchesPendingFilter(
   pendingOn: boolean,
 ): boolean {
   if (!pendingOn) return true
+  if (lead.status === "converted") return false
   if (
     lead.status === "new" ||
     lead.status === "denied" ||
-    lead.status === "interested" ||
-    lead.status === "converted"
+    lead.status === "interested"
   ) {
     return true
   }

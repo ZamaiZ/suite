@@ -32,7 +32,7 @@ import { LeadGbpSummaryCards } from "./LeadGbpSummaryCards"
 import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
-import { gbpOpportunitiesFromGaps } from "@/lib/leads/gbp-opportunities"
+import { mergeGbpOpportunities } from "@/lib/leads/gbp-opportunities"
 import {
   gbpGapsForProfile,
   type LeadGbpProfile,
@@ -105,6 +105,9 @@ export function LeadGbpProfileCard({
   const onUpdatedRef = useRef(onUpdated)
   onUpdatedRef.current = onUpdated
   const notesRef = useRef(profile.notes ?? "")
+  // A leitura de reputação divide o mesmo ciclo de salvamento das notas: são
+  // duas colunas da mesma linha, gravadas pela mesma action.
+  const reputationRef = useRef(profile.reputation_note ?? "")
   const notesTimerRef = useRef(0)
   const profileRef = useRef(profile)
   profileRef.current = profile
@@ -113,6 +116,7 @@ export function LeadGbpProfileCard({
 
   useEffect(() => {
     notesRef.current = profile.notes ?? ""
+    reputationRef.current = profile.reputation_note ?? ""
     setNotesStatus("idle")
   }, [profile.id])
 
@@ -156,11 +160,16 @@ export function LeadGbpProfileCard({
     return () => {
       window.clearTimeout(notesTimerRef.current)
       const current = profileRef.current
-      const next = notesRef.current
-      if (next.trim() === (current.notes ?? "")) return
+      const notes = notesRef.current
+      const reputation = reputationRef.current
+      const dirty =
+        notes.trim() !== (current.notes ?? "") ||
+        reputation.trim() !== (current.reputation_note ?? "")
+      if (!dirty) return
       const formData = new FormData()
       formData.set("profile_id", current.id)
-      formData.set("notes", next)
+      formData.set("notes", notes)
+      formData.set("reputation_note", reputation)
       formData.set("set_primary", "false")
       void updateLeadGbpProfile(formData)
     }
@@ -182,15 +191,17 @@ export function LeadGbpProfileCard({
       reviews: profile.reviews,
       reviewsReady:
         profile.reviews !== null && !gbpJobQueued(profile.jobs, "reviews"),
+      qna: profile.qna,
       rankKeywords: profile.rank_keywords,
       rankChecks: profile.rankChecks,
     },
   )
-  const opportunities = gbpOpportunitiesFromGaps(
+  const opportunities = mergeGbpOpportunities({
     gaps,
-    profile.rankChecks,
-    profile.rank_keywords,
-  )
+    rankChecks: profile.rankChecks,
+    keywords: profile.rank_keywords,
+    reputationNote: profile.reputation_note,
+  })
   const collectingPosts = profile.jobs.some(
     (job) => job.kind === "updates" && job.status === "queued",
   )
@@ -200,8 +211,16 @@ export function LeadGbpProfileCard({
   const collecting = collectingPosts || collectingReviews || actionPending || busy
   const failedJobs = profile.jobs.filter((job) => job.status === "failed")
 
-  async function persistNotes(next: string) {
-    if (next.trim() === (profileRef.current.notes ?? "")) {
+  function analystFieldsDirty() {
+    const current = profileRef.current
+    return (
+      notesRef.current.trim() !== (current.notes ?? "") ||
+      reputationRef.current.trim() !== (current.reputation_note ?? "")
+    )
+  }
+
+  async function persistNotes() {
+    if (!analystFieldsDirty()) {
       setNotesStatus("idle")
       return true
     }
@@ -209,7 +228,8 @@ export function LeadGbpProfileCard({
     setError(null)
     const formData = new FormData()
     formData.set("profile_id", profileRef.current.id)
-    formData.set("notes", next)
+    formData.set("notes", notesRef.current)
+    formData.set("reputation_note", reputationRef.current)
     formData.set("set_primary", "false")
     const result = await updateLeadGbpProfile(formData)
     if (result.status === "error") {
@@ -222,14 +242,23 @@ export function LeadGbpProfileCard({
     return true
   }
 
-  function handleDraftChange(next: string) {
-    notesRef.current = next
+  function scheduleAnalystSave() {
     window.clearTimeout(notesTimerRef.current)
     if (!canEdit) return
-    if (next.trim() === (profileRef.current.notes ?? "")) return
+    if (!analystFieldsDirty()) return
     notesTimerRef.current = window.setTimeout(() => {
-      void persistNotes(notesRef.current)
+      void persistNotes()
     }, NOTES_DEBOUNCE_MS)
+  }
+
+  function handleDraftChange(next: string) {
+    notesRef.current = next
+    scheduleAnalystSave()
+  }
+
+  function handleReputationDraftChange(next: string) {
+    reputationRef.current = next
+    scheduleAnalystSave()
   }
 
   async function run(action: () => Promise<void>) {
@@ -272,13 +301,14 @@ export function LeadGbpProfileCard({
 
   function handlePrimary() {
     void run(async () => {
-      if (notesRef.current.trim() !== (profile.notes ?? "")) {
-        const saved = await persistNotes(notesRef.current)
+      if (analystFieldsDirty()) {
+        const saved = await persistNotes()
         if (!saved) return
       }
       const formData = new FormData()
       formData.set("profile_id", profile.id)
       formData.set("notes", notesRef.current)
+      formData.set("reputation_note", reputationRef.current)
       formData.set("set_primary", "true")
       const result = await updateLeadGbpProfile(formData)
       if (result.status === "error") {
@@ -497,8 +527,24 @@ export function LeadGbpProfileCard({
               errorMessage={notesStatus === "error" ? error : null}
               onDraftChange={handleDraftChange}
               onRetry={() => {
-                void persistNotes(notesRef.current)
+                void persistNotes()
               }}
+            />
+          </m.div>
+          <m.div variants={item} className="md:col-span-2 xl:col-span-1">
+            <LeadGbpNotesCard
+              id={`gbp-reputation-${profile.id}`}
+              profileId={profile.id}
+              initialValue={profile.reputation_note ?? ""}
+              canEdit={canEdit}
+              status={notesStatus}
+              errorMessage={notesStatus === "error" ? error : null}
+              onDraftChange={handleReputationDraftChange}
+              onRetry={() => {
+                void persistNotes()
+              }}
+              title="Leitura da reputação"
+              placeholder="Sentimento das avaliações, temas recorrentes, o que os números não contam"
             />
           </m.div>
         </m.div>

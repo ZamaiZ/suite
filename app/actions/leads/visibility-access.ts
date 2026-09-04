@@ -31,10 +31,13 @@ export async function loadVisibilityAuditByLead(
   if (lead === "error") return { status: "error" }
   if (lead === "not_found") return { status: "not_found" }
 
+  // Append-only: a leitura padrao e sempre o snapshot mais recente do lead.
   const { data, error } = await supabase
     .from("lead_visibility_audits")
     .select(VISIBILITY_SELECT)
     .eq("lead_id", leadId)
+    .order("fetched_at", { ascending: false })
+    .limit(1)
     .maybeSingle()
 
   if (error) return { status: "error" }

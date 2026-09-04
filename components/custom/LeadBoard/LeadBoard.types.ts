@@ -19,5 +19,6 @@ export type LeadBoardProps = {
   listParams: LeadsListParams
   tagOptions: LeadTagFilterOption[]
   segmentOptions: LeadSegmentFilterOption[]
+  canViewTeamLeads: boolean
   initialLeadId?: string | null
 }

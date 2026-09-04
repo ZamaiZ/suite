@@ -19,7 +19,33 @@ export const CLIENT_PORTAL_MANAGER_ROLES = [
   "customer_success",
 ] as const satisfies readonly AppRole[]
 
+export const CLIENT_VIEW_ALL_ROLES = [
+  "admin",
+  "commercial_manager",
+  "analyst",
+  "customer_success",
+] as const satisfies readonly AppRole[]
+
 const HASH_ENCODING = "hex" as const
+
+export function canViewAllClients(roles: readonly AppRole[]): boolean {
+  return hasAnyRole(roles, CLIENT_VIEW_ALL_ROLES)
+}
+
+export function canViewOwnClients(roles: readonly AppRole[]): boolean {
+  return roles.includes("closer")
+}
+
+export function canViewClient(
+  roles: readonly AppRole[],
+  userId: string,
+  closerId: string | null,
+): boolean {
+  return (
+    canViewAllClients(roles) ||
+    (canViewOwnClients(roles) && closerId === userId)
+  )
+}
 
 export function canManageClientPortal(
   roles: readonly AppRole[],

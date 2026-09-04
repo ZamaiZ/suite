@@ -25,7 +25,10 @@ import {
 import type { DigitalPresenceReview } from "./digital-presence-review.ts"
 import type { LeadGbpProfile } from "./gbp.ts"
 import { gbpGapsForProfile } from "./gbp.ts"
-import { gbpOpportunitiesFromGaps, GbpOpportunityItem } from "./gbp-opportunities.ts"
+import {
+  mergeGbpOpportunities,
+  type GbpOpportunityItem,
+} from "./gbp-opportunities.ts"
 import {
   formatGbpCount,
   formatGbpRating,
@@ -40,7 +43,10 @@ import {
   websiteGapsForAudit,
   type LeadWebsiteAudit,
 } from "./website-audit.ts"
-import { mergeWebsiteOpportunities } from "./website-opportunities.ts"
+import {
+  mergeWebsiteOpportunities,
+  missingSecurityHeaderLabels,
+} from "./website-opportunities.ts"
 import { websiteMinPerformance } from "./website-pagespeed.ts"
 import { gbpJobQueued } from "./gbp-audit.ts"
 
@@ -157,15 +163,17 @@ function googleOpportunities(
       reviews: profile.reviews,
       reviewsReady:
         profile.reviews !== null && !gbpJobQueued(profile.jobs, "reviews"),
+      qna: profile.qna,
       rankKeywords: profile.rank_keywords,
       rankChecks: profile.rankChecks,
     },
   )
-  return gbpOpportunitiesFromGaps(
+  return mergeGbpOpportunities({
     gaps,
-    profile.rankChecks,
-    profile.rank_keywords,
-  )
+    rankChecks: profile.rankChecks,
+    keywords: profile.rank_keywords,
+    reputationNote: profile.reputation_note,
+  })
 }
 
 function googleMetrics(profile: LeadGbpProfile): DiagnosisKeyMetric[] {
@@ -289,6 +297,9 @@ export function compileDiagnosisFacts(
         websiteGaps,
         {
           minPerformance: websiteMinPerformance(input.websiteAudit.pagespeed),
+          missingSecurityHeaders: missingSecurityHeaderLabels(
+            input.websiteAudit.crawl,
+          ),
         },
         input.websiteAudit.review,
       ).map(toRef)

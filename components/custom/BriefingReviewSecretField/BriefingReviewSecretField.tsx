@@ -17,6 +17,7 @@ export function BriefingReviewSecretField({
   kind,
   label,
   hasSecret,
+  canReveal = true,
 }: BriefingReviewSecretFieldProps) {
   const [value, setValue] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -56,6 +57,8 @@ export function BriefingReviewSecretField({
       <p className="font-sans text-caption font-medium text-fg-muted">{label}</p>
       {!hasSecret ? (
         <p className="font-sans text-body-sm text-fg">—</p>
+      ) : !canReveal ? (
+        <p className="font-sans text-body-sm text-fg-muted">Protegida</p>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
           <p className="min-w-0 flex-1 font-mono text-body-sm text-fg">

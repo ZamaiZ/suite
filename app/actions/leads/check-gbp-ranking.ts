@@ -24,7 +24,7 @@ import {
   loadGbpProfileRow,
   matchedKeyForSnapshot,
   rowToGbpProfile,
-  upsertGbpRankCheck,
+  insertGbpRankCheck,
 } from "./gbp-access"
 
 export type CheckLeadGbpRankingState =
@@ -153,7 +153,7 @@ export async function checkLeadGbpRanking(
 
   for (const result of results) {
     if (result.status !== "ok") continue
-    const ok = await upsertGbpRankCheck(
+    const ok = await insertGbpRankCheck(
       supabase,
       parsed.data.profile_id,
       result.check,

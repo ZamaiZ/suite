@@ -1,21 +1,14 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import {
-  readLeadWebsiteAuditRow,
-  type LeadWebsiteAudit,
-} from "@/lib/leads/website-audit"
+import type { LeadWebsiteAudit } from "@/lib/leads/website-audit"
 import { stampWebsiteReview } from "@/lib/leads/website-review"
 import {
   readUpdateWebsiteAuditFields,
   updateWebsiteAuditSchema,
 } from "@/lib/validations/lead-website"
 import { createClient } from "@/lib/supabase/server"
-import {
-  denyWebsiteEdit,
-  loadWebsiteAuditRow,
-  WEBSITE_SELECT,
-} from "./website-access"
+import { denyWebsiteEdit, loadWebsiteAuditRow } from "./website-access"
 
 export type UpdateLeadWebsiteAuditState =
   | { status: "success"; audit: LeadWebsiteAudit }
@@ -49,26 +42,24 @@ export async function updateLeadWebsiteAudit(
   const denied = denyWebsiteEdit(loaded.lead, user.id, roles)
   if (denied) return { status: "error", message: denied }
 
-  const { data, error } = await supabase
-    .from("lead_website_audits")
-    .update({
-      review: stampWebsiteReview(
-        parsed.data.review,
-        user.id,
-        new Date().toISOString(),
-      ),
-    })
-    .eq("id", parsed.data.audit_id)
-    .select(WEBSITE_SELECT)
-    .single()
+  // A revisao vive por canal, fora do snapshot: uma nova analise nao a apaga e
+  // ela nao se duplica a cada coleta.
+  const now = new Date().toISOString()
+  const review = stampWebsiteReview(parsed.data.review, user.id, now)
+  const { error } = await supabase.from("lead_website_reviews").upsert(
+    {
+      lead_id: loaded.audit.lead_id,
+      channel_id: loaded.audit.channel_id,
+      review,
+      updated_at: now,
+      updated_by: user.id,
+    },
+    { onConflict: "channel_id" },
+  )
 
-  if (error || !data) {
+  if (error) {
     return { status: "error", message: SAVE_FAILED }
   }
 
-  const audit = readLeadWebsiteAuditRow(data as Record<string, unknown>)
-  if (!audit) {
-    return { status: "error", message: SAVE_FAILED }
-  }
-  return { status: "success", audit }
+  return { status: "success", audit: { ...loaded.audit, review } }
 }

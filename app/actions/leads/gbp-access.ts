@@ -21,7 +21,7 @@ import type { createClient } from "@/lib/supabase/server"
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
 const GBP_SELECT =
-  "id, lead_id, place_id, is_primary, sort_order, google_maps_uri, fetched_at, fetched_by, payload, matched_website_key, notes, cid, enrichment, enrichment_at, posts, posts_at, reviews, reviews_at, qna, qna_at, rank_keywords, lead_gbp_jobs(kind, status, error_message), lead_gbp_rank_checks(keyword, maps_position, in_top3, competitors, check_url, checked_at)"
+  "id, lead_id, place_id, is_primary, sort_order, google_maps_uri, fetched_at, fetched_by, payload, matched_website_key, notes, reputation_note, cid, rank_keywords, lead_gbp_jobs(kind, status, error_message), lead_gbp_rank_checks(keyword, maps_position, in_top3, competitors, check_url, checked_at), lead_gbp_snapshots(id, profile_id, captured_at, payload, enrichment, reviews, posts, qna)"
 
 export type GbpLeadContext = {
   id: string
@@ -281,25 +281,79 @@ export async function deleteGbpJobs(
   return !error
 }
 
-export async function upsertGbpRankCheck(
+type GbpSnapshotPatch = Partial<{
+  payload: unknown
+  enrichment: unknown
+  reviews: unknown
+  posts: unknown
+  qna: unknown
+}>
+
+/**
+ * Append-only: cria um snapshot novo do perfil, herdando do snapshot anterior
+ * tudo que o patch nao trouxer. `payload` cai para o estado corrente do perfil
+ * quando nao houver snapshot anterior.
+ *
+ * Precisa ser chamada ANTES de reler o perfil com GBP_SELECT, porque o embed
+ * de snapshots so devolve o que ja esta gravado.
+ */
+export async function insertGbpSnapshot(
+  supabase: SupabaseClient,
+  profileId: string,
+  patch: GbpSnapshotPatch,
+  capturedAt: string,
+): Promise<boolean> {
+  const { data: previous, error: previousError } = await supabase
+    .from("lead_gbp_snapshots")
+    .select("payload, enrichment, reviews, posts, qna")
+    .eq("profile_id", profileId)
+    .order("captured_at", { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (previousError) return false
+
+  let payload = "payload" in patch ? patch.payload : (previous?.payload ?? null)
+  if (payload === null || payload === undefined) {
+    const { data: profile, error: profileError } = await supabase
+      .from("lead_gbp_profiles")
+      .select("payload")
+      .eq("id", profileId)
+      .maybeSingle()
+    if (profileError || !profile) return false
+    payload = profile.payload
+  }
+
+  const { error } = await supabase.from("lead_gbp_snapshots").insert({
+    profile_id: profileId,
+    captured_at: capturedAt,
+    payload,
+    enrichment:
+      "enrichment" in patch ? patch.enrichment : (previous?.enrichment ?? null),
+    reviews: "reviews" in patch ? patch.reviews : (previous?.reviews ?? null),
+    posts: "posts" in patch ? patch.posts : (previous?.posts ?? null),
+    qna: "qna" in patch ? patch.qna : (previous?.qna ?? null),
+  })
+  return !error
+}
+
+// Append-only: cada checagem cria uma linha nova e preserva o historico da
+// keyword. A leitura resolve a mais recente em readGbpRankChecks.
+export async function insertGbpRankCheck(
   supabase: SupabaseClient,
   profileId: string,
   check: GbpRankCheck,
   source: GbpRankSource,
 ): Promise<boolean> {
-  const { error } = await supabase.from("lead_gbp_rank_checks").upsert(
-    {
-      profile_id: profileId,
-      keyword: check.keyword,
-      maps_position: check.maps_position,
-      in_top3: check.in_top3,
-      competitors: check.competitors,
-      check_url: check.check_url,
-      checked_at: check.checked_at,
-      source,
-    },
-    { onConflict: "profile_id,keyword" },
-  )
+  const { error } = await supabase.from("lead_gbp_rank_checks").insert({
+    profile_id: profileId,
+    keyword: check.keyword,
+    maps_position: check.maps_position,
+    in_top3: check.in_top3,
+    competitors: check.competitors,
+    check_url: check.check_url,
+    checked_at: check.checked_at,
+    source,
+  })
   return !error
 }
 

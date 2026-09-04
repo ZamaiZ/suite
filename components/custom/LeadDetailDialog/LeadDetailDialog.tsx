@@ -375,6 +375,10 @@ export function LeadDetailDialog({
         ...current,
         lead,
         ...leadAccessFlags(lead),
+        client: {
+          id: result.clientId,
+          canView: result.patch.can_view_client,
+        },
         canEditGbp: false,
         canRescheduleClosing: false,
         canRecordClosingOutcome: false,
@@ -419,6 +423,8 @@ export function LeadDetailDialog({
           canClaim={detail?.canClaim ?? false}
           canUnclaim={detail?.canUnclaim ?? false}
           createdByName={detail?.createdByName ?? null}
+          clientId={detail?.client?.id ?? null}
+          canViewClient={detail?.client?.canView ?? false}
           readOnly={readOnly}
           closeDisabled={isBusy}
           onClose={handleDismiss}

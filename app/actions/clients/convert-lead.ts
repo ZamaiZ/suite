@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 import { requireCommercialMember } from "@/lib/auth/session"
-import { createPortalAccess } from "@/lib/clients/access"
+import { canViewClient, createPortalAccess } from "@/lib/clients/access"
 import { buildPortalUrl } from "@/lib/clients/portal-session"
 import { canConvertClosing, isClosingStage } from "@/lib/leads/closing"
 import { isLeadStatus } from "@/lib/leads/status"
@@ -23,6 +23,9 @@ export type ConvertLeadState =
       patch: {
         status: "converted"
         closing_stage: null
+        client_id: string
+        converted_at: string
+        can_view_client: boolean
       }
     }
   | { status: "error"; message: string }
@@ -118,8 +121,13 @@ export async function convertLeadToClient(
       portal_slug: issued.slug,
       portal_code_hash: issued.hash,
       portal_code_generated_at: generatedAt,
+      converted_at: generatedAt,
+      // Ancora o "antes" da auditoria no momento da venda: sem isso, o
+      // comparativo futuro usaria a ultima coleta manual, qualquer que fosse
+      // a data dela.
+      baseline_at: generatedAt,
     })
-    .select("id")
+    .select("id, converted_at")
     .single()
 
   if (insertError || !client) {
@@ -132,7 +140,7 @@ export async function convertLeadToClient(
     }
   }
 
-  const { error: updateError } = await supabase
+  const { data: updatedLead, error: updateError } = await supabase
     .from("leads")
     .update({
       status: "converted",
@@ -142,8 +150,10 @@ export async function convertLeadToClient(
     .eq("id", leadId)
     .eq("status", "interested")
     .eq("closing_stage", "won_pending")
+    .select("id")
+    .maybeSingle()
 
-  if (updateError) {
+  if (updateError || !updatedLead) {
     await supabase.from("clients").delete().eq("id", client.id)
     return {
       status: "error",
@@ -163,6 +173,9 @@ export async function convertLeadToClient(
     patch: {
       status: "converted",
       closing_stage: null,
+      client_id: client.id,
+      converted_at: client.converted_at,
+      can_view_client: canViewClient(roles, user.id, lead.assigned_closer_id),
     },
   }
 }

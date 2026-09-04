@@ -11,7 +11,7 @@ import {
   type BriefingReviewStepState,
 } from "@/lib/briefing/review-step-state"
 import { BRIEFING_STEPS, type BriefingStepId } from "@/lib/briefing/steps"
-import { denyUnlessCanManage, loadStaffClient } from "@/lib/clients/staff"
+import { denyUnlessCanView, loadStaffClient } from "@/lib/clients/staff"
 import { createAdminClient } from "@/lib/supabase/admin"
 
 export type StaffBriefingOverviewStep = {
@@ -47,7 +47,7 @@ export async function loadStaffBriefingOverview(
 
   const loaded = await loadStaffClient(parsed.data)
   if (loaded.status === "error") return loaded
-  const denied = denyUnlessCanManage(loaded.context)
+  const denied = denyUnlessCanView(loaded.context)
   if (denied) return denied
 
   const { client } = loaded.context

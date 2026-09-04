@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server"
 import {
   denyGbpEdit,
   GBP_SELECT,
+  insertGbpSnapshot,
   loadGbpProfileRow,
   matchedKeyForSnapshot,
   rowToGbpProfile,
@@ -45,12 +46,28 @@ export async function refreshGbpProfileById(
   }
 
   const snapshot = snapshotFromPlace(details.data)
+  const fetchedAt = new Date().toISOString()
+
+  // Grava o snapshot antes de reler o perfil: GBP_SELECT embeda os snapshots.
+  const stored = await insertGbpSnapshot(
+    supabase,
+    profileId,
+    { payload: snapshot },
+    fetchedAt,
+  )
+  if (!stored) {
+    return {
+      status: "error",
+      message: "Não foi possível atualizar o perfil. Tente novamente.",
+    }
+  }
+
   const { data, error } = await supabase
     .from("lead_gbp_profiles")
     .update({
       place_id: snapshot.placeId,
       google_maps_uri: snapshot.googleMapsUri,
-      fetched_at: new Date().toISOString(),
+      fetched_at: fetchedAt,
       fetched_by: user.id,
       payload: snapshot,
       matched_website_key: matchedKeyForSnapshot(

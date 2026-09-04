@@ -6,6 +6,12 @@ import {
   type LeadWebsiteAudit,
 } from "@/lib/leads/website-audit"
 import {
+  emptyWebsiteReview,
+  readLeadWebsiteReviewRow,
+  websiteReviewsByChannel,
+  type WebsiteReview,
+} from "@/lib/leads/website-review"
+import {
   PSI_STALE_RUNNING_MS,
   WEBSITE_PSI_JOB_KINDS,
   type WebsitePsiJobKind,
@@ -16,7 +22,40 @@ import type { AppRole } from "@/lib/auth/roles"
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
 export const WEBSITE_SELECT =
-  "id, lead_id, channel_id, url, fetched_at, fetched_by, crawl, notes, review, pagespeed, pagespeed_at, lead_website_jobs(kind, status, error_message)"
+  "id, lead_id, channel_id, url, fetched_at, fetched_by, crawl, pagespeed, pagespeed_at, lead_website_jobs(kind, status, error_message)"
+
+export const WEBSITE_REVIEW_SELECT =
+  "channel_id, review, notes, updated_at, updated_by"
+
+/**
+ * A revisao do analista nao esta no snapshot: ela vive por canal, entao e
+ * carregada a parte e hidratada na auditoria antes de chegar na interface.
+ */
+export async function loadWebsiteReviewForChannel(
+  supabase: SupabaseClient,
+  channelId: string,
+): Promise<WebsiteReview> {
+  const { data, error } = await supabase
+    .from("lead_website_reviews")
+    .select(WEBSITE_REVIEW_SELECT)
+    .eq("channel_id", channelId)
+    .maybeSingle()
+  if (error || !data) return emptyWebsiteReview()
+  const parsed = readLeadWebsiteReviewRow(data as Record<string, unknown>)
+  return parsed?.review ?? emptyWebsiteReview()
+}
+
+export async function loadWebsiteReviewsForLead(
+  supabase: SupabaseClient,
+  leadId: string,
+): Promise<Map<string, WebsiteReview>> {
+  const { data, error } = await supabase
+    .from("lead_website_reviews")
+    .select(WEBSITE_REVIEW_SELECT)
+    .eq("lead_id", leadId)
+  if (error) return new Map()
+  return websiteReviewsByChannel(data)
+}
 
 export type WebsiteChannelRow = {
   id: string
@@ -24,12 +63,14 @@ export type WebsiteChannelRow = {
   type: string
   value: string
   normalized_key: string
+  audit_paths: string[]
 }
 
 export function rowToWebsiteAudit(
   row: Record<string, unknown>,
+  review?: WebsiteReview,
 ): LeadWebsiteAudit | null {
-  return readLeadWebsiteAuditRow(row)
+  return readLeadWebsiteAuditRow(row, review)
 }
 
 export async function loadWebsiteChannelRow(
@@ -46,7 +87,7 @@ export async function loadWebsiteChannelRow(
 > {
   const { data, error } = await supabase
     .from("lead_digital_channels")
-    .select("id, lead_id, type, value, normalized_key")
+    .select("id, lead_id, type, value, normalized_key, audit_paths")
     .eq("id", channelId)
     .maybeSingle()
 
@@ -65,6 +106,11 @@ export async function loadWebsiteChannelRow(
       type: data.type,
       value: data.value,
       normalized_key: data.normalized_key,
+      audit_paths: Array.isArray(data.audit_paths)
+        ? data.audit_paths.filter(
+            (item): item is string => typeof item === "string",
+          )
+        : [],
     },
     lead,
   }
@@ -87,7 +133,12 @@ export async function loadWebsiteAuditRow(
   if (error) return { status: "error" }
   if (!data) return { status: "not_found" }
 
-  const audit = rowToWebsiteAudit(data as Record<string, unknown>)
+  const row = data as Record<string, unknown>
+  const channelId = typeof row.channel_id === "string" ? row.channel_id : null
+  const review = channelId
+    ? await loadWebsiteReviewForChannel(supabase, channelId)
+    : emptyWebsiteReview()
+  const audit = readLeadWebsiteAuditRow(row, review)
   if (!audit) return { status: "error" }
 
   const lead = await loadGbpLeadContext(supabase, audit.lead_id)

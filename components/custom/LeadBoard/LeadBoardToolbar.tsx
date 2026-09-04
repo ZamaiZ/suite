@@ -24,12 +24,14 @@ export function LeadBoardToolbar({
   listParams,
   tagOptions,
   segmentOptions,
+  canViewTeamLeads,
   dueTodayCount,
   pendingCount,
 }: {
   listParams: LeadsListParams
   tagOptions: LeadTagFilterOption[]
   segmentOptions: LeadSegmentFilterOption[]
+  canViewTeamLeads: boolean
   dueTodayCount: number
   pendingCount: number
 }) {
@@ -119,7 +121,9 @@ export function LeadBoardToolbar({
               id="lead-scope-filter"
               items={[
                 { value: "portfolio", label: "Minha carteira" },
-                { value: "team", label: "Todos" },
+                ...(canViewTeamLeads
+                  ? [{ value: "team", label: "Todos" }]
+                  : []),
               ]}
               value={listParams.team ? "team" : "portfolio"}
               onValueChange={(next) => {

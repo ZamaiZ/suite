@@ -19,15 +19,22 @@ import type { BriefingReviewWebsiteProps } from "./BriefingReviewWebsite.types"
 function AssetLink({
   clientId,
   asset,
+  canOpen,
 }: {
   clientId: string
   asset: BriefingAssetRef
+  canOpen: boolean
 }) {
   const [url, setUrl] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!canOpen) {
+      setUrl(null)
+      setLoading(false)
+      return
+    }
     let cancelled = false
     void signStaffBriefingWebsiteAsset(clientId, asset.storagePath).then(
       (result) => {
@@ -43,7 +50,7 @@ function AssetLink({
     return () => {
       cancelled = true
     }
-  }, [clientId, asset.storagePath])
+  }, [canOpen, clientId, asset.storagePath])
 
   return (
     <div className="flex flex-col gap-1 rounded-lg bg-canvas px-3 py-2">
@@ -82,6 +89,7 @@ function AssetLink({
 export function BriefingReviewWebsite({
   clientId,
   payload,
+  canOpenAssets = true,
 }: BriefingReviewWebsiteProps) {
   return (
     <div className="flex flex-col gap-3">
@@ -111,16 +119,27 @@ export function BriefingReviewWebsite({
         ) : (
           <div className="flex flex-col gap-2">
             {payload.logos.map((asset) => (
-              <AssetLink key={asset.id} clientId={clientId} asset={asset} />
+              <AssetLink
+                key={asset.id}
+                clientId={clientId}
+                asset={asset}
+                canOpen={canOpenAssets}
+              />
             ))}
             {payload.brandBook ? (
               <AssetLink
                 clientId={clientId}
                 asset={payload.brandBook}
+                canOpen={canOpenAssets}
               />
             ) : null}
             {payload.iconKit.map((asset) => (
-              <AssetLink key={asset.id} clientId={clientId} asset={asset} />
+              <AssetLink
+                key={asset.id}
+                clientId={clientId}
+                asset={asset}
+                canOpen={canOpenAssets}
+              />
             ))}
           </div>
         )}

@@ -15,6 +15,7 @@ import {
   denyGbpEdit,
   deleteGbpJobs,
   GBP_SELECT,
+  insertGbpSnapshot,
   loadGbpProfileRow,
   loadQueuedGbpJobs,
   rowToGbpProfile,
@@ -114,11 +115,13 @@ export async function pollLeadGbpJobs(
         if (!failed) return { status: "error", message: POLL_FAILED }
         continue
       }
-      const { error } = await supabase
-        .from("lead_gbp_profiles")
-        .update({ reviews: result.reviews, reviews_at: now })
-        .eq("id", parsed.data.profile_id)
-      if (error) return { status: "error", message: POLL_FAILED }
+      const stored = await insertGbpSnapshot(
+        supabase,
+        parsed.data.profile_id,
+        { reviews: result.reviews },
+        now,
+      )
+      if (!stored) return { status: "error", message: POLL_FAILED }
       const ready = await upsertGbpJob(
         supabase,
         parsed.data.profile_id,
@@ -149,11 +152,13 @@ export async function pollLeadGbpJobs(
       if (!failed) return { status: "error", message: POLL_FAILED }
       continue
     }
-    const { error } = await supabase
-      .from("lead_gbp_profiles")
-      .update({ posts: result.posts, posts_at: now })
-      .eq("id", parsed.data.profile_id)
-    if (error) return { status: "error", message: POLL_FAILED }
+    const stored = await insertGbpSnapshot(
+      supabase,
+      parsed.data.profile_id,
+      { posts: result.posts },
+      now,
+    )
+    if (!stored) return { status: "error", message: POLL_FAILED }
     const ready = await upsertGbpJob(
       supabase,
       parsed.data.profile_id,

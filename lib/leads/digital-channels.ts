@@ -211,6 +211,12 @@ export type LeadDigitalChannelWrite = {
 
 export type LeadDigitalChannel = LeadDigitalChannelWrite & {
   id?: string
+  /**
+   * Amostra de caminhos fixada no primeiro crawl do canal. Duas coletas
+   * precisam ler as mesmas URLs para que o comparativo compare o mesmo site, e
+   * nao a ordem do menu daquele dia. Vazio significa "ainda nao derivada".
+   */
+  audit_paths?: string[]
 }
 
 export type DigitalChannelIssue = {
@@ -535,6 +541,11 @@ export function readLeadDigitalChannels(embed: unknown): LeadDigitalChannel[] {
     if (typeof is_primary !== "boolean") continue
     if (typeof sort_order !== "number") continue
     seen.add(id)
+    const audit_paths = Array.isArray(row.audit_paths)
+      ? row.audit_paths.filter(
+          (item): item is string => typeof item === "string" && item.length > 0,
+        )
+      : []
     channels.push({
       id,
       type,
@@ -542,6 +553,7 @@ export function readLeadDigitalChannels(embed: unknown): LeadDigitalChannel[] {
       normalized_key,
       is_primary,
       sort_order,
+      audit_paths,
     })
   }
   channels.sort((a, b) => a.sort_order - b.sort_order)

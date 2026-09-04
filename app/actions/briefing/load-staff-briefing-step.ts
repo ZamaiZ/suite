@@ -51,7 +51,7 @@ import {
   parseWebsitePayload,
   type BriefingWebsitePayload,
 } from "@/lib/briefing/website"
-import { denyUnlessCanManage, loadStaffClient } from "@/lib/clients/staff"
+import { denyUnlessCanView, loadStaffClient } from "@/lib/clients/staff"
 import { createAdminClient } from "@/lib/supabase/admin"
 
 function isBriefingStepId(value: unknown): value is BriefingStepId {
@@ -140,7 +140,7 @@ export async function loadStaffBriefingStep(
 
   const loaded = await loadStaffClient(parsedId.data)
   if (loaded.status === "error") return loaded
-  const denied = denyUnlessCanManage(loaded.context)
+  const denied = denyUnlessCanView(loaded.context)
   if (denied) return denied
 
   const { client } = loaded.context

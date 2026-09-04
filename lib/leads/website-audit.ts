@@ -10,7 +10,25 @@ import {
   type WebsitePsiJob,
 } from "./website-pagespeed.ts"
 import {
-  readWebsiteReview,
+  ROBOTS_CONTENT_MAX,
+  readRobotsAiAgents,
+  readRobotsGroups,
+  robotsBlocksPath,
+  type RobotsAiAgent,
+  type RobotsGroup,
+} from "../website-audit/robots.ts"
+import { canonicalIssuesForSample } from "./website-canonical.ts"
+import {
+  missingSecurityHeaders,
+  readSecurityHeaders,
+} from "./website-headers.ts"
+import {
+  headingsSkipLevel,
+  readHeadings,
+  type WebsiteHeading,
+} from "./website-headings.ts"
+import {
+  emptyWebsiteReview,
   type WebsiteReview,
 } from "./website-review.ts"
 
@@ -56,6 +74,18 @@ export const WEBSITE_GAP_IDS = [
   "a11y_issues",
   "mixed_content",
   "noindex",
+  "canonical_missing",
+  "canonical_points_elsewhere",
+  "canonical_external",
+  "canonical_insecure",
+  "canonical_vs_noindex",
+  "canonical_non_indexable",
+  "host_canonicalization",
+  "slash_canonicalization",
+  "weak_security_headers",
+  "heading_hierarchy",
+  "noindex_internal_pages",
+  "robots_blocks_search",
 ] as const
 
 export type WebsiteGapId = (typeof WEBSITE_GAP_IDS)[number]
@@ -86,6 +116,18 @@ export const WEBSITE_GAP_LABELS: Record<WebsiteGapId, string> = {
   a11y_issues: "Problemas de acessibilidade",
   mixed_content: "Recursos mistos sem HTTPS",
   noindex: "Página inicial com noindex",
+  canonical_missing: "Página sem canonical",
+  canonical_points_elsewhere: "Canonical aponta para outra URL",
+  canonical_external: "Canonical aponta para domínio externo",
+  canonical_insecure: "Canonical em HTTP na página HTTPS",
+  canonical_vs_noindex: "Canonical em página com noindex",
+  canonical_non_indexable: "Canonical aponta para URL não indexável",
+  host_canonicalization: "www e sem www não convergem",
+  slash_canonicalization: "Barra final e sem barra não convergem",
+  weak_security_headers: "Headers de segurança ausentes",
+  heading_hierarchy: "Hierarquia de headings quebrada",
+  noindex_internal_pages: "Páginas internas com noindex",
+  robots_blocks_search: "robots.txt bloqueia a busca",
 }
 
 export type WebsiteSitemapSampleStatus = {
@@ -112,12 +154,33 @@ export type WebsitePageSnapshot = {
   contactInFooterOnly: boolean
   phones: string[]
   textExcerpt: string
+  /** Ausentes em snapshots gravados antes da coleta ampliada. */
+  canonical: string | null
+  headings: WebsiteHeading[]
+  headers: Record<string, string>
   indexable: boolean
 }
 
 export type WebsiteCrawlSocialUrls = Record<SocialChannelType, string | null>
 
+/**
+ * Identificadores das tags encontradas. O booleano diz se existe medicao; o id
+ * diz *qual* propriedade — o que separa "tinha analytics" de "tinha a
+ * propriedade da agencia anterior" na hora do kickoff.
+ */
+export type WebsiteMeasurementIds = {
+  ga4: string | null
+  gtm: string | null
+  googleAds: string | null
+  metaPixel: string | null
+}
+
+export function emptyWebsiteMeasurementIds(): WebsiteMeasurementIds {
+  return { ga4: null, gtm: null, googleAds: null, metaPixel: null }
+}
+
 export type WebsiteCrawlSignals = {
+  measurementIds: WebsiteMeasurementIds
   hasGtm: boolean
   hasGtag: boolean
   hasFacebookPixel: boolean
@@ -146,6 +209,25 @@ export function emptyWebsiteCrawlSocialUrls(): WebsiteCrawlSocialUrls {
 export type WebsiteRobotsSnapshot = {
   found: boolean
   sitemapUrls: string[]
+  /** Ausentes em snapshots anteriores a interpretacao do robots. */
+  content: string
+  groups: RobotsGroup[]
+  aiAgents: RobotsAiAgent[]
+}
+
+export type WebsiteLlmsTxtSnapshot = {
+  found: boolean
+  status: number | null
+}
+
+/**
+ * Resultado da sondagem das variantes da home: com e sem `www`, com e sem
+ * barra final. Nao e regra de parse — exige buscar as variantes e comparar
+ * onde cada uma termina.
+ */
+export type WebsiteVariantSnapshot = {
+  hostMismatch: boolean
+  slashMismatch: boolean
 }
 
 export type WebsiteSitemapSnapshot = {
@@ -163,9 +245,12 @@ export type WebsiteCrawl = {
   robots: WebsiteRobotsSnapshot
   sitemap: WebsiteSitemapSnapshot
   signals: WebsiteCrawlSignals
+  llmsTxt: WebsiteLlmsTxtSnapshot
+  variants: WebsiteVariantSnapshot | null
 }
 
 export const EMPTY_WEBSITE_CRAWL_SIGNALS: WebsiteCrawlSignals = {
+  measurementIds: emptyWebsiteMeasurementIds(),
   hasGtm: false,
   hasGtag: false,
   hasFacebookPixel: false,
@@ -190,11 +275,27 @@ function mergeSocialUrls(
   return next
 }
 
+function mergeMeasurementIds(
+  left: WebsiteMeasurementIds,
+  right: WebsiteMeasurementIds,
+): WebsiteMeasurementIds {
+  return {
+    ga4: left.ga4 ?? right.ga4,
+    gtm: left.gtm ?? right.gtm,
+    googleAds: left.googleAds ?? right.googleAds,
+    metaPixel: left.metaPixel ?? right.metaPixel,
+  }
+}
+
 export function mergeWebsiteCrawlSignals(
   left: WebsiteCrawlSignals,
   right: WebsiteCrawlSignals,
 ): WebsiteCrawlSignals {
   return {
+    measurementIds: mergeMeasurementIds(
+      left.measurementIds,
+      right.measurementIds,
+    ),
     hasGtm: left.hasGtm || right.hasGtm,
     hasGtag: left.hasGtag || right.hasGtag,
     hasFacebookPixel: left.hasFacebookPixel || right.hasFacebookPixel,
@@ -217,7 +318,10 @@ export type LeadWebsiteAudit = {
   fetched_at: string
   fetched_by: string
   crawl: WebsiteCrawl
-  notes: string | null
+  /**
+   * Hidratada de `lead_website_reviews` pela camada de acesso: e um campo de
+   * apresentacao, nao uma coluna do snapshot.
+   */
   review: WebsiteReview
   pagespeed: WebsitePagespeedSnapshot | null
   pagespeed_at: string | null
@@ -413,6 +517,11 @@ function readPage(value: unknown): WebsitePageSnapshot | null {
     contactInFooterOnly,
     phones,
     textExcerpt: row.textExcerpt.slice(0, WEBSITE_TEXT_EXCERPT_MAX),
+    // Campos da coleta ampliada: opcionais, para que snapshots anteriores a
+    // ela continuem legiveis em vez de serem descartados.
+    canonical: asString(row.canonical),
+    headings: readHeadings(row.headings),
+    headers: readSecurityHeaders(row.headers),
     indexable,
   }
 }
@@ -423,7 +532,27 @@ function readRobots(value: unknown): WebsiteRobotsSnapshot | null {
   const found = asBool(row.found)
   const sitemapUrls = asStringList(row.sitemapUrls)
   if (found === null || !sitemapUrls) return null
-  return { found, sitemapUrls }
+  return {
+    found,
+    sitemapUrls,
+    content:
+      typeof row.content === "string"
+        ? row.content.slice(0, ROBOTS_CONTENT_MAX)
+        : "",
+    groups: readRobotsGroups(row.groups),
+    aiAgents: readRobotsAiAgents(row.aiAgents),
+  }
+}
+
+function readLlmsTxt(value: unknown): WebsiteLlmsTxtSnapshot {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return { found: false, status: null }
+  }
+  const row = value as Record<string, unknown>
+  return {
+    found: asBool(row.found) ?? false,
+    status: asCount(row.status),
+  }
 }
 
 function readOptionalBool(
@@ -452,6 +581,7 @@ function readSignals(value: unknown): WebsiteCrawlSignals | null {
     return {
       ...EMPTY_WEBSITE_CRAWL_SIGNALS,
       socialUrls: emptyWebsiteCrawlSocialUrls(),
+      measurementIds: emptyWebsiteMeasurementIds(),
     }
   }
   if (!value || typeof value !== "object" || Array.isArray(value)) return null
@@ -481,6 +611,7 @@ function readSignals(value: unknown): WebsiteCrawlSignals | null {
     return null
   }
   return {
+    measurementIds: readMeasurementIds(row.measurementIds),
     hasGtm,
     hasGtag,
     hasFacebookPixel,
@@ -493,6 +624,16 @@ function readSignals(value: unknown): WebsiteCrawlSignals | null {
     hasTwitter,
     socialUrls: readSocialUrls(row.socialUrls),
   }
+}
+
+function readMeasurementIds(value: unknown): WebsiteMeasurementIds {
+  const ids = emptyWebsiteMeasurementIds()
+  if (!value || typeof value !== "object" || Array.isArray(value)) return ids
+  const row = value as Record<string, unknown>
+  for (const key of ["ga4", "gtm", "googleAds", "metaPixel"] as const) {
+    ids[key] = asString(row[key])
+  }
+  return ids
 }
 
 function readSitemap(value: unknown): WebsiteSitemapSnapshot | null {
@@ -542,11 +683,30 @@ export function readWebsiteCrawl(value: unknown): WebsiteCrawl | null {
   const sitemap = readSitemap(row.sitemap)
   const signals = readSignals(row.signals)
   if (!robots || !sitemap || !signals) return null
-  return { finalUrl, https, pages, robots, sitemap, signals }
+  return {
+    finalUrl,
+    https,
+    pages,
+    robots,
+    sitemap,
+    signals,
+    llmsTxt: readLlmsTxt(row.llmsTxt),
+    variants: readVariants(row.variants),
+  }
+}
+
+function readVariants(value: unknown): WebsiteVariantSnapshot | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null
+  const row = value as Record<string, unknown>
+  const hostMismatch = asBool(row.hostMismatch)
+  const slashMismatch = asBool(row.slashMismatch)
+  if (hostMismatch === null || slashMismatch === null) return null
+  return { hostMismatch, slashMismatch }
 }
 
 export function readLeadWebsiteAuditRow(
   row: Record<string, unknown>,
+  review: WebsiteReview = emptyWebsiteReview(),
 ): LeadWebsiteAudit | null {
   const id = asString(row.id)
   const lead_id = asString(row.lead_id)
@@ -559,7 +719,6 @@ export function readLeadWebsiteAuditRow(
     return null
   }
   if (!crawl) return null
-  if (row.notes != null && typeof row.notes !== "string") return null
   let pagespeed: WebsitePagespeedSnapshot | null = null
   if (row.pagespeed != null) {
     pagespeed = readWebsitePagespeed(row.pagespeed)
@@ -578,26 +737,35 @@ export function readLeadWebsiteAuditRow(
     fetched_at,
     fetched_by,
     crawl,
-    notes: asString(row.notes),
-    review: readWebsiteReview(row.review, asString(row.notes)),
+    review,
     pagespeed,
     pagespeed_at,
     jobs: readWebsitePsiJobs(row.lead_website_jobs),
   }
 }
 
-export function readLeadWebsiteAudits(embed: unknown): LeadWebsiteAudit[] {
+export function readLeadWebsiteAudits(
+  embed: unknown,
+  reviewsByChannel?: ReadonlyMap<string, WebsiteReview>,
+): LeadWebsiteAudit[] {
   if (!Array.isArray(embed)) return []
-  const audits: LeadWebsiteAudit[] = []
-  const seen = new Set<string>()
+  // A tabela e append-only, entao o mesmo canal traz varios snapshots.
+  // A aplicacao le sempre o mais recente, sem depender da ordem da consulta.
+  const latest = new Map<string, LeadWebsiteAudit>()
   for (const row of embed) {
     if (!row || typeof row !== "object") continue
-    const audit = readLeadWebsiteAuditRow(row as Record<string, unknown>)
-    if (!audit || seen.has(audit.id)) continue
-    seen.add(audit.id)
-    audits.push(audit)
+    const record = row as Record<string, unknown>
+    const channelId = asString(record.channel_id)
+    const review = channelId
+      ? reviewsByChannel?.get(channelId)
+      : undefined
+    const audit = readLeadWebsiteAuditRow(record, review)
+    if (!audit) continue
+    const current = latest.get(audit.channel_id)
+    if (current && current.fetched_at >= audit.fetched_at) continue
+    latest.set(audit.channel_id, audit)
   }
-  return audits
+  return [...latest.values()]
 }
 
 export function websiteHomePage(
@@ -767,6 +935,55 @@ export function websiteGapsForAudit(
     gaps.push("no_https")
   }
   if (home.indexable === false) gaps.push("noindex")
+
+  // Canonical: seis regras por pagina, avaliadas sobre a amostra.
+  gaps.push(
+    ...canonicalIssuesForSample(
+      crawl.pages.map((page) => ({
+        url: page.url,
+        canonical: page.canonical,
+        indexable: page.indexable,
+        status: page.status,
+      })),
+    ),
+  )
+  if (crawl.variants?.hostMismatch) gaps.push("host_canonicalization")
+  if (crawl.variants?.slashMismatch) gaps.push("slash_canonicalization")
+
+  // Um unico gap para os headers, com o detalhe listando quais faltam: seis
+  // gaps separados poluiriam o roadmap sem ganho de leitura.
+  if (
+    crawl.pages.some(
+      (page) =>
+        page.status > 0 &&
+        page.status < 400 &&
+        missingSecurityHeaders(page.headers).length > 0,
+    )
+  ) {
+    gaps.push("weak_security_headers")
+  }
+
+  if (crawl.pages.some((page) => headingsSkipLevel(page.headings))) {
+    gaps.push("heading_hierarchy")
+  }
+
+  const homePath = pathOf(crawl.finalUrl)
+  if (
+    crawl.pages.some(
+      (page) => pathOf(page.url) !== homePath && page.indexable === false,
+    )
+  ) {
+    gaps.push("noindex_internal_pages")
+  }
+
+  if (
+    crawl.robots.groups.length > 0 &&
+    crawl.pages.some((page) =>
+      robotsBlocksPath(crawl.robots.groups, "googlebot", pathOf(page.url)),
+    )
+  ) {
+    gaps.push("robots_blocks_search")
+  }
   if (!crawl.sitemap.found) gaps.push("missing_sitemap")
   else if (
     crawl.sitemap.urlCount >= WEBSITE_SITEMAP_BLOAT_MIN_URLS &&

@@ -4,6 +4,7 @@ import {
   WEBSITE_FETCH_TIMEOUT_MS,
   WEBSITE_MAX_REDIRECTS,
 } from "../leads/website-audit.ts"
+import { pickSecurityHeaders } from "../leads/website-headers.ts"
 import {
   isPrivateIp,
   parseHttpUrl,
@@ -22,6 +23,8 @@ export type SafeFetchOk = {
   statusCode: number
   body: string
   contentType: string | null
+  /** Headers selecionados por `pickSecurityHeaders`, em minusculas. */
+  headers: Record<string, string>
 }
 
 export type SafeFetchResult =
@@ -93,6 +96,7 @@ export async function safeFetch(
           statusCode: response.status,
           body: "",
           contentType: response.headers.get("content-type"),
+          headers: pickSecurityHeaders(response.headers),
         }
       }
 
@@ -106,6 +110,7 @@ export async function safeFetch(
         statusCode: response.status,
         body,
         contentType: response.headers.get("content-type"),
+        headers: pickSecurityHeaders(response.headers),
       }
     } catch {
       return { status: "error", message: WEBSITE_FETCH_FAILED }

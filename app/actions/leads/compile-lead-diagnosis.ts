@@ -31,7 +31,7 @@ import {
 } from "./diagnosis-access"
 import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
-import { WEBSITE_SELECT } from "./website-access"
+import { loadWebsiteReviewsForLead, WEBSITE_SELECT } from "./website-access"
 import {
   readLeadDiagnosisDraftRow,
 } from "@/lib/leads/diagnosis-read"
@@ -115,7 +115,10 @@ export async function compileLeadDiagnosis(
   const gbpProfiles = readLeadGbpProfiles(gbpRows)
   const gbpProfile =
     gbpProfiles.find((item) => item.is_primary) ?? gbpProfiles[0] ?? null
-  const websiteAudits = readLeadWebsiteAudits(websiteRows)
+  // A revisao do analista entra no diagnostico como oportunidade, entao o
+  // snapshot precisa ser hidratado com ela antes de compilar.
+  const websiteReviews = await loadWebsiteReviewsForLead(supabase, leadId)
+  const websiteAudits = readLeadWebsiteAudits(websiteRows, websiteReviews)
   const primaryWebsite =
     channels
       .filter((channel) => channel.type === "website" && channel.id)

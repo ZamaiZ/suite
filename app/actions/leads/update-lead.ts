@@ -1,6 +1,7 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
+import { canViewLead } from "@/lib/leads/access"
 import { DIGITAL_CHANNEL_TAKEN_MESSAGE } from "@/lib/leads/digital-channels"
 import type { LeadSegment } from "@/lib/leads/segments"
 import { parseTagNames, type LeadTag } from "@/lib/leads/tags"
@@ -32,7 +33,7 @@ export type UpdateLeadState =
     }
 
 export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
-  await requireCommercialMember()
+  const { user, roles } = await requireCommercialMember()
 
   const idParsed = updateLeadSchema.safeParse({
     lead_id: formData.get("lead_id"),
@@ -55,6 +56,24 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
   const payload = fieldsParsed.data
   const leadId = idParsed.data.lead_id
   const supabase = await createClient()
+  const { data: lead, error: leadError } = await supabase
+    .from("leads")
+    .select("status, assigned_sdr_id, assigned_closer_id")
+    .eq("id", leadId)
+    .maybeSingle()
+
+  if (
+    leadError ||
+    !lead ||
+    !canViewLead(lead, user.id, roles) ||
+    lead.status === "converted"
+  ) {
+    return {
+      status: "error",
+      message: "Este lead não pode ser alterado.",
+    }
+  }
+
   const conflict = await findChannelConflict(supabase, payload.channels, leadId)
   if (conflict.status === "error") {
     return {

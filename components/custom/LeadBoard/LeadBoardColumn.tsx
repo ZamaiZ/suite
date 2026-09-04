@@ -5,6 +5,7 @@ import type { LeadAssignmentPatch } from "@/app/actions/leads"
 import { LeadCreate } from "@/components/custom/LeadCreate"
 import {
   RiCalendarEventLine,
+  RiBuilding2Line,
   RiChat3Line,
   RiCheckboxCircleLine,
   RiCloseCircleLine,
@@ -29,6 +30,7 @@ const EMPTY_ICON = {
   follow_up: RiCalendarEventLine,
   interested: RiCheckboxCircleLine,
   denied: RiCloseCircleLine,
+  converted: RiBuilding2Line,
 } as const
 
 export function readDragColumn(data: unknown): unknown {

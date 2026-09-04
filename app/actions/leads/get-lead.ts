@@ -3,6 +3,8 @@
 import { z } from "zod"
 import { requireCommercialMember } from "@/lib/auth/session"
 import { leadAccessFlags } from "@/lib/leads/board-item"
+import { canViewLead } from "@/lib/leads/access"
+import { canViewClient } from "@/lib/clients/access"
 import {
   canEditClosingChecklist,
   canRecordClosingOutcome,
@@ -49,7 +51,8 @@ import {
 } from "./diagnosis-access"
 import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
-import { WEBSITE_SELECT } from "./website-access"
+import { WEBSITE_REVIEW_SELECT, WEBSITE_SELECT } from "./website-access"
+import { websiteReviewsByChannel } from "@/lib/leads/website-review"
 
 export type {
   LeadDetailActivity,
@@ -84,6 +87,7 @@ export type LeadDetail = {
   canRescheduleClosing: boolean
   canRecordClosingOutcome: boolean
   canEditClosingChecklist: boolean
+  client: { id: string; canView: boolean } | null
 }
 
 export type GetLeadDetailState =
@@ -109,6 +113,7 @@ export async function getLeadDetail(
     { data: activities, error: activityError },
     { data: gbpRows, error: gbpError },
     { data: websiteRows, error: websiteError },
+    { data: websiteReviewRows },
     { data: digitalPresenceRow, error: digitalPresenceError },
     { data: visibilityRow, error: visibilityError },
     { data: diagnosisDraftRow, error: diagnosisDraftError },
@@ -117,7 +122,7 @@ export async function getLeadDetail(
     supabase
       .from("leads")
       .select(
-        "*, lead_tags(tags(id, name)), lead_digital_channels(id, type, value, normalized_key, is_primary, sort_order), segments(id, name)",
+        "*, clients(id), lead_tags(tags(id, name)), lead_digital_channels(id, type, value, normalized_key, is_primary, sort_order), segments(id, name)",
       )
       .eq("id", id)
       .maybeSingle(),
@@ -136,6 +141,11 @@ export async function getLeadDetail(
     supabase
       .from("lead_website_audits")
       .select(WEBSITE_SELECT)
+      .eq("lead_id", id)
+      .order("fetched_at", { ascending: false }),
+    supabase
+      .from("lead_website_reviews")
+      .select(WEBSITE_REVIEW_SELECT)
       .eq("lead_id", id),
     supabase
       .from("lead_digital_presence_audits")
@@ -146,6 +156,8 @@ export async function getLeadDetail(
       .from("lead_visibility_audits")
       .select(VISIBILITY_SELECT)
       .eq("lead_id", id)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
       .maybeSingle(),
     supabase
       .from("lead_diagnosis_drafts")
@@ -218,11 +230,13 @@ export async function getLeadDetail(
     lead_tags: tagEmbed,
     lead_digital_channels: channelEmbed,
     segments: segmentEmbed,
+    clients: clientEmbed,
     ...leadRow
   } = lead as LeadRecord & {
     lead_tags?: unknown
     lead_digital_channels?: unknown
     segments?: unknown
+    clients?: { id: string } | { id: string }[] | null
   }
   const segment = readLeadSegment(segmentEmbed)
   const record: LeadRecord = {
@@ -234,6 +248,18 @@ export async function getLeadDetail(
   if (!isLeadStatus(record.status)) {
     return { status: "error", message: "Lead com status inválido." }
   }
+  if (!canViewLead(record, user.id, roles)) return { status: "not_found" }
+
+  const clientRow = Array.isArray(clientEmbed)
+    ? (clientEmbed[0] ?? null)
+    : (clientEmbed ?? null)
+  const client =
+    clientRow && typeof clientRow.id === "string"
+      ? {
+          id: clientRow.id,
+          canView: canViewClient(roles, user.id, record.assigned_closer_id),
+        }
+      : null
 
   const websiteKeys = websiteKeysFromChannels(record.channels)
   const gbpProfiles = readLeadGbpProfiles(gbpRows).map((profile) => ({
@@ -291,7 +317,10 @@ export async function getLeadDetail(
       tags,
       segment,
       gbpProfiles,
-      websiteAudits: readLeadWebsiteAudits(websiteRows),
+      websiteAudits: readLeadWebsiteAudits(
+        websiteRows,
+        websiteReviewsByChannel(websiteReviewRows),
+      ),
       digitalPresenceAudit: digitalPresenceRow
         ? (readLeadDigitalPresenceAuditRow(
             digitalPresenceRow as Record<string, unknown>,
@@ -349,6 +378,7 @@ export async function getLeadDetail(
         user.id,
         roles,
       ),
+      client,
     },
   }
 }

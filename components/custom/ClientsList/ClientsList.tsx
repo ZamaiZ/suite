@@ -27,7 +27,7 @@ export function ClientsList({
   })
   const selected = clients.find((item) => item.id === clientId) ?? null
   const dialogOpen =
-    clientId !== null && Boolean(selected?.canManagePortal)
+    clientId !== null && Boolean(selected?.canViewClient)
 
   useEffect(() => {
     function onPopState() {
@@ -40,7 +40,7 @@ export function ClientsList({
   useEffect(() => {
     if (!clientId) return
     const item = clients.find((entry) => entry.id === clientId)
-    if (!item || !item.canManagePortal) {
+    if (!item || !item.canViewClient) {
       setClientId(null)
       window.history.replaceState(null, "", clientsListHref(listParams))
     }
@@ -67,6 +67,7 @@ export function ClientsList({
         onClose={closeClient}
         clientId={clientId}
         companyName={selected?.company_name}
+        readOnly={!selected?.canManagePortal}
       />
     </div>
   )

@@ -3,4 +3,5 @@ export type ClientBriefingReviewDialogProps = {
   onClose: () => void
   clientId: string | null
   companyName?: string
+  readOnly?: boolean
 }

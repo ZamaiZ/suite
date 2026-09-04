@@ -17,7 +17,11 @@ import {
   toLeadBoardItem,
   type LeadBoardItem,
 } from "@/lib/leads/board-item"
-import { canListAllOpportunities } from "@/lib/leads/gbp"
+import {
+  canViewTeamLeads,
+  leadPortfolioScope,
+} from "@/lib/leads/access"
+import { canViewClient } from "@/lib/clients/access"
 import { LeadBoard } from "@/components/custom/LeadBoard"
 
 export const maxDuration = 60
@@ -28,6 +32,18 @@ function sanitizeSearch(value: string): string {
 
 type AssigneeEmbed = { name: string } | { name: string }[] | null
 type ActivityEmbed = { type: string; created_at: string; channel: string | null }
+type ClientEmbed =
+  | { id: string; converted_at: string }
+  | { id: string; converted_at: string }[]
+  | null
+
+function readEmbeddedClient(embed: ClientEmbed): {
+  id: string
+  converted_at: string
+} | null {
+  if (!embed) return null
+  return Array.isArray(embed) ? (embed[0] ?? null) : embed
+}
 
 async function leadIdsForTagSlug(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -95,7 +111,8 @@ export default async function LeadsPage({
   const params = await searchParams
   const rawQuery = firstSearchParam(params.q)
   const query = sanitizeSearch(rawQuery ?? "")
-  const team = isBoardFlagOn(firstSearchParam(params.team))
+  const team =
+    isBoardFlagOn(firstSearchParam(params.team)) && canViewTeamLeads(roles)
   const today = isBoardFlagOn(firstSearchParam(params.today))
   const pending = isPendingFilterOn(firstSearchParam(params.pending))
   const rawTag = firstSearchParam(params.tag)
@@ -145,15 +162,11 @@ export default async function LeadsPage({
   let leads: LeadBoardItem[] = []
 
   if ((!matchingIds || matchingIds.length > 0) && (!segment || segmentId)) {
-    const scope = team
-      ? "and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.not.is.null)"
-      : canListAllOpportunities(roles)
-        ? `and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.eq.${user.id}),and(assigned_closer_id.eq.${user.id},status.eq.interested),and(status.eq.interested)`
-        : `and(status.eq.new,assigned_sdr_id.is.null),and(assigned_sdr_id.eq.${user.id}),and(assigned_closer_id.eq.${user.id},status.eq.interested)`
+    const scope = team ? null : leadPortfolioScope(user.id)
 
     let listQuery = supabase.from("leads").select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), lead_activities(type, channel, created_at), lead_tags(tags(id, name)), segments(id, name)",
-    ).neq("status", "converted")
+      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), clients(id, converted_at), lead_activities(type, channel, created_at), lead_tags(tags(id, name)), segments(id, name)",
+    )
 
     if (matchingIds) {
       listQuery = listQuery.in("id", matchingIds)
@@ -174,18 +187,19 @@ export default async function LeadsPage({
         channelMatchIds.length > 0
           ? `,id.in.(${channelMatchIds.join(",")})`
           : ""
-      listQuery = listQuery.or(
-        `and(or(${scope}),or(company_name.ilike.%${query}%,website_domain.ilike.%${query}%${channelFilter}))`,
-      )
-    } else {
+      const searchScope = `or(company_name.ilike.%${query}%,website_domain.ilike.%${query}%${channelFilter})`
+      listQuery = scope
+        ? listQuery.or(`and(or(${scope}),${searchScope})`)
+        : listQuery.or(searchScope.slice(3, -1))
+    } else if (scope) {
       listQuery = listQuery.or(scope)
     }
 
     if (today) {
       const until = endOfAppDayIso()
-      listQuery = listQuery.or(
-        `next_follow_up_at.lte.${until},closing_meeting_at.lte.${until}`,
-      )
+      listQuery = listQuery
+        .neq("status", "converted")
+        .or(`next_follow_up_at.lte.${until},closing_meeting_at.lte.${until}`)
     }
 
     const { data, error } = await listQuery
@@ -204,6 +218,9 @@ export default async function LeadsPage({
         ? (row.lead_activities as ActivityEmbed[])
         : []
       const latest = activities[0]
+      const client = readEmbeddedClient(
+        (row as { clients?: ClientEmbed }).clients ?? null,
+      )
       const item = toLeadBoardItem(row, {
         assignee_name: row.assigned_sdr_id
           ? readEmbeddedName(row.users as AssigneeEmbed)
@@ -225,6 +242,11 @@ export default async function LeadsPage({
         activity_count: activities.length,
         activity_counts: countActivitiesByChannel(activities),
         tags: readLeadTags(row.lead_tags),
+        client_id: client?.id ?? null,
+        converted_at: client?.converted_at ?? null,
+        can_view_client: Boolean(
+          client && canViewClient(roles, user.id, row.assigned_closer_id),
+        ),
       })
       return item ? [item] : []
     })
@@ -248,6 +270,7 @@ export default async function LeadsPage({
         }}
         tagOptions={tagOptions}
         segmentOptions={segmentOptions}
+        canViewTeamLeads={canViewTeamLeads(roles)}
         initialLeadId={initialLeadId}
       />
     </div>

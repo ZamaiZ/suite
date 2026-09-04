@@ -297,7 +297,10 @@ function fieldPercentile(
 function fieldCls(experience: Record<string, unknown> | null): number | null {
   const raw = fieldPercentile(experience, "CUMULATIVE_LAYOUT_SHIFT_SCORE")
   if (raw === null) return null
-  return raw > 1 ? raw / 100 : raw
+  // O CrUX sempre entrega o percentil de CLS multiplicado por cem. A condicao
+  // anterior (`raw > 1`) fazia um CLS real de 0,01 chegar como 1 e ser lido
+  // como 1,0, gerando poor_cwv falso — e contaminando o baseline.
+  return raw / 100
 }
 
 export function extractWebsitePsiStrategy(

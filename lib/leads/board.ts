@@ -6,6 +6,7 @@ export const BOARD_COLUMNS = [
   "follow_up",
   "interested",
   "denied",
+  "converted",
 ] as const
 
 export type BoardColumnId = (typeof BOARD_COLUMNS)[number]
@@ -16,6 +17,7 @@ export const BOARD_COLUMN_LABELS: Record<BoardColumnId, string> = {
   follow_up: "Retorno",
   interested: "Oportunidades",
   denied: "Negado",
+  converted: "Clientes",
 }
 
 export const BOARD_COLUMN_DOT: Record<BoardColumnId, string> = {
@@ -24,6 +26,7 @@ export const BOARD_COLUMN_DOT: Record<BoardColumnId, string> = {
   follow_up: "bg-warning",
   interested: "bg-success",
   denied: "bg-danger",
+  converted: "bg-success",
 }
 
 export const BOARD_COLUMN_EMPTY: Record<
@@ -50,6 +53,10 @@ export const BOARD_COLUMN_EMPTY: Record<
     title: "Nenhum lead negado",
     body: "Leads que não tiveram interesse aparecerão aqui",
   },
+  converted: {
+    title: "Nenhum cliente",
+    body: "Leads convertidos aparecem aqui",
+  },
 }
 
 export function isBoardColumnId(value: unknown): value is BoardColumnId {
@@ -72,7 +79,7 @@ export function columnForStatus(status: LeadStatus): BoardColumnId | null {
     case "denied":
       return "denied"
     case "converted":
-      return null
+      return "converted"
   }
 }
 
@@ -96,6 +103,7 @@ type GroupableLead = {
   last_activity_at: string | null
   created_at: string
   company_name: string
+  converted_at?: string | null
 }
 
 function compareByTime<T extends GroupableLead>(
@@ -129,6 +137,7 @@ export function groupLeadsByColumn<T extends GroupableLead>(
     follow_up: [],
     interested: [],
     denied: [],
+    converted: [],
   }
 
   for (const lead of leads) {
@@ -150,6 +159,12 @@ export function groupLeadsByColumn<T extends GroupableLead>(
   grouped.new.sort(compareRecencyDesc)
   grouped.contacting.sort(compareRecencyDesc)
   grouped.denied.sort(compareRecencyDesc)
+  grouped.converted.sort((left, right) => {
+    const leftTime = left.converted_at ?? left.created_at
+    const rightTime = right.converted_at ?? right.created_at
+    if (leftTime !== rightTime) return rightTime.localeCompare(leftTime)
+    return left.company_name.localeCompare(right.company_name, "pt-BR")
+  })
 
   return grouped
 }

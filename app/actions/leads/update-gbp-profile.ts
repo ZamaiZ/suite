@@ -62,7 +62,10 @@ export async function updateLeadGbpProfile(
 
   const { data, error } = await supabase
     .from("lead_gbp_profiles")
-    .update({ notes: parsed.data.notes })
+    .update({
+      notes: parsed.data.notes,
+      reputation_note: parsed.data.reputation_note,
+    })
     .eq("id", parsed.data.profile_id)
     .select(GBP_SELECT)
     .single()

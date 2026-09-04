@@ -16,6 +16,7 @@ import {
   denyWebsiteEdit,
   enqueueWebsitePagespeedJobs,
   loadWebsiteChannelRow,
+  loadWebsiteReviewForChannel,
   WEBSITE_SELECT,
 } from "./website-access"
 
@@ -49,22 +50,21 @@ export async function analyzeLeadWebsite(
   if (denied) return { status: "error", message: denied }
 
   const startUrl = canonicalWebsiteUrl(loaded.channel.normalized_key)
-  const crawled = await crawlWebsite(startUrl)
+  const crawled = await crawlWebsite(startUrl, loaded.channel.audit_paths)
   if (crawled.status === "error") {
     return { status: "error", message: crawled.message }
   }
 
-  const now = new Date().toISOString()
-  const { data: existing, error: existingError } = await supabase
-    .from("lead_website_audits")
-    .select("id")
-    .eq("channel_id", loaded.channel.id)
-    .maybeSingle()
-
-  if (existingError) {
-    return { status: "error", message: ANALYZE_FAILED }
+  // Primeira coleta do canal fixa a amostra; as seguintes a reutilizam, para
+  // que o comparativo compare as mesmas URLs.
+  if (loaded.channel.audit_paths.length === 0 && crawled.usedPaths.length > 0) {
+    await supabase
+      .from("lead_digital_channels")
+      .update({ audit_paths: crawled.usedPaths })
+      .eq("id", loaded.channel.id)
   }
 
+  const now = new Date().toISOString()
   const payload = {
     lead_id: loaded.lead.id,
     channel_id: loaded.channel.id,
@@ -76,20 +76,12 @@ export async function analyzeLeadWebsite(
     pagespeed_at: null,
   }
 
-  const query = existing?.id
-    ? supabase
-        .from("lead_website_audits")
-        .update(payload)
-        .eq("id", existing.id)
-        .select(WEBSITE_SELECT)
-        .single()
-    : supabase
-        .from("lead_website_audits")
-        .insert(payload)
-        .select(WEBSITE_SELECT)
-        .single()
-
-  const { data, error } = await query
+  // Append-only: cada analise cria um snapshot novo e preserva os anteriores.
+  const { data, error } = await supabase
+    .from("lead_website_audits")
+    .insert(payload)
+    .select(WEBSITE_SELECT)
+    .single()
   if (error || !data || typeof data.id !== "string") {
     return { status: "error", message: ANALYZE_FAILED }
   }
@@ -108,7 +100,12 @@ export async function analyzeLeadWebsite(
     return { status: "error", message: ANALYZE_FAILED }
   }
 
-  const audit = readLeadWebsiteAuditRow(withJobs as Record<string, unknown>)
+  // A revisao do analista sobrevive a nova coleta: ela vive por canal.
+  const review = await loadWebsiteReviewForChannel(supabase, loaded.channel.id)
+  const audit = readLeadWebsiteAuditRow(
+    withJobs as Record<string, unknown>,
+    review,
+  )
   if (!audit) {
     return { status: "error", message: ANALYZE_FAILED }
   }

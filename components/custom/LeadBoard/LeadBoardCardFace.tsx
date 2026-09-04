@@ -194,6 +194,11 @@ export function LeadBoardCardFace({
               : CLOSING_STAGE_LABELS[lead.closing_stage]}
           </span>
         ) : null}
+        {lead.status === "converted" && lead.converted_at ? (
+          <span className="mt-1.5 inline-flex rounded-md bg-success/10 px-2 py-0.5 font-sans text-caption font-medium text-success">
+            Cliente desde {formatDateTimeShort(lead.converted_at)}
+          </span>
+        ) : null}
         {showPeople ? (
           <div className="mt-1 flex flex-col gap-0.5">
             {showSdr ? (
