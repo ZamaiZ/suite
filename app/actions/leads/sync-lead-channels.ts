@@ -31,9 +31,7 @@ export async function findChannelConflict(
   channels: LeadDigitalChannelWrite[],
   excludeLeadId?: string,
 ): Promise<ChannelConflictLookup> {
-  const keys = [
-    ...new Set(channels.map((channel) => channel.normalized_key)),
-  ]
+  const keys = [...new Set(channels.map((channel) => channel.normalized_key))]
   if (keys.length === 0) return { status: "ok" }
 
   const { data, error } = await supabase

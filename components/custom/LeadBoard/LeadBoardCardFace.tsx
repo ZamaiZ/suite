@@ -3,8 +3,12 @@
 import { RiCalendarEventLine, RiChat3Line, RiTimeLine } from "react-icons/ri"
 import { LEAD_ACTIVITY_CHANNEL_ICONS } from "@/components/custom/LeadActivityChannelPicker"
 import { LeadTagChips } from "@/components/custom/LeadTagField"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { cn } from "@/lib/cn"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { cn } from "cn"
 import {
   formatDateTimeShort,
   formatTimeShort,
@@ -15,10 +19,7 @@ import {
   type LeadActivityChannel,
 } from "@/lib/leads/channel"
 import { isPendingDailyActivity } from "@/lib/leads/daily-activity"
-import {
-  CLOSING_STAGE_LABELS,
-  isClosingStage,
-} from "@/lib/leads/closing"
+import { CLOSING_STAGE_LABELS, isClosingStage } from "@/lib/leads/closing"
 import type { LeadBoardItem } from "./LeadBoard.types"
 
 const CHIP_CHANNELS: LeadActivityChannel[] = [
@@ -45,9 +46,15 @@ function ScheduleMark({ at, label }: { at: string; label: string }) {
   if (kind === "later") {
     return (
       <Tooltip>
-        <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary" />}>
+        <TooltipTrigger
+          render={
+            <span className="inline-flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary" />
+          }
+        >
           <RiCalendarEventLine size={14} aria-hidden />
-          <span className="sr-only">{label} {full}</span>
+          <span className="sr-only">
+            {label} {full}
+          </span>
         </TooltipTrigger>
         <TooltipContent side="top">{full}</TooltipContent>
       </Tooltip>
@@ -62,8 +69,10 @@ function ScheduleMark({ at, label }: { at: string; label: string }) {
       title={full}
       className={cn(
         "inline-flex h-4 items-center gap-1 rounded-md px-1",
-        "font-sans text-[10px] font-medium leading-none tabular-nums",
-        overdue ? "bg-danger/10 text-danger" : "bg-warning/10 text-warning",
+        "text-[10px] font-medium leading-none tabular-nums",
+        overdue
+          ? "bg-destructive/10 text-destructive"
+          : "bg-warning/10 text-warning",
       )}
     >
       <RiTimeLine size={13} aria-hidden />
@@ -99,20 +108,25 @@ export function LeadBoardCardFace({
     <div className="flex min-w-0 items-start gap-3">
       <span
         aria-hidden
-        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 font-sans text-caption font-semibold tracking-caption text-primary"
+        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs/relaxed font-semibold tracking-wide text-primary"
       >
         {getLeadInitials(lead.company_name)}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate font-sans text-body-sm font-semibold text-fg">
+        <p className="truncate text-xs/relaxed font-semibold text-foreground">
           {lead.company_name}
         </p>
-        <p className="truncate font-sans text-caption text-fg-muted">
+        <p className="truncate text-xs/relaxed text-muted-foreground">
           {lead.website_domain}
         </p>
         {lead.segment?.name || (lead.city && lead.state_code) ? (
-          <p className="truncate font-sans text-caption text-fg-secondary">
-            {[lead.segment?.name, lead.city && lead.state_code ? `${lead.city} · ${lead.state_code}` : null]
+          <p className="truncate text-xs/relaxed text-muted-foreground">
+            {[
+              lead.segment?.name,
+              lead.city && lead.state_code
+                ? `${lead.city} · ${lead.state_code}`
+                : null,
+            ]
               .filter(Boolean)
               .join(" · ")}
           </p>
@@ -124,7 +138,11 @@ export function LeadBoardCardFace({
           <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-2">
             {pendingActivity ? (
               <Tooltip>
-                <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary" />}>
+                <TooltipTrigger
+                  render={
+                    <span className="inline-flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary" />
+                  }
+                >
                   <RiChat3Line size={14} aria-hidden />
                   <span className="sr-only">Sem atividade hoje</span>
                 </TooltipTrigger>
@@ -138,8 +156,10 @@ export function LeadBoardCardFace({
                 <span
                   key={channel}
                   className={cn(
-                    "inline-flex items-center gap-0.5 font-sans text-caption tabular-nums",
-                    channel === "whatsapp" ? "text-success" : "text-fg-muted",
+                    "inline-flex items-center gap-0.5 text-xs/relaxed tabular-nums",
+                    channel === "whatsapp"
+                      ? "text-success"
+                      : "text-muted-foreground",
                   )}
                   aria-label={`${count} ${LEAD_ACTIVITY_CHANNEL_LABELS[channel]}`}
                 >
@@ -162,29 +182,29 @@ export function LeadBoardCardFace({
           </div>
         ) : null}
         {lead.from_denial ? (
-          <span className="mt-1.5 inline-flex rounded-md bg-danger/10 px-2 py-0.5 font-sans text-caption font-medium text-danger">
+          <span className="mt-1.5 inline-flex rounded-md bg-destructive/10 px-2 py-0.5 text-xs/relaxed font-medium text-destructive">
             Negativa
           </span>
         ) : null}
         {lead.from_closing_loss ? (
-          <span className="mt-1.5 inline-flex rounded-md bg-danger/10 px-2 py-0.5 font-sans text-caption font-medium text-danger">
+          <span className="mt-1.5 inline-flex rounded-md bg-destructive/10 px-2 py-0.5 text-xs/relaxed font-medium text-destructive">
             Fechamento
           </span>
         ) : null}
         {lead.status === "interested" && isClosingStage(lead.closing_stage) ? (
           <span
             className={cn(
-              "mt-1.5 mr-1.5 inline-flex rounded-md px-2 py-0.5 font-sans text-caption font-medium",
+              "mt-1.5 mr-1.5 inline-flex rounded-md px-2 py-0.5 text-xs/relaxed font-medium",
               lead.closing_stage === "no_show" ||
                 (lead.closing_stage === "open" &&
                   lead.closing_meeting_at &&
                   getCivilFollowUpKind(lead.closing_meeting_at) === "overdue")
-                ? "bg-danger/10 text-danger"
+                ? "bg-destructive/10 text-destructive"
                 : lead.closing_stage === "won_pending"
                   ? "bg-success/10 text-success"
                   : lead.closing_stage === "standby"
                     ? "bg-warning/10 text-warning"
-                    : "bg-hover text-fg-secondary",
+                    : "bg-accent text-muted-foreground",
             )}
           >
             {lead.closing_stage === "open" &&
@@ -195,19 +215,21 @@ export function LeadBoardCardFace({
           </span>
         ) : null}
         {lead.status === "converted" && lead.converted_at ? (
-          <span className="mt-1.5 inline-flex rounded-md bg-success/10 px-2 py-0.5 font-sans text-caption font-medium text-success">
+          <span className="mt-1.5 inline-flex rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
             Cliente desde {formatDateTimeShort(lead.converted_at)}
           </span>
         ) : null}
         {showPeople ? (
           <div className="mt-1 flex flex-col gap-0.5">
             {showSdr ? (
-              <p className="truncate font-sans text-caption text-fg-muted">
-                {namedRoles ? `SDR · ${lead.assignee_name}` : lead.assignee_name}
+              <p className="truncate text-xs/relaxed text-muted-foreground">
+                {namedRoles
+                  ? `SDR · ${lead.assignee_name}`
+                  : lead.assignee_name}
               </p>
             ) : null}
             {showCloser ? (
-              <p className="truncate font-sans text-caption text-fg-muted">
+              <p className="truncate text-xs/relaxed text-muted-foreground">
                 {`Closer · ${lead.closer_name}`}
               </p>
             ) : null}

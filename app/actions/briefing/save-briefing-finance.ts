@@ -1,9 +1,6 @@
 "use server"
 
-import {
-  emptyBrandPayload,
-  parseBrandPayload,
-} from "@/lib/briefing/brand"
+import { emptyBrandPayload, parseBrandPayload } from "@/lib/briefing/brand"
 import {
   emptyFinancePayload,
   isFinanceReadyToComplete,
@@ -79,7 +76,9 @@ export async function saveBriefingFinance(
       status: "success",
       updatedAt: now,
       completedAt:
-        typeof existing.completed_at === "string" ? existing.completed_at : null,
+        typeof existing.completed_at === "string"
+          ? existing.completed_at
+          : null,
     }
   }
 

@@ -111,7 +111,9 @@ export async function loadStaffBriefingOverview(
       ? clientRow.briefing_content_updated_at
       : null
   const status = deriveBriefingListStatus(finalizedAt, contentUpdatedAt)
-  const completedCount = steps.filter((step) => step.state === "completed").length
+  const completedCount = steps.filter(
+    (step) => step.state === "completed",
+  ).length
 
   return {
     status: "success",

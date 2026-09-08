@@ -1,5 +1,5 @@
 import { useRef, useState, type PointerEvent } from "react"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { fromHour12, toHour12, type CivilHourCycle } from "@/lib/date-time"
 
 const FACE = 256
@@ -151,7 +151,7 @@ export function TimePickerClock({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      className="relative mx-auto aspect-square w-full max-w-[16rem] cursor-pointer touch-none select-none rounded-full bg-hover"
+      className="relative mx-auto aspect-square w-full max-w-[16rem] cursor-pointer touch-none select-none rounded-full bg-accent"
     >
       <div
         className="pointer-events-none absolute inset-0"
@@ -161,7 +161,7 @@ export function TimePickerClock({
         }}
       >
         <span
-          className="absolute left-1/2 w-0.5 rounded-full bg-accent"
+          className="absolute left-1/2 w-0.5 rounded-full bg-primary"
           style={{
             bottom: "50%",
             height: `${handLength}%`,
@@ -169,7 +169,7 @@ export function TimePickerClock({
           }}
         />
       </div>
-      <span className="pointer-events-none absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" />
+      <span className="pointer-events-none absolute left-1/2 top-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary" />
 
       {segment === "minute"
         ? MINUTE_LABELS.map((value, index) => {
@@ -179,8 +179,10 @@ export function TimePickerClock({
                 key={value}
                 className={cn(
                   "pointer-events-none absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
-                  "font-sans text-caption font-medium tabular-nums",
-                  selected ? "bg-primary text-primary-foreground" : "text-fg",
+                  "text-xs/relaxed font-medium tabular-nums",
+                  selected
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground",
                 )}
                 style={labelPosition(index, OUTER_PCT)}
               >
@@ -196,8 +198,10 @@ export function TimePickerClock({
                 key={`outer-${value}`}
                 className={cn(
                   "pointer-events-none absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
-                  "font-sans text-caption font-medium tabular-nums",
-                  selected ? "bg-primary text-primary-foreground" : "text-fg",
+                  "text-xs/relaxed font-medium tabular-nums",
+                  selected
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground",
                 )}
                 style={labelPosition(index, OUTER_PCT)}
               >
@@ -214,8 +218,10 @@ export function TimePickerClock({
                 key={`inner-${value}`}
                 className={cn(
                   "pointer-events-none absolute flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
-                  "font-sans text-caption font-medium tabular-nums",
-                  selected ? "bg-primary text-primary-foreground" : "text-fg-muted",
+                  "text-xs/relaxed font-medium tabular-nums",
+                  selected
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground",
                 )}
                 style={labelPosition(index, INNER_PCT)}
               >

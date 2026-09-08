@@ -54,19 +54,20 @@ export function BriefingReviewFinance({
               : ""
           }
         />
-        <BriefingReviewField
-          label="Notas"
-          value={payload.seasonalityNotes}
-        />
+        <BriefingReviewField label="Notas" value={payload.seasonalityNotes} />
       </BriefingReviewSection>
       <BriefingReviewSection title="Maior lucratividade">
         <BriefingReviewField
           label="Produto"
-          value={productName ?? (payload.highestProfitProductId ? "Selecionado" : "")}
+          value={
+            productName ?? (payload.highestProfitProductId ? "Selecionado" : "")
+          }
         />
         <BriefingReviewField
           label="Serviço"
-          value={serviceName ?? (payload.highestProfitServiceId ? "Selecionado" : "")}
+          value={
+            serviceName ?? (payload.highestProfitServiceId ? "Selecionado" : "")
+          }
         />
       </BriefingReviewSection>
     </div>

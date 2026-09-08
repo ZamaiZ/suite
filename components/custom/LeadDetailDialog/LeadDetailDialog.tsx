@@ -27,7 +27,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { leadAccessFlags } from "@/lib/leads/board-item"
 import { isClosingStage } from "@/lib/leads/closing"
 import { countActivitiesByChannel } from "@/lib/leads/channel"
@@ -181,7 +181,17 @@ export function LeadDetailDialog({
   function applyFields(fields: LeadWritePayload, tags: LeadTag[]) {
     setDetail((current) => {
       if (!current) return current
-      const lead = { ...current.lead, ...fields }
+      // O payload de escrita carrega o segmento como nome; o registro guarda
+      // { id, name }. Espalhar direto trocaria o objeto por uma string.
+      const { segment: segmentName, ...rest } = fields
+      const currentSegment = current.lead.segment
+      const segment =
+        segmentName.trim().length === 0
+          ? null
+          : currentSegment?.name === segmentName
+            ? currentSegment
+            : { id: currentSegment?.id ?? "", name: segmentName }
+      const lead = { ...current.lead, ...rest, segment }
       const websiteKeys = websiteKeysFromChannels(lead.channels)
       return {
         ...current,
@@ -232,10 +242,7 @@ export function LeadDetailDialog({
     )
   }
 
-  function applyVisibility(
-    leadId: string,
-    audit: LeadVisibilityAudit | null,
-  ) {
+  function applyVisibility(leadId: string, audit: LeadVisibilityAudit | null) {
     setDetail((current) =>
       current && current.lead.id === leadId
         ? { ...current, visibilityAudit: audit }
@@ -413,151 +420,158 @@ export function LeadDetailDialog({
 
   return (
     <>
-    <Dialog open={open} onOpenChange={(next) => { if (!next) handleRequestClose() }}>
-      <DialogContent
-        showCloseButton={false}
-        className={cn(
-          "h-[min(50rem,calc(100dvh-2rem))] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl gap-0 overflow-hidden bg-background p-0",
-          tab === "opportunity" && "max-w-6xl",
-        )}
+      <Dialog
+        open={open}
+        onOpenChange={(next) => {
+          if (!next) handleRequestClose()
+        }}
       >
-        <DialogTitle className="sr-only">{companyName}</DialogTitle>
-        <DialogDescription className="sr-only">{domain || "Atividade e cadastro do lead"}</DialogDescription>
-        <LeadDetailHeader
-          tab={tab}
-          onTabChange={setTab}
-          companyName={companyName}
-          domain={domain}
-          status={status}
-          closingStage={
-            detail && isClosingStage(detail.lead.closing_stage)
-              ? detail.lead.closing_stage
-              : null
-          }
-          activityCount={activityCount}
-          leadId={leadId}
-          canClaim={detail?.canClaim ?? false}
-          canUnclaim={detail?.canUnclaim ?? false}
-          createdByName={detail?.createdByName ?? null}
-          clientId={detail?.client?.id ?? null}
-          canViewClient={detail?.client?.canView ?? false}
-          readOnly={readOnly}
-          closeDisabled={isBusy}
-          onClose={handleDismiss}
-          onClaimSuccess={applyAssignment}
-          onClaimPending={setClaimPending}
-          onClaimError={setClaimError}
-        />
-      <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
-        {claimError ? (
-          <p
-            role="alert"
-            className="mx-auto w-full max-w-2xl px-4 pt-4 font-sans text-body-sm text-danger sm:px-5"
-          >
-            {claimError}
-          </p>
-        ) : null}
-
-        {loadState === "not_found" ? (
-          <p className="mx-auto w-full max-w-2xl px-4 py-5 font-sans text-body-sm text-fg-secondary sm:px-5">
-            Lead não encontrado.
-          </p>
-        ) : loadState === "error" && !detail ? (
-          <p
-            role="alert"
-            className="mx-auto w-full max-w-2xl px-4 py-5 font-sans text-body-sm text-danger sm:px-5"
-          >
-            {errorMessage ?? "Não foi possível carregar o lead."}
-          </p>
-        ) : showBody ? (
-          <div className="relative h-full min-h-0 flex-1 overflow-hidden">
-            <AnimatePresence mode="wait" initial={false}>
-              {tab === "activity" ? (
-                <m.div
-                  key="activity"
-                  role="tabpanel"
-                  id="lead-detail-activity"
-                  aria-labelledby="lead-tab-activity"
-                  initial={paneEnter}
-                  animate={paneVisible}
-                  exit={paneEnter}
-                  transition={paneTransition}
-                  className="absolute inset-0 overflow-y-auto"
-                >
-                  <LeadActivityPanel
-                    detail={detail}
-                    loading={loadState === "loading"}
-                    readOnly={readOnly}
-                    enteredActivityId={enteredActivityId}
-                    onActivitySuccess={handleActivitySuccess}
-                    onClosingEventSuccess={handleClosingEventSuccess}
-                    onChecklistSuccess={handleChecklistSuccess}
-                    onConvertSuccess={handleConvertSuccess}
-                    onPendingChange={setActivityPending}
-                  />
-                </m.div>
-              ) : null}
-              {tab === "opportunity" ? (
-                <m.div
-                  key="opportunity"
-                  role="tabpanel"
-                  id="lead-detail-opportunity"
-                  aria-labelledby="lead-tab-opportunity"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={paneTransition}
-                  className="absolute inset-0 overflow-hidden"
-                >
-                  <LeadGbpPanel
-                    detail={detail}
-                    loading={loadState === "loading"}
-                    readOnly={readOnly}
-                    onProfilesChange={applyGbpProfiles}
-                    onWebsiteAuditsChange={applyWebsiteAudits}
-                    onDigitalPresenceChange={applyDigitalPresence}
-                    onVisibilityChange={applyVisibility}
-                    onBacklinksChange={applyBacklinks}
-                    onDiagnosisDraftChange={applyDiagnosisDraft}
-                    onDiagnosisExportsChange={applyDiagnosisExports}
-                    onPendingChange={setGbpPending}
-                  />
-                </m.div>
-              ) : null}
-            </AnimatePresence>
-
-            {keepRecordMounted ? (
-              <m.div
-                role="tabpanel"
-                id="lead-detail-record"
-                aria-labelledby="lead-tab-record"
-                hidden={tab !== "record"}
-                aria-hidden={tab !== "record"}
-                initial={paneEnter}
-                animate={paneVisible}
-                transition={paneTransition}
-                className={cn(
-                  "absolute inset-0 overflow-y-auto",
-                  tab !== "record" && "hidden",
-                )}
+        <DialogContent
+          showCloseButton={false}
+          className={cn(
+            "h-[min(50rem,calc(100dvh-2rem))] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl gap-0 overflow-hidden bg-background p-0",
+            tab === "opportunity" && "max-w-6xl",
+          )}
+        >
+          <DialogTitle className="sr-only">{companyName}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {domain || "Atividade e cadastro do lead"}
+          </DialogDescription>
+          <LeadDetailHeader
+            tab={tab}
+            onTabChange={setTab}
+            companyName={companyName}
+            domain={domain}
+            status={status}
+            closingStage={
+              detail && isClosingStage(detail.lead.closing_stage)
+                ? detail.lead.closing_stage
+                : null
+            }
+            activityCount={activityCount}
+            leadId={leadId}
+            canClaim={detail?.canClaim ?? false}
+            canUnclaim={detail?.canUnclaim ?? false}
+            createdByName={detail?.createdByName ?? null}
+            clientId={detail?.client?.id ?? null}
+            canViewClient={detail?.client?.canView ?? false}
+            readOnly={readOnly}
+            closeDisabled={isBusy}
+            onClose={handleDismiss}
+            onClaimSuccess={applyAssignment}
+            onClaimPending={setClaimPending}
+            onClaimError={setClaimError}
+          />
+          <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+            {claimError ? (
+              <p
+                role="alert"
+                className="mx-auto w-full max-w-2xl px-4 pt-4 text-xs/relaxed text-destructive sm:px-5"
               >
-                <LeadRecordPanel
-                  detail={detail}
-                  loading={loadState === "loading"}
-                  editing={editing}
-                  readOnly={readOnly}
-                  onEdit={() => setEditing(true)}
-                  onCancel={() => setEditing(false)}
-                  onSaved={applyFields}
-                  onPendingChange={setFormPending}
-                />
-              </m.div>
+                {claimError}
+              </p>
+            ) : null}
+
+            {loadState === "not_found" ? (
+              <p className="mx-auto w-full max-w-2xl px-4 py-5 text-xs/relaxed text-muted-foreground sm:px-5">
+                Lead não encontrado.
+              </p>
+            ) : loadState === "error" && !detail ? (
+              <p
+                role="alert"
+                className="mx-auto w-full max-w-2xl px-4 py-5 text-xs/relaxed text-destructive sm:px-5"
+              >
+                {errorMessage ?? "Não foi possível carregar o lead."}
+              </p>
+            ) : showBody ? (
+              <div className="relative h-full min-h-0 flex-1 overflow-hidden">
+                <AnimatePresence mode="wait" initial={false}>
+                  {tab === "activity" ? (
+                    <m.div
+                      key="activity"
+                      role="tabpanel"
+                      id="lead-detail-activity"
+                      aria-labelledby="lead-tab-activity"
+                      initial={paneEnter}
+                      animate={paneVisible}
+                      exit={paneEnter}
+                      transition={paneTransition}
+                      className="absolute inset-0 overflow-y-auto"
+                    >
+                      <LeadActivityPanel
+                        detail={detail}
+                        loading={loadState === "loading"}
+                        readOnly={readOnly}
+                        enteredActivityId={enteredActivityId}
+                        onActivitySuccess={handleActivitySuccess}
+                        onClosingEventSuccess={handleClosingEventSuccess}
+                        onChecklistSuccess={handleChecklistSuccess}
+                        onConvertSuccess={handleConvertSuccess}
+                        onPendingChange={setActivityPending}
+                      />
+                    </m.div>
+                  ) : null}
+                  {tab === "opportunity" ? (
+                    <m.div
+                      key="opportunity"
+                      role="tabpanel"
+                      id="lead-detail-opportunity"
+                      aria-labelledby="lead-tab-opportunity"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={paneTransition}
+                      className="absolute inset-0 overflow-hidden"
+                    >
+                      <LeadGbpPanel
+                        detail={detail}
+                        loading={loadState === "loading"}
+                        readOnly={readOnly}
+                        onProfilesChange={applyGbpProfiles}
+                        onWebsiteAuditsChange={applyWebsiteAudits}
+                        onDigitalPresenceChange={applyDigitalPresence}
+                        onVisibilityChange={applyVisibility}
+                        onBacklinksChange={applyBacklinks}
+                        onDiagnosisDraftChange={applyDiagnosisDraft}
+                        onDiagnosisExportsChange={applyDiagnosisExports}
+                        onPendingChange={setGbpPending}
+                      />
+                    </m.div>
+                  ) : null}
+                </AnimatePresence>
+
+                {keepRecordMounted ? (
+                  <m.div
+                    role="tabpanel"
+                    id="lead-detail-record"
+                    aria-labelledby="lead-tab-record"
+                    hidden={tab !== "record"}
+                    aria-hidden={tab !== "record"}
+                    initial={paneEnter}
+                    animate={paneVisible}
+                    transition={paneTransition}
+                    className={cn(
+                      "absolute inset-0 overflow-y-auto",
+                      tab !== "record" && "hidden",
+                    )}
+                  >
+                    <LeadRecordPanel
+                      detail={detail}
+                      loading={loadState === "loading"}
+                      editing={editing}
+                      readOnly={readOnly}
+                      onEdit={() => setEditing(true)}
+                      onCancel={() => setEditing(false)}
+                      onSaved={applyFields}
+                      onPendingChange={setFormPending}
+                    />
+                  </m.div>
+                ) : null}
+              </div>
             ) : null}
           </div>
-        ) : null}
-      </div>
-      </DialogContent>
-    </Dialog>
+        </DialogContent>
+      </Dialog>
       <ClientPortalCodeReveal
         open={portalReveal !== null}
         onClose={() => setPortalReveal(null)}

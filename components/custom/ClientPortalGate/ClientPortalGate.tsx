@@ -83,7 +83,10 @@ export function ClientPortalGate({ slug }: ClientPortalGateProps) {
         {error ? <FieldError id={errorId}>{error}</FieldError> : null}
       </Field>
 
-      <Button type="submit" disabled={isPending || code.length !== PORTAL_CODE_LENGTH}>
+      <Button
+        type="submit"
+        disabled={isPending || code.length !== PORTAL_CODE_LENGTH}
+      >
         {isPending ? "Validando..." : "Entrar"}
       </Button>
     </form>

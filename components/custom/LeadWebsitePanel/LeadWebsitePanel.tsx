@@ -72,9 +72,7 @@ function websiteChannels(channels: LeadDigitalChannel[]): LeadDigitalChannel[] {
 function websiteJobsKey(audit: LeadWebsiteAudit | null): string {
   if (!audit) return ""
   return audit.jobs
-    .filter(
-      (job) => job.status === "queued" || job.status === "running",
-    )
+    .filter((job) => job.status === "queued" || job.status === "running")
     .map((job) => job.kind)
     .sort()
     .join(",")
@@ -126,9 +124,8 @@ export function LeadWebsitePanel({
   const selected =
     channels.find((channel) => channel.id === selectedId) ?? channels[0] ?? null
   const audit =
-    detail.websiteAudits.find(
-      (item) => item.channel_id === selected?.id,
-    ) ?? null
+    detail.websiteAudits.find((item) => item.channel_id === selected?.id) ??
+    null
   auditRef.current = audit
   const jobsKey = websiteJobsKey(audit)
 
@@ -313,11 +310,11 @@ export function LeadWebsitePanel({
       <div className="flex flex-col items-center gap-3 px-4 py-8">
         <span
           aria-hidden
-          className="inline-flex size-12 items-center justify-center rounded-xl bg-hover text-fg-muted"
+          className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
         >
           <RiGlobalLine size={22} />
         </span>
-        <p className="font-sans text-caption text-fg-secondary">
+        <p className="text-xs/relaxed text-muted-foreground">
           Nenhum site cadastrado neste lead.
         </p>
       </div>
@@ -341,19 +338,29 @@ export function LeadWebsitePanel({
 
       {channels.length > 1 ? (
         <div className="max-w-sm">
-          <Select value={selected.id ?? ""} onValueChange={(value) => setSelectedId(String(value))}>
-            <SelectTrigger id={`website-channel-${detail.lead.id}`} className="w-full">
+          <Select
+            value={selected.id ?? ""}
+            onValueChange={(value) => setSelectedId(String(value))}
+          >
+            <SelectTrigger
+              id={`website-channel-${detail.lead.id}`}
+              className="w-full"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="start">
               {channels.map((channel) => {
                 const value = channel.id ?? channel.normalized_key
-                return <SelectItem key={value} value={value}>{digitalChannelDisplay(channel.type, channel.value)}</SelectItem>
+                return (
+                  <SelectItem key={value} value={value}>
+                    {digitalChannelDisplay(channel.type, channel.value)}
+                  </SelectItem>
+                )
               })}
             </SelectContent>
           </Select>
           {selected.is_primary ? (
-            <p className="mt-2 inline-flex items-center gap-1 font-sans text-caption text-accent">
+            <p className="mt-2 inline-flex items-center gap-1 text-xs/relaxed text-primary">
               <RiStarFill size={12} aria-hidden />
               Site principal
             </p>
@@ -362,19 +369,19 @@ export function LeadWebsitePanel({
       ) : null}
 
       {error ? (
-        <p role="alert" className="font-sans text-body-sm text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}
 
       {jobsActive ? (
-        <p className="font-sans text-body-sm text-fg-secondary">
+        <p className="text-xs/relaxed text-muted-foreground">
           Coletando PageSpeed…
         </p>
       ) : null}
 
       {pollTimedOut && jobsKey ? (
-        <p className="font-sans text-body-sm text-fg-secondary">
+        <p className="text-xs/relaxed text-muted-foreground">
           Ainda coletando o PageSpeed — abra de novo.
         </p>
       ) : null}
@@ -384,7 +391,7 @@ export function LeadWebsitePanel({
             <p
               key={job.kind}
               role="alert"
-              className="font-sans text-body-sm text-danger"
+              className="text-xs/relaxed text-destructive"
             >
               {job.error_message ??
                 "Não foi possível obter o PageSpeed. Tente novamente."}
@@ -424,15 +431,15 @@ export function LeadWebsitePanel({
         <div className="flex flex-col items-center gap-3 px-4 py-8">
           <span
             aria-hidden
-            className="inline-flex size-12 items-center justify-center rounded-xl bg-hover text-fg-muted"
+            className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
           >
             <RiGlobalLine size={22} />
           </span>
           <div className="max-w-sm text-center">
-            <p className="font-sans text-caption text-fg-secondary">
+            <p className="text-xs/relaxed text-muted-foreground">
               Nenhuma coleta deste site
             </p>
-            <p className="mt-1 font-sans text-caption text-fg-muted">
+            <p className="mt-1 text-xs/relaxed text-muted-foreground">
               Analise o website para montar a auditoria on-page.
             </p>
           </div>

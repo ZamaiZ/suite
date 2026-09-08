@@ -3,12 +3,12 @@
 import { RiCloseLine } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 
 const TONE_CLASS = {
   success: "bg-success/10 text-success",
   warning: "bg-warning/10 text-warning",
-  muted: "bg-fg-muted/10 text-fg-muted",
+  muted: "bg-muted-foreground/10 text-muted-foreground",
 }
 
 export function ClientBriefingDialogHeader({
@@ -27,19 +27,19 @@ export function ClientBriefingDialogHeader({
   onClose: () => void
 }) {
   return (
-    <header className="grid min-h-14 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border-subtle bg-elevated px-3 sm:px-4">
+    <header className="grid min-h-14 shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border/70 bg-popover px-3 sm:px-4">
       <div className="flex min-w-0 items-center gap-2.5 py-2">
         <span
           aria-hidden
-          className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-accent/10 font-sans text-caption font-semibold tracking-caption text-accent"
+          className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs/relaxed font-semibold tracking-wide text-primary"
         >
           {getLeadInitials(companyName)}
         </span>
         <div className="min-w-0">
-          <p className="truncate font-sans text-body-sm font-semibold text-fg">
+          <p className="truncate text-xs/relaxed font-semibold text-foreground">
             {companyName}
           </p>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Briefing interno
           </p>
         </div>
@@ -49,7 +49,7 @@ export function ClientBriefingDialogHeader({
         {statusLabel ? (
           <span
             className={cn(
-              "inline-flex rounded-md px-2 py-0.5 font-sans text-caption font-medium",
+              "inline-flex rounded-md px-2 py-0.5 text-xs/relaxed font-medium",
               TONE_CLASS[statusTone],
             )}
           >
@@ -57,7 +57,7 @@ export function ClientBriefingDialogHeader({
           </span>
         ) : null}
         {typeof completedCount === "number" ? (
-          <span className="inline-flex rounded-md bg-canvas px-2 py-0.5 font-sans text-caption font-medium tabular-nums text-fg-secondary">
+          <span className="inline-flex rounded-md bg-background px-2 py-0.5 text-xs/relaxed font-medium tabular-nums text-muted-foreground">
             {completedCount}/8
           </span>
         ) : null}

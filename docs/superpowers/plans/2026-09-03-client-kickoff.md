@@ -22,6 +22,7 @@
 ### Task 1: Persist the kickoff domain
 
 **Files:**
+
 - Create: `supabase/migrations/20260915000000_client_kickoff.sql`
 - Modify: `lib/clients/types.ts`, `lib/clients/parse.ts`
 
@@ -31,6 +32,7 @@
 ### Task 2: Add transition and validation contracts
 
 **Files:**
+
 - Create: `lib/clients/kickoff.ts`, `lib/validations/client-kickoff.ts`
 
 - [ ] Define labels, transition validation, action availability, and kickoff activity parsing.
@@ -39,6 +41,7 @@
 ### Task 3: Expose secure client actions
 
 **Files:**
+
 - Create: `app/actions/clients/load-client-kickoff.ts`, `app/actions/clients/log-client-kickoff-event.ts`
 - Modify: `app/actions/clients/index.ts`
 
@@ -48,6 +51,7 @@
 ### Task 4: Add the Contact panel
 
 **Files:**
+
 - Create: `components/custom/ClientKickoffPanel/*`, `components/custom/ClientKickoffTimeline/*`
 - Modify: `components/custom/ClientBriefingReviewDialog/ClientBriefingReviewDialog.tsx`
 
@@ -57,6 +61,7 @@
 ### Task 5: Project kickoff in the client list
 
 **Files:**
+
 - Modify: `app/actions/clients/list-clients.ts`, `components/custom/ClientsList/ClientsList.tsx`
 
 - [ ] Select and map kickoff state.

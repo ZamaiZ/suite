@@ -1,4 +1,1 @@
-export {
-  getToolsSettings,
-  type ToolsSettingsState,
-} from "./get-tools-settings"
+export { getToolsSettings, type ToolsSettingsState } from "./get-tools-settings"

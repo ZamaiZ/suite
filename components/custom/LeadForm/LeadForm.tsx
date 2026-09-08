@@ -1,6 +1,13 @@
 "use client"
 
-import { useEffect, useRef, useState, useTransition, type FormEvent, type ReactNode } from "react"
+import {
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+  type FormEvent,
+  type ReactNode,
+} from "react"
 import Link from "next/link"
 import { Controller, useForm, type Resolver } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -33,7 +40,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group"
 import { formatPhone } from "@/lib/br-documents"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { toDigitalChannelDrafts } from "@/lib/leads/digital-channels"
 import {
   leadFormSchema,
@@ -69,14 +76,14 @@ function FormSection({
   children: ReactNode
 }) {
   return (
-    <section className="rounded-xl bg-surface p-4 shadow-card">
+    <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-4 flex items-center gap-2.5">
         <LeadIconWell icon={icon} />
         <div className="min-w-0">
-          <h3 className="font-sans text-body-sm font-semibold text-fg">
+          <h3 className="text-xs/relaxed font-semibold text-foreground">
             {title}
           </h3>
-          <p className="font-sans text-caption text-fg-muted">{subtitle}</p>
+          <p className="text-xs/relaxed text-muted-foreground">{subtitle}</p>
         </div>
       </div>
       <div
@@ -123,10 +130,8 @@ export function LeadForm({
       channels:
         defaultValues?.channels ??
         (lead?.channels ? toDigitalChannelDrafts(lead.channels) : []),
-      segment:
-        defaultValues?.segment ?? lead?.segment?.name ?? "",
-      state_code:
-        defaultValues?.state_code ?? lead?.state_code ?? "",
+      segment: defaultValues?.segment ?? lead?.segment?.name ?? "",
+      state_code: defaultValues?.state_code ?? lead?.state_code ?? "",
       city: defaultValues?.city ?? lead?.city ?? "",
       contact_name: defaultValues?.contact_name ?? lead?.contact_name ?? "",
       phone: defaultValues?.phone ?? lead?.phone ?? "",
@@ -162,7 +167,9 @@ export function LeadForm({
 
     startTransition(async () => {
       const result =
-        mode === "create" ? await createLead(formData) : await updateLead(formData)
+        mode === "create"
+          ? await createLead(formData)
+          : await updateLead(formData)
 
       if (result.status === "error") {
         applyFieldErrors(form, result.fieldErrors)
@@ -217,9 +224,13 @@ export function LeadForm({
             const errorId = "lead-company-name-error"
             return (
               <Field data-invalid={!!fieldState.error}>
-                <FieldLabel htmlFor="lead-company-name">Nome da empresa</FieldLabel>
+                <FieldLabel htmlFor="lead-company-name">
+                  Nome da empresa
+                </FieldLabel>
                 <InputGroup>
-                  <InputGroupAddon><RiBuilding4Line aria-hidden /></InputGroupAddon>
+                  <InputGroupAddon>
+                    <RiBuilding4Line aria-hidden />
+                  </InputGroupAddon>
                   <InputGroupInput
                     id="lead-company-name"
                     value={field.value}
@@ -231,7 +242,9 @@ export function LeadForm({
                     aria-describedby={fieldState.error ? errorId : undefined}
                   />
                 </InputGroup>
-                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                <FieldError id={errorId}>
+                  {fieldState.error?.message}
+                </FieldError>
               </Field>
             )
           }}
@@ -349,9 +362,13 @@ export function LeadForm({
             const errorId = "lead-contact-name-error"
             return (
               <Field data-invalid={!!fieldState.error}>
-                <FieldLabel htmlFor="lead-contact-name">Nome do contato</FieldLabel>
+                <FieldLabel htmlFor="lead-contact-name">
+                  Nome do contato
+                </FieldLabel>
                 <InputGroup>
-                  <InputGroupAddon><RiUserLine aria-hidden /></InputGroupAddon>
+                  <InputGroupAddon>
+                    <RiUserLine aria-hidden />
+                  </InputGroupAddon>
                   <InputGroupInput
                     id="lead-contact-name"
                     value={field.value}
@@ -363,7 +380,9 @@ export function LeadForm({
                     aria-describedby={fieldState.error ? errorId : undefined}
                   />
                 </InputGroup>
-                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                <FieldError id={errorId}>
+                  {fieldState.error?.message}
+                </FieldError>
               </Field>
             )
           }}
@@ -377,14 +396,18 @@ export function LeadForm({
               <Field data-invalid={!!fieldState.error}>
                 <FieldLabel htmlFor="lead-phone">Telefone</FieldLabel>
                 <InputGroup>
-                  <InputGroupAddon><RiPhoneLine aria-hidden /></InputGroupAddon>
+                  <InputGroupAddon>
+                    <RiPhoneLine aria-hidden />
+                  </InputGroupAddon>
                   <InputGroupInput
                     id="lead-phone"
                     type="tel"
                     inputMode="tel"
                     placeholder="(11) 98765-4321"
                     value={formatPhone(field.value)}
-                    onChange={(event) => field.onChange(formatPhone(event.target.value))}
+                    onChange={(event) =>
+                      field.onChange(formatPhone(event.target.value))
+                    }
                     onBlur={field.onBlur}
                     disabled={fieldsDisabled}
                     autoComplete="tel"
@@ -392,7 +415,9 @@ export function LeadForm({
                     aria-describedby={fieldState.error ? errorId : undefined}
                   />
                 </InputGroup>
-                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                <FieldError id={errorId}>
+                  {fieldState.error?.message}
+                </FieldError>
               </Field>
             )
           }}
@@ -403,10 +428,15 @@ export function LeadForm({
           render={({ field, fieldState }) => {
             const errorId = "lead-email-error"
             return (
-              <Field className="sm:col-span-2" data-invalid={!!fieldState.error}>
+              <Field
+                className="sm:col-span-2"
+                data-invalid={!!fieldState.error}
+              >
                 <FieldLabel htmlFor="lead-email">E-mail</FieldLabel>
                 <InputGroup>
-                  <InputGroupAddon><RiMailLine aria-hidden /></InputGroupAddon>
+                  <InputGroupAddon>
+                    <RiMailLine aria-hidden />
+                  </InputGroupAddon>
                   <InputGroupInput
                     id="lead-email"
                     type="email"
@@ -419,7 +449,9 @@ export function LeadForm({
                     aria-describedby={fieldState.error ? errorId : undefined}
                   />
                 </InputGroup>
-                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                <FieldError id={errorId}>
+                  {fieldState.error?.message}
+                </FieldError>
               </Field>
             )
           }}
@@ -430,8 +462,10 @@ export function LeadForm({
         <p
           role={serverMessage.tone === "error" ? "alert" : "status"}
           className={cn(
-            "font-sans text-body-sm",
-            serverMessage.tone === "error" ? "text-danger" : "text-success",
+            "text-xs/relaxed",
+            serverMessage.tone === "error"
+              ? "text-destructive"
+              : "text-success",
           )}
         >
           {serverMessage.text}
@@ -440,7 +474,7 @@ export function LeadForm({
               {" "}
               <Link
                 href={`/leads?lead=${serverMessage.existingLeadId}`}
-                className="font-medium text-link underline-offset-2 hover:underline"
+                className="font-medium text-primary underline-offset-2 hover:underline"
               >
                 Abrir cadastro existente
               </Link>
@@ -456,7 +490,11 @@ export function LeadForm({
             disabled={isPending || (mode === "edit" && !form.formState.isDirty)}
           >
             {isPending ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : (
               <RiSaveLine data-icon="inline-start" aria-hidden />
             )}

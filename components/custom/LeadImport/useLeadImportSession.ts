@@ -109,7 +109,9 @@ export function useLeadImportSession() {
   const patchFile = useCallback(
     (id: string, patch: Partial<ImportFileEntry>) => {
       setFiles((current) =>
-        current.map((entry) => (entry.id === id ? { ...entry, ...patch } : entry)),
+        current.map((entry) =>
+          entry.id === id ? { ...entry, ...patch } : entry,
+        ),
       )
     },
     [],
@@ -186,8 +188,7 @@ export function useLeadImportSession() {
     })()
   }, [queuedId, queueEpoch, patchFile, startProgress, stopProgress])
 
-  const editingId =
-    typeof sidebarMode === "object" ? sidebarMode.editing : null
+  const editingId = typeof sidebarMode === "object" ? sidebarMode.editing : null
 
   const addFiles = useCallback(
     (incoming: File[]) => {
@@ -197,7 +198,9 @@ export function useLeadImportSession() {
 
       const remaining = LEAD_SPREADSHEET_MAX_FILES - filesRef.current.length
       if (remaining <= 0) {
-        setNotice(`No máximo ${LEAD_SPREADSHEET_MAX_FILES} arquivos por importação.`)
+        setNotice(
+          `No máximo ${LEAD_SPREADSHEET_MAX_FILES} arquivos por importação.`,
+        )
         return
       }
 
@@ -239,7 +242,9 @@ export function useLeadImportSession() {
         return
       }
       if (rejected) {
-        setNotice("Alguns arquivos foram ignorados. Use .xlsx de até 1 MB, no máximo 5.")
+        setNotice(
+          "Alguns arquivos foram ignorados. Use .xlsx de até 1 MB, no máximo 5.",
+        )
       }
 
       setFiles((current) => [...current, ...accepted])
@@ -248,28 +253,33 @@ export function useLeadImportSession() {
     [sidebarMode],
   )
 
-  const removeFile = useCallback((id: string) => {
-    stopProgress(id)
-    if (processingIdRef.current === id) {
-      processingIdRef.current = null
-      setQueueEpoch((value) => value + 1)
-    }
-    setImportError(null)
-    setFiles((current) => {
-      const next = syncSessionConflicts(current.filter((entry) => entry.id !== id))
-      return next
-    })
-    setSidebarMode((mode) => {
-      if (typeof mode === "object" && mode.editing === id) return "overview"
-      return mode
-    })
-    setDraftRows((current) => {
-      if (typeof sidebarMode === "object" && sidebarMode.editing === id) {
-        return null
+  const removeFile = useCallback(
+    (id: string) => {
+      stopProgress(id)
+      if (processingIdRef.current === id) {
+        processingIdRef.current = null
+        setQueueEpoch((value) => value + 1)
       }
-      return current
-    })
-  }, [sidebarMode, stopProgress])
+      setImportError(null)
+      setFiles((current) => {
+        const next = syncSessionConflicts(
+          current.filter((entry) => entry.id !== id),
+        )
+        return next
+      })
+      setSidebarMode((mode) => {
+        if (typeof mode === "object" && mode.editing === id) return "overview"
+        return mode
+      })
+      setDraftRows((current) => {
+        if (typeof sidebarMode === "object" && sidebarMode.editing === id) {
+          return null
+        }
+        return current
+      })
+    },
+    [sidebarMode, stopProgress],
+  )
 
   const startEdit = useCallback((id: string) => {
     const entry = filesRef.current.find((item) => item.id === id)
@@ -447,7 +457,8 @@ export function useLeadImportSession() {
 
   const isBusy = isAnalyzing || isImporting || isRevalidating
   const dropDisabled =
-    typeof sidebarMode === "object" || files.length >= LEAD_SPREADSHEET_MAX_FILES
+    typeof sidebarMode === "object" ||
+    files.length >= LEAD_SPREADSHEET_MAX_FILES
   const visibleIssues = issuesExpanded
     ? issueItems
     : issueItems.slice(0, ISSUES_COLLAPSED)

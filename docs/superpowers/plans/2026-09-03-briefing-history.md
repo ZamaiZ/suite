@@ -21,16 +21,16 @@ See [2026-09-03-briefing-history-design.md](../specs/2026-09-03-briefing-history
 
 ## File map
 
-| Path | Role |
-|------|------|
-| `supabase/migrations/20260911000000_briefing_step_history.sql` | Add `history` to step check |
-| `lib/briefing/steps.ts` | Insert step between audience and finance |
-| `lib/briefing/history.ts` | Domain helpers |
-| `lib/validations/briefing-history.ts` | Zod |
-| `app/actions/briefing/load-briefing-history.ts` | Load |
-| `app/actions/briefing/save-briefing-history.ts` | Save + complete |
-| `components/custom/ClientBriefingHistoryForm/` | Form |
-| `ClientBriefingWorkspace.tsx` | Wire step |
+| Path                                                           | Role                                     |
+| -------------------------------------------------------------- | ---------------------------------------- |
+| `supabase/migrations/20260911000000_briefing_step_history.sql` | Add `history` to step check              |
+| `lib/briefing/steps.ts`                                        | Insert step between audience and finance |
+| `lib/briefing/history.ts`                                      | Domain helpers                           |
+| `lib/validations/briefing-history.ts`                          | Zod                                      |
+| `app/actions/briefing/load-briefing-history.ts`                | Load                                     |
+| `app/actions/briefing/save-briefing-history.ts`                | Save + complete                          |
+| `components/custom/ClientBriefingHistoryForm/`                 | Form                                     |
+| `ClientBriefingWorkspace.tsx`                                  | Wire step                                |
 
 ## Tasks
 

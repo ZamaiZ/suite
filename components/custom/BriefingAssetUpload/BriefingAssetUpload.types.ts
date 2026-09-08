@@ -1,4 +1,7 @@
-import type { BriefingAssetKind, BriefingAssetRef } from "@/lib/briefing/website"
+import type {
+  BriefingAssetKind,
+  BriefingAssetRef,
+} from "@/lib/briefing/website"
 
 export type BriefingAssetUploadProps = {
   id: string

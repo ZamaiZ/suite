@@ -27,7 +27,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Field, FieldError } from "@/components/ui/field"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 import {
   Select,
   SelectContent,
@@ -255,9 +259,7 @@ export function LeadDigitalChannels({
             channel={channel}
             disabled={disabled}
             reduced={reduced}
-            canRemove={
-              channel.type !== "website" || websiteCount(value) > 1
-            }
+            canRemove={channel.type !== "website" || websiteCount(value) > 1}
             onOpen={() => startEdit(index)}
             onPrimary={() => markPrimary(index)}
             onRemove={() => removeAt(index)}
@@ -267,7 +269,10 @@ export function LeadDigitalChannels({
 
       {draft ? (
         <div className="flex flex-col gap-2 sm:grid sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-start">
-          <Select value={draft.type} disabled={disabled} onValueChange={(next) => {
+          <Select
+            value={draft.type}
+            disabled={disabled}
+            onValueChange={(next) => {
               const type = String(next)
               if (!isDigitalChannelType(type)) return
               setDraft({
@@ -278,12 +283,40 @@ export function LeadDigitalChannels({
                   !value.some((channel) => channel.type === type),
               })
               setDraftError(null)
-            }}>
-            <SelectTrigger id={`${id}-type`} className="h-10 w-full"><SelectValue /></SelectTrigger>
-            <SelectContent align="start">{DIGITAL_CHANNEL_TYPES.map((type) => <SelectItem key={type} value={type}><ChannelGlyph type={type} />{DIGITAL_CHANNEL_LABELS[type]}</SelectItem>)}</SelectContent>
+            }}
+          >
+            <SelectTrigger id={`${id}-type`} className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="start">
+              {DIGITAL_CHANNEL_TYPES.map((type) => (
+                <SelectItem key={type} value={type}>
+                  <ChannelGlyph type={type} />
+                  {DIGITAL_CHANNEL_LABELS[type]}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
           <Field data-invalid={Boolean(draftError)}>
-            <InputGroup className="h-10"><InputGroupAddon><ChannelGlyph type={draft.type} /></InputGroupAddon><InputGroupInput id={`${id}-value`} value={draft.value} placeholder={DIGITAL_CHANNEL_PLACEHOLDERS[draft.type]} aria-invalid={Boolean(draftError)} disabled={disabled} autoComplete="url" onChange={(event) => { setDraft({ ...draft, value: event.target.value }); if (draftError) setDraftError(null) }} onBlur={onValueBlur} onKeyDown={onDraftKeyDown} /></InputGroup>
+            <InputGroup>
+              <InputGroupAddon>
+                <ChannelGlyph type={draft.type} />
+              </InputGroupAddon>
+              <InputGroupInput
+                id={`${id}-value`}
+                value={draft.value}
+                placeholder={DIGITAL_CHANNEL_PLACEHOLDERS[draft.type]}
+                aria-invalid={Boolean(draftError)}
+                disabled={disabled}
+                autoComplete="url"
+                onChange={(event) => {
+                  setDraft({ ...draft, value: event.target.value })
+                  if (draftError) setDraftError(null)
+                }}
+                onBlur={onValueBlur}
+                onKeyDown={onDraftKeyDown}
+              />
+            </InputGroup>
             <FieldError>{draftError}</FieldError>
           </Field>
         </div>
@@ -301,7 +334,7 @@ export function LeadDigitalChannels({
       </Button>
 
       {listError ? (
-        <p role="alert" className="font-sans text-body-sm text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {listError}
         </p>
       ) : null}
@@ -334,7 +367,7 @@ function ChannelItem({
       initial={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: reduced ? 0.12 : 0.16, ease: EASE }}
-      className="flex items-center gap-2.5 rounded-lg border border-border bg-elevated px-3 py-2.5"
+      className="flex items-center gap-2.5 rounded-lg border border-border bg-popover px-3 py-2.5"
     >
       <button
         type="button"
@@ -344,16 +377,16 @@ function ChannelItem({
       >
         <LeadIconWell icon={Icon} />
         <span className="min-w-0">
-          <span className="block font-sans text-caption text-fg-muted">
+          <span className="block text-xs/relaxed text-muted-foreground">
             {DIGITAL_CHANNEL_LABELS[channel.type]}
           </span>
-          <span className="block truncate font-sans text-body-sm font-medium text-fg">
+          <span className="block truncate text-xs/relaxed font-medium text-foreground">
             {display}
           </span>
         </span>
       </button>
       {channel.is_primary ? (
-        <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-accent/10 px-2 py-0.5 font-sans text-caption font-medium text-accent">
+        <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
           <RiStarFill size={12} aria-hidden />
           Principal
         </span>
@@ -367,25 +400,22 @@ function ChannelItem({
           <RiMore2Line size={16} aria-hidden />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-44">
-              <DropdownMenuItem
-                disabled={channel.is_primary}
-                onClick={onPrimary}
-              >
-                <RiStarLine size={16} aria-hidden />
-                Definir como principal
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onOpen}>
-                <RiEditLine size={16} aria-hidden />
-                Editar
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                disabled={!canRemove}
-                onClick={onRemove}
-                variant="destructive"
-              >
-                <RiDeleteBinLine size={16} aria-hidden />
-                Remover
-              </DropdownMenuItem>
+          <DropdownMenuItem disabled={channel.is_primary} onClick={onPrimary}>
+            <RiStarLine size={16} aria-hidden />
+            Definir como principal
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onOpen}>
+            <RiEditLine size={16} aria-hidden />
+            Editar
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            disabled={!canRemove}
+            onClick={onRemove}
+            variant="destructive"
+          >
+            <RiDeleteBinLine size={16} aria-hidden />
+            Remover
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </m.div>
@@ -397,7 +427,7 @@ export function LeadDigitalChannelList({
 }: LeadDigitalChannelListProps) {
   if (channels.length === 0) {
     return (
-      <p className="font-sans text-body-sm text-fg-muted">Nenhum canal.</p>
+      <p className="text-xs/relaxed text-muted-foreground">Nenhum canal.</p>
     )
   }
 
@@ -410,20 +440,20 @@ export function LeadDigitalChannelList({
         return (
           <div
             key={`${channel.type}-${channel.value}-${index}`}
-            className="flex items-center gap-2.5 rounded-lg border border-border bg-elevated px-3 py-2.5"
+            className="flex items-center gap-2.5 rounded-lg border border-border bg-popover px-3 py-2.5"
           >
             <LeadIconWell icon={Icon} />
             <div className="min-w-0 flex-1">
-              <p className="font-sans text-caption text-fg-muted">
+              <p className="text-xs/relaxed text-muted-foreground">
                 {DIGITAL_CHANNEL_LABELS[channel.type]}
               </p>
-              <p className="truncate font-sans text-body-sm font-medium text-fg">
+              <p className="truncate text-xs/relaxed font-medium text-foreground">
                 {href ? (
                   <a
                     href={href}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-accent underline-offset-2 hover:underline"
+                    className="text-primary underline-offset-2 hover:underline"
                   >
                     {display}
                   </a>
@@ -433,7 +463,7 @@ export function LeadDigitalChannelList({
               </p>
             </div>
             {channel.is_primary ? (
-              <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-accent/10 px-2 py-0.5 font-sans text-caption font-medium text-accent">
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
                 <RiStarFill size={12} aria-hidden />
                 Principal
               </span>

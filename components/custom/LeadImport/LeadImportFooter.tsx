@@ -31,17 +31,30 @@ export function LeadImportFooter({
   return (
     <>
       {editing ? (
-        <Button type="button" variant="ghost" onClick={onBack} disabled={isRevalidating}>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onBack}
+          disabled={isRevalidating}
+        >
           Voltar à visão geral
         </Button>
       ) : (
-        <Button type="button" variant="ghost" onClick={onCancel} disabled={isImporting}>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onCancel}
+          disabled={isImporting}
+        >
           Cancelar
         </Button>
       )}
       <div className="flex min-w-0 items-center gap-3">
         {importError ? (
-          <p role="alert" className="max-w-72 truncate font-sans text-caption text-danger">
+          <p
+            role="alert"
+            className="max-w-72 truncate text-xs/relaxed text-destructive"
+          >
             {importError}
           </p>
         ) : null}
@@ -52,7 +65,11 @@ export function LeadImportFooter({
             disabled={isRevalidating}
           >
             {isRevalidating ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : null}
             Reavaliar arquivo
           </Button>
@@ -63,7 +80,11 @@ export function LeadImportFooter({
             disabled={!canImport || isImporting}
           >
             {isImporting ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : (
               <RiSendPlaneLine data-icon="inline-start" aria-hidden />
             )}

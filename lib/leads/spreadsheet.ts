@@ -1,5 +1,10 @@
 import "server-only"
-import { Workbook, type CellValue } from "exceljs"
+import {
+  Workbook,
+  type CellValue,
+  type DataValidation,
+  type Worksheet,
+} from "exceljs"
 import { BR_STATES } from "@/lib/br-locations"
 import {
   DIGITAL_CHANNEL_LABELS,
@@ -86,6 +91,19 @@ function listValidationFormula(values: string[]): string {
   return `"${escaped.join(",")}"`
 }
 
+/**
+ * `worksheet.dataValidations.add(range, rule)` existe em runtime no exceljs e é
+ * a API documentada para validação por intervalo, mas está comentada no
+ * `index.d.ts` do pacote (só `cell.dataValidation` é declarado).
+ */
+function sheetValidations(sheet: Worksheet) {
+  return (
+    sheet as unknown as {
+      dataValidations: { add(range: string, rule: DataValidation): void }
+    }
+  ).dataValidations
+}
+
 export async function buildLeadTemplateBuffer(
   catalog: LeadTemplateCatalog,
 ): Promise<Buffer> {
@@ -116,39 +134,49 @@ export async function buildLeadTemplateBuffer(
     SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "segment") + 1
   const stateIndex =
     SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "state_code") + 1
-  const tagsIndex = SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "tags") + 1
+  const tagsIndex =
+    SPREADSHEET_VALUE_KEYS.findIndex((key) => key === "tags") + 1
 
   if (catalog.segments.length > 0 && segmentIndex > 0) {
-    sheet.dataValidations.add(`${columnLetter(segmentIndex)}2:${columnLetter(segmentIndex)}${lastRow}`, {
-      type: "list",
-      allowBlank: false,
-      formulae: [listValidationFormula(catalog.segments)],
-      showErrorMessage: true,
-      errorTitle: "Segmento inválido",
-      error: "Selecione um segmento existente ou baixe o modelo novamente.",
-    })
+    sheetValidations(sheet).add(
+      `${columnLetter(segmentIndex)}2:${columnLetter(segmentIndex)}${lastRow}`,
+      {
+        type: "list",
+        allowBlank: false,
+        formulae: [listValidationFormula(catalog.segments)],
+        showErrorMessage: true,
+        errorTitle: "Segmento inválido",
+        error: "Selecione um segmento existente ou baixe o modelo novamente.",
+      },
+    )
   }
 
   if (stateIndex > 0) {
-    sheet.dataValidations.add(`${columnLetter(stateIndex)}2:${columnLetter(stateIndex)}${lastRow}`, {
-      type: "list",
-      allowBlank: false,
-      formulae: [listValidationFormula(BR_STATES.map((state) => state.code))],
-      showErrorMessage: true,
-      errorTitle: "UF inválida",
-      error: "Selecione uma UF válida.",
-    })
+    sheetValidations(sheet).add(
+      `${columnLetter(stateIndex)}2:${columnLetter(stateIndex)}${lastRow}`,
+      {
+        type: "list",
+        allowBlank: false,
+        formulae: [listValidationFormula(BR_STATES.map((state) => state.code))],
+        showErrorMessage: true,
+        errorTitle: "UF inválida",
+        error: "Selecione uma UF válida.",
+      },
+    )
   }
 
   if (catalog.tags.length > 0 && tagsIndex > 0) {
-    sheet.dataValidations.add(`${columnLetter(tagsIndex)}2:${columnLetter(tagsIndex)}${lastRow}`, {
-      type: "list",
-      allowBlank: true,
-      formulae: [listValidationFormula(catalog.tags)],
-      showErrorMessage: true,
-      errorTitle: "Tag inválida",
-      error: "Selecione tags existentes ou deixe em branco.",
-    })
+    sheetValidations(sheet).add(
+      `${columnLetter(tagsIndex)}2:${columnLetter(tagsIndex)}${lastRow}`,
+      {
+        type: "list",
+        allowBlank: true,
+        formulae: [listValidationFormula(catalog.tags)],
+        showErrorMessage: true,
+        errorTitle: "Tag inválida",
+        error: "Selecione tags existentes ou deixe em branco.",
+      },
+    )
   }
 
   const instructions = workbook.addWorksheet("Instruções")
@@ -199,8 +227,10 @@ export async function parseLeadSpreadsheet(
     }
   }
 
-  const rawRows: { row: number; values: ReturnType<typeof rawValuesFromCells> }[] =
-    []
+  const rawRows: {
+    row: number
+    values: ReturnType<typeof rawValuesFromCells>
+  }[] = []
   let dataRowCount = 0
   let exceeded = false
 

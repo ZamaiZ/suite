@@ -12,7 +12,7 @@ const BriefingServiceRadiusMapCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-64 w-full items-center justify-center gap-2 rounded-xl border border-border bg-elevated font-sans text-body-sm text-fg-muted sm:h-80">
+      <div className="flex h-64 w-full items-center justify-center gap-2 rounded-xl border border-border bg-popover text-xs/relaxed text-muted-foreground sm:h-80">
         <RiLoader4Line size={18} aria-hidden className="animate-spin" />
         Carregando mapa…
       </div>

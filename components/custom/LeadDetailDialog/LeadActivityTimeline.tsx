@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import {
   activityChannelLabel,
@@ -32,14 +32,14 @@ import { LeadIconWell } from "./LeadIconWell"
 const EASE = [0.23, 1, 0.32, 1] as const
 
 const TYPE_DOT: Record<LeadActivityType, string> = {
-  no_contact: "bg-accent",
+  no_contact: "bg-primary",
   call_later: "bg-warning",
-  denied: "bg-danger",
+  denied: "bg-destructive",
   interested: "bg-success",
-  meeting_rescheduled: "bg-accent",
+  meeting_rescheduled: "bg-primary",
   meeting_no_show: "bg-warning",
   closing_standby: "bg-warning",
-  closing_lost: "bg-danger",
+  closing_lost: "bg-destructive",
   closing_won: "bg-success",
 }
 
@@ -69,34 +69,49 @@ export function LeadActivityTimeline({
       : activities.filter((activity) => activity.channel === channelFilter)
 
   return (
-    <section className="rounded-xl bg-surface p-4 shadow-card">
+    <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h3 className="font-sans text-body-sm font-semibold text-fg">
+        <h3 className="text-xs/relaxed font-semibold text-foreground">
           Histórico de atividades
         </h3>
         <div className="w-48 shrink-0">
-          <Select value={channelFilter} onValueChange={(value) => {
-            const next = String(value)
-            if (next === "all" || isLeadActivityChannel(next)) setChannelFilter(next)
-          }}>
-            <SelectTrigger id="lead-activity-channel-filter" className="w-full"><RiFilter3Line size={14} aria-hidden /><SelectValue /></SelectTrigger>
-            <SelectContent align="start">{FILTER_ITEMS.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+          <Select
+            value={channelFilter}
+            onValueChange={(value) => {
+              const next = String(value)
+              if (next === "all" || isLeadActivityChannel(next))
+                setChannelFilter(next)
+            }}
+          >
+            <SelectTrigger id="lead-activity-channel-filter" className="w-full">
+              <RiFilter3Line size={14} aria-hidden />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="start">
+              {FILTER_ITEMS.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
         </div>
       </div>
 
       {activities.length === 0 ? (
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Nenhuma tentativa ainda.
         </p>
       ) : visible.length === 0 ? (
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Nenhuma atividade neste canal.
         </p>
       ) : (
         <ol className="flex flex-col">
           {visible.map((activity, index) => {
-            const type = isLeadActivityType(activity.type) ? activity.type : null
+            const type = isLeadActivityType(activity.type)
+              ? activity.type
+              : null
             const channel = isLeadActivityChannel(activity.channel)
               ? activity.channel
               : null
@@ -125,16 +140,10 @@ export function LeadActivityTimeline({
                       }
                     />
                   ) : (
-                    <span
-                      aria-hidden
-                      className="size-7 rounded-md bg-hover"
-                    />
+                    <span aria-hidden className="size-7 rounded-md bg-accent" />
                   )}
                   {index < visible.length - 1 ? (
-                    <span
-                      aria-hidden
-                      className="w-0.5 flex-1 bg-border-subtle"
-                    />
+                    <span aria-hidden className="w-0.5 flex-1 bg-border/70" />
                   ) : null}
                 </div>
                 <div
@@ -144,11 +153,11 @@ export function LeadActivityTimeline({
                   )}
                 >
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <p className="font-sans text-body-sm font-semibold text-fg">
+                    <p className="text-xs/relaxed font-semibold text-foreground">
                       {type ? LEAD_ACTIVITY_TYPE_LABELS[type] : activity.type}
                     </p>
                     {channelLabel ? (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-hover px-1.5 py-0.5 font-sans text-caption text-fg-muted">
+                      <span className="inline-flex items-center gap-1 rounded-md bg-accent px-1.5 py-0.5 text-xs/relaxed text-muted-foreground">
                         <span
                           aria-hidden
                           className={cn(
@@ -160,7 +169,7 @@ export function LeadActivityTimeline({
                       </span>
                     ) : null}
                   </div>
-                  <p className="font-sans text-caption text-fg-muted">
+                  <p className="text-xs/relaxed text-muted-foreground">
                     {formatDateTimeShort(activity.created_at)}
                     {" · "}
                     {activity.created_by_name ?? "—"}
@@ -176,12 +185,12 @@ export function LeadActivityTimeline({
                       : ""}
                   </p>
                   {activity.denied_reason ? (
-                    <p className="mt-1 font-sans text-body-sm text-fg-secondary">
+                    <p className="mt-1 text-xs/relaxed text-muted-foreground">
                       Motivo: {activity.denied_reason}
                     </p>
                   ) : null}
                   {activity.note ? (
-                    <p className="mt-1 font-sans text-body-sm text-fg-secondary">
+                    <p className="mt-1 text-xs/relaxed text-muted-foreground">
                       {activity.note}
                     </p>
                   ) : null}

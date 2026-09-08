@@ -170,11 +170,7 @@ function warnOrOk(
   return { status: "ok", detail: okDetail }
 }
 
-function sampleCount(
-  total: number,
-  bad: number,
-  warnLabel: string,
-): string {
+function sampleCount(total: number, bad: number, warnLabel: string): string {
   return `${bad.toLocaleString("pt-BR")} de ${total.toLocaleString("pt-BR")} ${warnLabel}`
 }
 
@@ -365,10 +361,7 @@ function designCheck(
   }
   return {
     status: "ok",
-    detail: clipReviewNote(
-      review?.design.note ?? "",
-      "Layout conferido",
-    ),
+    detail: clipReviewNote(review?.design.note ?? "", "Layout conferido"),
   }
 }
 
@@ -475,7 +468,11 @@ export function websiteCheckSections(
           ...(gaps.has("generic_title")
             ? {
                 status: "warn" as const,
-                detail: sampleCount(total, genericTitles, "páginas com title genérico"),
+                detail: sampleCount(
+                  total,
+                  genericTitles,
+                  "páginas com title genérico",
+                ),
               }
             : {
                 status: "ok" as const,

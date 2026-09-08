@@ -8,7 +8,7 @@ O documento de referência descreve a Fase 2 como diagnóstico **do cliente**, c
 
 O que existe hoje no `suite` é outra coisa: uma auditoria **do lead**, pré-venda, disparada manualmente pelo analista na interface, sem comando, sem deep-research, e que termina na conversão. Não há um único ponto do código onde a auditoria seja executada para um cliente já convertido.
 
-Isso não invalida o mapeamento abaixo — os pilares descrevem *o que* auditar, e isso vale nos dois lados. Mas duas consequências precisam ficar explícitas:
+Isso não invalida o mapeamento abaixo — os pilares descrevem _o que_ auditar, e isso vale nos dois lados. Mas duas consequências precisam ficar explícitas:
 
 - **A cobertura por pilar descrita aqui é da auditoria de lead.** Ler este documento como se fosse o estado da auditoria de cliente seria errado: a auditoria de cliente não existe.
 - **A ponte entre as duas foi construída na onda 1**, e é só uma: `clients.baseline_at`. Ele marca, no momento da conversão, qual snapshot de cada dimensão vale como "antes". Nada além disso atravessa a fronteira.
@@ -37,30 +37,30 @@ Três decisões acompanharam isso:
 
 ### A. Técnica & Performance
 
-| Item | Antes | Mudou | Continua faltando |
-|---|---|---|---|
-| HTTPS | ✅ | — | — |
-| sitemap.xml / robots.txt | ✅ leitura | robots agora **interpretado** em grupos `User-agent`/`Allow`/`Disallow`, com texto bruto guardado | sitemap ainda limitado a 3 arquivos e amostra de 20 URLs |
-| Redirects | parcial — seguidos, não registrados | **cadeia guardada** com a URL e o status de cada salto · gaps de cadeia longa, temporário, laço e http que não converge para https | soft 404 |
-| Erros de rastreamento | ✅ status por página | páginas com erro agora **persistem** no snapshot | — |
-| **Canonical** | ❌ inexistente | **6 regras novas** + 2 de convergência (www e barra final, por sondagem das variantes) | duplicidade em escala (exige mais que 9 páginas) |
-| Performance | ✅ PSI mobile+desktop | — | só a home |
-| Core Web Vitals | ✅ LCP/CLS · INP quase sempre nulo | **corrigido** o bug que lia CLS de campo 0,01 como 1,0 e gerava `poor_cwv` falso | INP de campo depende de CrUX; sem distinção entre "ok" e "sem dado" |
-| Mobile | ✅ viewport | — | usabilidade real |
-| **Segurança** | ✅ SSL e mixed content · ❌ headers | **6 headers coletados e gravados**, com um gap único listando os ausentes | COOP/COEP/CORP |
-| Links quebrados / 404 | ❌ | páginas da amostra com erro passam a ser visíveis | links internos e externos, cadeia, soft 404 |
+| Item                     | Antes                               | Mudou                                                                                                                              | Continua faltando                                                   |
+| ------------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| HTTPS                    | ✅                                  | —                                                                                                                                  | —                                                                   |
+| sitemap.xml / robots.txt | ✅ leitura                          | robots agora **interpretado** em grupos `User-agent`/`Allow`/`Disallow`, com texto bruto guardado                                  | sitemap ainda limitado a 3 arquivos e amostra de 20 URLs            |
+| Redirects                | parcial — seguidos, não registrados | **cadeia guardada** com a URL e o status de cada salto · gaps de cadeia longa, temporário, laço e http que não converge para https | soft 404                                                            |
+| Erros de rastreamento    | ✅ status por página                | páginas com erro agora **persistem** no snapshot                                                                                   | —                                                                   |
+| **Canonical**            | ❌ inexistente                      | **6 regras novas** + 2 de convergência (www e barra final, por sondagem das variantes)                                             | duplicidade em escala (exige mais que 9 páginas)                    |
+| Performance              | ✅ PSI mobile+desktop               | —                                                                                                                                  | só a home                                                           |
+| Core Web Vitals          | ✅ LCP/CLS · INP quase sempre nulo  | **corrigido** o bug que lia CLS de campo 0,01 como 1,0 e gerava `poor_cwv` falso                                                   | INP de campo depende de CrUX; sem distinção entre "ok" e "sem dado" |
+| Mobile                   | ✅ viewport                         | —                                                                                                                                  | usabilidade real                                                    |
+| **Segurança**            | ✅ SSL e mixed content · ❌ headers | **6 headers coletados e gravados**, com um gap único listando os ausentes                                                          | COOP/COEP/CORP                                                      |
+| Links quebrados / 404    | ❌                                  | páginas da amostra com erro passam a ser visíveis                                                                                  | links internos e externos, cadeia, soft 404                         |
 
 ### B. SEO
 
-| Item | Antes | Mudou | Continua faltando |
-|---|---|---|---|
-| On-page: titles, descriptions, alt | ✅ | — | — |
-| **Headings** | ✅ só H1 e H2 | **H1–H6 em lista ordenada por documento**, com gap de hierarquia quebrada; H1/H2 seguem gravados como derivados | — |
-| **Canonical (on-page)** | ❌ | **extraído e avaliado por página** | — |
-| **Indexação** | ✅ só meta robots, só na home | **X-Robots-Tag** passa a pesar · `noindex` avaliado em **toda a amostra** · `robots.txt` bloqueando Googlebot vira gap | `site:dominio`, cobertura real, motivo de exclusão — dependem do Search Console |
-| Dados estruturados / Schema | ✅ só nomes de `@type` de JSON-LD | — | validação, Rich Results, propriedades obrigatórias, microdata, JSON-LD bruto |
-| Arquitetura de URL | ✅ 9 páginas, sem recursão | amostra passou a ser **estável entre coletas** | profundidade de clique, órfãs, grafo, anchor text |
-| Rankings atuais | ✅ via provider | — | bloqueado pelo DataForSEO (ver documento de impedimentos) |
+| Item                               | Antes                             | Mudou                                                                                                                  | Continua faltando                                                               |
+| ---------------------------------- | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| On-page: titles, descriptions, alt | ✅                                | —                                                                                                                      | —                                                                               |
+| **Headings**                       | ✅ só H1 e H2                     | **H1–H6 em lista ordenada por documento**, com gap de hierarquia quebrada; H1/H2 seguem gravados como derivados        | —                                                                               |
+| **Canonical (on-page)**            | ❌                                | **extraído e avaliado por página**                                                                                     | —                                                                               |
+| **Indexação**                      | ✅ só meta robots, só na home     | **X-Robots-Tag** passa a pesar · `noindex` avaliado em **toda a amostra** · `robots.txt` bloqueando Googlebot vira gap | `site:dominio`, cobertura real, motivo de exclusão — dependem do Search Console |
+| Dados estruturados / Schema        | ✅ só nomes de `@type` de JSON-LD | —                                                                                                                      | validação, Rich Results, propriedades obrigatórias, microdata, JSON-LD bruto    |
+| Arquitetura de URL                 | ✅ 9 páginas, sem recursão        | amostra passou a ser **estável entre coletas**                                                                         | profundidade de clique, órfãs, grafo, anchor text                               |
+| Rankings atuais                    | ✅ via provider                   | —                                                                                                                      | bloqueado pelo DataForSEO (ver documento de impedimentos)                       |
 
 ### C. Conteúdo
 
@@ -68,22 +68,22 @@ Sem alteração nas duas ondas. Continua com volume de palavras e detecção de 
 
 ### D. UX/UI & Conversão
 
-| Item | Antes | Mudou | Continua faltando |
-|---|---|---|---|
-| UX/UI | ✅ revisão humana com 7 critérios, apoiada no screenshot do PSI | revisão **desacoplada do snapshot** — sobrevive a recoleta e ao poll do PageSpeed | medição automática |
-| Conversão | ✅ tel/WhatsApp/mailto, contato só no rodapé | — | formulários, campos, validação, teste de envio, microconversões |
-| Acessibilidade | ✅ score Lighthouse + contagem de contraste | — | elementos que falharam, teclado, ARIA, WCAG por critério |
+| Item           | Antes                                                           | Mudou                                                                             | Continua faltando                                               |
+| -------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| UX/UI          | ✅ revisão humana com 7 critérios, apoiada no screenshot do PSI | revisão **desacoplada do snapshot** — sobrevive a recoleta e ao poll do PageSpeed | medição automática                                              |
+| Conversão      | ✅ tel/WhatsApp/mailto, contato só no rodapé                    | —                                                                                 | formulários, campos, validação, teste de envio, microconversões |
+| Acessibilidade | ✅ score Lighthouse + contagem de contraste                     | —                                                                                 | elementos que falharam, teclado, ARIA, WCAG por critério        |
 
 ### E. SEO Local
 
-| Item | Antes | Mudou | Continua faltando |
-|---|---|---|---|
-| Google Business Profile | ✅ completo | agora **versionado** — existe histórico da ficha | — |
-| NAP | ✅ parcial (site × GBP, só home) | **telefone e endereço avaliados de forma independente**, com três estados por componente — o `else if` já não existe | a checagem ainda roda só na home |
-| **Citations** | ❌ inexistente | — | diretórios, agregadores — zero cobertura |
+| Item                    | Antes                                           | Mudou                                                                                                                                                                | Continua faltando                                                                                     |
+| ----------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Google Business Profile | ✅ completo                                     | agora **versionado** — existe histórico da ficha                                                                                                                     | —                                                                                                     |
+| NAP                     | ✅ parcial (site × GBP, só home)                | **telefone e endereço avaliados de forma independente**, com três estados por componente — o `else if` já não existe                                                 | a checagem ainda roda só na home                                                                      |
+| **Citations**           | ❌ inexistente                                  | —                                                                                                                                                                    | diretórios, agregadores — zero cobertura                                                              |
 | **Reviews / Reputação** | ✅ nota, volume, distribuição, taxa de resposta | **negativa sem resposta virou gap** · **campo de leitura humana** · **média histórica por subtração**, velocidade por janela de 30/60/90 dias e cobertura da amostra | tempo de resposta (depende de timestamp da resposta do dono) · evolução (depende de segundo snapshot) |
-| **Q&A** | ✅ coletado e exibido | **passou a virar gap** e chegar ao roadmap e ao PDF | — |
-| Local Pack | ✅ Maps por coordenada única | **malha geográfica** de 5×5, 7×7 ou 11×11 pontos, raio de 1 a 25 km, com ARP, ATRP e SoLV · histórico por keyword | Local Pack web, teto de 3 âncoras |
+| **Q&A**                 | ✅ coletado e exibido                           | **passou a virar gap** e chegar ao roadmap e ao PDF                                                                                                                  | —                                                                                                     |
+| Local Pack              | ✅ Maps por coordenada única                    | **malha geográfica** de 5×5, 7×7 ou 11×11 pontos, raio de 1 a 25 km, com ARP, ATRP e SoLV · histórico por keyword                                                    | Local Pack web, teto de 3 âncoras                                                                     |
 
 **A malha geográfica** é a mudança mais visível do pilar E. Antes, "aparece no Local Pack" era respondido num único ponto — a coordenada do próprio perfil. Agora o scan varre uma malha centrada nesse ponto e mostra a posição em cada célula, no formato da ferramenta de referência: marcador do perfil ao centro e marcadores numerados em volta, preenchendo enquanto a coleta avança.
 
@@ -120,10 +120,10 @@ Concorrentes mudou na onda 3. A checagem avulsa filtrava `item.position < maps_p
 
 ### G. Mensuração
 
-| Item | Antes | Mudou | Continua faltando |
-|---|---|---|---|
-| Analytics & rastreamento | ✅ 3 booleanos (GTM, gtag, pixel) | **IDs extraídos** — `G-`, `GTM-`, `AW-` e pixel da Meta. Separa "tinha analytics" de "era a propriedade da agência anterior" | GA4 e Search Console reais, eventos, microconversões |
-| **Conformidade / LGPD** | ❌ | **dois gaps** — política de privacidade e termos de uso, deduzidos dos caminhos que o site já linka, sem coleta nova | banner de cookies e cookie antes do consentimento — dependem de sinal do HTML |
+| Item                     | Antes                             | Mudou                                                                                                                        | Continua faltando                                                             |
+| ------------------------ | --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Analytics & rastreamento | ✅ 3 booleanos (GTM, gtag, pixel) | **IDs extraídos** — `G-`, `GTM-`, `AW-` e pixel da Meta. Separa "tinha analytics" de "era a propriedade da agência anterior" | GA4 e Search Console reais, eventos, microconversões                          |
+| **Conformidade / LGPD**  | ❌                                | **dois gaps** — política de privacidade e termos de uso, deduzidos dos caminhos que o site já linka, sem coleta nova         | banner de cookies e cookie antes do consentimento — dependem de sinal do HTML |
 
 O item de LGPD era o de menor custo do mapa inteiro e mesmo assim não entrou em nenhuma das duas primeiras ondas. Saiu na onda 3, como previsto: uma regra pura sobre os `internalPaths` que já eram coletados, retroativa a todo snapshot existente.
 

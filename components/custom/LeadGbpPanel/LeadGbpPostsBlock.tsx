@@ -12,7 +12,7 @@ function PostImage({ src }: { src: string }) {
     return (
       <span
         aria-hidden
-        className="flex h-28 w-full items-center justify-center rounded-lg bg-canvas text-fg-muted"
+        className="flex h-28 w-full items-center justify-center rounded-lg bg-background text-muted-foreground"
       >
         <RiImageLine size={22} />
       </span>
@@ -34,7 +34,7 @@ export function LeadGbpPostsBlock({ posts }: { posts: GbpPost[] | null }) {
   return (
     <LeadGbpCard title="Postagens">
       {!post ? (
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Nenhuma postagem coletada.
         </p>
       ) : (
@@ -44,19 +44,19 @@ export function LeadGbpPostsBlock({ posts }: { posts: GbpPost[] | null }) {
           ) : (
             <span
               aria-hidden
-              className="flex h-28 w-full items-center justify-center rounded-lg bg-canvas text-fg-muted"
+              className="flex h-28 w-full items-center justify-center rounded-lg bg-background text-muted-foreground"
             >
               <RiImageLine size={22} />
             </span>
           )}
           {post.text ? (
-            <p className="line-clamp-3 whitespace-pre-wrap font-sans text-caption text-fg">
+            <p className="line-clamp-3 whitespace-pre-wrap text-xs/relaxed text-foreground">
               {post.text}
             </p>
           ) : null}
           <div className="flex flex-wrap items-center gap-2">
             {post.publishedAt ? (
-              <span className="font-sans text-caption text-fg-muted">
+              <span className="text-xs/relaxed text-muted-foreground">
                 {formatRelativeShort(post.publishedAt)}
               </span>
             ) : null}
@@ -65,7 +65,7 @@ export function LeadGbpPostsBlock({ posts }: { posts: GbpPost[] | null }) {
                 href={post.url}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1 font-sans text-caption font-medium text-link hover:text-accent"
+                className="inline-flex items-center gap-1 text-xs/relaxed font-medium text-primary hover:text-primary"
               >
                 Ver postagem
                 <RiExternalLinkLine size={12} aria-hidden />

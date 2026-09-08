@@ -32,10 +32,7 @@ import {
   readHeadings,
   type WebsiteHeading,
 } from "./website-headings.ts"
-import {
-  emptyWebsiteReview,
-  type WebsiteReview,
-} from "./website-review.ts"
+import { emptyWebsiteReview, type WebsiteReview } from "./website-review.ts"
 
 export const WEBSITE_NOTES_MAX = 2000
 export const WEBSITE_THIN_CONTENT_WORDS = 300
@@ -803,9 +800,7 @@ export function readLeadWebsiteAudits(
     if (!row || typeof row !== "object") continue
     const record = row as Record<string, unknown>
     const channelId = asString(record.channel_id)
-    const review = channelId
-      ? reviewsByChannel?.get(channelId)
-      : undefined
+    const review = channelId ? reviewsByChannel?.get(channelId) : undefined
     const audit = readLeadWebsiteAuditRow(record, review)
     if (!audit) continue
     const current = latest.get(audit.channel_id)
@@ -861,7 +856,11 @@ export function isUnfriendlyUrl(urlOrPath: string): boolean {
     if ([...url.searchParams].length > 0) return true
     if (url.pathname.length > 80) return true
     const path = url.pathname.toLowerCase()
-    if (path.includes(".php") || path.includes(".aspx") || path.includes(".jsp")) {
+    if (
+      path.includes(".php") ||
+      path.includes(".aspx") ||
+      path.includes(".jsp")
+    ) {
       return true
     }
     return /\/\d{3,}(?:\/|$)/.test(path)
@@ -877,9 +876,7 @@ export function websiteTitleIsGeneric(
   if (!title) return true
   const folded = fold(title)
   if (GENERIC_TITLES.has(folded)) return true
-  if (
-    GENERIC_TITLE_FRAGMENTS.some((fragment) => folded.includes(fragment))
-  ) {
+  if (GENERIC_TITLE_FRAGMENTS.some((fragment) => folded.includes(fragment))) {
     return true
   }
   if (folded === fold(companyName)) return true
@@ -912,9 +909,7 @@ function phoneMatches(gbpPhone: string, page: WebsitePageSnapshot): boolean {
 }
 
 function addressTokens(address: string): string[] {
-  const folded = fold(address)
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
+  const folded = fold(address).normalize("NFD").replace(/\p{M}/gu, "")
   return folded.split(/[^a-z0-9]+/).filter((token) => {
     if (!token || ADDRESS_STOPWORDS.has(token)) return false
     if (/^\d+$/.test(token)) return token.length >= 3
@@ -977,9 +972,7 @@ export function napCheckForCrawl(
 const SERVICE_TITLE_MIN = 4
 
 function foldToken(value: string): string {
-  return fold(value)
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
+  return fold(value).normalize("NFD").replace(/\p{M}/gu, "")
 }
 
 function serviceNeedles(titles: readonly string[]): string[] {
@@ -988,7 +981,10 @@ function serviceNeedles(titles: readonly string[]): string[] {
     .filter((title) => title.length >= SERVICE_TITLE_MIN)
 }
 
-function mentionsService(haystack: string, needles: readonly string[]): boolean {
+function mentionsService(
+  haystack: string,
+  needles: readonly string[],
+): boolean {
   if (needles.length === 0) return false
   const folded = foldToken(haystack)
   return needles.some((needle) => folded.includes(needle))
@@ -1130,9 +1126,7 @@ export function websiteGapsForAudit(
     gaps.push("thin_content")
   }
   if (
-    crawl.pages.some(
-      (page) => page.imageCount > 0 && page.imagesWithoutAlt > 0,
-    )
+    crawl.pages.some((page) => page.imageCount > 0 && page.imagesWithoutAlt > 0)
   ) {
     gaps.push("images_missing_alt")
   }

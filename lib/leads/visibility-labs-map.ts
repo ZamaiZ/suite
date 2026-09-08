@@ -67,7 +67,9 @@ function mapOrganicMetrics(
   }
 }
 
-function mapKeywordItem(item: Record<string, unknown>): VisibilityKeywordRow | null {
+function mapKeywordItem(
+  item: Record<string, unknown>,
+): VisibilityKeywordRow | null {
   const keywordData =
     item.keyword_data && typeof item.keyword_data === "object"
       ? (item.keyword_data as Record<string, unknown>)
@@ -99,8 +101,7 @@ function mapKeywordItem(item: Record<string, unknown>): VisibilityKeywordRow | n
       ? (ranked.serp_item as Record<string, unknown>)
       : null
 
-  const position =
-    asInt(serpItem?.rank_group) ?? asInt(serpItem?.rank_absolute)
+  const position = asInt(serpItem?.rank_group) ?? asInt(serpItem?.rank_absolute)
   const url =
     asString(serpItem?.relative_url) ?? asString(serpItem?.url) ?? null
 

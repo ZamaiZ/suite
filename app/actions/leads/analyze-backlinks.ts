@@ -26,7 +26,8 @@ export type AnalyzeLeadBacklinksState =
   | { status: "success"; audit: LeadBacklinkAudit }
   | { status: "error"; message: string }
 
-const ANALYZE_FAILED = "Não foi possível analisar os backlinks. Tente novamente."
+const ANALYZE_FAILED =
+  "Não foi possível analisar os backlinks. Tente novamente."
 const NO_WEBSITE = "Cadastre um site no lead para analisar os backlinks."
 
 export async function analyzeLeadBacklinks(

@@ -3,10 +3,7 @@ import {
   type ParsedBrazilianAddress,
 } from "@/lib/briefing/address"
 import type { BriefingCompanyPayload } from "@/lib/briefing/company"
-import {
-  hasGbpCoordinates,
-  type GbpSnapshot,
-} from "@/lib/leads/gbp"
+import { hasGbpCoordinates, type GbpSnapshot } from "@/lib/leads/gbp"
 import { geocodeAddressText } from "@/lib/places/geocode"
 
 export type ResolvedMapCoordinates = {

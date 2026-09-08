@@ -54,9 +54,7 @@ export function napMismatchLabels(check: NapCheck): string[] {
  * Reúne os headers que faltam em qualquer página lida com sucesso. Fica aqui
  * para que os três pontos que montam oportunidades usem a mesma regra.
  */
-export function missingSecurityHeaderLabels(
-  crawl: WebsiteCrawl,
-): string[] {
+export function missingSecurityHeaderLabels(crawl: WebsiteCrawl): string[] {
   const missing = new Set<string>()
   for (const page of crawl.pages) {
     if (page.status <= 0 || page.status >= 400) continue

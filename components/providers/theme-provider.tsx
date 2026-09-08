@@ -14,8 +14,8 @@ function KeyboardShortcuts() {
       if (e.repeat) return
 
       const isCtrlAlt = e.ctrlKey && e.altKey
-      const isAltGr   = e.getModifierState("AltGraph")
-      const isT       = e.code === "KeyT"
+      const isAltGr = e.getModifierState("AltGraph")
+      const isT = e.code === "KeyT"
 
       if ((isCtrlAlt || isAltGr) && isT) {
         e.preventDefault()

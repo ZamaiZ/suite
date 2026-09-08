@@ -33,6 +33,7 @@
 ### Task 1: Formalizar o contrato canônico de cor
 
 **Files:**
+
 - Modify: `app/globals.css`
 - Modify: `styles/tokens/semantic.css`
 - Modify: `lib/theme/shadcn-palette.ts`
@@ -53,6 +54,7 @@
 ### Task 2: Criar receitas visíveis e acessíveis para os campos shadcn
 
 **Files:**
+
 - Modify: `components/ui/input.tsx`
 - Modify: `components/ui/input-group.tsx`
 - Modify: `components/ui/textarea.tsx`
@@ -76,6 +78,7 @@
 ### Task 3: Corrigir controles de escolha e ações
 
 **Files:**
+
 - Modify: `components/ui/button.tsx`
 - Modify: `components/ui/toggle.tsx`
 - Modify: `components/ui/toggle-group.tsx`
@@ -100,6 +103,7 @@
 ### Task 4: Reestruturar o Lead Board como implementação de referência
 
 **Files:**
+
 - Modify: `components/custom/LeadBoard/LeadBoardToolbarToggle.tsx`
 - Modify: `components/custom/LeadBoard/LeadBoardToolbar.tsx`
 - Modify: `components/custom/LeadBoard/LeadBoardColumn.tsx`
@@ -122,6 +126,7 @@
 ### Task 5: Migrar menus de domínio para DropdownMenu shadcn
 
 **Files:**
+
 - Modify: `components/custom/ClientCardMenu/ClientCardMenu.tsx`
 - Modify: `components/custom/LeadClaimActions/LeadClaimActions.tsx`
 - Modify: `components/custom/LeadImport/LeadImportFileCard.tsx`
@@ -142,6 +147,7 @@
 ### Task 6: Migrar comboboxes de domínio para o módulo local
 
 **Files:**
+
 - Modify: `components/custom/BriefingAddressSearch/BriefingAddressSearch.tsx`
 - Modify: `components/custom/LeadBoard/LeadCityFilter.tsx`
 - Modify: `components/custom/LeadSegmentField/LeadSegmentField.tsx`
@@ -163,6 +169,7 @@
 ### Task 7: Migrar cartões de escolha e os seletores de data/hora
 
 **Files:**
+
 - Modify: `components/custom/BriefingChoiceCard/BriefingChoiceCard.tsx`
 - Modify: `components/custom/BriefingChoiceCard/BriefingChoiceCardGroup.tsx`
 - Modify: `components/ui/DateTimePicker/DateTimePicker.tsx`
@@ -184,6 +191,7 @@
 ### Task 8: Reconstituir tema e navegação com primitives semânticos
 
 **Files:**
+
 - Modify: `components/ui/ThemeToggle/ThemeToggle.tsx`
 - Modify: `components/custom/Sidebar/Sidebar.tsx`
 - Modify: `components/custom/NavTree/NavTree.tsx`
@@ -204,6 +212,7 @@
 ### Task 9: Auditar consumidores de formulário e controles nativos remanescentes
 
 **Files:**
+
 - Modify: todos os arquivos retornados por `rg -l '<(button|input|textarea|select)' components/custom app --glob '*.tsx'`, exceto uploads que exigem input nativo.
 - Modify: `components/custom/BriefingFormControls/BriefingFormControls.tsx`
 
@@ -221,6 +230,7 @@
 ### Task 10: Impedir regressão de ícones e imports de primitives
 
 **Files:**
+
 - Modify: `components.json`
 - Modify: `docs/superpowers/specs/2026-09-08-shadcn-ui-ux-realignment-design.md` only if the chosen generator policy changes.
 - Modify: documentação de contribuição existente, if one is found; otherwise create `docs/ui-component-generation.md`.
@@ -237,6 +247,7 @@
 ### Task 11: Auditoria de aceite visual e estática
 
 **Files:**
+
 - Modify: `docs/superpowers/plans/2026-09-08-shadcn-ui-ux-realignment.md` to check completed items and record evidence.
 
 **Consumes:** Todas as tasks anteriores.

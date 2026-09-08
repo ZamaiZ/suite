@@ -133,7 +133,10 @@ export function readGbpEnrichment(value: unknown): GbpEnrichment | null {
   ) {
     return null
   }
-  if (row.peopleAlsoSearch !== undefined && !Array.isArray(row.peopleAlsoSearch)) {
+  if (
+    row.peopleAlsoSearch !== undefined &&
+    !Array.isArray(row.peopleAlsoSearch)
+  ) {
     return null
   }
   const ratingDistribution =

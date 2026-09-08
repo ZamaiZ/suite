@@ -36,11 +36,9 @@ export function seedDiagnosisProse(
       ? findings.map((item) => item.title).join("; ")
       : "oportunidades pontuais em presença digital e busca"
 
-  const weakest = DIAGNOSIS_PILLARS.slice()
-    .sort(
-      (left, right) =>
-        facts.scorecard[left].score - facts.scorecard[right].score,
-    )[0]
+  const weakest = DIAGNOSIS_PILLARS.slice().sort(
+    (left, right) => facts.scorecard[left].score - facts.scorecard[right].score,
+  )[0]
 
   const executiveSummary = [
     `Diagnóstico digital de ${meta.companyName}${place} (${meta.domain}).`,

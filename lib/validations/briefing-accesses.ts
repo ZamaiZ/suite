@@ -50,7 +50,9 @@ export const briefingAccessesPayloadSchema = z.object({
   }),
 })
 
-export type BriefingAccessesInput = z.infer<typeof briefingAccessesPayloadSchema>
+export type BriefingAccessesInput = z.infer<
+  typeof briefingAccessesPayloadSchema
+>
 
 export function toAccessesPayload(
   data: BriefingAccessesInput,

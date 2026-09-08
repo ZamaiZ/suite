@@ -105,10 +105,7 @@ export function dataForSeoTimeToIso(value: unknown): string | null {
   if (!trimmed) return null
   const normalized = trimmed.includes("T")
     ? trimmed
-    : trimmed.replace(
-        /^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) /,
-        "$1T$2",
-      )
+    : trimmed.replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) /, "$1T$2")
   const ms = Date.parse(normalized)
   if (!Number.isFinite(ms)) return null
   return new Date(ms).toISOString()
@@ -306,8 +303,7 @@ export function mapDataForSeoReviews(items: unknown): GbpReviewSummary {
   }
   const replied = parsed.filter((item) => item.ownerAnswer).length
   const unrepliedLowRating = parsed.filter(
-    (item) =>
-      !item.ownerAnswer && item.rating !== null && item.rating <= 3,
+    (item) => !item.ownerAnswer && item.rating !== null && item.rating <= 3,
   ).length
   return {
     sampled: parsed.length,
@@ -433,8 +429,7 @@ function readRankCheck(value: unknown): GbpRankCheck | null {
   if (row.maps_position != null && maps_position === null) return null
   return {
     keyword,
-    maps_position:
-      maps_position === null ? null : Math.trunc(maps_position),
+    maps_position: maps_position === null ? null : Math.trunc(maps_position),
     in_top3: row.in_top3,
     competitors,
     check_url: asString(row.check_url),
@@ -543,11 +538,7 @@ export function mapDataForSeoMapsRank(input: {
   const items = readMapsItems(input.result?.items)
   const target = items.find((item) => item.placeId === input.placeId) ?? null
   const maps_position = target?.position ?? null
-  const competitors = topCompetitors(
-    items,
-    input.placeId,
-    GBP_RANK_COMPETITORS,
-  )
+  const competitors = topCompetitors(items, input.placeId, GBP_RANK_COMPETITORS)
   return {
     keyword: input.keyword,
     maps_position,

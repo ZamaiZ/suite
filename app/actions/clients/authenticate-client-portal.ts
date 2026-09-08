@@ -15,8 +15,7 @@ import {
 import { parseClientRow } from "@/lib/clients/parse"
 
 export type AuthenticateClientPortalState =
-  | { status: "success" }
-  | { status: "error"; message: string }
+  { status: "success" } | { status: "error"; message: string }
 
 const INVALID_CODE_MESSAGE = "Código inválido."
 const LOCKED_MESSAGE = "Tente mais tarde."

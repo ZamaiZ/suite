@@ -23,7 +23,9 @@ export async function updateLeadGbpProfile(
   formData: FormData,
 ): Promise<UpdateLeadGbpState> {
   const { user, roles } = await requireCommercialMember()
-  const parsed = updateLeadGbpSchema.safeParse(readUpdateLeadGbpFields(formData))
+  const parsed = updateLeadGbpSchema.safeParse(
+    readUpdateLeadGbpFields(formData),
+  )
   if (!parsed.success) {
     return {
       status: "error",

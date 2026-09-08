@@ -156,9 +156,7 @@ function toLeadWritePayload(
   const result = normalizeDigitalChannelList(data.channels)
   const primary = primaryWebsiteChannel(result.channels)
   const stateCode = data.state_code as NonNullable<typeof data.state_code>
-  const city =
-    normalizeCityMatch(stateCode, data.city) ??
-    data.city.trim()
+  const city = normalizeCityMatch(stateCode, data.city) ?? data.city.trim()
   return {
     company_name: data.company_name,
     website: primary?.value ?? "",
@@ -177,10 +175,7 @@ function toLeadWritePayload(
 export const leadFieldsSchema = leadCoreObjectSchema
   .superRefine((data, ctx) => {
     refineDigitalChannels(data, ctx)
-    refineLeadLocation(
-      { state_code: data.state_code, city: data.city },
-      ctx,
-    )
+    refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
   })
   .transform(toLeadWritePayload)
 
@@ -195,10 +190,7 @@ export const leadFormObjectSchema = leadCoreObjectSchema
 
 export const leadFormSchema = leadFormObjectSchema.superRefine((data, ctx) => {
   refineDigitalChannels(data, ctx)
-  refineLeadLocation(
-    { state_code: data.state_code, city: data.city },
-    ctx,
-  )
+  refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
 })
 
 export const leadCompanyFormSchema = leadFormObjectSchema
@@ -212,10 +204,7 @@ export const leadCompanyFormSchema = leadFormObjectSchema
   })
   .superRefine((data, ctx) => {
     refineDigitalChannels(data, ctx)
-    refineLeadLocation(
-      { state_code: data.state_code, city: data.city },
-      ctx,
-    )
+    refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
   })
 
 export const leadContactFormSchema = leadFormObjectSchema.pick({

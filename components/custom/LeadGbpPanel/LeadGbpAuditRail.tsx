@@ -11,7 +11,7 @@ import {
   RiMapPin2Line,
 } from "react-icons/ri"
 import { LeadGbpAuditStep } from "./LeadGbpAuditStep"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import {
   buildGbpAuditRailModel,
@@ -28,17 +28,17 @@ import { GBP_AUDIT_STATUS_LABEL } from "@/lib/leads/gbp-presenters"
 const EASE = [0.23, 1, 0.32, 1] as const
 
 const STATUS_TONE: Record<GbpAuditRailStatus, string> = {
-  processing: "bg-warning-subtle text-fg",
+  processing: "bg-warning/10 text-foreground",
   analyzed: "bg-success/10 text-success",
-  pending: "bg-hover text-fg-secondary",
-  error: "bg-danger/10 text-danger",
+  pending: "bg-accent text-muted-foreground",
+  error: "bg-destructive/10 text-destructive",
 }
 
 const STATUS_DOT: Record<GbpAuditRailStatus, string> = {
   processing: "bg-warning",
   analyzed: "bg-success",
-  pending: "bg-fg-muted",
-  error: "bg-danger",
+  pending: "bg-muted-foreground",
+  error: "bg-destructive",
 }
 
 const STEP_ICONS: Record<string, IconType> = {
@@ -89,7 +89,8 @@ export function LeadGbpAuditRail({
     websiteAlertCount,
   })
   const selected = model.steps.find((step) => step.selected) ?? model.steps[0]
-  const SelectedIcon = STEP_ICONS[selected?.id ?? "google-profile"] ?? RiMapPin2Line
+  const SelectedIcon =
+    STEP_ICONS[selected?.id ?? "google-profile"] ?? RiMapPin2Line
 
   function mobileSubtitle(): string {
     if (selected?.id === "diagnosis") {
@@ -122,12 +123,12 @@ export function LeadGbpAuditRail({
   return (
     <div className="flex h-auto min-h-0 flex-col px-3 py-4 sm:px-4 lg:h-full">
       <header className="shrink-0">
-        <h2 className="font-display text-body-sm font-semibold text-fg">
+        <h2 className="font-heading text-xs/relaxed font-semibold text-foreground">
           Auditoria digital
         </h2>
         <span
           className={cn(
-            "mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 font-sans text-caption font-semibold",
+            "mt-2 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-xs/relaxed font-semibold",
             STATUS_TONE[model.status],
           )}
         >
@@ -146,10 +147,10 @@ export function LeadGbpAuditRail({
 
       <section className="mt-4 shrink-0" aria-label="Progresso da auditoria">
         <div className="flex items-center justify-between gap-3">
-          <p className="font-sans text-caption font-medium text-fg-secondary">
+          <p className="text-xs/relaxed font-medium text-muted-foreground">
             Etapa {model.currentStep} de {model.totalSteps}
           </p>
-          <span className="font-mono text-caption text-fg-muted">
+          <span className="font-mono text-xs/relaxed text-muted-foreground">
             {model.progress}%
           </span>
         </div>
@@ -160,10 +161,10 @@ export function LeadGbpAuditRail({
           aria-valuemax={100}
           aria-valuenow={model.progress}
           aria-valuetext={`Etapa ${model.currentStep} de ${model.totalSteps}`}
-          className="mt-2 h-1.5 overflow-hidden rounded-full bg-border-subtle"
+          className="mt-2 h-1.5 overflow-hidden rounded-full bg-border/70"
         >
           <m.div
-            className="h-full w-full origin-left rounded-full bg-accent"
+            className="h-full w-full origin-left rounded-full bg-primary"
             initial={reduced ? false : { transform: "scaleX(0)" }}
             animate={{ transform: `scaleX(${model.progress / 100})` }}
             transition={{ duration: reduced ? 0.12 : 0.24, ease: EASE }}
@@ -214,12 +215,12 @@ export function LeadGbpAuditRail({
                     type="button"
                     onClick={() => onSelectStep(step.id)}
                     className={cn(
-                      "inline-flex size-8 items-center justify-center rounded-full border bg-elevated font-sans text-caption font-semibold outline-none focus-visible:ring-2 focus-visible:ring-accent/40",
+                      "inline-flex size-8 items-center justify-center rounded-full border bg-popover text-xs/relaxed font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
                       step.selected
                         ? model.status === "error"
-                          ? "border-danger bg-danger text-danger-fg"
+                          ? "border-destructive bg-destructive text-white"
                           : "border-primary bg-primary text-primary-foreground"
-                        : "border-border text-fg-secondary",
+                        : "border-border text-muted-foreground",
                     )}
                     aria-label={step.label}
                   >
@@ -228,31 +229,30 @@ export function LeadGbpAuditRail({
                 ) : (
                   <span
                     aria-hidden
-                    className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-elevated font-sans text-caption font-semibold text-fg-secondary"
+                    className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-popover text-xs/relaxed font-semibold text-muted-foreground"
                   >
                     {index + 1}
                   </span>
                 )}
                 <span className="sr-only">
-                  {step.label},{" "}
-                  {step.selected ? "etapa atual" : "etapa futura"}
+                  {step.label}, {step.selected ? "etapa atual" : "etapa futura"}
                 </span>
               </li>
             ))}
           </ol>
 
-          <div className="mt-4 flex items-center gap-3 rounded-xl border border-accent/20 bg-surface/80 p-3 shadow-card">
+          <div className="mt-4 flex items-center gap-3 rounded-xl border border-primary/20 bg-card/80 p-3 shadow-xs">
             <span
               aria-hidden
-              className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-accent/15 bg-elevated text-accent"
+              className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-primary/15 bg-popover text-primary"
             >
               <SelectedIcon size={19} />
             </span>
             <div className="min-w-0">
-              <p className="truncate font-sans text-caption font-semibold text-fg">
+              <p className="truncate text-xs/relaxed font-semibold text-foreground">
                 {selected?.label}
               </p>
-              <p className="mt-0.5 font-sans text-caption text-fg-muted">
+              <p className="mt-0.5 text-xs/relaxed text-muted-foreground">
                 {mobileSubtitle()}
               </p>
             </div>
@@ -279,16 +279,16 @@ function AuditMetadata({
   processing: boolean
 }) {
   return (
-    <dl className="mt-3 shrink-0 divide-y divide-border-subtle border-t border-border-subtle pt-1.5 font-sans text-caption lg:mt-3">
+    <dl className="mt-3 shrink-0 divide-y divide-border/70 border-t border-border/70 pt-1.5 text-xs/relaxed lg:mt-3">
       <div className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-2 py-1.5">
-        <dt className="text-fg-muted">Coletado</dt>
-        <dd className="text-right font-medium text-fg-secondary">
+        <dt className="text-muted-foreground">Coletado</dt>
+        <dd className="text-right font-medium text-muted-foreground">
           {collectedAt ? formatDateTimeShort(collectedAt) : "—"}
         </dd>
       </div>
       <div className="grid grid-cols-[4.5rem_minmax(0,1fr)] items-center gap-2 py-1.5">
-        <dt className="text-fg-muted">Analisado</dt>
-        <dd className="text-right font-medium text-fg-secondary">
+        <dt className="text-muted-foreground">Analisado</dt>
+        <dd className="text-right font-medium text-muted-foreground">
           {analyzedAt
             ? formatDateTimeShort(analyzedAt)
             : processing
@@ -308,27 +308,27 @@ function AuditRailSkeleton() {
       className="flex h-auto min-h-0 flex-col gap-4 px-3 py-4 sm:px-4 lg:h-full"
     >
       <div className="flex flex-col gap-3">
-        <span className="h-6 w-40 animate-pulse rounded-md bg-hover motion-reduce:animate-none" />
-        <span className="h-8 w-28 animate-pulse rounded-lg bg-hover motion-reduce:animate-none" />
+        <span className="h-6 w-40 animate-pulse rounded-md bg-accent motion-reduce:animate-none" />
+        <span className="h-8 w-28 animate-pulse rounded-lg bg-accent motion-reduce:animate-none" />
       </div>
       <div className="flex flex-col gap-3">
-        <span className="h-4 w-24 animate-pulse rounded bg-hover motion-reduce:animate-none" />
-        <span className="h-1.5 w-full animate-pulse rounded-full bg-hover motion-reduce:animate-none" />
+        <span className="h-4 w-24 animate-pulse rounded bg-accent motion-reduce:animate-none" />
+        <span className="h-1.5 w-full animate-pulse rounded-full bg-accent motion-reduce:animate-none" />
       </div>
       <div className="hidden flex-col gap-2 lg:flex">
         {[0, 1, 2, 3, 4].map((item) => (
           <span
             key={item}
-            className="h-14 animate-pulse rounded-xl bg-hover motion-reduce:animate-none"
+            className="h-14 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
             style={{ animationDelay: `${item * 40}ms` }}
           />
         ))}
       </div>
       <div className="flex flex-col gap-4 lg:hidden">
-        <span className="h-8 w-full animate-pulse rounded-full bg-hover motion-reduce:animate-none" />
-        <span className="h-[4.25rem] animate-pulse rounded-xl bg-hover motion-reduce:animate-none" />
+        <span className="h-8 w-full animate-pulse rounded-full bg-accent motion-reduce:animate-none" />
+        <span className="h-[4.25rem] animate-pulse rounded-xl bg-accent motion-reduce:animate-none" />
       </div>
-      <span className="mt-auto h-16 animate-pulse rounded-lg bg-hover motion-reduce:animate-none" />
+      <span className="mt-auto h-16 animate-pulse rounded-lg bg-accent motion-reduce:animate-none" />
     </div>
   )
 }

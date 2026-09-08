@@ -39,7 +39,10 @@ export function extractSitemapLocs(xml: string): {
   }
 }
 
-export function pickSitemapSample(urls: string[], size = WEBSITE_SITEMAP_SAMPLE): string[] {
+export function pickSitemapSample(
+  urls: string[],
+  size = WEBSITE_SITEMAP_SAMPLE,
+): string[] {
   if (urls.length <= size) return [...urls]
   const picked: string[] = []
   const seen = new Set<number>()

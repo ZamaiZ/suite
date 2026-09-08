@@ -134,7 +134,8 @@ export async function getGoogleMapsGridTask(input: {
  * gravado ainda aparece aqui por três dias, com o `tag` que diz de que ponto é.
  */
 export async function readyGoogleMapsGridTasks(): Promise<
-  { status: "ok"; tasks: DataForSeoReadyTask[] } | { status: "error"; message: string }
+  | { status: "ok"; tasks: DataForSeoReadyTask[] }
+  | { status: "error"; message: string }
 > {
   const got = await getDataForSeoTasksReady(MAPS_TASKS_READY_PATH)
   if (got.status === "error") return got

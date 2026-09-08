@@ -1,8 +1,5 @@
 import { isClosingStage, type ClosingStage } from "@/lib/leads/closing"
-import {
-  emptyChannelCounts,
-  type LeadChannelCounts,
-} from "@/lib/leads/channel"
+import { emptyChannelCounts, type LeadChannelCounts } from "@/lib/leads/channel"
 import { isLeadStatus, type LeadStatus } from "@/lib/leads/status"
 import type { BrazilStateCode } from "@/lib/br-locations"
 import type { LeadSegment } from "@/lib/leads/segments"
@@ -81,9 +78,10 @@ export function toLeadBoardItem(
     if (Array.isArray(embeddedSegment)) {
       const first = embeddedSegment[0]
       if (first && typeof first.name === "string") {
-        segment = "id" in first && typeof first.id === "string"
-          ? { id: first.id, name: first.name }
-          : null
+        segment =
+          "id" in first && typeof first.id === "string"
+            ? { id: first.id, name: first.name }
+            : null
       }
     } else if (
       typeof embeddedSegment === "object" &&

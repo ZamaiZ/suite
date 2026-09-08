@@ -12,7 +12,7 @@ import {
   RiDragMoveLine,
   RiInboxLine,
 } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   BOARD_COLUMN_DOT,
   BOARD_COLUMN_EMPTY,
@@ -81,28 +81,29 @@ export function LeadBoardColumn({
     <section
       ref={ref}
       className={cn(
-        "flex min-h-0 w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-surface",
+        "flex min-h-0 w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-card",
         "transition-[border-color,background-color] duration-150 ease-out",
         isDropTarget && legalTarget
           ? "border-primary bg-primary/5"
           : "border-border",
       )}
     >
-      <header className="relative z-10 flex shrink-0 items-center justify-between gap-2 border-b border-border-subtle px-3 py-2.5">
-        <h2 className="flex min-w-0 items-center gap-2 font-sans text-body-sm font-semibold text-fg">
+      <header className="relative z-10 flex shrink-0 items-center justify-between gap-2 border-b border-border/70 px-3 py-2.5">
+        <h2 className="flex min-w-0 items-center gap-2 text-xs/relaxed font-semibold text-foreground">
           <span
             aria-hidden
-            className={cn("size-2 shrink-0 rounded-full", BOARD_COLUMN_DOT[columnId])}
+            className={cn(
+              "size-2 shrink-0 rounded-full",
+              BOARD_COLUMN_DOT[columnId],
+            )}
           />
           {BOARD_COLUMN_LABELS[columnId]}
         </h2>
         <div className="flex items-center gap-1.5">
-          <span className="font-sans text-caption text-fg-muted">
+          <span className="text-xs/relaxed text-muted-foreground">
             {leads.length}
           </span>
-          {columnId === "new" ? (
-            <LeadCreate onCreated={onLeadCreated} />
-          ) : null}
+          {columnId === "new" ? <LeadCreate onCreated={onLeadCreated} /> : null}
         </div>
       </header>
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
@@ -111,12 +112,14 @@ export function LeadBoardColumn({
             <EmptyIcon
               size={22}
               aria-hidden
-              className="text-fg-muted opacity-60"
+              className="text-muted-foreground opacity-60"
             />
-            <p className="font-sans text-body-sm font-medium text-fg-secondary">
+            <p className="text-xs/relaxed font-medium text-muted-foreground">
               {empty.title}
             </p>
-            <p className="font-sans text-caption text-fg-muted">{empty.body}</p>
+            <p className="text-xs/relaxed text-muted-foreground">
+              {empty.body}
+            </p>
           </div>
         ) : null}
         {leads.map((lead) => (
@@ -141,7 +144,7 @@ export function LeadBoardColumn({
               "text-center transition-opacity duration-150 ease-out",
             )}
           >
-            <p className="inline-flex items-center gap-1.5 font-sans text-caption font-medium text-primary">
+            <p className="inline-flex items-center gap-1.5 text-xs/relaxed font-medium text-primary">
               <RiDragMoveLine size={14} aria-hidden />
               Solte os leads aqui
             </p>

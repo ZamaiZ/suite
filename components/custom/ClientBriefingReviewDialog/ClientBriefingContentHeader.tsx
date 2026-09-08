@@ -32,7 +32,7 @@ export function ClientBriefingContentHeader({
   const stepDetail = area === "briefing" && step
 
   return (
-    <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border-subtle bg-elevated/70 px-4 py-3 sm:px-5">
+    <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border/70 bg-popover/70 px-4 py-3 sm:px-5">
       <div className="min-w-0">
         {stepDetail ? (
           <div className="flex items-start gap-2">
@@ -48,27 +48,31 @@ export function ClientBriefingContentHeader({
               <RiArrowLeftLine size={18} aria-hidden />
             </Button>
             <div className="min-w-0">
-              <p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">
+              <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
                 Briefing / etapa
               </p>
-              <h3 className="truncate font-display text-title font-semibold text-fg">
+              <h3 className="truncate font-heading text-xl font-semibold text-foreground">
                 {step.label}
               </h3>
-              <p className="mt-1 font-sans text-caption text-fg-muted">
+              <p className="mt-1 text-xs/relaxed text-muted-foreground">
                 {STATE_LABEL[step.state]}
-                {step.updatedAt ? ` · ${formatDateTimeShort(step.updatedAt)}` : ""}
+                {step.updatedAt
+                  ? ` · ${formatDateTimeShort(step.updatedAt)}`
+                  : ""}
               </p>
             </div>
           </div>
         ) : (
           <>
-            <p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">
+            <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
               {area === "contact" ? "Contato e kickoff" : "Briefing"}
             </p>
-            <h3 className="font-display text-title font-semibold text-fg">
-              {area === "contact" ? "Gestão do kickoff" : "Acompanhamento do briefing"}
+            <h3 className="font-heading text-xl font-semibold text-foreground">
+              {area === "contact"
+                ? "Gestão do kickoff"
+                : "Acompanhamento do briefing"}
             </h3>
-            <p className="mt-1 font-sans text-caption text-fg-muted">
+            <p className="mt-1 text-xs/relaxed text-muted-foreground">
               {area === "contact"
                 ? "Histórico, agenda e próximos passos do cliente."
                 : "Etapas, respostas e materiais registrados pelo cliente."}
@@ -85,7 +89,9 @@ export function ClientBriefingContentHeader({
           onClick={onEditToggle}
           className="shrink-0"
         >
-          {!editing ? <RiPencilLine size={16} aria-hidden data-icon="inline-start" /> : null}
+          {!editing ? (
+            <RiPencilLine size={16} aria-hidden data-icon="inline-start" />
+          ) : null}
           {editing ? "Concluir edição" : "Editar"}
         </Button>
       ) : null}

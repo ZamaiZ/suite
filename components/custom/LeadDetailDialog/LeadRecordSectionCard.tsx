@@ -3,11 +3,7 @@
 import type { ReactNode } from "react"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  RiLoader4Line,
-  RiPencilLine,
-  RiSaveLine,
-} from "react-icons/ri"
+import { RiLoader4Line, RiPencilLine, RiSaveLine } from "react-icons/ri"
 import type { IconType } from "react-icons"
 import { Button } from "@/components/ui/button"
 import { LeadIconWell } from "./LeadIconWell"
@@ -44,16 +40,18 @@ export function LeadRecordSectionCard({
   const reduced = !!useReducedMotion()
 
   return (
-    <section className="rounded-xl bg-surface p-4 shadow-card">
+    <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-4 flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2.5">
           <LeadIconWell icon={icon} />
           <div className="min-w-0">
-            <h3 className="font-sans text-body-sm font-semibold text-fg">
+            <h3 className="text-xs/relaxed font-semibold text-foreground">
               {title}
             </h3>
             {subtitle ? (
-              <p className="font-sans text-caption text-fg-muted">{subtitle}</p>
+              <p className="text-xs/relaxed text-muted-foreground">
+                {subtitle}
+              </p>
             ) : null}
           </div>
         </div>
@@ -67,10 +65,7 @@ export function LeadRecordSectionCard({
             >
               Cancelar
             </Button>
-            <Button
-              type="submit"
-              disabled={pending || saveDisabled}
-            >
+            <Button type="submit" disabled={pending || saveDisabled}>
               {pending ? (
                 <RiLoader4Line
                   data-icon="inline-start"
@@ -84,11 +79,7 @@ export function LeadRecordSectionCard({
             </Button>
           </div>
         ) : (
-          <Button
-            type="button"
-            variant="outline"
-            onClick={onEdit}
-          >
+          <Button type="button" variant="outline" onClick={onEdit}>
             <RiPencilLine data-icon="inline-start" aria-hidden />
             {editLabel}
           </Button>

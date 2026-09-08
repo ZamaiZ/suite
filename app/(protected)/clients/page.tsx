@@ -2,7 +2,11 @@ import { requireCommercialMember } from "@/lib/auth/session"
 import { listClients } from "@/app/actions/clients"
 import { ClientsList } from "@/components/custom/ClientsList"
 import { firstSearchParam } from "@/lib/leads/queues"
-import { isBriefingListStatus, isClientId, type ClientsListParams } from "@/lib/clients/href"
+import {
+  isBriefingListStatus,
+  isClientId,
+  type ClientsListParams,
+} from "@/lib/clients/href"
 import { isClientKickoffStage } from "@/lib/clients/kickoff"
 
 export default async function ClientsPage({
@@ -35,7 +39,14 @@ export default async function ClientsPage({
       clients={result.clients}
       initialClientId={initialClientId}
       listParams={listParams}
-      summary={result.summary ?? { total: result.clients.length, inProgress: 0, edited: 0, kickoffPending: 0 }}
+      summary={
+        result.summary ?? {
+          total: result.clients.length,
+          inProgress: 0,
+          edited: 0,
+          kickoffPending: 0,
+        }
+      }
       closerOptions={result.closerOptions ?? []}
     />
   )

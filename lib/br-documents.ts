@@ -14,12 +14,14 @@ export function isValidCnpj(value: string): boolean {
   const digits = digitsOnly(value)
   if (digits.length !== 14) return false
   if (/^(\d)\1{13}$/.test(digits)) return false
-  const first = checksumDigit(digits.slice(0, 12), [
-    5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2,
-  ])
-  const second = checksumDigit(`${digits.slice(0, 12)}${first}`, [
-    6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2,
-  ])
+  const first = checksumDigit(
+    digits.slice(0, 12),
+    [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
+  )
+  const second = checksumDigit(
+    `${digits.slice(0, 12)}${first}`,
+    [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2],
+  )
   return digits.endsWith(`${first}${second}`)
 }
 
@@ -28,9 +30,10 @@ export function isValidCpf(value: string): boolean {
   if (digits.length !== 11) return false
   if (/^(\d)\1{10}$/.test(digits)) return false
   const first = checksumDigit(digits.slice(0, 9), [10, 9, 8, 7, 6, 5, 4, 3, 2])
-  const second = checksumDigit(`${digits.slice(0, 9)}${first}`, [
-    11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
-  ])
+  const second = checksumDigit(
+    `${digits.slice(0, 9)}${first}`,
+    [11, 10, 9, 8, 7, 6, 5, 4, 3, 2],
+  )
   return digits.endsWith(`${first}${second}`)
 }
 

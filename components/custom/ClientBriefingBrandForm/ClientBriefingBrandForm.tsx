@@ -1,6 +1,12 @@
 "use client"
 
-import { useCallback, useMemo, useState, useTransition, type ComponentType } from "react"
+import {
+  useCallback,
+  useMemo,
+  useState,
+  useTransition,
+  type ComponentType,
+} from "react"
 import {
   AnimatePresence,
   LazyMotion,
@@ -49,6 +55,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { BriefingTextareaField } from "@/components/custom/BriefingFormControls/BriefingFormControls"
 import { Textarea } from "@/components/ui/textarea"
 import {
   BRAND_MISSING_LABELS,
@@ -63,7 +70,7 @@ import {
   MARKETING_TOOL_LABELS,
   type MarketingToolId,
 } from "@/lib/briefing/marketing-tools"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatTimeShort } from "@/lib/date-time"
 import type { ClientBriefingBrandFormProps } from "./ClientBriefingBrandForm.types"
 
@@ -97,26 +104,34 @@ function TeamRoleBlock({
   onChange: (next: TeamRoleAnswer) => void
 }) {
   return (
-    <div className="rounded-xl border border-border bg-elevated p-3.5">
+    <div className="rounded-xl border border-border bg-popover p-3.5">
       <FieldSet>
         <FieldLegend variant="label">{label}</FieldLegend>
         <RadioGroup
-        className="flex flex-row flex-wrap items-center gap-3"
-        value={value.hasTeam ?? ""}
-        onValueChange={(next) =>
-          onChange({
-            ...value,
-            hasTeam: next as TeamHasAnswer,
-          })
-        }
+          className="flex flex-row flex-wrap items-center gap-3"
+          value={value.hasTeam ?? ""}
+          onValueChange={(next) =>
+            onChange({
+              ...value,
+              hasTeam: next as TeamHasAnswer,
+            })
+          }
         >
-          <Field orientation="horizontal" className="w-auto"><RadioGroupItem id={`${id}-yes`} value="yes" /><FieldLabel htmlFor={`${id}-yes`}>Sim</FieldLabel></Field>
-          <Field orientation="horizontal" className="w-auto"><RadioGroupItem id={`${id}-no`} value="no" /><FieldLabel htmlFor={`${id}-no`}>Não</FieldLabel></Field>
+          <Field orientation="horizontal" className="w-auto">
+            <RadioGroupItem id={`${id}-yes`} value="yes" />
+            <FieldLabel htmlFor={`${id}-yes`}>Sim</FieldLabel>
+          </Field>
+          <Field orientation="horizontal" className="w-auto">
+            <RadioGroupItem id={`${id}-no`} value="no" />
+            <FieldLabel htmlFor={`${id}-no`}>Não</FieldLabel>
+          </Field>
         </RadioGroup>
       </FieldSet>
       <div className="mt-3">
         <Field>
-          <FieldLabel htmlFor={`${id}-notes`}>Como a função é realizada</FieldLabel>
+          <FieldLabel htmlFor={`${id}-notes`}>
+            Como a função é realizada
+          </FieldLabel>
           <Textarea
             id={`${id}-notes`}
             rows={3}
@@ -159,11 +174,7 @@ export function ClientBriefingBrandForm({
     markComplete,
     setError,
     clearError,
-  } = useBriefingAutosave(
-    initialUpdatedAt,
-    initialCompletedAt,
-    persist,
-  )
+  } = useBriefingAutosave(initialUpdatedAt, initialCompletedAt, persist)
   useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
@@ -181,7 +192,9 @@ export function ClientBriefingBrandForm({
   const ready = isBrandReadyToComplete(payload)
   const missingLabels = useMemo(
     () =>
-      getBrandMissingGroups(payload).map((group) => BRAND_MISSING_LABELS[group]),
+      getBrandMissingGroups(payload).map(
+        (group) => BRAND_MISSING_LABELS[group],
+      ),
     [payload],
   )
   const completed = Boolean(completedAt)
@@ -245,7 +258,7 @@ export function ClientBriefingBrandForm({
           title="Processo de vendas"
           description="Explique como vocês vendem hoje, do primeiro contato ao fechamento."
         >
-          <Textarea
+          <BriefingTextareaField
             id="briefing-sales-process"
             label="Como funciona o processo de vendas atual"
             rows={5}
@@ -260,7 +273,7 @@ export function ClientBriefingBrandForm({
           title="História e serviço"
           description="Conte um pouco da trajetória da empresa e do que vocês entregam."
         >
-          <Textarea
+          <BriefingTextareaField
             id="briefing-company-story"
             label="História da empresa e sobre o serviço"
             rows={5}
@@ -277,9 +290,7 @@ export function ClientBriefingBrandForm({
         >
           <BriefingCatalogEditor
             items={payload.productsAndServices}
-            onChange={(productsAndServices) =>
-              patch({ productsAndServices })
-            }
+            onChange={(productsAndServices) => patch({ productsAndServices })}
           />
         </BriefingSectionCard>
 
@@ -290,7 +301,7 @@ export function ClientBriefingBrandForm({
             title="Atração de clientes"
             description="Como os clientes chegam até vocês hoje."
           >
-            <Textarea
+            <BriefingTextareaField
               id="briefing-customer-attraction"
               label="Como atraem clientes atualmente"
               rows={5}
@@ -307,7 +318,7 @@ export function ClientBriefingBrandForm({
             title="Desafios"
             description="Os maiores obstáculos do negócio neste momento."
           >
-            <Textarea
+            <BriefingTextareaField
               id="briefing-challenges"
               label="Grandes desafios que enfrentam hoje"
               rows={5}
@@ -358,8 +369,8 @@ export function ClientBriefingBrandForm({
               className={cn(
                 "flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-colors",
                 payload.noneMarketingTools
-                  ? "border-accent bg-accent/10"
-                  : "border-border bg-elevated hover:border-accent/40",
+                  ? "border-primary bg-primary/10"
+                  : "border-border bg-popover hover:border-primary/40",
               )}
             >
               <span className="pointer-events-none">
@@ -368,8 +379,12 @@ export function ClientBriefingBrandForm({
                   checked={payload.noneMarketingTools}
                 />
               </span>
-              <span className="inline-flex items-center gap-1.5 font-sans text-body-sm text-fg">
-                <RiForbidLine size={16} aria-hidden className="text-fg-muted" />
+              <span className="inline-flex items-center gap-1.5 text-xs/relaxed text-foreground">
+                <RiForbidLine
+                  size={16}
+                  aria-hidden
+                  className="text-muted-foreground"
+                />
                 Nenhuma
               </span>
             </button>
@@ -388,8 +403,8 @@ export function ClientBriefingBrandForm({
                   className={cn(
                     "flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-colors",
                     checked
-                      ? "border-accent bg-accent/10"
-                      : "border-border bg-elevated hover:border-accent/40",
+                      ? "border-primary bg-primary/10"
+                      : "border-border bg-popover hover:border-primary/40",
                     payload.noneMarketingTools && "opacity-50",
                   )}
                 >
@@ -400,11 +415,11 @@ export function ClientBriefingBrandForm({
                       disabled={payload.noneMarketingTools}
                     />
                   </span>
-                  <span className="inline-flex min-w-0 items-center gap-1.5 font-sans text-body-sm text-fg">
+                  <span className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-foreground">
                     <Icon
                       size={16}
                       aria-hidden
-                      className="shrink-0 text-accent"
+                      className="shrink-0 text-primary"
                     />
                     <span className="truncate">
                       {MARKETING_TOOL_LABELS[id]}
@@ -421,8 +436,8 @@ export function ClientBriefingBrandForm({
               className={cn(
                 "flex items-center gap-2 rounded-xl border px-3 py-3 text-left transition-colors",
                 showOtherTools && !payload.noneMarketingTools
-                  ? "border-accent bg-accent/10"
-                  : "border-border bg-elevated hover:border-accent/40",
+                  ? "border-primary bg-primary/10"
+                  : "border-border bg-popover hover:border-primary/40",
                 payload.noneMarketingTools && "opacity-50",
               )}
             >
@@ -433,11 +448,11 @@ export function ClientBriefingBrandForm({
                   disabled={payload.noneMarketingTools}
                 />
               </span>
-              <span className="inline-flex items-center gap-1.5 font-sans text-body-sm text-fg">
+              <span className="inline-flex items-center gap-1.5 text-xs/relaxed text-foreground">
                 <RiAddCircleLine
                   size={16}
                   aria-hidden
-                  className="text-fg-muted"
+                  className="text-muted-foreground"
                 />
                 Outra
               </span>
@@ -476,7 +491,7 @@ export function ClientBriefingBrandForm({
           description="Diferenciais, pontos fracos e a lista dos principais, por ordem de relevância."
         >
           <div className="grid gap-3 lg:grid-cols-2">
-            <Textarea
+            <BriefingTextareaField
               id="briefing-competitive-advantages"
               label="Diferenciais em relação aos concorrentes"
               rows={5}
@@ -485,7 +500,7 @@ export function ClientBriefingBrandForm({
                 patch({ competitiveAdvantages: event.target.value })
               }
             />
-            <Textarea
+            <BriefingTextareaField
               id="briefing-competitive-weaknesses"
               label="Onde vocês perdem para os concorrentes"
               rows={5}
@@ -507,24 +522,24 @@ export function ClientBriefingBrandForm({
         {errorMessage ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/25 bg-danger/10 px-4 py-3 font-sans text-body-sm text-danger"
+            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
           >
             {errorMessage}
           </p>
         ) : null}
 
         {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 font-sans text-body-sm text-success">
+          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
             Etapa concluída. Você pode continuar editando; as alterações seguem
             sendo salvas.
           </div>
         ) : null}
 
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
-          <div className="pointer-events-auto border-t border-border bg-canvas/90 backdrop-blur-md">
+          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
               <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
+                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                   {saveState === "saving" || isCompleting ? (
                     <>
                       <RiLoader4Line
@@ -548,7 +563,7 @@ export function ClientBriefingBrandForm({
                       <RiCloseLine
                         size={14}
                         aria-hidden
-                        className="text-danger"
+                        className="text-destructive"
                       />
                       Não foi possível salvar
                     </>
@@ -557,7 +572,7 @@ export function ClientBriefingBrandForm({
                   )}
                 </p>
                 {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate font-sans text-caption text-fg-secondary">
+                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
                     Falta: {missingLabels.join(", ")}
                   </p>
                 ) : null}
@@ -569,18 +584,18 @@ export function ClientBriefingBrandForm({
                   </Button>
                 ) : null}
                 {variant === "staff" ? null : (
-                <Button
-                  type="button"
-                  disabled={isCompleting || !ready}
-                  onClick={handleComplete}
-                >
-                  {isCompleting
-                    ? "Salvando..."
-                    : completed
-                      ? "Etapa concluída"
-                      : "Continuar"}
-                  {completed ? <RiCheckLine size={16} aria-hidden /> : null}
-                </Button>
+                  <Button
+                    type="button"
+                    disabled={isCompleting || !ready}
+                    onClick={handleComplete}
+                  >
+                    {isCompleting
+                      ? "Salvando..."
+                      : completed
+                        ? "Etapa concluída"
+                        : "Continuar"}
+                    {completed ? <RiCheckLine size={16} aria-hidden /> : null}
+                  </Button>
                 )}
               </div>
             </div>

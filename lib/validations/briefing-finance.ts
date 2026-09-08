@@ -27,7 +27,8 @@ export type BriefingFinanceInput = z.infer<typeof briefingFinancePayloadSchema>
 export function toFinancePayload(
   data: BriefingFinanceInput,
 ): BriefingFinancePayload {
-  const seasonalityProfile = data.seasonalityProfile as SeasonalityProfileId | null
+  const seasonalityProfile =
+    data.seasonalityProfile as SeasonalityProfileId | null
 
   return {
     monthlyRevenueRange: data.monthlyRevenueRange as RevenueRangeId | null,

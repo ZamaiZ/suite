@@ -3,8 +3,16 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { RiAddLine } from "react-icons/ri"
 import { listLeadSegments } from "@/app/actions/leads"
-import { cn } from "@/lib/cn"
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList, ComboboxRootLabel } from "@/components/ui/combobox"
+import { cn } from "cn"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
   normalizeSegmentName,
   segmentSlug,
@@ -53,7 +61,9 @@ export function LeadSegmentField({
   const trimmedQuery = query.trim()
   const querySlug = segmentSlug(trimmedQuery)
   const normalizedQuery = normalizeSegmentName(trimmedQuery)
-  const catalogMatch = catalog.find((item) => segmentSlug(item.name) === querySlug)
+  const catalogMatch = catalog.find(
+    (item) => segmentSlug(item.name) === querySlug,
+  )
   const selectedItem = useMemo<SegmentOption | null>(() => {
     if (!value) return null
     const slug = segmentSlug(value)
@@ -66,9 +76,9 @@ export function LeadSegmentField({
 
   const canCreate = Boolean(
     normalizedQuery &&
-      querySlug &&
-      !catalogMatch &&
-      segmentSlug(value) !== querySlug,
+    querySlug &&
+    !catalogMatch &&
+    segmentSlug(value) !== querySlug,
   )
 
   const suggestionItems = useMemo<SegmentOption[]>(() => {
@@ -76,7 +86,9 @@ export function LeadSegmentField({
       ? catalog.filter((item) => {
           const name = item.name.toLocaleLowerCase("pt-BR")
           const needle = trimmedQuery.toLocaleLowerCase("pt-BR")
-          return name.includes(needle) || segmentSlug(item.name).includes(querySlug)
+          return (
+            name.includes(needle) || segmentSlug(item.name).includes(querySlug)
+          )
         })
       : catalog
     const items: SegmentOption[] = filtered.map((item) => ({
@@ -109,7 +121,7 @@ export function LeadSegmentField({
   }
 
   return (
-    <div className="flex w-full flex-col gap-1.5">
+    <Field data-invalid={Boolean(error)}>
       <Combobox
         items={suggestionItems}
         value={selectedItem}
@@ -130,34 +142,12 @@ export function LeadSegmentField({
         onInputValueChange={setQuery}
       >
         {label ? (
-          <ComboboxRootLabel
-            className={cn(
-              "font-sans text-body-sm font-medium text-fg-secondary",
-              disabled ? "opacity-50" : "cursor-text",
-              error && "text-danger",
-            )}
-            onClick={() => {
-              if (!disabled) inputRef.current?.focus()
-            }}
-          >
+          <FieldLabel htmlFor={id} className={cn(error && "text-destructive")}>
             {label}
-          </ComboboxRootLabel>
+          </FieldLabel>
         ) : null}
 
-        <div
-          ref={fieldRef}
-          onClick={() => {
-            if (!disabled) inputRef.current?.focus()
-          }}
-          className={cn(
-            "flex w-full items-center rounded-md border border-input-border bg-input px-2.5",
-            "min-h-[var(--control-height)]",
-            "transition-[background-color,border-color,color,opacity] duration-150 ease-out",
-            "focus-within:border-accent",
-            disabled && "pointer-events-none opacity-50",
-            error && "border-danger focus-within:border-danger",
-          )}
-        >
+        <div ref={fieldRef} className="w-full">
           <ComboboxInput
             ref={inputRef}
             id={id}
@@ -169,54 +159,34 @@ export function LeadSegmentField({
               if (!disabled) setOpen(true)
             }}
             onBlur={onBlur}
-            className={cn(
-              "w-full bg-transparent py-2 font-sans text-body-sm text-fg outline-none",
-              "placeholder:text-fg-muted",
-            )}
-            showTrigger={false}
+            className="w-full"
           />
         </div>
 
         <ComboboxContent anchor={fieldRef}>
-              <div className="max-h-[min(16rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-                <ComboboxEmpty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
-                  Nenhum segmento
-                </ComboboxEmpty>
-                <ComboboxList>
-                  {(item: SegmentOption) => (
-                    <ComboboxItem
-                      key={item.value}
-                      value={item}
-                      className={cn(
-                        "flex min-h-9 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5",
-                        "font-sans text-body-sm text-fg outline-none select-none",
-                        "data-highlighted:bg-hover",
-                      )}
-                    >
-                      {item.create ? (
-                        <>
-                          <RiAddLine
-                            size={14}
-                            aria-hidden
-                            className="shrink-0 text-accent"
-                          />
-                          <span>Criar «{item.label}»</span>
-                        </>
-                      ) : (
-                        <span className="truncate">{item.label}</span>
-                      )}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </div>
+          <ComboboxEmpty>Nenhum segmento</ComboboxEmpty>
+          <ComboboxList>
+            {(item: SegmentOption) => (
+              <ComboboxItem
+                key={item.value}
+                value={item}
+                className="cursor-pointer"
+              >
+                {item.create ? (
+                  <>
+                    <RiAddLine aria-hidden className="shrink-0 text-primary" />
+                    <span>Criar «{item.label}»</span>
+                  </>
+                ) : (
+                  <span className="truncate">{item.label}</span>
+                )}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
         </ComboboxContent>
       </Combobox>
 
-      {error ? (
-        <p id={errorId} role="alert" className="font-sans text-body-sm text-danger">
-          {error}
-        </p>
-      ) : null}
-    </div>
+      <FieldError id={errorId}>{error}</FieldError>
+    </Field>
   )
 }

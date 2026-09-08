@@ -1,6 +1,12 @@
 "use client"
 
-import { useEffect, useMemo, useOptimistic, useState, useTransition } from "react"
+import {
+  useEffect,
+  useMemo,
+  useOptimistic,
+  useState,
+  useTransition,
+} from "react"
 import {
   DragDropProvider,
   DragOverlay,
@@ -15,7 +21,7 @@ import {
   type LeadAssignmentPatch,
 } from "@/app/actions/leads"
 import { LeadDetailDialog } from "@/components/custom/LeadDetailDialog"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { getCivilFollowUpKind } from "@/lib/date-time"
 import {
   BOARD_COLUMNS,
@@ -260,9 +266,7 @@ export function LeadBoard({
   const scopeLabel =
     listParams.team && canViewTeamLeads ? "Todos" : "Minha carteira"
   const countLabel =
-    optimisticLeads.length === 1
-      ? "1 lead"
-      : `${optimisticLeads.length} leads`
+    optimisticLeads.length === 1 ? "1 lead" : `${optimisticLeads.length} leads`
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-4 overflow-hidden">
@@ -275,19 +279,19 @@ export function LeadBoard({
         pendingCount={pendingCount}
       />
       <div className="flex shrink-0 items-center gap-3">
-        <p className="min-w-0 font-sans text-caption text-fg-muted">
+        <p className="min-w-0 text-xs/relaxed text-muted-foreground">
           {scopeLabel} · {countLabel}
           {listParams.team ? " · somente leitura" : ""}
         </p>
         {canDrag ? (
-          <p className="ml-auto inline-flex shrink-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
+          <p className="ml-auto inline-flex shrink-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
             <RiDragMoveLine size={14} aria-hidden />
             Arraste os leads entre as etapas
           </p>
         ) : null}
       </div>
       {boardError ? (
-        <p role="alert" className="shrink-0 font-sans text-body-sm text-danger">
+        <p role="alert" className="shrink-0 text-xs/relaxed text-destructive">
           {boardError}
         </p>
       ) : null}
@@ -387,7 +391,7 @@ export function LeadBoard({
               return (
                 <div
                   className={cn(
-                    "w-72 rounded-lg border border-border bg-elevated p-3 shadow-card",
+                    "w-72 rounded-lg border border-border bg-popover p-3 shadow-xs",
                     "scale-[1.02]",
                   )}
                 >

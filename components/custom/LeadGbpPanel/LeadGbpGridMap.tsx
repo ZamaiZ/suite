@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiMapPinLine } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { GOOGLE_MAPS_DARK_STYLES, loadGoogleMaps } from "@/lib/google-maps"
 import type { GbpGridPoint } from "@/lib/leads/gbp-grid"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
@@ -207,12 +207,12 @@ export function LeadGbpGridMap({
       <div
         className={cn(
           "flex min-h-56 flex-col items-center justify-center gap-2 rounded-lg",
-          "border border-border-subtle bg-elevated px-4 text-center",
+          "border border-border/70 bg-popover px-4 text-center",
           className,
         )}
       >
-        <RiMapPinLine aria-hidden className="size-5 text-fg-muted" />
-        <p className="font-sans text-caption text-fg-muted">{scriptError}</p>
+        <RiMapPinLine aria-hidden className="size-5 text-muted-foreground" />
+        <p className="text-xs/relaxed text-muted-foreground">{scriptError}</p>
       </div>
     )
   }
@@ -220,14 +220,17 @@ export function LeadGbpGridMap({
   return (
     <div className="flex flex-col gap-2">
       <div
-        className={cn("relative min-h-56 overflow-hidden rounded-lg", className)}
+        className={cn(
+          "relative min-h-56 overflow-hidden rounded-lg",
+          className,
+        )}
       >
         <div ref={containerRef} className="size-full min-h-56" />
         {!ready ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-elevated">
+          <div className="absolute inset-0 flex items-center justify-center bg-popover">
             <RiLoader4Line
               aria-hidden
-              className="size-5 animate-spin text-fg-muted"
+              className="size-5 animate-spin text-muted-foreground"
             />
           </div>
         ) : null}
@@ -241,7 +244,7 @@ export function LeadGbpGridMap({
               className="size-2.5 rounded-full"
               style={{ backgroundColor: band.color }}
             />
-            <span className="font-sans text-caption text-fg-muted">
+            <span className="text-xs/relaxed text-muted-foreground">
               {band.label}
             </span>
           </li>

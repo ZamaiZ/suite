@@ -37,11 +37,13 @@
 ## Task 1: Define URL state and server query contract
 
 **Files:**
+
 - Modify `lib/clients/href.ts`
 - Modify `app/actions/clients/list-clients.ts`
 - Modify `components/custom/ClientsList/ClientsList.types.ts`
 
 **Interfaces:**
+
 - Produces:
 
 ```ts
@@ -72,13 +74,15 @@ export type ListClientsResult = {
 Accept optional `q`, `briefing`, `kickoff`, `closer`, and `client`; trim `q`, validate enum values and UUIDs, omit empty values, and return `/clients` when no params remain.
 
 ```ts
-export function clientsListHref(input: {
-  q?: string
-  briefing?: BriefingListStatus | null
-  kickoff?: ClientKickoffStage | null
-  closer?: string | null
-  client?: string
-} = {}): string
+export function clientsListHref(
+  input: {
+    q?: string
+    briefing?: BriefingListStatus | null
+    kickoff?: ClientKickoffStage | null
+    closer?: string | null
+    client?: string
+  } = {},
+): string
 ```
 
 - [ ] **Step 2: Add typed params to `ClientsListProps`.**
@@ -91,7 +95,12 @@ Use `requireCommercialMember`, query `clients` ordered by `converted_at desc`, j
 
 ```ts
 export async function listClients(
-  params: ClientsListParams = { q: "", briefing: null, kickoff: null, closer: null },
+  params: ClientsListParams = {
+    q: "",
+    briefing: null,
+    kickoff: null,
+    closer: null,
+  },
 ): Promise<ListClientsState>
 ```
 
@@ -106,12 +115,14 @@ Map each row with `deriveBriefingListStatus`. Filter the derived status when `pa
 ## Task 2: Build the reusable list presentation components
 
 **Files:**
+
 - Create `components/custom/ClientsList/ClientsListToolbar.tsx`
 - Create `components/custom/ClientsList/ClientsSummary.tsx`
 - Create `components/custom/ClientsList/ClientListRow.tsx`
 - Create `components/custom/ClientsList/ClientsListSkeleton.tsx`
 
 **Interfaces:**
+
 - Consumes: `ClientsListParams`, `ClientListItem`, `ClientsSummary`, `ClientCloserOption`, `clientsListHref`, existing `Input`, `Select`, `Button`, Motion and icon conventions.
 - Produces: presentational components with no data fetching.
 
@@ -144,9 +155,11 @@ Use the Users loading geometry: editorial header, summary bars, toolbar bars and
 ## Task 3: Compose `ClientsList` with URL/deep-link state
 
 **Files:**
+
 - Modify `components/custom/ClientsList/ClientsList.tsx`
 
 **Interfaces:**
+
 - Consumes: Task 1 server contracts and Task 2 components.
 - Produces: the same `ClientBriefingReviewDialog` open/close behavior, with filtered list navigation.
 
@@ -169,10 +182,12 @@ Pass the selected client’s `id` and `company_name` to `ClientBriefingReviewDia
 ## Task 4: Wire the server page and loading route
 
 **Files:**
+
 - Modify `app/(protected)/clients/page.tsx`
 - Modify `app/(protected)/clients/loading.tsx`
 
 **Interfaces:**
+
 - Consumes: `ClientsListParams`, `clientsListHref` validators and `listClients(params)`.
 - Produces: server-rendered filtered page and matching streaming/loading surface.
 
@@ -191,9 +206,11 @@ Replace the three generic card pulses with the shared `ClientsListSkeleton` or a
 ## Task 5: Final manual review against the approved spec
 
 **Files:**
+
 - Review all files changed in Tasks 1–4.
 
 **Interfaces:**
+
 - Consumes: completed page, server loader and existing briefing dialog.
 - Produces: no scope expansion and a concise delivery report.
 

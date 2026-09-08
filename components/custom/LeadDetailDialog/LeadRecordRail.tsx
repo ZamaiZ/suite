@@ -6,7 +6,7 @@ import {
   RiChat3Line,
   RiUserLine,
 } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import { LeadIconWell } from "./LeadIconWell"
 
@@ -61,22 +61,22 @@ export function LeadRecordRail({
                 "flex w-full cursor-pointer items-center gap-2.5 rounded-lg px-2.5 py-2 text-left",
                 "transition-colors duration-150 ease-out",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                selected ? "bg-accent/10" : "hover:bg-hover",
+                selected ? "bg-primary/10" : "hover:bg-accent",
               )}
             >
               <LeadIconWell icon={item.icon} />
               <span className="min-w-0">
                 <span
                   className={cn(
-                    "block font-sans text-body-sm",
+                    "block text-xs/relaxed",
                     selected
-                      ? "font-semibold text-fg"
-                      : "font-medium text-fg",
+                      ? "font-semibold text-foreground"
+                      : "font-medium text-foreground",
                   )}
                 >
                   {item.label}
                 </span>
-                <span className="block truncate font-sans text-caption text-fg-muted">
+                <span className="block truncate text-xs/relaxed text-muted-foreground">
                   {item.hint}
                 </span>
               </span>
@@ -85,14 +85,14 @@ export function LeadRecordRail({
         })}
       </nav>
 
-      <div className="mt-auto border-t border-border-subtle pt-4">
+      <div className="mt-auto border-t border-border/70 pt-4">
         <div className="flex min-w-0 items-center gap-2.5">
           <LeadIconWell icon={RiCalendarEventLine} />
           <div className="min-w-0">
-            <p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">
+            <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
               Criado em
             </p>
-            <p className="truncate font-sans text-body-sm text-fg">
+            <p className="truncate text-xs/relaxed text-foreground">
               {formatDateTimeShort(createdAt)}
             </p>
           </div>

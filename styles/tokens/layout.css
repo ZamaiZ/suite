@@ -1,0 +1,23 @@
+/* ─── Tokens de layout de página ────────────────────────────────────────────
+ * O que é densidade de componente (altura de controle, raio, tipografia) vem
+ * do shadcn `base-mira` — não duplique aqui. Este arquivo guarda apenas as
+ * medidas de página, que são responsivas e não têm equivalente no registry.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --page-padding-x: 1rem;
+  --page-padding-y: 1rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-padding-x: 1.5rem;
+    --page-padding-y: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-padding-x: 2rem;
+  }
+}

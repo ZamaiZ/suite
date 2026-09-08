@@ -37,7 +37,12 @@ export const NAV_ITEMS: NavItem[] = [
     icon: RiShapesLine,
     description: "Catálogo de componentes",
     children: [
-      { kind: "leaf", label: "Visão geral", href: "/showcase", description: "Inventário shadcn" },
+      {
+        kind: "leaf",
+        label: "Visão geral",
+        href: "/showcase",
+        description: "Inventário shadcn",
+      },
       { kind: "leaf", label: "Ações e feedback", href: "/showcase/actions" },
       { kind: "leaf", label: "Formulários", href: "/showcase/forms" },
       { kind: "leaf", label: "Navegação", href: "/showcase/navigation" },

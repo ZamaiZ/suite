@@ -40,9 +40,7 @@ async function probeVariants(
   homeUrl: URL,
 ): Promise<WebsiteVariantSnapshot | null> {
   const host = homeUrl.hostname
-  const otherHost = host.startsWith("www.")
-    ? host.slice(4)
-    : `www.${host}`
+  const otherHost = host.startsWith("www.") ? host.slice(4) : `www.${host}`
 
   const withHost = new URL(homeUrl.toString())
   withHost.hostname = otherHost
@@ -245,9 +243,7 @@ export async function crawlWebsite(
       : crawlTargetsFromHome(home, homeUrl)
           .slice(0, WEBSITE_MAX_INTERNAL_PAGES)
           .map((target) => new URL(target).pathname)
-  const targets = usedPaths.map((path) =>
-    new URL(path, homeUrl).toString(),
-  )
+  const targets = usedPaths.map((path) => new URL(path, homeUrl).toString())
 
   const robotsUrl = new URL("/robots.txt", homeUrl).toString()
   const llmsUrl = new URL("/llms.txt", homeUrl).toString()

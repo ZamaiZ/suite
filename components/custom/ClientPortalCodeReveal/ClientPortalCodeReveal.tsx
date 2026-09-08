@@ -42,15 +42,15 @@ function CopyRow({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="font-sans text-caption font-medium text-fg-secondary">
+      <p className="text-xs/relaxed font-medium text-muted-foreground">
         {label}
       </p>
       <div className="flex items-center gap-2">
         <p
           className={
             mono
-              ? "min-w-0 flex-1 break-all font-sans text-body-sm font-semibold tracking-[0.18em] text-fg"
-              : "min-w-0 flex-1 break-all font-sans text-body-sm text-fg"
+              ? "min-w-0 flex-1 break-all text-xs/relaxed font-semibold tracking-[0.18em] text-foreground"
+              : "min-w-0 flex-1 break-all text-xs/relaxed text-foreground"
           }
         >
           {value}

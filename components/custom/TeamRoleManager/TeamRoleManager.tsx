@@ -17,13 +17,10 @@ import {
   sortAppRoles,
   type AppRole,
 } from "@/lib/auth/roles"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
-import type {
-  TeamMember,
-  TeamRoleManagerProps,
-} from "./TeamRoleManager.types"
+import type { TeamMember, TeamRoleManagerProps } from "./TeamRoleManager.types"
 
 const EASE = [0.23, 1, 0.32, 1] as const
 const SAVE_DEBOUNCE_MS = 400
@@ -54,7 +51,10 @@ function formatMemberCount(count: number): string {
   return count === 1 ? "1 pessoa" : `${count} pessoas`
 }
 
-function sameRoles(left: readonly AppRole[], right: readonly AppRole[]): boolean {
+function sameRoles(
+  left: readonly AppRole[],
+  right: readonly AppRole[],
+): boolean {
   if (left.length !== right.length) return false
   return left.every((role, index) => role === right[index])
 }
@@ -62,7 +62,7 @@ function sameRoles(left: readonly AppRole[], right: readonly AppRole[]): boolean
 function RoleChips({ roles }: { roles: AppRole[] }) {
   if (roles.length === 0) {
     return (
-      <span className="font-sans text-caption text-fg-muted">Sem papel</span>
+      <span className="text-xs/relaxed text-muted-foreground">Sem papel</span>
     )
   }
 
@@ -71,7 +71,7 @@ function RoleChips({ roles }: { roles: AppRole[] }) {
       {roles.map((role) => (
         <span
           key={role}
-          className="inline-flex max-w-[9rem] items-center gap-1 rounded-md border border-border bg-elevated py-0.5 pr-1.5 pl-1.5 font-sans text-caption text-fg"
+          className="inline-flex max-w-[9rem] items-center gap-1 rounded-md border border-border bg-popover py-0.5 pr-1.5 pl-1.5 text-xs/relaxed text-foreground"
         >
           {role === "admin" ? (
             <RiShieldUserLine size={12} aria-hidden className="shrink-0" />
@@ -172,36 +172,38 @@ function TeamMemberRoleRow({
           transition: {
             duration: reduced ? 0.15 : 0.18,
             ease: EASE,
-            delay: reduced ? 0 : Math.min(index * ROW_STAGGER_S, ROW_STAGGER_CAP_S),
+            delay: reduced
+              ? 0
+              : Math.min(index * ROW_STAGGER_S, ROW_STAGGER_CAP_S),
           },
         },
       }}
       className={cn(
         "grid gap-3 px-4 py-3",
         "transition-[background-color] duration-150 ease-out",
-        "hover:bg-hover",
+        "hover:bg-accent",
         "sm:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_1.5rem] sm:items-center",
       )}
     >
       <div className="flex min-w-0 items-center gap-3">
         <span
           aria-hidden
-          className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/10 font-sans text-caption font-semibold tracking-caption text-accent"
+          className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs/relaxed font-semibold tracking-wide text-primary"
         >
           {getInitials(member.name)}
         </span>
         <div className="min-w-0">
           <div className="flex min-w-0 items-center gap-2">
-            <p className="truncate font-sans text-body-sm font-semibold text-fg">
+            <p className="truncate text-xs/relaxed font-semibold text-foreground">
               {member.name}
             </p>
             {isCurrentUser ? (
-              <span className="shrink-0 rounded-md border border-border-subtle px-1.5 py-0.5 font-sans text-caption text-fg-muted">
+              <span className="shrink-0 rounded-md border border-border/70 px-1.5 py-0.5 text-xs/relaxed text-muted-foreground">
                 Você
               </span>
             ) : null}
           </div>
-          <p className="truncate font-sans text-caption text-fg-muted">
+          <p className="truncate text-xs/relaxed text-muted-foreground">
             {member.email}
           </p>
         </div>
@@ -209,10 +211,38 @@ function TeamMemberRoleRow({
 
       <div className="min-w-0">
         {canEdit ? (
-          <FieldSet className="flex-row flex-wrap gap-2" aria-label={`Papéis de ${member.name}`}>
+          <FieldSet
+            className="flex-row flex-wrap gap-2"
+            aria-label={`Papéis de ${member.name}`}
+          >
             {APP_ROLES.map((role) => {
               const inputId = `team-member-${member.id}-${role}`
-              return <Field key={role} orientation="horizontal" className="w-auto"><Checkbox id={inputId} checked={roles.includes(role)} disabled={isBusy} onCheckedChange={(next) => handleRolesChange(next === true ? [...roles, role] : roles.filter((item) => item !== role))} /><FieldLabel htmlFor={inputId}>{role === "admin" ? <><RiShieldUserLine size={14} aria-hidden />{APP_ROLE_LABELS[role]}</> : APP_ROLE_LABELS[role]}</FieldLabel></Field>
+              return (
+                <Field key={role} orientation="horizontal" className="w-auto">
+                  <Checkbox
+                    id={inputId}
+                    checked={roles.includes(role)}
+                    disabled={isBusy}
+                    onCheckedChange={(next) =>
+                      handleRolesChange(
+                        next === true
+                          ? [...roles, role]
+                          : roles.filter((item) => item !== role),
+                      )
+                    }
+                  />
+                  <FieldLabel htmlFor={inputId}>
+                    {role === "admin" ? (
+                      <>
+                        <RiShieldUserLine size={14} aria-hidden />
+                        {APP_ROLE_LABELS[role]}
+                      </>
+                    ) : (
+                      APP_ROLE_LABELS[role]
+                    )}
+                  </FieldLabel>
+                </Field>
+              )
             })}
             <FieldError>{message}</FieldError>
           </FieldSet>
@@ -235,10 +265,14 @@ function TeamMemberRoleRow({
               exit={
                 reduced
                   ? { opacity: 0, transition: { duration: 0.1 } }
-                  : { opacity: 0, scale: 0.95, transition: { duration: 0.12, ease: EASE } }
+                  : {
+                      opacity: 0,
+                      scale: 0.95,
+                      transition: { duration: 0.12, ease: EASE },
+                    }
               }
               transition={{ duration: reduced ? 0.15 : 0.16, ease: EASE }}
-              className="inline-flex text-fg-muted"
+              className="inline-flex text-muted-foreground"
             >
               <RiLoader4Line size={16} aria-hidden className="animate-spin" />
               <span className="sr-only">Salvando papéis</span>
@@ -251,7 +285,11 @@ function TeamMemberRoleRow({
               exit={
                 reduced
                   ? { opacity: 0, transition: { duration: 0.1 } }
-                  : { opacity: 0, scale: 0.95, transition: { duration: 0.12, ease: EASE } }
+                  : {
+                      opacity: 0,
+                      scale: 0.95,
+                      transition: { duration: 0.12, ease: EASE },
+                    }
               }
               transition={{ duration: reduced ? 0.15 : 0.16, ease: EASE }}
               className="inline-flex text-success"
@@ -337,7 +375,7 @@ export function TeamRoleManager({
           >
             <m.p
               variants={fadeUp}
-              className="font-sans text-caption font-medium uppercase tracking-widest text-fg-muted"
+              className="text-xs/relaxed font-medium uppercase tracking-widest text-muted-foreground"
             >
               Configurações
             </m.p>
@@ -345,16 +383,16 @@ export function TeamRoleManager({
               variants={fadeUp}
               className="flex flex-wrap items-baseline justify-between gap-2"
             >
-              <h1 className="font-display text-display font-semibold text-fg">
+              <h1 className="font-heading text-2xl font-semibold text-foreground">
                 Equipe
               </h1>
-              <p className="font-sans text-caption text-fg-muted">
+              <p className="text-xs/relaxed text-muted-foreground">
                 {formatMemberCount(members.length)}
               </p>
             </m.div>
             <m.p
               variants={fadeUp}
-              className="max-w-3xl font-sans text-body-sm text-fg-secondary"
+              className="max-w-3xl text-xs/relaxed text-muted-foreground"
             >
               Papéis definem o acesso. Só administradores alteram.
             </m.p>
@@ -363,16 +401,16 @@ export function TeamRoleManager({
           {members.length === 0 ? (
             <m.div
               variants={fadeUp}
-              className="rounded-xl border border-border bg-surface px-6 py-10 text-center shadow-card"
+              className="rounded-xl border border-border bg-card px-6 py-10 text-center shadow-xs"
             >
-              <p className="font-sans text-body-sm text-fg-secondary">
+              <p className="text-xs/relaxed text-muted-foreground">
                 Nenhum usuário encontrado.
               </p>
             </m.div>
           ) : (
             <m.ul
               variants={panelFade}
-              className="divide-y divide-border-subtle overflow-hidden rounded-xl border border-border bg-surface shadow-card"
+              className="divide-y divide-border/70 overflow-hidden rounded-xl border border-border bg-card shadow-xs"
             >
               {members.map((member, index) => (
                 <TeamMemberRoleRow

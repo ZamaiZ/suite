@@ -23,8 +23,7 @@ type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 export const GRID_SCAN_SELECT =
   "id, lead_id, profile_id, keyword, center_lat, center_lng, size, radius_km, zoom, source, mode, status, processed, total, points, cost_usd, task_ids, error_message, started_at, captured_at"
 
-const GBP_SELECT =
-  `id, lead_id, place_id, is_primary, sort_order, google_maps_uri, fetched_at, fetched_by, payload, matched_website_key, notes, reputation_note, cid, rank_keywords, lead_gbp_jobs(kind, status, error_message), lead_gbp_rank_checks(keyword, maps_position, in_top3, competitors, check_url, checked_at), lead_gbp_snapshots(id, profile_id, captured_at, payload, enrichment, reviews, posts, qna), lead_gbp_grid_scans(${GRID_SCAN_SELECT})`
+const GBP_SELECT = `id, lead_id, place_id, is_primary, sort_order, google_maps_uri, fetched_at, fetched_by, payload, matched_website_key, notes, reputation_note, cid, rank_keywords, lead_gbp_jobs(kind, status, error_message), lead_gbp_rank_checks(keyword, maps_position, in_top3, competitors, check_url, checked_at), lead_gbp_snapshots(id, profile_id, captured_at, payload, enrichment, reviews, posts, qna), lead_gbp_grid_scans(${GRID_SCAN_SELECT})`
 
 export type GbpLeadContext = {
   id: string
@@ -38,7 +37,9 @@ export type GbpLeadContext = {
   segment: LeadSegment | null
 }
 
-export function rowToGbpProfile(row: Record<string, unknown>): LeadGbpProfile | null {
+export function rowToGbpProfile(
+  row: Record<string, unknown>,
+): LeadGbpProfile | null {
   return readLeadGbpProfileRow(row)
 }
 
@@ -67,7 +68,10 @@ export async function loadGbpLeadContext(
     assigned_sdr_id: data.assigned_sdr_id,
     assigned_closer_id: data.assigned_closer_id,
     websiteKeys: websiteKeysFromChannels(channels),
-    city: typeof data.city === "string" && data.city.trim().length > 0 ? data.city : null,
+    city:
+      typeof data.city === "string" && data.city.trim().length > 0
+        ? data.city
+        : null,
     state_code: stateCode,
     segment: readLeadSegment(data),
   }
@@ -170,7 +174,11 @@ export async function findGbpPlaceConflict(
     .eq("place_id", placeId)
     .maybeSingle()
   if (error) return { status: "error" }
-  if (!data || typeof data.lead_id !== "string" || typeof data.id !== "string") {
+  if (
+    !data ||
+    typeof data.lead_id !== "string" ||
+    typeof data.id !== "string"
+  ) {
     return { status: "free" }
   }
   return { status: "taken", leadId: data.lead_id, profileId: data.id }
@@ -228,7 +236,8 @@ export async function loadQueuedGbpJobs(
 
   if (error) return { status: "error" }
   const jobs = (data ?? []).flatMap((row) => {
-    const kind = row.kind === "reviews" || row.kind === "updates" ? row.kind : null
+    const kind =
+      row.kind === "reviews" || row.kind === "updates" ? row.kind : null
     const dfs_task_id =
       typeof row.dfs_task_id === "string" && row.dfs_task_id.trim().length > 0
         ? row.dfs_task_id.trim()

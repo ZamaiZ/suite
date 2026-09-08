@@ -1,11 +1,20 @@
-import type { ClientKickoffStage, ClientRecord, ClientStage } from "@/lib/clients/types"
+import type {
+  ClientKickoffStage,
+  ClientRecord,
+  ClientStage,
+} from "@/lib/clients/types"
 
 function isClientStage(value: unknown): value is ClientStage {
   return value === "initial"
 }
 
 function isClientKickoffStage(value: unknown): value is ClientKickoffStage {
-  return value === "none" || value === "scheduled" || value === "no_show" || value === "completed"
+  return (
+    value === "none" ||
+    value === "scheduled" ||
+    value === "no_show" ||
+    value === "completed"
+  )
 }
 
 function asInteger(value: unknown): number | null {
@@ -34,11 +43,13 @@ export function parseClientRow(value: unknown): ClientRecord | null {
     company_name: row.company_name,
     closer_id: typeof row.closer_id === "string" ? row.closer_id : null,
     converted_at: row.converted_at,
-    baseline_at:
-      typeof row.baseline_at === "string" ? row.baseline_at : null,
+    baseline_at: typeof row.baseline_at === "string" ? row.baseline_at : null,
     stage: row.stage,
     kickoff_stage: row.kickoff_stage,
-    kickoff_meeting_at: typeof row.kickoff_meeting_at === "string" ? row.kickoff_meeting_at : null,
+    kickoff_meeting_at:
+      typeof row.kickoff_meeting_at === "string"
+        ? row.kickoff_meeting_at
+        : null,
     portal_slug: typeof row.portal_slug === "string" ? row.portal_slug : null,
     portal_code_hash:
       typeof row.portal_code_hash === "string" ? row.portal_code_hash : null,

@@ -23,10 +23,7 @@ export type LeadGbpPanelProps = {
     leadId: string,
     audit: LeadVisibilityAudit | null,
   ) => void
-  onBacklinksChange: (
-    leadId: string,
-    audit: LeadBacklinkAudit | null,
-  ) => void
+  onBacklinksChange: (leadId: string, audit: LeadBacklinkAudit | null) => void
   onDiagnosisDraftChange: (
     leadId: string,
     draft: LeadDiagnosisDraft | null,

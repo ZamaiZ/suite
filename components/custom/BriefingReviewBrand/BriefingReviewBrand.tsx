@@ -22,9 +22,18 @@ export function BriefingReviewBrand({ payload }: BriefingReviewBrandProps) {
   return (
     <div className="flex flex-col gap-3">
       <BriefingReviewSection title="Marca">
-        <BriefingReviewField label="Processo de vendas" value={payload.salesProcess} />
-        <BriefingReviewField label="História da empresa" value={payload.companyStory} />
-        <BriefingReviewField label="Como atraem clientes" value={payload.customerAttraction} />
+        <BriefingReviewField
+          label="Processo de vendas"
+          value={payload.salesProcess}
+        />
+        <BriefingReviewField
+          label="História da empresa"
+          value={payload.companyStory}
+        />
+        <BriefingReviewField
+          label="Como atraem clientes"
+          value={payload.customerAttraction}
+        />
         <BriefingReviewField label="Desafios" value={payload.challenges} />
       </BriefingReviewSection>
       <BriefingReviewSection title="Produtos e serviços">

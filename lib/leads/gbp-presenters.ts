@@ -43,9 +43,7 @@ export function summarizeOpeningHours(lines: string[]): OpeningHoursSummary {
   }
 }
 
-export function gbpAuditStatus(
-  profile: LeadGbpProfile | null,
-): GbpAuditStatus {
+export function gbpAuditStatus(profile: LeadGbpProfile | null): GbpAuditStatus {
   if (!profile) return "pending"
   if (profile.jobs.some((job) => job.status === "queued")) return "processing"
   if (profile.jobs.some((job) => job.status === "failed")) return "error"

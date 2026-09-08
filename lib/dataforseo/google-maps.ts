@@ -2,16 +2,12 @@ import "server-only"
 
 import { postDataForSeo } from "@/lib/dataforseo/client"
 import { GBP_MAPS_ZOOM, googleMapsTask } from "@/lib/dataforseo/maps-task"
-import {
-  mapDataForSeoMapsRank,
-  type GbpRankCheck,
-} from "@/lib/leads/gbp-audit"
+import { mapDataForSeoMapsRank, type GbpRankCheck } from "@/lib/leads/gbp-audit"
 
 type MapsLiveResult = Record<string, unknown>
 
 export type FetchGoogleMapsRankResult =
-  | { status: "ok"; check: GbpRankCheck }
-  | { status: "error"; message: string }
+  { status: "ok"; check: GbpRankCheck } | { status: "error"; message: string }
 
 export async function fetchGoogleMapsRank(input: {
   keyword: string

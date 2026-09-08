@@ -31,17 +31,15 @@ export const PERSONA_INCOME_RANGE_IDS = [
 
 export type PersonaIncomeRangeId = (typeof PERSONA_INCOME_RANGE_IDS)[number]
 
-export const PERSONA_INCOME_RANGE_LABELS: Record<
-  PersonaIncomeRangeId,
-  string
-> = {
-  up_to_2000: "Até R$ 2.000",
-  "2001_5000": "R$ 2.001 – R$ 5.000",
-  "5001_10000": "R$ 5.001 – R$ 10.000",
-  "10001_20000": "R$ 10.001 – R$ 20.000",
-  "20001_50000": "R$ 20.001 – R$ 50.000",
-  above_50000: "Acima de R$ 50.000",
-}
+export const PERSONA_INCOME_RANGE_LABELS: Record<PersonaIncomeRangeId, string> =
+  {
+    up_to_2000: "Até R$ 2.000",
+    "2001_5000": "R$ 2.001 – R$ 5.000",
+    "5001_10000": "R$ 5.001 – R$ 10.000",
+    "10001_20000": "R$ 10.001 – R$ 20.000",
+    "20001_50000": "R$ 20.001 – R$ 50.000",
+    above_50000: "Acima de R$ 50.000",
+  }
 
 export const PERSONA_SEX_IDS = ["male", "female", "both", "any"] as const
 export type PersonaSexId = (typeof PERSONA_SEX_IDS)[number]
@@ -181,11 +179,15 @@ export function parseAudiencePayload(value: unknown): BriefingAudiencePayload {
 
   const personaAgeRanges = asStringList(row.personaAgeRanges)
     .filter(isPersonaAgeRangeId)
-    .filter((id, index, list) => list.findIndex((item) => item === id) === index)
+    .filter(
+      (id, index, list) => list.findIndex((item) => item === id) === index,
+    )
 
   const personaIncomeRanges = asStringList(row.personaIncomeRanges)
     .filter(isPersonaIncomeRangeId)
-    .filter((id, index, list) => list.findIndex((item) => item === id) === index)
+    .filter(
+      (id, index, list) => list.findIndex((item) => item === id) === index,
+    )
 
   const legacyIncomeCents = asFiniteNumber(row.personaIncomeCents)
   const resolvedIncomeRanges =
@@ -213,9 +215,7 @@ export function parseAudiencePayload(value: unknown): BriefingAudiencePayload {
     personaTraits: asString(row.personaTraits),
     voiceTone: asString(row.voiceTone),
     serviceRadiusNotApplicable: row.serviceRadiusNotApplicable === true,
-    serviceRadiusKm: clampServiceRadiusKm(
-      radius ?? SERVICE_RADIUS_KM_DEFAULT,
-    ),
+    serviceRadiusKm: clampServiceRadiusKm(radius ?? SERVICE_RADIUS_KM_DEFAULT),
     mapLatitude: latitude,
     mapLongitude: longitude,
     mapAddressKey: asString(row.mapAddressKey),
@@ -312,9 +312,7 @@ export function getAudienceMissingGroups(
   ) {
     missing.push("personaProfile")
   }
-  if (
-    payload.personaIncomeRanges.length === 0
-  ) {
+  if (payload.personaIncomeRanges.length === 0) {
     missing.push("personaIncome")
   }
   if (payload.personaPains.length === 0) missing.push("personaPains")

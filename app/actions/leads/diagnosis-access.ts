@@ -1,6 +1,10 @@
 import "server-only"
 
-import { denyGbpEdit, loadGbpLeadContext, type GbpLeadContext } from "./gbp-access"
+import {
+  denyGbpEdit,
+  loadGbpLeadContext,
+  type GbpLeadContext,
+} from "./gbp-access"
 import {
   readLeadDiagnosisDraftRow,
   readLeadDiagnosisExportRow,
@@ -22,10 +26,7 @@ export const DIAGNOSIS_EXPORT_SELECT =
 
 export const LEADS_STORAGE_BUCKET = "leads"
 
-export function diagnosisStoragePath(
-  leadId: string,
-  fileName: string,
-): string {
+export function diagnosisStoragePath(leadId: string, fileName: string): string {
   return `${leadId}/${fileName}`
 }
 
@@ -94,9 +95,7 @@ export async function loadCurrentDiagnosisExport(
 
   if (error) return "error"
   if (!data) return null
-  return (
-    readLeadDiagnosisExportRow(data as Record<string, unknown>) ?? "error"
-  )
+  return readLeadDiagnosisExportRow(data as Record<string, unknown>) ?? "error"
 }
 
 export function denyDiagnosisEdit(

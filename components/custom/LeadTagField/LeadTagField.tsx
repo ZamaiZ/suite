@@ -3,8 +3,16 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { RiAddLine, RiCloseLine } from "react-icons/ri"
 import { listLeadTags } from "@/app/actions/leads"
-import { cn } from "@/lib/cn"
-import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList, ComboboxRootLabel } from "@/components/ui/combobox"
+import { cn } from "cn"
+import {
+  Combobox,
+  ComboboxChipsInput,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
   normalizeTagName,
   parseTagNames,
@@ -70,18 +78,22 @@ export function LeadTagField({
   const trimmedQuery = query.trim()
   const querySlug = tagSlug(trimmedQuery)
   const normalizedQuery = normalizeTagName(trimmedQuery)
-  const queryMatchesSelected = Boolean(querySlug && selectedSlugs.has(querySlug))
+  const queryMatchesSelected = Boolean(
+    querySlug && selectedSlugs.has(querySlug),
+  )
   const catalogMatch = catalog.find((tag) => tagSlug(tag.name) === querySlug)
   const canCreate = Boolean(
     normalizedQuery &&
-      querySlug &&
-      !queryMatchesSelected &&
-      !catalogMatch &&
-      !atLimit,
+    querySlug &&
+    !queryMatchesSelected &&
+    !catalogMatch &&
+    !atLimit,
   )
 
   const suggestionItems = useMemo<TagOption[]>(() => {
-    const unused = catalog.filter((tag) => !selectedSlugs.has(tagSlug(tag.name)))
+    const unused = catalog.filter(
+      (tag) => !selectedSlugs.has(tagSlug(tag.name)),
+    )
     const filtered = trimmedQuery
       ? unused.filter((tag) => {
           const name = tag.name.toLocaleLowerCase("pt-BR")
@@ -161,7 +173,7 @@ export function LeadTagField({
   }
 
   return (
-    <div className="flex w-full flex-col gap-1.5">
+    <Field data-invalid={Boolean(error)}>
       <Combobox
         items={suggestionItems}
         multiple
@@ -183,18 +195,9 @@ export function LeadTagField({
         onInputValueChange={setQuery}
       >
         {label ? (
-          <ComboboxRootLabel
-            className={cn(
-              "font-sans text-body-sm font-medium text-fg-secondary",
-              disabled ? "opacity-50" : "cursor-text",
-              error && "text-danger",
-            )}
-            onClick={() => {
-              if (!disabled) inputRef.current?.focus()
-            }}
-          >
+          <FieldLabel htmlFor={id} className={cn(error && "text-destructive")}>
             {label}
-          </ComboboxRootLabel>
+          </FieldLabel>
         ) : null}
 
         <div
@@ -203,18 +206,17 @@ export function LeadTagField({
             if (!disabled) inputRef.current?.focus()
           }}
           className={cn(
-            "flex w-full flex-wrap items-center gap-1.5 rounded-md border border-input-border bg-input px-2 py-1.5",
-            "min-h-[var(--control-height)]",
-            "transition-[background-color,border-color,color,opacity] duration-150 ease-out",
-            "focus-within:border-accent",
+            "flex min-h-7 w-full flex-wrap items-center gap-1 rounded-md border border-input bg-background bg-clip-padding px-1.5 py-0.5 text-xs/relaxed shadow-xs transition-colors",
+            "focus-within:border-ring focus-within:ring-2 focus-within:ring-ring/30",
             disabled && "pointer-events-none opacity-50",
-            error && "border-danger focus-within:border-danger",
+            error &&
+              "border-destructive ring-2 ring-destructive/20 focus-within:border-destructive focus-within:ring-destructive/20",
           )}
         >
           {selectedItems.map((item) => (
             <span
               key={item.value}
-              className="inline-flex max-w-full items-center gap-1 rounded-md bg-hover py-0.5 pr-1 pl-1.5 font-sans text-caption text-fg"
+              className="inline-flex h-[calc(--spacing(4.75))] max-w-full items-center gap-1 rounded-[calc(var(--radius-sm)-2px)] bg-muted-foreground/10 pr-0 pl-1.5 text-xs/relaxed font-medium whitespace-nowrap text-foreground"
             >
               <span className="truncate">{item.label}</span>
               <button
@@ -225,13 +227,13 @@ export function LeadTagField({
                   event.stopPropagation()
                   removeName(item.label)
                 }}
-                className="inline-flex size-4 shrink-0 items-center justify-center rounded text-fg-muted hover:text-fg"
+                className="inline-flex size-4 shrink-0 items-center justify-center rounded-sm opacity-50 transition-opacity hover:opacity-100"
               >
-                <RiCloseLine size={12} aria-hidden />
+                <RiCloseLine size={10} aria-hidden />
               </button>
             </span>
           ))}
-          <ComboboxInput
+          <ComboboxChipsInput
             ref={inputRef}
             id={id}
             disabled={disabled || atLimit}
@@ -243,54 +245,36 @@ export function LeadTagField({
             }}
             onBlur={onBlur}
             onKeyDown={handleKeyDown}
-            className={cn(
-              "min-w-[7rem] flex-1 bg-transparent py-0.5 font-sans text-body-sm text-fg outline-none",
-              "placeholder:text-fg-muted",
-            )}
-            showTrigger={false}
+            className="min-w-[7rem] flex-1 bg-transparent placeholder:text-muted-foreground"
           />
         </div>
 
         <ComboboxContent anchor={fieldRef}>
-              <div className="max-h-[min(16rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-                <ComboboxEmpty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
-                  {atLimit ? "Limite de 8 tags." : "Nenhuma tag"}
-                </ComboboxEmpty>
-                <ComboboxList>
-                  {(item: TagOption) => (
-                    <ComboboxItem
-                      key={item.value}
-                      value={item}
-                      className={cn(
-                        "flex min-h-9 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5",
-                        "font-sans text-body-sm text-fg outline-none select-none",
-                        "data-highlighted:bg-hover",
-                      )}
-                    >
-                      {item.create ? (
-                        <>
-                          <RiAddLine
-                            size={14}
-                            aria-hidden
-                            className="shrink-0 text-accent"
-                          />
-                          <span>Criar «{item.label}»</span>
-                        </>
-                      ) : (
-                        <span className="truncate">{item.label}</span>
-                      )}
-                    </ComboboxItem>
-                  )}
-                </ComboboxList>
-              </div>
+          <ComboboxEmpty>
+            {atLimit ? "Limite de 8 tags." : "Nenhuma tag"}
+          </ComboboxEmpty>
+          <ComboboxList>
+            {(item: TagOption) => (
+              <ComboboxItem
+                key={item.value}
+                value={item}
+                className="cursor-pointer"
+              >
+                {item.create ? (
+                  <>
+                    <RiAddLine aria-hidden className="shrink-0 text-primary" />
+                    <span>Criar «{item.label}»</span>
+                  </>
+                ) : (
+                  <span className="truncate">{item.label}</span>
+                )}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
         </ComboboxContent>
       </Combobox>
 
-      {error ? (
-        <p id={errorId} role="alert" className="font-sans text-body-sm text-danger">
-          {error}
-        </p>
-      ) : null}
-    </div>
+      <FieldError id={errorId}>{error}</FieldError>
+    </Field>
   )
 }

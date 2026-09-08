@@ -206,30 +206,30 @@ export async function getLeadDetail(
   if (gbpError) {
     return {
       status: "error",
-      message: "Não foi possível carregar os perfis do Google. Tente novamente.",
+      message:
+        "Não foi possível carregar os perfis do Google. Tente novamente.",
     }
   }
 
   if (websiteError) {
     return {
       status: "error",
-      message: "Não foi possível carregar a auditoria do site. Tente novamente.",
+      message:
+        "Não foi possível carregar a auditoria do site. Tente novamente.",
     }
   }
 
   if (digitalPresenceError) {
     return {
       status: "error",
-      message:
-        "Não foi possível carregar a presença digital. Tente novamente.",
+      message: "Não foi possível carregar a presença digital. Tente novamente.",
     }
   }
 
   if (visibilityError) {
     return {
       status: "error",
-      message:
-        "Não foi possível carregar a visibilidade. Tente novamente.",
+      message: "Não foi possível carregar a visibilidade. Tente novamente.",
     }
   }
 
@@ -243,8 +243,7 @@ export async function getLeadDetail(
   if (diagnosisDraftError || diagnosisExportError) {
     return {
       status: "error",
-      message:
-        "Não foi possível carregar o diagnóstico. Tente novamente.",
+      message: "Não foi possível carregar o diagnóstico. Tente novamente.",
     }
   }
 
@@ -354,9 +353,8 @@ export async function getLeadDetail(
           ) ?? null)
         : null,
       backlinkAudit: backlinkRow
-        ? (readLeadBacklinkAuditRow(
-            backlinkRow as Record<string, unknown>,
-          ) ?? null)
+        ? (readLeadBacklinkAuditRow(backlinkRow as Record<string, unknown>) ??
+          null)
         : null,
       diagnosisDraft: diagnosisDraftRow
         ? (readLeadDiagnosisDraftRow(
@@ -390,11 +388,7 @@ export async function getLeadDetail(
       })),
       ...flags,
       canEditGbp: canEditLeadGbp(record, user.id, roles),
-      canRescheduleClosing: canRescheduleClosing(
-        closingActor,
-        user.id,
-        roles,
-      ),
+      canRescheduleClosing: canRescheduleClosing(closingActor, user.id, roles),
       canRecordClosingOutcome: canRecordClosingOutcome(
         closingActor,
         user.id,

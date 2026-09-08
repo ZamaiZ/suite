@@ -1,9 +1,6 @@
 "use server"
 
-import {
-  emptyBrandPayload,
-  isBrandReadyToComplete,
-} from "@/lib/briefing/brand"
+import { emptyBrandPayload, isBrandReadyToComplete } from "@/lib/briefing/brand"
 import { BRIEFING_STEP_BRAND } from "@/lib/briefing/steps"
 import { touchBriefingContentUpdatedAt } from "@/lib/briefing/touch-content"
 import {
@@ -72,7 +69,9 @@ export async function saveBriefingBrand(
       status: "success",
       updatedAt: now,
       completedAt:
-        typeof existing.completed_at === "string" ? existing.completed_at : null,
+        typeof existing.completed_at === "string"
+          ? existing.completed_at
+          : null,
     }
   }
 

@@ -5,11 +5,7 @@ import { ClientBriefingWorkspace } from "@/components/custom/ClientBriefingWorks
 import type { BriefingWorkspacePhase } from "@/components/custom/ClientBriefingWorkspace"
 import { ClientPortalShell } from "@/components/custom/ClientPortalShell"
 
-export function ClientPortalBriefing({
-  companyName,
-}: {
-  companyName: string
-}) {
+export function ClientPortalBriefing({ companyName }: { companyName: string }) {
   const [phase, setPhase] = useState<BriefingWorkspacePhase>("wizard")
 
   const onPhaseChange = useCallback((next: BriefingWorkspacePhase) => {

@@ -1,9 +1,5 @@
 import type { GbpEnrichment } from "./gbp-enrichment.ts"
-import type {
-  GbpPost,
-  GbpQna,
-  GbpReviewSummary,
-} from "./gbp-audit.ts"
+import type { GbpPost, GbpQna, GbpReviewSummary } from "./gbp-audit.ts"
 
 /**
  * Snapshot append-only do perfil do Google.

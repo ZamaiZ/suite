@@ -36,8 +36,7 @@ export const DIGITAL_PRESENCE_IDENTITY_VERDICT_LABEL: Record<
 export const DIGITAL_PRESENCE_IDENTITY = {
   label: "Identidade visual",
   title: "Alinhar a identidade visual nas redes",
-  placeholder:
-    "Logo, foto e cores das redes estão consistentes com a marca?",
+  placeholder: "Logo, foto e cores das redes estão consistentes com a marca?",
   impact: "high" as const,
 }
 
@@ -107,9 +106,7 @@ function readLastPostedOn(value: unknown): string | null {
   return trimmed
 }
 
-function readNetwork(
-  value: unknown,
-): DigitalPresenceNetworkAnswer | null {
+function readNetwork(value: unknown): DigitalPresenceNetworkAnswer | null {
   const row = objectRecord(value)
   if (!row) return null
   const unavailable = row.unavailable === true

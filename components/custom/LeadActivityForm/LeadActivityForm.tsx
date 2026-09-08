@@ -7,7 +7,11 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { z } from "zod"
 import { RiEditBoxLine, RiLoader4Line, RiSendPlaneLine } from "react-icons/ri"
-import { logLeadActivity, listClosers, type CloserOption } from "@/app/actions/leads"
+import {
+  logLeadActivity,
+  listClosers,
+  type CloserOption,
+} from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,11 +22,11 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "@/components/ui/combobox"
-import { DateTimePicker } from "@/components/ui/DateTimePicker"
+import { DateTimePicker } from "@/components/custom/DateTimePicker"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   datetimeLocalToCivilDate,
   datetimeLocalToCivilTime,
@@ -70,7 +74,9 @@ function FieldReveal({
         <m.div
           key={id}
           initial={reduced ? { opacity: 0 } : { opacity: 0, height: 0, y: 4 }}
-          animate={reduced ? { opacity: 1 } : { opacity: 1, height: "auto", y: 0 }}
+          animate={
+            reduced ? { opacity: 1 } : { opacity: 1, height: "auto", y: 0 }
+          }
           exit={
             reduced
               ? { opacity: 0, transition: { duration: 0.12 } }
@@ -91,18 +97,21 @@ function FieldReveal({
   )
 }
 
-const TYPE_CHIP: Record<LeadSdrActivityType, { selected: string; dot: string }> = {
+const TYPE_CHIP: Record<
+  LeadSdrActivityType,
+  { selected: string; dot: string }
+> = {
   no_contact: {
-    selected: "border-accent bg-accent/10 text-accent",
-    dot: "bg-accent",
+    selected: "border-primary bg-primary/10 text-primary",
+    dot: "bg-primary",
   },
   call_later: {
     selected: "border-warning bg-warning/10 text-warning",
     dot: "bg-warning",
   },
   denied: {
-    selected: "border-danger bg-danger/10 text-danger",
-    dot: "bg-danger",
+    selected: "border-destructive bg-destructive/10 text-destructive",
+    dot: "bg-destructive",
   },
   interested: {
     selected: "border-success bg-success/10 text-success",
@@ -237,14 +246,14 @@ export function LeadActivityForm({
     <form
       onSubmit={form.handleSubmit(onSubmit)}
       noValidate
-      className="rounded-xl bg-surface p-4 shadow-card"
+      className="rounded-xl bg-card p-4 shadow-xs"
     >
-      <h3 className="mb-3 flex items-center gap-2 font-sans text-body-sm font-semibold text-fg">
-        <RiEditBoxLine size={16} aria-hidden className="text-accent" />
+      <h3 className="mb-3 flex items-center gap-2 text-xs/relaxed font-semibold text-foreground">
+        <RiEditBoxLine size={16} aria-hidden className="text-primary" />
         Registrar atividade
       </h3>
 
-      <p className="mb-1.5 font-sans text-caption text-fg-secondary">
+      <p className="mb-1.5 text-xs/relaxed text-muted-foreground">
         Status da atividade
       </p>
       <div
@@ -264,11 +273,11 @@ export function LeadActivityForm({
               onClick={() => form.setValue("type", item, { shouldDirty: true })}
               className={cn(
                 "inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-md border px-2",
-                "font-sans text-caption transition-[colors,transform] duration-150 ease-out",
+                "text-xs/relaxed transition-[colors,transform] duration-150 ease-out",
                 "active:scale-[0.97]",
                 selected
                   ? TYPE_CHIP[item].selected
-                  : "border-transparent text-fg-muted hover:text-fg",
+                  : "border-transparent text-muted-foreground hover:text-foreground",
                 "disabled:pointer-events-none disabled:opacity-50",
               )}
             >
@@ -282,7 +291,7 @@ export function LeadActivityForm({
         })}
       </div>
 
-      <p className="mb-1.5 font-sans text-caption text-fg-secondary">
+      <p className="mb-1.5 text-xs/relaxed text-muted-foreground">
         Canal de contato
       </p>
       <div className="mb-3">
@@ -315,7 +324,9 @@ export function LeadActivityForm({
             const errorId = "lead-denied-reason-error"
             return (
               <Field className="mb-3" data-invalid={!!fieldState.error}>
-                <FieldLabel htmlFor="lead-denied-reason">Motivo da negativa</FieldLabel>
+                <FieldLabel htmlFor="lead-denied-reason">
+                  Motivo da negativa
+                </FieldLabel>
                 <Input
                   id="lead-denied-reason"
                   value={field.value}
@@ -325,7 +336,9 @@ export function LeadActivityForm({
                   aria-invalid={!!fieldState.error}
                   aria-describedby={fieldState.error ? errorId : undefined}
                 />
-                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                <FieldError id={errorId}>
+                  {fieldState.error?.message}
+                </FieldError>
               </Field>
             )
           }}
@@ -338,7 +351,8 @@ export function LeadActivityForm({
             name="closer_id"
             control={form.control}
             render={({ field, fieldState }) => {
-              const selectedCloser = closers.find((closer) => closer.id === field.value) ?? null
+              const selectedCloser =
+                closers.find((closer) => closer.id === field.value) ?? null
               const errorId = "lead-activity-closer-error"
               return (
                 <Field data-invalid={!!fieldState.error}>
@@ -351,12 +365,18 @@ export function LeadActivityForm({
                       field.onChange(closer?.id ?? "")
                     }}
                     itemToStringLabel={(closer) => closer.name}
-                    isItemEqualToValue={(closer, selected) => closer.id === selected.id}
+                    isItemEqualToValue={(closer, selected) =>
+                      closer.id === selected.id
+                    }
                     disabled={isPending || closersLoading}
                   >
                     <ComboboxInput
                       id="lead-activity-closer"
-                      placeholder={closersLoading ? "Carregando closers..." : "Selecione o closer"}
+                      placeholder={
+                        closersLoading
+                          ? "Carregando closers..."
+                          : "Selecione o closer"
+                      }
                       showClear
                       onBlur={field.onBlur}
                       aria-invalid={!!fieldState.error}
@@ -374,7 +394,9 @@ export function LeadActivityForm({
                       </ComboboxList>
                     </ComboboxContent>
                   </Combobox>
-                  <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                  <FieldError id={errorId}>
+                    {fieldState.error?.message}
+                  </FieldError>
                 </Field>
               )
             }}
@@ -388,7 +410,9 @@ export function LeadActivityForm({
         render={({ field, fieldState }) => (
           <div className="mb-3">
             <Field data-invalid={!!fieldState.error}>
-              <FieldLabel htmlFor="lead-activity-note">O que aconteceu?</FieldLabel>
+              <FieldLabel htmlFor="lead-activity-note">
+                O que aconteceu?
+              </FieldLabel>
               <Textarea
                 id="lead-activity-note"
                 rows={3}
@@ -399,15 +423,19 @@ export function LeadActivityForm({
                 maxLength={2000}
                 placeholder="Descreva o que aconteceu neste contato..."
                 aria-invalid={!!fieldState.error}
-                aria-describedby={fieldState.error ? "lead-activity-note-error" : undefined}
+                aria-describedby={
+                  fieldState.error ? "lead-activity-note-error" : undefined
+                }
               />
-              <FieldError id="lead-activity-note-error">{fieldState.error?.message}</FieldError>
+              <FieldError id="lead-activity-note-error">
+                {fieldState.error?.message}
+              </FieldError>
             </Field>
-            <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+            <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
               {note.length}/2000
             </p>
             {fieldState.error?.message ? (
-              <p role="alert" className="mt-1 font-sans text-caption text-danger">
+              <p role="alert" className="mt-1 text-xs/relaxed text-destructive">
                 {fieldState.error.message}
               </p>
             ) : null}
@@ -452,7 +480,10 @@ export function LeadActivityForm({
                               : "Retorno (opcional)"
                         }
                         placeholder="Data e hora"
-                        value={joinDatetimeLocal(dateField.value, timeField.value)}
+                        value={joinDatetimeLocal(
+                          dateField.value,
+                          timeField.value,
+                        )}
                         onValueChange={(next) => {
                           dateField.onChange(datetimeLocalToCivilDate(next))
                           timeField.onChange(datetimeLocalToCivilTime(next))
@@ -474,13 +505,13 @@ export function LeadActivityForm({
             </m.div>
           ) : null}
         </AnimatePresence>
-        <Button
-          type="submit"
-          disabled={isPending}
-          className="ml-auto"
-        >
+        <Button type="submit" disabled={isPending} className="ml-auto">
           {isPending ? (
-            <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            <RiLoader4Line
+              data-icon="inline-start"
+              aria-hidden
+              className="animate-spin"
+            />
           ) : (
             <RiSendPlaneLine data-icon="inline-start" aria-hidden />
           )}
@@ -489,7 +520,7 @@ export function LeadActivityForm({
       </div>
 
       {message ? (
-        <p role="alert" className="mt-3 font-sans text-body-sm text-danger">
+        <p role="alert" className="mt-3 text-xs/relaxed text-destructive">
           {message.text}
         </p>
       ) : null}

@@ -16,7 +16,7 @@ import {
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { canonicalWebsiteUrl } from "@/lib/leads/website"
 import type { GbpGapId, LeadGbpProfile } from "@/lib/leads/gbp"
 import {
@@ -42,11 +42,11 @@ function FieldRow({
         className={warning ? "text-warning" : undefined}
       />
       <div className="min-w-0 flex-1">
-        <p className="font-sans text-caption text-fg-muted">{label}</p>
+        <p className="text-xs/relaxed text-muted-foreground">{label}</p>
         <div
           className={cn(
-            "mt-0.5 font-sans text-caption",
-            warning ? "text-warning" : "text-fg",
+            "mt-0.5 text-xs/relaxed",
+            warning ? "text-warning" : "text-foreground",
           )}
         >
           {children}
@@ -62,7 +62,7 @@ function ExternalValue({ href, label }: { href: string; label: string }) {
       href={href}
       target="_blank"
       rel="noreferrer"
-      className="inline-flex max-w-full items-center gap-1 text-link transition-colors hover:text-accent"
+      className="inline-flex max-w-full items-center gap-1 text-primary transition-colors hover:text-primary"
     >
       <span className="break-all">{label}</span>
       <RiExternalLinkLine size={12} aria-hidden className="shrink-0" />
@@ -107,7 +107,7 @@ export function LeadGbpInformationCard({
 
   return (
     <LeadGbpCard title="Informações do perfil">
-      <div className="divide-y divide-border-subtle">
+      <div className="divide-y divide-border/70">
         <FieldRow icon={RiBuilding4Line} label="Categoria principal">
           {category ?? "—"}
         </FieldRow>
@@ -129,7 +129,7 @@ export function LeadGbpInformationCard({
         </FieldRow>
         <FieldRow icon={RiPhoneLine} label="Telefone">
           {phoneLabel && phoneHref ? (
-            <a href={phoneHref} className="text-link hover:text-accent">
+            <a href={phoneHref} className="text-primary hover:text-primary">
               {phoneLabel}
             </a>
           ) : (
@@ -163,7 +163,7 @@ export function LeadGbpInformationCard({
                     type="button"
                     aria-expanded={hoursOpen}
                     onClick={() => setHoursOpen((open) => !open)}
-                    className="mt-1 cursor-pointer font-sans text-caption font-medium text-accent"
+                    className="mt-1 cursor-pointer text-xs/relaxed font-medium text-primary"
                   >
                     {hoursOpen ? "Ocultar detalhes" : "Ver detalhes"}
                   </button>
@@ -172,7 +172,7 @@ export function LeadGbpInformationCard({
                       {hours.details.map((line) => (
                         <li
                           key={line}
-                          className="font-sans text-caption text-fg-secondary"
+                          className="text-xs/relaxed text-muted-foreground"
                         >
                           {line}
                         </li>
@@ -202,7 +202,7 @@ export function LeadGbpInformationCard({
                 {description}
               </p>
               {thinDescription ? (
-                <p className="mt-1 inline-flex items-center gap-1 text-caption text-warning">
+                <p className="mt-1 inline-flex items-center gap-1 text-xs/relaxed text-warning">
                   Descrição curta
                   <RiAlertLine size={14} aria-hidden />
                 </p>
@@ -211,7 +211,7 @@ export function LeadGbpInformationCard({
                 <button
                   type="button"
                   onClick={() => setDescriptionOpen((open) => !open)}
-                  className="mt-1 cursor-pointer font-sans text-caption font-medium text-accent"
+                  className="mt-1 cursor-pointer text-xs/relaxed font-medium text-primary"
                 >
                   {descriptionOpen ? "Ver menos" : "Ver mais"}
                 </button>

@@ -21,7 +21,9 @@ export type DateTimeInput = Exclude<ConfigType, null | undefined>
 
 function assertValidInput(value: ConfigType): asserts value is DateTimeInput {
   if (value === null || value === undefined) {
-    throw new Error(`[date-time] received ${String(value)}. Use a valid date string, number, or Date.`)
+    throw new Error(
+      `[date-time] received ${String(value)}. Use a valid date string, number, or Date.`,
+    )
   }
   if (!dayjs(value).isValid()) {
     throw new Error(`[date-time] invalid date value: ${String(value)}`)
@@ -55,22 +57,30 @@ export function formatTimeShort(value: DateTimeInput): string {
 
 function parseCivilDate(value: string): dayjs.Dayjs {
   if (value === null || value === undefined) {
-    throw new Error(`[date-time] received ${String(value)}. Use a YYYY-MM-DD string.`)
+    throw new Error(
+      `[date-time] received ${String(value)}. Use a YYYY-MM-DD string.`,
+    )
   }
   const parsed = dayjs(value, "YYYY-MM-DD", true)
   if (!parsed.isValid()) {
-    throw new Error(`[date-time] invalid civil date: ${String(value)}. Expected YYYY-MM-DD.`)
+    throw new Error(
+      `[date-time] invalid civil date: ${String(value)}. Expected YYYY-MM-DD.`,
+    )
   }
   return parsed
 }
 
 function parseYearMonth(value: string): dayjs.Dayjs {
   if (typeof value !== "string" || !/^\d{4}-\d{2}$/.test(value)) {
-    throw new Error(`[date-time] invalid year-month: ${String(value)}. Expected YYYY-MM.`)
+    throw new Error(
+      `[date-time] invalid year-month: ${String(value)}. Expected YYYY-MM.`,
+    )
   }
   const parsed = dayjs(`${value}-01`, "YYYY-MM-DD", true)
   if (!parsed.isValid()) {
-    throw new Error(`[date-time] invalid year-month: ${String(value)}. Expected YYYY-MM.`)
+    throw new Error(
+      `[date-time] invalid year-month: ${String(value)}. Expected YYYY-MM.`,
+    )
   }
   return parsed
 }
@@ -110,7 +120,9 @@ export function isCivilTime(value: string): boolean {
 
 function parseCivilTime(value: string): { hour: number; minute: number } {
   if (!isCivilTime(value)) {
-    throw new Error(`[date-time] invalid civil time: ${String(value)}. Expected HH:mm.`)
+    throw new Error(
+      `[date-time] invalid civil time: ${String(value)}. Expected HH:mm.`,
+    )
   }
   return {
     hour: Number(value.slice(0, 2)),
@@ -118,7 +130,10 @@ function parseCivilTime(value: string): { hour: number; minute: number } {
   }
 }
 
-export function splitCivilTime(value: string): { hour: number; minute: number } {
+export function splitCivilTime(value: string): {
+  hour: number
+  minute: number
+} {
   return parseCivilTime(value)
 }
 
@@ -285,7 +300,10 @@ export function isDatetimeLocal(value: string): boolean {
   )
 }
 
-export function joinDatetimeLocal(civilDate: string, civilTime: string): string {
+export function joinDatetimeLocal(
+  civilDate: string,
+  civilTime: string,
+): string {
   if (!isCivilDate(civilDate) || !isCivilTime(civilTime)) return ""
   return `${civilDate}T${civilTime}`
 }
@@ -304,7 +322,10 @@ export function formatDatetimeLocal(
   return `${formatDateOnly(date)} · ${formatCivilTime(time, hourCycle)}`
 }
 
-export function setDatetimeLocalDate(current: string, civilDate: string): string {
+export function setDatetimeLocalDate(
+  current: string,
+  civilDate: string,
+): string {
   if (!civilDate) return ""
   if (!isCivilDate(civilDate)) return current
   const match = /T(\d{2}:\d{2})/.exec(current)
@@ -336,9 +357,7 @@ export function formatRelativeShort(value: DateTimeInput): string {
 export function formatStorageTimestamp(value?: DateTimeInput): string {
   const stamp = value === undefined ? dayjs.utc() : dayjs.utc(value)
   if (!stamp.isValid()) {
-    throw new Error(
-      `[date-time] invalid date value: ${String(value)}`,
-    )
+    throw new Error(`[date-time] invalid date value: ${String(value)}`)
   }
   return stamp.format("YYYYMMDD[T]HHmmss[Z]")
 }

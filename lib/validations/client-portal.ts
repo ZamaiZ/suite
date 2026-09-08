@@ -1,8 +1,5 @@
 import { z } from "zod"
-import {
-  isPortalCode,
-  normalizePortalCode,
-} from "@/lib/clients/portal-code"
+import { isPortalCode, normalizePortalCode } from "@/lib/clients/portal-code"
 
 export const portalCodeSchema = z
   .string()

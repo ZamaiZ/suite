@@ -7,7 +7,7 @@ import {
   RiLoader4Line,
   RiMore2Line,
 } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -30,13 +30,13 @@ function Metric({
 }) {
   return (
     <div className="min-w-12">
-      <p className="font-sans text-caption text-fg-muted">{label}</p>
+      <p className="text-xs/relaxed text-muted-foreground">{label}</p>
       <p
         className={cn(
-          "font-sans text-body-sm font-semibold tabular-nums",
+          "text-xs/relaxed font-semibold tabular-nums",
           tone === "success" && "text-success",
           tone === "warning" && "text-warning",
-          !tone && "text-fg",
+          !tone && "text-foreground",
         )}
       >
         {value}
@@ -60,17 +60,17 @@ export function LeadImportFileCard({
   const ready = entry.status === "ready"
   const summary = summarizeEvaluatedRows(entry.rows)
   const barTone = failed
-    ? "bg-danger"
+    ? "bg-destructive"
     : ready && summary.problems > 0
       ? "bg-warning"
       : ready
         ? "bg-success"
-        : "bg-accent"
+        : "bg-primary"
 
   return (
     <article
       className={cn(
-        "overflow-hidden rounded-lg border border-border bg-elevated",
+        "overflow-hidden rounded-lg border border-border bg-popover",
       )}
     >
       <div className="flex items-center gap-3 px-3 py-2.5">
@@ -79,9 +79,9 @@ export function LeadImportFileCard({
           className={cn(
             "inline-flex size-8 shrink-0 items-center justify-center rounded-md",
             failed
-              ? "bg-danger/10 text-danger"
+              ? "bg-destructive/10 text-destructive"
               : analyzing || queued
-                ? "bg-hover text-accent"
+                ? "bg-accent text-primary"
                 : "bg-success/10 text-success",
           )}
         >
@@ -92,33 +92,35 @@ export function LeadImportFileCard({
           )}
         </span>
         <div className="min-w-0 flex-1">
-          <p className="truncate font-sans text-body-sm font-semibold text-fg">
+          <p className="truncate text-xs/relaxed font-semibold text-foreground">
             {entry.name}
           </p>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Enviado {formatDateTimeShort(entry.uploadedAt)}
           </p>
         </div>
         {queued ? (
-          <p className="min-w-32 font-sans text-caption font-medium text-fg-muted">
+          <p className="min-w-32 text-xs/relaxed font-medium text-muted-foreground">
             Na fila
           </p>
         ) : null}
         {analyzing ? (
           <div className="min-w-40 max-w-56 flex-1">
-            <p className="font-sans text-caption font-medium text-fg">
+            <p className="text-xs/relaxed font-medium text-foreground">
               Analisando… {entry.stageLabel}
             </p>
-            <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-hover">
+            <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-accent">
               <div
-                className="h-full origin-left rounded-full bg-accent transition-transform duration-200 ease-linear motion-reduce:transition-none"
-                style={{ transform: `scaleX(${Math.max(entry.progress, 4) / 100})` }}
+                className="h-full origin-left rounded-full bg-primary transition-transform duration-200 ease-linear motion-reduce:transition-none"
+                style={{
+                  transform: `scaleX(${Math.max(entry.progress, 4) / 100})`,
+                }}
               />
             </div>
           </div>
         ) : null}
         {failed ? (
-          <p className="max-w-56 font-sans text-caption text-danger">
+          <p className="max-w-56 text-xs/relaxed text-destructive">
             {entry.failureMessage}
           </p>
         ) : null}
@@ -133,8 +135,8 @@ export function LeadImportFileCard({
             />
             <span
               className={cn(
-                "inline-flex items-center gap-1.5 rounded-full bg-hover px-2 py-0.5",
-                "font-sans text-caption font-semibold",
+                "inline-flex items-center gap-1.5 rounded-full bg-accent px-2 py-0.5",
+                "text-xs/relaxed font-semibold",
                 summary.problems > 0 ? "text-warning" : "text-success",
               )}
             >
@@ -156,17 +158,14 @@ export function LeadImportFileCard({
             <RiMore2Line size={16} aria-hidden />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="min-w-40">
-                <DropdownMenuItem
-                  disabled={!ready}
-                  onClick={onEdit}
-                >
-                  <RiEditLine size={16} aria-hidden />
-                  Editar
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={onRemove} variant="destructive">
-                  <RiDeleteBinLine size={16} aria-hidden />
-                  Remover
-                </DropdownMenuItem>
+            <DropdownMenuItem disabled={!ready} onClick={onEdit}>
+              <RiEditLine size={16} aria-hidden />
+              Editar
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={onRemove} variant="destructive">
+              <RiDeleteBinLine size={16} aria-hidden />
+              Remover
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

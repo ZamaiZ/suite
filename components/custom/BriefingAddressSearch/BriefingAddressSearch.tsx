@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiSearchLine } from "react-icons/ri"
 import { suggestBriefingAddresses } from "@/app/actions/briefing"
 import { useBriefingWriterClientId } from "@/components/custom/BriefingWriter"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   Combobox,
   ComboboxContent,
@@ -116,76 +116,82 @@ export function BriefingAddressSearch({
         <label
           htmlFor={id}
           className={cn(
-            "font-sans text-body-sm font-medium text-fg-secondary",
+            "text-xs/relaxed font-medium text-muted-foreground",
             disabled ? "opacity-50" : "cursor-text",
-            shownError && "text-danger",
+            shownError && "text-destructive",
           )}
         >
           Rua ou estabelecimento
         </label>
         <ComboboxInput
-            id={id}
-            placeholder="Buscar endereço"
-            disabled={disabled}
-            aria-invalid={shownError ? true : undefined}
-            aria-describedby={shownError ? errorId : undefined}
-            aria-busy={loading || undefined}
-            showTrigger={false}
-            className={cn("h-[var(--control-height)]", shownError && "border-danger")}
-          >
+          id={id}
+          placeholder="Buscar endereço"
+          disabled={disabled}
+          aria-invalid={shownError ? true : undefined}
+          aria-describedby={shownError ? errorId : undefined}
+          aria-busy={loading || undefined}
+          showTrigger={false}
+          className={cn("h-7", shownError && "border-destructive")}
+        >
           <InputGroupAddon align="inline-start">
             <RiSearchLine size={16} aria-hidden />
           </InputGroupAddon>
           {loading ? (
-            <InputGroupAddon align="inline-end"><RiLoader4Line size={16} aria-hidden className="animate-spin" /></InputGroupAddon>
+            <InputGroupAddon align="inline-end">
+              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+            </InputGroupAddon>
           ) : null}
         </ComboboxInput>
 
         <ComboboxContent>
-              <div className="max-h-[min(22.5rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-                {loading ? (
-                  <div className="flex flex-col gap-1 p-1" aria-hidden>
-                    {[0, 1, 2].map((row) => (
-                      <div
-                        key={row}
-                        className="h-10 animate-pulse rounded-md bg-hover"
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <>
-                    <ComboboxEmpty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
-                      {canSearch
-                        ? "Nenhum endereço encontrado"
-                        : `Digite pelo menos ${PLACES_SUGGEST_MIN_CHARS} caracteres`}
-                    </ComboboxEmpty>
-                    <ComboboxList>
-                      {(item: PlaceSuggestion) => (
-                        <ComboboxItem
-                          key={item.placeId}
-                          value={item}
-                          className={cn(
-                            "flex min-h-10 cursor-pointer flex-col justify-center rounded-md px-2 py-1.5",
-                            "font-sans text-body-sm text-fg outline-none select-none",
-                            "data-highlighted:bg-hover",
-                          )}
-                        >
-                          <span className="truncate">{item.name}</span>
-                          {item.address ? (
-                            <span className="truncate font-sans text-caption text-fg-muted">
-                              {item.address}
-                            </span>
-                          ) : null}
-                        </ComboboxItem>
-                      )}
-                    </ComboboxList>
-                  </>
-                )}
+          <div className="max-h-[min(22.5rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
+            {loading ? (
+              <div className="flex flex-col gap-1 p-1" aria-hidden>
+                {[0, 1, 2].map((row) => (
+                  <div
+                    key={row}
+                    className="h-10 animate-pulse rounded-md bg-accent"
+                  />
+                ))}
               </div>
+            ) : (
+              <>
+                <ComboboxEmpty className="px-2 py-2.5 text-xs/relaxed text-muted-foreground">
+                  {canSearch
+                    ? "Nenhum endereço encontrado"
+                    : `Digite pelo menos ${PLACES_SUGGEST_MIN_CHARS} caracteres`}
+                </ComboboxEmpty>
+                <ComboboxList>
+                  {(item: PlaceSuggestion) => (
+                    <ComboboxItem
+                      key={item.placeId}
+                      value={item}
+                      className={cn(
+                        "flex min-h-10 cursor-pointer flex-col justify-center rounded-md px-2 py-1.5",
+                        "text-xs/relaxed text-foreground outline-none select-none",
+                        "data-highlighted:bg-accent",
+                      )}
+                    >
+                      <span className="truncate">{item.name}</span>
+                      {item.address ? (
+                        <span className="truncate text-xs/relaxed text-muted-foreground">
+                          {item.address}
+                        </span>
+                      ) : null}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </>
+            )}
+          </div>
         </ComboboxContent>
       </Combobox>
       {shownError ? (
-        <p id={errorId} role="alert" className="font-sans text-body-sm text-danger">
+        <p
+          id={errorId}
+          role="alert"
+          className="text-xs/relaxed text-destructive"
+        >
           {shownError}
         </p>
       ) : null}

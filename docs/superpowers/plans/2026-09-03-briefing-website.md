@@ -21,18 +21,18 @@ See [2026-09-03-briefing-website-design.md](../specs/2026-09-03-briefing-website
 
 ## File map
 
-| Path | Role |
-|------|------|
+| Path                                                           | Role                                                          |
+| -------------------------------------------------------------- | ------------------------------------------------------------- |
 | `supabase/migrations/20260910000000_briefing_step_website.sql` | Add `website` to step check + create `briefing-assets` bucket |
-| `lib/briefing/steps.ts` | Append `{ id: "website", label: "Website" }` |
-| `lib/briefing/website.ts` | Domain helpers |
-| `lib/validations/briefing-website.ts` | Zod |
-| `app/actions/briefing/load-briefing-website.ts` | Load |
-| `app/actions/briefing/save-briefing-website.ts` | Save + complete |
-| `app/actions/briefing/website-assets.ts` | Upload / remove / signed URL |
-| `components/custom/BriefingAssetUpload/` | Upload UI |
-| `components/custom/ClientBriefingWebsiteForm/` | Form |
-| `ClientBriefingWorkspace.tsx` | Wire step |
+| `lib/briefing/steps.ts`                                        | Append `{ id: "website", label: "Website" }`                  |
+| `lib/briefing/website.ts`                                      | Domain helpers                                                |
+| `lib/validations/briefing-website.ts`                          | Zod                                                           |
+| `app/actions/briefing/load-briefing-website.ts`                | Load                                                          |
+| `app/actions/briefing/save-briefing-website.ts`                | Save + complete                                               |
+| `app/actions/briefing/website-assets.ts`                       | Upload / remove / signed URL                                  |
+| `components/custom/BriefingAssetUpload/`                       | Upload UI                                                     |
+| `components/custom/ClientBriefingWebsiteForm/`                 | Form                                                          |
+| `ClientBriefingWorkspace.tsx`                                  | Wire step                                                     |
 
 ## Tasks
 

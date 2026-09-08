@@ -13,10 +13,7 @@ export function BriefingReviewHistory({ payload }: BriefingReviewHistoryProps) {
           label="Já investiu em marketing?"
           value={formatYesNo(payload.hasMarketingInvestment)}
         />
-        <BriefingReviewField
-          label="Canais"
-          value={payload.marketingChannels}
-        />
+        <BriefingReviewField label="Canais" value={payload.marketingChannels} />
         <BriefingReviewField
           label="Resultados"
           value={payload.marketingResults}

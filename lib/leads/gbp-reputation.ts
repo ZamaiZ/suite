@@ -142,8 +142,7 @@ function readSample(
           ? Math.round((newest - oldest) / DAY_MS)
           : null,
       repliedCount: reviews.replied,
-      replyRate:
-        reviews.sampled > 0 ? reviews.replied / reviews.sampled : null,
+      replyRate: reviews.sampled > 0 ? reviews.replied / reviews.sampled : null,
     },
   }
 }
@@ -204,11 +203,6 @@ export function gbpReputation(input: {
   )
   return {
     sample,
-    history: readHistory(
-      input.reviews,
-      input.distribution,
-      sample,
-      ratedSum,
-    ),
+    history: readHistory(input.reviews, input.distribution, sample, ratedSum),
   }
 }

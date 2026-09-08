@@ -1,4 +1,7 @@
 export { ShowcaseCategory } from "./ShowcaseCategory"
 export { ShowcaseOverview } from "./ShowcaseOverview"
-export { SHOWCASE_CATEGORIES, SHOWCASE_COMPONENT_TOTAL } from "./showcase-registry"
-export type { ShowcaseCategory, ShowcaseCategoryId } from "./Showcase.types"
+export {
+  SHOWCASE_CATEGORIES,
+  SHOWCASE_COMPONENT_TOTAL,
+} from "./showcase-registry"
+export type { ShowcaseCategoryId } from "./Showcase.types"

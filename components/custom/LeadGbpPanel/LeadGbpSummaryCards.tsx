@@ -26,14 +26,16 @@ function MetricCard({
   complement: string
 }) {
   return (
-    <div className="flex min-h-16 items-center gap-2 rounded-xl border border-border-subtle bg-surface px-3 py-2">
+    <div className="flex min-h-16 items-center gap-2 rounded-xl border border-border/70 bg-card px-3 py-2">
       <LeadIconWell icon={icon} />
       <div className="min-w-0">
-        <p className="font-sans text-caption text-fg-muted">{label}</p>
-        <p className="font-sans text-caption font-semibold text-fg">
+        <p className="text-xs/relaxed text-muted-foreground">{label}</p>
+        <p className="text-xs/relaxed font-semibold text-foreground">
           {value ?? "—"}
           {value ? (
-            <span className="ml-1 font-normal text-fg-muted">{complement}</span>
+            <span className="ml-1 font-normal text-muted-foreground">
+              {complement}
+            </span>
           ) : null}
         </p>
       </div>
@@ -70,7 +72,9 @@ export function LeadGbpSummaryCards({ profile }: { profile: LeadGbpProfile }) {
       <MetricCard
         icon={RiTrophyLine}
         label="Melhor posição"
-        value={position !== null ? `${position.toLocaleString("pt-BR")}º` : null}
+        value={
+          position !== null ? `${position.toLocaleString("pt-BR")}º` : null
+        }
         complement="no Maps"
       />
     </div>

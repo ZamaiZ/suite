@@ -59,7 +59,9 @@ function opportunityTitle(
     const channelId = id.slice("stale_social_posts:".length)
     const channel = channels.find((item) => item.id === channelId)
     const label = channel
-      ? DIGITAL_CHANNEL_LABELS[channel.type as keyof typeof DIGITAL_CHANNEL_LABELS]
+      ? DIGITAL_CHANNEL_LABELS[
+          channel.type as keyof typeof DIGITAL_CHANNEL_LABELS
+        ]
       : "rede"
     return `Retomar publicações no ${label}`
   }
@@ -101,9 +103,7 @@ export function digitalPresenceOpportunitiesFromReview(
       title: DIGITAL_PRESENCE_IDENTITY.title,
       impact: DIGITAL_PRESENCE_IDENTITY.impact,
       source: "analyst",
-      ...(review.identity.note.trim()
-        ? { detail: review.identity.note }
-        : {}),
+      ...(review.identity.note.trim() ? { detail: review.identity.note } : {}),
     },
   ]
 }

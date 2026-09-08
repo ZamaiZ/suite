@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatDateTimeShort, todayCivilDate } from "@/lib/date-time"
 import type { GbpReviewSummary } from "@/lib/leads/gbp-audit"
 import {
@@ -24,15 +24,11 @@ const BAR_TONE: Record<(typeof STARS)[number], string> = {
   "5": "bg-success",
   "4": "bg-warning",
   "3": "bg-warning/70",
-  "2": "bg-fg-muted/40",
-  "1": "bg-danger/80",
+  "2": "bg-muted-foreground/40",
+  "1": "bg-destructive/80",
 }
 
-function RatingBars({
-  distribution,
-}: {
-  distribution: GbpRatingDistribution
-}) {
+function RatingBars({ distribution }: { distribution: GbpRatingDistribution }) {
   const total = STARS.reduce((sum, star) => sum + distribution[star], 0)
   return (
     <ul className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -41,16 +37,18 @@ function RatingBars({
         const ratio = total > 0 ? count / total : 0
         return (
           <li key={star} className="flex items-center gap-2">
-            <span className="w-8 shrink-0 font-sans text-caption tabular-nums text-fg-muted">
+            <span className="w-8 shrink-0 text-xs/relaxed tabular-nums text-muted-foreground">
               {star}★
             </span>
-            <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-hover">
+            <span className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-accent">
               <span
                 className={cn("block h-full rounded-full", BAR_TONE[star])}
-                style={{ width: `${Math.max(ratio * 100, count > 0 ? 2 : 0)}%` }}
+                style={{
+                  width: `${Math.max(ratio * 100, count > 0 ? 2 : 0)}%`,
+                }}
               />
             </span>
-            <span className="w-8 shrink-0 text-right font-sans text-caption tabular-nums text-fg-muted">
+            <span className="w-8 shrink-0 text-right text-xs/relaxed tabular-nums text-muted-foreground">
               {count.toLocaleString("pt-BR")}
             </span>
           </li>
@@ -82,39 +80,37 @@ export function LeadGbpReviewsBlock({
     distribution,
     today: todayCivilDate(),
   })
-  const spanLabel = gbpReputationSpanLabel(
-    reputation?.sample.spanDays ?? null,
-  )
+  const spanLabel = gbpReputationSpanLabel(reputation?.sample.spanDays ?? null)
   const replyLabel = gbpReplyRateLabel(reputation?.sample.replyRate ?? null)
 
   return (
     <LeadGbpCard title="Reputação">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="shrink-0">
-          <p className="font-sans text-body-lg font-semibold text-fg">
+          <p className="text-base font-semibold text-foreground">
             {ratingLabel ?? "—"}
           </p>
-          <p className="font-sans text-caption text-fg-muted">de 5</p>
-          <p className="mt-1 font-sans text-caption text-fg-secondary">
-            {countLabel
-              ? `${countLabel} avaliações`
-              : "Sem avaliações"}
+          <p className="text-xs/relaxed text-muted-foreground">de 5</p>
+          <p className="mt-1 text-xs/relaxed text-muted-foreground">
+            {countLabel ? `${countLabel} avaliações` : "Sem avaliações"}
           </p>
         </div>
         {distribution ? <RatingBars distribution={distribution} /> : null}
       </div>
 
       {reputation ? (
-        <div className="mt-4 flex flex-col gap-1 rounded-lg border border-border-subtle bg-canvas px-3 py-2">
-          <p className="font-sans text-caption text-fg">
+        <div className="mt-4 flex flex-col gap-1 rounded-lg border border-border/70 bg-background px-3 py-2">
+          <p className="text-xs/relaxed text-foreground">
             {reputation.history.status === "ok"
               ? `Nas ${formatGbpCount(reputation.history.recentCount)} mais recentes a média é ${formatGbpRating(reputation.history.recentAverage)}; nas ${formatGbpCount(reputation.history.priorCount)} anteriores era ${formatGbpRating(reputation.history.priorAverage)}.`
               : gbpReputationBlockLabel(reputation.history.reason)}
           </p>
-          <p className="font-sans text-caption text-fg-secondary">
-            {reputation.sample.windows.map(gbpReputationWindowLabel).join(" · ")}
+          <p className="text-xs/relaxed text-muted-foreground">
+            {reputation.sample.windows
+              .map(gbpReputationWindowLabel)
+              .join(" · ")}
           </p>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             {[
               `Amostra de ${formatGbpCount(reputation.sample.size)}`,
               spanLabel ? `cobrindo ${spanLabel}` : null,
@@ -129,7 +125,7 @@ export function LeadGbpReviewsBlock({
       ) : null}
 
       {items.length === 0 ? (
-        <p className="mt-4 font-sans text-caption text-fg-muted">
+        <p className="mt-4 text-xs/relaxed text-muted-foreground">
           Nenhuma avaliação em destaque.
         </p>
       ) : (
@@ -137,11 +133,11 @@ export function LeadGbpReviewsBlock({
           {visible.map((item, index) => (
             <li
               key={`${item.publishedAt ?? ""}:${index}`}
-              className="rounded-lg border border-border-subtle bg-canvas px-3 py-2"
+              className="rounded-lg border border-border/70 bg-background px-3 py-2"
             >
-              <p className="flex items-center gap-1 font-sans text-caption text-fg-muted">
+              <p className="flex items-center gap-1 text-xs/relaxed text-muted-foreground">
                 {item.rating !== null ? (
-                  <span className="inline-flex items-center gap-0.5 text-fg">
+                  <span className="inline-flex items-center gap-0.5 text-foreground">
                     {Array.from({ length: 5 }, (_, star) => (
                       <RiStarFill
                         key={star}
@@ -163,12 +159,12 @@ export function LeadGbpReviewsBlock({
                   : ""}
               </p>
               {item.text ? (
-                <p className="mt-1 line-clamp-4 whitespace-pre-wrap font-sans text-caption text-fg">
+                <p className="mt-1 line-clamp-4 whitespace-pre-wrap text-xs/relaxed text-foreground">
                   {item.text}
                 </p>
               ) : null}
               {item.ownerAnswer ? (
-                <p className="mt-1 font-sans text-caption text-fg-secondary">
+                <p className="mt-1 text-xs/relaxed text-muted-foreground">
                   Resposta do dono
                 </p>
               ) : null}
@@ -181,7 +177,7 @@ export function LeadGbpReviewsBlock({
         <button
           type="button"
           onClick={() => setExpanded((open) => !open)}
-          className="mt-2 cursor-pointer font-sans text-caption font-medium text-accent"
+          className="mt-2 cursor-pointer text-xs/relaxed font-medium text-primary"
         >
           {expanded
             ? "Ver menos"

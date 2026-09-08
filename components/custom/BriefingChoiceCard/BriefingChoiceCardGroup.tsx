@@ -2,7 +2,7 @@
 
 import { useId } from "react"
 import { RadioGroup } from "@/components/ui/radio-group"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { BriefingChoiceCardGroupProps } from "./BriefingChoiceCard.types"
 
 export function BriefingChoiceCardGroup({
@@ -28,7 +28,7 @@ export function BriefingChoiceCardGroup({
       {label ? (
         <span
           id={groupId}
-          className="font-sans text-body-sm font-medium text-fg-secondary"
+          className="text-xs/relaxed font-medium text-muted-foreground"
         >
           {label}
         </span>

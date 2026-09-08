@@ -210,9 +210,7 @@ export function readDiagnosisDocument(
   const facts = readFacts(row.facts)
   if (!meta || !facts) return null
   const limitations = Array.isArray(row.limitations)
-    ? row.limitations.filter(
-        (item): item is string => typeof item === "string",
-      )
+    ? row.limitations.filter((item): item is string => typeof item === "string")
     : []
   return {
     version: 1,

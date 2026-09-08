@@ -9,8 +9,5 @@ export {
   type PlacesResult,
   type PlacesAutocompleteIntent,
 } from "./client"
-export {
-  geocodeAddressText,
-  type GeocodeCoordinates,
-} from "./geocode"
+export { geocodeAddressText, type GeocodeCoordinates } from "./geocode"
 export { parsePlaceInput } from "./parse-input"

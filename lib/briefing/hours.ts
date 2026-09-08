@@ -87,10 +87,7 @@ function normalizeHoursLine(value: string): string {
 }
 
 function foldText(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .toLowerCase()
+  return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase()
 }
 
 function matchWeekday(line: string): WeekdayId | null {

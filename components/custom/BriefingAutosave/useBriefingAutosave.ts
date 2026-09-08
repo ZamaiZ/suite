@@ -67,18 +67,21 @@ export function useBriefingAutosave<T>(
     return request
   }, [])
 
-  const scheduleSave = useCallback((payload: T) => {
-    setSaveState("idle")
-    setErrorMessage(null)
-    pendingPayloadRef.current = payload
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
-    saveTimerRef.current = setTimeout(() => {
-      saveTimerRef.current = null
-      const pending = pendingPayloadRef.current
-      pendingPayloadRef.current = null
-      if (pending) void savePayload(pending)
-    }, AUTOSAVE_MS)
-  }, [savePayload])
+  const scheduleSave = useCallback(
+    (payload: T) => {
+      setSaveState("idle")
+      setErrorMessage(null)
+      pendingPayloadRef.current = payload
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current)
+      saveTimerRef.current = setTimeout(() => {
+        saveTimerRef.current = null
+        const pending = pendingPayloadRef.current
+        pendingPayloadRef.current = null
+        if (pending) void savePayload(pending)
+      }, AUTOSAVE_MS)
+    },
+    [savePayload],
+  )
 
   const flushPending = useCallback(async (): Promise<boolean> => {
     if (saveTimerRef.current) {

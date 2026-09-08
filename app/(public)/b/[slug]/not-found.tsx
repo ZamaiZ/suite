@@ -6,7 +6,7 @@ export default function ClientPortalNotFound() {
       title="Link inválido"
       description="Este acesso não existe ou não está mais disponível."
     >
-      <p className="font-sans text-body-sm text-fg-secondary">
+      <p className="text-xs/relaxed text-muted-foreground">
         Confira o endereço que você recebeu ou peça um novo link.
       </p>
     </ClientPortalShell>

@@ -4,10 +4,18 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react"
 import Link, { useLinkStatus } from "next/link"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import { RiArrowDownSLine, RiArrowRightSLine, RiLoader4Line } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import {
+  RiArrowDownSLine,
+  RiArrowRightSLine,
+  RiLoader4Line,
+} from "react-icons/ri"
+import { cn } from "cn"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { isGroupActive, isHrefActive } from "@/components/custom/navigation"
 import type { NavGroup, NavLeaf } from "@/components/custom/navigation.types"
 import type { NavTreeDensity, NavTreeProps } from "./NavTree.types"
@@ -113,7 +121,7 @@ function TreeRail({ count, rail }: { count: number; rail: Rail }) {
       aria-hidden
       width={treeEndX(rail) + TREE_STROKE}
       height={treeHeight(count, rail)}
-      className="pointer-events-none absolute top-0 left-0 z-0 text-fg opacity-40 dark:opacity-[0.38]"
+      className="pointer-events-none absolute top-0 left-0 z-0 text-foreground opacity-40 dark:opacity-[0.38]"
     >
       <path
         d={treePath(count, rail)}
@@ -137,8 +145,12 @@ function NavPendingSurface({ children }: { children: ReactNode }) {
           aria-busy
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
-          <span className="absolute inset-0 rounded-[inherit] bg-canvas/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line size={16} aria-hidden className="relative animate-spin text-fg" />
+          <span className="absolute inset-0 rounded-[inherit] bg-background/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
+          <RiLoader4Line
+            size={16}
+            aria-hidden
+            className="relative animate-spin text-foreground"
+          />
         </span>
       ) : null}
     </>
@@ -178,32 +190,37 @@ function SheetTreeChild({
   const Icon = child.icon
 
   const className = cn(
-    "relative flex h-full w-full items-center gap-2.5 rounded-lg px-2.5 py-2 font-sans text-body-sm",
+    "relative flex h-full w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-xs/relaxed",
     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
     child.disabled
       ? "cursor-not-allowed select-none opacity-35"
-      : "[transition:background-color_150ms_cubic-bezier(0.23,1,0.32,1),transform_110ms_ease-out] hover:bg-sidebar-active active:scale-[0.98]",
-    isActive && "bg-sidebar-active dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
+      : "[transition:background-color_150ms_cubic-bezier(0.23,1,0.32,1),transform_110ms_ease-out] hover:bg-sidebar-accent active:scale-[0.98]",
+    isActive &&
+      "bg-sidebar-accent dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
   )
 
   const inner = (
     <>
       {Icon && (
-        <span className={cn("inline-flex shrink-0", isActive && "text-primary")}>
+        <span
+          className={cn("inline-flex shrink-0", isActive && "text-primary")}
+        >
           <Icon size={20} aria-hidden />
         </span>
       )}
       <span className="min-w-0">
         <span
           className={cn(
-            "block font-sans text-body-sm leading-none",
-            isActive ? "font-semibold text-fg" : "font-medium text-fg-muted",
+            "block text-xs/relaxed leading-none",
+            isActive
+              ? "font-semibold text-foreground"
+              : "font-medium text-muted-foreground",
           )}
         >
           {child.label}
         </span>
         {child.description && (
-          <span className="mt-1 block font-sans text-caption leading-none text-fg-muted">
+          <span className="mt-1 block text-xs/relaxed leading-none text-muted-foreground">
             {child.description}
           </span>
         )}
@@ -220,7 +237,11 @@ function SheetTreeChild({
   }
 
   return (
-    <Link href={child.href} aria-current={isActive ? "page" : undefined} className={className}>
+    <Link
+      href={child.href}
+      aria-current={isActive ? "page" : undefined}
+      className={className}
+    >
       <NavPendingSurface>{inner}</NavPendingSurface>
     </Link>
   )
@@ -246,18 +267,19 @@ function NavChildLink({
   const Icon = child.icon
 
   const className = cn(
-    "relative z-10 flex w-full font-sans text-body-sm",
+    "relative z-10 flex w-full text-xs/relaxed",
     "transition-colors duration-150",
     isFlyout
       ? "group/nav items-start gap-2.5 rounded-lg px-2 py-2"
       : "h-10 items-center gap-2 rounded-md px-2.5",
     child.disabled
-      ? "cursor-not-allowed text-fg-muted opacity-40"
+      ? "cursor-not-allowed text-muted-foreground opacity-40"
       : cn(
-          "text-fg-muted hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-          isFlyout ? "hover:bg-hover" : "hover:bg-sidebar-active",
+          "text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+          isFlyout ? "hover:bg-accent" : "hover:bg-sidebar-accent",
         ),
-    isActive && "bg-sidebar-active font-semibold text-fg dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
+    isActive &&
+      "bg-sidebar-accent font-semibold text-foreground dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
   )
 
   const inner = isFlyout ? (
@@ -266,7 +288,9 @@ function NavChildLink({
         <span
           className={cn(
             "flex size-8 shrink-0 items-center justify-center rounded-md",
-            isActive ? "bg-accent text-primary" : "bg-hover text-fg-muted",
+            isActive
+              ? "bg-primary text-primary"
+              : "bg-accent text-muted-foreground",
           )}
         >
           <Icon size={16} aria-hidden />
@@ -276,13 +300,15 @@ function NavChildLink({
         <span
           className={cn(
             "block leading-none",
-            isActive ? "font-semibold text-fg" : "font-medium text-fg",
+            isActive
+              ? "font-semibold text-foreground"
+              : "font-medium text-foreground",
           )}
         >
           {child.label}
         </span>
         {child.description && (
-          <span className="mt-1 block font-sans text-caption leading-snug text-fg-muted">
+          <span className="mt-1 block text-xs/relaxed leading-snug text-muted-foreground">
             {child.description}
           </span>
         )}
@@ -291,14 +317,16 @@ function NavChildLink({
         <RiArrowRightSLine
           size={14}
           aria-hidden
-          className="mt-1 shrink-0 text-fg-muted opacity-0 transition-opacity duration-150 group-hover/nav:opacity-100 group-focus-visible/nav:opacity-100"
+          className="mt-1 shrink-0 text-muted-foreground opacity-0 transition-opacity duration-150 group-hover/nav:opacity-100 group-focus-visible/nav:opacity-100"
         />
       )}
     </>
   ) : (
     <>
       {Icon && (
-        <span className={cn("inline-flex shrink-0", isActive && "text-primary")}>
+        <span
+          className={cn("inline-flex shrink-0", isActive && "text-primary")}
+        >
           <Icon size={16} aria-hidden />
         </span>
       )}
@@ -353,16 +381,16 @@ function NavLeafRow({
           className="flex min-h-11 cursor-not-allowed select-none items-center gap-4 rounded-xl px-3 py-3 opacity-35"
         >
           {Icon && (
-            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-hover text-fg-muted">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-accent text-muted-foreground">
               <Icon size={20} aria-hidden />
             </span>
           )}
           <span>
-            <span className="block font-sans text-body-sm font-semibold leading-none text-fg">
+            <span className="block text-xs/relaxed font-semibold leading-none text-foreground">
               {item.label}
             </span>
             {item.description && (
-              <span className="mt-1 block font-sans text-caption leading-none text-fg-muted">
+              <span className="mt-1 block text-xs/relaxed leading-none text-muted-foreground">
                 {item.description}
               </span>
             )}
@@ -379,36 +407,40 @@ function NavLeafRow({
           "relative flex min-h-11 items-center gap-4 rounded-xl px-3 py-3",
           "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           "[transition:background-color_150ms_cubic-bezier(0.23,1,0.32,1),transform_110ms_ease-out]",
-          "hover:bg-hover active:scale-[0.98]",
-          isActive && "bg-sidebar-active",
+          "hover:bg-accent active:scale-[0.98]",
+          isActive && "bg-sidebar-accent",
         )}
       >
         <NavPendingSurface>
-        {Icon && (
-          <span
-            className={cn(
-              "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-150",
-              isActive ? "bg-primary/10 text-primary" : "bg-hover text-fg-muted",
-            )}
-          >
-            <Icon size={20} aria-hidden />
-          </span>
-        )}
-        <span className="min-w-0">
-          <span
-            className={cn(
-              "block font-sans text-body-sm leading-none",
-              isActive ? "font-semibold text-fg" : "font-medium text-fg-muted",
-            )}
-          >
-            {item.label}
-          </span>
-          {item.description && (
-            <span className="mt-1 block font-sans text-caption leading-none text-fg-muted">
-              {item.description}
+          {Icon && (
+            <span
+              className={cn(
+                "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-150",
+                isActive
+                  ? "bg-primary/10 text-primary"
+                  : "bg-accent text-muted-foreground",
+              )}
+            >
+              <Icon size={20} aria-hidden />
             </span>
           )}
-        </span>
+          <span className="min-w-0">
+            <span
+              className={cn(
+                "block text-xs/relaxed leading-none",
+                isActive
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-muted-foreground",
+              )}
+            >
+              {item.label}
+            </span>
+            {item.description && (
+              <span className="mt-1 block text-xs/relaxed leading-none text-muted-foreground">
+                {item.description}
+              </span>
+            )}
+          </span>
         </NavPendingSurface>
       </Link>
     )
@@ -417,15 +449,16 @@ function NavLeafRow({
   if (!Icon) return null
 
   const rowClassName = cn(
-    "relative flex h-10 w-full items-center rounded-md font-sans text-body-sm",
+    "relative flex h-10 w-full items-center rounded-md text-xs/relaxed",
     "transition-colors duration-150",
     collapsed
-      ? "justify-center gap-0 px-0 text-fg-muted"
-      : "gap-3 px-3 text-fg-muted",
+      ? "justify-center gap-0 px-0 text-muted-foreground"
+      : "gap-3 px-3 text-muted-foreground",
     item.disabled
       ? "cursor-not-allowed opacity-40"
-      : "hover:bg-hover hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-    isActive && "bg-sidebar-active font-semibold text-fg dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
+      : "hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+    isActive &&
+      "bg-sidebar-accent font-semibold text-foreground dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
   )
 
   const label = (
@@ -610,7 +643,7 @@ function NavGroupBlock({
         className={cn(
           "relative overflow-hidden rounded-xl p-0 transition-[padding,background-color] duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
           "motion-reduce:duration-0",
-          open && "bg-hover p-1",
+          open && "bg-accent p-1",
         )}
       >
         <Button
@@ -625,14 +658,16 @@ function NavGroupBlock({
             open ? "rounded-t-xl" : "rounded-xl",
             "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
             "[transition:background-color_150ms_cubic-bezier(0.23,1,0.32,1),transform_110ms_ease-out]",
-            "hover:bg-hover active:scale-[0.98]",
-            !open && parentLit && "bg-sidebar-active",
+            "hover:bg-accent active:scale-[0.98]",
+            !open && parentLit && "bg-sidebar-accent",
           )}
         >
           <span
             className={cn(
               "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-150",
-              parentLit ? "bg-primary/10 text-primary" : "bg-hover text-fg-muted",
+              parentLit
+                ? "bg-primary/10 text-primary"
+                : "bg-accent text-muted-foreground",
             )}
           >
             <Icon size={20} aria-hidden />
@@ -640,14 +675,16 @@ function NavGroupBlock({
           <span className="min-w-0 flex-1 text-left">
             <span
               className={cn(
-                "block font-sans text-body-sm leading-none",
-                parentLit ? "font-semibold text-fg" : "font-medium text-fg-muted",
+                "block text-xs/relaxed leading-none",
+                parentLit
+                  ? "font-semibold text-foreground"
+                  : "font-medium text-muted-foreground",
               )}
             >
               {item.label}
             </span>
             {item.description && (
-              <span className="mt-1 block font-sans text-caption leading-none text-fg-muted">
+              <span className="mt-1 block text-xs/relaxed leading-none text-muted-foreground">
                 {item.description}
               </span>
             )}
@@ -676,7 +713,7 @@ function NavGroupBlock({
         "relative w-full",
         !collapsed &&
           "overflow-hidden rounded-md p-0 transition-[padding,background-color] duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)] motion-reduce:duration-0",
-        !collapsed && open && "bg-hover p-1",
+        !collapsed && open && "bg-accent p-1",
       )}
       onMouseEnter={() => {
         if (collapsed) showFlyout()
@@ -709,27 +746,39 @@ function NavGroupBlock({
           setOpen((v) => !v)
         }}
         className={cn(
-          "relative z-10 flex h-10 w-full cursor-pointer items-center font-sans text-body-sm",
+          "relative z-10 flex h-10 w-full cursor-pointer items-center text-xs/relaxed",
           "transition-colors duration-150",
           collapsed
-            ? "justify-center gap-0 rounded-md px-0 text-fg-muted"
-            : cn("gap-3 px-3 text-fg-muted", open ? "rounded-t-md" : "rounded-md"),
-          "hover:bg-hover hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+            ? "justify-center gap-0 rounded-md px-0 text-muted-foreground"
+            : cn(
+                "gap-3 px-3 text-muted-foreground",
+                open ? "rounded-t-md" : "rounded-md",
+              ),
+          "hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
           collapsed
             ? groupActive &&
-              "bg-sidebar-active font-semibold text-fg dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]"
+                "bg-sidebar-accent font-semibold text-foreground dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]"
             : cn(
-                parentLit && "font-semibold text-fg",
+                parentLit && "font-semibold text-foreground",
                 !open &&
                   parentLit &&
-                  "bg-sidebar-active dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
+                  "bg-sidebar-accent dark:shadow-[inset_0_0_0_1px_rgb(255_255_255/0.06)]",
               ),
         )}
       >
-        <span className={cn("inline-flex shrink-0", (collapsed ? groupActive : parentLit) && "text-primary")}>
+        <span
+          className={cn(
+            "inline-flex shrink-0",
+            (collapsed ? groupActive : parentLit) && "text-primary",
+          )}
+        >
           <Icon size={18} aria-hidden />
         </span>
-        <SidebarLabel expanded={!collapsed} animate={animate} delay={index * 0.03}>
+        <SidebarLabel
+          expanded={!collapsed}
+          animate={animate}
+          delay={index * 0.03}
+        >
           {item.label}
         </SidebarLabel>
         {chevron}
@@ -745,7 +794,9 @@ function NavGroupBlock({
             exit="hidden"
             className={cn(
               "pointer-events-none fixed inset-y-0 right-0 left-16 z-0 hidden md:block",
-              reduceMotion ? "bg-canvas/70" : "bg-canvas/50 backdrop-blur-[6px]",
+              reduceMotion
+                ? "bg-background/70"
+                : "bg-background/50 backdrop-blur-[6px]",
             )}
           />
         )}
@@ -761,35 +812,35 @@ function NavGroupBlock({
             exit="hidden"
             className={cn(
               "absolute top-0 left-full z-50 ml-3 w-72 overflow-visible",
-              "rounded-xl border border-popover-border bg-elevated p-1.5 shadow-dialog",
+              "rounded-xl border border-border bg-popover p-1.5 shadow-lg",
             )}
             style={{ transformOrigin: "left 20px" }}
           >
             <div aria-hidden className="absolute top-0 right-full h-10 w-3" />
             <span
               aria-hidden
-              className="absolute top-[15px] -left-[5px] z-10 size-2.5 rotate-45 border-b border-l border-popover-border bg-elevated"
+              className="absolute top-[15px] -left-[5px] z-10 size-2.5 rotate-45 border-b border-l border-border bg-popover"
             />
             <div className="relative mb-1 flex items-start gap-2.5 px-2 py-2">
               <span
                 aria-hidden
                 className="absolute top-2.5 bottom-2.5 left-0 w-0.5 rounded-full bg-primary"
               />
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary">
                 <Icon size={16} aria-hidden />
               </span>
               <span className="min-w-0 pt-0.5">
-                <span className="block font-sans text-body-sm font-semibold leading-none text-fg">
+                <span className="block text-xs/relaxed font-semibold leading-none text-foreground">
                   {item.label}
                 </span>
                 {item.description && (
-                  <span className="mt-1 block font-sans text-caption leading-snug text-fg-muted">
+                  <span className="mt-1 block text-xs/relaxed leading-snug text-muted-foreground">
                     {item.description}
                   </span>
                 )}
               </span>
             </div>
-            <div aria-hidden className="mx-1.5 mb-1 h-px bg-border-subtle" />
+            <div aria-hidden className="mx-1.5 mb-1 h-px bg-border/70" />
             <ul className="flex max-h-[min(24rem,calc(100dvh-6rem))] flex-col gap-0.5 overflow-y-auto">
               {item.children.map((child) => (
                 <li key={child.href || child.label}>

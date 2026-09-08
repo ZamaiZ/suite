@@ -33,7 +33,11 @@ export const briefingCompanyPayloadSchema = z
   })
   .superRefine((data, ctx) => {
     const taxDigits = digitsOnly(data.taxId)
-    if (taxDigits.length > 0 && !isValidCpf(taxDigits) && !isValidCnpj(taxDigits)) {
+    if (
+      taxDigits.length > 0 &&
+      !isValidCpf(taxDigits) &&
+      !isValidCnpj(taxDigits)
+    ) {
       ctx.addIssue({
         code: "custom",
         path: ["taxId"],

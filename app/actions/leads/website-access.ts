@@ -1,6 +1,10 @@
 import "server-only"
 
-import { denyGbpEdit, loadGbpLeadContext, type GbpLeadContext } from "./gbp-access"
+import {
+  denyGbpEdit,
+  loadGbpLeadContext,
+  type GbpLeadContext,
+} from "./gbp-access"
 import {
   readLeadWebsiteAuditRow,
   type LeadWebsiteAudit,
@@ -198,9 +202,7 @@ export async function claimWebsitePagespeedJob(
   })
   const candidate = ranked.find((row) => {
     if (row.status === "queued") return true
-    return (
-      typeof row.started_at === "string" && row.started_at < staleBefore
-    )
+    return typeof row.started_at === "string" && row.started_at < staleBefore
   })
   if (!candidate || typeof candidate.id !== "string") {
     return { status: "empty" }

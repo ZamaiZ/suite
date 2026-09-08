@@ -1,10 +1,7 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import {
-  canEditClosingChecklist,
-  isClosingStage,
-} from "@/lib/leads/closing"
+import { canEditClosingChecklist, isClosingStage } from "@/lib/leads/closing"
 import { isLeadStatus } from "@/lib/leads/status"
 import { createClient } from "@/lib/supabase/server"
 import {

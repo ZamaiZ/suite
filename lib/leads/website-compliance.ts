@@ -35,7 +35,10 @@ function contentWords(path: string): string[][] {
   const segments = withoutQuery.split("/").filter(Boolean)
   if (segments.some((segment) => EDITORIAL_SEGMENT.test(segment))) return []
   return segments.map((segment) =>
-    segment.toLowerCase().split(/[-_.]+/).filter(Boolean),
+    segment
+      .toLowerCase()
+      .split(/[-_.]+/)
+      .filter(Boolean),
   )
 }
 

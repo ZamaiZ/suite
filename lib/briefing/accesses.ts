@@ -170,7 +170,9 @@ export function sanitizeAccessesPayload(
       payload.wordpress.status === "yes"
         ? {
             status: "yes",
-            loginUrl: payload.wordpress.loginUrl.trim().slice(0, ACCESS_URL_MAX),
+            loginUrl: payload.wordpress.loginUrl
+              .trim()
+              .slice(0, ACCESS_URL_MAX),
             username: payload.wordpress.username
               .trim()
               .slice(0, ACCESS_USERNAME_MAX),

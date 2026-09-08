@@ -1,12 +1,7 @@
 "use client"
 
-import {
-  useEffect,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react"
-import { cn } from "@/lib/cn"
+import { useEffect, useRef, useState, type KeyboardEvent } from "react"
+import { cn } from "cn"
 import {
   fromHour12,
   isCivilTime,
@@ -25,16 +20,16 @@ export type TimeSegment = "hour" | "minute"
 
 const SEGMENT_BOX = cn(
   "flex h-14 w-full items-center justify-center rounded-md text-center",
-  "font-sans text-title font-semibold tabular-nums text-fg",
+  "text-xl font-semibold tabular-nums text-foreground",
   "transition-[background-color,color,transform] duration-150 ease-out",
-  "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent",
+  "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
 )
 
 const PERIOD_BUTTON = cn(
-  "flex flex-1 items-center justify-center font-sans text-caption font-semibold",
+  "flex flex-1 items-center justify-center text-xs/relaxed font-semibold",
   "transition-[background-color,color,transform] duration-150 ease-out",
   "active:scale-[0.97]",
-  "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent",
+  "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring",
 )
 
 export function prefersClock(): boolean {
@@ -115,12 +110,14 @@ export function TimePickerPanel({
   useEffect(() => {
     if (!active) return
     if (view === "input") {
-      const node = segment === "minute" ? minuteInputRef.current : hourInputRef.current
+      const node =
+        segment === "minute" ? minuteInputRef.current : hourInputRef.current
       node?.focus()
       node?.select()
       return
     }
-    const node = segment === "minute" ? minuteButtonRef.current : hourButtonRef.current
+    const node =
+      segment === "minute" ? minuteButtonRef.current : hourButtonRef.current
     node?.focus()
   }, [active, view, segment])
 
@@ -272,7 +269,9 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "cursor-pointer active:scale-[0.97]",
-                hourActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
+                hourActive
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-accent text-accent-foreground",
               )}
             >
               {pad2(displayHour)}
@@ -297,18 +296,20 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "min-w-0 border-0 p-0 outline-none",
-                hourActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
+                hourActive
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-accent text-accent-foreground",
               )}
             />
           )}
           {showClock ? null : (
-            <span className="font-sans text-caption text-fg-muted">Hora</span>
+            <span className="text-xs/relaxed text-muted-foreground">Hora</span>
           )}
         </div>
 
         <span
           aria-hidden
-          className="flex h-14 items-center font-sans text-title font-semibold text-fg"
+          className="flex h-14 items-center text-xl font-semibold text-foreground"
         >
           :
         </span>
@@ -329,7 +330,9 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "cursor-pointer active:scale-[0.97]",
-                minuteActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
+                minuteActive
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-accent text-accent-foreground",
               )}
             >
               {pad2(minute)}
@@ -354,12 +357,16 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "min-w-0 border-0 p-0 outline-none",
-                minuteActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
+                minuteActive
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-accent text-accent-foreground",
               )}
             />
           )}
           {showClock ? null : (
-            <span className="font-sans text-caption text-fg-muted">Minuto</span>
+            <span className="text-xs/relaxed text-muted-foreground">
+              Minuto
+            </span>
           )}
         </div>
 
@@ -374,7 +381,7 @@ export function TimePickerPanel({
                 PERIOD_BUTTON,
                 hour12.period === "am"
                   ? "bg-primary text-primary-foreground"
-                  : "bg-transparent text-fg-muted",
+                  : "bg-transparent text-muted-foreground",
               )}
             >
               AM
@@ -388,7 +395,7 @@ export function TimePickerPanel({
                 PERIOD_BUTTON,
                 hour12.period === "pm"
                   ? "bg-primary text-primary-foreground"
-                  : "bg-transparent text-fg-muted",
+                  : "bg-transparent text-muted-foreground",
               )}
             >
               PM

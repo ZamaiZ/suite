@@ -21,7 +21,9 @@ export async function prefillCompanyFromLead(
   const [leadResult, gbpResult, channelsResult] = await Promise.all([
     admin
       .from("leads")
-      .select("company_name, contact_name, tax_id, phone, email, city, state_code")
+      .select(
+        "company_name, contact_name, tax_id, phone, email, city, state_code",
+      )
       .eq("id", leadId)
       .maybeSingle(),
     admin
@@ -58,7 +60,8 @@ export async function prefillCompanyFromLead(
   if (snapshot) {
     if (snapshot.formattedAddress) {
       const parsed = parseBrazilianAddress(snapshot.formattedAddress)
-      payload.formattedAddress = parsed.formattedAddress || snapshot.formattedAddress
+      payload.formattedAddress =
+        parsed.formattedAddress || snapshot.formattedAddress
       payload.street = parsed.street
       payload.number = parsed.number
       payload.complement = parsed.complement

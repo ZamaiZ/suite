@@ -50,12 +50,12 @@ export const briefingAudiencePayloadSchema = z.object({
   primaryKeyword: chipItem,
 })
 
-export type BriefingAudienceInput = z.infer<typeof briefingAudiencePayloadSchema>
+export type BriefingAudienceInput = z.infer<
+  typeof briefingAudiencePayloadSchema
+>
 
 function normalizeChips(values: string[]): string[] {
-  return values
-    .map((item) => item.trim())
-    .filter((item) => item.length > 0)
+  return values.map((item) => item.trim()).filter((item) => item.length > 0)
 }
 
 export function toAudiencePayload(

@@ -15,9 +15,7 @@ export type WebsiteRedirectHop = {
 }
 
 export type RedirectIssueId =
-  | "redirect_chain"
-  | "temporary_redirect"
-  | "redirect_loop"
+  "redirect_chain" | "temporary_redirect" | "redirect_loop"
 
 /** Mais que isto e o salto deixa de ser um ajuste e vira perda de sinal. */
 export const REDIRECT_CHAIN_MAX = 1

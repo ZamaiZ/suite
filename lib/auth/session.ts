@@ -56,9 +56,7 @@ export const getCurrentUserRoles = cache(async (): Promise<AppRole[]> => {
     throw new Error("Unable to load the current user roles.", { cause: error })
   }
 
-  return sortAppRoles(
-    (data ?? []).map((entry) => entry.role).filter(isAppRole),
-  )
+  return sortAppRoles((data ?? []).map((entry) => entry.role).filter(isAppRole))
 })
 
 export async function requireAuthenticatedUser() {

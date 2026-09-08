@@ -53,7 +53,7 @@ export function ClientBriefingCompleteScreen({
               ease: EASE,
               delay: reduced ? 0 : 0.12,
             }}
-            className="mt-6 font-sans text-caption font-medium tracking-wide text-fg-muted uppercase"
+            className="mt-6 text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase"
           >
             {companyName}
           </m.p>
@@ -66,7 +66,7 @@ export function ClientBriefingCompleteScreen({
               ease: EASE,
               delay: reduced ? 0 : 0.18,
             }}
-            className="mt-2 font-display text-title font-semibold text-fg"
+            className="mt-2 font-heading text-xl font-semibold text-foreground"
           >
             Obrigado
           </m.h1>
@@ -79,7 +79,7 @@ export function ClientBriefingCompleteScreen({
               ease: EASE,
               delay: reduced ? 0 : 0.26,
             }}
-            className="mt-3 max-w-md font-sans text-body-sm leading-relaxed text-fg-secondary"
+            className="mt-3 max-w-md text-xs/relaxed leading-relaxed text-muted-foreground"
           >
             Recebemos seu briefing. Nossa equipe entrará em contato o quanto
             antes.
@@ -94,7 +94,7 @@ export function ClientBriefingCompleteScreen({
                 ease: EASE,
                 delay: reduced ? 0 : 0.32,
               }}
-              className="mt-4 font-sans text-caption text-fg-muted"
+              className="mt-4 text-xs/relaxed text-muted-foreground"
             >
               Alterações salvas após o envio.
             </m.p>

@@ -8,8 +8,7 @@ import { createAdminClient } from "@/lib/supabase/admin"
 const SIGNED_TTL_SECONDS = 60 * 30
 
 export type SignStaffBriefingWebsiteAssetState =
-  | { status: "success"; url: string }
-  | { status: "error"; message: string }
+  { status: "success"; url: string } | { status: "error"; message: string }
 
 function belongsToClient(clientId: string, path: string): boolean {
   return path.startsWith(`${clientId}/website/`)

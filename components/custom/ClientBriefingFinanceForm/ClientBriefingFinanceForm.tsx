@@ -72,11 +72,7 @@ export function ClientBriefingFinanceForm({
     markComplete,
     setError,
     clearError,
-  } = useBriefingAutosave(
-    initialUpdatedAt,
-    initialCompletedAt,
-    persist,
-  )
+  } = useBriefingAutosave(initialUpdatedAt, initialCompletedAt, persist)
   useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
@@ -169,9 +165,9 @@ export function ClientBriefingFinanceForm({
             value={payload.monthlyRevenueRange ?? ""}
             onValueChange={(next) =>
               patch({
-                monthlyRevenueRange: (REVENUE_RANGE_IDS as readonly string[]).includes(
-                  next,
-                )
+                monthlyRevenueRange: (
+                  REVENUE_RANGE_IDS as readonly string[]
+                ).includes(next)
                   ? (next as RevenueRangeId)
                   : null,
               })
@@ -192,9 +188,9 @@ export function ClientBriefingFinanceForm({
             value={payload.peakRevenueRange ?? ""}
             onValueChange={(next) =>
               patch({
-                peakRevenueRange: (REVENUE_RANGE_IDS as readonly string[]).includes(
-                  next,
-                )
+                peakRevenueRange: (
+                  REVENUE_RANGE_IDS as readonly string[]
+                ).includes(next)
                   ? (next as RevenueRangeId)
                   : null,
               })
@@ -211,15 +207,17 @@ export function ClientBriefingFinanceForm({
           </BriefingChoiceCardGroup>
 
           <Field>
-            <FieldLabel htmlFor="briefing-peak-revenue-reason">Teve algum motivo específico?</FieldLabel>
+            <FieldLabel htmlFor="briefing-peak-revenue-reason">
+              Teve algum motivo específico?
+            </FieldLabel>
             <Textarea
-            id="briefing-peak-revenue-reason"
-            rows={4}
-            value={payload.peakRevenueReason}
-            onChange={(event) =>
-              patch({ peakRevenueReason: event.target.value })
-            }
-            placeholder="Ex.: campanha, sazonalidade, contrato pontual…"
+              id="briefing-peak-revenue-reason"
+              rows={4}
+              value={payload.peakRevenueReason}
+              onChange={(event) =>
+                patch({ peakRevenueReason: event.target.value })
+              }
+              placeholder="Ex.: campanha, sazonalidade, contrato pontual…"
             />
           </Field>
 
@@ -254,15 +252,17 @@ export function ClientBriefingFinanceForm({
 
           {showSeasonalityNotes ? (
             <Field>
-              <FieldLabel htmlFor="briefing-seasonality-notes">Quando e por quê?</FieldLabel>
+              <FieldLabel htmlFor="briefing-seasonality-notes">
+                Quando e por quê?
+              </FieldLabel>
               <Textarea
-              id="briefing-seasonality-notes"
-              rows={4}
-              value={payload.seasonalityNotes}
-              onChange={(event) =>
-                patch({ seasonalityNotes: event.target.value })
-              }
-              placeholder="Quais meses ou datas mais importam, e o que costuma acontecer?"
+                id="briefing-seasonality-notes"
+                rows={4}
+                value={payload.seasonalityNotes}
+                onChange={(event) =>
+                  patch({ seasonalityNotes: event.target.value })
+                }
+                placeholder="Quais meses ou datas mais importam, e o que costuma acontecer?"
               />
             </Field>
           ) : null}
@@ -275,11 +275,11 @@ export function ClientBriefingFinanceForm({
           description="O que mais lucra hoje e o ticket médio da operação."
         >
           {eligible.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-elevated/40 px-4 py-8 text-center">
-              <p className="font-sans text-body-sm font-medium text-fg">
+            <div className="rounded-xl border border-dashed border-border bg-popover/40 px-4 py-8 text-center">
+              <p className="text-xs/relaxed font-medium text-foreground">
                 Cadastre produtos ou serviços na etapa Marca
               </p>
-              <p className="mt-1 font-sans text-caption text-fg-muted">
+              <p className="mt-1 text-xs/relaxed text-muted-foreground">
                 Volte e complete o catálogo para escolher o item de maior lucro.
               </p>
             </div>
@@ -338,9 +338,9 @@ export function ClientBriefingFinanceForm({
             value={payload.averageTicketRange ?? ""}
             onValueChange={(next) =>
               patch({
-                averageTicketRange: (REVENUE_RANGE_IDS as readonly string[]).includes(
-                  next,
-                )
+                averageTicketRange: (
+                  REVENUE_RANGE_IDS as readonly string[]
+                ).includes(next)
                   ? (next as RevenueRangeId)
                   : null,
               })
@@ -360,24 +360,24 @@ export function ClientBriefingFinanceForm({
         {errorMessage ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/25 bg-danger/10 px-4 py-3 font-sans text-body-sm text-danger"
+            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
           >
             {errorMessage}
           </p>
         ) : null}
 
         {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 font-sans text-body-sm text-success">
+          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
             Etapa concluída. Você pode continuar editando; as alterações seguem
             sendo salvas.
           </div>
         ) : null}
 
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
-          <div className="pointer-events-auto border-t border-border bg-canvas/90 backdrop-blur-md">
+          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
               <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
+                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                   {saveState === "saving" || isCompleting ? (
                     <>
                       <RiLoader4Line
@@ -401,7 +401,7 @@ export function ClientBriefingFinanceForm({
                       <RiCloseLine
                         size={14}
                         aria-hidden
-                        className="text-danger"
+                        className="text-destructive"
                       />
                       Não foi possível salvar
                     </>
@@ -410,7 +410,7 @@ export function ClientBriefingFinanceForm({
                   )}
                 </p>
                 {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate font-sans text-caption text-fg-secondary">
+                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
                     Falta: {missingLabels.join(", ")}
                   </p>
                 ) : null}
@@ -422,18 +422,24 @@ export function ClientBriefingFinanceForm({
                   </Button>
                 ) : null}
                 {variant === "staff" ? null : (
-                <Button
-                  type="button"
-                  disabled={isCompleting || !ready}
-                  onClick={handleComplete}
-                >
-                  {isCompleting
-                    ? "Salvando..."
-                    : completed
-                      ? "Etapa concluída"
-                      : "Continuar"}
-                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
-                </Button>
+                  <Button
+                    type="button"
+                    disabled={isCompleting || !ready}
+                    onClick={handleComplete}
+                  >
+                    {isCompleting
+                      ? "Salvando..."
+                      : completed
+                        ? "Etapa concluída"
+                        : "Continuar"}
+                    {completed ? (
+                      <RiCheckLine
+                        size={16}
+                        aria-hidden
+                        data-icon="inline-end"
+                      />
+                    ) : null}
+                  </Button>
                 )}
               </div>
             </div>

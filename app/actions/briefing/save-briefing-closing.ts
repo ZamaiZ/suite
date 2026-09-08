@@ -77,7 +77,9 @@ export async function saveBriefingClosing(
       status: "success",
       updatedAt: now,
       completedAt:
-        typeof existing.completed_at === "string" ? existing.completed_at : null,
+        typeof existing.completed_at === "string"
+          ? existing.completed_at
+          : null,
     }
   }
 
@@ -151,7 +153,10 @@ export async function completeBriefingClosing(
     .maybeSingle()
 
   if (clientLoadError) {
-    return { status: "error", message: "Não foi possível finalizar o briefing." }
+    return {
+      status: "error",
+      message: "Não foi possível finalizar o briefing.",
+    }
   }
 
   const existingFinalizedAt =

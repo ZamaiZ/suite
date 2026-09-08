@@ -8,7 +8,7 @@ export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
   if (!qna || qna.questionCount === 0) {
     return (
       <LeadGbpCard title="Perguntas">
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Nenhuma pergunta coletada.
         </p>
       </LeadGbpCard>
@@ -17,7 +17,7 @@ export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
 
   return (
     <LeadGbpCard title="Perguntas">
-      <p className="font-sans text-caption text-fg">
+      <p className="text-xs/relaxed text-foreground">
         {qna.questionCount.toLocaleString("pt-BR")} perguntas
         {qna.unansweredCount > 0
           ? ` · ${qna.unansweredCount.toLocaleString("pt-BR")} sem resposta`
@@ -27,13 +27,13 @@ export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
         {qna.items.slice(0, 5).map((item, index) => (
           <li
             key={`${item.question}:${index}`}
-            className="rounded-lg border border-border-subtle bg-canvas px-3 py-2"
+            className="rounded-lg border border-border/70 bg-background px-3 py-2"
           >
-            <p className="font-sans text-caption font-medium text-fg">
+            <p className="text-xs/relaxed font-medium text-foreground">
               {item.question}
             </p>
             {item.askedAt ? (
-              <p className="font-sans text-caption text-fg-muted">
+              <p className="text-xs/relaxed text-muted-foreground">
                 {formatDateTimeShort(item.askedAt)}
               </p>
             ) : null}
@@ -42,7 +42,7 @@ export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
                 {item.answers.slice(0, 3).map((answer, answerIndex) => (
                   <li
                     key={`${answer.text}:${answerIndex}`}
-                    className="font-sans text-caption text-fg-secondary"
+                    className="text-xs/relaxed text-muted-foreground"
                   >
                     {answer.isOwner ? "Dono: " : ""}
                     {answer.text}
@@ -50,9 +50,7 @@ export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
                 ))}
               </ul>
             ) : (
-              <p className="mt-1 font-sans text-caption text-warning">
-                Sem resposta
-              </p>
+              <p className="mt-1 text-xs/relaxed text-warning">Sem resposta</p>
             )}
           </li>
         ))}

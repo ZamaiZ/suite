@@ -32,7 +32,9 @@ export async function postGoogleReviewsTask(input: {
   })
 }
 
-export async function getGoogleReviewsTask(taskId: string): Promise<
+export async function getGoogleReviewsTask(
+  taskId: string,
+): Promise<
   | { status: "ok"; reviews: GbpReviewSummary }
   | { status: "pending" }
   | { status: "error"; message: string }

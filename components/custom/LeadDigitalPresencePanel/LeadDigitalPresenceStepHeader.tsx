@@ -1,10 +1,6 @@
 "use client"
 
-import {
-  RiCheckLine,
-  RiGroupLine,
-  RiLoader4Line,
-} from "react-icons/ri"
+import { RiCheckLine, RiGroupLine, RiLoader4Line } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 
 export function LeadDigitalPresenceStepHeader({
@@ -17,10 +13,10 @@ export function LeadDigitalPresenceStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiGroupLine} />
         <div className="min-w-0">
-          <h2 className="font-sans text-caption font-semibold text-fg">
+          <h2 className="text-xs/relaxed font-semibold text-foreground">
             Presença digital
           </h2>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Redes, rastreamento e identidade da marca.
           </p>
         </div>
@@ -28,7 +24,7 @@ export function LeadDigitalPresenceStepHeader({
       <div className="flex flex-wrap items-center justify-end gap-2">
         {saveStatus === "saving" ? (
           <span
-            className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted"
+            className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground"
             aria-live="polite"
           >
             <RiLoader4Line size={14} aria-hidden className="animate-spin" />
@@ -37,7 +33,7 @@ export function LeadDigitalPresenceStepHeader({
         ) : null}
         {saveStatus === "saved" ? (
           <span
-            className="inline-flex items-center gap-1 font-sans text-caption text-success"
+            className="inline-flex items-center gap-1 text-xs/relaxed text-success"
             aria-live="polite"
           >
             <RiCheckLine size={14} aria-hidden />

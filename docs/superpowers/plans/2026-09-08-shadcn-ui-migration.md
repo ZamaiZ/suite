@@ -24,6 +24,7 @@
 ### Task 1: Normalize the shadcn primitives used by the migration
 
 **Files:**
+
 - Modify: `components/ui/checkbox.tsx`
 - Modify: `components/ui/calendar.tsx`
 - Modify: `components/ui/dialog.tsx`
@@ -43,6 +44,7 @@
 ### Task 2: Replace Button imports and legacy button props
 
 **Files:**
+
 - Modify: `app/(public)/access-pending/page.tsx`
 - Modify: all current consumers of `@/components/ui/Button` under `components/custom`, including Sidebar, Lead flows, Client Briefing forms, Client Portal, import workspace, and authentication forms.
 - Delete: `components/ui/Button/Button.tsx`
@@ -62,6 +64,7 @@
 ### Task 3: Migrate simple selection controls through Field composition
 
 **Files:**
+
 - Modify: `components/custom/ClientBriefingAudienceForm/ClientBriefingAudienceForm.tsx`
 - Modify: `components/custom/ClientBriefingBrandForm/ClientBriefingBrandForm.tsx`
 - Modify: `components/custom/ClientBriefingAccessesForm/ClientBriefingAccessesForm.tsx`
@@ -88,6 +91,7 @@
 ### Task 4: Migrate textual inputs without reintroducing visual wrappers
 
 **Files:**
+
 - Modify: all 17 current Input consumers under `components/custom`, including `ClientBriefingCompanyForm`, `ClientBriefingAccessesForm`, `ClientPortalGate`, `CreateUserForm`, `LeadForm`, `LeadActivityForm`, `LeadBoardToolbar`, `LeadClosingPanel`, `LeadDetailDialog`, `LeadDigitalPresencePanel`, `LoginForm`, and `ToolsSettings`.
 - Modify: all eight current Textarea consumers under `components/custom`.
 - Modify: `components/custom/ClientPortalGate/ClientPortalGate.tsx`
@@ -109,6 +113,7 @@
 ### Task 5: Classify and migrate Select consumers to Select or Combobox
 
 **Files:**
+
 - Modify: `components/custom/ClientBriefingCompanyForm/ClientBriefingCompanyForm.tsx`
 - Modify: `components/custom/ClientsList/ClientsListToolbar.tsx`
 - Modify: `components/custom/LeadActivityForm/LeadActivityForm.tsx`
@@ -138,6 +143,7 @@
 ### Task 6: Add civil-date conversion and replace DatePicker with Calendar plus Popover
 
 **Files:**
+
 - Modify: `lib/date-time.ts`
 - Modify: `components/ui/DateTimePicker/DateTimePicker.tsx` (somente a dependência interna do calendário)
 - Modify: every current DatePicker consumer discovered by the direct component import search and every DatePicker usage re-exported through a form module.
@@ -160,6 +166,7 @@
 ### Task 7: Replace Dialog and Tooltip only after composed fields
 
 **Files:**
+
 - Modify: all 14 current Dialog consumers, including Client Briefing review, Client Portal code reveal, Lead board dialogs, Lead creation/detail dialogs, Google Business Profile pickers, import dialogs, segment, and tag fields.
 - Modify: `components/custom/LeadBoard/LeadBoardCardFace.tsx`
 - Modify: `components/custom/LeadCreate/LeadCreate.tsx`
@@ -181,6 +188,7 @@
 ### Task 8: Remove stale API surface and perform migration audit
 
 **Files:**
+
 - Delete: all targeted PascalCase directories under `components/ui` after their consumers are migrated.
 - Modify: `docs/superpowers/specs/2026-09-08-shadcn-ui-migration-design.md` only if implementation uncovers a specification change.
 

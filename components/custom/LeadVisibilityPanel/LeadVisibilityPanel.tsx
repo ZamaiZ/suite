@@ -3,9 +3,7 @@
 import { useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  analyzeLeadVisibility,
-} from "@/app/actions/leads"
+import { analyzeLeadVisibility } from "@/app/actions/leads"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
 import { resolveLeadLocation } from "@/lib/leads/resolve-location"
 import { mergeVisibilityOpportunities } from "@/lib/leads/visibility-opportunities"
@@ -96,13 +94,13 @@ export function LeadVisibilityPanel({
       </m.div>
 
       {error ? (
-        <p role="alert" className="font-sans text-caption text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}
 
       {!audit ? (
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Analise a visibilidade orgânica do domínio do lead. A fonte segue o
           vendor configurado em Ferramentas.
         </p>

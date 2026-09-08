@@ -17,7 +17,11 @@ const REQUEST_TIMEOUT_MS = 20_000
 const BATCH_TIMEOUT_MS = 30_000
 
 export { DATAFORSEO_TASKS_PER_POST }
-export type { DataForSeoCreatedTask, DataForSeoReadyTask, DataForSeoRejectedTask }
+export type {
+  DataForSeoCreatedTask,
+  DataForSeoReadyTask,
+  DataForSeoRejectedTask,
+}
 
 export const DATAFORSEO_UNCONFIGURED =
   "A análise do perfil não está configurada."

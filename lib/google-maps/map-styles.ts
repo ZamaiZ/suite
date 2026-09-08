@@ -4,8 +4,14 @@ const colors = SHADCN_PALETTE.dark
 
 export const GOOGLE_MAPS_DARK_STYLES: google.maps.MapTypeStyle[] = [
   { elementType: "geometry", stylers: [{ color: colors.background }] },
-  { elementType: "labels.text.fill", stylers: [{ color: colors.mutedForeground }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: colors.background }] },
+  {
+    elementType: "labels.text.fill",
+    stylers: [{ color: colors.mutedForeground }],
+  },
+  {
+    elementType: "labels.text.stroke",
+    stylers: [{ color: colors.background }],
+  },
   {
     featureType: "administrative",
     elementType: "geometry.stroke",

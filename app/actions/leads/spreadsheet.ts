@@ -24,15 +24,27 @@ import {
   type SpreadsheetValueKey,
 } from "@/lib/leads/spreadsheet-model"
 import { parseLeadSpreadsheet } from "@/lib/leads/spreadsheet"
-import type { LeadWritePayload, SpreadsheetEvaluatedRow } from "@/lib/leads/types"
+import type {
+  LeadWritePayload,
+  SpreadsheetEvaluatedRow,
+} from "@/lib/leads/types"
 import { ensureSegment } from "./sync-lead-segment"
 import { syncLeadTags } from "./sync-lead-tags"
 
 const rawValuesSchema = z.object(
   Object.fromEntries(
-    ["company_name", "segment", "state_code", "city", "tags", "website", "contact_name", "phone", "email", ...DIGITAL_CHANNEL_TYPES.filter((type) => type !== "website")].map(
-      (key) => [key, z.string()],
-    ),
+    [
+      "company_name",
+      "segment",
+      "state_code",
+      "city",
+      "tags",
+      "website",
+      "contact_name",
+      "phone",
+      "email",
+      ...DIGITAL_CHANNEL_TYPES.filter((type) => type !== "website"),
+    ].map((key) => [key, z.string()]),
   ) as Record<SpreadsheetValueKey, z.ZodString>,
 )
 
@@ -105,10 +117,9 @@ export type ImportLeadsState =
       message: string
     }
 
-async function readSpreadsheetFile(formData: FormData): Promise<
-  | { ok: true; buffer: ArrayBuffer }
-  | { ok: false; message: string }
-> {
+async function readSpreadsheetFile(
+  formData: FormData,
+): Promise<{ ok: true; buffer: ArrayBuffer } | { ok: false; message: string }> {
   const file = formData.get("file")
   if (!(file instanceof File)) {
     return { ok: false, message: "Envie um arquivo .xlsx." }
@@ -157,9 +168,7 @@ async function attachDatabaseConflicts(
     if (!isDigitalChannelType(row.type)) continue
     if (typeof row.normalized_key !== "string") continue
     const embed = row.leads as
-      | { company_name: string }
-      | { company_name: string }[]
-      | null
+      { company_name: string } | { company_name: string }[] | null
     const company_name = Array.isArray(embed)
       ? (embed[0]?.company_name ?? "")
       : (embed?.company_name ?? "")
@@ -171,7 +180,9 @@ async function attachDatabaseConflicts(
   return applyExistingChannelConflicts(rows, existing)
 }
 
-function toEvaluateOk(rows: SpreadsheetEvaluatedRow[]): EvaluateLeadSpreadsheetState {
+function toEvaluateOk(
+  rows: SpreadsheetEvaluatedRow[],
+): EvaluateLeadSpreadsheetState {
   const summary = summarizeEvaluatedRows(rows)
   return {
     status: "ok",
@@ -228,7 +239,9 @@ export async function importLeads(
   if (!parsed.success) {
     return {
       status: "error",
-      message: parsed.error.issues[0]?.message ?? "Nenhuma linha válida para importar.",
+      message:
+        parsed.error.issues[0]?.message ??
+        "Nenhuma linha válida para importar.",
     }
   }
 
@@ -281,7 +294,8 @@ export async function importLeads(
       if (!isSpreadsheetRowClean(row) || !row.payload) {
         return {
           status: "error",
-          message: "Ainda há problemas ou conflitos. Corrija e reavalie antes de importar.",
+          message:
+            "Ainda há problemas ou conflitos. Corrija e reavalie antes de importar.",
         }
       }
       const source = parsed.data[importRows.length]
@@ -325,7 +339,8 @@ export async function importLeads(
       if (error.code === "23505") {
         return {
           status: "error",
-          message: "Um dos sites já foi cadastrado enquanto você avaliava o arquivo.",
+          message:
+            "Um dos sites já foi cadastrado enquanto você avaliava o arquivo.",
         }
       }
       return {

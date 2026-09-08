@@ -221,10 +221,8 @@ export function readLeadDigitalPresenceAuditRow(
 ): LeadDigitalPresenceAudit | null {
   const id = typeof row.id === "string" ? row.id : null
   const lead_id = typeof row.lead_id === "string" ? row.lead_id : null
-  const updated_at =
-    typeof row.updated_at === "string" ? row.updated_at : null
-  const updated_by =
-    typeof row.updated_by === "string" ? row.updated_by : null
+  const updated_at = typeof row.updated_at === "string" ? row.updated_at : null
+  const updated_by = typeof row.updated_by === "string" ? row.updated_by : null
   if (!id || !lead_id || !updated_at || !updated_by) return null
   return {
     id,
@@ -243,7 +241,9 @@ export function digitalPresenceGapLabel(
     return DIGITAL_PRESENCE_GAP_LABELS[id]
   }
   if (id.startsWith("social_not_linked_on_site:")) {
-    const type = id.slice("social_not_linked_on_site:".length) as SocialChannelType
+    const type = id.slice(
+      "social_not_linked_on_site:".length,
+    ) as SocialChannelType
     return `${DIGITAL_CHANNEL_LABELS[type]} sem link no site`
   }
   if (id.startsWith("social_on_site_unregistered:")) {

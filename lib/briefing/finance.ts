@@ -87,9 +87,7 @@ function isRevenueRangeId(value: unknown): value is RevenueRangeId {
   )
 }
 
-function isSeasonalityProfileId(
-  value: unknown,
-): value is SeasonalityProfileId {
+function isSeasonalityProfileId(value: unknown): value is SeasonalityProfileId {
   return (
     typeof value === "string" &&
     (SEASONALITY_PROFILE_IDS as readonly string[]).includes(value)

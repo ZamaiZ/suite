@@ -1,7 +1,5 @@
 export type BriefingListStatus =
-  | "in_progress"
-  | "finalized"
-  | "edited_after_submit"
+  "in_progress" | "finalized" | "edited_after_submit"
 
 export const BRIEFING_LIST_STATUS_LABELS: Record<BriefingListStatus, string> = {
   in_progress: "Em andamento",

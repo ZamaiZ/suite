@@ -4,13 +4,16 @@ import {
   dataForSeoLocationCoordinate,
   postDataForSeo,
 } from "@/lib/dataforseo/client"
-import { GBP_QNA_DEPTH, mapDataForSeoQna, type GbpQna } from "@/lib/leads/gbp-audit"
+import {
+  GBP_QNA_DEPTH,
+  mapDataForSeoQna,
+  type GbpQna,
+} from "@/lib/leads/gbp-audit"
 
 type QnaLiveResult = Record<string, unknown>
 
 export type FetchGoogleQnaResult =
-  | { status: "ok"; qna: GbpQna | null }
-  | { status: "error"; message: string }
+  { status: "ok"; qna: GbpQna | null } | { status: "error"; message: string }
 
 export async function fetchGoogleQna(input: {
   placeId: string

@@ -16,7 +16,8 @@ export type LoginState =
 
 export async function login(formData: FormData): Promise<LoginState> {
   const headerStore = await headers()
-  const ip = headerStore.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown"
+  const ip =
+    headerStore.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown"
 
   const allowed = await checkRateLimit("login", ip)
   if (!allowed) {
@@ -27,7 +28,7 @@ export async function login(formData: FormData): Promise<LoginState> {
   }
 
   const parsed = loginSchema.safeParse({
-    email:    formData.get("email"),
+    email: formData.get("email"),
     password: formData.get("password"),
   })
 

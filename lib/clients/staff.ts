@@ -1,10 +1,7 @@
 import "server-only"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import {
-  canManageClientPortal,
-  canViewClient,
-} from "@/lib/clients/access"
+import { canManageClientPortal, canViewClient } from "@/lib/clients/access"
 import { parseClientRow } from "@/lib/clients/parse"
 import { CLIENT_PORTAL_SELECT, type ClientRecord } from "@/lib/clients/types"
 import { createClient } from "@/lib/supabase/server"

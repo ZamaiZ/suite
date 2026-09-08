@@ -3,12 +3,9 @@
 import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiMapPinLine, RiRefreshLine } from "react-icons/ri"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
-import {
-  GOOGLE_MAPS_DARK_STYLES,
-  loadGoogleMaps,
-} from "@/lib/google-maps"
+import { GOOGLE_MAPS_DARK_STYLES, loadGoogleMaps } from "@/lib/google-maps"
 import type { BriefingServiceRadiusMapProps } from "./BriefingServiceRadiusMap.types"
 
 function readPrimaryColor(): string {
@@ -23,10 +20,7 @@ function isDarkMode(): boolean {
   return document.documentElement.classList.contains("dark")
 }
 
-function fitCircle(
-  map: google.maps.Map,
-  circle: google.maps.Circle,
-) {
+function fitCircle(map: google.maps.Map, circle: google.maps.Circle) {
   const bounds = circle.getBounds()
   if (!bounds) return
   map.fitBounds(bounds, 28)
@@ -55,10 +49,7 @@ export function BriefingServiceRadiusMapCanvas({
   const [scriptReady, setScriptReady] = useState(false)
 
   const showMap =
-    latitude !== null &&
-    longitude !== null &&
-    !loading &&
-    !scriptError
+    latitude !== null && longitude !== null && !loading && !scriptError
 
   useEffect(() => {
     if (!showMap || !containerRef.current || mapRef.current) return
@@ -168,24 +159,22 @@ export function BriefingServiceRadiusMapCanvas({
   }, [showMap, scriptReady])
 
   const placeholderMessage =
-    scriptError ??
-    errorMessage ??
-    "Não foi possível localizar o endereço"
+    scriptError ?? errorMessage ?? "Não foi possível localizar o endereço"
 
   const showRetry = Boolean(onRetry) && !scriptError
 
   return (
     <div className={cn("flex w-full flex-col gap-2", className)}>
-      <div className="relative overflow-hidden rounded-xl border border-border bg-elevated">
+      <div className="relative overflow-hidden rounded-xl border border-border bg-popover">
         {showMap ? (
           <div className="relative h-64 w-full sm:h-80">
             <div ref={containerRef} className="size-full" />
             {!scriptReady ? (
-              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-elevated font-sans text-body-sm text-fg-muted">
+              <div className="absolute inset-0 flex items-center justify-center gap-2 bg-popover text-xs/relaxed text-muted-foreground">
                 <RiLoader4Line
                   size={18}
                   aria-hidden
-                  className="animate-spin text-accent"
+                  className="animate-spin text-primary"
                 />
                 Carregando mapa…
               </div>
@@ -198,34 +187,34 @@ export function BriefingServiceRadiusMapCanvas({
                 <RiLoader4Line
                   size={22}
                   aria-hidden
-                  className="animate-spin text-accent"
+                  className="animate-spin text-primary"
                 />
-                <p className="font-sans text-body-sm text-fg-secondary">
+                <p className="text-xs/relaxed text-muted-foreground">
                   Localizando o endereço no mapa…
                 </p>
               </>
             ) : (
               <>
-                <span className="inline-flex size-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                <span className="inline-flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <RiMapPinLine size={18} aria-hidden />
                 </span>
                 <div className="max-w-sm">
-                  <p className="font-sans text-body-sm font-medium text-fg">
+                  <p className="text-xs/relaxed font-medium text-foreground">
                     {placeholderMessage}
                   </p>
                   {formattedAddress ? (
-                    <p className="mt-1 font-sans text-caption text-fg-muted">
+                    <p className="mt-1 text-xs/relaxed text-muted-foreground">
                       {formattedAddress}
                     </p>
                   ) : null}
                 </div>
                 {showRetry ? (
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={onRetry}
-                  >
-                    <RiRefreshLine size={16} aria-hidden data-icon="inline-start" />
+                  <Button type="button" variant="outline" onClick={onRetry}>
+                    <RiRefreshLine
+                      size={16}
+                      aria-hidden
+                      data-icon="inline-start"
+                    />
                     Tentar novamente
                   </Button>
                 ) : null}
@@ -235,7 +224,9 @@ export function BriefingServiceRadiusMapCanvas({
         )}
       </div>
       {showMap && formattedAddress ? (
-        <p className="font-sans text-caption text-fg-muted">{formattedAddress}</p>
+        <p className="text-xs/relaxed text-muted-foreground">
+          {formattedAddress}
+        </p>
       ) : null}
     </div>
   )

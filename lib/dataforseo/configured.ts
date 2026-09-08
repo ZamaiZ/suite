@@ -10,7 +10,7 @@ import "server-only"
 export function isDataForSeoConfigured(): boolean {
   return Boolean(
     process.env.DATAFORSEO_LOGIN?.trim() &&
-      process.env.DATAFORSEO_PASSWORD?.trim(),
+    process.env.DATAFORSEO_PASSWORD?.trim(),
   )
 }
 

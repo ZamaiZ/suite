@@ -38,6 +38,7 @@
 ### Task 1: Tabela do scan
 
 **Files:**
+
 - Create: `supabase/migrations/20260921000000_lead_gbp_grid_scans.sql`
 
 - [ ] Criar `lead_gbp_grid_scans` com `id`, `lead_id` e `profile_id` referenciando `leads` e `lead_gbp_profiles` com `on delete cascade`, `keyword text`, `center_lat`/`center_lng` como `double precision`, `size integer`, `radius_km numeric(5,2)`, `zoom integer`, `source text`, `status text`, `processed integer default 0`, `total integer`, `points jsonb default '[]'::jsonb`, `error_message text`, `started_at timestamptz`, `captured_at timestamptz default now()` e `updated_at timestamptz default now()`.
@@ -49,6 +50,7 @@
 ### Task 2: Geometria, tipos e métricas
 
 **Files:**
+
 - Create: `lib/leads/gbp-grid.ts`
 
 **Interfaces:**
@@ -77,7 +79,7 @@ export type GbpGridPoint = {
 }
 
 export type GbpGridScanStatus =
-  | "queued" | "running" | "ready" | "partial" | "failed"
+  "queued" | "running" | "ready" | "partial" | "failed"
 
 // snake_case nos campos que são coluna, como em LeadGbpProfile e
 // LeadWebsiteAudit; camelCase fica reservado ao que é derivado.
@@ -114,10 +116,15 @@ export function gbpGridPoints(input: {
   radiusKm: number
 }): GbpGridPoint[]
 export function gbpGridCenterIndex(size: number): number
-export function readLeadGbpGridScanRow(row: Record<string, unknown>): LeadGbpGridScan | null
+export function readLeadGbpGridScanRow(
+  row: Record<string, unknown>,
+): LeadGbpGridScan | null
 export function latestGbpGridScan(embed: unknown): LeadGbpGridScan | null
 export function gbpGridMetrics(points: readonly GbpGridPoint[]): GbpGridMetrics
-export function gbpGridPendingPoints(points: readonly GbpGridPoint[], limit: number): GbpGridPoint[]
+export function gbpGridPendingPoints(
+  points: readonly GbpGridPoint[],
+  limit: number,
+): GbpGridPoint[]
 ```
 
 - [ ] Implementar `gbpGridPoints` com espaçamento `(2 * radiusKm) / (size - 1)`, `KM_PER_DEG_LAT = 111.32` e longitude corrigida por `cos(latitude em radianos)`. Linha 0 é o norte e coluna 0 é o oeste, para que a matriz se leia como o mapa. Todos os pontos nascem `pending`, com `position` nula e `competitors` vazio.
@@ -129,12 +136,17 @@ export function gbpGridPendingPoints(points: readonly GbpGridPoint[], limit: num
 ### Task 3: Coleta de um ponto no SerpAPI
 
 **Files:**
+
 - Modify: `lib/serpapi/google-maps-rank.ts`
 
 **Interfaces:**
 
 ```ts
-export function serpApiMapsLl(latitude: number, longitude: number, zoom?: number): string
+export function serpApiMapsLl(
+  latitude: number,
+  longitude: number,
+  zoom?: number,
+): string
 
 export type SerpApiGridPointResult =
   | { status: "ok"; position: number | null; competitors: GbpRankCompetitor[] }
@@ -156,6 +168,7 @@ export async function fetchSerpApiGridPoint(input: {
 ### Task 4: Validações
 
 **Files:**
+
 - Create: `lib/validations/lead-gbp-grid.ts`
 
 **Interfaces:**
@@ -178,6 +191,7 @@ export function readPollGbpGridScanFields(formData: FormData): unknown
 ### Task 5: Iniciar o scan
 
 **Files:**
+
 - Create: `app/actions/leads/start-gbp-grid-scan.ts`
 - Modify: `app/actions/leads/index.ts`
 
@@ -192,6 +206,7 @@ export function readPollGbpGridScanFields(formData: FormData): unknown
 ### Task 6: Processar a malha em lotes
 
 **Files:**
+
 - Create: `app/actions/leads/poll-gbp-grid-scan.ts`
 - Modify: `app/actions/leads/index.ts`
 
@@ -207,6 +222,7 @@ export function readPollGbpGridScanFields(formData: FormData): unknown
 ### Task 7: Carregar o scan mais recente
 
 **Files:**
+
 - Modify: `app/actions/leads/gbp-access.ts`
 
 - [ ] Acrescentar ao `GBP_SELECT` o embed `lead_gbp_grid_scans(...)` com as colunas do scan, ordenado por `captured_at desc` e limitado a um por perfil.
@@ -215,6 +231,7 @@ export function readPollGbpGridScanFields(formData: FormData): unknown
 ### Task 8: Mapa da malha
 
 **Files:**
+
 - Create: `components/custom/LeadGbpPanel/LeadGbpGridMap.tsx`
 
 - [ ] Montar o mapa com o carregador de `lib/google-maps/` e os estilos de `map-styles.ts`, no mesmo formato de `BriefingServiceRadiusMapCanvas`: referência ao contêiner, instância guardada em ref e limpeza no desmonte.
@@ -225,6 +242,7 @@ export function readPollGbpGridScanFields(formData: FormData): unknown
 ### Task 9: Controles no bloco de ranking
 
 **Files:**
+
 - Modify: `components/custom/LeadGbpPanel/LeadGbpRankBlock.tsx`
 
 - [ ] Acrescentar uma seção expansível com seletor de keyword — limitado a `profile.rank_keywords` —, seletor de tamanho entre `GBP_GRID_SIZES` e campo de raio entre 1 e 25 km.
@@ -236,6 +254,7 @@ export function readPollGbpGridScanFields(formData: FormData): unknown
 ### Task 10: Revisão estrutural sem execução automatizada
 
 **Files:**
+
 - Review: todos os arquivos alterados nesta entrega
 
 - [ ] Conferir que nenhum caminho reprocessa ponto já `done`, inclusive no retry e no `partial`.

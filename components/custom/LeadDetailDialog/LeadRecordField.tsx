@@ -1,7 +1,9 @@
 import type { IconType } from "react-icons"
 import { LeadIconWell } from "./LeadIconWell"
 
-export function hrefForWebsite(value: string | null | undefined): string | null {
+export function hrefForWebsite(
+  value: string | null | undefined,
+): string | null {
   if (!value) return null
   const trimmed = value.trim()
   if (!trimmed) return null
@@ -24,22 +26,20 @@ export function LeadRecordField({
   const display = value?.trim() ? value.trim() : "—"
   const link = href?.trim() ? href.trim() : null
   const external =
-    link !== null &&
-    !link.startsWith("mailto:") &&
-    !link.startsWith("tel:")
+    link !== null && !link.startsWith("mailto:") && !link.startsWith("tel:")
 
   return (
     <div className="flex min-w-0 items-start gap-2.5">
       <LeadIconWell icon={icon} />
       <div className="min-w-0">
-        <p className="font-sans text-caption text-fg-muted">{label}</p>
-        <p className="truncate font-sans text-body-sm font-medium text-fg">
+        <p className="text-xs/relaxed text-muted-foreground">{label}</p>
+        <p className="truncate text-xs/relaxed font-medium text-foreground">
           {link && value?.trim() ? (
             <a
               href={link}
               target={external ? "_blank" : undefined}
               rel={external ? "noreferrer" : undefined}
-              className="text-accent underline-offset-2 hover:underline"
+              className="text-primary underline-offset-2 hover:underline"
             >
               {display}
             </a>

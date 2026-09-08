@@ -18,11 +18,11 @@ Permitir que o time interno (quem gerencia o portal do cliente) acompanhe o pree
 
 ## Step state
 
-| Estado | Regra |
-|--------|--------|
-| `empty` | Sem row em `client_briefing_steps` |
-| `in_progress` | Row sem `completed_at` |
-| `completed` | Row com `completed_at` |
+| Estado        | Regra                              |
+| ------------- | ---------------------------------- |
+| `empty`       | Sem row em `client_briefing_steps` |
+| `in_progress` | Row sem `completed_at`             |
+| `completed`   | Row com `completed_at`             |
 
 Status da lista permanece `deriveBriefingListStatus(finalizedAt, contentUpdatedAt)`.
 

@@ -53,15 +53,15 @@ function AssetLink({
   }, [canOpen, clientId, asset.storagePath])
 
   return (
-    <div className="flex flex-col gap-1 rounded-lg bg-canvas px-3 py-2">
-      <p className="font-sans text-body-sm font-medium text-fg">
+    <div className="flex flex-col gap-1 rounded-lg bg-background px-3 py-2">
+      <p className="text-xs/relaxed font-medium text-foreground">
         {asset.fileName}
       </p>
-      <p className="font-sans text-caption text-fg-muted">
+      <p className="text-xs/relaxed text-muted-foreground">
         {asset.mimeType} · {Math.round(asset.sizeBytes / 1024)} KB
       </p>
       {loading ? (
-        <span className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted">
+        <span className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground">
           <RiLoader4Line size={14} aria-hidden className="animate-spin" />
           Gerando link…
         </span>
@@ -71,14 +71,14 @@ function AssetLink({
           href={url}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1 font-sans text-caption font-medium text-accent"
+          className="inline-flex items-center gap-1 text-xs/relaxed font-medium text-primary"
         >
           Abrir
           <RiExternalLinkLine size={14} aria-hidden />
         </a>
       ) : null}
       {error ? (
-        <p role="alert" className="font-sans text-caption text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}
@@ -97,17 +97,13 @@ export function BriefingReviewWebsite({
         <BriefingReviewField
           label="Logo"
           value={
-            payload.logoStatus
-              ? LOGO_STATUS_LABELS[payload.logoStatus]
-              : ""
+            payload.logoStatus ? LOGO_STATUS_LABELS[payload.logoStatus] : ""
           }
         />
         <BriefingReviewField
           label="Política de cores"
           value={
-            payload.colorPolicy
-              ? COLOR_POLICY_LABELS[payload.colorPolicy]
-              : ""
+            payload.colorPolicy ? COLOR_POLICY_LABELS[payload.colorPolicy] : ""
           }
         />
       </BriefingReviewSection>
@@ -164,7 +160,10 @@ export function BriefingReviewWebsite({
         <BriefingReviewChips label="Links" items={payload.assetLinks} />
       </BriefingReviewSection>
       <BriefingReviewSection title="Referências">
-        <BriefingReviewChips label="Sites que gostam" items={payload.likedSites} />
+        <BriefingReviewChips
+          label="Sites que gostam"
+          items={payload.likedSites}
+        />
         <BriefingReviewChips
           label="Sites que não gostam"
           items={payload.dislikedSites}

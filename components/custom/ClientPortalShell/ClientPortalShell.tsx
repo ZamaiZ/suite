@@ -3,9 +3,9 @@
 import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiShieldKeyholeLine } from "react-icons/ri"
-import { ThemeToggle } from "@/components/ui/ThemeToggle"
+import { ThemeToggle } from "@/components/custom/ThemeToggle"
 import { APP_NAME } from "@/lib/brand"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { ClientPortalShellProps } from "./ClientPortalShell.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -100,11 +100,14 @@ export function ClientPortalShell({
     <LazyMotion features={domAnimation} strict>
       <div
         className={cn(
-          "relative min-h-dvh bg-canvas",
+          "relative min-h-dvh bg-background",
           isWorkspace ? "overflow-x-hidden" : "overflow-hidden",
         )}
       >
-        <div aria-hidden className="pointer-events-none absolute inset-0 select-none">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 select-none"
+        >
           <m.div
             variants={V.glowA}
             initial="hidden"
@@ -132,7 +135,7 @@ export function ClientPortalShell({
             variants={V.brand}
             initial="hidden"
             animate="visible"
-            className="font-display text-body-sm font-semibold tracking-widest text-fg-muted uppercase select-none"
+            className="font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none"
           >
             {APP_NAME}
           </m.span>
@@ -167,11 +170,11 @@ export function ClientPortalShell({
                 animate="visible"
                 className="flex items-center gap-2"
               >
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface px-3 py-1 font-sans text-caption font-medium text-fg-muted shadow-card">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs/relaxed font-medium text-muted-foreground shadow-xs">
                   <RiShieldKeyholeLine
                     size={12}
                     aria-hidden
-                    className="text-accent"
+                    className="text-primary"
                   />
                   Área do cliente
                 </span>
@@ -182,8 +185,8 @@ export function ClientPortalShell({
                 initial="hidden"
                 animate="visible"
                 className={cn(
-                  "font-display font-semibold tracking-display leading-display text-fg",
-                  isWorkspace ? "text-title" : "text-display",
+                  "font-heading font-semibold tracking-tight leading-tight text-foreground",
+                  isWorkspace ? "text-xl" : "text-2xl",
                 )}
               >
                 {title}
@@ -193,7 +196,7 @@ export function ClientPortalShell({
                 variants={V.desc}
                 initial="hidden"
                 animate="visible"
-                className="-mt-4 font-sans text-body leading-body text-fg-secondary"
+                className="-mt-4 text-sm leading-normal text-muted-foreground"
               >
                 {description}
               </m.p>
@@ -210,7 +213,7 @@ export function ClientPortalShell({
               </m.div>
             ) : (
               <m.div variants={V.card} initial="hidden" animate="visible">
-                <div className="relative overflow-hidden rounded-xl border border-border bg-surface p-6 shadow-card">
+                <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-xs">
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"

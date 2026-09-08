@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   DATAFORSEO_OPERATIONS,
   dataForSeoOperationCost,
@@ -95,13 +95,13 @@ export function ToolsSettings({
           className="mx-auto flex max-w-6xl flex-col gap-6"
         >
           <m.header variants={fadeUp} className="flex flex-col gap-1">
-            <p className="font-sans text-caption font-medium uppercase tracking-widest text-fg-muted">
+            <p className="text-xs/relaxed font-medium uppercase tracking-widest text-muted-foreground">
               Configurações
             </p>
-            <h1 className="font-display text-display font-semibold text-fg">
+            <h1 className="font-heading text-2xl font-semibold text-foreground">
               Ferramentas
             </h1>
-            <p className="max-w-3xl font-sans text-body-sm text-fg-secondary">
+            <p className="max-w-3xl text-xs/relaxed text-muted-foreground">
               O DataForSEO é a fonte de todas as coletas da auditoria. Saldo,
               consumo e preços vêm da própria conta — nada aqui é estimativa
               gravada no código.
@@ -111,14 +111,16 @@ export function ToolsSettings({
           {!configured ? (
             <m.div
               variants={fadeUp}
-              className="flex items-start gap-2 rounded-xl border border-border bg-surface p-4 shadow-card"
+              className="flex items-start gap-2 rounded-xl border border-border bg-card p-4 shadow-xs"
             >
               <RiAlertLine aria-hidden className="mt-0.5 size-4 text-warning" />
-              <p className="font-sans text-body-sm text-fg-secondary">
+              <p className="text-xs/relaxed text-muted-foreground">
                 Credencial ausente. Defina{" "}
-                <code className="font-mono text-caption">DATAFORSEO_LOGIN</code>{" "}
+                <code className="font-mono text-xs/relaxed">
+                  DATAFORSEO_LOGIN
+                </code>{" "}
                 e{" "}
-                <code className="font-mono text-caption">
+                <code className="font-mono text-xs/relaxed">
                   DATAFORSEO_PASSWORD
                 </code>{" "}
                 para liberar as coletas.
@@ -127,7 +129,7 @@ export function ToolsSettings({
           ) : null}
 
           {errorMessage ? (
-            <m.p variants={fadeUp} className="font-sans text-body-sm text-danger">
+            <m.p variants={fadeUp} className="text-xs/relaxed text-destructive">
               {errorMessage}
             </m.p>
           ) : null}
@@ -136,11 +138,9 @@ export function ToolsSettings({
             <>
               <m.section
                 variants={fadeUp}
-                className="rounded-xl border border-border bg-surface p-4 shadow-card sm:p-6"
+                className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
               >
-                <h2 className="font-sans text-body font-semibold text-fg">
-                  Saldo
-                </h2>
+                <h2 className="text-sm font-semibold text-foreground">Saldo</h2>
                 <dl className="mt-3 grid gap-4 sm:grid-cols-3">
                   <Stat
                     label="Disponível"
@@ -174,12 +174,12 @@ export function ToolsSettings({
 
               <m.section
                 variants={fadeUp}
-                className="rounded-xl border border-border bg-surface p-4 shadow-card sm:p-6"
+                className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
               >
-                <h2 className="font-sans text-body font-semibold text-fg">
+                <h2 className="text-sm font-semibold text-foreground">
                   Uso e limites
                 </h2>
-                <p className="mt-1 font-sans text-caption text-fg-muted">
+                <p className="mt-1 text-xs/relaxed text-muted-foreground">
                   O limite por minuto é o que trava uma malha grande.
                 </p>
                 <div className="mt-4 grid gap-6 lg:grid-cols-2">
@@ -190,25 +190,30 @@ export function ToolsSettings({
 
               <m.section
                 variants={fadeUp}
-                className="rounded-xl border border-border bg-surface p-4 shadow-card sm:p-6"
+                className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
               >
-                <h2 className="font-sans text-body font-semibold text-fg">
+                <h2 className="text-sm font-semibold text-foreground">
                   Calculadora
                 </h2>
-                <p className="mt-1 font-sans text-caption text-fg-muted">
+                <p className="mt-1 text-xs/relaxed text-muted-foreground">
                   Preço unitário lido da tabela da conta, não de valores fixos.
                 </p>
 
                 <div className="mt-4 flex flex-wrap items-end gap-3">
                   <label className="flex min-w-56 flex-col gap-1">
-                    <span className="font-sans text-caption text-fg-muted">
+                    <span className="text-xs/relaxed text-muted-foreground">
                       Operação
                     </span>
                     <Select
                       value={operationId}
-                      onValueChange={(value) => setOperationId(value as DataForSeoOperationId)}
+                      onValueChange={(value) =>
+                        setOperationId(value as DataForSeoOperationId)
+                      }
                     >
-                      <SelectTrigger id="dataforseo-operation" className="h-9 w-full">
+                      <SelectTrigger
+                        id="dataforseo-operation"
+                        className="w-full"
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent align="start">
@@ -222,7 +227,7 @@ export function ToolsSettings({
                   </label>
 
                   <label className="flex w-32 flex-col gap-1">
-                    <span className="font-sans text-caption text-fg-muted">
+                    <span className="text-xs/relaxed text-muted-foreground">
                       Quantidade
                     </span>
                     <Input
@@ -258,7 +263,7 @@ export function ToolsSettings({
                 ) : null}
 
                 {estimate && estimate.unitCost === null ? (
-                  <p className="mt-3 font-sans text-caption text-fg-muted">
+                  <p className="mt-3 text-xs/relaxed text-muted-foreground">
                     A conta não expõe preço para{" "}
                     <code className="font-mono">
                       {estimate.operation.api}/{estimate.operation.fnSuffix}
@@ -286,13 +291,13 @@ function Stat({
 }) {
   return (
     <div className="flex flex-col">
-      <dt className="font-sans text-caption text-fg-muted">{label}</dt>
+      <dt className="text-xs/relaxed text-muted-foreground">{label}</dt>
       <dd
         className={cn(
-          "font-sans text-body tabular-nums",
-          tone === "accent" && "font-semibold text-accent",
+          "text-sm tabular-nums",
+          tone === "accent" && "font-semibold text-primary",
           tone === "warning" && "font-semibold text-warning",
-          tone === "default" && "text-fg",
+          tone === "default" && "text-foreground",
         )}
       >
         {value}
@@ -311,8 +316,8 @@ function RateGroup({
   if (entries.length === 0) {
     return (
       <div>
-        <h3 className="font-sans text-body-sm font-medium text-fg">{title}</h3>
-        <p className="mt-2 font-sans text-caption text-fg-muted">
+        <h3 className="text-xs/relaxed font-medium text-foreground">{title}</h3>
+        <p className="mt-2 text-xs/relaxed text-muted-foreground">
           Sem dados de limite.
         </p>
       </div>
@@ -320,17 +325,17 @@ function RateGroup({
   }
   return (
     <div>
-      <h3 className="font-sans text-body-sm font-medium text-fg">{title}</h3>
+      <h3 className="text-xs/relaxed font-medium text-foreground">{title}</h3>
       <ul className="mt-2 flex flex-col gap-2">
         {entries.map((entry) => {
           const ratio = usageRatio(entry)
           return (
             <li key={entry.api} className="flex flex-col gap-1">
               <div className="flex items-baseline justify-between gap-2">
-                <span className="font-sans text-caption text-fg-secondary">
+                <span className="text-xs/relaxed text-muted-foreground">
                   {apiLabel(entry.api)}
                 </span>
-                <span className="font-sans text-caption tabular-nums text-fg-muted">
+                <span className="text-xs/relaxed tabular-nums text-muted-foreground">
                   {(entry.used ?? 0).toLocaleString("pt-BR")}
                   {entry.limit !== null
                     ? ` / ${entry.limit.toLocaleString("pt-BR")}`
@@ -338,11 +343,11 @@ function RateGroup({
                 </span>
               </div>
               {ratio !== null ? (
-                <div className="h-1 overflow-hidden rounded-full bg-hover">
+                <div className="h-1 overflow-hidden rounded-full bg-accent">
                   <div
                     className={cn(
                       "h-full rounded-full",
-                      ratio > 0.85 ? "bg-danger" : "bg-accent",
+                      ratio > 0.85 ? "bg-destructive" : "bg-primary",
                     )}
                     style={{ width: `${Math.round(ratio * 100)}%` }}
                   />

@@ -141,11 +141,7 @@ export function ClientBriefingCompanyForm({
     markComplete,
     setError,
     clearError,
-  } = useBriefingAutosave(
-    initialUpdatedAt,
-    initialCompletedAt,
-    persist,
-  )
+  } = useBriefingAutosave(initialUpdatedAt, initialCompletedAt, persist)
   useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
@@ -279,10 +275,7 @@ export function ClientBriefingCompanyForm({
   function addSocialChannel() {
     if (payload.channels.length >= DIGITAL_CHANNELS_MAX) return
     patch({
-      channels: [
-        ...payload.channels,
-        { type: "instagram", value: "" },
-      ],
+      channels: [...payload.channels, { type: "instagram", value: "" }],
     })
   }
 
@@ -347,9 +340,13 @@ export function ClientBriefingCompanyForm({
         description="Dados básicos da empresa e do responsável."
       >
         <Field>
-          <FieldLabel htmlFor="briefing-company-name">Nome da empresa</FieldLabel>
+          <FieldLabel htmlFor="briefing-company-name">
+            Nome da empresa
+          </FieldLabel>
           <InputGroup>
-            <InputGroupAddon><RiBuilding4Line size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupAddon>
+              <RiBuilding4Line size={16} aria-hidden />
+            </InputGroupAddon>
             <InputGroupInput
               id="briefing-company-name"
               value={payload.companyName}
@@ -358,9 +355,13 @@ export function ClientBriefingCompanyForm({
           </InputGroup>
         </Field>
         <Field>
-          <FieldLabel htmlFor="briefing-contact-name">Nome do responsável</FieldLabel>
+          <FieldLabel htmlFor="briefing-contact-name">
+            Nome do responsável
+          </FieldLabel>
           <InputGroup>
-            <InputGroupAddon><RiUserLine size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupAddon>
+              <RiUserLine size={16} aria-hidden />
+            </InputGroupAddon>
             <InputGroupInput
               id="briefing-contact-name"
               value={payload.contactName}
@@ -371,11 +372,17 @@ export function ClientBriefingCompanyForm({
         <Field>
           <FieldLabel htmlFor="briefing-tax-id">CNPJ ou CPF</FieldLabel>
           <InputGroup>
-            <InputGroupAddon><RiFileList3Line size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupAddon>
+              <RiFileList3Line size={16} aria-hidden />
+            </InputGroupAddon>
             <InputGroupInput
               id="briefing-tax-id"
               inputMode="numeric"
-              value={taxVariant === "cpf" ? formatCpf(payload.taxId) : formatCnpj(payload.taxId)}
+              value={
+                taxVariant === "cpf"
+                  ? formatCpf(payload.taxId)
+                  : formatCnpj(payload.taxId)
+              }
               onChange={(event) =>
                 patch({ taxId: digitsOnly(event.target.value) })
               }
@@ -393,7 +400,9 @@ export function ClientBriefingCompanyForm({
           <Field data-invalid={Boolean(postalError)}>
             <FieldLabel htmlFor="briefing-postal-code">CEP</FieldLabel>
             <InputGroup>
-              <InputGroupAddon><RiInboxLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupAddon>
+                <RiInboxLine size={16} aria-hidden />
+              </InputGroupAddon>
               <InputGroupInput
                 id="briefing-postal-code"
                 inputMode="numeric"
@@ -408,17 +417,29 @@ export function ClientBriefingCompanyForm({
                 }}
                 aria-busy={postalStatus === "loading" || undefined}
                 aria-invalid={Boolean(postalError)}
-                aria-describedby={postalError ? "briefing-postal-code-error" : undefined}
+                aria-describedby={
+                  postalError ? "briefing-postal-code-error" : undefined
+                }
               />
               {postalStatus !== "idle" ? (
                 <InputGroupAddon align="inline-end">
-                  {postalStatus === "loading" ? <RiLoader4Line aria-hidden className="animate-spin" /> : null}
-                  {postalStatus === "success" ? <RiCheckLine aria-hidden className="text-primary" /> : null}
-                  {postalStatus === "error" ? <RiCloseLine aria-hidden className="text-destructive" /> : null}
+                  {postalStatus === "loading" ? (
+                    <RiLoader4Line aria-hidden className="animate-spin" />
+                  ) : null}
+                  {postalStatus === "success" ? (
+                    <RiCheckLine aria-hidden className="text-primary" />
+                  ) : null}
+                  {postalStatus === "error" ? (
+                    <RiCloseLine aria-hidden className="text-destructive" />
+                  ) : null}
                 </InputGroupAddon>
               ) : null}
             </InputGroup>
-            {postalError ? <FieldError id="briefing-postal-code-error">{postalError}</FieldError> : null}
+            {postalError ? (
+              <FieldError id="briefing-postal-code-error">
+                {postalError}
+              </FieldError>
+            ) : null}
           </Field>
           <BriefingAddressSearch
             id="briefing-street-search"
@@ -433,44 +454,90 @@ export function ClientBriefingCompanyForm({
           <Field>
             <FieldLabel htmlFor="briefing-number">Número</FieldLabel>
             <InputGroup>
-              <InputGroupAddon><RiHashtag size={16} aria-hidden /></InputGroupAddon>
-              <InputGroupInput id="briefing-number" value={payload.number} onChange={(event) => patchAddress({ number: event.target.value })} />
+              <InputGroupAddon>
+                <RiHashtag size={16} aria-hidden />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="briefing-number"
+                value={payload.number}
+                onChange={(event) =>
+                  patchAddress({ number: event.target.value })
+                }
+              />
             </InputGroup>
           </Field>
           <Field>
-            <FieldLabel htmlFor="briefing-complement">Complemento (opcional)</FieldLabel>
+            <FieldLabel htmlFor="briefing-complement">
+              Complemento (opcional)
+            </FieldLabel>
             <InputGroup>
-              <InputGroupAddon><RiHomeGearLine size={16} aria-hidden /></InputGroupAddon>
-              <InputGroupInput id="briefing-complement" value={payload.complement} onChange={(event) => patchAddress({ complement: event.target.value })} />
+              <InputGroupAddon>
+                <RiHomeGearLine size={16} aria-hidden />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="briefing-complement"
+                value={payload.complement}
+                onChange={(event) =>
+                  patchAddress({ complement: event.target.value })
+                }
+              />
             </InputGroup>
           </Field>
         </div>
         <Field>
           <FieldLabel htmlFor="briefing-neighborhood">Bairro</FieldLabel>
           <InputGroup>
-            <InputGroupAddon><RiCommunityLine size={16} aria-hidden /></InputGroupAddon>
-            <InputGroupInput id="briefing-neighborhood" value={payload.neighborhood} onChange={(event) => patchAddress({ neighborhood: event.target.value })} />
+            <InputGroupAddon>
+              <RiCommunityLine size={16} aria-hidden />
+            </InputGroupAddon>
+            <InputGroupInput
+              id="briefing-neighborhood"
+              value={payload.neighborhood}
+              onChange={(event) =>
+                patchAddress({ neighborhood: event.target.value })
+              }
+            />
           </InputGroup>
         </Field>
         <div className="grid gap-3 sm:grid-cols-[1fr_8rem]">
           <Field>
             <FieldLabel htmlFor="briefing-city">Cidade</FieldLabel>
             <InputGroup>
-              <InputGroupAddon><RiBuilding2Line size={16} aria-hidden /></InputGroupAddon>
-              <InputGroupInput id="briefing-city" value={payload.city} onChange={(event) => patchAddress({ city: event.target.value })} />
+              <InputGroupAddon>
+                <RiBuilding2Line size={16} aria-hidden />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="briefing-city"
+                value={payload.city}
+                onChange={(event) => patchAddress({ city: event.target.value })}
+              />
             </InputGroup>
           </Field>
           <Field>
             <FieldLabel htmlFor="briefing-state">UF</FieldLabel>
             <Combobox
               items={STATE_ITEMS}
-              value={STATE_ITEMS.find((item) => item.value === payload.stateCode) ?? null}
-              onValueChange={(item) => patchAddress({ stateCode: item?.value ?? "" })}
+              value={
+                STATE_ITEMS.find((item) => item.value === payload.stateCode) ??
+                null
+              }
+              onValueChange={(item) =>
+                patchAddress({ stateCode: item?.value ?? "" })
+              }
               itemToStringLabel={(item) => item.label}
-              isItemEqualToValue={(item, selected) => item.value === selected.value}
+              isItemEqualToValue={(item, selected) =>
+                item.value === selected.value
+              }
             >
-              <ComboboxInput id="briefing-state" placeholder="UF" showClear className="w-full">
-                <InputGroupAddon align="inline-start"><RiFlagLine size={16} aria-hidden /></InputGroupAddon>
+              <ComboboxInput
+                id="briefing-state"
+                placeholder="UF"
+                showClear
+                className="w-full"
+              >
+                <InputGroupAddon align="inline-start">
+                  <RiFlagLine size={16} aria-hidden />
+                </InputGroupAddon>
               </ComboboxInput>
               <ComboboxContent>
                 <ComboboxEmpty>Nenhum estado encontrado.</ComboboxEmpty>
@@ -479,7 +546,9 @@ export function ClientBriefingCompanyForm({
                     <ComboboxItem key={item.value} value={item}>
                       <span className="flex min-w-0 flex-col">
                         <span>{item.label}</span>
-                        <span className="text-muted-foreground">{item.description}</span>
+                        <span className="text-muted-foreground">
+                          {item.description}
+                        </span>
                       </span>
                     </ComboboxItem>
                   ))}
@@ -506,23 +575,46 @@ export function ClientBriefingCompanyForm({
           <Field>
             <FieldLabel htmlFor="briefing-phone">Telefone principal</FieldLabel>
             <InputGroup>
-              <InputGroupAddon><RiPhoneLine size={16} aria-hidden /></InputGroupAddon>
-              <InputGroupInput id="briefing-phone" type="tel" inputMode="tel" value={formatPhone(payload.phone)} onChange={(event) => patch({ phone: event.target.value })} />
+              <InputGroupAddon>
+                <RiPhoneLine size={16} aria-hidden />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="briefing-phone"
+                type="tel"
+                inputMode="tel"
+                value={formatPhone(payload.phone)}
+                onChange={(event) => patch({ phone: event.target.value })}
+              />
             </InputGroup>
           </Field>
           <Field>
             <FieldLabel htmlFor="briefing-whatsapp">WhatsApp</FieldLabel>
             <InputGroup>
-              <InputGroupAddon><RiWhatsappLine size={16} aria-hidden /></InputGroupAddon>
-              <InputGroupInput id="briefing-whatsapp" type="tel" inputMode="tel" value={formatPhone(payload.whatsapp)} onChange={(event) => patch({ whatsapp: event.target.value })} />
+              <InputGroupAddon>
+                <RiWhatsappLine size={16} aria-hidden />
+              </InputGroupAddon>
+              <InputGroupInput
+                id="briefing-whatsapp"
+                type="tel"
+                inputMode="tel"
+                value={formatPhone(payload.whatsapp)}
+                onChange={(event) => patch({ whatsapp: event.target.value })}
+              />
             </InputGroup>
           </Field>
         </div>
         <Field>
           <FieldLabel htmlFor="briefing-email">E-mail de contato</FieldLabel>
           <InputGroup>
-            <InputGroupAddon><RiMailLine size={16} aria-hidden /></InputGroupAddon>
-            <InputGroupInput id="briefing-email" type="email" value={payload.email} onChange={(event) => patch({ email: event.target.value })} />
+            <InputGroupAddon>
+              <RiMailLine size={16} aria-hidden />
+            </InputGroupAddon>
+            <InputGroupInput
+              id="briefing-email"
+              type="email"
+              value={payload.email}
+              onChange={(event) => patch({ email: event.target.value })}
+            />
           </InputGroup>
         </Field>
       </BriefingSectionCard>
@@ -539,13 +631,15 @@ export function ClientBriefingCompanyForm({
         />
 
         <div className="flex flex-col gap-3">
-          <p className="inline-flex items-center gap-1.5 font-sans text-body-sm font-medium text-fg-secondary">
-            <RiGlobalLine size={14} aria-hidden className="text-accent" />
+          <p className="inline-flex items-center gap-1.5 text-xs/relaxed font-medium text-muted-foreground">
+            <RiGlobalLine size={14} aria-hidden className="text-primary" />
             Site
           </p>
           {websiteChannel && websiteIndex >= 0 ? (
             <Field>
-              <FieldLabel htmlFor="briefing-website">Endereço do site</FieldLabel>
+              <FieldLabel htmlFor="briefing-website">
+                Endereço do site
+              </FieldLabel>
               <InputGroup>
                 <InputGroupAddon>
                   {(() => {
@@ -569,8 +663,8 @@ export function ClientBriefingCompanyForm({
           ) : null}
 
           <div className="flex items-center justify-between gap-2">
-            <p className="inline-flex items-center gap-1.5 font-sans text-body-sm font-medium text-fg-secondary">
-              <RiGlobalLine size={14} aria-hidden className="text-accent" />
+            <p className="inline-flex items-center gap-1.5 text-xs/relaxed font-medium text-muted-foreground">
+              <RiGlobalLine size={14} aria-hidden className="text-primary" />
               Redes sociais
             </p>
             <Button
@@ -585,7 +679,7 @@ export function ClientBriefingCompanyForm({
           </div>
 
           {socialChannels.length === 0 ? (
-            <p className="rounded-md border border-dashed border-border px-3 py-4 text-center font-sans text-caption text-fg-muted">
+            <p className="rounded-md border border-dashed border-border px-3 py-4 text-center text-xs/relaxed text-muted-foreground">
               Nenhuma rede informada. Adicione se quiser.
             </p>
           ) : (
@@ -598,21 +692,28 @@ export function ClientBriefingCompanyForm({
                 >
                   <Field>
                     {index === websiteIndex + 1 ? (
-                      <FieldLabel htmlFor={`briefing-channel-type-${index}`}>Tipo</FieldLabel>
+                      <FieldLabel htmlFor={`briefing-channel-type-${index}`}>
+                        Tipo
+                      </FieldLabel>
                     ) : null}
                     <Select
                       value={channel.type}
                       onValueChange={(value) => {
-                        const type = isSocialChannelType(value)
-                          ? value
-                          : (channel.type as SocialChannelType)
+                        const type =
+                          typeof value === "string" &&
+                          isSocialChannelType(value)
+                            ? value
+                            : (channel.type as SocialChannelType)
                         updateChannel(index, {
                           type: type as DigitalChannelType,
                           value: channel.value,
                         })
                       }}
                     >
-                      <SelectTrigger id={`briefing-channel-type-${index}`} className="w-full">
+                      <SelectTrigger
+                        id={`briefing-channel-type-${index}`}
+                        className="w-full"
+                      >
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -627,10 +728,14 @@ export function ClientBriefingCompanyForm({
                   </Field>
                   <Field>
                     {index === websiteIndex + 1 ? (
-                      <FieldLabel htmlFor={`briefing-channel-value-${index}`}>Link ou @perfil</FieldLabel>
+                      <FieldLabel htmlFor={`briefing-channel-value-${index}`}>
+                        Link ou @perfil
+                      </FieldLabel>
                     ) : null}
                     <InputGroup>
-                      <InputGroupAddon><ChannelIcon size={16} aria-hidden /></InputGroupAddon>
+                      <InputGroupAddon>
+                        <ChannelIcon size={16} aria-hidden />
+                      </InputGroupAddon>
                       <InputGroupInput
                         id={`briefing-channel-value-${index}`}
                         value={channel.value}
@@ -651,7 +756,11 @@ export function ClientBriefingCompanyForm({
                     onClick={() => removeChannel(index)}
                     className="sm:mb-0"
                   >
-                    <RiDeleteBinLine size={16} aria-hidden data-icon="inline-start" />
+                    <RiDeleteBinLine
+                      size={16}
+                      aria-hidden
+                      data-icon="inline-start"
+                    />
                     Remover
                   </Button>
                 </div>
@@ -664,24 +773,24 @@ export function ClientBriefingCompanyForm({
       {errorMessage ? (
         <p
           role="alert"
-          className="rounded-xl border border-danger/25 bg-danger/10 px-4 py-3 font-sans text-body-sm text-danger"
+          className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
         >
           {errorMessage}
         </p>
       ) : null}
 
       {completed ? (
-        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 font-sans text-body-sm text-success">
+        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
           Etapa concluída. Você pode continuar editando; as alterações seguem
           sendo salvas.
         </div>
       ) : null}
 
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
-        <div className="pointer-events-auto border-t border-border bg-canvas/90 backdrop-blur-md">
+        <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
           <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
             <div className="min-w-0">
-              <p className="inline-flex min-w-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
+              <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                 {saveState === "saving" || isCompleting ? (
                   <>
                     <RiLoader4Line
@@ -705,7 +814,7 @@ export function ClientBriefingCompanyForm({
                     <RiCloseLine
                       size={14}
                       aria-hidden
-                      className="text-danger"
+                      className="text-destructive"
                     />
                     Não foi possível salvar
                   </>
@@ -714,24 +823,26 @@ export function ClientBriefingCompanyForm({
                 )}
               </p>
               {!ready && missingLabels.length > 0 ? (
-                <p className="mt-0.5 truncate font-sans text-caption text-fg-secondary">
+                <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
                   Falta: {missingLabels.join(", ")}
                 </p>
               ) : null}
             </div>
             {variant === "staff" ? null : (
-            <Button
-              type="button"
-              disabled={isCompleting || !ready}
-              onClick={handleComplete}
-            >
-              {isCompleting
-                ? "Salvando..."
-                : completed
-                  ? "Continuar"
-                  : "Continuar"}
-              {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
-            </Button>
+              <Button
+                type="button"
+                disabled={isCompleting || !ready}
+                onClick={handleComplete}
+              >
+                {isCompleting
+                  ? "Salvando..."
+                  : completed
+                    ? "Continuar"
+                    : "Continuar"}
+                {completed ? (
+                  <RiCheckLine size={16} aria-hidden data-icon="inline-end" />
+                ) : null}
+              </Button>
             )}
           </div>
         </div>

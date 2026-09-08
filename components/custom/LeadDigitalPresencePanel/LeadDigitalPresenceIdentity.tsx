@@ -5,7 +5,7 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   DIGITAL_PRESENCE_IDENTITY,
   DIGITAL_PRESENCE_IDENTITY_VERDICT_LABEL,
@@ -83,13 +83,13 @@ function VerdictGroup({
             onClick={() => onChange(option)}
             className={cn(
               "inline-flex h-7 cursor-pointer items-center rounded-md border px-2",
-              "font-sans text-caption transition-[colors,transform] duration-150 ease-out",
+              "text-xs/relaxed transition-[colors,transform] duration-150 ease-out",
               "active:scale-[0.97]",
               selected
                 ? option === "issue"
                   ? "border-warning/25 bg-warning/10 text-warning"
-                  : "border-accent bg-accent/10 text-accent"
-                : "border-transparent text-fg-muted hover:text-fg",
+                  : "border-primary bg-primary/10 text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground",
               "disabled:pointer-events-none disabled:opacity-50",
             )}
           >
@@ -131,13 +131,13 @@ export function LeadDigitalPresenceIdentity({
   if (!canEdit) {
     return (
       <LeadGbpCard title={DIGITAL_PRESENCE_IDENTITY.label}>
-        <p className="font-sans text-caption text-fg-secondary">
+        <p className="text-xs/relaxed text-muted-foreground">
           {answer.verdict
             ? DIGITAL_PRESENCE_IDENTITY_VERDICT_LABEL[answer.verdict]
             : "Sem julgamento"}
         </p>
         {answer.note ? (
-          <p className="mt-1 whitespace-pre-wrap font-sans text-caption text-fg-secondary">
+          <p className="mt-1 whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
             {answer.note}
           </p>
         ) : null}
@@ -148,7 +148,7 @@ export function LeadDigitalPresenceIdentity({
   return (
     <LeadGbpCard title={DIGITAL_PRESENCE_IDENTITY.label}>
       <div className="flex items-start justify-between gap-3">
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Consistência da marca entre as redes — não o layout do site.
         </p>
         <VerdictGroup
@@ -173,7 +173,7 @@ export function LeadDigitalPresenceIdentity({
             onChange={(event) => patch({ note: event.target.value })}
             className="min-h-0 resize-y"
           />
-          <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+          <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
             {answer.note.length}/{DIGITAL_PRESENCE_REVIEW_NOTE_MAX}
           </p>
         </div>

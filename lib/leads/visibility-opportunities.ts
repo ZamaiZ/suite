@@ -56,7 +56,5 @@ export function mergeVisibilityOpportunities(input: {
   companyName: string
   city: string | null
 }): VisibilityOpportunityItem[] {
-  return visibilityOpportunitiesFromGaps(
-    visibilityGapsForSnapshot(input),
-  )
+  return visibilityOpportunitiesFromGaps(visibilityGapsForSnapshot(input))
 }

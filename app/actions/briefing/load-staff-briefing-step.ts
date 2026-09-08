@@ -16,6 +16,7 @@ import {
 import {
   emptyBrandPayload,
   parseBrandPayload,
+  type BriefingBrandPayload,
   type ProductOrService,
 } from "@/lib/briefing/brand"
 import {
@@ -42,10 +43,7 @@ import {
   deriveBriefingReviewStepState,
   type BriefingReviewStepState,
 } from "@/lib/briefing/review-step-state"
-import {
-  BRIEFING_STEPS,
-  type BriefingStepId,
-} from "@/lib/briefing/steps"
+import { BRIEFING_STEPS, type BriefingStepId } from "@/lib/briefing/steps"
 import {
   emptyWebsitePayload,
   parseWebsitePayload,

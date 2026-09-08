@@ -37,10 +37,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
 import { mergeGbpOpportunities } from "@/lib/leads/gbp-opportunities"
-import {
-  gbpGapsForProfile,
-  type LeadGbpProfile,
-} from "@/lib/leads/gbp"
+import { gbpGapsForProfile, type LeadGbpProfile } from "@/lib/leads/gbp"
 import { latestGbpCollectedAt } from "@/lib/leads/gbp-presenters"
 
 const POLL_MS = 5000
@@ -204,7 +201,8 @@ export function LeadGbpProfileCard({
   const collectingReviews = profile.jobs.some(
     (job) => job.kind === "reviews" && job.status === "queued",
   )
-  const collecting = collectingPosts || collectingReviews || actionPending || busy
+  const collecting =
+    collectingPosts || collectingReviews || actionPending || busy
   const failedJobs = profile.jobs.filter((job) => job.status === "failed")
 
   function analystFieldsDirty() {
@@ -362,165 +360,162 @@ export function LeadGbpProfileCard({
       animate="show"
       className="flex flex-col gap-3"
     >
-        <m.div
-          variants={item}
-          className="flex items-start justify-between gap-3"
-        >
-          <LeadGbpStepHeader
-            updatedAt={latestGbpCollectedAt(profile)}
-            mapsHref={mapsUri}
-            collecting={collecting}
-            canEdit={canEdit}
-            onEnrich={handleEnrich}
-          />
-          {canEdit ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                render={<Button variant="ghost" size="icon" />}
-                aria-label="Ações do perfil"
+      <m.div variants={item} className="flex items-start justify-between gap-3">
+        <LeadGbpStepHeader
+          updatedAt={latestGbpCollectedAt(profile)}
+          mapsHref={mapsUri}
+          collecting={collecting}
+          canEdit={canEdit}
+          onEnrich={handleEnrich}
+        />
+        {canEdit ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon" />}
+              aria-label="Ações do perfil"
+            >
+              <RiMore2Line size={16} aria-hidden />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-44">
+              <DropdownMenuItem
+                disabled={profile.is_primary}
+                onClick={handlePrimary}
               >
-                <RiMore2Line size={16} aria-hidden />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="min-w-44">
-                    <DropdownMenuItem
-                      disabled={profile.is_primary}
-                      onClick={handlePrimary}
-                    >
-                      <RiStarLine size={16} aria-hidden />
-                      Definir como principal
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleRefresh}>
-                      <RiRefreshLine size={16} aria-hidden />
-                      Atualizar dados do Places
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleRemove} variant="destructive">
-                      <RiDeleteBinLine size={16} aria-hidden />
-                      Remover
-                    </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : null}
-        </m.div>
-
-        {collectingPosts ? (
-          <p className="font-sans text-body-sm text-fg-secondary">
-            Coletando postagens…
-          </p>
+                <RiStarLine size={16} aria-hidden />
+                Definir como principal
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleRefresh}>
+                <RiRefreshLine size={16} aria-hidden />
+                Atualizar dados do Places
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleRemove} variant="destructive">
+                <RiDeleteBinLine size={16} aria-hidden />
+                Remover
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : null}
-        {collectingReviews ? (
-          <p className="font-sans text-body-sm text-fg-secondary">
-            Coletando avaliações…
-          </p>
-        ) : null}
-        {pollTimedOut && queuedKey ? (
-          <p className="font-sans text-body-sm text-fg-secondary">
-            Ainda coletando — abra de novo.
-          </p>
-        ) : null}
+      </m.div>
 
-        {failedJobs.map((job) => (
-          <p
-            key={job.kind}
-            role="alert"
-            className="font-sans text-body-sm text-danger"
-          >
-            {job.error_message ??
-              "Não foi possível coletar os dados. Tente novamente."}
-          </p>
-        ))}
+      {collectingPosts ? (
+        <p className="text-xs/relaxed text-muted-foreground">
+          Coletando postagens…
+        </p>
+      ) : null}
+      {collectingReviews ? (
+        <p className="text-xs/relaxed text-muted-foreground">
+          Coletando avaliações…
+        </p>
+      ) : null}
+      {pollTimedOut && queuedKey ? (
+        <p className="text-xs/relaxed text-muted-foreground">
+          Ainda coletando — abra de novo.
+        </p>
+      ) : null}
 
-        {error && notesStatus !== "error" ? (
-          <p role="alert" className="font-sans text-body-sm text-danger">
-            {error}
-          </p>
-        ) : null}
+      {failedJobs.map((job) => (
+        <p
+          key={job.kind}
+          role="alert"
+          className="text-xs/relaxed text-destructive"
+        >
+          {job.error_message ??
+            "Não foi possível coletar os dados. Tente novamente."}
+        </p>
+      ))}
 
+      {error && notesStatus !== "error" ? (
+        <p role="alert" className="text-xs/relaxed text-destructive">
+          {error}
+        </p>
+      ) : null}
+
+      <m.div variants={item}>
+        <LeadGbpIdentity
+          profile={profile}
+          profiles={profiles}
+          onSelectProfile={onSelectProfile}
+        />
+      </m.div>
+
+      <m.div variants={item}>
+        <LeadGbpSummaryCards profile={profile} />
+      </m.div>
+
+      <m.div
+        variants={container}
+        className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
+      >
         <m.div variants={item}>
-          <LeadGbpIdentity
-            profile={profile}
-            profiles={profiles}
-            onSelectProfile={onSelectProfile}
+          <LeadGbpInformationCard profile={profile} gaps={gaps} />
+        </m.div>
+        <m.div variants={item}>
+          <LeadGbpReviewsBlock
+            reviews={profile.reviews}
+            rating={snapshot.rating}
+            ratingCount={snapshot.userRatingCount}
+            distribution={enrichment?.ratingDistribution ?? null}
           />
         </m.div>
-
         <m.div variants={item}>
-          <LeadGbpSummaryCards profile={profile} />
+          <LeadGbpPostsBlock posts={profile.posts} />
         </m.div>
+      </m.div>
 
-        <m.div
-          variants={container}
-          className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
-        >
-          <m.div variants={item}>
-            <LeadGbpInformationCard profile={profile} gaps={gaps} />
-          </m.div>
-          <m.div variants={item}>
-            <LeadGbpReviewsBlock
-              reviews={profile.reviews}
-              rating={snapshot.rating}
-              ratingCount={snapshot.userRatingCount}
-              distribution={enrichment?.ratingDistribution ?? null}
-            />
-          </m.div>
-          <m.div variants={item}>
-            <LeadGbpPostsBlock posts={profile.posts} />
-          </m.div>
-        </m.div>
+      <m.div variants={item}>
+        <LeadGbpQnaBlock qna={profile.qna} />
+      </m.div>
 
+      <m.div
+        variants={container}
+        className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
+      >
         <m.div variants={item}>
-          <LeadGbpQnaBlock qna={profile.qna} />
+          <LeadGbpRankBlock
+            profileId={profile.id}
+            keywords={profile.rank_keywords}
+            checks={profile.rankChecks}
+            gridScan={profile.gridScan}
+            canEdit={canEdit}
+            pending={actionPending || busy}
+            onSave={handleSaveRankKeywords}
+            onCheck={handleCheckRanking}
+          />
         </m.div>
-
-        <m.div
-          variants={container}
-          className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3"
-        >
-          <m.div variants={item}>
-            <LeadGbpRankBlock
-              profileId={profile.id}
-              keywords={profile.rank_keywords}
-              checks={profile.rankChecks}
-              gridScan={profile.gridScan}
-              canEdit={canEdit}
-              pending={actionPending || busy}
-              onSave={handleSaveRankKeywords}
-              onCheck={handleCheckRanking}
-            />
-          </m.div>
-          <m.div variants={item}>
-            <LeadGbpOpportunitiesCard items={opportunities} />
-          </m.div>
-          <m.div variants={item} className="md:col-span-2 xl:col-span-1">
-            <LeadGbpNotesCard
-              id={`gbp-notes-${profile.id}`}
-              profileId={profile.id}
-              initialValue={profile.notes ?? ""}
-              canEdit={canEdit}
-              status={notesStatus}
-              errorMessage={notesStatus === "error" ? error : null}
-              onDraftChange={handleDraftChange}
-              onRetry={() => {
-                void persistNotes()
-              }}
-            />
-          </m.div>
-          <m.div variants={item} className="md:col-span-2 xl:col-span-1">
-            <LeadGbpNotesCard
-              id={`gbp-reputation-${profile.id}`}
-              profileId={profile.id}
-              initialValue={profile.reputation_note ?? ""}
-              canEdit={canEdit}
-              status={notesStatus}
-              errorMessage={notesStatus === "error" ? error : null}
-              onDraftChange={handleReputationDraftChange}
-              onRetry={() => {
-                void persistNotes()
-              }}
-              title="Leitura da reputação"
-              placeholder="Sentimento das avaliações, temas recorrentes, o que os números não contam"
-            />
-          </m.div>
+        <m.div variants={item}>
+          <LeadGbpOpportunitiesCard items={opportunities} />
         </m.div>
+        <m.div variants={item} className="md:col-span-2 xl:col-span-1">
+          <LeadGbpNotesCard
+            id={`gbp-notes-${profile.id}`}
+            profileId={profile.id}
+            initialValue={profile.notes ?? ""}
+            canEdit={canEdit}
+            status={notesStatus}
+            errorMessage={notesStatus === "error" ? error : null}
+            onDraftChange={handleDraftChange}
+            onRetry={() => {
+              void persistNotes()
+            }}
+          />
+        </m.div>
+        <m.div variants={item} className="md:col-span-2 xl:col-span-1">
+          <LeadGbpNotesCard
+            id={`gbp-reputation-${profile.id}`}
+            profileId={profile.id}
+            initialValue={profile.reputation_note ?? ""}
+            canEdit={canEdit}
+            status={notesStatus}
+            errorMessage={notesStatus === "error" ? error : null}
+            onDraftChange={handleReputationDraftChange}
+            onRetry={() => {
+              void persistNotes()
+            }}
+            title="Leitura da reputação"
+            placeholder="Sentimento das avaliações, temas recorrentes, o que os números não contam"
+          />
+        </m.div>
+      </m.div>
     </m.div>
   )
 }

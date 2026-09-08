@@ -3,7 +3,7 @@
 import { useRef, useState } from "react"
 import { RiUploadCloud2Line } from "react-icons/ri"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { LEAD_SPREADSHEET_ACCEPT } from "@/lib/leads/spreadsheet-model"
 
 export function LeadImportDropzone({
@@ -50,7 +50,7 @@ export function LeadImportDropzone({
         "transition-[border-color,background-color] duration-150 ease-out",
         dragOver && !disabled
           ? "border-primary bg-primary/10"
-          : "border-border bg-canvas",
+          : "border-border bg-background",
         disabled && "pointer-events-none opacity-50",
       )}
     >
@@ -60,7 +60,7 @@ export function LeadImportDropzone({
       >
         <RiUploadCloud2Line size={20} />
       </span>
-      <p className="font-sans text-body-sm font-semibold text-fg">
+      <p className="text-xs/relaxed font-semibold text-foreground">
         Arraste arquivos .xlsx aqui ou
       </p>
       <div className="mt-3">
@@ -73,7 +73,7 @@ export function LeadImportDropzone({
           Selecionar arquivos
         </Button>
       </div>
-      <p className="mt-3 font-sans text-caption text-fg-muted">
+      <p className="mt-3 text-xs/relaxed text-muted-foreground">
         Vários arquivos. Máximo 1 MB e 500 linhas por arquivo. Até 5 arquivos.
       </p>
       <input

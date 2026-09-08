@@ -39,15 +39,15 @@ export function LeadDiagnosisStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiFileList3Line} />
         <div className="min-w-0">
-          <h2 className="font-sans text-caption font-semibold text-fg">
+          <h2 className="text-xs/relaxed font-semibold text-foreground">
             Diagnóstico
           </h2>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Compila as quatro etapas em um relatório editável e PDF para a
             reunião.
           </p>
           {stale ? (
-            <p className="mt-1 font-sans text-caption text-warning">
+            <p className="mt-1 text-xs/relaxed text-warning">
               As coletas mudaram — recompile os fatos (o texto editado é
               preservado).
             </p>
@@ -56,17 +56,13 @@ export function LeadDiagnosisStepHeader({
       </div>
       <div className="flex flex-wrap items-center justify-end gap-2">
         {updatedAt ? (
-          <span className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted">
+          <span className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground">
             <RiCheckLine size={14} aria-hidden className="text-success" />
             Atualizado {formatRelativeShort(updatedAt)}
           </span>
         ) : null}
         {hasExport ? (
-          <Button
-            type="button"
-            variant="ghost"
-            onClick={onOpenPdf}
-          >
+          <Button type="button" variant="ghost" onClick={onOpenPdf}>
             <RiExternalLinkLine data-icon="inline-start" aria-hidden />
             Abrir PDF
           </Button>

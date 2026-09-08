@@ -25,9 +25,7 @@ export function BriefingReviewAudience({
         <BriefingReviewField
           label="Sexo"
           value={
-            payload.personaSex
-              ? PERSONA_SEX_LABELS[payload.personaSex]
-              : ""
+            payload.personaSex ? PERSONA_SEX_LABELS[payload.personaSex] : ""
           }
         />
         <BriefingReviewField label="Cidade" value={payload.personaCity} />

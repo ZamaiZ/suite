@@ -34,11 +34,7 @@ export function BriefingReviewCompany({ payload }: BriefingReviewCompanyProps) {
         <BriefingReviewField label="Endereço" value={address} />
         <BriefingReviewField
           label="CEP"
-          value={
-            payload.postalCode
-              ? formatPostalCode(payload.postalCode)
-              : ""
-          }
+          value={payload.postalCode ? formatPostalCode(payload.postalCode) : ""}
         />
       </BriefingReviewSection>
       <BriefingReviewSection title="Contatos">
@@ -52,7 +48,10 @@ export function BriefingReviewCompany({ payload }: BriefingReviewCompanyProps) {
         />
         <BriefingReviewField label="E-mail" value={payload.email} />
       </BriefingReviewSection>
-      <BriefingReviewChips label="Áreas atendidas" items={payload.servedAreas} />
+      <BriefingReviewChips
+        label="Áreas atendidas"
+        items={payload.servedAreas}
+      />
       <BriefingReviewSection title="Horários">
         {hours.map((day) => {
           const label =
@@ -62,9 +61,7 @@ export function BriefingReviewCompany({ payload }: BriefingReviewCompanyProps) {
             <BriefingReviewField
               key={day.weekday}
               label={label}
-              value={
-                day.closed ? "Fechado" : `${day.open} – ${day.close}`
-              }
+              value={day.closed ? "Fechado" : `${day.open} – ${day.close}`}
             />
           )
         })}

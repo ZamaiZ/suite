@@ -16,7 +16,8 @@ export type CreateUserState =
 
 export async function createUser(formData: FormData): Promise<CreateUserState> {
   const headerStore = await headers()
-  const ip = headerStore.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown"
+  const ip =
+    headerStore.get("x-forwarded-for")?.split(",")[0].trim() ?? "unknown"
 
   const allowed = await checkRateLimit("signup", ip)
   if (!allowed) {
@@ -27,8 +28,8 @@ export async function createUser(formData: FormData): Promise<CreateUserState> {
   }
 
   const parsed = createUserSchema.safeParse({
-    name:     formData.get("name"),
-    email:    formData.get("email"),
+    name: formData.get("name"),
+    email: formData.get("email"),
     password: formData.get("password"),
   })
 
@@ -53,7 +54,8 @@ export async function createUser(formData: FormData): Promise<CreateUserState> {
   if (error || !data.user) {
     return {
       status: "error",
-      message: "Não foi possível criar a conta. Verifique os dados e tente novamente.",
+      message:
+        "Não foi possível criar a conta. Verifique os dados e tente novamente.",
     }
   }
 

@@ -40,7 +40,10 @@ export const startGbpGridScanSchema = z.object({
   radius_km: z
     .number()
     .min(GBP_GRID_RADIUS_KM_MIN, `Raio mínimo de ${GBP_GRID_RADIUS_KM_MIN} km.`)
-    .max(GBP_GRID_RADIUS_KM_MAX, `Raio máximo de ${GBP_GRID_RADIUS_KM_MAX} km.`),
+    .max(
+      GBP_GRID_RADIUS_KM_MAX,
+      `Raio máximo de ${GBP_GRID_RADIUS_KM_MAX} km.`,
+    ),
   mode: z.enum(["live", "queued"], "Modo de execução inválido."),
 })
 

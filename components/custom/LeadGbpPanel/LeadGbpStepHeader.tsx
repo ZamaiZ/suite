@@ -29,17 +29,17 @@ export function LeadGbpStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiMapPin2Line} />
         <div className="min-w-0">
-          <h2 className="font-sans text-caption font-semibold text-fg">
+          <h2 className="text-xs/relaxed font-semibold text-foreground">
             Perfil no Google
           </h2>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Presença, reputação e posicionamento local da empresa.
           </p>
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-end gap-2">
         {updatedAt ? (
-          <span className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted">
+          <span className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground">
             <RiCheckLine size={14} aria-hidden className="text-success" />
             Atualizado {formatRelativeShort(updatedAt)}
           </span>
@@ -52,7 +52,11 @@ export function LeadGbpStepHeader({
             onClick={onEnrich}
           >
             {collecting ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : (
               <RiRefreshLine data-icon="inline-start" aria-hidden />
             )}

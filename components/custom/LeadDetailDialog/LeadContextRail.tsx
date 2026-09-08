@@ -1,7 +1,12 @@
-import { RiCalendarEventLine, RiMailLine, RiPhoneLine, RiUserLine } from "react-icons/ri"
+import {
+  RiCalendarEventLine,
+  RiMailLine,
+  RiPhoneLine,
+  RiUserLine,
+} from "react-icons/ri"
 import { LeadTagChips } from "@/components/custom/LeadTagField"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   formatDateTimeShort,
   getTimestampUrgency,
@@ -13,20 +18,20 @@ import type { LeadDetail } from "@/app/actions/leads"
 import { LeadIconWell } from "./LeadIconWell"
 
 const FOLLOW_UP_TONE: Record<TimestampUrgency, string> = {
-  overdue: "text-danger",
+  overdue: "text-destructive",
   soon: "text-warning",
-  later: "text-accent",
+  later: "text-primary",
 }
 
 const FOLLOW_UP_WELL: Record<TimestampUrgency, string> = {
-  overdue: "text-danger",
+  overdue: "text-destructive",
   soon: "text-warning",
-  later: "text-accent",
+  later: "text-primary",
 }
 
 function SectionLabel({ children }: { children: string }) {
   return (
-    <p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">
+    <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
       {children}
     </p>
   )
@@ -96,12 +101,12 @@ export function LeadContextRail({
                 {item.href ? (
                   <a
                     href={item.href}
-                    className="min-w-0 truncate font-sans text-body-sm text-fg transition-colors duration-150 ease-out hover:text-accent"
+                    className="min-w-0 truncate text-xs/relaxed text-foreground transition-colors duration-150 ease-out hover:text-primary"
                   >
                     {item.value}
                   </a>
                 ) : (
-                  <span className="min-w-0 truncate font-sans text-body-sm text-fg">
+                  <span className="min-w-0 truncate text-xs/relaxed text-foreground">
                     {item.value}
                   </span>
                 )}
@@ -114,29 +119,32 @@ export function LeadContextRail({
       <section
         className={cn(
           "flex flex-col gap-2",
-          contacts.length > 0 && "border-t border-border-subtle pt-4",
+          contacts.length > 0 && "border-t border-border/70 pt-4",
         )}
       >
         <SectionLabel>Última interação</SectionLabel>
         {lastAt ? (
           <div className="flex min-w-0 items-center gap-2">
-            <LeadIconWell icon={RiCalendarEventLine} className="text-fg-secondary" />
-            <span className="min-w-0 truncate font-sans text-body-sm text-fg">
+            <LeadIconWell
+              icon={RiCalendarEventLine}
+              className="text-muted-foreground"
+            />
+            <span className="min-w-0 truncate text-xs/relaxed text-foreground">
               {formatDateTimeShort(lastAt)}
             </span>
             {isToday ? (
-              <span className="shrink-0 rounded-md bg-success/10 px-1.5 py-0.5 font-sans text-caption font-medium text-success">
+              <span className="shrink-0 rounded-md bg-success/10 px-1.5 py-0.5 text-xs/relaxed font-medium text-success">
                 Hoje
               </span>
             ) : null}
           </div>
         ) : (
-          <p className="font-sans text-body-sm text-fg-muted">Nenhuma ainda</p>
+          <p className="text-xs/relaxed text-muted-foreground">Nenhuma ainda</p>
         )}
       </section>
 
       {followUpAt && followUpUrgency ? (
-        <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+        <section className="flex flex-col gap-2 border-t border-border/70 pt-4">
           <SectionLabel>
             {detail.lead.closing_stage === "standby"
               ? "Próximo contato"
@@ -149,7 +157,7 @@ export function LeadContextRail({
             />
             <span
               className={cn(
-                "min-w-0 truncate font-sans text-body-sm",
+                "min-w-0 truncate text-xs/relaxed",
                 FOLLOW_UP_TONE[followUpUrgency],
               )}
             >
@@ -160,7 +168,7 @@ export function LeadContextRail({
       ) : null}
 
       {meetingAt && meetingUrgency ? (
-        <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+        <section className="flex flex-col gap-2 border-t border-border/70 pt-4">
           <SectionLabel>Reunião de fechamento</SectionLabel>
           <div className="flex min-w-0 items-center gap-2">
             <LeadIconWell
@@ -169,7 +177,7 @@ export function LeadContextRail({
             />
             <span
               className={cn(
-                "min-w-0 truncate font-sans text-body-sm",
+                "min-w-0 truncate text-xs/relaxed",
                 FOLLOW_UP_TONE[meetingUrgency],
               )}
             >
@@ -179,36 +187,38 @@ export function LeadContextRail({
         </section>
       ) : null}
 
-      <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+      <section className="flex flex-col gap-2 border-t border-border/70 pt-4">
         <SectionLabel>Responsável</SectionLabel>
         {assigneeName ? (
           <div className="flex min-w-0 items-center gap-2">
             <span
               aria-hidden
-              className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-accent/10 font-sans text-caption font-semibold text-accent"
+              className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs/relaxed font-semibold text-primary"
             >
               {assigneeInitial}
             </span>
-            <span className="min-w-0 truncate font-sans text-body-sm text-fg">
+            <span className="min-w-0 truncate text-xs/relaxed text-foreground">
               {assigneeName}
             </span>
           </div>
         ) : (
-          <p className="font-sans text-body-sm text-fg-muted">Sem responsável</p>
+          <p className="text-xs/relaxed text-muted-foreground">
+            Sem responsável
+          </p>
         )}
       </section>
 
       {closerName ? (
-        <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+        <section className="flex flex-col gap-2 border-t border-border/70 pt-4">
           <SectionLabel>Closer</SectionLabel>
           <div className="flex min-w-0 items-center gap-2">
             <span
               aria-hidden
-              className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-success/10 font-sans text-caption font-semibold text-success"
+              className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-success/10 text-xs/relaxed font-semibold text-success"
             >
               {closerInitial}
             </span>
-            <span className="min-w-0 truncate font-sans text-body-sm text-fg">
+            <span className="min-w-0 truncate text-xs/relaxed text-foreground">
               {closerName}
             </span>
           </div>
@@ -216,7 +226,7 @@ export function LeadContextRail({
       ) : null}
 
       {detail.tags.length > 0 ? (
-        <section className="flex flex-col gap-2 border-t border-border-subtle pt-4">
+        <section className="flex flex-col gap-2 border-t border-border/70 pt-4">
           <SectionLabel>Tags</SectionLabel>
           <LeadTagChips tags={detail.tags} />
         </section>
@@ -228,17 +238,17 @@ export function LeadContextRail({
 function RailSkeleton() {
   return (
     <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
-      <span className="h-16 animate-pulse rounded-md bg-hover motion-reduce:animate-none" />
+      <span className="h-16 animate-pulse rounded-md bg-accent motion-reduce:animate-none" />
       <span
-        className="h-10 animate-pulse rounded-md bg-hover motion-reduce:animate-none"
+        className="h-10 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
         style={{ animationDelay: "40ms" }}
       />
       <span
-        className="h-10 animate-pulse rounded-md bg-hover motion-reduce:animate-none"
+        className="h-10 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
         style={{ animationDelay: "80ms" }}
       />
       <span
-        className="h-10 animate-pulse rounded-md bg-hover motion-reduce:animate-none"
+        className="h-10 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
         style={{ animationDelay: "120ms" }}
       />
     </div>

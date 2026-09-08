@@ -44,6 +44,7 @@
 ### Task 1: Establish typed navigation and route boundaries
 
 **Files:**
+
 - Modify: `components/custom/navigation.ts`
 - Create: `components/custom/Showcase/Showcase.types.ts`
 - Create: `components/custom/Showcase/showcase-registry.tsx`
@@ -52,6 +53,7 @@
 - Create: `app/(protected)/showcase/[category]/page.tsx`
 
 **Interfaces:**
+
 - Produces `ShowcaseCategoryId = "actions" | "forms" | "navigation" | "overlays" | "content" | "messaging"`.
 - Produces `SHOWCASE_CATEGORIES`, each with `id`, `label`, `description`, `href`, `icon`, and `componentCount`.
 - Produces `isShowcaseCategory(value: string): value is ShowcaseCategoryId`.
@@ -67,12 +69,14 @@
 ### Task 2: Build the shared catalog frame
 
 **Files:**
+
 - Create: `components/custom/Showcase/ShowcaseOverview.tsx`
 - Create: `components/custom/Showcase/ShowcaseCategory.tsx`
 - Create: `components/custom/Showcase/ShowcaseSection.tsx`
 - Create: `components/custom/Showcase/ShowcaseDocsLink.tsx`
 
 **Interfaces:**
+
 - `ShowcaseSection({ title, description, documentationHref, composition, children, notes })` renders one accessible component section.
 - `ShowcaseCategory({ category }: { category: ShowcaseCategoryId })` selects exactly one category module and mounts one `Toaster`.
 
@@ -86,9 +90,11 @@
 ### Task 3: Implement Ações e feedback
 
 **Files:**
+
 - Create: `components/custom/Showcase/categories/ActionsShowcase.tsx`
 
 **Interfaces:**
+
 - Consumes `ShowcaseSection` and lowercase imports from `alert`, `alert-dialog`, `button`, `button-group`, `progress`, `spinner`, `toast`, `toggle`, `toggle-group`.
 - Produces `ActionsShowcase(): React.ReactNode`.
 
@@ -104,9 +110,11 @@
 ### Task 4: Implement Formulários
 
 **Files:**
+
 - Create: `components/custom/Showcase/categories/FormsShowcase.tsx`
 
 **Interfaces:**
+
 - Consumes `ShowcaseSection` and lowercase imports from `calendar`, `checkbox`, `combobox`, `field`, `input`, `input-group`, `input-otp`, `label`, `popover`, `questionnaire`, `radio-group`, `select`, `slider`, `switch`, `textarea`.
 - Produces `FormsShowcase(): React.ReactNode`.
 
@@ -123,9 +131,11 @@
 ### Task 5: Implement Navegação e comandos
 
 **Files:**
+
 - Create: `components/custom/Showcase/categories/NavigationShowcase.tsx`
 
 **Interfaces:**
+
 - Consumes `ShowcaseSection` and lowercase imports from `breadcrumb`, `command`, `kbd`, `menubar`, `navigation-menu`, `pagination`, `sidebar`, `tabs`.
 - Produces `NavigationShowcase(): React.ReactNode`.
 
@@ -141,9 +151,11 @@
 ### Task 6: Implement Camadas e revelação
 
 **Files:**
+
 - Create: `components/custom/Showcase/categories/OverlaysShowcase.tsx`
 
 **Interfaces:**
+
 - Consumes `ShowcaseSection` and lowercase imports from `accordion`, `collapsible`, `context-menu`, `dialog`, `drawer`, `dropdown-menu`, `hover-card`, `popover`, `sheet`, `tooltip`.
 - Produces `OverlaysShowcase(): React.ReactNode`.
 
@@ -158,9 +170,11 @@
 ### Task 7: Implement Conteúdo e dados
 
 **Files:**
+
 - Create: `components/custom/Showcase/categories/ContentShowcase.tsx`
 
 **Interfaces:**
+
 - Consumes `ShowcaseSection` and lowercase imports from `aspect-ratio`, `avatar`, `badge`, `card`, `carousel`, `chart`, `empty`, `item`, `marker`, `resizable`, `scroll-area`, `separator`, `skeleton`, `table`.
 - Consumes `@tanstack/react-table` v9 to create a feature-local Data Table demonstration.
 - Produces `ContentShowcase(): React.ReactNode`.
@@ -178,9 +192,11 @@
 ### Task 8: Implement Conversas e anexos
 
 **Files:**
+
 - Create: `components/custom/Showcase/categories/MessagingShowcase.tsx`
 
 **Interfaces:**
+
 - Consumes `ShowcaseSection` and lowercase imports from `attachment`, `bubble`, `message`, `message-scroller`.
 - Produces `MessagingShowcase(): React.ReactNode`.
 
@@ -193,9 +209,11 @@
 ### Task 9: Run the final manual acceptance pass
 
 **Files:**
+
 - Modify only if a concrete acceptance defect is found in a Showcase file created by Tasks 1–8.
 
 **Interfaces:**
+
 - Consumes all prior Showcase routes and categories.
 - Produces a manually reviewed protected catalog with 59 accounted components.
 

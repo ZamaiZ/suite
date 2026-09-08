@@ -37,17 +37,19 @@ export function firstSearchParam(value: unknown): string | undefined {
   return undefined
 }
 
-export function leadsListHref(input: {
-  q?: string
-  team?: boolean
-  today?: boolean
-  pending?: boolean
-  tag?: string | null
-  segment?: string | null
-  city?: string | null
-  state?: string | null
-  lead?: string
-} = {}): string {
+export function leadsListHref(
+  input: {
+    q?: string
+    team?: boolean
+    today?: boolean
+    pending?: boolean
+    tag?: string | null
+    segment?: string | null
+    city?: string | null
+    state?: string | null
+    lead?: string
+  } = {},
+): string {
   const params = new URLSearchParams()
   const query = input.q?.trim()
   if (query) params.set("q", query)

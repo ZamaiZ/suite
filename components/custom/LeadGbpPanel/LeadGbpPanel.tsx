@@ -11,7 +11,7 @@ import { LeadDiagnosisPanel } from "@/components/custom/LeadDiagnosisPanel"
 import { LeadVisibilityPanel } from "@/components/custom/LeadVisibilityPanel"
 import { LeadWebsitePanel } from "@/components/custom/LeadWebsitePanel"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { todayCivilDate } from "@/lib/date-time"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
 import {
@@ -43,9 +43,7 @@ import {
   leadLocationSearchHint,
   resolveLeadLocation,
 } from "@/lib/leads/resolve-location"
-import {
-  visibilityGapsForSnapshot,
-} from "@/lib/leads/visibility-audit"
+import { visibilityGapsForSnapshot } from "@/lib/leads/visibility-audit"
 import { LeadGbpAuditRail } from "./LeadGbpAuditRail"
 import { LeadGbpPlacePicker } from "./LeadGbpPlacePicker"
 import { LeadGbpProfileCard } from "./LeadGbpProfileCard"
@@ -109,17 +107,17 @@ export function LeadGbpPanel({
   if (loading && !detail) {
     return (
       <div className="grid h-full min-h-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-1">
-        <aside className="border-b border-border-subtle bg-elevated/70 lg:border-r lg:border-b-0">
-        <LeadGbpAuditRail
-          profile={null}
-          website={null}
-          digitalPresence={null}
-          visibility={null}
-          diagnosis={null}
-          selectedStep="google-profile"
-          loading
-          onSelectStep={() => undefined}
-        />
+        <aside className="border-b border-border/70 bg-popover/70 lg:border-r lg:border-b-0">
+          <LeadGbpAuditRail
+            profile={null}
+            website={null}
+            digitalPresence={null}
+            visibility={null}
+            diagnosis={null}
+            selectedStep="google-profile"
+            loading
+            onSelectStep={() => undefined}
+          />
         </aside>
         <div className="flex min-h-0 flex-col gap-3 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
           <Pulse className="h-16" delay={0} />
@@ -163,8 +161,7 @@ export function LeadGbpPanel({
         {
           posts: selected.posts,
           postsReady:
-            selected.posts !== null &&
-            !gbpJobQueued(selected.jobs, "updates"),
+            selected.posts !== null && !gbpJobQueued(selected.jobs, "updates"),
           reviews: selected.reviews,
           reviewsReady:
             selected.reviews !== null &&
@@ -288,7 +285,7 @@ export function LeadGbpPanel({
   })
   const diagnosisStale = Boolean(
     detail.diagnosisDraft &&
-      detail.diagnosisDraft.facts_fingerprint !== liveFingerprint,
+    detail.diagnosisDraft.facts_fingerprint !== liveFingerprint,
   )
   const hasDiagnosisExport = detail.diagnosisExports.some(
     (item) => item.is_current,
@@ -364,7 +361,7 @@ export function LeadGbpPanel({
 
   return (
     <div className="grid h-full min-h-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-1">
-      <aside className="min-h-0 overflow-y-auto border-b border-border-subtle bg-elevated/70 lg:border-r lg:border-b-0">
+      <aside className="min-h-0 overflow-y-auto border-b border-border/70 bg-popover/70 lg:border-r lg:border-b-0">
         <LeadGbpAuditRail
           profile={selected}
           website={
@@ -470,14 +467,14 @@ export function LeadGbpPanel({
                 initial={fade.initial}
                 animate={fade.animate}
                 transition={fade.transition}
-                className="flex flex-wrap items-center gap-3 rounded-lg border border-warning/25 bg-warning-subtle px-3 py-2"
+                className="flex flex-wrap items-center gap-3 rounded-lg border border-warning/25 bg-warning/10 px-3 py-2"
               >
                 <RiAlertLine
                   size={16}
                   aria-hidden
                   className="shrink-0 text-warning"
                 />
-                <p className="min-w-0 flex-1 font-sans text-caption text-warning">
+                <p className="min-w-0 flex-1 text-xs/relaxed text-warning">
                   {uncoveredCount === 1
                     ? "1 site sem perfil vinculado"
                     : `${uncoveredCount.toLocaleString("pt-BR")} sites sem perfil vinculado`}
@@ -505,14 +502,14 @@ export function LeadGbpPanel({
             ) : null}
 
             {linkError ? (
-              <p role="alert" className="font-sans text-body-sm text-danger">
+              <p role="alert" className="text-xs/relaxed text-destructive">
                 {linkError}
                 {existingLeadId ? (
                   <>
                     {" "}
                     <Link
                       href={`/leads?lead=${existingLeadId}`}
-                      className="font-medium text-link underline-offset-2 hover:underline"
+                      className="font-medium text-primary underline-offset-2 hover:underline"
                     >
                       Abrir cadastro existente
                     </Link>
@@ -530,15 +527,15 @@ export function LeadGbpPanel({
               >
                 <span
                   aria-hidden
-                  className="inline-flex size-12 items-center justify-center rounded-xl bg-hover text-fg-muted"
+                  className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
                 >
                   <RiMapPin2Line size={22} />
                 </span>
                 <div className="max-w-sm text-center">
-                  <p className="font-sans text-caption text-fg-secondary">
+                  <p className="text-xs/relaxed text-muted-foreground">
                     Nenhum perfil do Google vinculado
                   </p>
-                  <p className="mt-1 font-sans text-caption text-fg-muted">
+                  <p className="mt-1 text-xs/relaxed text-muted-foreground">
                     Busque o estabelecimento para montar a análise do GBP.
                   </p>
                 </div>
@@ -580,7 +577,7 @@ export function LeadGbpPanel({
 function UpcomingStepPlaceholder() {
   return (
     <div className="flex flex-col items-center gap-3 px-4 py-8">
-      <p className="font-sans text-caption text-fg-secondary">
+      <p className="text-xs/relaxed text-muted-foreground">
         Esta etapa ainda não está disponível.
       </p>
     </div>
@@ -591,7 +588,7 @@ function Pulse({ className, delay }: { className: string; delay: number }) {
   return (
     <span
       className={cn(
-        "block animate-pulse rounded-xl bg-hover motion-reduce:animate-none",
+        "block animate-pulse rounded-xl bg-accent motion-reduce:animate-none",
         className,
       )}
       style={{ animationDelay: `${delay}ms` }}

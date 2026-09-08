@@ -36,7 +36,11 @@ function sameSite(left: URL, right: URL): boolean {
 
 function decodeHref(raw: string, base: URL): URL | null {
   const trimmed = raw.trim()
-  if (!trimmed || trimmed.startsWith("#") || trimmed.startsWith("javascript:")) {
+  if (
+    !trimmed ||
+    trimmed.startsWith("#") ||
+    trimmed.startsWith("javascript:")
+  ) {
     return null
   }
   try {
@@ -65,7 +69,8 @@ export function internalPathFromHref(
   if (SKIP_ASSET.test(parsed.pathname)) return null
   const clean = stripTracking(parsed)
   const path = clean.pathname || "/"
-  const normalized = path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path
+  const normalized =
+    path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path
   if ([...clean.searchParams].length > 0) {
     return `${normalized}?${clean.searchParams.toString()}`
   }
@@ -200,9 +205,9 @@ export function extractHtmlSignals(
       ga4: first(/g-[a-z0-9]{6,}/i),
       gtm: first(/gtm-[a-z0-9]{5,}/i),
       googleAds: first(/aw-\d{6,}/i),
-      metaPixel: /fbq\(\s*['"]init['"]\s*,\s*['"](\d{8,})['"]/i.exec(
-        haystack,
-      )?.[1] ?? null,
+      metaPixel:
+        /fbq\(\s*['"]init['"]\s*,\s*['"](\d{8,})['"]/i.exec(haystack)?.[1] ??
+        null,
     },
     hasGtm: /googletagmanager\.com\/gtm\.js/i.test(haystack),
     hasGtag:
@@ -325,9 +330,10 @@ export function parseHtmlPage(
     const path = internalPathFromHref(href, url)
     if (path) pathSet.add(path)
   })
-  const pagePath = url.pathname !== "/" && url.pathname.endsWith("/")
-    ? url.pathname.slice(0, -1)
-    : url.pathname || "/"
+  const pagePath =
+    url.pathname !== "/" && url.pathname.endsWith("/")
+      ? url.pathname.slice(0, -1)
+      : url.pathname || "/"
   pathSet.delete(pagePath)
   pathSet.delete("/")
   const internalPaths = [...pathSet].slice(0, WEBSITE_INTERNAL_PATHS_MAX)
@@ -339,7 +345,9 @@ export function parseHtmlPage(
 
   const hasTel = hrefs.some((href) => href.toLowerCase().startsWith("tel:"))
   const hasWhatsapp = hrefs.some((href) => isWhatsappHref(href))
-  const hasMailto = hrefs.some((href) => href.toLowerCase().startsWith("mailto:"))
+  const hasMailto = hrefs.some((href) =>
+    href.toLowerCase().startsWith("mailto:"),
+  )
 
   const phones = [
     ...new Set(
@@ -405,9 +413,10 @@ export function crawlTargetsFromHome(
   home: WebsitePageSnapshot,
   homeUrl: URL,
 ): string[] {
-  const homePath = homeUrl.pathname !== "/" && homeUrl.pathname.endsWith("/")
-    ? homeUrl.pathname.slice(0, -1)
-    : homeUrl.pathname || "/"
+  const homePath =
+    homeUrl.pathname !== "/" && homeUrl.pathname.endsWith("/")
+      ? homeUrl.pathname.slice(0, -1)
+      : homeUrl.pathname || "/"
   const targets: string[] = []
   const seen = new Set<string>([homePath, "/"])
   for (const path of home.internalPaths) {

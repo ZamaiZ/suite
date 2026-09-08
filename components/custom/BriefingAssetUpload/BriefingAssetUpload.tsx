@@ -7,7 +7,7 @@ import {
   uploadBriefingWebsiteAsset,
 } from "@/app/actions/briefing"
 import { useBriefingWriterClientId } from "@/components/custom/BriefingWriter"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { BriefingAssetUploadProps } from "./BriefingAssetUpload.types"
 
 function formatBytes(size: number): string {
@@ -87,12 +87,12 @@ export function BriefingAssetUpload({
       <div className="flex flex-col gap-0.5">
         <label
           htmlFor={id}
-          className="font-sans text-body-sm font-medium text-fg-secondary"
+          className="text-xs/relaxed font-medium text-muted-foreground"
         >
           {label}
         </label>
         {description ? (
-          <p className="font-sans text-caption text-fg-muted">{description}</p>
+          <p className="text-xs/relaxed text-muted-foreground">{description}</p>
         ) : null}
       </div>
 
@@ -115,16 +115,20 @@ export function BriefingAssetUpload({
         disabled={busy}
         onClick={() => inputRef.current?.click()}
         className={cn(
-          "flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-elevated/40 px-4 py-6",
-          "font-sans text-body-sm text-fg-secondary transition-[border-color,background-color] duration-150",
-          "hover:border-accent/40 hover:bg-elevated",
+          "flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border bg-popover/40 px-4 py-6",
+          "text-xs/relaxed text-muted-foreground transition-[border-color,background-color] duration-150",
+          "hover:border-primary/40 hover:bg-popover",
           "disabled:pointer-events-none disabled:opacity-50",
         )}
       >
         {isUploading ? (
-          <RiLoader4Line size={20} aria-hidden className="animate-spin text-accent" />
+          <RiLoader4Line
+            size={20}
+            aria-hidden
+            className="animate-spin text-primary"
+          />
         ) : (
-          <RiUpload2Line size={20} aria-hidden className="text-accent" />
+          <RiUpload2Line size={20} aria-hidden className="text-primary" />
         )}
         <span>
           {atLimit
@@ -143,24 +147,24 @@ export function BriefingAssetUpload({
             return (
               <li
                 key={asset.id}
-                className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2"
+                className="flex items-center gap-3 rounded-xl border border-border bg-card px-3 py-2"
               >
                 {isImage && preview ? (
                   <img
                     src={preview}
                     alt=""
-                    className="size-10 shrink-0 rounded-md object-contain bg-elevated"
+                    className="size-10 shrink-0 rounded-md object-contain bg-popover"
                   />
                 ) : (
-                  <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-elevated font-sans text-caption font-medium text-fg-muted">
+                  <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-md bg-popover text-xs/relaxed font-medium text-muted-foreground">
                     PDF
                   </span>
                 )}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-sans text-body-sm font-medium text-fg">
+                  <p className="truncate text-xs/relaxed font-medium text-foreground">
                     {asset.fileName}
                   </p>
-                  <p className="font-sans text-caption text-fg-muted">
+                  <p className="text-xs/relaxed text-muted-foreground">
                     {formatBytes(asset.sizeBytes)}
                   </p>
                 </div>
@@ -169,7 +173,7 @@ export function BriefingAssetUpload({
                   disabled={disabled || isUploading}
                   aria-label={`Remover ${asset.fileName}`}
                   onClick={() => handleRemove(asset)}
-                  className="inline-flex size-8 items-center justify-center rounded-md text-fg-muted transition-colors hover:bg-hover hover:text-fg disabled:opacity-50"
+                  className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:opacity-50"
                 >
                   <RiCloseLine size={16} aria-hidden />
                 </button>
@@ -180,7 +184,7 @@ export function BriefingAssetUpload({
       ) : null}
 
       {error ? (
-        <p role="alert" className="font-sans text-caption text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}

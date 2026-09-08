@@ -49,11 +49,11 @@ export function LeadGbpNotesCard({
     return (
       <LeadGbpCard title={title} className={className}>
         {initialValue ? (
-          <p className="whitespace-pre-wrap font-sans text-caption text-fg-secondary">
+          <p className="whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
             {initialValue}
           </p>
         ) : (
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Nada registrado nesta etapa.
           </p>
         )}
@@ -76,13 +76,13 @@ export function LeadGbpNotesCard({
         placeholder={placeholder}
       />
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
-        <p className="font-sans text-caption tabular-nums text-fg-muted">
+        <p className="text-xs/relaxed tabular-nums text-muted-foreground">
           {value.length}/{GBP_NOTES_MAX}
         </p>
         <div className="flex items-center gap-2">
           {status === "saving" ? (
             <span
-              className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted"
+              className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground"
               aria-live="polite"
             >
               <RiLoader4Line size={14} aria-hidden className="animate-spin" />
@@ -91,7 +91,7 @@ export function LeadGbpNotesCard({
           ) : null}
           {status === "saved" ? (
             <span
-              className="inline-flex items-center gap-1 font-sans text-caption text-success"
+              className="inline-flex items-center gap-1 text-xs/relaxed text-success"
               aria-live="polite"
             >
               <RiCheckLine size={14} aria-hidden />
@@ -100,7 +100,7 @@ export function LeadGbpNotesCard({
           ) : null}
           {status === "error" ? (
             <>
-              <span role="alert" className="font-sans text-caption text-danger">
+              <span role="alert" className="text-xs/relaxed text-destructive">
                 {errorMessage ?? "Não foi possível salvar."}
               </span>
               <Button type="button" variant="ghost" onClick={onRetry}>

@@ -34,6 +34,7 @@
 ### Task 1: Centralizar capacidades de leitura
 
 **Files:**
+
 - Create: `lib/leads/access.ts`
 - Modify: `lib/clients/access.ts`
 - Modify: `lib/clients/staff.ts`
@@ -42,9 +43,17 @@
 
 ```ts
 export function canViewTeamLeads(roles: readonly AppRole[]): boolean
-export function canViewLead(lead: LeadReadSubject, userId: string, roles: readonly AppRole[]): boolean
+export function canViewLead(
+  lead: LeadReadSubject,
+  userId: string,
+  roles: readonly AppRole[],
+): boolean
 export function leadPortfolioScope(userId: string): string
-export function canViewClient(roles: readonly AppRole[], userId: string, closerId: string | null): boolean
+export function canViewClient(
+  roles: readonly AppRole[],
+  userId: string,
+  closerId: string | null,
+): boolean
 ```
 
 - [x] Definir os quatro papéis com visão de equipe e a regra individual de SDR/Closer.
@@ -56,6 +65,7 @@ export function canViewClient(roles: readonly AppRole[], userId: string, closerI
 ### Task 2: Expor wins no loader e no board
 
 **Files:**
+
 - Modify: `app/(protected)/leads/page.tsx`
 - Modify: `lib/leads/board-item.ts`
 - Modify: `lib/leads/board.ts`
@@ -76,6 +86,7 @@ export function canViewClient(roles: readonly AppRole[], userId: string, closerI
 ### Task 3: Proteger detalhe e conversão otimista
 
 **Files:**
+
 - Modify: `app/actions/leads/get-lead.ts`
 - Modify: `app/actions/leads/update-lead.ts`
 - Modify: `app/actions/clients/convert-lead.ts`
@@ -91,6 +102,7 @@ export function canViewClient(roles: readonly AppRole[], userId: string, closerI
 ### Task 4: Abrir cliente em leitura quando necessário
 
 **Files:**
+
 - Modify: `app/actions/clients/get-client.ts`
 - Modify: `app/actions/clients/list-clients.ts`
 - Modify: `app/actions/clients/load-client-kickoff.ts`
@@ -110,6 +122,7 @@ export function canViewClient(roles: readonly AppRole[], userId: string, closerI
 ### Task 5: Revisão estrutural sem execução automatizada
 
 **Files:**
+
 - Review: todos os arquivos alterados nesta entrega
 
 - [x] Conferir que contratos de `LeadBoardItem`, `LeadDetail`, `ClientListItem` e `ConvertLeadState` carregam os mesmos nomes de campos.

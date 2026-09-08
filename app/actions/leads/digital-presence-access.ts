@@ -1,6 +1,10 @@
 import "server-only"
 
-import { denyGbpEdit, loadGbpLeadContext, type GbpLeadContext } from "./gbp-access"
+import {
+  denyGbpEdit,
+  loadGbpLeadContext,
+  type GbpLeadContext,
+} from "./gbp-access"
 import {
   readLeadDigitalPresenceAuditRow,
   type LeadDigitalPresenceAudit,
@@ -23,7 +27,11 @@ export async function loadDigitalPresenceAuditByLead(
   supabase: SupabaseClient,
   leadId: string,
 ): Promise<
-  | { status: "ok"; audit: LeadDigitalPresenceAudit | null; lead: GbpLeadContext }
+  | {
+      status: "ok"
+      audit: LeadDigitalPresenceAudit | null
+      lead: GbpLeadContext
+    }
   | { status: "not_found" }
   | { status: "error" }
 > {

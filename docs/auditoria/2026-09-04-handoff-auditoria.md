@@ -92,9 +92,10 @@ chamada paga nova:
 3. **Concorrentes orgânicos** — `/dataforseo_labs/google/competitors_domain/live`, endpoint novo, tabela nova. O item do plano antigo que mandava mexer em `findOrganicRankForDomain` está errado: essa função saiu com o SerpAPI.
 
    **Não existe quinto pilar**, e a decisão é deliberada: autoridade externa fala do mesmo domínio, então backlinks entrou no pilar de `website`. Um pilar novo obrigaria a inventar estado de "não medido" no scorecard, porque `emptyPillarScore()` vale **100** e um pilar vazio afirmaria perfeição. Se algum dia autoridade virar pilar, esse estado vem antes.
+
 4. **A lista de domínios de referência** — `summary` devolve contagem, não quem aponta. Exige outro endpoint e outra chamada.
-6. **Âncoras 5–6** — teto de 3 travado em três lugares; multiplica o custo da malha.
-7. **Resto do crawl ampliado** — formulários, banner de cookies, schema validado, links quebrados, sitemap além do teto, NAP fora da home.
+5. **Âncoras 5–6** — teto de 3 travado em três lugares; multiplica o custo da malha.
+6. **Resto do crawl ampliado** — formulários, banner de cookies, schema validado, links quebrados, sitemap além do teto, NAP fora da home.
 
 ## Regras de trabalho desta linha
 

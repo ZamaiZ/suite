@@ -1,22 +1,10 @@
-export type GbpAuditRailStatus =
-  | "processing"
-  | "analyzed"
-  | "pending"
-  | "error"
+export type GbpAuditRailStatus = "processing" | "analyzed" | "pending" | "error"
 
 export type GbpAuditStepState =
-  | "current"
-  | "processing"
-  | "complete"
-  | "error"
-  | "upcoming"
+  "current" | "processing" | "complete" | "error" | "upcoming"
 
 export type GbpAuditRailStepId =
-  | "google-profile"
-  | "website"
-  | "digital-presence"
-  | "visibility"
-  | "diagnosis"
+  "google-profile" | "website" | "digital-presence" | "visibility" | "diagnosis"
 
 export type GbpAuditRailStep = {
   id: GbpAuditRailStepId
@@ -304,9 +292,7 @@ export function buildGbpAuditRailModel(
     analyzedAt = input.visibility?.fetchedAt ?? null
   } else if (selected === "diagnosis") {
     collectedAt = input.diagnosis?.updatedAt ?? null
-    analyzedAt = input.diagnosis?.hasExport
-      ? input.diagnosis.updatedAt
-      : null
+    analyzedAt = input.diagnosis?.hasExport ? input.diagnosis.updatedAt : null
   } else {
     collectedAt = input.profile?.fetched_at ?? null
     analyzedAt = input.profile?.enrichment_at ?? null

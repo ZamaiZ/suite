@@ -42,11 +42,11 @@
 
 ## Status na lista
 
-| Status | Regra |
-|--------|--------|
-| `in_progress` | `briefing_finalized_at` nulo |
-| `finalized` | finalize setado e (`content_updated_at` nulo ou `<= finalized_at`) |
-| `edited_after_submit` | `content_updated_at > finalized_at` |
+| Status                | Regra                                                              |
+| --------------------- | ------------------------------------------------------------------ |
+| `in_progress`         | `briefing_finalized_at` nulo                                       |
+| `finalized`           | finalize setado e (`content_updated_at` nulo ou `<= finalized_at`) |
+| `edited_after_submit` | `content_updated_at > finalized_at`                                |
 
 Labels: Em andamento / Briefing enviado / Editado após envio.
 

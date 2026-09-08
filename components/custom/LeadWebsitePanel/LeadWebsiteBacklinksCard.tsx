@@ -22,8 +22,8 @@ function count(value: number | null): string {
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <p className="font-sans text-caption text-fg-muted">{label}</p>
-      <p className="font-sans text-body-sm font-semibold tabular-nums text-fg">
+      <p className="text-xs/relaxed text-muted-foreground">{label}</p>
+      <p className="text-xs/relaxed font-semibold tabular-nums text-foreground">
         {value}
       </p>
     </div>
@@ -77,8 +77,12 @@ export function LeadWebsiteBacklinksCard({
     <LeadGbpCard title="Autoridade externa">
       <div className="flex flex-col gap-3">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <span className="inline-flex items-center gap-1.5 font-sans text-caption text-fg-secondary">
-            <RiLinksLine size={14} aria-hidden className="text-fg-muted" />
+          <span className="inline-flex items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+            <RiLinksLine
+              size={14}
+              aria-hidden
+              className="text-muted-foreground"
+            />
             {audit
               ? `Coletado ${formatRelativeShort(audit.fetched_at)}`
               : "Ainda não medido"}
@@ -128,7 +132,7 @@ export function LeadWebsiteBacklinksCard({
               />
             </div>
             {snapshot.topTlds.length > 0 ? (
-              <p className="font-sans text-caption text-fg-muted">
+              <p className="text-xs/relaxed text-muted-foreground">
                 Principais TLDs:{" "}
                 {snapshot.topTlds
                   .map((item) => `${item.label} (${count(item.count)})`)
@@ -137,13 +141,13 @@ export function LeadWebsiteBacklinksCard({
             ) : null}
           </>
         ) : (
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             O resumo de backlinks ainda não foi coletado para este domínio.
           </p>
         )}
 
         {error ? (
-          <p className="font-sans text-caption text-danger">{error}</p>
+          <p className="text-xs/relaxed text-destructive">{error}</p>
         ) : null}
       </div>
     </LeadGbpCard>

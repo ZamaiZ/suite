@@ -2,13 +2,9 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { todayCivilDate } from "@/lib/date-time"
-import {
-  compileDiagnosisDocument,
-} from "@/lib/leads/diagnosis-compile"
+import { compileDiagnosisDocument } from "@/lib/leads/diagnosis-compile"
 import { diagnosisFactsFingerprint } from "@/lib/leads/diagnosis-document"
-import {
-  emptyDigitalPresenceReview,
-} from "@/lib/leads/digital-presence-review"
+import { emptyDigitalPresenceReview } from "@/lib/leads/digital-presence-review"
 import { readLeadDigitalChannels } from "@/lib/leads/digital-channels"
 import {
   digitalPresenceReviewForChannels,
@@ -34,9 +30,7 @@ import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
 import { BACKLINKS_SELECT } from "./backlinks-access"
 import { loadWebsiteReviewsForLead, WEBSITE_SELECT } from "./website-access"
-import {
-  readLeadDiagnosisDraftRow,
-} from "@/lib/leads/diagnosis-read"
+import { readLeadDiagnosisDraftRow } from "@/lib/leads/diagnosis-read"
 import type { LeadDiagnosisDraft } from "@/lib/leads/diagnosis-document"
 
 export type CompileLeadDiagnosisState =
@@ -59,10 +53,7 @@ export async function compileLeadDiagnosis(
   }
 
   const supabase = await createClient()
-  const loaded = await loadDiagnosisDraftByLead(
-    supabase,
-    parsed.data.lead_id,
-  )
+  const loaded = await loadDiagnosisDraftByLead(supabase, parsed.data.lead_id)
   if (loaded.status === "error") {
     return { status: "error", message: FAILED }
   }
@@ -91,7 +82,10 @@ export async function compileLeadDiagnosis(
       .select(GBP_SELECT)
       .eq("lead_id", leadId)
       .order("sort_order", { ascending: true }),
-    supabase.from("lead_website_audits").select(WEBSITE_SELECT).eq("lead_id", leadId),
+    supabase
+      .from("lead_website_audits")
+      .select(WEBSITE_SELECT)
+      .eq("lead_id", leadId),
     supabase
       .from("lead_digital_presence_audits")
       .select(DIGITAL_PRESENCE_SELECT)

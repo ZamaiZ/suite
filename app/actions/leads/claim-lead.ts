@@ -11,7 +11,11 @@ const leadIdSchema = z.object({
 
 export type LeadAssignmentPatch = Pick<
   LeadBoardItem,
-  "assigned_sdr_id" | "status" | "assignee_name" | "next_follow_up_at" | "from_denial"
+  | "assigned_sdr_id"
+  | "status"
+  | "assignee_name"
+  | "next_follow_up_at"
+  | "from_denial"
 >
 
 export type ClaimLeadState =

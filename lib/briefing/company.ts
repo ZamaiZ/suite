@@ -117,9 +117,7 @@ export function hoursLinesEqual(left: string[], right: string[]): boolean {
   return left.every((line, index) => line === right[index])
 }
 
-export function taxIdInputVariant(
-  value: string,
-): "cnpj" | "cpf" | "text" {
+export function taxIdInputVariant(value: string): "cnpj" | "cpf" | "text" {
   const digits = digitsOnly(value)
   if (digits.length === 0) return "cnpj"
   if (digits.length <= 11 && !isValidCnpj(digits)) return "cpf"
@@ -128,12 +126,7 @@ export function taxIdInputVariant(
 }
 
 export type CompanyMissingGroup =
-  | "identity"
-  | "address"
-  | "servedAreas"
-  | "contact"
-  | "hours"
-  | "website"
+  "identity" | "address" | "servedAreas" | "contact" | "hours" | "website"
 
 export const COMPANY_MISSING_LABELS: Record<CompanyMissingGroup, string> = {
   identity: "identidade",

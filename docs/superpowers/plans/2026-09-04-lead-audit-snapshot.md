@@ -42,6 +42,7 @@
 ### Task 1: Migrations de versionamento, snapshots e baseline
 
 **Files:**
+
 - Create: `supabase/migrations/20260917000000_lead_audit_versioning.sql`
 - Create: `supabase/migrations/20260918000000_lead_gbp_snapshots.sql`
 - Create: `supabase/migrations/20260919000000_lead_website_reviews.sql`
@@ -62,6 +63,7 @@
 ### Task 2: Escrita e leitura append-only
 
 **Files:**
+
 - Modify: `app/actions/leads/analyze-website.ts`
 - Modify: `app/actions/leads/website-access.ts`
 - Modify: `app/actions/leads/analyze-visibility.ts`
@@ -84,6 +86,7 @@
 ### Task 3: Snapshot do perfil do Google
 
 **Files:**
+
 - Create: `lib/leads/gbp-snapshot.ts`
 - Modify: `lib/leads/gbp.ts`
 - Modify: `app/actions/leads/gbp-access.ts`
@@ -106,7 +109,9 @@ export type LeadGbpSnapshot = {
   qna: GbpQna | null
 }
 
-export function readLeadGbpSnapshotRow(row: Record<string, unknown>): LeadGbpSnapshot | null
+export function readLeadGbpSnapshotRow(
+  row: Record<string, unknown>,
+): LeadGbpSnapshot | null
 export function latestGbpSnapshot(embed: unknown): LeadGbpSnapshot | null
 ```
 
@@ -124,6 +129,7 @@ export function latestGbpSnapshot(embed: unknown): LeadGbpSnapshot | null
 ### Task 4: Revisão do analista por canal
 
 **Files:**
+
 - Modify: `lib/leads/website-review.ts`
 - Modify: `lib/leads/website-audit.ts`
 - Modify: `app/actions/leads/update-website-audit.ts`
@@ -142,7 +148,9 @@ export type LeadWebsiteReview = {
   updated_by: string | null
 }
 
-export function readLeadWebsiteReviewRow(row: Record<string, unknown>): LeadWebsiteReview
+export function readLeadWebsiteReviewRow(
+  row: Record<string, unknown>,
+): LeadWebsiteReview
 ```
 
 - [ ] Remover `review` e `notes` de `LeadWebsiteAudit` e de `readLeadWebsiteAuditRow`.
@@ -155,6 +163,7 @@ export function readLeadWebsiteReviewRow(row: Record<string, unknown>): LeadWebs
 ### Task 5: Amostra estável e páginas com erro
 
 **Files:**
+
 - Modify: `lib/website-audit/crawl.ts`
 - Modify: `lib/website-audit/parse.ts`
 - Modify: `lib/leads/digital-channels.ts`
@@ -163,8 +172,14 @@ export function readLeadWebsiteReviewRow(row: Record<string, unknown>): LeadWebs
 **Interfaces:**
 
 ```ts
-export function crawlWebsite(startUrl: string, fixedPaths?: readonly string[]): Promise<CrawlWebsiteResult>
-export function emptyPageSnapshot(url: string, status: number): WebsitePageSnapshot
+export function crawlWebsite(
+  startUrl: string,
+  fixedPaths?: readonly string[],
+): Promise<CrawlWebsiteResult>
+export function emptyPageSnapshot(
+  url: string,
+  status: number,
+): WebsitePageSnapshot
 export type CrawlWebsiteResult =
   | { status: "ok"; crawl: WebsiteCrawl; usedPaths: string[] }
   | { status: "error"; message: string }
@@ -181,6 +196,7 @@ export type CrawlWebsiteResult =
 ### Task 6: Headers, canonical e headings na coleta
 
 **Files:**
+
 - Create: `lib/leads/website-headers.ts`
 - Create: `lib/leads/website-canonical.ts`
 - Create: `lib/leads/website-headings.ts`
@@ -203,10 +219,15 @@ export const SECURITY_HEADER_KEYS = [
 export type WebsiteHeading = { level: number; text: string }
 
 export function pickSecurityHeaders(headers: Headers): Record<string, string>
-export function missingSecurityHeaders(headers: Record<string, string>): string[]
+export function missingSecurityHeaders(
+  headers: Record<string, string>,
+): string[]
 export function collectHeadings($: ReturnType<typeof load>): WebsiteHeading[]
 export function headingsSkipLevel(headings: readonly WebsiteHeading[]): boolean
-export function normalizeCanonical(raw: string | undefined, pageUrl: URL): string | null
+export function normalizeCanonical(
+  raw: string | undefined,
+  pageUrl: URL,
+): string | null
 ```
 
 - [ ] Em `SafeFetchOk`, acrescentar `headers: Record<string, string>` preenchido por `pickSecurityHeaders`, mantendo `contentType` como está.
@@ -220,6 +241,7 @@ export function normalizeCanonical(raw: string | undefined, pageUrl: URL): strin
 ### Task 7: Robots interpretado, llms.txt e IDs de medição
 
 **Files:**
+
 - Create: `lib/website-audit/robots.ts`
 - Modify: `lib/website-audit/crawl.ts`
 - Modify: `lib/website-audit/parse.ts`
@@ -241,12 +263,22 @@ export const AI_USER_AGENTS = [
   "amazonbot",
 ] as const
 
-export type RobotsGroup = { userAgents: string[]; allow: string[]; disallow: string[] }
+export type RobotsGroup = {
+  userAgents: string[]
+  allow: string[]
+  disallow: string[]
+}
 export type RobotsAiAgent = { agent: string; blocked: boolean }
 
 export function parseRobotsGroups(text: string): RobotsGroup[]
-export function aiAgentsFromGroups(groups: readonly RobotsGroup[]): RobotsAiAgent[]
-export function robotsBlocksPath(groups: readonly RobotsGroup[], agent: string, path: string): boolean
+export function aiAgentsFromGroups(
+  groups: readonly RobotsGroup[],
+): RobotsAiAgent[]
+export function robotsBlocksPath(
+  groups: readonly RobotsGroup[],
+  agent: string,
+  path: string,
+): boolean
 ```
 
 - [ ] Criar o parser de grupos, tratando linhas `User-agent`, `Allow` e `Disallow`, agrupando user-agents consecutivos e ignorando comentários.
@@ -261,6 +293,7 @@ export function robotsBlocksPath(groups: readonly RobotsGroup[], agent: string, 
 ### Task 8: Regras derivadas e correção do CLS de campo
 
 **Files:**
+
 - Modify: `lib/leads/website-audit.ts`
 - Modify: `lib/leads/website-opportunities.ts`
 - Modify: `lib/leads/website-pagespeed.ts`
@@ -282,6 +315,7 @@ export function robotsBlocksPath(groups: readonly RobotsGroup[], agent: string, 
 ### Task 9: Baseline na conversão
 
 **Files:**
+
 - Create: `lib/leads/audit-baseline.ts`
 - Modify: `app/actions/clients/convert-lead.ts`
 - Modify: `app/actions/clients/get-client.ts`
@@ -310,6 +344,7 @@ export function resolveAuditBaseline(
 ### Task 10: Revisão estrutural sem execução automatizada
 
 **Files:**
+
 - Review: todos os arquivos alterados nesta entrega
 
 - [ ] Conferir que nenhuma action de auditoria restante usa `update` ou `upsert` sobre snapshot.

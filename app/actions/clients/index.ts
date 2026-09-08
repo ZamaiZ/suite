@@ -1,7 +1,4 @@
-export {
-  convertLeadToClient,
-  type ConvertLeadState,
-} from "./convert-lead"
+export { convertLeadToClient, type ConvertLeadState } from "./convert-lead"
 export {
   listClients,
   type ClientListItem,
@@ -10,8 +7,16 @@ export {
   type ListClientsState,
 } from "./list-clients"
 export { getClient, type ClientDetail, type GetClientState } from "./get-client"
-export { loadClientKickoff, type ClientKickoffDetail, type ClientKickoffActivity, type LoadClientKickoffState } from "./load-client-kickoff"
-export { logClientKickoffEvent, type LogClientKickoffEventState } from "./log-client-kickoff-event"
+export {
+  loadClientKickoff,
+  type ClientKickoffDetail,
+  type ClientKickoffActivity,
+  type LoadClientKickoffState,
+} from "./load-client-kickoff"
+export {
+  logClientKickoffEvent,
+  type LogClientKickoffEventState,
+} from "./log-client-kickoff-event"
 export {
   issuePortalAccess,
   type IssuePortalAccessState,

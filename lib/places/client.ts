@@ -56,8 +56,7 @@ export type PlacesPlace = {
 }
 
 export type PlacesResult<T> =
-  | { status: "ok"; data: T }
-  | { status: "error"; message: string }
+  { status: "ok"; data: T } | { status: "error"; message: string }
 
 type LocalizedText = { text?: string }
 type PlacePhoto = { name?: string }

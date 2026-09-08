@@ -292,9 +292,7 @@ function DiagnosisPdfDocument({ document }: { document: DiagnosisDocument }) {
       <Page size="A4" style={styles.page}>
         <Text style={styles.sectionTitle}>Roadmap recomendado</Text>
         {document.facts.roadmap.length === 0 ? (
-          <Text style={styles.body}>
-            Nenhum item prioritário nesta coleta.
-          </Text>
+          <Text style={styles.body}>Nenhum item prioritário nesta coleta.</Text>
         ) : (
           document.facts.roadmap.map((item) => (
             <View key={item.id} style={styles.roadmapItem}>

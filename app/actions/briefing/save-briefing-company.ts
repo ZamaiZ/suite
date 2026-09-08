@@ -70,7 +70,9 @@ export async function saveBriefingCompany(
       status: "success",
       updatedAt: now,
       completedAt:
-        typeof existing.completed_at === "string" ? existing.completed_at : null,
+        typeof existing.completed_at === "string"
+          ? existing.completed_at
+          : null,
     }
   }
 

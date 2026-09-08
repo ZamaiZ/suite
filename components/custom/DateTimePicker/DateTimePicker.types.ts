@@ -1,4 +1,4 @@
-import type { HourCycle } from "@/components/ui/TimePicker/TimePicker.types"
+import type { HourCycle } from "@/components/custom/TimePicker/TimePicker.types"
 
 export type DateTimePickerProps = {
   id: string

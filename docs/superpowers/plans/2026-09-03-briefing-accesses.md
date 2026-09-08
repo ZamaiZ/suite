@@ -21,19 +21,19 @@ See [2026-09-03-briefing-accesses-design.md](../specs/2026-09-03-briefing-access
 
 ## File map
 
-| Path | Role |
-|------|------|
+| Path                                                            | Role                           |
+| --------------------------------------------------------------- | ------------------------------ |
 | `supabase/migrations/20260912000000_briefing_step_accesses.sql` | Add `accesses` + secrets table |
-| `lib/briefing/steps.ts` | Append accesses step |
-| `lib/briefing/accesses.ts` | Domain helpers |
-| `lib/briefing/secrets.ts` | Encrypt/decrypt + kinds |
-| `lib/validations/briefing-accesses.ts` | Zod |
-| `app/actions/briefing/load-briefing-accesses.ts` | Load |
-| `app/actions/briefing/save-briefing-accesses.ts` | Save + complete |
-| `app/actions/briefing/save-briefing-secret.ts` | Upsert/delete secret |
-| `components/custom/ClientBriefingAccessesForm/` | Form |
-| `ClientBriefingWorkspace.tsx` | Wire step |
-| `.env.example` | `BRIEFING_SECRETS_KEY` |
+| `lib/briefing/steps.ts`                                         | Append accesses step           |
+| `lib/briefing/accesses.ts`                                      | Domain helpers                 |
+| `lib/briefing/secrets.ts`                                       | Encrypt/decrypt + kinds        |
+| `lib/validations/briefing-accesses.ts`                          | Zod                            |
+| `app/actions/briefing/load-briefing-accesses.ts`                | Load                           |
+| `app/actions/briefing/save-briefing-accesses.ts`                | Save + complete                |
+| `app/actions/briefing/save-briefing-secret.ts`                  | Upsert/delete secret           |
+| `components/custom/ClientBriefingAccessesForm/`                 | Form                           |
+| `ClientBriefingWorkspace.tsx`                                   | Wire step                      |
+| `.env.example`                                                  | `BRIEFING_SECRETS_KEY`         |
 
 ## Tasks
 

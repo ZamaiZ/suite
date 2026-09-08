@@ -32,7 +32,8 @@ const reviewJsonSchema = z
       if (answer.unavailable) return true
       if (
         answer.followers !== null &&
-        (answer.followers < 0 || answer.followers > DIGITAL_PRESENCE_FOLLOWERS_MAX)
+        (answer.followers < 0 ||
+          answer.followers > DIGITAL_PRESENCE_FOLLOWERS_MAX)
       ) {
         return false
       }

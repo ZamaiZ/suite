@@ -155,8 +155,7 @@ export async function uploadBriefingWebsiteAsset(
   return {
     status: "success",
     asset,
-    previewUrl:
-      !signedError && signed?.signedUrl ? signed.signedUrl : "",
+    previewUrl: !signedError && signed?.signedUrl ? signed.signedUrl : "",
   }
 }
 

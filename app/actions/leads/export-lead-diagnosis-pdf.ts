@@ -39,10 +39,7 @@ export async function exportLeadDiagnosisPdf(
   }
 
   const supabase = await createClient()
-  const loaded = await loadDiagnosisDraftByLead(
-    supabase,
-    parsed.data.lead_id,
-  )
+  const loaded = await loadDiagnosisDraftByLead(supabase, parsed.data.lead_id)
   if (loaded.status === "error") {
     return { status: "error", message: FAILED }
   }

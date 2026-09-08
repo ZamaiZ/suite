@@ -163,7 +163,9 @@ export function bucketsFromPositions(
   return buckets
 }
 
-export function readVisibilitySnapshot(value: unknown): VisibilitySnapshot | null {
+export function readVisibilitySnapshot(
+  value: unknown,
+): VisibilitySnapshot | null {
   if (!value || typeof value !== "object") return null
   const row = value as Record<string, unknown>
   const source = row.source
@@ -290,11 +292,16 @@ export function isHomepageUrl(url: string | null, domain: string): boolean {
   }
 }
 
-export function cityFromFormattedAddress(address: string | null): string | null {
+export function cityFromFormattedAddress(
+  address: string | null,
+): string | null {
   if (!address) return null
   const match = address.match(/,\s*([^,]+?)\s*-\s*[A-Z]{2}\b/)
   if (match?.[1]) return match[1].trim()
-  const parts = address.split(",").map((part) => part.trim()).filter(Boolean)
+  const parts = address
+    .split(",")
+    .map((part) => part.trim())
+    .filter(Boolean)
   if (parts.length >= 2) {
     const candidate = parts[parts.length - 2]
     if (candidate && !/\d/.test(candidate)) return candidate
@@ -321,14 +328,15 @@ export function visibilityGapsForSnapshot(input: {
   const top10 = ranked.filter((row) => (row.position ?? 999) <= 10)
   if (
     top10.length > 0 &&
-    top10.every((row) => isBrandKeyword(row.keyword, companyName, snapshot.domain))
+    top10.every((row) =>
+      isBrandKeyword(row.keyword, companyName, snapshot.domain),
+    )
   ) {
     gaps.push("brand_only_visibility")
   }
 
   const localTop20 = ranked.some(
-    (row) =>
-      (row.position ?? 999) <= 20 && isLocalKeyword(row.keyword, city),
+    (row) => (row.position ?? 999) <= 20 && isLocalKeyword(row.keyword, city),
   )
   /**
    * A amostra do `ranked_keywords` vem truncada e ordenada por tráfego, então
@@ -344,9 +352,7 @@ export function visibilityGapsForSnapshot(input: {
     gaps.push("no_local_top20")
   }
 
-  if (
-    ranked.every((row) => isHomepageUrl(row.url, snapshot.domain))
-  ) {
+  if (ranked.every((row) => isHomepageUrl(row.url, snapshot.domain))) {
     gaps.push("homepage_only")
   }
 

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type {
   BriefingReviewChipsProps,
   BriefingReviewFieldProps,
@@ -10,8 +10,8 @@ export function BriefingReviewSection({
   children,
 }: BriefingReviewSectionProps) {
   return (
-    <section className="flex flex-col gap-3 rounded-xl border border-border-subtle bg-surface/60 px-4 py-3">
-      <h3 className="font-sans text-body-sm font-semibold text-fg">{title}</h3>
+    <section className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 px-4 py-3">
+      <h3 className="text-xs/relaxed font-semibold text-foreground">{title}</h3>
       <div className="flex flex-col gap-3">{children}</div>
     </section>
   )
@@ -23,13 +23,14 @@ export function BriefingReviewField({
   children,
 }: BriefingReviewFieldProps) {
   const display =
-    children ??
-    (value && value.trim().length > 0 ? value.trim() : "—")
+    children ?? (value && value.trim().length > 0 ? value.trim() : "—")
   return (
     <div className="flex flex-col gap-1">
-      <p className="font-sans text-caption font-medium text-fg-muted">{label}</p>
+      <p className="text-xs/relaxed font-medium text-muted-foreground">
+        {label}
+      </p>
       {typeof display === "string" ? (
-        <p className="whitespace-pre-wrap font-sans text-body-sm text-fg">
+        <p className="whitespace-pre-wrap text-xs/relaxed text-foreground">
           {display}
         </p>
       ) : (
@@ -39,20 +40,25 @@ export function BriefingReviewField({
   )
 }
 
-export function BriefingReviewChips({ label, items }: BriefingReviewChipsProps) {
+export function BriefingReviewChips({
+  label,
+  items,
+}: BriefingReviewChipsProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="font-sans text-caption font-medium text-fg-muted">{label}</p>
+      <p className="text-xs/relaxed font-medium text-muted-foreground">
+        {label}
+      </p>
       {items.length === 0 ? (
-        <p className="font-sans text-body-sm text-fg">—</p>
+        <p className="text-xs/relaxed text-foreground">—</p>
       ) : (
         <ul className="flex flex-wrap gap-1.5">
           {items.map((item) => (
             <li
               key={item}
               className={cn(
-                "inline-flex rounded-md bg-canvas px-2 py-0.5",
-                "font-sans text-caption font-medium text-fg",
+                "inline-flex rounded-md bg-background px-2 py-0.5",
+                "text-xs/relaxed font-medium text-foreground",
               )}
             >
               {item}

@@ -62,7 +62,11 @@ export function joinBrazilianAddress(
   const streetNumber = [parts.street.trim(), parts.number.trim()]
     .filter((part) => part.length > 0)
     .join(", ")
-  const head = [streetNumber, parts.complement.trim(), parts.neighborhood.trim()]
+  const head = [
+    streetNumber,
+    parts.complement.trim(),
+    parts.neighborhood.trim(),
+  ]
     .filter((part) => part.length > 0)
     .join(" - ")
   const cityState = [parts.city.trim(), parts.stateCode.trim()]
@@ -71,9 +75,7 @@ export function joinBrazilianAddress(
   const postal = parts.postalCode.trim()
     ? formatPostalCode(parts.postalCode)
     : ""
-  return [head, cityState, postal]
-    .filter((part) => part.length > 0)
-    .join(", ")
+  return [head, cityState, postal].filter((part) => part.length > 0).join(", ")
 }
 
 export function parseBrazilianAddress(input: string): ParsedBrazilianAddress {
@@ -92,7 +94,11 @@ export function parseBrazilianAddress(input: string): ParsedBrazilianAddress {
 
   const stateMatch = rest.match(STATE_AT_END)
   const stateCode = stateMatch?.[1]?.toUpperCase() ?? ""
-  if (stateMatch && stateMatch.index !== undefined && isBrazilStateCode(stateCode)) {
+  if (
+    stateMatch &&
+    stateMatch.index !== undefined &&
+    isBrazilStateCode(stateCode)
+  ) {
     result.stateCode = stateCode
     rest = rest.slice(0, stateMatch.index).replace(/[,\s]+$/, "")
   }
@@ -155,9 +161,8 @@ export function mergeAddress(
     }
   }
   const formatted = overlay.formattedAddress?.trim()
-  next.formattedAddress = formatted && formatted.length > 0
-    ? formatted
-    : joinBrazilianAddress(next)
+  next.formattedAddress =
+    formatted && formatted.length > 0 ? formatted : joinBrazilianAddress(next)
   return next
 }
 

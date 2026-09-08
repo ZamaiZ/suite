@@ -8,7 +8,7 @@ export function createAdminClient() {
   if (!url || !key) {
     throw new Error(
       "Missing Supabase environment variables. " +
-        "Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local."
+        "Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local.",
     )
   }
 

@@ -18,7 +18,11 @@ import {
   DialogFooter,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import type { LeadBoardItem } from "@/lib/leads/board-item"
 import { LeadCreateHeader } from "./LeadCreateHeader"
 
@@ -65,7 +69,7 @@ export function LeadCreate({
       >
         <DialogContent
           showCloseButton={false}
-          className="max-h-[calc(100dvh-2rem)] max-w-2xl grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0 sm:max-w-2xl"
+          className="max-w-2xl grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0"
         >
           <DialogTitle className="sr-only">Novo lead</DialogTitle>
           <DialogDescription className="sr-only">
@@ -85,7 +89,7 @@ export function LeadCreate({
                   aria-hidden
                   className="mt-0.5 shrink-0 text-primary"
                 />
-                <p className="font-sans text-body-sm">
+                <p className="text-xs/relaxed">
                   O lead será adicionado à fila para ser assumido por um SDR.
                 </p>
               </m.div>
@@ -109,13 +113,13 @@ export function LeadCreate({
             >
               Cancelar
             </Button>
-            <Button
-              type="submit"
-              form={LEAD_FORM_ID}
-              disabled={isPending}
-            >
+            <Button type="submit" form={LEAD_FORM_ID} disabled={isPending}>
               {isPending ? (
-                <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+                <RiLoader4Line
+                  data-icon="inline-start"
+                  aria-hidden
+                  className="animate-spin"
+                />
               ) : (
                 <RiSendPlaneLine data-icon="inline-start" aria-hidden />
               )}

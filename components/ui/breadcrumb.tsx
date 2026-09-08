@@ -21,7 +21,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
       data-slot="breadcrumb-list"
       className={cn(
         "flex flex-wrap items-center gap-1.5 text-xs/relaxed wrap-break-word text-muted-foreground",
-        className
+        className,
       )}
       {...props}
     />
@@ -49,7 +49,7 @@ function BreadcrumbLink({
       {
         className: cn("transition-colors hover:text-foreground", className),
       },
-      props
+      props,
     ),
     render,
     state: {
@@ -84,9 +84,7 @@ function BreadcrumbSeparator({
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? (
-        <RiArrowRightSLine />
-      )}
+      {children ?? <RiArrowRightSLine />}
     </li>
   )
 }
@@ -102,7 +100,7 @@ function BreadcrumbEllipsis({
       aria-hidden="true"
       className={cn(
         "flex size-4 items-center justify-center [&>svg]:size-3.5",
-        className
+        className,
       )}
       {...props}
     >

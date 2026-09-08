@@ -10,12 +10,16 @@ import {
   RiLoader4Line,
   RiLogoutBoxLine,
 } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { APP_MONOGRAM, APP_NAME } from "@/lib/brand"
 import { logout } from "@/app/actions/logout"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/ui/ThemeToggle"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { ThemeToggle } from "@/components/custom/ThemeToggle"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { NAV_ITEMS } from "@/components/custom/navigation"
 import { NavTree } from "@/components/custom/NavTree"
 
@@ -39,8 +43,12 @@ function FormPendingSurface({ children }: { children?: ReactNode }) {
           aria-busy
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
-          <span className="absolute inset-0 rounded-[inherit] bg-canvas/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line size={16} aria-hidden className="relative animate-spin text-foreground" />
+          <span className="absolute inset-0 rounded-[inherit] bg-background/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
+          <RiLoader4Line
+            size={16}
+            aria-hidden
+            className="relative animate-spin text-foreground"
+          />
         </span>
       ) : null}
     </>
@@ -93,7 +101,7 @@ export function Sidebar() {
 
   const animate = live && !reduced
 
-  const labelT = (delay = 0) => animate ? LABEL_T(delay) : INSTANT
+  const labelT = (delay = 0) => (animate ? LABEL_T(delay) : INSTANT)
 
   return (
     <LazyMotion features={domAnimation} strict>
@@ -109,7 +117,9 @@ export function Sidebar() {
           variant="outline"
           size="icon-lg"
           onClick={toggle}
-          aria-label={expanded ? "Recolher menu lateral" : "Expandir menu lateral"}
+          aria-label={
+            expanded ? "Recolher menu lateral" : "Expandir menu lateral"
+          }
           title={expanded ? "Recolher (Ctrl+B)" : "Expandir (Ctrl+B)"}
           className={cn(
             "absolute top-3 right-0 translate-x-1/2 z-20",
@@ -134,15 +144,18 @@ export function Sidebar() {
         >
           <m.span
             aria-hidden
-            className="overflow-hidden whitespace-nowrap font-display text-body-sm font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
-            animate={{ maxWidth: expanded ? 220 : 0, opacity: expanded ? 1 : 0 }}
+            className="overflow-hidden whitespace-nowrap font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
+            animate={{
+              maxWidth: expanded ? 220 : 0,
+              opacity: expanded ? 1 : 0,
+            }}
             transition={labelT()}
           >
             {APP_NAME}
           </m.span>
           <m.span
             aria-hidden
-            className="pointer-events-none absolute inset-0 flex items-center justify-center font-display text-body-sm font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
             animate={{ opacity: expanded ? 0 : 1 }}
             transition={labelT()}
           >
@@ -198,13 +211,16 @@ export function Sidebar() {
               >
                 <RiLogoutBoxLine size={18} aria-hidden />
                 <FormPendingSurface>
-                <m.span
-                  className="overflow-hidden whitespace-nowrap leading-none"
-                  animate={{ maxWidth: expanded ? 200 : 0, opacity: expanded ? 1 : 0 }}
-                  transition={labelT()}
-                >
-                  Sair
-                </m.span>
+                  <m.span
+                    className="overflow-hidden whitespace-nowrap leading-none"
+                    animate={{
+                      maxWidth: expanded ? 200 : 0,
+                      opacity: expanded ? 1 : 0,
+                    }}
+                    transition={labelT()}
+                  >
+                    Sair
+                  </m.span>
                 </FormPendingSurface>
               </Button>
             )}

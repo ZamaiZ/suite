@@ -11,7 +11,7 @@ import {
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
 import { BriefingTextField as Input } from "@/components/custom/BriefingFormControls/BriefingFormControls"
 import { Button } from "@/components/ui/button"
-import { DateTimePicker } from "@/components/ui/DateTimePicker"
+import { DateTimePicker } from "@/components/custom/DateTimePicker"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { formatCnpj, formatCpf, digitsOnly } from "@/lib/br-documents"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   datetimeLocalToCivilDate,
   datetimeLocalToCivilTime,
@@ -50,8 +50,8 @@ const EVENT_CHIP: Record<
   { selected: string; dot: string }
 > = {
   meeting_rescheduled: {
-    selected: "border-accent bg-accent/10 text-accent",
-    dot: "bg-accent",
+    selected: "border-primary bg-primary/10 text-primary",
+    dot: "bg-primary",
   },
   meeting_no_show: {
     selected: "border-warning bg-warning/10 text-warning",
@@ -62,8 +62,8 @@ const EVENT_CHIP: Record<
     dot: "bg-warning",
   },
   closing_lost: {
-    selected: "border-danger bg-danger/10 text-danger",
-    dot: "bg-danger",
+    selected: "border-destructive bg-destructive/10 text-destructive",
+    dot: "bg-destructive",
   },
   closing_won: {
     selected: "border-success bg-success/10 text-success",
@@ -80,7 +80,12 @@ function actionsForStage(
   if (canReschedule) items.push("meeting_rescheduled")
   if (!canOutcome) return items
   if (stage === "open") {
-    items.push("meeting_no_show", "closing_standby", "closing_lost", "closing_won")
+    items.push(
+      "meeting_no_show",
+      "closing_standby",
+      "closing_lost",
+      "closing_won",
+    )
   } else if (stage === "no_show") {
     items.push("closing_lost")
   } else if (stage === "standby") {
@@ -269,32 +274,30 @@ function ClosingEventForm({
     !readOnly && (detail.canRescheduleClosing || detail.canRecordClosingOutcome)
 
   return (
-    <section className="rounded-xl bg-surface p-4 shadow-card">
+    <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h3 className="font-sans text-body-sm font-semibold text-fg">
+        <h3 className="text-xs/relaxed font-semibold text-foreground">
           Fechamento
         </h3>
-        <span className="inline-flex rounded-md bg-hover px-2 py-0.5 font-sans text-caption font-medium text-fg-secondary">
+        <span className="inline-flex rounded-md bg-accent px-2 py-0.5 text-xs/relaxed font-medium text-muted-foreground">
           {CLOSING_STAGE_LABELS[stage]}
         </span>
         {meetingOverdue ? (
-          <span className="inline-flex rounded-md bg-danger/10 px-2 py-0.5 font-sans text-caption font-medium text-danger">
+          <span className="inline-flex rounded-md bg-destructive/10 px-2 py-0.5 text-xs/relaxed font-medium text-destructive">
             Reunião vencida
           </span>
         ) : null}
       </div>
 
       {!canAct ? (
-        <p className="font-sans text-body-sm text-fg-secondary">
+        <p className="text-xs/relaxed text-muted-foreground">
           {readOnly
             ? "Visualização da oportunidade."
             : "Você não pode registrar o desfecho desta reunião."}
         </p>
       ) : (
         <>
-          <p className="mb-1.5 font-sans text-caption text-fg-secondary">
-            Ação
-          </p>
+          <p className="mb-1.5 text-xs/relaxed text-muted-foreground">Ação</p>
           <div
             role="radiogroup"
             aria-label="Ação de fechamento"
@@ -312,17 +315,20 @@ function ClosingEventForm({
                   onClick={() => setAction(item)}
                   className={cn(
                     "inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-md border px-2",
-                    "font-sans text-caption transition-[colors,transform] duration-150 ease-out",
+                    "text-xs/relaxed transition-[colors,transform] duration-150 ease-out",
                     "active:scale-[0.97]",
                     selected
                       ? EVENT_CHIP[item].selected
-                      : "border-transparent text-fg-muted hover:text-fg",
+                      : "border-transparent text-muted-foreground hover:text-foreground",
                     "disabled:pointer-events-none disabled:opacity-50",
                   )}
                 >
                   <span
                     aria-hidden
-                    className={cn("size-1.5 rounded-full", EVENT_CHIP[item].dot)}
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      EVENT_CHIP[item].dot,
+                    )}
                   />
                   {item === "meeting_rescheduled" && stage === "standby"
                     ? "Outra reunião"
@@ -348,9 +354,25 @@ function ClosingEventForm({
             <div className="mb-3">
               <Field data-invalid={Boolean(fieldError.closer_id)}>
                 <FieldLabel htmlFor="closing-closer">Closer</FieldLabel>
-                <Select value={closerId} onValueChange={(next) => setCloserId(String(next))} disabled={isPending || closersLoading}>
-                  <SelectTrigger id="closing-closer" className="w-full"><SelectValue placeholder={closersLoading ? "Carregando…" : "Selecione o closer"} /></SelectTrigger>
-                  <SelectContent align="start">{closers.map((closer) => <SelectItem key={closer.id} value={closer.id}>{closer.name}</SelectItem>)}</SelectContent>
+                <Select
+                  value={closerId}
+                  onValueChange={(next) => setCloserId(String(next))}
+                  disabled={isPending || closersLoading}
+                >
+                  <SelectTrigger id="closing-closer" className="w-full">
+                    <SelectValue
+                      placeholder={
+                        closersLoading ? "Carregando…" : "Selecione o closer"
+                      }
+                    />
+                  </SelectTrigger>
+                  <SelectContent align="start">
+                    {closers.map((closer) => (
+                      <SelectItem key={closer.id} value={closer.id}>
+                        {closer.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
                 <FieldError>{fieldError.closer_id}</FieldError>
               </Field>
@@ -359,7 +381,7 @@ function ClosingEventForm({
 
           {showChannel ? (
             <div className="mb-3">
-              <p className="mb-1.5 font-sans text-caption text-fg-secondary">
+              <p className="mb-1.5 text-xs/relaxed text-muted-foreground">
                 Canal de contato
               </p>
               <LeadActivityChannelPicker
@@ -380,7 +402,7 @@ function ClosingEventForm({
 
           <label
             htmlFor="closing-note"
-            className="mb-1.5 block font-sans text-caption text-fg-secondary"
+            className="mb-1.5 block text-xs/relaxed text-muted-foreground"
           >
             Observação
           </label>
@@ -431,7 +453,7 @@ function ClosingEventForm({
       )}
 
       {error ? (
-        <p role="alert" className="mt-3 font-sans text-body-sm text-danger">
+        <p role="alert" className="mt-3 text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}
@@ -520,12 +542,12 @@ function ClosingChecklist({
   }
 
   return (
-    <section className="rounded-xl bg-surface p-4 shadow-card">
+    <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h3 className="font-sans text-body-sm font-semibold text-fg">
+        <h3 className="text-xs/relaxed font-semibold text-foreground">
           {converted ? "Cliente consolidado" : "Consolidação do acordo"}
         </h3>
-        <span className="inline-flex rounded-md bg-success/10 px-2 py-0.5 font-sans text-caption font-medium text-success">
+        <span className="inline-flex rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
           {converted ? "Início" : CLOSING_STAGE_LABELS.won_pending}
         </span>
       </div>
@@ -621,7 +643,7 @@ function ClosingChecklist({
       ) : null}
 
       {error ? (
-        <p role="alert" className="mt-3 font-sans text-body-sm text-danger">
+        <p role="alert" className="mt-3 text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}

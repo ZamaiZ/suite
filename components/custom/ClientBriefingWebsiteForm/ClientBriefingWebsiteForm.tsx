@@ -1,6 +1,13 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react"
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react"
 import { LazyMotion, domAnimation } from "motion/react"
 import {
   RiCheckLine,
@@ -91,11 +98,7 @@ export function ClientBriefingWebsiteForm({
     markComplete,
     setError,
     clearError,
-  } = useBriefingAutosave(
-    initialUpdatedAt,
-    initialCompletedAt,
-    persist,
-  )
+  } = useBriefingAutosave(initialUpdatedAt, initialCompletedAt, persist)
   useBriefingWriterFlushRegistration(flushPending)
 
   const patch = useCallback(
@@ -357,13 +360,15 @@ export function ClientBriefingWebsiteForm({
           />
 
           <Field>
-            <FieldLabel htmlFor="briefing-website-notes">Observações (opcional)</FieldLabel>
+            <FieldLabel htmlFor="briefing-website-notes">
+              Observações (opcional)
+            </FieldLabel>
             <Textarea
-            id="briefing-website-notes"
-            rows={4}
-            value={payload.notes}
-            onChange={(event) => patch({ notes: event.target.value })}
-            placeholder="Restrições de uso do logo, tipografia, o que evitar…"
+              id="briefing-website-notes"
+              rows={4}
+              value={payload.notes}
+              onChange={(event) => patch({ notes: event.target.value })}
+              placeholder="Restrições de uso do logo, tipografia, o que evitar…"
             />
           </Field>
         </BriefingSectionCard>
@@ -397,7 +402,7 @@ export function ClientBriefingWebsiteForm({
             ))}
           </BriefingChoiceCardGroup>
           {payload.colorPolicy === "keep_current" ? (
-            <p className="font-sans text-caption text-fg-muted">
+            <p className="text-xs/relaxed text-muted-foreground">
               Usaremos o site informado na etapa Empresa como referência de
               cores.
             </p>
@@ -429,24 +434,24 @@ export function ClientBriefingWebsiteForm({
         {errorMessage ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/25 bg-danger/10 px-4 py-3 font-sans text-body-sm text-danger"
+            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
           >
             {errorMessage}
           </p>
         ) : null}
 
         {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 font-sans text-body-sm text-success">
+          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
             Etapa concluída. Você pode continuar editando; as alterações seguem
             sendo salvas.
           </div>
         ) : null}
 
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
-          <div className="pointer-events-auto border-t border-border bg-canvas/90 backdrop-blur-md">
+          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
               <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
+                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                   {saveState === "saving" || isCompleting ? (
                     <>
                       <RiLoader4Line
@@ -470,7 +475,7 @@ export function ClientBriefingWebsiteForm({
                       <RiCloseLine
                         size={14}
                         aria-hidden
-                        className="text-danger"
+                        className="text-destructive"
                       />
                       Não foi possível salvar
                     </>
@@ -479,7 +484,7 @@ export function ClientBriefingWebsiteForm({
                   )}
                 </p>
                 {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate font-sans text-caption text-fg-secondary">
+                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
                     Falta: {missingLabels.join(", ")}
                   </p>
                 ) : null}
@@ -491,18 +496,24 @@ export function ClientBriefingWebsiteForm({
                   </Button>
                 ) : null}
                 {variant === "staff" ? null : (
-                <Button
-                  type="button"
-                  disabled={isCompleting || !ready}
-                  onClick={handleComplete}
-                >
-                  {isCompleting
-                    ? "Salvando..."
-                    : completed
-                      ? "Etapa concluída"
-                      : "Continuar"}
-                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
-                </Button>
+                  <Button
+                    type="button"
+                    disabled={isCompleting || !ready}
+                    onClick={handleComplete}
+                  >
+                    {isCompleting
+                      ? "Salvando..."
+                      : completed
+                        ? "Etapa concluída"
+                        : "Continuar"}
+                    {completed ? (
+                      <RiCheckLine
+                        size={16}
+                        aria-hidden
+                        data-icon="inline-end"
+                      />
+                    ) : null}
+                  </Button>
                 )}
               </div>
             </div>

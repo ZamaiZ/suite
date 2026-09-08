@@ -13,10 +13,7 @@ export function BriefingReviewClosing({ payload }: BriefingReviewClosingProps) {
           label="Há informação adicional?"
           value={formatYesNo(payload.hasAdditionalInfo)}
         />
-        <BriefingReviewField
-          label="Detalhes"
-          value={payload.additionalInfo}
-        />
+        <BriefingReviewField label="Detalhes" value={payload.additionalInfo} />
       </BriefingReviewSection>
     </div>
   )

@@ -1,7 +1,12 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
-import { RiLoader4Line, RiMore2Line, RiUserAddLine, RiUserUnfollowLine } from "react-icons/ri"
+import {
+  RiLoader4Line,
+  RiMore2Line,
+  RiUserAddLine,
+  RiUserUnfollowLine,
+} from "react-icons/ri"
 import { claimLead, unclaimLead } from "@/app/actions/leads"
 import { Button } from "@/components/ui/button"
 import {
@@ -10,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { LeadClaimActionsProps } from "./LeadClaimActions.types"
 
 export function LeadClaimActions({
@@ -47,7 +52,9 @@ export function LeadClaimActions({
 
     startTransition(async () => {
       const result =
-        kind === "claim" ? await claimLead(formData) : await unclaimLead(formData)
+        kind === "claim"
+          ? await claimLead(formData)
+          : await unclaimLead(formData)
       if (result.status === "error") {
         setMessage({ tone: "error", text: result.message })
         onError?.(result.message)
@@ -74,29 +81,26 @@ export function LeadClaimActions({
           )}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-44">
-              {canClaim ? (
-                <DropdownMenuItem
-                  disabled={isPending}
-                  onClick={() => run("claim")}
-                >
-                  <RiUserAddLine size={16} aria-hidden />
-                  Reivindicar
-                </DropdownMenuItem>
-              ) : null}
-              {canUnclaim ? (
-                <DropdownMenuItem
-                  disabled={isPending}
-                  onClick={() => run("unclaim")}
-                >
-                  <RiUserUnfollowLine size={16} aria-hidden />
-                  Devolver à fila
-                </DropdownMenuItem>
-              ) : null}
-              {createdByName ? (
-                <p className="px-2 py-1.5 font-sans text-caption text-fg-muted">
-                  Criado por {createdByName}
-                </p>
-              ) : null}
+          {canClaim ? (
+            <DropdownMenuItem disabled={isPending} onClick={() => run("claim")}>
+              <RiUserAddLine size={16} aria-hidden />
+              Reivindicar
+            </DropdownMenuItem>
+          ) : null}
+          {canUnclaim ? (
+            <DropdownMenuItem
+              disabled={isPending}
+              onClick={() => run("unclaim")}
+            >
+              <RiUserUnfollowLine size={16} aria-hidden />
+              Devolver à fila
+            </DropdownMenuItem>
+          ) : null}
+          {createdByName ? (
+            <p className="px-2 py-1.5 text-xs/relaxed text-muted-foreground">
+              Criado por {createdByName}
+            </p>
+          ) : null}
         </DropdownMenuContent>
       </DropdownMenu>
     )
@@ -112,7 +116,11 @@ export function LeadClaimActions({
             disabled={isPending}
           >
             {isPending ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : (
               <RiUserAddLine data-icon="inline-start" aria-hidden />
             )}
@@ -127,7 +135,11 @@ export function LeadClaimActions({
             disabled={isPending}
           >
             {isPending ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : (
               <RiUserUnfollowLine data-icon="inline-start" aria-hidden />
             )}
@@ -139,8 +151,8 @@ export function LeadClaimActions({
         <p
           role={message.tone === "error" ? "alert" : "status"}
           className={cn(
-            "font-sans text-body-sm",
-            message.tone === "error" ? "text-danger" : "text-success",
+            "text-xs/relaxed",
+            message.tone === "error" ? "text-destructive" : "text-success",
           )}
         >
           {message.text}

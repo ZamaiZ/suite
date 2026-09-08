@@ -1,15 +1,8 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import {
-  getCurrentUserRoles,
-  requireUser,
-} from "@/lib/auth/session"
-import {
-  hasRole,
-  sortAppRoles,
-  type AppRole,
-} from "@/lib/auth/roles"
+import { getCurrentUserRoles, requireUser } from "@/lib/auth/session"
+import { hasRole, sortAppRoles, type AppRole } from "@/lib/auth/roles"
 import { createClient } from "@/lib/supabase/server"
 import { updateTeamMemberRolesSchema } from "@/lib/validations/team-role"
 

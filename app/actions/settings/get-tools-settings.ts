@@ -2,10 +2,8 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { isDataForSeoConfigured } from "@/lib/dataforseo/configured"
-import {
-  fetchDataForSeoUserData,
-  type DataForSeoUserData,
-} from "@/lib/dataforseo/user-data"
+import { fetchDataForSeoUserData } from "@/lib/dataforseo/user-data"
+import type { DataForSeoUserData } from "@/lib/dataforseo/usage"
 
 export type ToolsSettingsState = {
   configured: boolean

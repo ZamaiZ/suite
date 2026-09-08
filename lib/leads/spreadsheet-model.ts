@@ -48,7 +48,9 @@ export const SPREADSHEET_FIELD_LABELS: Record<SpreadsheetValueKey, string> = {
   ...DIGITAL_CHANNEL_LABELS,
 }
 
-export const SPREADSHEET_FIELD_NOTES: Partial<Record<SpreadsheetValueKey, string>> = {
+export const SPREADSHEET_FIELD_NOTES: Partial<
+  Record<SpreadsheetValueKey, string>
+> = {
   segment: "Use um segmento existente ou digite um novo nome.",
   state_code: "Sigla da UF com 2 letras (ex.: SP).",
   city: "Cidade conforme a UF selecionada.",
@@ -159,9 +161,8 @@ export function rowChannelKeys(
   row: SpreadsheetEvaluatedRow,
 ): LeadDigitalChannelWrite[] {
   if (row.payload?.channels) return row.payload.channels
-  return normalizeDigitalChannelList(
-    channelsFromSpreadsheetCells(row.values),
-  ).channels
+  return normalizeDigitalChannelList(channelsFromSpreadsheetCells(row.values))
+    .channels
 }
 
 export function validateRawRows(
@@ -188,8 +189,7 @@ export function validateRawRows(
     if (!parsed.success) {
       for (const issue of parsed.error.issues) {
         const path0 = issue.path[0]
-        let field: string | null =
-          typeof path0 === "string" ? path0 : null
+        let field: string | null = typeof path0 === "string" ? path0 : null
         if (path0 === "channels") {
           const index = issue.path[1]
           if (typeof index === "number" && drafts[index]) {
@@ -308,8 +308,7 @@ export function stripSessionConflicts(
   return rows.map((row) => ({
     ...row,
     issues: row.issues.filter(
-      (issue) =>
-        !prefixes.some((prefix) => issue.message.startsWith(prefix)),
+      (issue) => !prefixes.some((prefix) => issue.message.startsWith(prefix)),
     ),
   }))
 }

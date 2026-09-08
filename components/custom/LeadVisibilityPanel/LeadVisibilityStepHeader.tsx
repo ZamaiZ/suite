@@ -30,14 +30,14 @@ export function LeadVisibilityStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiBarChartBoxLine} />
         <div className="min-w-0">
-          <h2 className="font-sans text-caption font-semibold text-fg">
+          <h2 className="text-xs/relaxed font-semibold text-foreground">
             Visibilidade
           </h2>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Keywords orgânicas, páginas ranqueadas e veredito comercial.
           </p>
           {source ? (
-            <p className="mt-1 font-sans text-caption text-fg-secondary">
+            <p className="mt-1 text-xs/relaxed text-muted-foreground">
               {visibilitySourceLabel(source)}
             </p>
           ) : null}
@@ -45,7 +45,7 @@ export function LeadVisibilityStepHeader({
       </div>
       <div className="flex flex-wrap items-center justify-end gap-2">
         {updatedAt ? (
-          <span className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted">
+          <span className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground">
             <RiCheckLine size={14} aria-hidden className="text-success" />
             Atualizado {formatRelativeShort(updatedAt)}
           </span>
@@ -58,7 +58,11 @@ export function LeadVisibilityStepHeader({
             onClick={onAnalyze}
           >
             {collecting ? (
-              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              <RiLoader4Line
+                data-icon="inline-start"
+                aria-hidden
+                className="animate-spin"
+              />
             ) : (
               <RiRefreshLine data-icon="inline-start" aria-hidden />
             )}

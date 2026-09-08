@@ -2,7 +2,14 @@
 
 import { useEffect, useRef, useState, useTransition } from "react"
 import Link from "next/link"
-import { Controller, useForm, type FieldValues, type Path, type Resolver, type UseFormReturn } from "react-hook-form"
+import {
+  Controller,
+  useForm,
+  type FieldValues,
+  type Path,
+  type Resolver,
+  type UseFormReturn,
+} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import {
@@ -32,8 +39,11 @@ import {
 } from "@/components/ui/input-group"
 import { Textarea } from "@/components/ui/textarea"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
-import { cn } from "@/lib/cn"
-import { toDigitalChannelDrafts, type DigitalChannelDraft } from "@/lib/leads/digital-channels"
+import { cn } from "cn"
+import {
+  toDigitalChannelDrafts,
+  type DigitalChannelDraft,
+} from "@/lib/leads/digital-channels"
 import type { LeadDetail } from "@/app/actions/leads"
 import type { LeadTag } from "@/lib/leads/tags"
 import type { LeadRecord, LeadWritePayload } from "@/lib/leads/types"
@@ -108,10 +118,7 @@ function fillLeadFormData(
   formData.set("contact_name", overlay.contact_name ?? lead.contact_name ?? "")
   formData.set("phone", overlay.phone ?? lead.phone ?? "")
   formData.set("email", overlay.email ?? lead.email ?? "")
-  formData.set(
-    "observations",
-    overlay.observations ?? lead.observations ?? "",
-  )
+  formData.set("observations", overlay.observations ?? lead.observations ?? "")
   for (const tag of tags) formData.append("tags", tag)
 }
 
@@ -161,7 +168,7 @@ export function LeadRecordPanel({
 
   return (
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="border-b border-border-subtle bg-elevated lg:border-r lg:border-b-0">
+      <aside className="border-b border-border/70 bg-popover lg:border-r lg:border-b-0">
         <LeadRecordRail
           section={section}
           createdAt={detail.lead.created_at}
@@ -174,7 +181,9 @@ export function LeadRecordPanel({
             detail={detail}
             editing={sectionEditing === "company"}
             readOnly={readOnly}
-            showActions={sectionEditing === null || sectionEditing === "company"}
+            showActions={
+              sectionEditing === null || sectionEditing === "company"
+            }
             onEdit={() => startEdit("company")}
             onCancel={onCancel}
             onSaved={onSaved}
@@ -186,7 +195,9 @@ export function LeadRecordPanel({
             detail={detail}
             editing={sectionEditing === "contact"}
             readOnly={readOnly}
-            showActions={sectionEditing === null || sectionEditing === "contact"}
+            showActions={
+              sectionEditing === null || sectionEditing === "contact"
+            }
             onEdit={() => startEdit("contact")}
             onCancel={onCancel}
             onSaved={onSaved}
@@ -312,9 +323,13 @@ function CompanyCard({
                   const errorId = "lead-record-company-name-error"
                   return (
                     <Field data-invalid={!!fieldState.error}>
-                      <FieldLabel htmlFor="lead-record-company-name">Nome da empresa</FieldLabel>
+                      <FieldLabel htmlFor="lead-record-company-name">
+                        Nome da empresa
+                      </FieldLabel>
                       <InputGroup>
-                        <InputGroupAddon><RiBuilding4Line aria-hidden /></InputGroupAddon>
+                        <InputGroupAddon>
+                          <RiBuilding4Line aria-hidden />
+                        </InputGroupAddon>
                         <InputGroupInput
                           id="lead-record-company-name"
                           value={field.value}
@@ -323,10 +338,14 @@ function CompanyCard({
                           disabled={isPending}
                           autoComplete="organization"
                           aria-invalid={!!fieldState.error}
-                          aria-describedby={fieldState.error ? errorId : undefined}
+                          aria-describedby={
+                            fieldState.error ? errorId : undefined
+                          }
                         />
                       </InputGroup>
-                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                      <FieldError id={errorId}>
+                        {fieldState.error?.message}
+                      </FieldError>
                     </Field>
                   )
                 }}
@@ -439,8 +458,8 @@ function CompanyCard({
                   : "—"
               }
             />
-            <div className="border-t border-border-subtle pt-4">
-              <p className="mb-2 font-sans text-caption text-fg-muted">Tags</p>
+            <div className="border-t border-border/70 pt-4">
+              <p className="mb-2 text-xs/relaxed text-muted-foreground">Tags</p>
               <div className="flex flex-wrap items-center gap-1.5">
                 <LeadTagChips tags={detail.tags} />
                 {readOnly || !showActions ? null : (
@@ -448,7 +467,7 @@ function CompanyCard({
                     type="button"
                     aria-label="Adicionar tag"
                     onClick={onEdit}
-                    className="inline-flex size-7 cursor-pointer items-center justify-center rounded-md border border-border text-accent transition-colors duration-150 ease-out hover:bg-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                    className="inline-flex size-7 cursor-pointer items-center justify-center rounded-md border border-border text-primary transition-colors duration-150 ease-out hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     <RiAddLine size={14} aria-hidden />
                   </button>
@@ -550,9 +569,13 @@ function ContactCard({
                   const errorId = "lead-record-contact-name-error"
                   return (
                     <Field data-invalid={!!fieldState.error}>
-                      <FieldLabel htmlFor="lead-record-contact-name">Nome do contato</FieldLabel>
+                      <FieldLabel htmlFor="lead-record-contact-name">
+                        Nome do contato
+                      </FieldLabel>
                       <InputGroup>
-                        <InputGroupAddon><RiUserLine aria-hidden /></InputGroupAddon>
+                        <InputGroupAddon>
+                          <RiUserLine aria-hidden />
+                        </InputGroupAddon>
                         <InputGroupInput
                           id="lead-record-contact-name"
                           value={field.value}
@@ -561,10 +584,14 @@ function ContactCard({
                           disabled={isPending}
                           autoComplete="name"
                           aria-invalid={!!fieldState.error}
-                          aria-describedby={fieldState.error ? errorId : undefined}
+                          aria-describedby={
+                            fieldState.error ? errorId : undefined
+                          }
                         />
                       </InputGroup>
-                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                      <FieldError id={errorId}>
+                        {fieldState.error?.message}
+                      </FieldError>
                     </Field>
                   )
                 }}
@@ -576,24 +603,34 @@ function ContactCard({
                   const errorId = "lead-record-phone-error"
                   return (
                     <Field data-invalid={!!fieldState.error}>
-                      <FieldLabel htmlFor="lead-record-phone">Telefone</FieldLabel>
+                      <FieldLabel htmlFor="lead-record-phone">
+                        Telefone
+                      </FieldLabel>
                       <InputGroup>
-                        <InputGroupAddon><RiPhoneLine aria-hidden /></InputGroupAddon>
+                        <InputGroupAddon>
+                          <RiPhoneLine aria-hidden />
+                        </InputGroupAddon>
                         <InputGroupInput
                           id="lead-record-phone"
                           type="tel"
                           inputMode="tel"
                           placeholder="(11) 98765-4321"
                           value={formatPhone(field.value)}
-                          onChange={(event) => field.onChange(formatPhone(event.target.value))}
+                          onChange={(event) =>
+                            field.onChange(formatPhone(event.target.value))
+                          }
                           onBlur={field.onBlur}
                           disabled={isPending}
                           autoComplete="tel"
                           aria-invalid={!!fieldState.error}
-                          aria-describedby={fieldState.error ? errorId : undefined}
+                          aria-describedby={
+                            fieldState.error ? errorId : undefined
+                          }
                         />
                       </InputGroup>
-                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                      <FieldError id={errorId}>
+                        {fieldState.error?.message}
+                      </FieldError>
                     </Field>
                   )
                 }}
@@ -605,9 +642,13 @@ function ContactCard({
                   const errorId = "lead-record-email-error"
                   return (
                     <Field data-invalid={!!fieldState.error}>
-                      <FieldLabel htmlFor="lead-record-email">E-mail</FieldLabel>
+                      <FieldLabel htmlFor="lead-record-email">
+                        E-mail
+                      </FieldLabel>
                       <InputGroup>
-                        <InputGroupAddon><RiMailLine aria-hidden /></InputGroupAddon>
+                        <InputGroupAddon>
+                          <RiMailLine aria-hidden />
+                        </InputGroupAddon>
                         <InputGroupInput
                           id="lead-record-email"
                           type="email"
@@ -617,10 +658,14 @@ function ContactCard({
                           disabled={isPending}
                           autoComplete="email"
                           aria-invalid={!!fieldState.error}
-                          aria-describedby={fieldState.error ? errorId : undefined}
+                          aria-describedby={
+                            fieldState.error ? errorId : undefined
+                          }
                         />
                       </InputGroup>
-                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                      <FieldError id={errorId}>
+                        {fieldState.error?.message}
+                      </FieldError>
                     </Field>
                   )
                 }}
@@ -741,7 +786,7 @@ function NotesCard({
                 <div>
                   <label
                     htmlFor="lead-record-observations"
-                    className="mb-1.5 block font-sans text-caption text-fg-secondary"
+                    className="mb-1.5 block text-xs/relaxed text-muted-foreground"
                   >
                     Observação
                   </label>
@@ -757,11 +802,14 @@ function NotesCard({
                     aria-invalid={fieldState.error ? true : undefined}
                     className="min-h-0 resize-none"
                   />
-                  <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+                  <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
                     {observations.length}/{LEAD_OBSERVATIONS_MAX}
                   </p>
                   {fieldState.error?.message ? (
-                    <p role="alert" className="mt-1 font-sans text-caption text-danger">
+                    <p
+                      role="alert"
+                      className="mt-1 text-xs/relaxed text-destructive"
+                    >
                       {fieldState.error.message}
                     </p>
                   ) : null}
@@ -774,15 +822,15 @@ function NotesCard({
           <div className="flex flex-col items-center gap-3 px-4 py-6">
             <span
               aria-hidden
-              className="inline-flex size-12 items-center justify-center rounded-xl bg-hover text-fg-muted"
+              className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
             >
               <RiFileTextLine size={22} />
             </span>
             <div className="max-w-sm text-center">
-              <p className="font-sans text-body-sm text-fg-secondary">
+              <p className="text-xs/relaxed text-muted-foreground">
                 Nenhuma observação cadastrada
               </p>
-              <p className="mt-1 font-sans text-caption text-fg-muted">
+              <p className="mt-1 text-xs/relaxed text-muted-foreground">
                 Informações importantes ou observações sobre este lead.
               </p>
             </div>
@@ -790,14 +838,14 @@ function NotesCard({
               <button
                 type="button"
                 onClick={onEdit}
-                className="cursor-pointer font-sans text-body-sm font-medium text-accent transition-colors duration-150 ease-out hover:text-accent-hover"
+                className="cursor-pointer text-xs/relaxed font-medium text-primary transition-colors duration-150 ease-out hover:text-primary"
               >
                 Adicionar observação
               </button>
             )}
           </div>
         ) : (
-          <p className="whitespace-pre-wrap font-sans text-body-sm text-fg-secondary">
+          <p className="whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
             {lead.observations}
           </p>
         )}
@@ -833,14 +881,14 @@ function ServerMessage({
   existingLeadId?: string
 }) {
   return (
-    <p role="alert" className="font-sans text-body-sm text-danger">
+    <p role="alert" className="text-xs/relaxed text-destructive">
       {text}
       {existingLeadId ? (
         <>
           {" "}
           <Link
             href={`/leads?lead=${existingLeadId}`}
-            className="font-medium text-link underline-offset-2 hover:underline"
+            className="font-medium text-primary underline-offset-2 hover:underline"
           >
             Abrir cadastro existente
           </Link>
@@ -853,27 +901,27 @@ function ServerMessage({
 function RecordSkeleton() {
   return (
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="border-b border-border-subtle bg-elevated lg:border-r lg:border-b-0">
+      <aside className="border-b border-border/70 bg-popover lg:border-r lg:border-b-0">
         <div className="flex flex-col gap-3 px-4 py-5 sm:px-5">
-          <span className="h-12 animate-pulse rounded-lg bg-hover motion-reduce:animate-none" />
+          <span className="h-12 animate-pulse rounded-lg bg-accent motion-reduce:animate-none" />
           <span
-            className="h-12 animate-pulse rounded-lg bg-hover motion-reduce:animate-none"
+            className="h-12 animate-pulse rounded-lg bg-accent motion-reduce:animate-none"
             style={{ animationDelay: "40ms" }}
           />
           <span
-            className="h-12 animate-pulse rounded-lg bg-hover motion-reduce:animate-none"
+            className="h-12 animate-pulse rounded-lg bg-accent motion-reduce:animate-none"
             style={{ animationDelay: "80ms" }}
           />
         </div>
       </aside>
       <div className="flex min-w-0 flex-col gap-4 px-4 py-5 sm:px-5">
-        <span className="h-44 animate-pulse rounded-xl bg-hover motion-reduce:animate-none" />
+        <span className="h-44 animate-pulse rounded-xl bg-accent motion-reduce:animate-none" />
         <span
-          className="h-36 animate-pulse rounded-xl bg-hover motion-reduce:animate-none"
+          className="h-36 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
           style={{ animationDelay: "40ms" }}
         />
         <span
-          className="h-40 animate-pulse rounded-xl bg-hover motion-reduce:animate-none"
+          className="h-40 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
           style={{ animationDelay: "80ms" }}
         />
       </div>

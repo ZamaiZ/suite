@@ -1,10 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
-import {
-  generatePortalCode,
-  hashPortalCode,
-} from "@/lib/clients/access"
+import { generatePortalCode, hashPortalCode } from "@/lib/clients/access"
 import { buildPortalUrl } from "@/lib/clients/portal-session"
 import {
   rotatePortalAccessSchema,

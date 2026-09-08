@@ -91,12 +91,8 @@ export function psiKindToStrategy(
   return kind === "pagespeed_mobile" ? "mobile" : "desktop"
 }
 
-export function websitePsiJobsActive(
-  jobs: readonly WebsitePsiJob[],
-): boolean {
-  return jobs.some(
-    (job) => job.status === "queued" || job.status === "running",
-  )
+export function websitePsiJobsActive(jobs: readonly WebsitePsiJob[]): boolean {
+  return jobs.some((job) => job.status === "queued" || job.status === "running")
 }
 
 export function websitePsiJobsFailedWithoutReady(
@@ -262,9 +258,7 @@ function auditScoreOne(
   return score >= 1
 }
 
-function contrastFailCount(
-  audits: Record<string, unknown> | null,
-): number {
+function contrastFailCount(audits: Record<string, unknown> | null): number {
   const audit = auditRecord(audits, "color-contrast")
   if (!audit) return 0
   const score = asFinite(audit.score)
@@ -383,9 +377,7 @@ export function websitePagespeedGaps(
   const strategies = presentStrategies(pagespeed)
   if (strategies.length === 0) return []
   const gaps: WebsiteGapId[] = []
-  const minPerformance = Math.min(
-    ...strategies.map((item) => item.performance),
-  )
+  const minPerformance = Math.min(...strategies.map((item) => item.performance))
   if (minPerformance < PSI_PERFORMANCE_NEEDS) gaps.push("slow_performance")
   if (strategies.some((item) => strategyCwvNeedsImprovement(item))) {
     gaps.push("poor_cwv")
@@ -393,8 +385,7 @@ export function websitePagespeedGaps(
   if (strategies.some((item) => !item.viewportOk)) gaps.push("not_responsive")
   if (
     strategies.some(
-      (item) =>
-        item.accessibility < PSI_A11Y_POOR || item.contrastFails > 0,
+      (item) => item.accessibility < PSI_A11Y_POOR || item.contrastFails > 0,
     )
   ) {
     gaps.push("a11y_issues")

@@ -15,13 +15,12 @@ export async function ensureSegment(
   const slug = name ? segmentSlug(name) : ""
   if (!name || !slug) return null
 
-  const { error: upsertError } = await supabase.from("segments").upsert(
-    [{ name, slug }],
-    {
+  const { error: upsertError } = await supabase
+    .from("segments")
+    .upsert([{ name, slug }], {
       onConflict: "slug",
       ignoreDuplicates: true,
-    },
-  )
+    })
   if (upsertError) return null
 
   const { data: segmentRow, error: selectError } = await supabase

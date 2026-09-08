@@ -74,10 +74,7 @@ export async function pollLeadWebsiteJobs(
   const denied = denyWebsiteEdit(loaded.lead, user.id, roles)
   if (denied) return { status: "error", message: denied }
 
-  const claimed = await claimWebsitePagespeedJob(
-    supabase,
-    parsed.data.audit_id,
-  )
+  const claimed = await claimWebsitePagespeedJob(supabase, parsed.data.audit_id)
   if (claimed.status === "error") {
     return { status: "error", message: POLL_FAILED }
   }

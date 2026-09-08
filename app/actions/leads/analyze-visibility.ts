@@ -26,7 +26,8 @@ export type AnalyzeLeadVisibilityState =
   | { status: "success"; audit: LeadVisibilityAudit }
   | { status: "error"; message: string }
 
-const ANALYZE_FAILED = "Não foi possível analisar a visibilidade. Tente novamente."
+const ANALYZE_FAILED =
+  "Não foi possível analisar a visibilidade. Tente novamente."
 const NO_WEBSITE = "Cadastre um site no lead para analisar a visibilidade."
 
 export async function analyzeLeadVisibility(
@@ -41,10 +42,7 @@ export async function analyzeLeadVisibility(
   }
 
   const supabase = await createClient()
-  const loaded = await loadVisibilityAuditByLead(
-    supabase,
-    parsed.data.lead_id,
-  )
+  const loaded = await loadVisibilityAuditByLead(supabase, parsed.data.lead_id)
   if (loaded.status === "error") {
     return { status: "error", message: ANALYZE_FAILED }
   }

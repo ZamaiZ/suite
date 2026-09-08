@@ -12,16 +12,17 @@ export function LeadImportHeader({
   closeDisabled: boolean
 }) {
   return (
-    <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border-subtle bg-elevated px-4 py-4 sm:px-5">
+    <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border/70 bg-popover px-4 py-4 sm:px-5">
       <div className="flex min-w-0 items-center gap-2.5">
         <LeadIconWell icon={RiUploadCloud2Line} />
         <div className="min-w-0">
-          <p className="font-display text-title font-semibold text-fg">
+          <p className="font-heading text-xl font-semibold text-foreground">
             Importar leads
           </p>
-          <p className="mt-1 font-sans text-body-sm text-fg-muted">
+          <p className="mt-1 text-xs/relaxed text-muted-foreground">
             Importe uma ou mais planilhas seguindo o modelo do CRM. A validação
-            começa no envio. Importar só libera com zero problemas e zero conflitos.
+            começa no envio. Importar só libera com zero problemas e zero
+            conflitos.
           </p>
         </div>
       </div>

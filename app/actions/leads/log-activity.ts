@@ -91,7 +91,8 @@ export async function logLeadActivity(
   if (lead.status === "interested" || lead.status === "converted") {
     return {
       status: "error",
-      message: "Este lead já tem interesse. Não há novas tentativas nesta etapa.",
+      message:
+        "Este lead já tem interesse. Não há novas tentativas nesta etapa.",
     }
   }
 

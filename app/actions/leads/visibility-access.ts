@@ -1,6 +1,10 @@
 import "server-only"
 
-import { denyGbpEdit, loadGbpLeadContext, type GbpLeadContext } from "./gbp-access"
+import {
+  denyGbpEdit,
+  loadGbpLeadContext,
+  type GbpLeadContext,
+} from "./gbp-access"
 import {
   readLeadVisibilityAuditRow,
   type LeadVisibilityAudit,

@@ -59,7 +59,7 @@ import {
   type PersonaIncomeRangeId,
   type PersonaSexId,
 } from "@/lib/briefing/audience"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatTimeShort } from "@/lib/date-time"
 import type { ClientBriefingAudienceFormProps } from "./ClientBriefingAudienceForm.types"
 
@@ -76,8 +76,11 @@ export function ClientBriefingAudienceForm({
 }: ClientBriefingAudienceFormProps) {
   const writerClientId = useBriefingWriterClientId()
   const persist = useWrappedBriefingSave(saveBriefingAudience)
-  const [payload, setPayload] = useState<BriefingAudiencePayload>(initialPayload)
-  const [primaryDraft, setPrimaryDraft] = useState(initialPayload.primaryKeyword)
+  const [payload, setPayload] =
+    useState<BriefingAudiencePayload>(initialPayload)
+  const [primaryDraft, setPrimaryDraft] = useState(
+    initialPayload.primaryKeyword,
+  )
   const [mapLoading, setMapLoading] = useState(false)
   const [mapError, setMapError] = useState<string | null>(null)
   const [mapAddressLabel, setMapAddressLabel] = useState(
@@ -95,11 +98,7 @@ export function ClientBriefingAudienceForm({
     markComplete,
     setError,
     clearError,
-  } = useBriefingAutosave(
-    initialUpdatedAt,
-    initialCompletedAt,
-    persist,
-  )
+  } = useBriefingAutosave(initialUpdatedAt, initialCompletedAt, persist)
   useBriefingWriterFlushRegistration(flushPending)
 
   const payloadRef = useRef(payload)
@@ -190,10 +189,7 @@ export function ClientBriefingAudienceForm({
 
   function toggleAgeRange(id: PersonaAgeRangeId, checked: boolean) {
     const personaAgeRanges = checked
-      ? [
-          ...payload.personaAgeRanges.filter((item) => item !== id),
-          id,
-        ].sort(
+      ? [...payload.personaAgeRanges.filter((item) => item !== id), id].sort(
           (left, right) =>
             PERSONA_AGE_RANGE_IDS.indexOf(left) -
             PERSONA_AGE_RANGE_IDS.indexOf(right),
@@ -204,10 +200,7 @@ export function ClientBriefingAudienceForm({
 
   function toggleIncomeRange(id: PersonaIncomeRangeId, checked: boolean) {
     const personaIncomeRanges = checked
-      ? [
-          ...payload.personaIncomeRanges.filter((item) => item !== id),
-          id,
-        ].sort(
+      ? [...payload.personaIncomeRanges.filter((item) => item !== id), id].sort(
           (left, right) =>
             PERSONA_INCOME_RANGE_IDS.indexOf(left) -
             PERSONA_INCOME_RANGE_IDS.indexOf(right),
@@ -270,7 +263,7 @@ export function ClientBriefingAudienceForm({
           description="Descreva o cliente ideal. Quanto mais específico, melhor o direcionamento."
         >
           <div className="flex flex-col gap-2">
-            <p className="font-sans text-body-sm font-medium text-fg-secondary">
+            <p className="text-xs/relaxed font-medium text-muted-foreground">
               Faixa etária
             </p>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -323,7 +316,7 @@ export function ClientBriefingAudienceForm({
           </div>
 
           <div className="flex flex-col gap-2">
-            <p className="font-sans text-body-sm font-medium text-fg-secondary">
+            <p className="text-xs/relaxed font-medium text-muted-foreground">
               Renda média mensal
             </p>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-3">
@@ -406,10 +399,10 @@ export function ClientBriefingAudienceForm({
             <>
               <div className="flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="font-sans text-body-sm font-medium text-fg-secondary">
+                  <p className="text-xs/relaxed font-medium text-muted-foreground">
                     Raio de atendimento
                   </p>
-                  <span className="font-sans text-body-sm tabular-nums text-fg-muted">
+                  <span className="text-xs/relaxed tabular-nums text-muted-foreground">
                     {payload.serviceRadiusKm} km
                   </span>
                 </div>
@@ -501,10 +494,10 @@ export function ClientBriefingAudienceForm({
                       type="button"
                       onClick={() => promoteKeyword(item)}
                       className={cn(
-                        "rounded-md border px-2 py-1 font-sans text-caption transition-colors",
+                        "rounded-md border px-2 py-1 text-xs/relaxed transition-colors",
                         selected
-                          ? "border-accent bg-accent/10 font-medium text-accent"
-                          : "border-border bg-elevated text-fg-secondary hover:border-accent/40 hover:text-fg",
+                          ? "border-primary bg-primary/10 font-medium text-primary"
+                          : "border-border bg-popover text-muted-foreground hover:border-primary/40 hover:text-foreground",
                       )}
                     >
                       {selected ? "Principal · " : "Definir principal · "}
@@ -535,24 +528,24 @@ export function ClientBriefingAudienceForm({
         {errorMessage ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/25 bg-danger/10 px-4 py-3 font-sans text-body-sm text-danger"
+            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
           >
             {errorMessage}
           </p>
         ) : null}
 
         {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 font-sans text-body-sm text-success">
+          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
             Etapa concluída. Você pode continuar editando; as alterações seguem
             sendo salvas.
           </div>
         ) : null}
 
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
-          <div className="pointer-events-auto border-t border-border bg-canvas/90 backdrop-blur-md">
+          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
               <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
+                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                   {saveState === "saving" || isCompleting ? (
                     <>
                       <RiLoader4Line
@@ -576,7 +569,7 @@ export function ClientBriefingAudienceForm({
                       <RiCloseLine
                         size={14}
                         aria-hidden
-                        className="text-danger"
+                        className="text-destructive"
                       />
                       Não foi possível salvar
                     </>
@@ -585,7 +578,7 @@ export function ClientBriefingAudienceForm({
                   )}
                 </p>
                 {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate font-sans text-caption text-fg-secondary">
+                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
                     Falta: {missingLabels.join(", ")}
                   </p>
                 ) : null}
@@ -597,18 +590,24 @@ export function ClientBriefingAudienceForm({
                   </Button>
                 ) : null}
                 {variant === "staff" ? null : (
-                <Button
-                  type="button"
-                  disabled={isCompleting || !ready}
-                  onClick={handleComplete}
-                >
-                  {isCompleting
-                    ? "Salvando..."
-                    : completed
-                      ? "Etapa concluída"
-                      : "Continuar"}
-                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
-                </Button>
+                  <Button
+                    type="button"
+                    disabled={isCompleting || !ready}
+                    onClick={handleComplete}
+                  >
+                    {isCompleting
+                      ? "Salvando..."
+                      : completed
+                        ? "Etapa concluída"
+                        : "Continuar"}
+                    {completed ? (
+                      <RiCheckLine
+                        size={16}
+                        aria-hidden
+                        data-icon="inline-end"
+                      />
+                    ) : null}
+                  </Button>
                 )}
               </div>
             </div>

@@ -6,12 +6,12 @@ import {
   type DiagnosisDocument,
   type DiagnosisPillar,
 } from "@/lib/leads/diagnosis-document"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 
 function toneForScore(score: number): string {
   if (score >= 80) return "text-success"
   if (score >= 55) return "text-warning"
-  return "text-danger"
+  return "text-destructive"
 }
 
 export function LeadDiagnosisScorecard({
@@ -26,20 +26,20 @@ export function LeadDiagnosisScorecard({
         return (
           <article
             key={pillar}
-            className="rounded-xl border border-border-subtle bg-surface px-3 py-3 shadow-card"
+            className="rounded-xl border border-border/70 bg-card px-3 py-3 shadow-xs"
           >
-            <p className="font-sans text-caption text-fg-muted">
+            <p className="text-xs/relaxed text-muted-foreground">
               {DIAGNOSIS_PILLAR_LABELS[pillar]}
             </p>
             <p
               className={cn(
-                "mt-1 font-display text-title font-semibold tabular-nums",
+                "mt-1 font-heading text-xl font-semibold tabular-nums",
                 toneForScore(cell.score),
               )}
             >
               {cell.score}
             </p>
-            <p className="mt-1 font-sans text-caption text-fg-secondary">
+            <p className="mt-1 text-xs/relaxed text-muted-foreground">
               {cell.highCount + cell.mediumCount === 0
                 ? "Sem alertas"
                 : `${cell.highCount.toLocaleString("pt-BR")} altos · ${cell.mediumCount.toLocaleString("pt-BR")} médios`}

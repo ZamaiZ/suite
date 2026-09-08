@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { Toggle } from "@/components/ui/toggle"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 
 export function LeadBoardToolbarToggle({
   pressed,
@@ -25,10 +25,10 @@ export function LeadBoardToolbarToggle({
       variant="outline"
       size="lg"
       className={cn(
-        "relative h-[var(--control-height)] gap-1.5 px-3 font-sans text-body-sm",
+        "relative h-7 gap-1.5 px-3 text-xs/relaxed",
         pressed
           ? "border-primary bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
-          : "text-fg-secondary hover:bg-accent hover:text-fg",
+          : "text-muted-foreground hover:bg-accent hover:text-foreground",
       )}
     >
       {icon}
@@ -36,7 +36,7 @@ export function LeadBoardToolbarToggle({
       {badgeCount > 0 ? (
         <span
           aria-hidden
-          className="absolute top-1 right-1 size-1.5 rounded-full bg-danger"
+          className="absolute top-1 right-1 size-1.5 rounded-full bg-destructive"
         />
       ) : null}
     </Toggle>

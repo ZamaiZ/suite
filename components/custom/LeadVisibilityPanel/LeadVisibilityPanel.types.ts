@@ -1,7 +1,4 @@
-import type {
-  LeadDetail,
-  LeadVisibilityAudit,
-} from "@/app/actions/leads"
+import type { LeadDetail, LeadVisibilityAudit } from "@/app/actions/leads"
 
 export type LeadVisibilityPanelProps = {
   detail: LeadDetail

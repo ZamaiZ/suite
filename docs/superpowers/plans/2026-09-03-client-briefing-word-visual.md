@@ -23,6 +23,7 @@
 ### Task 1: Document design system
 
 **Files:**
+
 - Modify: `lib/briefing/export-document.ts`
 
 **Produces:** Reusable helpers for styled paragraphs, metadata grids, tables, real bullet lists, headers, footers and sensitive callouts.
@@ -32,6 +33,7 @@
 ### Task 2: Semantic briefing adapters
 
 **Files:**
+
 - Modify: `lib/briefing/export-document.ts`
 
 **Consumes:** `ClientBriefingExportDocument` raw snapshot.
@@ -45,6 +47,7 @@
 ### Task 3: Integration review
 
 **Files:**
+
 - Modify: `docs/superpowers/plans/2026-09-03-client-briefing-word-visual.md`
 
 - [x] Confirm by inspection that snapshot, fingerprint, export action and signed download interfaces are unchanged.

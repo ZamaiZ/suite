@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import { gbpBusinessStatusLabel } from "@/lib/leads/gbp-presenters"
 
@@ -35,7 +35,7 @@ export function LeadGbpIdentity({
   }, [profile.id, cover])
 
   return (
-    <div className="flex flex-col gap-2.5 rounded-xl border border-border-subtle bg-surface p-3 shadow-card sm:flex-row sm:items-start">
+    <div className="flex flex-col gap-2.5 rounded-xl border border-border/70 bg-card p-3 shadow-xs sm:flex-row sm:items-start">
       {cover && !coverFailed ? (
         <img
           src={cover}
@@ -46,16 +46,18 @@ export function LeadGbpIdentity({
       ) : (
         <span
           aria-hidden
-          className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 font-sans text-body font-semibold text-accent"
+          className="inline-flex size-12 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-sm font-semibold text-primary"
         >
           {getLeadInitials(name)}
         </span>
       )}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <p className="font-sans text-caption font-semibold text-fg">{name}</p>
+          <p className="text-xs/relaxed font-semibold text-foreground">
+            {name}
+          </p>
           {profile.is_primary ? (
-            <span className="inline-flex items-center gap-1 rounded-md bg-accent/10 px-2 py-0.5 font-sans text-caption font-medium text-accent">
+            <span className="inline-flex items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
               <RiStarFill size={12} aria-hidden />
               Perfil principal
             </span>
@@ -63,39 +65,49 @@ export function LeadGbpIdentity({
           {statusLabel ? (
             <span
               className={cn(
-                "rounded-md px-2 py-0.5 font-sans text-caption font-medium",
+                "rounded-md px-2 py-0.5 text-xs/relaxed font-medium",
                 snapshot.businessStatus === "OPERATIONAL"
                   ? "bg-success/10 text-success"
-                  : "bg-hover text-fg-secondary",
+                  : "bg-accent text-muted-foreground",
               )}
             >
               {statusLabel}
             </span>
           ) : null}
           {claimed === true ? (
-            <span className="rounded-md bg-success/10 px-2 py-0.5 font-sans text-caption font-medium text-success">
+            <span className="rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
               Reivindicado
             </span>
           ) : null}
           {claimed === false ? (
-            <span className="rounded-md bg-warning/10 px-2 py-0.5 font-sans text-caption font-medium text-warning">
+            <span className="rounded-md bg-warning/10 px-2 py-0.5 text-xs/relaxed font-medium text-warning">
               Não reivindicado
             </span>
           ) : null}
         </div>
         {snapshot.formattedAddress ? (
-          <p className="mt-1 font-sans text-caption text-fg-secondary">
+          <p className="mt-1 text-xs/relaxed text-muted-foreground">
             {snapshot.formattedAddress}
           </p>
         ) : null}
         {profiles.length > 1 ? (
           <div className="mt-3 max-w-sm">
-            <Select value={profile.id} onValueChange={(value) => onSelectProfile(String(value))}>
-              <SelectTrigger id={`gbp-profile-${profile.lead_id}`} className="w-full">
+            <Select
+              value={profile.id}
+              onValueChange={(value) => onSelectProfile(String(value))}
+            >
+              <SelectTrigger
+                id={`gbp-profile-${profile.lead_id}`}
+                className="w-full"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="start">
-                {profiles.map((item) => <SelectItem key={item.id} value={item.id}>{item.payload.displayName ?? item.place_id}</SelectItem>)}
+                {profiles.map((item) => (
+                  <SelectItem key={item.id} value={item.id}>
+                    {item.payload.displayName ?? item.place_id}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>

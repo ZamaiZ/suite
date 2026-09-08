@@ -34,9 +34,7 @@ import {
   formatGbpRating,
   bestMapsPosition,
 } from "./gbp-presenters.ts"
-import {
-  type LeadVisibilityAudit,
-} from "./visibility-audit.ts"
+import { type LeadVisibilityAudit } from "./visibility-audit.ts"
 import { mergeVisibilityOpportunities } from "./visibility-opportunities.ts"
 import type { BacklinkSnapshot } from "./backlinks-audit.ts"
 import { backlinkOpportunitiesFromSnapshot } from "./backlinks-opportunities.ts"
@@ -78,15 +76,13 @@ function metric(id: string, label: string, value: string): DiagnosisKeyMetric {
   return { id, label, value }
 }
 
-function toRef(
-  item: {
-    id: string
-    title: string
-    impact: "high" | "medium"
-    source?: "machine" | "analyst"
-    detail?: string
-  },
-): DiagnosisOpportunityRef {
+function toRef(item: {
+  id: string
+  title: string
+  impact: "high" | "medium"
+  source?: "machine" | "analyst"
+  detail?: string
+}): DiagnosisOpportunityRef {
   return {
     id: item.id,
     title: item.title,
@@ -185,10 +181,7 @@ function googleOpportunities(
 function googleMetrics(profile: LeadGbpProfile): DiagnosisKeyMetric[] {
   const rating = formatGbpRating(profile.payload.rating)
   const reviews = formatGbpCount(profile.payload.userRatingCount)
-  const mapsPos = bestMapsPosition(
-    profile.rank_keywords,
-    profile.rankChecks,
-  )
+  const mapsPos = bestMapsPosition(profile.rank_keywords, profile.rankChecks)
   return [
     metric("rating", "Nota", rating ?? "—"),
     metric("reviews", "Avaliações", reviews ?? "—"),
@@ -223,9 +216,7 @@ function presenceMetrics(
   ]
 }
 
-function visibilityMetrics(
-  audit: LeadVisibilityAudit,
-): DiagnosisKeyMetric[] {
+function visibilityMetrics(audit: LeadVisibilityAudit): DiagnosisKeyMetric[] {
   const snap = audit.snapshot
   return [
     metric(
@@ -318,9 +309,9 @@ export function compileDiagnosisFacts(
           input.websiteAudit.review,
         ).map(toRef)
       : []),
-    ...backlinkOpportunitiesFromSnapshot(
-      input.backlinkSnapshot ?? null,
-    ).map(toRef),
+    ...backlinkOpportunitiesFromSnapshot(input.backlinkSnapshot ?? null).map(
+      toRef,
+    ),
   ].sort((left, right) => {
     if (left.impact !== right.impact) return left.impact === "high" ? -1 : 1
     return 0

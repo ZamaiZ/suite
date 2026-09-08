@@ -21,7 +21,7 @@ export const BOARD_COLUMN_LABELS: Record<BoardColumnId, string> = {
 }
 
 export const BOARD_COLUMN_DOT: Record<BoardColumnId, string> = {
-  new: "bg-fg-muted",
+  new: "bg-accent",
   contacting: "bg-accent",
   follow_up: "bg-warning",
   interested: "bg-success",
@@ -121,7 +121,10 @@ function recencyOf<T extends GroupableLead>(lead: T): string {
   return lead.last_activity_at ?? lead.created_at
 }
 
-function compareRecencyDesc<T extends GroupableLead>(left: T, right: T): number {
+function compareRecencyDesc<T extends GroupableLead>(
+  left: T,
+  right: T,
+): number {
   const leftTime = recencyOf(left)
   const rightTime = recencyOf(right)
   if (leftTime !== rightTime) return rightTime.localeCompare(leftTime)

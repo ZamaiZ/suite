@@ -29,7 +29,10 @@ function encodeSession(payload: PortalSessionPayload, key: string): string {
   return `${body}.${sign(body, key)}`
 }
 
-function decodeSession(token: string, key: string): PortalSessionPayload | null {
+function decodeSession(
+  token: string,
+  key: string,
+): PortalSessionPayload | null {
   const parts = token.split(".")
   if (parts.length !== 3) return null
   const [clientId, versionRaw, mac] = parts
@@ -84,8 +87,7 @@ export type PortalClientContext = {
 }
 
 export async function requirePortalClient(): Promise<
-  | { status: "ok"; context: PortalClientContext }
-  | { status: "unauthenticated" }
+  { status: "ok"; context: PortalClientContext } | { status: "unauthenticated" }
 > {
   const session = await readPortalSession()
   if (!session) return { status: "unauthenticated" }

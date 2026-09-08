@@ -35,9 +35,7 @@ export function useBriefingWriterClientId(): string | null {
   return useContext(BriefingWriterContext).clientId
 }
 
-export function useBriefingWriterFlushRegistration(
-  flush: BriefingWriterFlush,
-) {
+export function useBriefingWriterFlushRegistration(flush: BriefingWriterFlush) {
   const { registerFlush } = useContext(BriefingWriterContext)
   useEffect(() => {
     registerFlush(flush)
@@ -54,7 +52,9 @@ export function attachBriefingClientId<T extends object>(
 }
 
 export function useWrappedBriefingSave<T extends object>(
-  save: (input: unknown) => Promise<
+  save: (
+    input: unknown,
+  ) => Promise<
     | { status: "success"; updatedAt: string; completedAt: string | null }
     | { status: "error"; message: string }
     | { status: "unauthenticated" }

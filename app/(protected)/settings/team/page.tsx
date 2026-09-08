@@ -1,8 +1,4 @@
-import {
-  hasRole,
-  isAppRole,
-  sortAppRoles,
-} from "@/lib/auth/roles"
+import { hasRole, isAppRole, sortAppRoles } from "@/lib/auth/roles"
 import { requireCommercialMember } from "@/lib/auth/session"
 import { createClient } from "@/lib/supabase/server"
 import {

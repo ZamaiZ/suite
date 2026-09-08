@@ -23,6 +23,7 @@
 ### Task 1: Export persistence
 
 **Files:**
+
 - Create: `supabase/migrations/20260916000000_client_briefing_exports.sql`
 
 - [x] Create the private `clients` bucket, the versioned export table, indexes, unique-current constraint and service-role-only grants.
@@ -30,6 +31,7 @@
 ### Task 2: Snapshot and Word renderer
 
 **Files:**
+
 - Create: `lib/briefing/export-document.ts`
 
 - [x] Read and normalize briefing, encrypted secret and kickoff data with the existing parsers.
@@ -38,6 +40,7 @@
 ### Task 3: Guarded export actions
 
 **Files:**
+
 - Create: `app/actions/briefing/client-briefing-export.ts`
 - Modify: `app/actions/briefing/index.ts`
 
@@ -46,6 +49,7 @@
 ### Task 4: Briefing overview controls
 
 **Files:**
+
 - Create: `components/custom/ClientBriefingExport/ClientBriefingExport.tsx`
 - Create: `components/custom/ClientBriefingExport/index.ts`
 - Modify: `components/custom/ClientBriefingReviewDialog/ClientBriefingReviewDialog.tsx`

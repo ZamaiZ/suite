@@ -17,10 +17,7 @@ function optionalText(max: number, message: string) {
     .transform((value) => (value.length === 0 ? null : value))
 }
 
-function parseFollowUp(
-  date: string,
-  time: string,
-): string | null {
+function parseFollowUp(date: string, time: string): string | null {
   if (!date || !time) return null
   return datetimeLocalToIso(`${date}T${time}`)
 }
@@ -32,7 +29,10 @@ export const logClosingEventSchema = z
     channel: z.string().trim(),
     channel_detail: optionalText(80, "Canal deve ter no máximo 80 caracteres."),
     note: optionalText(2000, "Observação deve ter no máximo 2000 caracteres."),
-    denied_reason: optionalText(500, "Motivo deve ter no máximo 500 caracteres."),
+    denied_reason: optionalText(
+      500,
+      "Motivo deve ter no máximo 500 caracteres.",
+    ),
     closer_id: z.string().trim(),
     follow_up_date: z.string().trim(),
     follow_up_time: z.string().trim(),
@@ -45,7 +45,8 @@ export const logClosingEventSchema = z
         (data.follow_up_date.length > 0 || data.follow_up_time.length > 0))
 
     if (
-      (data.type === "meeting_rescheduled" || data.type === "closing_standby") &&
+      (data.type === "meeting_rescheduled" ||
+        data.type === "closing_standby") &&
       (!data.follow_up_date || !data.follow_up_time)
     ) {
       ctx.addIssue({
@@ -201,20 +202,26 @@ export function readClosingEventFormFields(formData: FormData) {
 }
 
 function optionalIsoDatetime(message: string) {
-  return z.string().trim().transform((value, ctx) => {
-    if (value.length === 0) return null
-    const iso = datetimeLocalToIso(value)
-    if (!iso) {
-      ctx.addIssue({ code: "custom", message })
-      return z.NEVER
-    }
-    return iso
-  })
+  return z
+    .string()
+    .trim()
+    .transform((value, ctx) => {
+      if (value.length === 0) return null
+      const iso = datetimeLocalToIso(value)
+      if (!iso) {
+        ctx.addIssue({ code: "custom", message })
+        return z.NEVER
+      }
+      return iso
+    })
 }
 
 export const updateClosingChecklistSchema = z.object({
   lead_id: z.uuid("Lead inválido."),
-  legal_name: optionalText(200, "Razão social deve ter no máximo 200 caracteres."),
+  legal_name: optionalText(
+    200,
+    "Razão social deve ter no máximo 200 caracteres.",
+  ),
   tax_id: z
     .string()
     .trim()
@@ -222,9 +229,18 @@ export const updateClosingChecklistSchema = z.object({
       const digits = digitsOnly(value)
       return digits.length === 0 ? null : digits.slice(0, 14)
     }),
-  signer_name: optionalText(200, "Signatário deve ter no máximo 200 caracteres."),
-  contract_ref: optionalText(500, "Referência deve ter no máximo 500 caracteres."),
-  invoice_ref: optionalText(500, "Referência deve ter no máximo 500 caracteres."),
+  signer_name: optionalText(
+    200,
+    "Signatário deve ter no máximo 200 caracteres.",
+  ),
+  contract_ref: optionalText(
+    500,
+    "Referência deve ter no máximo 500 caracteres.",
+  ),
+  invoice_ref: optionalText(
+    500,
+    "Referência deve ter no máximo 500 caracteres.",
+  ),
   contract_sent_at: optionalIsoDatetime("Data de envio do contrato inválida."),
   contract_signed_at: optionalIsoDatetime("Data de assinatura inválida."),
   invoice_sent_at: optionalIsoDatetime("Data de envio da fatura inválida."),

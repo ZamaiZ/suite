@@ -86,7 +86,9 @@ export async function upsertLeadDigitalPresence(
     if (error || !data) {
       return { status: "error", message: SAVE_FAILED }
     }
-    const audit = readLeadDigitalPresenceAuditRow(data as Record<string, unknown>)
+    const audit = readLeadDigitalPresenceAuditRow(
+      data as Record<string, unknown>,
+    )
     if (!audit) return { status: "error", message: SAVE_FAILED }
     return { status: "success", audit }
   }

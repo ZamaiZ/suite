@@ -157,9 +157,7 @@ export function parseBrandPayload(value: unknown): BriefingBrandPayload {
 }
 
 export function isTeamRoleComplete(answer: TeamRoleAnswer): boolean {
-  return (
-    answer.hasTeam !== null && answer.notes.trim().length > 0
-  )
+  return answer.hasTeam !== null && answer.notes.trim().length > 0
 }
 
 export function isProductOrServiceComplete(item: ProductOrService): boolean {

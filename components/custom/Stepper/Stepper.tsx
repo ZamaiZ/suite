@@ -1,9 +1,14 @@
 "use client"
 
-import { AnimatePresence, LazyMotion, domAnimation, useReducedMotion } from "motion/react"
+import {
+  AnimatePresence,
+  LazyMotion,
+  domAnimation,
+  useReducedMotion,
+} from "motion/react"
 import * as m from "motion/react-m"
 import { RiCheckLine } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { StepperProps } from "./Stepper.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -45,7 +50,7 @@ export function Stepper({
           <m.div
             aria-hidden
             className={cn(
-              "pointer-events-none absolute rounded-full bg-accent",
+              "pointer-events-none absolute rounded-full bg-primary",
               isVertical
                 ? "top-0 left-4 w-1 origin-top"
                 : "top-4 left-0 h-1 origin-left",
@@ -82,17 +87,17 @@ export function Stepper({
                     if (isReachable) onStepSelect(index)
                   }}
                   className={cn(
-                    "relative flex size-9 shrink-0 items-center justify-center rounded-full font-sans text-caption font-semibold",
+                    "relative flex size-9 shrink-0 items-center justify-center rounded-full text-xs/relaxed font-semibold",
                     "transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-out",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                    isFilled && "text-accent-fg",
-                    isCurrent && "ring-2 ring-accent/25 shadow-card",
+                    isFilled && "text-primary-foreground",
+                    isCurrent && "ring-2 ring-primary/25 shadow-xs",
                     isComplete && "hover:brightness-95",
                     !isFilled &&
                       isReachable &&
-                      "border border-border bg-surface text-fg-secondary hover:bg-hover",
+                      "border border-border bg-card text-muted-foreground hover:bg-accent",
                     isUpcoming &&
-                      "cursor-not-allowed border border-border bg-surface text-fg-muted",
+                      "cursor-not-allowed border border-border bg-card text-muted-foreground",
                     isReachable &&
                       !isUpcoming &&
                       "cursor-pointer active:scale-[0.96]",
@@ -101,11 +106,9 @@ export function Stepper({
                   {isFilled ? (
                     <m.span
                       aria-hidden
-                      className="absolute inset-0 rounded-full bg-accent"
+                      className="absolute inset-0 rounded-full bg-primary"
                       initial={
-                        reduced
-                          ? { opacity: 1 }
-                          : { opacity: 0, scale: 0.92 }
+                        reduced ? { opacity: 1 } : { opacity: 0, scale: 0.92 }
                       }
                       animate={{ opacity: 1, scale: 1 }}
                       transition={fillTransition}
@@ -167,12 +170,14 @@ export function Stepper({
                     if (isReachable) onStepSelect(index)
                   }}
                   className={cn(
-                    "border-0 bg-transparent p-0 font-sans text-caption leading-tight",
+                    "border-0 bg-transparent p-0 text-xs/relaxed leading-tight",
                     "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                     isVertical
                       ? "text-left"
                       : "max-w-[5.5rem] text-center sm:max-w-none",
-                    isCurrent ? "font-semibold text-fg" : "text-fg-muted",
+                    isCurrent
+                      ? "font-semibold text-foreground"
+                      : "text-muted-foreground",
                     isUpcoming && "cursor-not-allowed opacity-60",
                     isReachable && !isUpcoming && "cursor-pointer",
                     !isVertical && !isCurrent && "hidden sm:block",

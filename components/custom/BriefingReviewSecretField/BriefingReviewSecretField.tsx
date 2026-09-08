@@ -54,14 +54,16 @@ export function BriefingReviewSecretField({
 
   return (
     <div className="flex flex-col gap-1.5">
-      <p className="font-sans text-caption font-medium text-fg-muted">{label}</p>
+      <p className="text-xs/relaxed font-medium text-muted-foreground">
+        {label}
+      </p>
       {!hasSecret ? (
-        <p className="font-sans text-body-sm text-fg">—</p>
+        <p className="text-xs/relaxed text-foreground">—</p>
       ) : !canReveal ? (
-        <p className="font-sans text-body-sm text-fg-muted">Protegida</p>
+        <p className="text-xs/relaxed text-muted-foreground">Protegida</p>
       ) : (
         <div className="flex flex-wrap items-center gap-2">
-          <p className="min-w-0 flex-1 font-mono text-body-sm text-fg">
+          <p className="min-w-0 flex-1 font-mono text-xs/relaxed text-foreground">
             {value ?? "••••••••"}
           </p>
           {value ? (
@@ -108,7 +110,7 @@ export function BriefingReviewSecretField({
         </div>
       )}
       {error ? (
-        <p role="alert" className="font-sans text-caption text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}

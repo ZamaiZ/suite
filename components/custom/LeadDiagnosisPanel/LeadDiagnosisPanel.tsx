@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  RiAlertLine,
-  RiLightbulbLine,
-  RiSaveLine,
-} from "react-icons/ri"
+import { RiAlertLine, RiLightbulbLine, RiSaveLine } from "react-icons/ri"
 import {
   compileLeadDiagnosis,
   exportLeadDiagnosisPdf,
@@ -18,7 +14,7 @@ import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import {
   DIAGNOSIS_HOOK_MAX,
@@ -54,9 +50,7 @@ export function LeadDiagnosisPanel({
   const draft = detail.diagnosisDraft
   const exports = detail.diagnosisExports
   const currentExport = exports.find((item) => item.is_current) ?? null
-  const stale = Boolean(
-    draft && draft.facts_fingerprint !== liveFingerprint,
-  )
+  const stale = Boolean(draft && draft.facts_fingerprint !== liveFingerprint)
 
   const [executiveSummary, setExecutiveSummary] = useState(
     draft?.document.prose.executiveSummary ?? "",
@@ -217,21 +211,21 @@ export function LeadDiagnosisPanel({
       </m.div>
 
       {error ? (
-        <p role="alert" className="font-sans text-caption text-danger">
+        <p role="alert" className="text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}
 
       {!unlocked ? (
         <LeadGbpCard title="Etapa bloqueada">
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Conclua Perfil no Google, Website, Presença digital e Visibilidade
             para liberar o diagnóstico.
           </p>
         </LeadGbpCard>
       ) : !draft ? (
         <LeadGbpCard title="Pronto para compilar">
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             Monte o diagnóstico para gerar scorecard, achados cross-pillar,
             roadmap e textos editáveis antes do PDF da reunião.
           </p>
@@ -259,12 +253,12 @@ export function LeadDiagnosisPanel({
                     onChange={(event) => setCommercialHook(event.target.value)}
                     className={TEXTAREA}
                   />
-                  <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+                  <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
                     {commercialHook.length}/{DIAGNOSIS_HOOK_MAX}
                   </p>
                 </>
               ) : (
-                <p className="font-sans text-body-sm text-fg">
+                <p className="text-xs/relaxed text-foreground">
                   {draft.document.prose.commercialHook}
                 </p>
               )}
@@ -283,12 +277,12 @@ export function LeadDiagnosisPanel({
                   onChange={(event) => setExecutiveSummary(event.target.value)}
                   className={TEXTAREA}
                 />
-                <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+                <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
                   {executiveSummary.length}/{DIAGNOSIS_PROSE_MAX}
                 </p>
               </>
             ) : (
-              <p className="whitespace-pre-wrap font-sans text-body-sm text-fg">
+              <p className="whitespace-pre-wrap text-xs/relaxed text-foreground">
                 {draft.document.prose.executiveSummary}
               </p>
             )}
@@ -301,18 +295,18 @@ export function LeadDiagnosisPanel({
                   <li key={item.id} className="flex items-start gap-2.5">
                     <span
                       aria-hidden
-                      className="mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-accent/10 text-accent"
+                      className="mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary"
                     >
                       <RiAlertLine size={14} />
                     </span>
                     <div className="min-w-0">
-                      <p className="font-sans text-caption font-semibold text-fg">
+                      <p className="text-xs/relaxed font-semibold text-foreground">
                         {item.title}
                       </p>
-                      <p className="mt-0.5 font-sans text-caption text-fg-muted">
+                      <p className="mt-0.5 text-xs/relaxed text-muted-foreground">
                         {item.detail}
                       </p>
-                      <p className="mt-1 font-sans text-caption text-fg-secondary">
+                      <p className="mt-1 text-xs/relaxed text-muted-foreground">
                         {item.pillars
                           .map((pillar) => DIAGNOSIS_PILLAR_LABELS[pillar])
                           .join(" · ")}
@@ -335,20 +329,21 @@ export function LeadDiagnosisPanel({
           />
 
           {DIAGNOSIS_PILLARS.map((pillar: DiagnosisPillar) => (
-            <LeadGbpCard
-              key={pillar}
-              title={DIAGNOSIS_PILLAR_LABELS[pillar]}
-            >
+            <LeadGbpCard key={pillar} title={DIAGNOSIS_PILLAR_LABELS[pillar]}>
               <div className="mb-3 flex flex-wrap gap-2">
-                {draft.document.facts.pillars[pillar].keyMetrics.map((metric) => (
-                  <span
-                    key={metric.id}
-                    className="rounded-md border border-border-subtle bg-elevated px-2 py-1 font-sans text-caption text-fg-secondary"
-                  >
-                    <span className="text-fg-muted">{metric.label}: </span>
-                    {metric.value}
-                  </span>
-                ))}
+                {draft.document.facts.pillars[pillar].keyMetrics.map(
+                  (metric) => (
+                    <span
+                      key={metric.id}
+                      className="rounded-md border border-border/70 bg-popover px-2 py-1 text-xs/relaxed text-muted-foreground"
+                    >
+                      <span className="text-muted-foreground">
+                        {metric.label}:{" "}
+                      </span>
+                      {metric.value}
+                    </span>
+                  ),
+                )}
               </div>
               {canEdit ? (
                 <>
@@ -366,23 +361,23 @@ export function LeadDiagnosisPanel({
                     }
                     className={TEXTAREA}
                   />
-                  <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+                  <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
                     {narratives[pillar].length}/{DIAGNOSIS_PROSE_MAX}
                   </p>
                 </>
               ) : (
-                <p className="font-sans text-caption text-fg">
+                <p className="text-xs/relaxed text-foreground">
                   {draft.document.prose.pillarNarratives[pillar]}
                 </p>
               )}
               {draft.document.facts.pillars[pillar].opportunities.length > 0 ? (
-                <ul className="mt-3 flex flex-col gap-1.5 border-t border-border-subtle pt-3">
+                <ul className="mt-3 flex flex-col gap-1.5 border-t border-border/70 pt-3">
                   {draft.document.facts.pillars[pillar].opportunities
                     .slice(0, 5)
                     .map((item) => (
                       <li
                         key={item.id}
-                        className="flex items-start gap-2 font-sans text-caption text-fg-secondary"
+                        className="flex items-start gap-2 text-xs/relaxed text-muted-foreground"
                       >
                         <RiLightbulbLine
                           size={14}
@@ -406,13 +401,13 @@ export function LeadDiagnosisPanel({
                     className="flex flex-wrap items-center justify-between gap-2"
                   >
                     <div className="min-w-0">
-                      <p className="truncate font-sans text-caption text-fg">
+                      <p className="truncate text-xs/relaxed text-foreground">
                         {item.file_name}
                         {item.is_current ? (
                           <span className="ml-2 text-success">atual</span>
                         ) : null}
                       </p>
-                      <p className="font-sans text-caption text-fg-muted">
+                      <p className="text-xs/relaxed text-muted-foreground">
                         {formatDateTimeShort(item.exported_at)}
                       </p>
                     </div>
@@ -438,7 +433,7 @@ export function LeadDiagnosisPanel({
               {draft.document.limitations.map((line) => (
                 <li
                   key={line}
-                  className="font-sans text-caption text-fg-muted"
+                  className="text-xs/relaxed text-muted-foreground"
                 >
                   · {line}
                 </li>
@@ -451,12 +446,12 @@ export function LeadDiagnosisPanel({
       {canEdit && unlocked && draft ? (
         <div
           className={cn(
-            "sticky bottom-0 z-10 -mx-3 border-t border-border-subtle bg-canvas/95 px-3 py-3 backdrop-blur-sm sm:-mx-4 sm:px-4",
+            "sticky bottom-0 z-10 -mx-3 border-t border-border/70 bg-background/95 px-3 py-3 backdrop-blur-sm sm:-mx-4 sm:px-4",
           )}
         >
           <div className="flex flex-wrap items-center justify-end gap-2">
             {savedFlash ? (
-              <span className="font-sans text-caption text-success">
+              <span className="text-xs/relaxed text-success">
                 Rascunho salvo
               </span>
             ) : null}

@@ -1,7 +1,4 @@
-import {
-  canonicalWebsiteUrl,
-  normalizeWebsiteDomain,
-} from "./website.ts"
+import { canonicalWebsiteUrl, normalizeWebsiteDomain } from "./website.ts"
 
 export const DIGITAL_CHANNEL_TYPES = [
   "website",
@@ -52,28 +49,31 @@ export const DIGITAL_CHANNEL_LABELS: Record<DigitalChannelType, string> = {
   twitter: "X (Twitter)",
 }
 
-export const DIGITAL_CHANNEL_PLACEHOLDERS: Record<DigitalChannelType, string> = {
-  website: "empresa.com.br",
-  instagram: "@empresa",
-  linkedin: "linkedin.com/company/empresa",
-  facebook: "facebook.com/empresa",
-  youtube: "youtube.com/@empresa",
-  tiktok: "@empresa",
-  pinterest: "pinterest.com/empresa",
-  twitter: "@empresa",
-}
-
-export const DIGITAL_CHANNEL_INVALID_MESSAGE: Record<DigitalChannelType, string> =
+export const DIGITAL_CHANNEL_PLACEHOLDERS: Record<DigitalChannelType, string> =
   {
-    website: "Site inválido.",
-    instagram: "Instagram inválido.",
-    linkedin: "LinkedIn inválido.",
-    facebook: "Facebook inválido.",
-    youtube: "YouTube inválido.",
-    tiktok: "TikTok inválido.",
-    pinterest: "Pinterest inválido.",
-    twitter: "X (Twitter) inválido.",
+    website: "empresa.com.br",
+    instagram: "@empresa",
+    linkedin: "linkedin.com/company/empresa",
+    facebook: "facebook.com/empresa",
+    youtube: "youtube.com/@empresa",
+    tiktok: "@empresa",
+    pinterest: "pinterest.com/empresa",
+    twitter: "@empresa",
   }
+
+export const DIGITAL_CHANNEL_INVALID_MESSAGE: Record<
+  DigitalChannelType,
+  string
+> = {
+  website: "Site inválido.",
+  instagram: "Instagram inválido.",
+  linkedin: "LinkedIn inválido.",
+  facebook: "Facebook inválido.",
+  youtube: "YouTube inválido.",
+  tiktok: "TikTok inválido.",
+  pinterest: "Pinterest inválido.",
+  twitter: "X (Twitter) inválido.",
+}
 
 export const DIGITAL_CHANNEL_DUPLICATE_MESSAGE: Record<
   DigitalChannelType,
@@ -89,16 +89,17 @@ export const DIGITAL_CHANNEL_DUPLICATE_MESSAGE: Record<
   twitter: "X (Twitter) repetido.",
 }
 
-export const DIGITAL_CHANNEL_TAKEN_MESSAGE: Record<DigitalChannelType, string> = {
-  website: "Este site já está cadastrado.",
-  instagram: "Este Instagram já está cadastrado.",
-  linkedin: "Este LinkedIn já está cadastrado.",
-  facebook: "Este Facebook já está cadastrado.",
-  youtube: "Este YouTube já está cadastrado.",
-  tiktok: "Este TikTok já está cadastrado.",
-  pinterest: "Este Pinterest já está cadastrado.",
-  twitter: "Este X (Twitter) já está cadastrado.",
-}
+export const DIGITAL_CHANNEL_TAKEN_MESSAGE: Record<DigitalChannelType, string> =
+  {
+    website: "Este site já está cadastrado.",
+    instagram: "Este Instagram já está cadastrado.",
+    linkedin: "Este LinkedIn já está cadastrado.",
+    facebook: "Este Facebook já está cadastrado.",
+    youtube: "Este YouTube já está cadastrado.",
+    tiktok: "Este TikTok já está cadastrado.",
+    pinterest: "Este Pinterest já está cadastrado.",
+    twitter: "Este X (Twitter) já está cadastrado.",
+  }
 
 export const SPREADSHEET_FIELD_BY_TYPE = Object.fromEntries(
   DIGITAL_CHANNEL_TYPES.map((type) => [type, type]),
@@ -315,9 +316,7 @@ export function digitalChannelDisplay(
   }
 }
 
-export function normalizeDigitalChannelList(
-  drafts: DigitalChannelDraft[],
-): {
+export function normalizeDigitalChannelList(drafts: DigitalChannelDraft[]): {
   channels: LeadDigitalChannelWrite[]
   issues: DigitalChannelIssue[]
 } {
@@ -349,10 +348,7 @@ export function normalizeDigitalChannelList(
       })
       return
     }
-    const key = digitalChannelConflictKey(
-      draft.type,
-      normalized.normalized_key,
-    )
+    const key = digitalChannelConflictKey(draft.type, normalized.normalized_key)
     if (seen.has(key)) {
       issues.push({
         index,
@@ -531,18 +527,18 @@ export function readLeadDigitalChannels(embed: unknown): LeadDigitalChannel[] {
     const id = "id" in row ? row.id : null
     const type = "type" in row ? row.type : null
     const value = "value" in row ? row.value : null
-    const normalized_key =
-      "normalized_key" in row ? row.normalized_key : null
+    const normalized_key = "normalized_key" in row ? row.normalized_key : null
     const is_primary = "is_primary" in row ? row.is_primary : null
     const sort_order = "sort_order" in row ? row.sort_order : null
     if (typeof id !== "string" || seen.has(id)) continue
     if (!isDigitalChannelType(type)) continue
-    if (typeof value !== "string" || typeof normalized_key !== "string") continue
+    if (typeof value !== "string" || typeof normalized_key !== "string")
+      continue
     if (typeof is_primary !== "boolean") continue
     if (typeof sort_order !== "number") continue
     seen.add(id)
     const audit_paths = Array.isArray(row.audit_paths)
-      ? row.audit_paths.filter(
+      ? (row.audit_paths as unknown[]).filter(
           (item): item is string => typeof item === "string" && item.length > 0,
         )
       : []
@@ -592,13 +588,16 @@ function firstPathSegment(url: URL): string {
 }
 
 function urlPathParts(url: URL): string[] {
-  return url.pathname.split("/").filter(Boolean).map((part) => {
-    try {
-      return decodeURIComponent(part)
-    } catch {
-      return part
-    }
-  })
+  return url.pathname
+    .split("/")
+    .filter(Boolean)
+    .map((part) => {
+      try {
+        return decodeURIComponent(part)
+      } catch {
+        return part
+      }
+    })
 }
 
 function looksLikeHostedUrl(input: string, hostPattern: RegExp): boolean {
@@ -609,8 +608,7 @@ function normalizeInstagram(
   input: string,
 ): { value: string; normalized_key: string } | null {
   let handle = input.trim()
-  const urlLike =
-    looksLikeHostedUrl(handle, /instagram\.com|instagr\.am/i)
+  const urlLike = looksLikeHostedUrl(handle, /instagram\.com|instagr\.am/i)
 
   if (urlLike) {
     const url = parseHttpUrl(handle)

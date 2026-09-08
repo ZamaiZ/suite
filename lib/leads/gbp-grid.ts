@@ -1,8 +1,5 @@
 import { GBP_MAPS_ZOOM } from "../dataforseo/maps-task.ts"
-import {
-  GBP_MAPS_DEPTH,
-  type GbpRankCompetitor,
-} from "./gbp-audit.ts"
+import { GBP_MAPS_DEPTH, type GbpRankCompetitor } from "./gbp-audit.ts"
 
 export const GBP_GRID_SIZES = [3, 5, 7, 11] as const
 export const GBP_GRID_SIZE_DEFAULT = 5
@@ -78,11 +75,7 @@ export type GbpGridPoint = {
 }
 
 export type GbpGridScanStatus =
-  | "queued"
-  | "running"
-  | "ready"
-  | "partial"
-  | "failed"
+  "queued" | "running" | "ready" | "partial" | "failed"
 
 export type LeadGbpGridScan = {
   id: string
@@ -185,8 +178,7 @@ export function gbpGridTaskIdsFromPosted(input: {
   // Reserva por posição: só com a resposta inteira de volta e sem tag alguma
   // para conferir, ou com todas as tags conferindo.
   const orderTrusted =
-    created.length === requested.length &&
-    (tagged === 0 || aligned === tagged)
+    created.length === requested.length && (tagged === 0 || aligned === tagged)
 
   let byIndex = 0
   if (orderTrusted) {
@@ -346,7 +338,8 @@ export function gbpGridNextStatus(
     (point) => point.status === "pending" || point.status === "queued",
   )
   if (open && !options.deadlineReached) return "running"
-  if (open || points.some((point) => point.status === "failed")) return "partial"
+  if (open || points.some((point) => point.status === "failed"))
+    return "partial"
   return "ready"
 }
 

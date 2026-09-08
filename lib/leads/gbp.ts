@@ -22,10 +22,7 @@ import {
   type GbpRankCheck,
   type GbpReviewSummary,
 } from "@/lib/leads/gbp-audit"
-import {
-  latestGbpGridScan,
-  type LeadGbpGridScan,
-} from "@/lib/leads/gbp-grid"
+import { latestGbpGridScan, type LeadGbpGridScan } from "@/lib/leads/gbp-grid"
 import {
   pickLatestGbpSnapshotRow,
   type LeadGbpSnapshot,
@@ -349,15 +346,15 @@ export function gbpGapsForProfile(
   const rankKeywords = audit?.rankKeywords ?? []
   const rankChecks = audit?.rankChecks ?? []
   if (rankKeywords.length > 0 && rankChecks.length > 0) {
-    const current = new Set(rankKeywords.map((keyword) => keyword.toLowerCase()))
+    const current = new Set(
+      rankKeywords.map((keyword) => keyword.toLowerCase()),
+    )
     const relevant = rankChecks.filter((check) =>
       current.has(check.keyword.toLowerCase()),
     )
     if (
       relevant.length > 0 &&
-      relevant.some(
-        (check) => !check.in_top3 || check.maps_position === null,
-      )
+      relevant.some((check) => !check.in_top3 || check.maps_position === null)
     ) {
       gaps.push("not_in_map_top3")
     }
@@ -415,8 +412,7 @@ export function readLeadGbpProfileRow(
   const place_id = "place_id" in row ? row.place_id : null
   const is_primary = "is_primary" in row ? row.is_primary : null
   const sort_order = "sort_order" in row ? row.sort_order : null
-  const google_maps_uri =
-    "google_maps_uri" in row ? row.google_maps_uri : null
+  const google_maps_uri = "google_maps_uri" in row ? row.google_maps_uri : null
   const fetched_at = "fetched_at" in row ? row.fetched_at : null
   const fetched_by = "fetched_by" in row ? row.fetched_by : null
   const payload = "payload" in row ? readGbpSnapshot(row.payload) : null

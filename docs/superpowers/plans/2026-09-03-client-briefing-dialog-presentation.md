@@ -34,11 +34,13 @@
 ## Task 1: Build the stable dialog chrome
 
 **Files:**
+
 - Create: `components/custom/ClientBriefingReviewDialog/ClientBriefingDialogHeader.tsx`
 - Create: `components/custom/ClientBriefingReviewDialog/ClientBriefingNavigationRail.tsx`
 - Create: `components/custom/ClientBriefingReviewDialog/ClientBriefingContentHeader.tsx`
 
 **Interfaces:**
+
 - Consumes: `BriefingStepId` from `@/lib/briefing/steps`, `StaffBriefingOverview` from `@/app/actions/briefing`, existing `Button`, `cn`, `formatDateTimeShort`, Motion and Remix Icon conventions.
 - Produces:
 
@@ -104,9 +106,16 @@ Implement a single-row header patterned after `LeadDetailHeader`: initials from 
     <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-accent/10 font-sans text-caption font-semibold text-accent">
       {getLeadInitials(companyName)}
     </span>
-    <div className="min-w-0"><p className="truncate font-sans text-body-sm font-semibold text-fg">{companyName}</p><p className="font-sans text-caption text-fg-muted">Briefing interno</p></div>
+    <div className="min-w-0">
+      <p className="truncate font-sans text-body-sm font-semibold text-fg">
+        {companyName}
+      </p>
+      <p className="font-sans text-caption text-fg-muted">Briefing interno</p>
+    </div>
   </div>
-  <div className="flex items-center justify-end gap-2">{/* badges and close button */}</div>
+  <div className="flex items-center justify-end gap-2">
+    {/* badges and close button */}
+  </div>
 </header>
 ```
 
@@ -116,13 +125,21 @@ Render a semantic `<nav aria-label="Navegação do cliente">` with a 224 px desk
 
 ```tsx
 <aside className="shrink-0 border-b border-border-subtle bg-elevated lg:w-56 lg:border-r lg:border-b-0">
-  <nav aria-label="Navegação do cliente" className="flex gap-1 overflow-x-auto p-2 lg:h-full lg:flex-col lg:overflow-y-auto">
+  <nav
+    aria-label="Navegação do cliente"
+    className="flex gap-1 overflow-x-auto p-2 lg:h-full lg:flex-col lg:overflow-y-auto"
+  >
     {/* client summary and first-level areas */}
-    {area === "briefing" ? steps.map((step) => (
-      <button aria-current={activeStep === step.id ? "page" : undefined} onClick={() => onStepSelect(step.id)}>
-        {/* icon, label, text state */}
-      </button>
-    )) : null}
+    {area === "briefing"
+      ? steps.map((step) => (
+          <button
+            aria-current={activeStep === step.id ? "page" : undefined}
+            onClick={() => onStepSelect(step.id)}
+          >
+            {/* icon, label, text state */}
+          </button>
+        ))
+      : null}
   </nav>
 </aside>
 ```
@@ -138,9 +155,11 @@ Expected: desktop navigation always exposes full labels and step state; narrow l
 ## Task 2: Refine overview cards without changing their data contract
 
 **Files:**
+
 - Modify: `components/custom/BriefingReviewOverview/BriefingReviewOverview.tsx:49-151`
 
 **Interfaces:**
+
 - Consumes: existing `BriefingReviewOverviewProps` exactly as defined in `BriefingReviewOverview.types.ts`.
 - Produces: the same `onSelectStep(step.id)` behavior, `loading` skeleton behavior, and 8-step overview API for `ClientBriefingReviewDialog`.
 
@@ -153,15 +172,25 @@ Keep `steps`, `onSelectStep`, and `loading` untouched. Retain `STEP_ICONS`, `STA
 Use status icon/well, title, textual state, last-update line, and a directional affordance. Preserve semantic state colors but never omit textual state.
 
 ```tsx
-<button type="button" onClick={() => onSelectStep(step.id)} className="group flex h-full w-full flex-col gap-3 rounded-2xl border px-4 py-3.5 text-left ...">
+<button
+  type="button"
+  onClick={() => onSelectStep(step.id)}
+  className="group flex h-full w-full flex-col gap-3 rounded-2xl border px-4 py-3.5 text-left ..."
+>
   <span className="flex items-start justify-between gap-3">
-    <span className={iconWellClass}>{step.state === "completed" ? <RiCheckLine /> : <Icon />}</span>
+    <span className={iconWellClass}>
+      {step.state === "completed" ? <RiCheckLine /> : <Icon />}
+    </span>
     <RiArrowRightSLine className="text-fg-muted transition-transform duration-200 group-hover:translate-x-0.5" />
   </span>
   <span className="flex min-w-0 flex-col gap-1">
-    <span className="truncate font-sans text-body-sm font-semibold text-fg">{step.label}</span>
+    <span className="truncate font-sans text-body-sm font-semibold text-fg">
+      {step.label}
+    </span>
     <span className={stateTextClass}>{STATE_LABEL[step.state]}</span>
-    <span className="font-sans text-caption text-fg-muted">{step.updatedAt ? formatDateTimeShort(step.updatedAt) : "Sem atividade"}</span>
+    <span className="font-sans text-caption text-fg-muted">
+      {step.updatedAt ? formatDateTimeShort(step.updatedAt) : "Sem atividade"}
+    </span>
   </span>
 </button>
 ```
@@ -177,9 +206,11 @@ Expected: all-empty, in-progress and completed inputs remain visually distinguis
 ## Task 3: Reorganize the Contact/Kickoff area around intent
 
 **Files:**
+
 - Modify: `components/custom/ClientKickoffPanel/ClientKickoffPanel.tsx:15-62`
 
 **Interfaces:**
+
 - Consumes: unchanged `clientId`, `loadClientKickoff`, `logClientKickoffEvent`, `ClientKickoffDetail`, activity labels and `ClientKickoffActivityType`.
 - Produces: unchanged create/update payload fields (`client_id`, `type`, `meeting_at`, `channel`, `channel_detail`, `note`) and current state updates after a successful submission.
 
@@ -194,10 +225,21 @@ Render the meeting/status card as the first content unit. Its heading, state bad
 ```tsx
 <section className="rounded-2xl border border-border-subtle bg-surface p-4 shadow-card">
   <div className="flex flex-wrap items-start justify-between gap-3">
-    <div><p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">Próximo encontro</p><h3 className="mt-1 font-display text-title font-semibold text-fg">{meetingLabel}</h3></div>
-    <span className={stageClass}>{CLIENT_KICKOFF_STAGE_LABELS[detail.stage]}</span>
+    <div>
+      <p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">
+        Próximo encontro
+      </p>
+      <h3 className="mt-1 font-display text-title font-semibold text-fg">
+        {meetingLabel}
+      </h3>
+    </div>
+    <span className={stageClass}>
+      {CLIENT_KICKOFF_STAGE_LABELS[detail.stage]}
+    </span>
   </div>
-  <div className="mt-4 flex flex-wrap gap-2">{/* eligible existing action buttons */}</div>
+  <div className="mt-4 flex flex-wrap gap-2">
+    {/* eligible existing action buttons */}
+  </div>
 </section>
 ```
 
@@ -216,9 +258,11 @@ Expected: schedule, reschedule, complete, no-show and note retain their existing
 ## Task 4: Integrate the persistent shell and pane transitions
 
 **Files:**
+
 - Modify: `components/custom/ClientBriefingReviewDialog/ClientBriefingReviewDialog.tsx:3-616`
 
 **Interfaces:**
+
 - Consumes: Task 1 components, existing `BriefingReviewOverview`, existing `ClientBriefingExport`, existing `ClientKickoffPanel`, and existing `StepBody`.
 - Produces: a dialog where `activeContext` is replaced by `area: ClientBriefingArea`; active briefing step, edit lifecycle, cache, loaders, errors and close safety remain externally invisible and behaviorally identical.
 
@@ -238,7 +282,8 @@ Use one area handler that clears transient step view only when moving to Contact
 
 ```ts
 function selectArea(next: ClientBriefingArea) {
-  if (editing || isFinishingEdit || (next === "contact" && !canUseContact)) return
+  if (editing || isFinishingEdit || (next === "contact" && !canUseContact))
+    return
   setArea(next)
   if (next === "contact") {
     setActiveStep(null)
@@ -272,7 +317,9 @@ Keep `AnimatePresence mode="wait"`. For overview/contact area changes, use opaci
 ```ts
 const paneTransition = { duration: reduced ? 0.12 : 0.22, ease: EASE }
 const areaEnter = reduced ? { opacity: 0 } : { opacity: 0, x: 14 }
-const stepEnter = reduced ? { opacity: 0 } : { opacity: 0, x: direction > 0 ? 24 : -24 }
+const stepEnter = reduced
+  ? { opacity: 0 }
+  : { opacity: 0, x: direction > 0 ? 24 : -24 }
 ```
 
 - [ ] **Step 5: Preserve all existing rendering branches inside the new content pane.**
@@ -286,6 +333,7 @@ Inspect with a client that has no briefing, a partially complete briefing and a 
 ## Task 5: Final visual and behavior review
 
 **Files:**
+
 - Review: `components/custom/ClientBriefingReviewDialog/ClientBriefingReviewDialog.tsx`
 - Review: `components/custom/ClientBriefingReviewDialog/ClientBriefingDialogHeader.tsx`
 - Review: `components/custom/ClientBriefingReviewDialog/ClientBriefingNavigationRail.tsx`
@@ -294,6 +342,7 @@ Inspect with a client that has no briefing, a partially complete briefing and a 
 - Review: `components/custom/ClientKickoffPanel/ClientKickoffPanel.tsx`
 
 **Interfaces:**
+
 - Consumes: completed Tasks 1–4 and the requirements in the linked spec.
 - Produces: final human-reviewed presentation with no scope expansion.
 

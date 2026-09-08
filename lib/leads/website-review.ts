@@ -164,7 +164,10 @@ function readVerdict(
   allowsNa: boolean,
 ): WebsiteReviewVerdict | null {
   if (value === null || value === undefined) return null
-  if (typeof value !== "string" || !VERDICTS.has(value as WebsiteReviewVerdict)) {
+  if (
+    typeof value !== "string" ||
+    !VERDICTS.has(value as WebsiteReviewVerdict)
+  ) {
     return null
   }
   const verdict = value as WebsiteReviewVerdict

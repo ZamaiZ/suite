@@ -8,10 +8,7 @@ import {
   useReducedMotion,
 } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  RiErrorWarningLine,
-  RiLoader4Line,
-} from "react-icons/ri"
+import { RiErrorWarningLine, RiLoader4Line } from "react-icons/ri"
 import {
   loadStaffBriefingOverview,
   loadStaffBriefingStep,
@@ -73,7 +70,10 @@ type OverviewState =
   | { status: "ready"; overview: StaffBriefingOverview }
 
 type StepCache = Partial<
-  Record<BriefingStepId, Extract<StaffBriefingStepResult, { status: "success" }>>
+  Record<
+    BriefingStepId,
+    Extract<StaffBriefingStepResult, { status: "success" }>
+  >
 >
 
 type StepLoadState =
@@ -265,7 +265,7 @@ export function ClientBriefingReviewDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="flex h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] grid-cols-1 grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-3xl p-0 sm:max-w-none"
+        className="flex h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] grid-cols-1 grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-3xl p-0"
       >
         <DialogHeader className="sr-only">
           <DialogTitle>{title}</DialogTitle>
@@ -281,195 +281,211 @@ export function ClientBriefingReviewDialog({
           closeDisabled={isFinishingEdit}
           onClose={() => void closeDialog()}
         />
-      <BriefingWriterProvider clientId={clientId} flushRef={editorFlushRef}>
-        <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
-          <ClientBriefingNavigationRail
-            companyName={title}
-            completedCount={overview?.completedCount ?? 0}
-            area={area}
-            activeStep={activeStep}
-            steps={overview?.steps ?? []}
-            contactEnabled={canUseContact}
-            disabled={editing || isFinishingEdit}
-            onAreaChange={selectArea}
-            onStepSelect={openStep}
-          />
-          <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-            <ClientBriefingContentHeader
+        <BriefingWriterProvider clientId={clientId} flushRef={editorFlushRef}>
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
+            <ClientBriefingNavigationRail
+              companyName={title}
+              completedCount={overview?.completedCount ?? 0}
               area={area}
-              step={stepMeta}
-              editing={editing}
-              editAvailable={Boolean(activeStep && canEditBriefing && stepLoad.status === "ready")}
-              busy={isFinishingEdit}
-              onBackToOverview={() => void backToOverview()}
-              onEditToggle={() => {
-                if (editing) void stopEdit()
-                else void startEdit()
-              }}
+              activeStep={activeStep}
+              steps={overview?.steps ?? []}
+              contactEnabled={canUseContact}
+              disabled={editing || isFinishingEdit}
+              onAreaChange={selectArea}
+              onStepSelect={openStep}
             />
-            <div className="relative min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
-          {area === "contact" ? (
-            <div className="mx-auto w-full max-w-3xl"><ClientKickoffPanel clientId={clientId!} /></div>
-          ) : (
-          <AnimatePresence mode="wait" custom={direction} initial={false}>
-            {overviewState.status === "loading" ||
-            overviewState.status === "idle" ? (
-              <m.div
-                key="overview-loading"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <div className="mb-4 h-6 w-48 animate-pulse rounded-md bg-hover" />
-                <BriefingReviewOverview
-                  steps={[]}
-                  completedCount={0}
-                  onSelectStep={() => {}}
-                  loading
-                />
-              </m.div>
-            ) : null}
-
-            {overviewState.status === "error" ? (
-              <m.div
-                key="overview-error"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                role="alert"
-                className="flex flex-col items-start gap-3 rounded-xl border border-danger/25 bg-danger/10 px-4 py-5"
-              >
-                <div className="flex items-center gap-2 font-sans text-body-sm text-danger">
-                  <RiErrorWarningLine size={18} aria-hidden />
-                  {overviewState.message}
-                </div>
-                {clientId ? (
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => void loadOverview(clientId)}
+            <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+              <ClientBriefingContentHeader
+                area={area}
+                step={stepMeta}
+                editing={editing}
+                editAvailable={Boolean(
+                  activeStep && canEditBriefing && stepLoad.status === "ready",
+                )}
+                busy={isFinishingEdit}
+                onBackToOverview={() => void backToOverview()}
+                onEditToggle={() => {
+                  if (editing) void stopEdit()
+                  else void startEdit()
+                }}
+              />
+              <div className="relative min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
+                {area === "contact" ? (
+                  <div className="mx-auto w-full max-w-3xl">
+                    <ClientKickoffPanel clientId={clientId!} />
+                  </div>
+                ) : (
+                  <AnimatePresence
+                    mode="wait"
+                    custom={direction}
+                    initial={false}
                   >
-                    Tentar novamente
-                  </Button>
-                ) : null}
-              </m.div>
-            ) : null}
+                    {overviewState.status === "loading" ||
+                    overviewState.status === "idle" ? (
+                      <m.div
+                        key="overview-loading"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <div className="mb-4 h-6 w-48 animate-pulse rounded-md bg-accent" />
+                        <BriefingReviewOverview
+                          steps={[]}
+                          completedCount={0}
+                          onSelectStep={() => {}}
+                          loading
+                        />
+                      </m.div>
+                    ) : null}
 
-            {overviewState.status === "ready" && !activeStep ? (
-              <m.div
-                key="overview"
-                custom={direction}
-                initial={
-                  reduced
-                    ? { opacity: 0 }
-                    : { opacity: 0, x: direction > 0 ? -20 : 20 }
-                }
-                animate={{ opacity: 1, x: 0 }}
-                exit={
-                  reduced
-                    ? { opacity: 0 }
-                    : { opacity: 0, x: direction > 0 ? -20 : 20 }
-                }
-                transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
-              >
-                {!readOnly ? (
-                  <ClientBriefingExport
-                    clientId={overviewState.overview.clientId}
-                    finalizedAt={overviewState.overview.finalizedAt}
-                    contentUpdatedAt={overviewState.overview.contentUpdatedAt}
-                  />
-                ) : null}
-                <BriefingReviewOverview
-                  steps={overviewState.overview.steps}
-                  completedCount={overviewState.overview.completedCount}
-                  onSelectStep={openStep}
-                />
-              </m.div>
-            ) : null}
+                    {overviewState.status === "error" ? (
+                      <m.div
+                        key="overview-error"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        role="alert"
+                        className="flex flex-col items-start gap-3 rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5"
+                      >
+                        <div className="flex items-center gap-2 text-xs/relaxed text-destructive">
+                          <RiErrorWarningLine size={18} aria-hidden />
+                          {overviewState.message}
+                        </div>
+                        {clientId ? (
+                          <Button
+                            type="button"
+                            variant="secondary"
+                            onClick={() => void loadOverview(clientId)}
+                          >
+                            Tentar novamente
+                          </Button>
+                        ) : null}
+                      </m.div>
+                    ) : null}
 
-            {activeStep ? (
-              <m.div
-                key={`step-${activeStep}`}
-                custom={direction}
-                initial={
-                  reduced
-                    ? { opacity: 0 }
-                    : { opacity: 0, x: direction > 0 ? 24 : -24 }
-                }
-                animate={{ opacity: 1, x: 0 }}
-                exit={
-                  reduced
-                    ? { opacity: 0 }
-                    : { opacity: 0, x: direction > 0 ? -24 : 24 }
-                }
-                transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
-                className="mx-auto w-full max-w-3xl"
-              >
-                {stepLoad.status === "loading" ? (
-                  <div className="flex flex-col gap-3">
-                    {Array.from({ length: 3 }, (_, index) => (
-                      <div
-                        key={index}
-                        className="h-28 animate-pulse rounded-xl bg-hover"
-                      />
-                    ))}
-                  </div>
-                ) : null}
-                {stepLoad.status === "error" ? (
-                  <div
-                    role="alert"
-                    className="flex flex-col items-start gap-3 rounded-xl border border-danger/25 bg-danger/10 px-4 py-5"
-                  >
-                    <p className="font-sans text-body-sm text-danger">
-                      {stepLoad.message}
-                    </p>
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() => void openStep(activeStep)}
-                    >
-                      Tentar novamente
-                    </Button>
-                  </div>
-                ) : null}
-                {stepLoad.status === "ready" ? (
-                  stepLoad.data.meta.state === "empty" && !editing ? (
-                    <p className="rounded-xl border border-border-subtle bg-surface/60 px-4 py-8 text-center font-sans text-body-sm text-fg-muted">
-                      O cliente ainda não preencheu esta etapa.
-                    </p>
-                  ) : (
-                    <StepBody
-                      clientId={clientId!}
-                      data={stepLoad.data}
-                      editing={editing}
-                      readOnly={readOnly}
-                      companyPayload={
-                        stepCache.company &&
-                        stepCache.company.step === "company"
-                          ? stepCache.company.payload
-                          : emptyCompanyPayload()
-                      }
-                    />
-                  )
-                ) : null}
-                {stepLoad.status === "idle" ? (
-                  <div className="flex items-center justify-center gap-2 py-16 font-sans text-body-sm text-fg-muted">
-                    <RiLoader4Line
-                      size={18}
-                      aria-hidden
-                      className="animate-spin"
-                    />
-                    Carregando…
-                  </div>
-                ) : null}
-              </m.div>
-            ) : null}
-          </AnimatePresence>
-          )}
-            </div>
-          </section>
-        </div>
-      </BriefingWriterProvider>
+                    {overviewState.status === "ready" && !activeStep ? (
+                      <m.div
+                        key="overview"
+                        custom={direction}
+                        initial={
+                          reduced
+                            ? { opacity: 0 }
+                            : { opacity: 0, x: direction > 0 ? -20 : 20 }
+                        }
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={
+                          reduced
+                            ? { opacity: 0 }
+                            : { opacity: 0, x: direction > 0 ? -20 : 20 }
+                        }
+                        transition={{
+                          duration: reduced ? 0.12 : 0.28,
+                          ease: EASE,
+                        }}
+                      >
+                        {!readOnly ? (
+                          <ClientBriefingExport
+                            clientId={overviewState.overview.clientId}
+                            finalizedAt={overviewState.overview.finalizedAt}
+                            contentUpdatedAt={
+                              overviewState.overview.contentUpdatedAt
+                            }
+                          />
+                        ) : null}
+                        <BriefingReviewOverview
+                          steps={overviewState.overview.steps}
+                          completedCount={overviewState.overview.completedCount}
+                          onSelectStep={openStep}
+                        />
+                      </m.div>
+                    ) : null}
+
+                    {activeStep ? (
+                      <m.div
+                        key={`step-${activeStep}`}
+                        custom={direction}
+                        initial={
+                          reduced
+                            ? { opacity: 0 }
+                            : { opacity: 0, x: direction > 0 ? 24 : -24 }
+                        }
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={
+                          reduced
+                            ? { opacity: 0 }
+                            : { opacity: 0, x: direction > 0 ? -24 : 24 }
+                        }
+                        transition={{
+                          duration: reduced ? 0.12 : 0.28,
+                          ease: EASE,
+                        }}
+                        className="mx-auto w-full max-w-3xl"
+                      >
+                        {stepLoad.status === "loading" ? (
+                          <div className="flex flex-col gap-3">
+                            {Array.from({ length: 3 }, (_, index) => (
+                              <div
+                                key={index}
+                                className="h-28 animate-pulse rounded-xl bg-accent"
+                              />
+                            ))}
+                          </div>
+                        ) : null}
+                        {stepLoad.status === "error" ? (
+                          <div
+                            role="alert"
+                            className="flex flex-col items-start gap-3 rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5"
+                          >
+                            <p className="text-xs/relaxed text-destructive">
+                              {stepLoad.message}
+                            </p>
+                            <Button
+                              type="button"
+                              variant="secondary"
+                              onClick={() => void openStep(activeStep)}
+                            >
+                              Tentar novamente
+                            </Button>
+                          </div>
+                        ) : null}
+                        {stepLoad.status === "ready" ? (
+                          stepLoad.data.meta.state === "empty" && !editing ? (
+                            <p className="rounded-xl border border-border/70 bg-card/60 px-4 py-8 text-center text-xs/relaxed text-muted-foreground">
+                              O cliente ainda não preencheu esta etapa.
+                            </p>
+                          ) : (
+                            <StepBody
+                              clientId={clientId!}
+                              data={stepLoad.data}
+                              editing={editing}
+                              readOnly={readOnly}
+                              companyPayload={
+                                stepCache.company &&
+                                stepCache.company.step === "company"
+                                  ? stepCache.company.payload
+                                  : emptyCompanyPayload()
+                              }
+                            />
+                          )
+                        ) : null}
+                        {stepLoad.status === "idle" ? (
+                          <div className="flex items-center justify-center gap-2 py-16 text-xs/relaxed text-muted-foreground">
+                            <RiLoader4Line
+                              size={18}
+                              aria-hidden
+                              className="animate-spin"
+                            />
+                            Carregando…
+                          </div>
+                        ) : null}
+                      </m.div>
+                    ) : null}
+                  </AnimatePresence>
+                )}
+              </div>
+            </section>
+          </div>
+        </BriefingWriterProvider>
       </DialogContent>
     </Dialog>
   )

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useTheme } from "next-themes"
 import { RiComputerLine, RiMoonLine, RiSunLine } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { ThemeValue } from "@/lib/theme"
 import { Button } from "@/components/ui/button"
 import {
@@ -42,7 +42,8 @@ export function ThemeToggle({
   useEffect(() => setMounted(true), [])
 
   const current = mounted && isThemeValue(theme) ? theme : "system"
-  const currentOption = THEME_OPTIONS.find(({ value }) => value === current) ?? THEME_OPTIONS[0]
+  const currentOption =
+    THEME_OPTIONS.find(({ value }) => value === current) ?? THEME_OPTIONS[0]
   const CurrentIcon = currentOption.Icon
   const hasLabel = Boolean(label)
 
@@ -65,17 +66,21 @@ export function ThemeToggle({
         }
       >
         <CurrentIcon size={hasLabel ? 18 : 20} aria-hidden />
-        {hasLabel ? <span>{label}</span> : <span className="sr-only">Tema</span>}
+        {hasLabel ? (
+          <span>{label}</span>
+        ) : (
+          <span className="sr-only">Tema</span>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuLabel>Tema</DropdownMenuLabel>
-        <DropdownMenuSeparator />
         <DropdownMenuRadioGroup
           value={current}
           onValueChange={(value) => {
             if (isThemeValue(value)) setTheme(value)
           }}
         >
+          <DropdownMenuLabel>Tema</DropdownMenuLabel>
+          <DropdownMenuSeparator />
           {THEME_OPTIONS.map(({ value, label: optionLabel, Icon }) => (
             <DropdownMenuRadioItem key={value} value={value}>
               <Icon size={16} aria-hidden />

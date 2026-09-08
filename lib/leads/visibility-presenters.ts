@@ -38,9 +38,7 @@ export function formatVisibilityMetric(
   })
 }
 
-export function visibilityKeywordIntentLabel(
-  intent: string | null,
-): string {
+export function visibilityKeywordIntentLabel(intent: string | null): string {
   if (!intent) return "—"
   if (intent === "informational") return "I"
   if (intent === "commercial") return "C"
@@ -112,13 +110,8 @@ export function visibilityCheckSections(input: {
       title: "Visibilidade orgânica",
       items: overviewIds
         .filter((id) => {
-          if (
-            id === "low_organic_traffic" ||
-            id === "thin_keyword_footprint"
-          ) {
-            return (
-              input.snapshot?.source === "dataforseo_labs" || gaps.has(id)
-            )
+          if (id === "low_organic_traffic" || id === "thin_keyword_footprint") {
+            return input.snapshot?.source === "dataforseo_labs" || gaps.has(id)
           }
           return true
         })

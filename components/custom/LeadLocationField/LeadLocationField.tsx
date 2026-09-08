@@ -39,29 +39,60 @@ export function LeadLocationField({
     <div className="grid gap-4 sm:grid-cols-2">
       <Field data-invalid={Boolean(stateError)}>
         <FieldLabel htmlFor={`${id}-state`}>UF</FieldLabel>
-        <Select value={value.state_code} disabled={disabled} onValueChange={(next) => {
-          const stateCode = String(next)
-          onValueChange({
-            state_code: stateCode as BrazilStateCode | "",
-            city: "",
-          })
-        }}>
-          <SelectTrigger id={`${id}-state`} className="w-full" onBlur={onBlur}><RiMapPinLine size={16} aria-hidden /><SelectValue placeholder="Selecionar UF" /></SelectTrigger>
-          <SelectContent align="start">{stateItems.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+        <Select
+          value={value.state_code}
+          disabled={disabled}
+          onValueChange={(next) => {
+            const stateCode = String(next)
+            onValueChange({
+              state_code: stateCode as BrazilStateCode | "",
+              city: "",
+            })
+          }}
+        >
+          <SelectTrigger id={`${id}-state`} className="w-full" onBlur={onBlur}>
+            <RiMapPinLine size={16} aria-hidden />
+            <SelectValue placeholder="Selecionar UF" />
+          </SelectTrigger>
+          <SelectContent align="start">
+            {stateItems.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
         <FieldError>{stateError}</FieldError>
       </Field>
       <Field data-invalid={Boolean(cityError)}>
         <FieldLabel htmlFor={`${id}-city`}>Cidade</FieldLabel>
-        <Select value={value.city} disabled={disabled || !value.state_code} onValueChange={(next) => {
-          const city = String(next)
-          onValueChange({
-            ...value,
-            city,
-          })
-        }}>
-          <SelectTrigger id={`${id}-city`} className="w-full" onBlur={onBlur}><SelectValue placeholder={value.state_code ? "Selecionar cidade" : "Selecione a UF primeiro"} /></SelectTrigger>
-          <SelectContent align="start">{cityItems.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+        <Select
+          value={value.city}
+          disabled={disabled || !value.state_code}
+          onValueChange={(next) => {
+            const city = String(next)
+            onValueChange({
+              ...value,
+              city,
+            })
+          }}
+        >
+          <SelectTrigger id={`${id}-city`} className="w-full" onBlur={onBlur}>
+            <SelectValue
+              placeholder={
+                value.state_code
+                  ? "Selecionar cidade"
+                  : "Selecione a UF primeiro"
+              }
+            />
+          </SelectTrigger>
+          <SelectContent align="start">
+            {cityItems.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
         <FieldError>{cityError}</FieldError>
       </Field>

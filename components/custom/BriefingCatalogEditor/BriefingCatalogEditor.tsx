@@ -19,7 +19,7 @@ import {
   PRODUCTS_AND_SERVICES_MAX,
   type ProductOrService,
 } from "@/lib/briefing/brand"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { BriefingCatalogEditorProps } from "./BriefingCatalogEditor.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -59,7 +59,7 @@ export function BriefingCatalogEditor({
             <RiAddLine size={16} aria-hidden data-icon="inline-start" />
             Adicionar
           </Button>
-          <p className="font-sans text-caption text-fg-muted">
+          <p className="text-xs/relaxed text-muted-foreground">
             {items.length}/{PRODUCTS_AND_SERVICES_MAX} itens
           </p>
         </div>
@@ -71,7 +71,7 @@ export function BriefingCatalogEditor({
             onClick={addItem}
             className={cn(
               "flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-border px-4 py-10",
-              "bg-elevated/40 text-center transition-colors hover:border-accent/40 hover:bg-elevated",
+              "bg-popover/40 text-center transition-colors hover:border-primary/40 hover:bg-popover",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
               disabled && "pointer-events-none opacity-50",
             )}
@@ -79,10 +79,10 @@ export function BriefingCatalogEditor({
             <span className="inline-flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <RiServiceLine size={18} aria-hidden />
             </span>
-            <span className="font-sans text-body-sm font-medium text-fg">
+            <span className="text-xs/relaxed font-medium text-foreground">
               Adicione o primeiro produto ou serviço
             </span>
-            <span className="font-sans text-caption text-fg-muted">
+            <span className="text-xs/relaxed text-muted-foreground">
               Nome, descrição e se é produto ou serviço.
             </span>
           </button>
@@ -107,15 +107,20 @@ export function BriefingCatalogEditor({
                           ? { opacity: 0 }
                           : { opacity: 0, scale: 0.96, y: -6 }
                       }
-                      transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
-                      className="flex flex-col gap-3 rounded-xl border border-border bg-elevated p-3.5 shadow-card"
+                      transition={{
+                        duration: reduced ? 0.12 : 0.28,
+                        ease: EASE,
+                      }}
+                      className="flex flex-col gap-3 rounded-xl border border-border bg-popover p-3.5 shadow-xs"
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="inline-flex items-center gap-2">
                           <span
                             className={cn(
-                              "font-sans text-caption font-medium",
-                              isService ? "text-fg-muted" : "text-accent",
+                              "text-xs/relaxed font-medium",
+                              isService
+                                ? "text-muted-foreground"
+                                : "text-primary",
                             )}
                           >
                             Produto
@@ -132,8 +137,10 @@ export function BriefingCatalogEditor({
                           />
                           <span
                             className={cn(
-                              "font-sans text-caption font-medium",
-                              isService ? "text-accent" : "text-fg-muted",
+                              "text-xs/relaxed font-medium",
+                              isService
+                                ? "text-primary"
+                                : "text-muted-foreground",
                             )}
                           >
                             Serviço
@@ -146,7 +153,11 @@ export function BriefingCatalogEditor({
                           disabled={disabled}
                           onClick={() => removeItem(item.id)}
                         >
-                          <RiDeleteBinLine size={16} aria-hidden data-icon="inline-start" />
+                          <RiDeleteBinLine
+                            size={16}
+                            aria-hidden
+                            data-icon="inline-start"
+                          />
                           Remover
                         </Button>
                       </div>

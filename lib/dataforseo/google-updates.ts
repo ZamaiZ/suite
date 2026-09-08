@@ -34,7 +34,9 @@ export async function postGoogleUpdatesTask(input: {
   )
 }
 
-export async function getGoogleUpdatesTask(taskId: string): Promise<
+export async function getGoogleUpdatesTask(
+  taskId: string,
+): Promise<
   | { status: "ok"; posts: GbpPost[] }
   | { status: "pending" }
   | { status: "error"; message: string }

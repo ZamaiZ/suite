@@ -55,7 +55,7 @@ export function LeadActivityPanel({
 
   return (
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="border-b border-border-subtle bg-elevated lg:border-r lg:border-b-0">
+      <aside className="border-b border-border/70 bg-popover lg:border-r lg:border-b-0">
         <LeadContextRail detail={detail} loading={loading} />
       </aside>
       <div className="flex min-w-0 flex-col gap-4 px-4 py-5 sm:px-5">
@@ -75,7 +75,7 @@ export function LeadActivityPanel({
             onPendingChange={onPendingChange}
           />
         ) : readOnly ? null : (
-          <p className="font-sans text-body-sm text-fg-secondary">
+          <p className="text-xs/relaxed text-muted-foreground">
             Somente o responsável registra tentativas.
           </p>
         )}
@@ -91,17 +91,17 @@ export function LeadActivityPanel({
 function ActivitySkeleton() {
   return (
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
-      <aside className="border-b border-border-subtle bg-elevated lg:border-r lg:border-b-0">
+      <aside className="border-b border-border/70 bg-popover lg:border-r lg:border-b-0">
         <LeadContextRail detail={null} loading />
       </aside>
       <div className="flex min-w-0 flex-col gap-4 px-4 py-5 sm:px-5">
-        <span className="h-36 animate-pulse rounded-xl bg-hover motion-reduce:animate-none" />
+        <span className="h-36 animate-pulse rounded-xl bg-accent motion-reduce:animate-none" />
         <span
-          className="h-24 animate-pulse rounded-xl bg-hover motion-reduce:animate-none"
+          className="h-24 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
           style={{ animationDelay: "40ms" }}
         />
         <span
-          className="h-24 animate-pulse rounded-xl bg-hover motion-reduce:animate-none"
+          className="h-24 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
           style={{ animationDelay: "80ms" }}
         />
       </div>

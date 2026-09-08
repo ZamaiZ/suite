@@ -20,8 +20,14 @@ export function BriefingReviewAccesses({
           label="Possui?"
           value={formatYesNo(payload.wordpress.status)}
         />
-        <BriefingReviewField label="URL de login" value={payload.wordpress.loginUrl} />
-        <BriefingReviewField label="Usuário" value={payload.wordpress.username} />
+        <BriefingReviewField
+          label="URL de login"
+          value={payload.wordpress.loginUrl}
+        />
+        <BriefingReviewField
+          label="Usuário"
+          value={payload.wordpress.username}
+        />
         <BriefingReviewSecretField
           clientId={clientId}
           kind="wordpress"
@@ -69,10 +75,7 @@ export function BriefingReviewAccesses({
           label="URL do painel"
           value={payload.hosting.panelUrl}
         />
-        <BriefingReviewField
-          label="Usuário"
-          value={payload.hosting.username}
-        />
+        <BriefingReviewField label="Usuário" value={payload.hosting.username} />
         <BriefingReviewSecretField
           clientId={clientId}
           kind="hosting_domain"
@@ -90,10 +93,7 @@ export function BriefingReviewAccesses({
           label="URL do painel"
           value={payload.domain.panelUrl}
         />
-        <BriefingReviewField
-          label="Usuário"
-          value={payload.domain.username}
-        />
+        <BriefingReviewField label="Usuário" value={payload.domain.username} />
         <BriefingReviewSecretField
           clientId={clientId}
           kind="domain"
@@ -111,7 +111,10 @@ export function BriefingReviewAccesses({
           <BriefingReviewField label="Itens" value="" />
         ) : (
           payload.otherTools.items.map((item) => (
-            <div key={item.id} className="flex flex-col gap-2 rounded-lg bg-canvas px-3 py-2">
+            <div
+              key={item.id}
+              className="flex flex-col gap-2 rounded-lg bg-background px-3 py-2"
+            >
               <BriefingReviewField label="Nome" value={item.name} />
               <BriefingReviewField label="Usuário" value={item.username} />
               <BriefingReviewSecretField

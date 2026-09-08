@@ -130,76 +130,73 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
           <RiMore2Line size={16} aria-hidden />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="min-w-44">
-              {loadingDetail && !portal ? (
-                <div className="flex items-center gap-2 px-2 py-1.5 font-sans text-body-sm text-fg-muted">
-                  <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-                  Carregando…
-                </div>
-              ) : null}
-              {loadError ? (
-                <p
-                  role="alert"
-                  className="px-2 py-1.5 font-sans text-caption text-danger"
-                >
-                  {loadError}
-                </p>
-              ) : null}
-              {portal && !portal.hasPortalAccess ? (
+          {loadingDetail && !portal ? (
+            <div className="flex items-center gap-2 px-2 py-1.5 text-xs/relaxed text-muted-foreground">
+              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+              Carregando…
+            </div>
+          ) : null}
+          {loadError ? (
+            <p
+              role="alert"
+              className="px-2 py-1.5 text-xs/relaxed text-destructive"
+            >
+              {loadError}
+            </p>
+          ) : null}
+          {portal && !portal.hasPortalAccess ? (
+            <DropdownMenuItem disabled={isPending} onClick={runIssue}>
+              <RiKey2Line size={16} aria-hidden />
+              {isPending ? "Gerando…" : "Gerar acesso"}
+            </DropdownMenuItem>
+          ) : null}
+          {portal?.hasPortalAccess ? (
+            <>
+              <DropdownMenuItem
+                disabled={isPending || !portal.portalUrl}
+                onClick={() => void copyLink()}
+              >
+                {copied ? (
+                  <RiCheckLine size={16} aria-hidden />
+                ) : (
+                  <RiFileCopyLine size={16} aria-hidden />
+                )}
+                {copied ? "Link copiado" : "Copiar link"}
+              </DropdownMenuItem>
+              {confirmRotate ? (
                 <DropdownMenuItem
                   disabled={isPending}
-                  onClick={runIssue}
+                  onClick={runRotate}
+                  variant="destructive"
                 >
-                  <RiKey2Line size={16} aria-hidden />
-                  {isPending ? "Gerando…" : "Gerar acesso"}
+                  <RiRefreshLine size={16} aria-hidden />
+                  {isPending ? "Rotacionando…" : "Confirmar rotação"}
                 </DropdownMenuItem>
-              ) : null}
-              {portal?.hasPortalAccess ? (
-                <>
-                  <DropdownMenuItem
-                    disabled={isPending || !portal.portalUrl}
-                    onClick={() => void copyLink()}
-                  >
-                    {copied ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : (
-                      <RiFileCopyLine size={16} aria-hidden />
-                    )}
-                    {copied ? "Link copiado" : "Copiar link"}
-                  </DropdownMenuItem>
-                  {confirmRotate ? (
-                    <DropdownMenuItem
-                      disabled={isPending}
-                      onClick={runRotate}
-                      variant="destructive"
-                    >
-                      <RiRefreshLine size={16} aria-hidden />
-                      {isPending ? "Rotacionando…" : "Confirmar rotação"}
-                    </DropdownMenuItem>
-                  ) : (
-                    <DropdownMenuItem
-                      closeOnClick={false}
-                      disabled={isPending}
-                      onClick={() => setConfirmRotate(true)}
-                    >
-                      <RiRefreshLine size={16} aria-hidden />
-                      Rotacionar código
-                    </DropdownMenuItem>
-                  )}
-                </>
-              ) : null}
-              {confirmRotate ? (
-                <p className="px-2 py-1 font-sans text-caption text-warning">
-                  Invalida o código e a sessão atuais.
-                </p>
-              ) : null}
-              {actionError ? (
-                <p
-                  role="alert"
-                  className="px-2 py-1.5 font-sans text-caption text-danger"
+              ) : (
+                <DropdownMenuItem
+                  closeOnClick={false}
+                  disabled={isPending}
+                  onClick={() => setConfirmRotate(true)}
                 >
-                  {actionError}
-                </p>
-              ) : null}
+                  <RiRefreshLine size={16} aria-hidden />
+                  Rotacionar código
+                </DropdownMenuItem>
+              )}
+            </>
+          ) : null}
+          {confirmRotate ? (
+            <p className="px-2 py-1 text-xs/relaxed text-warning">
+              Invalida o código e a sessão atuais.
+            </p>
+          ) : null}
+          {actionError ? (
+            <p
+              role="alert"
+              className="px-2 py-1.5 text-xs/relaxed text-destructive"
+            >
+              {actionError}
+            </p>
+          ) : null}
         </DropdownMenuContent>
       </DropdownMenu>
 

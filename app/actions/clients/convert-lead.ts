@@ -34,7 +34,9 @@ export async function convertLeadToClient(
   formData: FormData,
 ): Promise<ConvertLeadState> {
   const { user, roles } = await requireCommercialMember()
-  const parsed = convertLeadSchema.safeParse(readConvertLeadFormFields(formData))
+  const parsed = convertLeadSchema.safeParse(
+    readConvertLeadFormFields(formData),
+  )
 
   if (!parsed.success) {
     return { status: "error", message: "Lead inválido." }
@@ -93,7 +95,10 @@ export async function convertLeadToClient(
     return { status: "error", message: "Informe o nome do signatário." }
   }
   if (!lead.contract_signed_at) {
-    return { status: "error", message: "Marque a data de assinatura do contrato." }
+    return {
+      status: "error",
+      message: "Marque a data de assinatura do contrato.",
+    }
   }
   if (!lead.paid_at) {
     return { status: "error", message: "Marque a data de pagamento." }
@@ -157,7 +162,8 @@ export async function convertLeadToClient(
     await supabase.from("clients").delete().eq("id", client.id)
     return {
       status: "error",
-      message: "O cliente foi criado, mas o lead não consolidou. Tente novamente.",
+      message:
+        "O cliente foi criado, mas o lead não consolidou. Tente novamente.",
     }
   }
 

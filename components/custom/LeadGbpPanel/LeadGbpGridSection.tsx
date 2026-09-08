@@ -12,11 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Slider } from "@/components/ui/slider"
-import { cn } from "@/lib/cn"
-import {
-  pollLeadGbpGridScan,
-  startLeadGbpGridScan,
-} from "@/app/actions/leads"
+import { cn } from "cn"
+import { pollLeadGbpGridScan, startLeadGbpGridScan } from "@/app/actions/leads"
 import {
   GBP_GRID_RADIUS_KM_DEFAULT,
   GBP_GRID_RADIUS_KM_MAX,
@@ -68,9 +65,7 @@ export function LeadGbpGridSection({
   const [open, setOpen] = useState(false)
   const [scan, setScan] = useState<LeadGbpGridScan | null>(initialScan)
   const [keyword, setKeyword] = useState(keywords[0] ?? "")
-  const [source, setSource] = useState(
-    `${profileId}:${initialScan?.id ?? ""}`,
-  )
+  const [source, setSource] = useState(`${profileId}:${initialScan?.id ?? ""}`)
   const [size, setSize] = useState<number>(GBP_GRID_SIZE_DEFAULT)
   const [mode, setMode] = useState<GbpGridMode>(
     gbpGridExecutionMode(GBP_GRID_SIZE_DEFAULT),
@@ -188,18 +183,19 @@ export function LeadGbpGridSection({
   const requests = gbpGridCost(size)
   const failed = scan ? gbpGridFailedCount(scan.points) : 0
   const stalled = scan?.status === "partial" || scan?.status === "failed"
-  const canResume = canEdit && Boolean(scan) && (stalled || (timedOut && active))
+  const canResume =
+    canEdit && Boolean(scan) && (stalled || (timedOut && active))
 
   return (
-    <div className="mt-3 border-t border-border-subtle pt-3">
+    <div className="mt-3 border-t border-border/70 pt-3">
       <button
         type="button"
         onClick={() => setOpen((current) => !current)}
-        className="flex items-center gap-2 font-sans text-caption text-fg-secondary hover:text-fg"
+        className="flex items-center gap-2 text-xs/relaxed text-muted-foreground hover:text-foreground"
       >
         <RiGridLine aria-hidden size={14} />
         Malha geográfica
-        <span className="text-fg-muted">{open ? "−" : "+"}</span>
+        <span className="text-muted-foreground">{open ? "−" : "+"}</span>
       </button>
 
       {open ? (
@@ -207,45 +203,90 @@ export function LeadGbpGridSection({
           {canEdit ? (
             <div className="flex flex-wrap items-end gap-3">
               <label className="flex min-w-44 flex-col gap-1">
-                <span className="font-sans text-caption text-fg-muted">
+                <span className="text-xs/relaxed text-muted-foreground">
                   Keyword
                 </span>
-                <Select value={activeKeyword} onValueChange={(value) => setKeyword(String(value))} disabled={busy || active || keywords.length === 0}>
-                  <SelectTrigger id={`gbp-grid-keyword-${profileId}`} className="w-full"><SelectValue /></SelectTrigger>
-                  <SelectContent align="start">{keywords.map((item) => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
+                <Select
+                  value={activeKeyword}
+                  onValueChange={(value) => setKeyword(String(value))}
+                  disabled={busy || active || keywords.length === 0}
+                >
+                  <SelectTrigger
+                    id={`gbp-grid-keyword-${profileId}`}
+                    className="w-full"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent align="start">
+                    {keywords.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </label>
 
               <label className="flex min-w-28 flex-col gap-1">
-                <span className="font-sans text-caption text-fg-muted">
+                <span className="text-xs/relaxed text-muted-foreground">
                   Malha
                 </span>
-                <Select value={String(size)} disabled={busy || active} onValueChange={(value) => {
+                <Select
+                  value={String(size)}
+                  disabled={busy || active}
+                  onValueChange={(value) => {
                     const next = Number(value)
                     setSize(next)
                     // O modo acompanha o tamanho, e o usuário pode trocar depois.
                     setMode(gbpGridExecutionMode(next))
-                  }}>
-                  <SelectTrigger id={`gbp-grid-size-${profileId}`} className="w-full"><SelectValue /></SelectTrigger>
-                  <SelectContent align="start">{GBP_GRID_SIZES.map((item) => <SelectItem key={item} value={String(item)}>{item}×{item}</SelectItem>)}</SelectContent>
+                  }}
+                >
+                  <SelectTrigger
+                    id={`gbp-grid-size-${profileId}`}
+                    className="w-full"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent align="start">
+                    {GBP_GRID_SIZES.map((item) => (
+                      <SelectItem key={item} value={String(item)}>
+                        {item}×{item}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </label>
 
               <label className="flex min-w-32 flex-col gap-1">
-                <span className="font-sans text-caption text-fg-muted">
+                <span className="text-xs/relaxed text-muted-foreground">
                   Execução
                 </span>
-                <Select value={mode} disabled={busy || active} onValueChange={(value) => {
+                <Select
+                  value={mode}
+                  disabled={busy || active}
+                  onValueChange={(value) => {
                     const next = String(value)
                     if (next === "live" || next === "queued") setMode(next)
-                  }}>
-                  <SelectTrigger id={`gbp-grid-mode-${profileId}`} className="w-full"><SelectValue /></SelectTrigger>
-                  <SelectContent align="start">{MODE_ITEMS.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+                  }}
+                >
+                  <SelectTrigger
+                    id={`gbp-grid-mode-${profileId}`}
+                    className="w-full"
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent align="start">
+                    {MODE_ITEMS.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </label>
 
               <label className="flex min-w-44 flex-col gap-1">
-                <span className="font-sans text-caption text-fg-muted">
+                <span className="text-xs/relaxed text-muted-foreground">
                   Raio · {radiusKm.toLocaleString("pt-BR")} km
                 </span>
                 <Slider
@@ -255,25 +296,35 @@ export function LeadGbpGridSection({
                   step={1}
                   value={[radiusKm]}
                   disabled={busy || active}
-                  onValueChange={(value) => setRadiusKm(value[0] ?? radiusKm)}
+                  onValueChange={(value) =>
+                    setRadiusKm(
+                      Array.isArray(value) ? (value[0] ?? radiusKm) : value,
+                    )
+                  }
                 />
               </label>
 
               <Button
                 type="button"
                 variant="outline"
-                className="border-accent/30 text-accent hover:bg-accent/10"
+                className="border-primary/30 text-primary hover:bg-primary/10"
                 disabled={busy || active || !activeKeyword}
                 onClick={() => {
                   void handleStart()
                 }}
               >
-                {busy ? <RiLoader4Line size={16} aria-hidden className="animate-spin" /> : null}
+                {busy ? (
+                  <RiLoader4Line
+                    size={16}
+                    aria-hidden
+                    className="animate-spin"
+                  />
+                ) : null}
                 Rodar malha
               </Button>
 
               {/* Requisições e modo antes do disparo: cada ponto é pago. */}
-              <span className="pb-2 font-sans text-caption text-fg-muted">
+              <span className="pb-2 text-xs/relaxed text-muted-foreground">
                 {requests.toLocaleString("pt-BR")} requisições ·{" "}
                 {mode === "live" ? "modo live" : "fila padrão"}
               </span>
@@ -281,18 +332,18 @@ export function LeadGbpGridSection({
           ) : null}
 
           {error ? (
-            <p className="font-sans text-caption text-danger">{error}</p>
+            <p className="text-xs/relaxed text-destructive">{error}</p>
           ) : null}
 
           {scan ? (
             <>
               <div className="flex flex-wrap items-center gap-3">
-                <span className="font-sans text-caption text-fg-secondary">
+                <span className="text-xs/relaxed text-muted-foreground">
                   “{scan.keyword}” · {scan.size}×{scan.size} ·{" "}
                   {scan.radius_km.toLocaleString("pt-BR")} km ·{" "}
                   {scan.mode === "live" ? "live" : "fila"}
                 </span>
-                <span className="font-sans text-caption text-fg-muted">
+                <span className="text-xs/relaxed text-muted-foreground">
                   {scan.processed.toLocaleString("pt-BR")} de{" "}
                   {scan.total.toLocaleString("pt-BR")} pontos
                   {failed > 0
@@ -300,14 +351,14 @@ export function LeadGbpGridSection({
                     : ""}
                 </span>
                 {/* Custo real devolvido pela API, não estimativa. */}
-                <span className="font-sans text-caption tabular-nums text-fg-muted">
+                <span className="text-xs/relaxed tabular-nums text-muted-foreground">
                   {formatUsd(scan.cost_usd)}
                 </span>
                 {active ? (
                   <RiLoader4Line
                     aria-hidden
                     size={14}
-                    className="animate-spin text-fg-muted"
+                    className="animate-spin text-muted-foreground"
                   />
                 ) : null}
               </div>
@@ -329,7 +380,7 @@ export function LeadGbpGridSection({
 
               {canResume ? (
                 <div className="flex flex-wrap items-center gap-2">
-                  <p className="font-sans text-caption text-fg-muted">
+                  <p className="text-xs/relaxed text-muted-foreground">
                     {timedOut && active
                       ? QUEUE_WAITING
                       : (scan.error_message ??
@@ -337,7 +388,7 @@ export function LeadGbpGridSection({
                   </p>
                   {/* Retoma nos pendentes; só o ponto falho volta a ser pago. */}
                   {failed > 0 ? (
-                    <p className="font-sans text-caption text-fg-muted">
+                    <p className="text-xs/relaxed text-muted-foreground">
                       {failed.toLocaleString("pt-BR")} ponto(s) serão cobrados
                       de novo.
                     </p>
@@ -356,7 +407,7 @@ export function LeadGbpGridSection({
               ) : null}
             </>
           ) : (
-            <p className="font-sans text-caption text-fg-muted">
+            <p className="text-xs/relaxed text-muted-foreground">
               Nenhuma malha rodada para este perfil.
             </p>
           )}
@@ -369,8 +420,8 @@ export function LeadGbpGridSection({
 function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className={cn("flex flex-col")}>
-      <span className="font-sans text-caption text-fg-muted">{label}</span>
-      <span className="font-sans text-body-sm tabular-nums text-fg">
+      <span className="text-xs/relaxed text-muted-foreground">{label}</span>
+      <span className="text-xs/relaxed tabular-nums text-foreground">
         {value}
       </span>
     </div>

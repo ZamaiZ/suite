@@ -72,7 +72,9 @@ export async function saveBriefingHistory(
       status: "success",
       updatedAt: now,
       completedAt:
-        typeof existing.completed_at === "string" ? existing.completed_at : null,
+        typeof existing.completed_at === "string"
+          ? existing.completed_at
+          : null,
     }
   }
 

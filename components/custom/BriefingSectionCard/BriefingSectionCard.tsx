@@ -1,4 +1,4 @@
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { BriefingSectionCardProps } from "./BriefingSectionCard.types"
 
 export function BriefingSectionCard({
@@ -12,7 +12,7 @@ export function BriefingSectionCard({
   return (
     <section
       className={cn(
-        "relative overflow-hidden rounded-xl border border-border bg-surface p-5 shadow-card",
+        "relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs",
         className,
       )}
     >
@@ -25,19 +25,19 @@ export function BriefingSectionCard({
         }}
       />
       <div className="mb-4 flex items-start gap-3">
-        <span className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+        <span className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
           {icon}
           {typeof index === "number" ? (
-            <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-primary font-sans text-[10px] font-semibold text-primary-foreground">
+            <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground">
               {index}
             </span>
           ) : null}
         </span>
         <div className="min-w-0">
-          <h2 className="font-sans text-body-sm font-semibold text-fg">
+          <h2 className="text-xs/relaxed font-semibold text-foreground">
             {title}
           </h2>
-          <p className="mt-0.5 font-sans text-caption text-fg-muted">
+          <p className="mt-0.5 text-xs/relaxed text-muted-foreground">
             {description}
           </p>
         </div>

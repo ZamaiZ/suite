@@ -18,11 +18,11 @@ function MetricCard({
   value: string
 }) {
   return (
-    <div className="flex min-h-16 items-center gap-2 rounded-xl border border-border-subtle bg-surface px-3 py-2">
+    <div className="flex min-h-16 items-center gap-2 rounded-xl border border-border/70 bg-card px-3 py-2">
       <LeadIconWell icon={icon} />
       <div className="min-w-0">
-        <p className="font-sans text-caption text-fg-muted">{label}</p>
-        <p className="font-sans text-caption font-semibold text-fg">{value}</p>
+        <p className="text-xs/relaxed text-muted-foreground">{label}</p>
+        <p className="text-xs/relaxed font-semibold text-foreground">{value}</p>
       </div>
     </div>
   )
@@ -53,16 +53,9 @@ export function LeadVisibilitySummaryCards({
       <MetricCard
         icon={RiMoneyDollarCircleLine}
         label="Custo tráfego"
-        value={formatVisibilityMetric(
-          snapshot.metrics.estimatedTrafficCost,
-          1,
-        )}
+        value={formatVisibilityMetric(snapshot.metrics.estimatedTrafficCost, 1)}
       />
-      <MetricCard
-        icon={RiBarChart2Line}
-        label="Posições"
-        value={bucketLabel}
-      />
+      <MetricCard icon={RiBarChart2Line} label="Posições" value={bucketLabel} />
     </div>
   )
 }

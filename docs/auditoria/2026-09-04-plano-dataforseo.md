@@ -129,11 +129,11 @@ A tabela já aceita `dataforseo_maps` em `source`, então nenhuma migration é n
 
 ## Ordem e resumo
 
-| Etapa | Entrega | Bloqueia |
-|---|---|---|
-| 0 · Validar mapeadores | correções + 2 respostas | tudo |
-| 1 · Provider único | −850 linhas, sem capacidade nova | 2 e 3 |
-| 2 · Matemática de reputação | 4 métricas com um snapshot; 2 com histórico | — |
+| Etapa                         | Entrega                                                       | Bloqueia         |
+| ----------------------------- | ------------------------------------------------------------- | ---------------- |
+| 0 · Validar mapeadores        | correções + 2 respostas                                       | tudo             |
+| 1 · Provider único            | −850 linhas, sem capacidade nova                              | 2 e 3            |
+| 2 · Matemática de reputação   | 4 métricas com um snapshot; 2 com histórico                   | —                |
 | 3 · Autoridade e concorrência | backlinks, 5 concorrentes, âncoras 5–6, consolidação da malha | decisão de pilar |
 
 A etapa 0 é a que costuma ser pulada e a que mais custa quando falha: ela é a única que pode invalidar tudo que vier depois. As etapas 2 e 3 são independentes entre si e podem correr em paralelo depois da 1.

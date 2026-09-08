@@ -21,7 +21,8 @@ export const LOGO_STATUS_LABELS: Record<LogoStatusId, string> = {
 
 export const LOGO_STATUS_DESCRIPTIONS: Record<LogoStatusId, string> = {
   have_file: "Vou enviar SVG ou PNG do logo.",
-  use_current_site: "Usem o logo que já aparece no site informado na etapa Empresa.",
+  use_current_site:
+    "Usem o logo que já aparece no site informado na etapa Empresa.",
   create_new: "Não tenho arquivo; precisam criar a marca visual.",
   none: "Seguimos sem logo por enquanto.",
 }
@@ -44,7 +45,8 @@ export const COLOR_POLICY_LABELS: Record<ColorPolicyId, string> = {
 
 export const COLOR_POLICY_DESCRIPTIONS: Record<ColorPolicyId, string> = {
   keep_current: "Extraímos a paleta a partir do site atual.",
-  follow_brand: "Priorizamos logo, manual e links do kit — mesmo que o site atual seja diferente.",
+  follow_brand:
+    "Priorizamos logo, manual e links do kit — mesmo que o site atual seja diferente.",
   refresh_ok: "Podemos ajustar tons e contraste, sem abandonar a identidade.",
   open: "Marca fraca ou inexistente; o time pode propor do zero.",
 }
@@ -65,10 +67,7 @@ export const WEBSITE_IMAGE_MAX_BYTES = 2 * 1024 * 1024
 export const WEBSITE_PDF_MAX_BYTES = 10 * 1024 * 1024
 export const BRIEFING_ASSETS_BUCKET = "briefing-assets"
 
-export const WEBSITE_IMAGE_MIME_TYPES = [
-  "image/png",
-  "image/svg+xml",
-] as const
+export const WEBSITE_IMAGE_MIME_TYPES = ["image/png", "image/svg+xml"] as const
 
 export const WEBSITE_PDF_MIME_TYPES = ["application/pdf"] as const
 
@@ -333,10 +332,7 @@ export function clearedStoragePaths(
   return [...prevPaths].filter((path) => !nextPaths.has(path))
 }
 
-function hasAssetOrLink(
-  hasFile: boolean,
-  links: string[],
-): boolean {
+function hasAssetOrLink(hasFile: boolean, links: string[]): boolean {
   return hasFile || links.length > 0
 }
 

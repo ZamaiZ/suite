@@ -127,11 +127,7 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
     }
   }
 
-  const tags = await syncLeadTags(
-    supabase,
-    data.id,
-    parseTagNames(fields.tags),
-  )
+  const tags = await syncLeadTags(supabase, data.id, parseTagNames(fields.tags))
   const item = toLeadBoardItem(data, {
     tags: tags ?? [],
     segment: segment,

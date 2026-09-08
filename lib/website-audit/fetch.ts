@@ -6,11 +6,7 @@ import {
   type WebsiteRedirectHop,
 } from "../leads/website-audit.ts"
 import { pickSecurityHeaders } from "../leads/website-headers.ts"
-import {
-  isPrivateIp,
-  parseHttpUrl,
-  resolveRedirectUrl,
-} from "./ssrf.ts"
+import { isPrivateIp, parseHttpUrl, resolveRedirectUrl } from "./ssrf.ts"
 
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
@@ -81,7 +77,8 @@ export async function safeFetch(
         redirect: "manual",
         cache: "no-store",
         headers: {
-          Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
           "User-Agent": USER_AGENT,
         },
@@ -143,7 +140,11 @@ export async function safeFetchStatus(input: string): Promise<{
   status: number | null
 }> {
   const head = await safeFetch(input, "HEAD")
-  if (head.status === "ok" && head.statusCode !== 405 && head.statusCode !== 501) {
+  if (
+    head.status === "ok" &&
+    head.statusCode !== 405 &&
+    head.statusCode !== 501
+  ) {
     return { url: head.url, status: head.statusCode }
   }
   const get = await safeFetch(input, "GET")

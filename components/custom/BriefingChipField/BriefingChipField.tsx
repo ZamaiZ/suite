@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { RiCloseLine } from "react-icons/ri"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { BriefingChipFieldProps } from "./BriefingChipField.types"
 
 function splitTokens(value: string): string[] {
@@ -40,7 +40,7 @@ export function BriefingChipField({
       <label
         htmlFor={id}
         className={cn(
-          "font-sans text-body-sm font-medium text-fg-secondary",
+          "text-xs/relaxed font-medium text-muted-foreground",
           disabled ? "opacity-50" : "cursor-text",
         )}
       >
@@ -48,16 +48,16 @@ export function BriefingChipField({
       </label>
       <div
         className={cn(
-          "flex min-h-[var(--control-height)] flex-wrap items-center gap-1.5 rounded-md border border-input-border bg-input px-2 py-1.5",
+          "flex min-h-7 flex-wrap items-center gap-1.5 rounded-md border border-input bg-background px-2 py-1.5",
           "transition-[border-color] duration-150 ease-out",
-          "focus-within:border-accent",
+          "focus-within:border-ring",
           disabled && "opacity-50",
         )}
       >
         {values.map((item) => (
           <span
             key={item}
-            className="inline-flex items-center gap-1 rounded-md bg-accent/10 px-2 py-0.5 font-sans text-caption font-medium text-accent"
+            className="inline-flex items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary"
           >
             {item}
             <button
@@ -65,7 +65,7 @@ export function BriefingChipField({
               disabled={disabled}
               aria-label={`Remover ${item}`}
               onClick={() => onChange(values.filter((value) => value !== item))}
-              className="inline-flex size-4 items-center justify-center rounded-sm text-accent/70 transition-colors hover:text-accent"
+              className="inline-flex size-4 items-center justify-center rounded-sm text-primary/70 transition-colors hover:text-primary"
             >
               <RiCloseLine size={12} aria-hidden />
             </button>
@@ -82,14 +82,18 @@ export function BriefingChipField({
               event.preventDefault()
               addTokens(draft)
             }
-            if (event.key === "Backspace" && draft.length === 0 && values.length > 0) {
+            if (
+              event.key === "Backspace" &&
+              draft.length === 0 &&
+              values.length > 0
+            ) {
               onChange(values.slice(0, -1))
             }
           }}
           onBlur={() => {
             if (draft.trim()) addTokens(draft)
           }}
-          className="min-w-28 flex-1 bg-transparent py-0.5 font-sans text-body-sm text-fg outline-none placeholder:text-fg-muted"
+          className="min-w-28 flex-1 bg-transparent py-0.5 text-xs/relaxed text-foreground outline-none placeholder:text-muted-foreground"
         />
       </div>
     </div>

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiSearchLine } from "react-icons/ri"
 import { suggestPlaces } from "@/app/actions/leads"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   Combobox,
   ComboboxContent,
@@ -11,8 +11,8 @@ import {
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
-  ComboboxRootLabel,
 } from "@/components/ui/combobox"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { InputGroupAddon } from "@/components/ui/input-group"
 import { PLACES_SUGGEST_MIN_CHARS } from "@/lib/places"
 import type { PlaceSuggestion } from "@/lib/places"
@@ -90,7 +90,7 @@ export function LeadGbpPlacePicker({
   const canSearch = query.trim().length >= PLACES_SUGGEST_MIN_CHARS
 
   return (
-    <div className="flex w-full flex-col gap-1.5">
+    <Field data-invalid={Boolean(error)}>
       <Combobox<PlaceSuggestion>
         items={items}
         value={null}
@@ -115,85 +115,69 @@ export function LeadGbpPlacePicker({
           if (!open && value.trim().length > 0) setOpen(true)
         }}
       >
-        <ComboboxRootLabel
-          className={cn(
-            "font-sans text-body-sm font-medium text-fg-secondary",
-            disabled ? "opacity-50" : "cursor-text",
-            error && "text-danger",
-          )}
-        >
+        <FieldLabel htmlFor={id} className={cn(error && "text-destructive")}>
           Perfil no Google
-        </ComboboxRootLabel>
+        </FieldLabel>
         <ComboboxInput
-            id={id}
-            placeholder="Buscar estabelecimento"
-            disabled={disabled}
-            aria-invalid={error ? true : undefined}
-            aria-describedby={error ? errorId : undefined}
-            aria-busy={loading || undefined}
-            showTrigger={false}
-            className={cn("h-[var(--control-height)]", error && "border-danger")}
-          >
-          <InputGroupAddon align="inline-start"><RiSearchLine size={16} aria-hidden /></InputGroupAddon>
+          id={id}
+          placeholder="Buscar estabelecimento"
+          disabled={disabled}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? errorId : undefined}
+          aria-busy={loading || undefined}
+          showTrigger={false}
+          className="w-full"
+        >
+          <InputGroupAddon align="inline-start">
+            <RiSearchLine size={16} aria-hidden />
+          </InputGroupAddon>
           {loading ? (
-            <InputGroupAddon align="inline-end"><RiLoader4Line size={16} aria-hidden className="animate-spin" /></InputGroupAddon>
+            <InputGroupAddon align="inline-end">
+              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+            </InputGroupAddon>
           ) : null}
         </ComboboxInput>
 
         <ComboboxContent>
-              <div className="max-h-[min(22.5rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-                {loading ? (
-                  <div className="flex flex-col gap-1 p-1" aria-hidden>
-                    {[0, 1, 2].map((row) => (
-                      <div
-                        key={row}
-                        className="h-10 animate-pulse rounded-md bg-hover"
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <>
-                    <ComboboxEmpty
-                      className="px-2 py-2.5 font-sans text-body-sm text-fg-muted"
-                    >
-                      {canSearch
-                        ? "Nenhum estabelecimento encontrado"
-                        : `Digite pelo menos ${PLACES_SUGGEST_MIN_CHARS} caracteres`}
-                    </ComboboxEmpty>
-                    <ComboboxList>
-                      {(item: PlaceSuggestion) => (
-                        <ComboboxItem
-                          key={item.placeId}
-                          value={item}
-                          className={cn(
-                            "flex min-h-10 cursor-pointer flex-col justify-center rounded-md px-2 py-1.5",
-                            "font-sans text-body-sm text-fg outline-none select-none",
-                            "data-highlighted:bg-hover",
-                          )}
-                        >
-                          <span className="truncate">{item.name}</span>
-                          {item.address ? (
-                            <span className="truncate font-sans text-caption text-fg-muted">
-                              {item.address}
-                            </span>
-                          ) : null}
-                        </ComboboxItem>
-                      )}
-                    </ComboboxList>
-                  </>
-                )}
+          <div className="max-h-[min(22.5rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
+            {loading ? (
+              <div className="flex flex-col gap-1 p-1" aria-hidden>
+                {[0, 1, 2].map((row) => (
+                  <div
+                    key={row}
+                    className="h-10 animate-pulse rounded-md bg-muted"
+                  />
+                ))}
               </div>
+            ) : (
+              <>
+                <ComboboxEmpty className="px-2 py-2">
+                  {canSearch
+                    ? "Nenhum estabelecimento encontrado"
+                    : `Digite pelo menos ${PLACES_SUGGEST_MIN_CHARS} caracteres`}
+                </ComboboxEmpty>
+                <ComboboxList>
+                  {(item: PlaceSuggestion) => (
+                    <ComboboxItem
+                      key={item.placeId}
+                      value={item}
+                      className="cursor-pointer flex-col items-start justify-center"
+                    >
+                      <span className="truncate">{item.name}</span>
+                      {item.address ? (
+                        <span className="w-full truncate text-muted-foreground">
+                          {item.address}
+                        </span>
+                      ) : null}
+                    </ComboboxItem>
+                  )}
+                </ComboboxList>
+              </>
+            )}
+          </div>
         </ComboboxContent>
       </Combobox>
-      {error ? (
-        <p
-          id={errorId}
-          role="alert"
-          className="font-sans text-body-sm text-danger"
-        >
-          {error}
-        </p>
-      ) : null}
-    </div>
+      <FieldError id={errorId}>{error}</FieldError>
+    </Field>
   )
 }

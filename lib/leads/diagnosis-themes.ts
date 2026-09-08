@@ -1,7 +1,4 @@
-import type {
-  DiagnosisFinding,
-  DiagnosisPillar,
-} from "./diagnosis-document.ts"
+import type { DiagnosisFinding, DiagnosisPillar } from "./diagnosis-document.ts"
 
 export type DiagnosisThemeMatchInput = {
   opportunityIds: ReadonlySet<string>

@@ -54,11 +54,7 @@ export function LeadImport() {
 
   return (
     <>
-      <Button
-        type="button"
-        variant="secondary"
-        onClick={() => setOpen(true)}
-      >
+      <Button type="button" variant="secondary" onClick={() => setOpen(true)}>
         <RiUploadLine data-icon="inline-start" aria-hidden />
         Importar planilha
       </Button>
@@ -70,13 +66,16 @@ export function LeadImport() {
       >
         <DialogContent
           showCloseButton={false}
-          className={showSidebar
-            ? "h-[min(90dvh,56rem)] max-w-[calc(100%-2rem)] grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0 sm:max-w-6xl"
-            : "h-[min(90dvh,46rem)] max-w-[calc(100%-2rem)] grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0 sm:max-w-3xl"}
+          className={
+            showSidebar
+              ? "h-[min(90dvh,56rem)] max-w-6xl grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0"
+              : "h-[min(90dvh,46rem)] max-w-3xl grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0"
+          }
         >
           <DialogTitle className="sr-only">Importar leads</DialogTitle>
           <DialogDescription className="sr-only">
-            Importe planilhas .xlsx no modelo do CRM. A validação começa no envio.
+            Importe planilhas .xlsx no modelo do CRM. A validação começa no
+            envio.
           </DialogDescription>
           <LeadImportHeader onClose={close} closeDisabled={session.isBusy} />
           <div className="min-h-0 bg-background">
@@ -121,9 +120,17 @@ export function LeadImport() {
                       {showSidebar ? (
                         <m.aside
                           key="import-sidebar"
-                          initial={reduced ? { opacity: 0 } : { opacity: 0, transform: "translateX(12px)" }}
+                          initial={
+                            reduced
+                              ? { opacity: 0 }
+                              : { opacity: 0, transform: "translateX(12px)" }
+                          }
                           animate={{ opacity: 1, transform: "translateX(0px)" }}
-                          exit={reduced ? { opacity: 0 } : { opacity: 0, transform: "translateX(12px)" }}
+                          exit={
+                            reduced
+                              ? { opacity: 0 }
+                              : { opacity: 0, transform: "translateX(12px)" }
+                          }
                           transition={paneTransition}
                           className="flex max-h-[48%] w-full shrink-0 flex-col overflow-hidden border-t border-border bg-muted/30 lg:max-h-none lg:w-[min(100%,28rem)] lg:border-t-0 lg:border-l"
                         >
@@ -132,7 +139,9 @@ export function LeadImport() {
                             previewRows={session.previewRows}
                             issues={session.issueItems}
                             issuesExpanded={session.issuesExpanded}
-                            onToggleIssues={() => session.setIssuesExpanded(!session.issuesExpanded)}
+                            onToggleIssues={() =>
+                              session.setIssuesExpanded(!session.issuesExpanded)
+                            }
                             analyzing={session.isAnalyzing}
                           />
                         </m.aside>
@@ -144,23 +153,23 @@ export function LeadImport() {
             </div>
           </div>
           <DialogFooter className="border-t border-border p-3 sm:p-4">
-          <LeadImportFooter
-            editing={editing}
-            canImport={session.canImport}
-            importLabel={`Importar ${session.totals.valid} ${session.totals.valid === 1 ? "lead" : "leads"}`}
-            blockReason={session.importBlockReason}
-            importError={session.importError}
-            isImporting={session.isImporting}
-            isRevalidating={session.isRevalidating}
-            onCancel={close}
-            onBack={session.cancelEdit}
-            onImport={() => {
-              void handleImport()
-            }}
-            onRevalidate={() => {
-              void session.revalidateEditing()
-            }}
-          />
+            <LeadImportFooter
+              editing={editing}
+              canImport={session.canImport}
+              importLabel={`Importar ${session.totals.valid} ${session.totals.valid === 1 ? "lead" : "leads"}`}
+              blockReason={session.importBlockReason}
+              importError={session.importError}
+              isImporting={session.isImporting}
+              isRevalidating={session.isRevalidating}
+              onCancel={close}
+              onBack={session.cancelEdit}
+              onImport={() => {
+                void handleImport()
+              }}
+              onRevalidate={() => {
+                void session.revalidateEditing()
+              }}
+            />
           </DialogFooter>
         </DialogContent>
       </Dialog>

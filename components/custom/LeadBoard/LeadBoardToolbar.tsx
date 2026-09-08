@@ -12,7 +12,11 @@ import {
 } from "react-icons/ri"
 import { LeadImport } from "@/components/custom/LeadImport"
 import { Button } from "@/components/ui/button"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 import {
   Select,
   SelectContent,
@@ -23,7 +27,10 @@ import {
 import { leadsListHref, type LeadsListParams } from "@/lib/leads/queues"
 import { LeadCityFilter } from "./LeadCityFilter"
 import { LeadBoardToolbarToggle } from "./LeadBoardToolbarToggle"
-import type { LeadSegmentFilterOption, LeadTagFilterOption } from "./LeadBoard.types"
+import type {
+  LeadSegmentFilterOption,
+  LeadTagFilterOption,
+} from "./LeadBoard.types"
 
 const SEARCH_DEBOUNCE_MS = 300
 
@@ -110,11 +117,38 @@ export function LeadBoardToolbar({
 
   return (
     <div className="flex min-w-0 shrink-0 flex-col gap-2">
-      <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border-subtle pb-2">
-        <InputGroup className="h-10 min-w-0 flex-1 basis-48 max-w-xs"><InputGroupAddon><RiSearchLine size={16} aria-hidden /></InputGroupAddon><InputGroupInput id="lead-search" name="q" value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Empresa ou site" aria-label="Buscar" aria-busy={isPending} /></InputGroup>
+      <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border/70 pb-2">
+        <InputGroup className="min-w-0 flex-1 basis-48 max-w-xs">
+          <InputGroupAddon>
+            <RiSearchLine size={16} aria-hidden />
+          </InputGroupAddon>
+          <InputGroupInput
+            id="lead-search"
+            name="q"
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            placeholder="Empresa ou site"
+            aria-label="Buscar"
+            aria-busy={isPending}
+          />
+        </InputGroup>
         <div className="flex shrink-0 items-center gap-2">
           <div className="w-40 shrink-0">
-            <Select value={listParams.team ? "team" : "portfolio"} onValueChange={(next) => replaceParams({ team: next === "team" })}><SelectTrigger id="lead-scope-filter" className="h-10 w-full"><RiUserLine size={16} aria-hidden /><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="portfolio">Minha carteira</SelectItem>{canViewTeamLeads ? <SelectItem value="team">Todos</SelectItem> : null}</SelectContent></Select>
+            <Select
+              value={listParams.team ? "team" : "portfolio"}
+              onValueChange={(next) => replaceParams({ team: next === "team" })}
+            >
+              <SelectTrigger id="lead-scope-filter" className="w-full">
+                <RiUserLine size={16} aria-hidden />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="start">
+                <SelectItem value="portfolio">Minha carteira</SelectItem>
+                {canViewTeamLeads ? (
+                  <SelectItem value="team">Todos</SelectItem>
+                ) : null}
+              </SelectContent>
+            </Select>
           </div>
           <LeadBoardToolbarToggle
             pressed={listParams.today}
@@ -149,7 +183,25 @@ export function LeadBoardToolbar({
       <div className="flex min-w-0 flex-wrap items-center gap-2">
         {segmentOptions.length > 0 ? (
           <div className="w-40 shrink-0">
-            <Select value={listParams.segment ?? "all"} onValueChange={(next) => replaceParams({ segment: next === "all" ? null : String(next) })}><SelectTrigger id="lead-segment-filter" className="h-10 w-full"><RiStore2Line size={16} aria-hidden /><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="all">Todos os segmentos</SelectItem>{segmentOptions.map((option) => <SelectItem key={option.slug} value={option.slug}>{option.name}</SelectItem>)}</SelectContent></Select>
+            <Select
+              value={listParams.segment ?? "all"}
+              onValueChange={(next) =>
+                replaceParams({ segment: next === "all" ? null : String(next) })
+              }
+            >
+              <SelectTrigger id="lead-segment-filter" className="w-full">
+                <RiStore2Line size={16} aria-hidden />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="start">
+                <SelectItem value="all">Todos os segmentos</SelectItem>
+                {segmentOptions.map((option) => (
+                  <SelectItem key={option.slug} value={option.slug}>
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         ) : null}
         <div className="w-40 shrink-0">
@@ -164,7 +216,25 @@ export function LeadBoardToolbar({
         </div>
         {tagOptions.length > 0 ? (
           <div className="w-40 shrink-0">
-            <Select value={listParams.tag ?? "all"} onValueChange={(next) => replaceParams({ tag: next === "all" ? null : String(next) })}><SelectTrigger id="lead-tag-filter" className="h-10 w-full"><RiPriceTag3Line size={16} aria-hidden /><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="all">Todas as tags</SelectItem>{tagOptions.map((option) => <SelectItem key={option.slug} value={option.slug}>{option.name}</SelectItem>)}</SelectContent></Select>
+            <Select
+              value={listParams.tag ?? "all"}
+              onValueChange={(next) =>
+                replaceParams({ tag: next === "all" ? null : String(next) })
+              }
+            >
+              <SelectTrigger id="lead-tag-filter" className="w-full">
+                <RiPriceTag3Line size={16} aria-hidden />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="start">
+                <SelectItem value="all">Todas as tags</SelectItem>
+                {tagOptions.map((option) => (
+                  <SelectItem key={option.slug} value={option.slug}>
+                    {option.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         ) : null}
         {hasCatalogFilters ? (
@@ -180,7 +250,7 @@ export function LeadBoardToolbar({
                 tag: null,
               })
             }
-            className="ml-auto h-[var(--control-height)] shrink-0 px-3 font-sans text-body-sm text-fg-secondary"
+            className="ml-auto h-7 shrink-0 px-3 text-xs/relaxed text-muted-foreground"
           >
             Limpar filtros
           </Button>

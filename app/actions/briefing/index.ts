@@ -70,10 +70,7 @@ export {
   completeBriefingClosing,
   type SaveBriefingClosingState,
 } from "./save-briefing-closing"
-export {
-  loadBriefingMeta,
-  type BriefingMetaState,
-} from "./load-briefing-meta"
+export { loadBriefingMeta, type BriefingMetaState } from "./load-briefing-meta"
 export {
   upsertBriefingSecret,
   deleteBriefingSecret,

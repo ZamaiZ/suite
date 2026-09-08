@@ -28,22 +28,22 @@ import {
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
 const FIELD_CONTAINER = {
-  hidden:  {},
+  hidden: {},
   visible: { transition: { delayChildren: 0.62, staggerChildren: 0.055 } },
 }
 
 const FIELD_CONTAINER_REDUCED = {
-  hidden:  {},
+  hidden: {},
   visible: { transition: { delayChildren: 0, staggerChildren: 0 } },
 }
 
 const FIELD_ITEM = {
-  hidden:  { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 8 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.24, ease: EASE } },
 }
 
 const FIELD_ITEM_REDUCED = {
-  hidden:  { opacity: 0 },
+  hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.15 } },
 }
 
@@ -62,7 +62,7 @@ export function LoginForm() {
     setServerMessage(null)
 
     const formData = new FormData()
-    formData.set("email",    data.email)
+    formData.set("email", data.email)
     formData.set("password", data.password)
 
     startTransition(async () => {
@@ -83,13 +83,10 @@ export function LoginForm() {
   }
 
   const container = reduced ? FIELD_CONTAINER_REDUCED : FIELD_CONTAINER
-  const fieldItem  = reduced ? FIELD_ITEM_REDUCED : FIELD_ITEM
+  const fieldItem = reduced ? FIELD_ITEM_REDUCED : FIELD_ITEM
 
   return (
-    <m.form
-      onSubmit={form.handleSubmit(onSubmit)}
-      noValidate
-    >
+    <m.form onSubmit={form.handleSubmit(onSubmit)} noValidate>
       <m.div
         variants={container}
         initial="hidden"
@@ -99,8 +96,10 @@ export function LoginForm() {
         <m.div variants={fieldItem}>
           <Field data-invalid={Boolean(form.formState.errors.email)}>
             <FieldLabel htmlFor="email">E-mail</FieldLabel>
-            <InputGroup className="h-10">
-              <InputGroupAddon><RiMailLine size={16} aria-hidden /></InputGroupAddon>
+            <InputGroup>
+              <InputGroupAddon>
+                <RiMailLine size={16} aria-hidden />
+              </InputGroupAddon>
               <InputGroupInput
                 id="email"
                 type="email"
@@ -118,8 +117,10 @@ export function LoginForm() {
         <m.div variants={fieldItem}>
           <Field data-invalid={Boolean(form.formState.errors.password)}>
             <FieldLabel htmlFor="password">Senha</FieldLabel>
-            <InputGroup className="h-10">
-              <InputGroupAddon><RiLockPasswordLine size={16} aria-hidden /></InputGroupAddon>
+            <InputGroup>
+              <InputGroupAddon>
+                <RiLockPasswordLine size={16} aria-hidden />
+              </InputGroupAddon>
               <InputGroupInput
                 id="password"
                 type={passwordVisible ? "text" : "password"}
@@ -135,9 +136,15 @@ export function LoginForm() {
                   size="icon-sm"
                   disabled={isPending}
                   onClick={() => setPasswordVisible((visible) => !visible)}
-                  aria-label={passwordVisible ? "Ocultar senha" : "Exibir senha"}
+                  aria-label={
+                    passwordVisible ? "Ocultar senha" : "Exibir senha"
+                  }
                 >
-                  {passwordVisible ? <RiEyeOffLine aria-hidden /> : <RiEyeLine aria-hidden />}
+                  {passwordVisible ? (
+                    <RiEyeOffLine aria-hidden />
+                  ) : (
+                    <RiEyeLine aria-hidden />
+                  )}
                 </InputGroupButton>
               </InputGroupAddon>
             </InputGroup>
@@ -150,7 +157,11 @@ export function LoginForm() {
             role="alert"
             aria-live="polite"
             initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0, transition: { duration: 0.18, ease: EASE } }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              transition: { duration: 0.18, ease: EASE },
+            }}
             className="text-sm text-destructive"
           >
             {serverMessage}
@@ -163,9 +174,13 @@ export function LoginForm() {
             variant="default"
             disabled={isPending}
             size="lg"
-            className="h-10 w-full"
+            className="w-full"
           >
-            {isPending ? <RiLoader4Line aria-hidden className="animate-spin" /> : <RiLoginBoxLine aria-hidden />}
+            {isPending ? (
+              <RiLoader4Line aria-hidden className="animate-spin" />
+            ) : (
+              <RiLoginBoxLine aria-hidden />
+            )}
             {isPending ? "Entrando…" : "Entrar"}
           </Button>
         </m.div>

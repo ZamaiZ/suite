@@ -49,14 +49,15 @@ export function LeadCityFilter({
   const [offset, setOffset] = useState(0)
   const [hasMore, setHasMore] = useState(false)
 
-  const selectedItem = value.city && value.state
-    ? {
-        name: value.city,
-        stateCode: value.state,
-        label: `${value.city} · ${value.state}`,
-        value: `${value.state}|${value.city}`,
-      }
-    : null
+  const selectedItem =
+    value.city && value.state
+      ? {
+          name: value.city,
+          stateCode: value.state,
+          label: `${value.city} · ${value.state}`,
+          value: `${value.state}|${value.city}`,
+        }
+      : null
 
   useEffect(() => {
     if (!open) return
@@ -129,51 +130,55 @@ export function LeadCityFilter({
       onInputValueChange={setQuery}
     >
       <ComboboxInput
-          ref={inputRef}
-          id={id}
-          disabled={disabled}
-          placeholder="Cidade"
-          aria-label="Filtrar por cidade"
-          onFocus={() => {
-            if (!disabled) setOpen(true)
-          }}
-          showTrigger={false}
-          className="h-[var(--control-height)]"
-        >
-        <InputGroupAddon align="inline-start"><RiMapPinLine size={16} aria-hidden /></InputGroupAddon>
+        ref={inputRef}
+        id={id}
+        disabled={disabled}
+        placeholder="Cidade"
+        aria-label="Filtrar por cidade"
+        onFocus={() => {
+          if (!disabled) setOpen(true)
+        }}
+        showTrigger={false}
+        className="h-7"
+      >
+        <InputGroupAddon align="inline-start">
+          <RiMapPinLine size={16} aria-hidden />
+        </InputGroupAddon>
         {loading ? (
-          <InputGroupAddon align="inline-end"><RiLoader4Line size={16} aria-hidden className="animate-spin" /></InputGroupAddon>
+          <InputGroupAddon align="inline-end">
+            <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+          </InputGroupAddon>
         ) : null}
       </ComboboxInput>
 
       <ComboboxContent>
-            <div className="max-h-[min(16rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-              <ComboboxEmpty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
-                Nenhuma cidade
-              </ComboboxEmpty>
-              <ComboboxList>
-                {(item: CityOption) => (
-                  <ComboboxItem
-                    key={item.value}
-                    value={item}
-                    className="flex min-h-9 cursor-pointer items-center rounded-md px-2 py-1.5 font-sans text-body-sm text-fg outline-none select-none data-highlighted:bg-hover"
-                  >
-                    {item.label}
-                  </ComboboxItem>
-                )}
-              </ComboboxList>
-              {hasMore ? (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => void loadMore()}
-                  className="mt-1 h-9 w-full px-2 font-sans text-body-sm text-primary hover:bg-accent"
-                >
-                  Carregar mais
-                </Button>
-              ) : null}
-            </div>
+        <div className="max-h-[min(16rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
+          <ComboboxEmpty className="px-2 py-2.5 text-xs/relaxed text-muted-foreground">
+            Nenhuma cidade
+          </ComboboxEmpty>
+          <ComboboxList>
+            {(item: CityOption) => (
+              <ComboboxItem
+                key={item.value}
+                value={item}
+                className="flex min-h-9 cursor-pointer items-center rounded-md px-2 py-1.5 text-xs/relaxed text-foreground outline-none select-none data-highlighted:bg-accent"
+              >
+                {item.label}
+              </ComboboxItem>
+            )}
+          </ComboboxList>
+          {hasMore ? (
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => void loadMore()}
+              className="mt-1 h-9 w-full px-2 text-xs/relaxed text-primary hover:bg-accent"
+            >
+              Carregar mais
+            </Button>
+          ) : null}
+        </div>
       </ComboboxContent>
     </Combobox>
   )

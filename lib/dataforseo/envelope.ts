@@ -162,7 +162,8 @@ export function readTaskGetEnvelope<T>(
   body: DataForSeoEnvelope<T>,
   errorMessage: string,
 ): DataForSeoTaskGetEnvelope<T> {
-  const envelopeCode = typeof body.status_code === "number" ? body.status_code : null
+  const envelopeCode =
+    typeof body.status_code === "number" ? body.status_code : null
   if (envelopeCode !== null && DATAFORSEO_TASK_PENDING.has(envelopeCode)) {
     return { status: "pending" }
   }
@@ -204,7 +205,9 @@ export type DataForSeoReadyTask = { id: string; tag: string | null }
 export function readTasksReadyEnvelope(
   body: DataForSeoEnvelope<Record<string, unknown>>,
   errorMessage: string,
-): { status: "ok"; tasks: DataForSeoReadyTask[] } | { status: "error"; message: string } {
+):
+  | { status: "ok"; tasks: DataForSeoReadyTask[] }
+  | { status: "error"; message: string } {
   if (body.status_code !== DATAFORSEO_OK) {
     return { status: "error", message: errorMessage }
   }

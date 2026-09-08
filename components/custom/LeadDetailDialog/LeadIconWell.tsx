@@ -1,5 +1,5 @@
 import type { IconType } from "react-icons"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 
 export function LeadIconWell({
   icon: Icon,
@@ -12,7 +12,7 @@ export function LeadIconWell({
     <span
       aria-hidden
       className={cn(
-        "inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-hover text-accent",
+        "inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-accent text-primary",
         className,
       )}
     >

@@ -123,11 +123,7 @@ export function ClientBriefingAccessesForm({
     markComplete,
     setError,
     clearError,
-  } = useBriefingAutosave(
-    initialUpdatedAt,
-    initialCompletedAt,
-    persist,
-  )
+  } = useBriefingAutosave(initialUpdatedAt, initialCompletedAt, persist)
 
   const patch = useCallback(
     (partial: Partial<BriefingAccessesPayload>) => {
@@ -332,11 +328,11 @@ export function ClientBriefingAccessesForm({
     )
     for (const item of removed) {
       void deleteBriefingSecret(
-          attachBriefingClientId(
-            { kind: otherSecretKind(item.id) },
-            writerClientId,
-          ),
-        )
+        attachBriefingClientId(
+          { kind: otherSecretKind(item.id) },
+          writerClientId,
+        ),
+      )
       setSecretFlags((current) => {
         const nextFlags = { ...current }
         delete nextFlags[otherSecretKind(item.id)]
@@ -432,7 +428,7 @@ export function ClientBriefingAccessesForm({
               />
               <Input
                 id="briefing-wp-password"
-                variant="password"
+                type="password"
                 label="Senha"
                 value={wordpressPassword}
                 onChange={(event) => {
@@ -487,7 +483,7 @@ export function ClientBriefingAccessesForm({
           {payload.searchConsole.status === "yes" ? (
             <Input
               id="briefing-sc-email"
-              variant="email"
+              type="email"
               label="E-mail para o convite"
               value={payload.searchConsole.inviteEmail}
               onChange={(event) =>
@@ -531,7 +527,7 @@ export function ClientBriefingAccessesForm({
           {payload.analytics.status === "yes" ? (
             <Input
               id="briefing-ga-email"
-              variant="email"
+              type="email"
               label="E-mail para o convite"
               value={payload.analytics.inviteEmail}
               onChange={(event) =>
@@ -573,7 +569,7 @@ export function ClientBriefingAccessesForm({
           {payload.gbp.status === "yes" ? (
             <Input
               id="briefing-gbp-email"
-              variant="email"
+              type="email"
               label="E-mail para o convite"
               value={payload.gbp.inviteEmail}
               onChange={(event) =>
@@ -638,7 +634,7 @@ export function ClientBriefingAccessesForm({
                 />
                 <Input
                   id="briefing-hosting-password"
-                  variant="password"
+                  type="password"
                   label="Senha"
                   value={hostingPassword}
                   onChange={(event) => {
@@ -713,7 +709,7 @@ export function ClientBriefingAccessesForm({
                 />
                 <Input
                   id="briefing-domain-password"
-                  variant="password"
+                  type="password"
                   label="Senha"
                   value={domainPassword}
                   onChange={(event) => {
@@ -766,9 +762,9 @@ export function ClientBriefingAccessesForm({
               {payload.otherTools.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex flex-col gap-3 rounded-lg border border-border bg-canvas/40 p-3"
+                  className="flex flex-col gap-3 rounded-lg border border-border bg-background/40 p-3"
                 >
-                  <p className="font-sans text-body-sm font-semibold text-fg">
+                  <p className="text-xs/relaxed font-semibold text-foreground">
                     {item.name}
                   </p>
                   <Input
@@ -792,7 +788,7 @@ export function ClientBriefingAccessesForm({
                   />
                   <Input
                     id={`briefing-other-pass-${item.id}`}
-                    variant="password"
+                    type="password"
                     label="Senha (opcional)"
                     value={otherPasswords[item.id] ?? ""}
                     onChange={(event) => {
@@ -832,27 +828,25 @@ export function ClientBriefingAccessesForm({
         {errorMessage ? (
           <p
             role="alert"
-            className="rounded-xl border border-danger/25 bg-danger/10 px-4 py-3 font-sans text-body-sm text-danger"
+            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
           >
             {errorMessage}
           </p>
         ) : null}
 
         {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 font-sans text-body-sm text-success">
+          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
             Etapa concluída. Você pode continuar editando; as alterações seguem
             sendo salvas.
           </div>
         ) : null}
 
         <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
-          <div className="pointer-events-auto border-t border-border bg-canvas/90 backdrop-blur-md">
+          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
               <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 font-sans text-caption text-fg-muted">
-                  {saveState === "saving" ||
-                  isCompleting ||
-                  isSavingSecret ? (
+                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+                  {saveState === "saving" || isCompleting || isSavingSecret ? (
                     <>
                       <RiLoader4Line
                         size={14}
@@ -875,7 +869,7 @@ export function ClientBriefingAccessesForm({
                       <RiCloseLine
                         size={14}
                         aria-hidden
-                        className="text-danger"
+                        className="text-destructive"
                       />
                       Não foi possível salvar
                     </>
@@ -884,7 +878,7 @@ export function ClientBriefingAccessesForm({
                   )}
                 </p>
                 {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate font-sans text-caption text-fg-secondary">
+                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
                     Falta: {missingLabels.join(", ")}
                   </p>
                 ) : null}
@@ -896,18 +890,24 @@ export function ClientBriefingAccessesForm({
                   </Button>
                 ) : null}
                 {variant === "staff" ? null : (
-                <Button
-                  type="button"
-                  disabled={isCompleting || isSavingSecret || !ready}
-                  onClick={handleComplete}
-                >
-                  {isCompleting
-                    ? "Salvando..."
-                    : completed
-                      ? "Etapa concluída"
-                      : "Continuar"}
-                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
-                </Button>
+                  <Button
+                    type="button"
+                    disabled={isCompleting || isSavingSecret || !ready}
+                    onClick={handleComplete}
+                  >
+                    {isCompleting
+                      ? "Salvando..."
+                      : completed
+                        ? "Etapa concluída"
+                        : "Continuar"}
+                    {completed ? (
+                      <RiCheckLine
+                        size={16}
+                        aria-hidden
+                        data-icon="inline-end"
+                      />
+                    ) : null}
+                  </Button>
                 )}
               </div>
             </div>

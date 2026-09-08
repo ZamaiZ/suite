@@ -12,7 +12,7 @@ import {
 } from "react-icons/ri"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   LEAD_ACTIVITY_CHANNEL_LABELS,
   LEAD_ACTIVITY_CHANNELS,
@@ -45,7 +45,9 @@ function FieldReveal({
         <m.div
           key={id}
           initial={reduced ? { opacity: 0 } : { opacity: 0, height: 0, y: 4 }}
-          animate={reduced ? { opacity: 1 } : { opacity: 1, height: "auto", y: 0 }}
+          animate={
+            reduced ? { opacity: 1 } : { opacity: 1, height: "auto", y: 0 }
+          }
           exit={
             reduced
               ? { opacity: 0, transition: { duration: 0.12 } }
@@ -101,11 +103,11 @@ export function LeadActivityChannelPicker({
               }}
               className={cn(
                 "inline-flex h-7 cursor-pointer items-center gap-1 rounded-md border px-2",
-                "font-sans text-caption transition-[colors,transform] duration-150 ease-out",
+                "text-xs/relaxed transition-[colors,transform] duration-150 ease-out",
                 "active:scale-[0.97]",
                 selected
-                  ? "border-accent bg-accent/10 text-accent"
-                  : "border-transparent text-fg-muted hover:text-fg",
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-transparent text-muted-foreground hover:text-foreground",
                 "disabled:pointer-events-none disabled:opacity-50",
               )}
             >
@@ -116,7 +118,7 @@ export function LeadActivityChannelPicker({
         })}
       </div>
       {error ? (
-        <p role="alert" className="mt-1 font-sans text-caption text-danger">
+        <p role="alert" className="mt-1 text-xs/relaxed text-destructive">
           {error}
         </p>
       ) : null}

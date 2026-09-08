@@ -10,7 +10,7 @@ export default async function ProtectedLayout({
   await requireCommercialMember()
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-canvas">
+    <div className="flex h-dvh overflow-hidden bg-background">
       <div className="hidden md:flex">
         <Sidebar />
       </div>

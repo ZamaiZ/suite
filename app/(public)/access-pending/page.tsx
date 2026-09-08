@@ -22,7 +22,7 @@ export default async function AccessPendingPage() {
       description="Sua conta foi criada, mas ainda não possui um papel."
     >
       <div className="flex flex-col gap-4">
-        <p className="font-sans text-body-sm text-fg-secondary">
+        <p className="text-xs/relaxed text-muted-foreground">
           Solicite a um administrador a liberação do seu acesso.
         </p>
         <form action={logout}>

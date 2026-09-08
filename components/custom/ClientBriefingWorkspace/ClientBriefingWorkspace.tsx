@@ -30,7 +30,7 @@ import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFin
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
 import { Button } from "@/components/ui/button"
-import { Stepper } from "@/components/ui/Stepper"
+import { Stepper } from "@/components/custom/Stepper"
 import {
   companyAddressFingerprint,
   companyFormattedAddress,
@@ -459,14 +459,10 @@ export function ClientBriefingWorkspace({
 
   const slideVariants = {
     enter: (dir: number) =>
-      reduced
-        ? { opacity: 0 }
-        : { opacity: 0, x: dir > 0 ? 28 : -28 },
+      reduced ? { opacity: 0 } : { opacity: 0, x: dir > 0 ? 28 : -28 },
     center: { opacity: 1, x: 0 },
     exit: (dir: number) =>
-      reduced
-        ? { opacity: 0 }
-        : { opacity: 0, x: dir > 0 ? -28 : 28 },
+      reduced ? { opacity: 0 } : { opacity: 0, x: dir > 0 ? -28 : 28 },
   }
 
   return (
@@ -479,7 +475,7 @@ export function ClientBriefingWorkspace({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-surface px-4 py-16 font-sans text-body-sm text-fg-muted shadow-card"
+              className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
             >
               <RiLoader4Line size={18} aria-hidden className="animate-spin" />
               Carregando seus dados…
@@ -493,7 +489,7 @@ export function ClientBriefingWorkspace({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               role="alert"
-              className="mx-auto w-full max-w-3xl rounded-xl border border-danger/25 bg-danger/10 px-4 py-5 font-sans text-body-sm text-danger"
+              className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5 text-xs/relaxed text-destructive"
             >
               {loadState.message}
             </m.div>
@@ -531,7 +527,7 @@ export function ClientBriefingWorkspace({
                 className="mx-auto flex w-full max-w-3xl flex-col gap-3"
               >
                 <div>
-                  <p className="font-sans text-caption font-medium tracking-wide text-fg-muted uppercase">
+                  <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
                     {companyName}
                   </p>
                   <AnimatePresence mode="wait" initial={false}>
@@ -545,10 +541,10 @@ export function ClientBriefingWorkspace({
                         ease: EASE,
                       }}
                     >
-                      <p className="mt-1 font-sans text-body-sm font-semibold text-fg">
+                      <p className="mt-1 text-xs/relaxed font-semibold text-foreground">
                         {stepCopy.title}
                       </p>
-                      <p className="mt-1 font-sans text-body-sm text-fg-secondary">
+                      <p className="mt-1 text-xs/relaxed text-muted-foreground">
                         {stepCopy.description}
                       </p>
                     </m.div>
@@ -563,12 +559,12 @@ export function ClientBriefingWorkspace({
               </m.div>
 
               {isEditing ? (
-                <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 rounded-xl border border-accent/25 bg-accent/5 px-4 py-3 shadow-card sm:flex-row sm:items-center sm:justify-between">
+                <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 shadow-xs sm:flex-row sm:items-center sm:justify-between">
                   <div className="min-w-0">
-                    <p className="font-sans text-body-sm font-semibold text-fg">
+                    <p className="text-xs/relaxed font-semibold text-foreground">
                       Briefing já enviado
                     </p>
-                    <p className="mt-1 font-sans text-caption leading-relaxed text-fg-secondary">
+                    <p className="mt-1 text-xs/relaxed leading-relaxed text-muted-foreground">
                       Alterações ficam registradas para a equipe.
                     </p>
                   </div>
@@ -604,16 +600,16 @@ export function ClientBriefingWorkspace({
                     ease: EASE,
                     delay: reduced ? 0 : 0.06,
                   }}
-                  className="mx-auto flex w-full max-w-3xl gap-3 rounded-xl border border-border bg-surface px-4 py-3 shadow-card"
+                  className="mx-auto flex w-full max-w-3xl gap-3 rounded-xl border border-border bg-card px-4 py-3 shadow-xs"
                 >
-                  <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+                  <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <RiErrorWarningLine size={16} aria-hidden />
                   </span>
                   <div className="min-w-0">
-                    <p className="font-sans text-body-sm font-semibold text-fg">
+                    <p className="text-xs/relaxed font-semibold text-foreground">
                       Complete para avançar
                     </p>
-                    <p className="mt-1 font-sans text-caption leading-relaxed text-fg-secondary">
+                    <p className="mt-1 text-xs/relaxed leading-relaxed text-muted-foreground">
                       O rascunho é salvo automaticamente. O botão Continuar
                       libera quando todos os campos obrigatórios estiverem
                       preenchidos.
@@ -629,7 +625,7 @@ export function ClientBriefingWorkspace({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-surface px-4 py-16 font-sans text-body-sm text-fg-muted shadow-card"
+                    className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
                   >
                     <RiLoader4Line
                       size={18}
@@ -647,7 +643,7 @@ export function ClientBriefingWorkspace({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     role="alert"
-                    className="mx-auto w-full max-w-3xl rounded-xl border border-danger/25 bg-danger/10 px-4 py-5 font-sans text-body-sm text-danger"
+                    className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5 text-xs/relaxed text-destructive"
                   >
                     {loadState.message}
                   </m.div>

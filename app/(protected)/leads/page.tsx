@@ -17,21 +17,25 @@ import {
   toLeadBoardItem,
   type LeadBoardItem,
 } from "@/lib/leads/board-item"
-import {
-  canViewTeamLeads,
-  leadPortfolioScope,
-} from "@/lib/leads/access"
+import { canViewTeamLeads, leadPortfolioScope } from "@/lib/leads/access"
 import { canViewClient } from "@/lib/clients/access"
 import { LeadBoard } from "@/components/custom/LeadBoard"
 
 export const maxDuration = 60
 
 function sanitizeSearch(value: string): string {
-  return value.replace(/[%*,()\\]/g, " ").replace(/\s+/g, " ").trim()
+  return value
+    .replace(/[%*,()\\]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
 }
 
 type AssigneeEmbed = { name: string } | { name: string }[] | null
-type ActivityEmbed = { type: string; created_at: string; channel: string | null }
+type ActivityEmbed = {
+  type: string
+  created_at: string
+  channel: string | null
+}
 type ClientEmbed =
   | { id: string; converted_at: string }
   | { id: string; converted_at: string }[]
@@ -104,9 +108,7 @@ async function leadIdsForChannelQuery(
   ]
 }
 
-export default async function LeadsPage({
-  searchParams,
-}: PageProps<"/leads">) {
+export default async function LeadsPage({ searchParams }: PageProps<"/leads">) {
   const { user, roles } = await requireCommercialMember()
   const params = await searchParams
   const rawQuery = firstSearchParam(params.q)
@@ -122,8 +124,7 @@ export default async function LeadsPage({
   const rawCity = firstSearchParam(params.city)
   const rawState = firstSearchParam(params.state)?.toUpperCase()
   const city = rawCity?.trim() || null
-  const state =
-    rawState && isBrazilStateCode(rawState) ? rawState : null
+  const state = rawState && isBrazilStateCode(rawState) ? rawState : null
   const locationFilter = city && state ? { city, state } : null
   const initialLeadId =
     typeof params.lead === "string" && isLeadId(params.lead)
@@ -164,9 +165,11 @@ export default async function LeadsPage({
   if ((!matchingIds || matchingIds.length > 0) && (!segment || segmentId)) {
     const scope = team ? null : leadPortfolioScope(user.id)
 
-    let listQuery = supabase.from("leads").select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), clients(id, converted_at), lead_activities(type, channel, created_at), lead_tags(tags(id, name)), segments(id, name)",
-    )
+    let listQuery = supabase
+      .from("leads")
+      .select(
+        "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, users!assigned_sdr_id(name), closer:users!assigned_closer_id(name), clients(id, converted_at), lead_activities(type, channel, created_at), lead_tags(tags(id, name)), segments(id, name)",
+      )
 
     if (matchingIds) {
       listQuery = listQuery.in("id", matchingIds)
@@ -226,17 +229,15 @@ export default async function LeadsPage({
           ? readEmbeddedName(row.users as AssigneeEmbed)
           : null,
         closer_name: row.assigned_closer_id
-          ? readEmbeddedName(
-              (row as { closer?: AssigneeEmbed }).closer,
-            )
+          ? readEmbeddedName((row as { closer?: AssigneeEmbed }).closer)
           : null,
         from_denial: Boolean(
           latest && isLeadActivityType(latest.type) && latest.type === "denied",
         ),
         from_closing_loss: Boolean(
           latest &&
-            isLeadActivityType(latest.type) &&
-            latest.type === "closing_lost",
+          isLeadActivityType(latest.type) &&
+          latest.type === "closing_lost",
         ),
         last_activity_at: latest?.created_at ?? null,
         activity_count: activities.length,

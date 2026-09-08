@@ -10,24 +10,24 @@ Use the `customer_pack` document archetype with a neutral executive adaptation. 
 
 ### Tokens
 
-| Role | Value |
-| --- | --- |
-| Page | A4 portrait, 1.8 cm top/bottom and 1.9 cm left/right margins |
-| Font | Inter for every body, heading, table, header and footer run |
-| Ink | `1F2937` |
-| Muted text | `6B7280` |
-| Executive blue | `1D4ED8` |
-| Navy | `0F172A` |
-| Soft surface | `F8FAFC` |
-| Rule / border | `E2E8F0` |
-| Body | 10 pt, 1.25 line spacing, 6 pt after |
-| Kicker | 9 pt, semibold, uppercase, executive blue |
-| Title | 28 pt, semibold, navy |
-| Subtitle | 12 pt, muted |
-| Heading 1 | 16 pt, semibold, navy, 18 pt before / 8 pt after |
-| Heading 2 | 11 pt, semibold, executive blue, 12 pt before / 5 pt after |
-| Label | 8.5 pt, semibold, uppercase, muted |
-| Value | 10 pt, regular, ink |
+| Role           | Value                                                        |
+| -------------- | ------------------------------------------------------------ |
+| Page           | A4 portrait, 1.8 cm top/bottom and 1.9 cm left/right margins |
+| Font           | Inter for every body, heading, table, header and footer run  |
+| Ink            | `1F2937`                                                     |
+| Muted text     | `6B7280`                                                     |
+| Executive blue | `1D4ED8`                                                     |
+| Navy           | `0F172A`                                                     |
+| Soft surface   | `F8FAFC`                                                     |
+| Rule / border  | `E2E8F0`                                                     |
+| Body           | 10 pt, 1.25 line spacing, 6 pt after                         |
+| Kicker         | 9 pt, semibold, uppercase, executive blue                    |
+| Title          | 28 pt, semibold, navy                                        |
+| Subtitle       | 12 pt, muted                                                 |
+| Heading 1      | 16 pt, semibold, navy, 18 pt before / 8 pt after             |
+| Heading 2      | 11 pt, semibold, executive blue, 12 pt before / 5 pt after   |
+| Label          | 8.5 pt, semibold, uppercase, muted                           |
+| Value          | 10 pt, regular, ink                                          |
 
 ## Page furniture
 

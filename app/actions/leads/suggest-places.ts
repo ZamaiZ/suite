@@ -17,7 +17,9 @@ export async function suggestPlaces(
   formData: FormData,
 ): Promise<SuggestPlacesState> {
   await requireCommercialMember()
-  const parsed = suggestPlacesSchema.safeParse(readSuggestPlacesFields(formData))
+  const parsed = suggestPlacesSchema.safeParse(
+    readSuggestPlacesFields(formData),
+  )
   if (!parsed.success) {
     return {
       status: "error",
@@ -32,10 +34,7 @@ export async function suggestPlaces(
     parsed.data.location_hint,
   )
 
-  const result = await autocompletePlaces(
-    query,
-    parsed.data.session_token,
-  )
+  const result = await autocompletePlaces(query, parsed.data.session_token)
   if (result.status === "error") {
     return { status: "error", message: result.message }
   }

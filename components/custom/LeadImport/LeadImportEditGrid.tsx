@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState } from "react"
 import { formatPhone } from "@/lib/br-documents"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   SPREADSHEET_FIELD_LABELS,
   SPREADSHEET_VALUE_KEYS,
@@ -65,20 +65,20 @@ export function LeadImportEditGrid({
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden p-4">
       <div>
-        <p className="font-sans text-body-sm font-semibold text-fg">
+        <p className="text-xs/relaxed font-semibold text-foreground">
           Editando {fileName}
         </p>
-        <p className="mt-1 font-sans text-caption text-fg-muted">
+        <p className="mt-1 text-xs/relaxed text-muted-foreground">
           Células marcadas precisam ser corrigidas. Reavaliar consulta o CRM de
           novo e volta à visão geral.
         </p>
         {problemCount > 0 ? (
-          <p className="mt-1 font-sans text-caption text-warning">
-            {problemCount} {problemCount === 1 ? "linha" : "linhas"} com problema
-            ou conflito.
+          <p className="mt-1 text-xs/relaxed text-warning">
+            {problemCount} {problemCount === 1 ? "linha" : "linhas"} com
+            problema ou conflito.
           </p>
         ) : (
-          <p className="mt-1 font-sans text-caption text-success">
+          <p className="mt-1 text-xs/relaxed text-success">
             Nenhuma linha marcada. Reavalie para confirmar.
           </p>
         )}
@@ -89,15 +89,15 @@ export function LeadImportEditGrid({
         className="min-h-0 flex-1 overflow-auto rounded-lg border border-border"
       >
         <table className="w-full min-w-[80rem] border-collapse text-left">
-          <thead className="sticky top-0 z-10 bg-elevated">
-            <tr className="border-b border-border-subtle">
-              <th className="w-14 px-2 py-1.5 font-sans text-caption font-medium text-fg-muted">
+          <thead className="sticky top-0 z-10 bg-popover">
+            <tr className="border-b border-border/70">
+              <th className="w-14 px-2 py-1.5 text-xs/relaxed font-medium text-muted-foreground">
                 Linha
               </th>
               {SPREADSHEET_VALUE_KEYS.map((key) => (
                 <th
                   key={key}
-                  className="px-2 py-1.5 font-sans text-caption font-medium text-fg-muted"
+                  className="px-2 py-1.5 text-xs/relaxed font-medium text-muted-foreground"
                 >
                   {SPREADSHEET_FIELD_LABELS[key]}
                 </th>
@@ -113,9 +113,9 @@ export function LeadImportEditGrid({
             {slice.map((row) => (
               <tr
                 key={row.row}
-                className="border-b border-border-subtle last:border-b-0"
+                className="border-b border-border/70 last:border-b-0"
               >
-                <td className="px-2 py-1 font-sans text-caption tabular-nums text-fg-muted">
+                <td className="px-2 py-1 text-xs/relaxed tabular-nums text-muted-foreground">
                   {row.row}
                 </td>
                 {SPREADSHEET_VALUE_KEYS.map((key) => {
@@ -145,10 +145,10 @@ export function LeadImportEditGrid({
                         aria-invalid={kind !== null}
                         className={cn(
                           "h-8 w-full rounded-md border bg-transparent px-2",
-                          "font-sans text-caption text-fg outline-none",
+                          "text-xs/relaxed text-foreground outline-none",
                           "transition-[border-color,background-color] duration-150 ease-out",
-                          "focus:bg-hover",
-                          kind === "problem" && "border-danger",
+                          "focus:bg-accent",
+                          kind === "problem" && "border-destructive",
                           kind === "conflict" && "border-warning",
                           !kind && "border-transparent",
                         )}

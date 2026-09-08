@@ -58,11 +58,7 @@ export const BR_STATES: readonly BrazilState[] = STATES
 const DEFAULT_SEARCH_LIMIT = 50
 
 function foldText(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .toLowerCase()
-    .trim()
+  return value.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim()
 }
 
 export function isBrazilStateCode(value: unknown): value is BrazilStateCode {

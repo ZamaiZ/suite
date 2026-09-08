@@ -1,10 +1,7 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import {
-  snapshotFromPlace,
-  type LeadGbpProfile,
-} from "@/lib/leads/gbp"
+import { snapshotFromPlace, type LeadGbpProfile } from "@/lib/leads/gbp"
 import { fetchPlaceDetails } from "@/lib/places"
 import {
   linkLeadGbpSchema,
@@ -41,8 +38,7 @@ export async function linkLeadGbpProfile(
   if (!parsed.success) {
     return {
       status: "error",
-      message:
-        parsed.error.issues[0]?.message ?? "Revise o estabelecimento.",
+      message: parsed.error.issues[0]?.message ?? "Revise o estabelecimento.",
     }
   }
 

@@ -5,7 +5,7 @@ import {
   RiTimeLine,
 } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import type { DigitalPresenceCheckSection } from "@/lib/leads/digital-presence-presenters"
 
 const STATUS_ICON = {
@@ -18,8 +18,8 @@ const STATUS_ICON = {
 const STATUS_TONE = {
   ok: "text-success",
   warn: "text-warning",
-  pending: "text-fg-muted",
-  error: "text-danger",
+  pending: "text-muted-foreground",
+  error: "text-destructive",
 } as const
 
 export function LeadDigitalPresenceChecks({
@@ -42,10 +42,10 @@ export function LeadDigitalPresenceChecks({
                     className={cn("mt-0.5 shrink-0", STATUS_TONE[item.status])}
                   />
                   <div className="min-w-0">
-                    <p className="font-sans text-caption font-medium text-fg">
+                    <p className="text-xs/relaxed font-medium text-foreground">
                       {item.label}
                     </p>
-                    <p className="font-sans text-caption text-fg-muted">
+                    <p className="text-xs/relaxed text-muted-foreground">
                       {item.detail}
                     </p>
                   </div>

@@ -24,14 +24,10 @@ export function canViewLead(
 ): boolean {
   if (canViewTeamLeads(roles)) return true
   if (lead.status === "new" && !lead.assigned_sdr_id) return true
-  return (
-    lead.assigned_sdr_id === userId || lead.assigned_closer_id === userId
-  )
+  return lead.assigned_sdr_id === userId || lead.assigned_closer_id === userId
 }
 
-export function leadPortfolioScope(
-  userId: string,
-): string {
+export function leadPortfolioScope(userId: string): string {
   return [
     "and(status.eq.new,assigned_sdr_id.is.null)",
     `and(assigned_sdr_id.eq.${userId})`,

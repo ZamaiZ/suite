@@ -99,7 +99,10 @@ export const logLeadActivitySchema = z
       (data.type === "denied" &&
         (data.follow_up_date.length > 0 || data.follow_up_time.length > 0))
 
-    if (data.type === "call_later" && (!data.follow_up_date || !data.follow_up_time)) {
+    if (
+      data.type === "call_later" &&
+      (!data.follow_up_date || !data.follow_up_time)
+    ) {
       ctx.addIssue({
         code: "custom",
         path: ["follow_up_date"],
@@ -119,7 +122,9 @@ export const logLeadActivitySchema = z
     }
 
     if (wantsFollowUp && data.follow_up_date && data.follow_up_time) {
-      const iso = datetimeLocalToIso(`${data.follow_up_date}T${data.follow_up_time}`)
+      const iso = datetimeLocalToIso(
+        `${data.follow_up_date}T${data.follow_up_time}`,
+      )
       if (!iso) {
         ctx.addIssue({
           code: "custom",

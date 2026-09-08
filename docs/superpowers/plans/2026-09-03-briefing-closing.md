@@ -22,25 +22,25 @@ See [2026-09-03-briefing-closing-design.md](../specs/2026-09-03-briefing-closing
 
 ## File map
 
-| Path | Role |
-|------|------|
-| `docs/superpowers/specs/2026-09-03-briefing-closing-design.md` | Design gravado |
-| `docs/superpowers/plans/2026-09-03-briefing-closing.md` | Este plano |
-| `supabase/migrations/20260913000000_briefing_step_closing.sql` | Expand step check + client columns |
-| `lib/briefing/steps.ts` | Append `closing` |
-| `lib/briefing/closing.ts` | Domain helpers |
-| `lib/briefing/status.ts` | Derive list status + labels |
-| `lib/briefing/touch-content.ts` | `touchBriefingContentUpdatedAt` |
-| `lib/validations/briefing-closing.ts` | Zod |
-| `app/actions/briefing/load-briefing-closing.ts` | Load step |
-| `app/actions/briefing/save-briefing-closing.ts` | Save + complete (+ finalize client) |
-| `app/actions/briefing/load-briefing-meta.ts` | Meta from `clients` |
-| `app/actions/briefing/index.ts` | Re-exports |
-| Existing save actions + secrets + website-assets | Call touch after content write |
-| `components/custom/ClientBriefingClosingForm/` | Step form |
-| `components/custom/ClientBriefingCompleteScreen/` | Thank-you screen |
-| `ClientBriefingWorkspace.tsx` | Phase machine + wire step 8 |
-| `list-clients.ts` + `ClientsList.tsx` | Badge |
+| Path                                                           | Role                                |
+| -------------------------------------------------------------- | ----------------------------------- |
+| `docs/superpowers/specs/2026-09-03-briefing-closing-design.md` | Design gravado                      |
+| `docs/superpowers/plans/2026-09-03-briefing-closing.md`        | Este plano                          |
+| `supabase/migrations/20260913000000_briefing_step_closing.sql` | Expand step check + client columns  |
+| `lib/briefing/steps.ts`                                        | Append `closing`                    |
+| `lib/briefing/closing.ts`                                      | Domain helpers                      |
+| `lib/briefing/status.ts`                                       | Derive list status + labels         |
+| `lib/briefing/touch-content.ts`                                | `touchBriefingContentUpdatedAt`     |
+| `lib/validations/briefing-closing.ts`                          | Zod                                 |
+| `app/actions/briefing/load-briefing-closing.ts`                | Load step                           |
+| `app/actions/briefing/save-briefing-closing.ts`                | Save + complete (+ finalize client) |
+| `app/actions/briefing/load-briefing-meta.ts`                   | Meta from `clients`                 |
+| `app/actions/briefing/index.ts`                                | Re-exports                          |
+| Existing save actions + secrets + website-assets               | Call touch after content write      |
+| `components/custom/ClientBriefingClosingForm/`                 | Step form                           |
+| `components/custom/ClientBriefingCompleteScreen/`              | Thank-you screen                    |
+| `ClientBriefingWorkspace.tsx`                                  | Phase machine + wire step 8         |
+| `list-clients.ts` + `ClientsList.tsx`                          | Badge                               |
 
 ## Tasks
 

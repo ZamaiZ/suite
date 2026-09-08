@@ -8,7 +8,7 @@ import { RiCheckLine, RiLoader4Line } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { cn } from "@/lib/cn"
+import { cn } from "cn"
 import {
   WEBSITE_REVIEW_CATALOG,
   WEBSITE_REVIEW_NOTE_MAX,
@@ -89,7 +89,7 @@ function NoteField({
         onChange={(event) => onChange(event.target.value)}
         className="min-h-0 resize-y"
       />
-      <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
+      <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
         {value.length}/{WEBSITE_REVIEW_NOTE_MAX}
       </p>
     </div>
@@ -133,15 +133,15 @@ function VerdictGroup({
             onClick={() => onChange(option)}
             className={cn(
               "inline-flex h-7 cursor-pointer items-center rounded-md border px-2",
-              "font-sans text-caption transition-[colors,transform] duration-150 ease-out",
+              "text-xs/relaxed transition-[colors,transform] duration-150 ease-out",
               "active:scale-[0.97]",
               selected
                 ? option === "issue"
                   ? "border-warning/25 bg-warning/10 text-warning"
                   : option === "na"
-                    ? "border-border bg-hover text-fg-secondary"
-                    : "border-accent bg-accent/10 text-accent"
-                : "border-transparent text-fg-muted hover:text-fg",
+                    ? "border-border bg-accent text-muted-foreground"
+                    : "border-primary bg-primary/10 text-primary"
+                : "border-transparent text-muted-foreground hover:text-foreground",
               "disabled:pointer-events-none disabled:opacity-50",
             )}
           >
@@ -171,7 +171,10 @@ function CriterionRow({
   const answer = review[criterion.id]
   const showNote = !criterion.hasVerdict || answer.verdict !== null
 
-  function patch(partial: { verdict?: WebsiteReviewVerdict | null; note?: string }) {
+  function patch(partial: {
+    verdict?: WebsiteReviewVerdict | null
+    note?: string
+  }) {
     onChange({
       ...review,
       [criterion.id]: {
@@ -183,20 +186,20 @@ function CriterionRow({
 
   if (!canEdit) {
     return (
-      <li className="border-t border-border-subtle py-3 first:border-t-0 first:pt-0">
-        <p className="font-sans text-caption font-medium text-fg">
+      <li className="border-t border-border/70 py-3 first:border-t-0 first:pt-0">
+        <p className="text-xs/relaxed font-medium text-foreground">
           {criterion.label}
         </p>
         {evidence ? (
-          <p className="font-sans text-caption text-fg-muted">{evidence}</p>
+          <p className="text-xs/relaxed text-muted-foreground">{evidence}</p>
         ) : null}
-        <p className="mt-1 font-sans text-caption text-fg-secondary">
+        <p className="mt-1 text-xs/relaxed text-muted-foreground">
           {answer.verdict
             ? WEBSITE_REVIEW_VERDICT_LABEL[answer.verdict]
             : "Sem julgamento"}
         </p>
         {answer.note ? (
-          <p className="mt-1 whitespace-pre-wrap font-sans text-caption text-fg-secondary">
+          <p className="mt-1 whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
             {answer.note}
           </p>
         ) : null}
@@ -205,14 +208,14 @@ function CriterionRow({
   }
 
   return (
-    <li className="border-t border-border-subtle py-3 first:border-t-0 first:pt-0">
+    <li className="border-t border-border/70 py-3 first:border-t-0 first:pt-0">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="font-sans text-caption font-medium text-fg">
+          <p className="text-xs/relaxed font-medium text-foreground">
             {criterion.label}
           </p>
           {evidence ? (
-            <p className="font-sans text-caption text-fg-muted">{evidence}</p>
+            <p className="text-xs/relaxed text-muted-foreground">{evidence}</p>
           ) : null}
         </div>
         {criterion.hasVerdict ? (
@@ -284,10 +287,10 @@ export function LeadWebsiteReview({
   return (
     <LeadGbpCard title="Validação visual">
       <div className="flex items-baseline justify-between gap-3">
-        <p className="font-sans text-caption text-fg-muted">
+        <p className="text-xs/relaxed text-muted-foreground">
           Julgue pelas capturas. A coleta não fecha estes pontos.
         </p>
-        <p className="shrink-0 font-sans text-caption tabular-nums text-fg-muted">
+        <p className="shrink-0 text-xs/relaxed tabular-nums text-muted-foreground">
           {progress.done.toLocaleString("pt-BR")} de{" "}
           {progress.total.toLocaleString("pt-BR")}
         </p>
@@ -309,7 +312,7 @@ export function LeadWebsiteReview({
         <div className="mt-1 flex flex-wrap items-center justify-end gap-2">
           {status === "saving" ? (
             <span
-              className="inline-flex items-center gap-1 font-sans text-caption text-fg-muted"
+              className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground"
               aria-live="polite"
             >
               <RiLoader4Line size={14} aria-hidden className="animate-spin" />
@@ -318,7 +321,7 @@ export function LeadWebsiteReview({
           ) : null}
           {status === "saved" ? (
             <span
-              className="inline-flex items-center gap-1 font-sans text-caption text-success"
+              className="inline-flex items-center gap-1 text-xs/relaxed text-success"
               aria-live="polite"
             >
               <RiCheckLine size={14} aria-hidden />
@@ -327,7 +330,7 @@ export function LeadWebsiteReview({
           ) : null}
           {status === "error" ? (
             <>
-              <span role="alert" className="font-sans text-caption text-danger">
+              <span role="alert" className="text-xs/relaxed text-destructive">
                 {errorMessage ?? "Não foi possível salvar."}
               </span>
               <Button type="button" variant="ghost" onClick={onRetry}>

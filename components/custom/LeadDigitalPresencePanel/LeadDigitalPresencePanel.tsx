@@ -183,7 +183,7 @@ export function LeadDigitalPresencePanel({
 
       {saveStatus === "error" ? (
         <div className="flex flex-wrap items-center justify-end gap-2">
-          <span role="alert" className="font-sans text-caption text-danger">
+          <span role="alert" className="text-xs/relaxed text-destructive">
             {saveError ?? "Não foi possível salvar."}
           </span>
           {canEdit ? (
@@ -195,9 +195,9 @@ export function LeadDigitalPresencePanel({
       ) : null}
 
       {!websiteAudit ? (
-        <p className="flex items-center gap-2 font-sans text-caption text-fg-muted">
-          <RiGroupLine size={14} aria-hidden />
-          A integração usa a coleta do Website quando disponível.
+        <p className="flex items-center gap-2 text-xs/relaxed text-muted-foreground">
+          <RiGroupLine size={14} aria-hidden />A integração usa a coleta do
+          Website quando disponível.
         </p>
       ) : null}
     </m.div>

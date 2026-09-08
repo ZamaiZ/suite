@@ -23,23 +23,23 @@ See [2026-09-03-staff-briefing-review-design.md](../specs/2026-09-03-staff-brief
 
 ## File map
 
-| Path | Role |
-|------|------|
-| `lib/clients/href.ts` | `isClientId`, `clientsListHref` |
-| `app/actions/clients/list-clients.ts` | `canManagePortal` |
-| `app/(protected)/clients/page.tsx` | `initialClientId` |
-| `components/custom/ClientsList/*` | URL sync, gated card, dialog + menu |
-| `components/custom/ClientCardMenu/*` | Portal actions menu |
-| `app/actions/briefing/load-staff-briefing-overview.ts` | Overview |
-| `app/actions/briefing/load-staff-briefing-step.ts` | Step payload |
-| `app/actions/briefing/reveal-staff-briefing-secret.ts` | Reveal secret |
-| `app/actions/briefing/sign-staff-briefing-website-asset.ts` | Sign asset |
-| `lib/briefing/review-step-state.ts` | Step state helper |
-| `components/custom/ClientBriefingReviewDialog/*` | Dialog shell |
-| `components/custom/BriefingReviewOverview/*` | Tile grid |
-| `components/custom/BriefingReviewField/*` | Read primitives |
-| `components/custom/BriefingReviewSecretField/*` | Secret UI |
-| `components/custom/BriefingReviewCompany` … `Closing` | Step viewers |
+| Path                                                        | Role                                |
+| ----------------------------------------------------------- | ----------------------------------- |
+| `lib/clients/href.ts`                                       | `isClientId`, `clientsListHref`     |
+| `app/actions/clients/list-clients.ts`                       | `canManagePortal`                   |
+| `app/(protected)/clients/page.tsx`                          | `initialClientId`                   |
+| `components/custom/ClientsList/*`                           | URL sync, gated card, dialog + menu |
+| `components/custom/ClientCardMenu/*`                        | Portal actions menu                 |
+| `app/actions/briefing/load-staff-briefing-overview.ts`      | Overview                            |
+| `app/actions/briefing/load-staff-briefing-step.ts`          | Step payload                        |
+| `app/actions/briefing/reveal-staff-briefing-secret.ts`      | Reveal secret                       |
+| `app/actions/briefing/sign-staff-briefing-website-asset.ts` | Sign asset                          |
+| `lib/briefing/review-step-state.ts`                         | Step state helper                   |
+| `components/custom/ClientBriefingReviewDialog/*`            | Dialog shell                        |
+| `components/custom/BriefingReviewOverview/*`                | Tile grid                           |
+| `components/custom/BriefingReviewField/*`                   | Read primitives                     |
+| `components/custom/BriefingReviewSecretField/*`             | Secret UI                           |
+| `components/custom/BriefingReviewCompany` … `Closing`       | Step viewers                        |
 
 ## Tasks
 

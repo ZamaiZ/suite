@@ -12,7 +12,10 @@ import {
   canViewClient,
   canViewOwnClients,
 } from "@/lib/clients/access"
-import { CLIENT_KICKOFF_STAGE_LABELS } from "@/lib/clients/kickoff"
+import {
+  CLIENT_KICKOFF_STAGE_LABELS,
+  isClientKickoffStage,
+} from "@/lib/clients/kickoff"
 import type { ClientKickoffStage } from "@/lib/clients/types"
 import { createClient } from "@/lib/supabase/server"
 import type { ClientsListParams } from "@/lib/clients/href"
@@ -36,13 +39,30 @@ export type ClientListItem = {
 }
 
 export type ClientCloserOption = { id: string; name: string }
-export type ClientsSummary = { total: number; inProgress: number; edited: number; kickoffPending: number }
+export type ClientsSummary = {
+  total: number
+  inProgress: number
+  edited: number
+  kickoffPending: number
+}
 
 export type ListClientsState =
-  | { status: "success"; clients: ClientListItem[]; summary: ClientsSummary; closerOptions: ClientCloserOption[] }
+  | {
+      status: "success"
+      clients: ClientListItem[]
+      summary: ClientsSummary
+      closerOptions: ClientCloserOption[]
+    }
   | { status: "error"; message: string }
 
-export async function listClients(params: ClientsListParams = { q: "", briefing: null, kickoff: null, closer: null }): Promise<ListClientsState> {
+export async function listClients(
+  params: ClientsListParams = {
+    q: "",
+    briefing: null,
+    kickoff: null,
+    closer: null,
+  },
+): Promise<ListClientsState> {
   const { user, roles } = await requireCommercialMember()
   const canViewAll = canViewAllClients(roles)
   if (!canViewAll && !canViewOwnClients(roles)) {
@@ -58,7 +78,10 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
   const search = params.q.trim().replace(/[%*,()\\]/g, "")
   let matchingLeadIds: string[] = []
   if (search) {
-    const { data: leads } = await supabase.from("leads").select("id").or(`company_name.ilike.%${search}%,website_domain.ilike.%${search}%`)
+    const { data: leads } = await supabase
+      .from("leads")
+      .select("id")
+      .or(`company_name.ilike.%${search}%,website_domain.ilike.%${search}%`)
     matchingLeadIds = (leads ?? []).map((lead) => lead.id)
   }
   let query = supabase
@@ -72,9 +95,12 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
   if (!canViewAll) query = query.eq("closer_id", user.id)
   if (params.kickoff) query = query.eq("kickoff_stage", params.kickoff)
   if (search) {
-    query = matchingLeadIds.length > 0
-      ? query.or(`company_name.ilike.%${search}%,lead_id.in.(${matchingLeadIds.join(",")})`)
-      : query.ilike("company_name", `%${search}%`)
+    query =
+      matchingLeadIds.length > 0
+        ? query.or(
+            `company_name.ilike.%${search}%,lead_id.in.(${matchingLeadIds.join(",")})`,
+          )
+        : query.ilike("company_name", `%${search}%`)
   }
   const { data, error } = await query
 
@@ -110,10 +136,17 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
   }
 
   const domainsByLeadId = new Map<string, string>()
-  const leadIds = [...new Set((data ?? []).map((row) => row.lead_id).filter(Boolean))]
+  const leadIds = [
+    ...new Set((data ?? []).map((row) => row.lead_id).filter(Boolean)),
+  ]
   if (leadIds.length > 0) {
-    const { data: leads } = await supabase.from("leads").select("id, website_domain").in("id", leadIds)
-    for (const lead of leads ?? []) if (typeof lead.website_domain === "string") domainsByLeadId.set(lead.id, lead.website_domain)
+    const { data: leads } = await supabase
+      .from("leads")
+      .select("id, website_domain")
+      .in("id", leadIds)
+    for (const lead of leads ?? [])
+      if (typeof lead.website_domain === "string")
+        domainsByLeadId.set(lead.id, lead.website_domain)
   }
 
   const clients: ClientListItem[] = (data ?? []).flatMap((row) => {
@@ -126,6 +159,9 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
         ? row.briefing_content_updated_at
         : null,
     )
+    const kickoffStage = isClientKickoffStage(row.kickoff_stage)
+      ? row.kickoff_stage
+      : "none"
     return [
       {
         id: row.id,
@@ -141,21 +177,40 @@ export async function listClients(params: ClientsListParams = { q: "", briefing:
         briefingStatusLabel: BRIEFING_LIST_STATUS_LABELS[briefingStatus],
         canManagePortal: canManageClientPortal(roles, user.id, row.closer_id),
         canViewClient: canViewClient(roles, user.id, row.closer_id),
-        kickoffStage: row.kickoff_stage,
-        kickoffStageLabel: CLIENT_KICKOFF_STAGE_LABELS[row.kickoff_stage],
-        kickoffMeetingAt: typeof row.kickoff_meeting_at === "string" ? row.kickoff_meeting_at : null,
+        kickoffStage,
+        kickoffStageLabel: CLIENT_KICKOFF_STAGE_LABELS[kickoffStage],
+        kickoffMeetingAt:
+          typeof row.kickoff_meeting_at === "string"
+            ? row.kickoff_meeting_at
+            : null,
         websiteDomain: domainsByLeadId.get(row.lead_id) ?? null,
       },
     ]
   })
-  const filteredClients = params.briefing ? clients.filter((client) => client.briefingStatus === params.briefing) : clients
-  const { data: closerRows } = await supabase.from("users").select("id, name, user_roles!inner(role)").eq("user_roles.role", "closer").order("name")
-  const closerOptions = (closerRows ?? []).map((row) => ({ id: row.id, name: row.name }))
+  const filteredClients = params.briefing
+    ? clients.filter((client) => client.briefingStatus === params.briefing)
+    : clients
+  const { data: closerRows } = await supabase
+    .from("users")
+    .select("id, name, user_roles!inner(role)")
+    .eq("user_roles.role", "closer")
+    .order("name")
+  const closerOptions = (closerRows ?? []).map((row) => ({
+    id: row.id,
+    name: row.name,
+  }))
   const summary: ClientsSummary = {
     total: filteredClients.length,
-    inProgress: filteredClients.filter((client) => client.briefingStatus === "in_progress").length,
-    edited: filteredClients.filter((client) => client.briefingStatus === "edited_after_submit").length,
-    kickoffPending: filteredClients.filter((client) => client.kickoffStage === "none" || client.kickoffStage === "scheduled").length,
+    inProgress: filteredClients.filter(
+      (client) => client.briefingStatus === "in_progress",
+    ).length,
+    edited: filteredClients.filter(
+      (client) => client.briefingStatus === "edited_after_submit",
+    ).length,
+    kickoffPending: filteredClients.filter(
+      (client) =>
+        client.kickoffStage === "none" || client.kickoffStage === "scheduled",
+    ).length,
   }
   return { status: "success", clients: filteredClients, summary, closerOptions }
 }

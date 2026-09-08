@@ -1,4 +1,9 @@
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from "crypto"
+import {
+  createCipheriv,
+  createDecipheriv,
+  createHash,
+  randomBytes,
+} from "crypto"
 
 export const FIXED_SECRET_KINDS = [
   "wordpress",
@@ -34,7 +39,9 @@ export function otherSecretKind(itemId: string): BriefingSecretKind {
   return `other:${itemId}`
 }
 
-export function isBriefingSecretKind(value: unknown): value is BriefingSecretKind {
+export function isBriefingSecretKind(
+  value: unknown,
+): value is BriefingSecretKind {
   if (typeof value !== "string" || value.length === 0 || value.length > 120) {
     return false
   }
