@@ -6,7 +6,7 @@ import {
 } from "@/lib/auth/session"
 import { isCommercialMember } from "@/lib/auth/roles"
 import { AuthPageShell } from "@/components/custom/AuthPageShell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 export default async function AccessPendingPage() {
   await requireAuthenticatedUser()

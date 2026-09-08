@@ -2,7 +2,7 @@
 
 import { RiCloseLine } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 
 const TONE_CLASS = {
@@ -67,7 +67,8 @@ export function ClientBriefingDialogHeader({
           aria-label="Fechar"
           disabled={closeDisabled}
           onClick={onClose}
-          className="size-9 shrink-0 px-0"
+          size="icon-lg"
+          className="shrink-0"
         >
           <RiCloseLine size={18} aria-hidden />
         </Button>

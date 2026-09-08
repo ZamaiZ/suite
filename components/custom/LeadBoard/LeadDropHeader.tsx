@@ -3,7 +3,7 @@
 import { RiCloseLine } from "react-icons/ri"
 import type { IconType } from "react-icons"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 export function LeadDropHeader({
   icon,
@@ -40,6 +40,7 @@ export function LeadDropHeader({
       <Button
         type="button"
         variant="ghost"
+        size="icon-lg"
         aria-label="Fechar"
         onClick={onClose}
         className="size-9 shrink-0 px-0"

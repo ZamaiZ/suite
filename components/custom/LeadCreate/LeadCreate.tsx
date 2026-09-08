@@ -10,9 +10,15 @@ import {
   RiSendPlaneLine,
 } from "react-icons/ri"
 import { LeadForm, LEAD_FORM_ID } from "@/components/custom/LeadForm"
-import { Button } from "@/components/ui/Button"
-import { Dialog } from "@/components/ui/Dialog"
-import { Tooltip } from "@/components/ui/Tooltip"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import type { LeadBoardItem } from "@/lib/leads/board-item"
 import { LeadCreateHeader } from "./LeadCreateHeader"
 
@@ -34,30 +40,67 @@ export function LeadCreate({
 
   return (
     <>
-      <Tooltip content="Criar novo" side="left">
-        <Button
-          type="button"
-          variant="outline"
-          tone="danger"
-          aria-label="Criar novo"
-          onClick={() => setOpen(true)}
-          className="size-6 shrink-0 rounded-full px-0 text-fg-muted hover:bg-hover hover:text-fg"
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <Button
+              type="button"
+              variant="outline"
+              size="icon-sm"
+              aria-label="Criar novo"
+              onClick={() => setOpen(true)}
+              className="shrink-0 rounded-full text-muted-foreground"
+            />
+          }
         >
           <RiAddLine size={14} aria-hidden />
-        </Button>
+        </TooltipTrigger>
+        <TooltipContent side="left">Criar novo</TooltipContent>
       </Tooltip>
       <Dialog
         open={open}
-        onClose={close}
-        title="Novo lead"
-        description="Cadastre uma empresa e seu principal contato."
-        className="max-w-2xl"
-        bodyClassName="bg-canvas"
-        header={
+        onOpenChange={(next) => {
+          if (!next) close()
+        }}
+      >
+        <DialogContent
+          showCloseButton={false}
+          className="max-h-[calc(100dvh-2rem)] max-w-2xl grid-rows-[auto_minmax(0,1fr)_auto] gap-0 overflow-hidden p-0 sm:max-w-2xl"
+        >
+          <DialogTitle className="sr-only">Novo lead</DialogTitle>
+          <DialogDescription className="sr-only">
+            Cadastre uma empresa e seu principal contato.
+          </DialogDescription>
           <LeadCreateHeader onClose={close} closeDisabled={isPending} />
-        }
-        footer={
-          <>
+          <div className="overflow-y-auto bg-background p-4 sm:p-5">
+            <div className="flex flex-col gap-4">
+              <m.div
+                initial={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
+                animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+                transition={{ duration: reduced ? 0.12 : 0.16, ease: EASE }}
+                className="flex items-start gap-2.5 rounded-lg bg-accent px-3 py-2.5 text-accent-foreground"
+              >
+                <RiInformationLine
+                  size={16}
+                  aria-hidden
+                  className="mt-0.5 shrink-0 text-primary"
+                />
+                <p className="font-sans text-body-sm">
+                  O lead será adicionado à fila para ser assumido por um SDR.
+                </p>
+              </m.div>
+              <LeadForm
+                mode="create"
+                hideSubmit
+                onSuccess={(result) => {
+                  if (result.kind === "create") onCreated?.(result.item)
+                  setOpen(false)
+                }}
+                onPendingChange={setIsPending}
+              />
+            </div>
+          </div>
+          <DialogFooter className="border-t border-border p-3 sm:p-4">
             <Button
               type="button"
               variant="ghost"
@@ -70,49 +113,16 @@ export function LeadCreate({
               type="submit"
               form={LEAD_FORM_ID}
               disabled={isPending}
-              leadingIcon={
-                isPending ? (
-                  <RiLoader4Line
-                    size={16}
-                    aria-hidden
-                    className="animate-spin"
-                  />
-                ) : (
-                  <RiSendPlaneLine size={16} aria-hidden />
-                )
-              }
             >
+              {isPending ? (
+                <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+              ) : (
+                <RiSendPlaneLine data-icon="inline-start" aria-hidden />
+              )}
               {isPending ? "Cadastrando…" : "Cadastrar lead"}
             </Button>
-          </>
-        }
-      >
-        <div className="flex flex-col gap-4">
-          <m.div
-            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
-            animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
-            transition={{ duration: reduced ? 0.12 : 0.16, ease: EASE }}
-            className="flex items-start gap-2.5 rounded-lg bg-accent/10 px-3 py-2.5"
-          >
-            <RiInformationLine
-              size={16}
-              aria-hidden
-              className="mt-0.5 shrink-0 text-accent"
-            />
-            <p className="font-sans text-body-sm text-fg-secondary">
-              O lead será adicionado à fila para ser assumido por um SDR.
-            </p>
-          </m.div>
-          <LeadForm
-            mode="create"
-            hideSubmit
-            onSuccess={(result) => {
-              if (result.kind === "create") onCreated?.(result.item)
-              setOpen(false)
-            }}
-            onPendingChange={setIsPending}
-          />
-        </div>
+          </DialogFooter>
+        </DialogContent>
       </Dialog>
     </>
   )

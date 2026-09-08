@@ -29,8 +29,9 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Textarea } from "@/components/ui/textarea"
 import {
   COLOR_POLICY_DESCRIPTIONS,
   COLOR_POLICY_IDS,
@@ -355,14 +356,16 @@ export function ClientBriefingWebsiteForm({
             placeholder="Cole o link e pressione Enter"
           />
 
-          <Textarea
+          <Field>
+            <FieldLabel htmlFor="briefing-website-notes">Observações (opcional)</FieldLabel>
+            <Textarea
             id="briefing-website-notes"
-            label="Observações (opcional)"
             rows={4}
             value={payload.notes}
             onChange={(event) => patch({ notes: event.target.value })}
             placeholder="Restrições de uso do logo, tipografia, o que evitar…"
-          />
+            />
+          </Field>
         </BriefingSectionCard>
 
         <BriefingSectionCard
@@ -492,17 +495,13 @@ export function ClientBriefingWebsiteForm({
                   type="button"
                   disabled={isCompleting || !ready}
                   onClick={handleComplete}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Salvando..."
                     : completed
                       ? "Etapa concluída"
                       : "Continuar"}
+                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
                 </Button>
                 )}
               </div>

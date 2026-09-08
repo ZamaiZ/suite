@@ -9,7 +9,7 @@ import {
   RiSaveLine,
 } from "react-icons/ri"
 import type { IconType } from "react-icons"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { LeadIconWell } from "./LeadIconWell"
 
 const EASE = [0.23, 1, 0.32, 1] as const
@@ -70,18 +70,16 @@ export function LeadRecordSectionCard({
             <Button
               type="submit"
               disabled={pending || saveDisabled}
-              leadingIcon={
-                pending ? (
-                  <RiLoader4Line
-                    size={16}
-                    aria-hidden
-                    className="animate-spin"
-                  />
-                ) : (
-                  <RiSaveLine size={16} aria-hidden />
-                )
-              }
             >
+              {pending ? (
+                <RiLoader4Line
+                  data-icon="inline-start"
+                  aria-hidden
+                  className="animate-spin"
+                />
+              ) : (
+                <RiSaveLine data-icon="inline-start" aria-hidden />
+              )}
               {pending ? "Salvando…" : "Salvar"}
             </Button>
           </div>
@@ -90,8 +88,8 @@ export function LeadRecordSectionCard({
             type="button"
             variant="outline"
             onClick={onEdit}
-            leadingIcon={<RiPencilLine size={14} aria-hidden />}
           >
+            <RiPencilLine data-icon="inline-start" aria-hidden />
             {editLabel}
           </Button>
         )}

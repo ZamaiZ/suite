@@ -8,7 +8,7 @@ import {
   RiRefreshLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 
 export function LeadDiagnosisStepHeader({
@@ -66,8 +66,8 @@ export function LeadDiagnosisStepHeader({
             type="button"
             variant="ghost"
             onClick={onOpenPdf}
-            leadingIcon={<RiExternalLinkLine size={16} aria-hidden />}
           >
+            <RiExternalLinkLine data-icon="inline-start" aria-hidden />
             Abrir PDF
           </Button>
         ) : null}
@@ -78,18 +78,16 @@ export function LeadDiagnosisStepHeader({
               variant="secondary"
               disabled={compiling || exporting}
               onClick={onCompile}
-              leadingIcon={
-                compiling ? (
-                  <RiLoader4Line
-                    size={16}
-                    aria-hidden
-                    className="animate-spin"
-                  />
-                ) : (
-                  <RiRefreshLine size={16} aria-hidden />
-                )
-              }
             >
+              {compiling ? (
+                <RiLoader4Line
+                  data-icon="inline-start"
+                  aria-hidden
+                  className="animate-spin"
+                />
+              ) : (
+                <RiRefreshLine data-icon="inline-start" aria-hidden />
+              )}
               {updatedAt ? "Recompilar fatos" : "Montar diagnóstico"}
             </Button>
             {updatedAt ? (
@@ -97,16 +95,14 @@ export function LeadDiagnosisStepHeader({
                 type="button"
                 disabled={compiling || exporting}
                 onClick={onExport}
-                leadingIcon={
-                  exporting ? (
-                    <RiLoader4Line
-                      size={16}
-                      aria-hidden
-                      className="animate-spin"
-                    />
-                  ) : undefined
-                }
               >
+                {exporting ? (
+                  <RiLoader4Line
+                    data-icon="inline-start"
+                    aria-hidden
+                    className="animate-spin"
+                  />
+                ) : null}
                 Exportar PDF
               </Button>
             ) : null}

@@ -4,8 +4,14 @@ import { useMemo, useState } from "react"
 import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiAlertLine } from "react-icons/ri"
-import { Select } from "@/components/ui/Select"
-import { Input } from "@/components/ui/Input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/cn"
 import {
   DATAFORSEO_OPERATIONS,
@@ -199,19 +205,20 @@ export function ToolsSettings({
                       Operação
                     </span>
                     <Select
-                      id="dataforseo-operation"
-                      items={DATAFORSEO_OPERATIONS.map((item) => ({
-                        value: item.id,
-                        label: item.label,
-                        description: item.detail,
-                      }))}
                       value={operationId}
-                      searchable={false}
-                      onValueChange={(value) => {
-                        const next = Array.isArray(value) ? value[0] : value
-                        if (next) setOperationId(next as DataForSeoOperationId)
-                      }}
-                    />
+                      onValueChange={(value) => setOperationId(value as DataForSeoOperationId)}
+                    >
+                      <SelectTrigger id="dataforseo-operation" className="h-9 w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent align="start">
+                        {DATAFORSEO_OPERATIONS.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </label>
 
                   <label className="flex w-32 flex-col gap-1">

@@ -83,6 +83,22 @@ export function isCivilDate(value: string): boolean {
   return typeof value === "string" && dayjs(value, "YYYY-MM-DD", true).isValid()
 }
 
+export function civilDateToCalendarDate(value: string): Date | undefined {
+  if (!isCivilDate(value)) return undefined
+  const year = Number(value.slice(0, 4))
+  const month = Number(value.slice(5, 7)) - 1
+  const day = Number(value.slice(8, 10))
+  return new Date(year, month, day, 12)
+}
+
+export function calendarDateToCivilDate(value: Date | undefined): string {
+  if (!value || Number.isNaN(value.getTime())) return ""
+  const year = value.getFullYear()
+  const month = String(value.getMonth() + 1).padStart(2, "0")
+  const day = String(value.getDate()).padStart(2, "0")
+  return `${year}-${month}-${day}`
+}
+
 export type CivilHourCycle = "h23" | "h12"
 export type DayPeriod = "am" | "pm"
 

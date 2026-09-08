@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiMapPinLine, RiRefreshLine } from "react-icons/ri"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
 import {
@@ -224,8 +224,8 @@ export function BriefingServiceRadiusMapCanvas({
                     type="button"
                     variant="outline"
                     onClick={onRetry}
-                    leadingIcon={<RiRefreshLine size={16} aria-hidden />}
                   >
+                    <RiRefreshLine size={16} aria-hidden data-icon="inline-start" />
                     Tentar novamente
                   </Button>
                 ) : null}

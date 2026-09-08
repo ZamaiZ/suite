@@ -6,7 +6,7 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiCheckLine, RiLoader4Line } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import {
   WEBSITE_REVIEW_CATALOG,

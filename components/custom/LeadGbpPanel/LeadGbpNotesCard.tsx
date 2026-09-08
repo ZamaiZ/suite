@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { RiCheckLine, RiLoader4Line } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import { GBP_NOTES_MAX } from "@/lib/leads/gbp"
 

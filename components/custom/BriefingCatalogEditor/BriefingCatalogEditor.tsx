@@ -9,10 +9,11 @@ import {
 } from "motion/react"
 import * as m from "motion/react-m"
 import { RiAddLine, RiDeleteBinLine, RiServiceLine } from "react-icons/ri"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { Switch } from "@/components/ui/Switch"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Switch } from "@/components/ui/switch"
+import { Textarea } from "@/components/ui/textarea"
 import {
   createEmptyProductOrService,
   PRODUCTS_AND_SERVICES_MAX,
@@ -53,9 +54,9 @@ export function BriefingCatalogEditor({
             type="button"
             variant="outline"
             disabled={disabled || items.length >= PRODUCTS_AND_SERVICES_MAX}
-            leadingIcon={<RiAddLine size={16} aria-hidden />}
             onClick={addItem}
           >
+            <RiAddLine size={16} aria-hidden data-icon="inline-start" />
             Adicionar
           </Button>
           <p className="font-sans text-caption text-fg-muted">
@@ -75,7 +76,7 @@ export function BriefingCatalogEditor({
               disabled && "pointer-events-none opacity-50",
             )}
           >
-            <span className="inline-flex size-10 items-center justify-center rounded-lg bg-accent/10 text-accent">
+            <span className="inline-flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <RiServiceLine size={18} aria-hidden />
             </span>
             <span className="font-sans text-body-sm font-medium text-fg">
@@ -144,32 +145,40 @@ export function BriefingCatalogEditor({
                           aria-label="Remover item"
                           disabled={disabled}
                           onClick={() => removeItem(item.id)}
-                          leadingIcon={<RiDeleteBinLine size={16} aria-hidden />}
                         >
+                          <RiDeleteBinLine size={16} aria-hidden data-icon="inline-start" />
                           Remover
                         </Button>
                       </div>
-                      <Input
-                        id={`catalog-name-${item.id}`}
-                        label="Nome"
-                        value={item.name}
-                        disabled={disabled}
-                        onChange={(event) =>
-                          updateItem(item.id, { name: event.target.value })
-                        }
-                      />
-                      <Textarea
-                        id={`catalog-description-${item.id}`}
-                        label="Detalhes"
-                        rows={4}
-                        value={item.description}
-                        disabled={disabled}
-                        onChange={(event) =>
-                          updateItem(item.id, {
-                            description: event.target.value,
-                          })
-                        }
-                      />
+                      <Field>
+                        <FieldLabel htmlFor={`catalog-name-${item.id}`}>
+                          Nome
+                        </FieldLabel>
+                        <Input
+                          id={`catalog-name-${item.id}`}
+                          value={item.name}
+                          disabled={disabled}
+                          onChange={(event) =>
+                            updateItem(item.id, { name: event.target.value })
+                          }
+                        />
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor={`catalog-description-${item.id}`}>
+                          Detalhes
+                        </FieldLabel>
+                        <Textarea
+                          id={`catalog-description-${item.id}`}
+                          rows={4}
+                          value={item.description}
+                          disabled={disabled}
+                          onChange={(event) =>
+                            updateItem(item.id, {
+                              description: event.target.value,
+                            })
+                          }
+                        />
+                      </Field>
                     </m.div>
                   )
                 })}

@@ -14,8 +14,9 @@ import {
 } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
+import { Button } from "@/components/ui/button"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/cn"
 import {
   DIGITAL_CHANNEL_LABELS,
@@ -109,12 +110,12 @@ export function LeadDigitalPresenceNetworks({
                     type="button"
                     variant="ghost"
                     className="mt-1 h-7 px-2 text-accent"
-                    trailingIcon={<RiExternalLinkLine size={14} aria-hidden />}
                     onClick={() =>
                       window.open(href, "_blank", "noopener,noreferrer")
                     }
                   >
                     Abrir
+                    <RiExternalLinkLine size={14} aria-hidden data-icon="inline-end" />
                   </Button>
                 ) : null}
               </div>
@@ -149,35 +150,8 @@ export function LeadDigitalPresenceNetworks({
             </label>
 
             <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
-              <Input
-                id={`dp-followers-${channel.id}`}
-                label="Seguidores"
-                variant="number"
-                value={
-                  answer.followers === null ? "" : String(answer.followers)
-                }
-                disabled={!canEdit || answer.unavailable}
-                onChange={(event) => {
-                  const raw = event.target.value.replace(/\D/g, "")
-                  patch({
-                    followers: raw.length === 0 ? null : Number(raw),
-                  })
-                }}
-              />
-              <Input
-                id={`dp-last-post-${channel.id}`}
-                label="Última postagem"
-                variant="date"
-                value={answer.lastPostedOn ?? ""}
-                disabled={!canEdit || answer.unavailable}
-                max={today}
-                onChange={(event) => {
-                  const value = event.target.value
-                  patch({
-                    lastPostedOn: value.length === 0 ? null : value,
-                  })
-                }}
-              />
+              <Field><FieldLabel htmlFor={`dp-followers-${channel.id}`}>Seguidores</FieldLabel><Input id={`dp-followers-${channel.id}`} inputMode="numeric" pattern="[0-9]*" value={answer.followers === null ? "" : String(answer.followers)} disabled={!canEdit || answer.unavailable} onChange={(event) => { const raw = event.target.value.replace(/\D/g, ""); patch({ followers: raw.length === 0 ? null : Number(raw) }) }} /></Field>
+              <Field><FieldLabel htmlFor={`dp-last-post-${channel.id}`}>Última postagem</FieldLabel><Input id={`dp-last-post-${channel.id}`} type="date" value={answer.lastPostedOn ?? ""} disabled={!canEdit || answer.unavailable} max={today} onChange={(event) => { const value = event.target.value; patch({ lastPostedOn: value.length === 0 ? null : value }) }} /></Field>
             </div>
 
             {!answer.unavailable && answer.lastPostedOn ? (

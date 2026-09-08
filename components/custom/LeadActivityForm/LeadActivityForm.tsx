@@ -9,10 +9,19 @@ import { z } from "zod"
 import { RiEditBoxLine, RiLoader4Line, RiSendPlaneLine } from "react-icons/ri"
 import { logLeadActivity, listClosers, type CloserOption } from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
 import { DateTimePicker } from "@/components/ui/DateTimePicker"
-import { Input } from "@/components/ui/Input"
-import { Select } from "@/components/ui/Select"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/cn"
 import {
   datetimeLocalToCivilDate,
@@ -302,18 +311,24 @@ export function LeadActivityForm({
         <Controller
           name="denied_reason"
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              id="lead-denied-reason"
-              label="Motivo da negativa"
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              disabled={isPending}
-              className="mb-3"
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const errorId = "lead-denied-reason-error"
+            return (
+              <Field className="mb-3" data-invalid={!!fieldState.error}>
+                <FieldLabel htmlFor="lead-denied-reason">Motivo da negativa</FieldLabel>
+                <Input
+                  id="lead-denied-reason"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  disabled={isPending}
+                  aria-invalid={!!fieldState.error}
+                  aria-describedby={fieldState.error ? errorId : undefined}
+                />
+                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+              </Field>
+            )
+          }}
         />
       </FieldReveal>
 
@@ -322,25 +337,47 @@ export function LeadActivityForm({
           <Controller
             name="closer_id"
             control={form.control}
-            render={({ field, fieldState }) => (
-              <Select
-                id="lead-activity-closer"
-                label="Closer"
-                placeholder="Selecione o closer"
-                items={closers.map((closer) => ({
-                  value: closer.id,
-                  label: closer.name,
-                }))}
-                value={field.value}
-                onValueChange={(next) => {
-                  field.onChange(typeof next === "string" ? next : "")
-                }}
-                onBlur={field.onBlur}
-                error={fieldState.error?.message}
-                disabled={isPending}
-                loading={closersLoading}
-              />
-            )}
+            render={({ field, fieldState }) => {
+              const selectedCloser = closers.find((closer) => closer.id === field.value) ?? null
+              const errorId = "lead-activity-closer-error"
+              return (
+                <Field data-invalid={!!fieldState.error}>
+                  <FieldLabel htmlFor="lead-activity-closer">Closer</FieldLabel>
+                  <Combobox
+                    items={closers}
+                    value={selectedCloser}
+                    onValueChange={(next) => {
+                      const closer = Array.isArray(next) ? next[0] : next
+                      field.onChange(closer?.id ?? "")
+                    }}
+                    itemToStringLabel={(closer) => closer.name}
+                    isItemEqualToValue={(closer, selected) => closer.id === selected.id}
+                    disabled={isPending || closersLoading}
+                  >
+                    <ComboboxInput
+                      id="lead-activity-closer"
+                      placeholder={closersLoading ? "Carregando closers..." : "Selecione o closer"}
+                      showClear
+                      onBlur={field.onBlur}
+                      aria-invalid={!!fieldState.error}
+                      aria-describedby={fieldState.error ? errorId : undefined}
+                      className="w-full"
+                    />
+                    <ComboboxContent>
+                      <ComboboxEmpty>Nenhum closer encontrado.</ComboboxEmpty>
+                      <ComboboxList>
+                        {(closer: CloserOption) => (
+                          <ComboboxItem key={closer.id} value={closer}>
+                            {closer.name}
+                          </ComboboxItem>
+                        )}
+                      </ComboboxList>
+                    </ComboboxContent>
+                  </Combobox>
+                  <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                </Field>
+              )
+            }}
           />
         </div>
       </FieldReveal>
@@ -350,32 +387,22 @@ export function LeadActivityForm({
         control={form.control}
         render={({ field, fieldState }) => (
           <div className="mb-3">
-            <label
-              htmlFor="lead-activity-note"
-              className="mb-1.5 block font-sans text-caption text-fg-secondary"
-            >
-              O que aconteceu?
-            </label>
-            <textarea
-              id="lead-activity-note"
-              rows={3}
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              disabled={isPending}
-              maxLength={2000}
-              placeholder="Descreva o que aconteceu neste contato..."
-              aria-invalid={fieldState.error ? true : undefined}
-              className={cn(
-                "w-full resize-none rounded-md border border-input-border bg-input px-3 py-2",
-                "font-sans text-body-sm text-fg outline-none",
-                "placeholder:text-fg-muted",
-                "transition-[border-color,opacity] duration-150 ease-out",
-                "focus-visible:border-accent",
-                "disabled:opacity-50",
-                fieldState.error && "border-danger focus-visible:border-danger",
-              )}
-            />
+            <Field data-invalid={!!fieldState.error}>
+              <FieldLabel htmlFor="lead-activity-note">O que aconteceu?</FieldLabel>
+              <Textarea
+                id="lead-activity-note"
+                rows={3}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={field.onBlur}
+                disabled={isPending}
+                maxLength={2000}
+                placeholder="Descreva o que aconteceu neste contato..."
+                aria-invalid={!!fieldState.error}
+                aria-describedby={fieldState.error ? "lead-activity-note-error" : undefined}
+              />
+              <FieldError id="lead-activity-note-error">{fieldState.error?.message}</FieldError>
+            </Field>
             <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
               {note.length}/2000
             </p>
@@ -451,14 +478,12 @@ export function LeadActivityForm({
           type="submit"
           disabled={isPending}
           className="ml-auto"
-          leadingIcon={
-            isPending ? (
-              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-            ) : (
-              <RiSendPlaneLine size={16} aria-hidden />
-            )
-          }
         >
+          {isPending ? (
+            <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+          ) : (
+            <RiSendPlaneLine data-icon="inline-start" aria-hidden />
+          )}
           {isPending ? "Registrando..." : "Registrar atividade"}
         </Button>
       </div>

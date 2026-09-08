@@ -8,7 +8,7 @@ import {
 } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridSection } from "./LeadGbpGridSection"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import type { LeadGbpGridScan } from "@/lib/leads/gbp-grid"
 import { cn } from "@/lib/cn"
 import { formatDate } from "@/lib/date-time"
@@ -244,12 +244,10 @@ export function LeadGbpRankBlock({
             onClick={() => {
               void handleCheck()
             }}
-            leadingIcon={
-              pending ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : null
-            }
           >
+            {pending ? (
+              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+            ) : null}
             Checar ranking
           </Button>
         </div>

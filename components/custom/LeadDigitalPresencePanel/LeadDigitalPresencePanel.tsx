@@ -9,7 +9,7 @@ import {
   type LeadDigitalPresenceAudit,
 } from "@/app/actions/leads"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { todayCivilDate } from "@/lib/date-time"
 import { mergeDigitalPresenceOpportunities } from "@/lib/leads/digital-presence-opportunities"
 import { digitalPresenceCheckSections } from "@/lib/leads/digital-presence-presenters"

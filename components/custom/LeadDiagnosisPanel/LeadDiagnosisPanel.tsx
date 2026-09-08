@@ -16,7 +16,7 @@ import {
 } from "@/app/actions/leads"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import {
@@ -467,14 +467,12 @@ export function LeadDiagnosisPanel({
               onClick={() => {
                 void handleSave()
               }}
-              leadingIcon={
-                saving ? (
-                  <RiSaveLine size={16} aria-hidden className="animate-pulse" />
-                ) : (
-                  <RiSaveLine size={16} aria-hidden />
-                )
-              }
             >
+              <RiSaveLine
+                size={16}
+                aria-hidden
+                className={saving ? "animate-pulse" : undefined}
+              />
               Salvar rascunho
             </Button>
             <Button

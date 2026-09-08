@@ -5,11 +5,7 @@ import { Popover } from "@base-ui/react/popover"
 import { useReducedMotion } from "motion/react"
 import { RiCalendarLine, RiCloseLine, RiKeyboardLine, RiTimeLine } from "react-icons/ri"
 import { cn } from "@/lib/cn"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
-import {
-  DatePickerCalendar,
-  isCivilDateOutOfRange,
-} from "@/components/ui/DatePicker/DatePickerCalendar"
+import { Calendar } from "@/components/ui/calendar"
 import {
   CLOCK_MIN_HEIGHT_PX,
   prefersClock,
@@ -20,6 +16,8 @@ import {
   formatCivilTime,
   formatDateOnly,
   formatDatetimeLocal,
+  calendarDateToCivilDate,
+  civilDateToCalendarDate,
   isCivilDate,
   isCivilTime,
   isDatetimeLocal,
@@ -74,10 +72,8 @@ export function DateTimePicker({
   className,
   onBlur,
 }: DateTimePickerProps) {
-  const portalContainer = useDialogPortalContainer()
   const reduced = !!useReducedMotion()
   const popupRef = useRef<HTMLDivElement>(null)
-  const focusedCellRef = useRef<HTMLButtonElement>(null)
   const dateRef = useRef("")
   const timeRef = useRef(nowCivilTime())
   const dirtyRef = useRef(false)
@@ -94,7 +90,7 @@ export function DateTimePicker({
   const hasValue = Boolean(value && isDatetimeLocal(value))
   const displayValue = hasValue && value ? formatDatetimeLocal(value, hourCycle) : ""
   const today = todayCivilDate()
-  const todayDisabled = isCivilDateOutOfRange(today, min, max)
+  const todayDisabled = Boolean((min && today < min) || (max && today > max))
   const showClock = view === "clock" && clockAllowed
   const dateLabel = isCivilDate(draftDate) ? formatDateOnly(draftDate) : "Data"
   const timeLabel = isCivilTime(draftTime) ? formatCivilTime(draftTime, hourCycle) : "—:—"
@@ -166,7 +162,7 @@ export function DateTimePicker({
   }, [open, step])
 
   function selectDate(civilDate: string) {
-    if (isCivilDateOutOfRange(civilDate, min, max)) return
+    if ((min && civilDate < min) || (max && civilDate > max)) return
     setDate(civilDate)
     setStep("time")
   }
@@ -245,7 +241,7 @@ export function DateTimePicker({
           ) : null}
         </Popover.Trigger>
 
-        <Popover.Portal container={portalContainer ?? undefined}>
+        <Popover.Portal>
           <Popover.Positioner
             className="z-50 outline-none"
             sideOffset={4}
@@ -278,14 +274,18 @@ export function DateTimePicker({
               </div>
 
               {step === "date" ? (
-                <DatePickerCalendar
-                  value={isCivilDate(draftDate) ? draftDate : undefined}
-                  min={min}
-                  max={max}
-                  onSelectDate={selectDate}
-                  titleId={titleId}
-                  focusedCellRef={focusedCellRef}
-                  active={open && step === "date"}
+                <Calendar
+                  mode="single"
+                  selected={civilDateToCalendarDate(draftDate)}
+                  onSelect={(date) => {
+                    const civilDate = calendarDateToCivilDate(date)
+                    if (civilDate) selectDate(civilDate)
+                  }}
+                  disabled={(date) => {
+                    const civilDate = calendarDateToCivilDate(date)
+                    return Boolean((min && civilDate < min) || (max && civilDate > max))
+                  }}
+                  autoFocus
                 />
               ) : (
                 <>

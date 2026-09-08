@@ -29,7 +29,7 @@ import { ClientBriefingCompanyForm } from "@/components/custom/ClientBriefingCom
 import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFinanceForm"
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { Stepper } from "@/components/ui/Stepper"
 import {
   companyAddressFingerprint,

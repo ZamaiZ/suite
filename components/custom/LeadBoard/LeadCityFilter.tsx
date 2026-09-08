@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { Combobox } from "@base-ui/react/combobox"
 import { RiLoader4Line, RiMapPinLine } from "react-icons/ri"
 import { searchLeadCities } from "@/app/actions/leads"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import type { CitySearchItem } from "@/lib/br-locations"
 
@@ -33,7 +32,6 @@ export function LeadCityFilter({
   onValueChange: (next: { city: string | null; state: string | null }) => void
   disabled?: boolean
 }) {
-  const portalContainer = useDialogPortalContainer()
   const fieldRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const requestIdRef = useRef(0)
@@ -152,7 +150,7 @@ export function LeadCityFilter({
         ) : null}
       </div>
 
-      <Combobox.Portal container={portalContainer ?? undefined}>
+      <Combobox.Portal>
         <Combobox.Positioner
           className="z-50 outline-none"
           sideOffset={4}

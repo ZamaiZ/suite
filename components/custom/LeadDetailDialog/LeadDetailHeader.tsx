@@ -5,7 +5,7 @@ import * as m from "motion/react-m"
 import { RiCloseLine, RiExternalLinkLine, RiHistoryLine } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { LeadClaimActions } from "@/components/custom/LeadClaimActions"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import { LEAD_STATUS_LABELS, type LeadStatus } from "@/lib/leads/status"
 import {
@@ -196,6 +196,7 @@ export function LeadDetailHeader({
         <Button
           type="button"
           variant="ghost"
+          size="icon-lg"
           aria-label="Fechar"
           onClick={onClose}
           disabled={closeDisabled}

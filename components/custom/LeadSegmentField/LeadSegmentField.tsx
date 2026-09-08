@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState } from "react"
 import { Combobox } from "@base-ui/react/combobox"
 import { RiAddLine } from "react-icons/ri"
 import { listLeadSegments } from "@/app/actions/leads"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import {
   normalizeSegmentName,
@@ -34,7 +33,6 @@ export function LeadSegmentField({
   disabled,
   onBlur,
 }: LeadSegmentFieldProps) {
-  const portalContainer = useDialogPortalContainer()
   const fieldRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [catalog, setCatalog] = useState<LeadSegment[]>([])
@@ -178,7 +176,7 @@ export function LeadSegmentField({
           />
         </div>
 
-        <Combobox.Portal container={portalContainer ?? undefined}>
+        <Combobox.Portal>
           <Combobox.Positioner
             className="z-50 outline-none"
             sideOffset={4}

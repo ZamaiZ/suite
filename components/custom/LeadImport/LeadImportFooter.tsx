@@ -1,7 +1,7 @@
 "use client"
 
 import { RiLoader4Line, RiSendPlaneLine } from "react-icons/ri"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 export function LeadImportFooter({
   editing,
@@ -50,12 +50,10 @@ export function LeadImportFooter({
             type="button"
             onClick={onRevalidate}
             disabled={isRevalidating}
-            leadingIcon={
-              isRevalidating ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : undefined
-            }
           >
+            {isRevalidating ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : null}
             Reavaliar arquivo
           </Button>
         ) : (
@@ -63,14 +61,12 @@ export function LeadImportFooter({
             type="button"
             onClick={onImport}
             disabled={!canImport || isImporting}
-            leadingIcon={
-              isImporting ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiSendPlaneLine size={16} aria-hidden />
-              )
-            }
           >
+            {isImporting ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiSendPlaneLine data-icon="inline-start" aria-hidden />
+            )}
             {canImport ? importLabel : (blockReason ?? importLabel)}
           </Button>
         )}

@@ -9,10 +9,17 @@ import {
   type CloserOption,
 } from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
-import { Button } from "@/components/ui/Button"
+import { BriefingTextField as Input } from "@/components/custom/BriefingFormControls/BriefingFormControls"
+import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/ui/DateTimePicker"
-import { Input } from "@/components/ui/Input"
-import { Select } from "@/components/ui/Select"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { formatCnpj, formatCpf, digitsOnly } from "@/lib/br-documents"
 import { cn } from "@/lib/cn"
 import {
@@ -338,22 +345,14 @@ function ClosingEventForm({
 
           {showCloser ? (
             <div className="mb-3">
-              <Select
-                id="closing-closer"
-                label="Closer"
-                placeholder="Selecione o closer"
-                items={closers.map((closer) => ({
-                  value: closer.id,
-                  label: closer.name,
-                }))}
-                value={closerId}
-                onValueChange={(next) => {
-                  setCloserId(typeof next === "string" ? next : "")
-                }}
-                error={fieldError.closer_id}
-                disabled={isPending}
-                loading={closersLoading}
-              />
+              <Field data-invalid={Boolean(fieldError.closer_id)}>
+                <FieldLabel htmlFor="closing-closer">Closer</FieldLabel>
+                <Select value={closerId} onValueChange={(next) => setCloserId(String(next))} disabled={isPending || closersLoading}>
+                  <SelectTrigger id="closing-closer" className="w-full"><SelectValue placeholder={closersLoading ? "Carregando…" : "Selecione o closer"} /></SelectTrigger>
+                  <SelectContent align="start">{closers.map((closer) => <SelectItem key={closer.id} value={closer.id}>{closer.name}</SelectItem>)}</SelectContent>
+                </Select>
+                <FieldError>{fieldError.closer_id}</FieldError>
+              </Field>
             </div>
           ) : null}
 

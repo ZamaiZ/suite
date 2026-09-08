@@ -2,8 +2,15 @@
 
 import { useState } from "react"
 import { RiCheckLine, RiFileCopyLine } from "react-icons/ri"
-import { Button } from "@/components/ui/Button"
-import { Dialog } from "@/components/ui/Dialog"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import type { ClientPortalCodeRevealProps } from "./ClientPortalCodeReveal.types"
 
 async function copyText(value: string): Promise<boolean> {
@@ -52,14 +59,12 @@ function CopyRow({
           type="button"
           variant="secondary"
           onClick={() => void handleCopy()}
-          leadingIcon={
-            copied ? (
-              <RiCheckLine size={16} aria-hidden />
-            ) : (
-              <RiFileCopyLine size={16} aria-hidden />
-            )
-          }
         >
+          {copied ? (
+            <RiCheckLine size={16} aria-hidden data-icon="inline-start" />
+          ) : (
+            <RiFileCopyLine size={16} aria-hidden data-icon="inline-start" />
+          )}
           {copied ? "Copiado" : "Copiar"}
         </Button>
       </div>
@@ -75,21 +80,25 @@ export function ClientPortalCodeReveal({
   title = "Guarde este código",
 }: ClientPortalCodeRevealProps) {
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title={title}
-      description="O código não será exibido de novo. Copie agora ou será preciso rotacionar."
-      footer={
-        <Button type="button" onClick={onClose}>
-          Entendi
-        </Button>
-      }
-    >
-      <div className="flex flex-col gap-4">
-        <CopyRow label="Código" value={code} mono />
-        <CopyRow label="Link" value={url} />
-      </div>
+    <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
+            O código não será exibido de novo. Copie agora ou será preciso
+            rotacionar.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-4 py-1">
+          <CopyRow label="Código" value={code} mono />
+          <CopyRow label="Link" value={url} />
+        </div>
+        <DialogFooter>
+          <Button type="button" onClick={onClose}>
+            Entendi
+          </Button>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   )
 }

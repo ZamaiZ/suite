@@ -45,10 +45,11 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Checkbox } from "@/components/ui/Checkbox"
-import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Field, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Textarea } from "@/components/ui/textarea"
 import {
   BRAND_MISSING_LABELS,
   getBrandMissingGroups,
@@ -97,9 +98,10 @@ function TeamRoleBlock({
 }) {
   return (
     <div className="rounded-xl border border-border bg-elevated p-3.5">
-      <RadioGroup
-        label={label}
-        orientation="horizontal"
+      <FieldSet>
+        <FieldLegend variant="label">{label}</FieldLegend>
+        <RadioGroup
+        className="flex flex-row flex-wrap items-center gap-3"
         value={value.hasTeam ?? ""}
         onValueChange={(next) =>
           onChange({
@@ -107,21 +109,24 @@ function TeamRoleBlock({
             hasTeam: next as TeamHasAnswer,
           })
         }
-      >
-        <Radio value="yes" label="Sim" />
-        <Radio value="no" label="Não" />
-      </RadioGroup>
+        >
+          <Field orientation="horizontal" className="w-auto"><RadioGroupItem id={`${id}-yes`} value="yes" /><FieldLabel htmlFor={`${id}-yes`}>Sim</FieldLabel></Field>
+          <Field orientation="horizontal" className="w-auto"><RadioGroupItem id={`${id}-no`} value="no" /><FieldLabel htmlFor={`${id}-no`}>Não</FieldLabel></Field>
+        </RadioGroup>
+      </FieldSet>
       <div className="mt-3">
-        <Textarea
-          id={`${id}-notes`}
-          label="Como a função é realizada"
-          rows={3}
-          value={value.notes}
-          onChange={(event) =>
-            onChange({ ...value, notes: event.target.value })
-          }
-          placeholder="Explique brevemente"
-        />
+        <Field>
+          <FieldLabel htmlFor={`${id}-notes`}>Como a função é realizada</FieldLabel>
+          <Textarea
+            id={`${id}-notes`}
+            rows={3}
+            value={value.notes}
+            onChange={(event) =>
+              onChange({ ...value, notes: event.target.value })
+            }
+            placeholder="Explique brevemente"
+          />
+        </Field>
       </div>
     </div>
   )
@@ -568,17 +573,13 @@ export function ClientBriefingBrandForm({
                   type="button"
                   disabled={isCompleting || !ready}
                   onClick={handleComplete}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Salvando..."
                     : completed
                       ? "Etapa concluída"
                       : "Continuar"}
+                  {completed ? <RiCheckLine size={16} aria-hidden /> : null}
                 </Button>
                 )}
               </div>

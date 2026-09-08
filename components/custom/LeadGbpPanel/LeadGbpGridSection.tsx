@@ -3,9 +3,15 @@
 import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiGridLine } from "react-icons/ri"
 import { LeadGbpGridMap } from "./LeadGbpGridMap"
-import { Button } from "@/components/ui/Button"
-import { Select } from "@/components/ui/Select"
-import { Slider } from "@/components/ui/Slider"
+import { Button } from "@/components/ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { Slider } from "@/components/ui/slider"
 import { cn } from "@/lib/cn"
 import {
   pollLeadGbpGridScan,
@@ -46,11 +52,6 @@ const QUEUE_WAITING =
 function metricLabel(value: number | null, suffix = ""): string {
   if (value === null) return "—"
   return `${value.toLocaleString("pt-BR")}${suffix}`
-}
-
-/** O Select devolve `string | string[]`; aqui o uso é sempre simples. */
-function firstValue(value: string | string[]): string {
-  return Array.isArray(value) ? (value[0] ?? "") : value
 }
 
 export function LeadGbpGridSection({
@@ -209,56 +210,38 @@ export function LeadGbpGridSection({
                 <span className="font-sans text-caption text-fg-muted">
                   Keyword
                 </span>
-                <Select
-                  id={`gbp-grid-keyword-${profileId}`}
-                  items={keywords.map((item) => ({
-                    value: item,
-                    label: item,
-                  }))}
-                  value={activeKeyword}
-                  searchable={false}
-                  disabled={busy || active || keywords.length === 0}
-                  onValueChange={(value) => setKeyword(firstValue(value))}
-                />
+                <Select value={activeKeyword} onValueChange={(value) => setKeyword(String(value))} disabled={busy || active || keywords.length === 0}>
+                  <SelectTrigger id={`gbp-grid-keyword-${profileId}`} className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent align="start">{keywords.map((item) => <SelectItem key={item} value={item}>{item}</SelectItem>)}</SelectContent>
+                </Select>
               </label>
 
               <label className="flex min-w-28 flex-col gap-1">
                 <span className="font-sans text-caption text-fg-muted">
                   Malha
                 </span>
-                <Select
-                  id={`gbp-grid-size-${profileId}`}
-                  items={GBP_GRID_SIZES.map((item) => ({
-                    value: String(item),
-                    label: `${item}×${item}`,
-                  }))}
-                  value={String(size)}
-                  searchable={false}
-                  disabled={busy || active}
-                  onValueChange={(value) => {
-                    const next = Number(firstValue(value))
+                <Select value={String(size)} disabled={busy || active} onValueChange={(value) => {
+                    const next = Number(value)
                     setSize(next)
                     // O modo acompanha o tamanho, e o usuário pode trocar depois.
                     setMode(gbpGridExecutionMode(next))
-                  }}
-                />
+                  }}>
+                  <SelectTrigger id={`gbp-grid-size-${profileId}`} className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent align="start">{GBP_GRID_SIZES.map((item) => <SelectItem key={item} value={String(item)}>{item}×{item}</SelectItem>)}</SelectContent>
+                </Select>
               </label>
 
               <label className="flex min-w-32 flex-col gap-1">
                 <span className="font-sans text-caption text-fg-muted">
                   Execução
                 </span>
-                <Select
-                  id={`gbp-grid-mode-${profileId}`}
-                  items={MODE_ITEMS}
-                  value={mode}
-                  searchable={false}
-                  disabled={busy || active}
-                  onValueChange={(value) => {
-                    const next = firstValue(value)
+                <Select value={mode} disabled={busy || active} onValueChange={(value) => {
+                    const next = String(value)
                     if (next === "live" || next === "queued") setMode(next)
-                  }}
-                />
+                  }}>
+                  <SelectTrigger id={`gbp-grid-mode-${profileId}`} className="w-full"><SelectValue /></SelectTrigger>
+                  <SelectContent align="start">{MODE_ITEMS.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+                </Select>
               </label>
 
               <label className="flex min-w-44 flex-col gap-1">
@@ -270,12 +253,9 @@ export function LeadGbpGridSection({
                   min={GBP_GRID_RADIUS_KM_MIN}
                   max={GBP_GRID_RADIUS_KM_MAX}
                   step={1}
-                  value={radiusKm}
+                  value={[radiusKm]}
                   disabled={busy || active}
-                  onValueChange={(value) => {
-                    const next = Array.isArray(value) ? value[0] : value
-                    if (typeof next === "number") setRadiusKm(next)
-                  }}
+                  onValueChange={(value) => setRadiusKm(value[0] ?? radiusKm)}
                 />
               </label>
 
@@ -287,16 +267,8 @@ export function LeadGbpGridSection({
                 onClick={() => {
                   void handleStart()
                 }}
-                leadingIcon={
-                  busy ? (
-                    <RiLoader4Line
-                      size={16}
-                      aria-hidden
-                      className="animate-spin"
-                    />
-                  ) : null
-                }
               >
+                {busy ? <RiLoader4Line size={16} aria-hidden className="animate-spin" /> : null}
                 Rodar malha
               </Button>
 

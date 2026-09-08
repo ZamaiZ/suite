@@ -4,8 +4,7 @@ import { useEffect, useState, useTransition } from "react"
 import { Menu } from "@base-ui/react/menu"
 import { RiLoader4Line, RiMore2Line, RiUserAddLine, RiUserUnfollowLine } from "react-icons/ri"
 import { claimLead, unclaimLead } from "@/app/actions/leads"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import type { LeadClaimActionsProps } from "./LeadClaimActions.types"
 
@@ -26,7 +25,6 @@ export function LeadClaimActions({
   onPendingChange,
   onError,
 }: LeadClaimActionsProps) {
-  const portalContainer = useDialogPortalContainer()
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState<{
     tone: "success" | "error"
@@ -86,7 +84,7 @@ export function LeadClaimActions({
             <RiMore2Line size={18} aria-hidden />
           )}
         </Menu.Trigger>
-        <Menu.Portal container={portalContainer ?? undefined}>
+        <Menu.Portal>
           <Menu.Positioner className="z-50 outline-none" sideOffset={4} align="end">
             <Menu.Popup
               className={cn(
@@ -139,14 +137,12 @@ export function LeadClaimActions({
             type="button"
             onClick={() => run("claim")}
             disabled={isPending}
-            leadingIcon={
-              isPending ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiUserAddLine size={16} aria-hidden />
-              )
-            }
           >
+            {isPending ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiUserAddLine data-icon="inline-start" aria-hidden />
+            )}
             Reivindicar
           </Button>
         ) : null}
@@ -156,14 +152,12 @@ export function LeadClaimActions({
             variant="secondary"
             onClick={() => run("unclaim")}
             disabled={isPending}
-            leadingIcon={
-              isPending ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiUserUnfollowLine size={16} aria-hidden />
-              )
-            }
           >
+            {isPending ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiUserUnfollowLine data-icon="inline-start" aria-hidden />
+            )}
             Devolver à fila
           </Button>
         ) : null}

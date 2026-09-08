@@ -25,8 +25,9 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Textarea } from "@/components/ui/textarea"
 import {
   eligibleCatalogItems,
   FINANCE_MISSING_LABELS,
@@ -209,16 +210,18 @@ export function ClientBriefingFinanceForm({
             ))}
           </BriefingChoiceCardGroup>
 
-          <Textarea
+          <Field>
+            <FieldLabel htmlFor="briefing-peak-revenue-reason">Teve algum motivo específico?</FieldLabel>
+            <Textarea
             id="briefing-peak-revenue-reason"
-            label="Teve algum motivo específico?"
             rows={4}
             value={payload.peakRevenueReason}
             onChange={(event) =>
               patch({ peakRevenueReason: event.target.value })
             }
             placeholder="Ex.: campanha, sazonalidade, contrato pontual…"
-          />
+            />
+          </Field>
 
           <BriefingChoiceCardGroup
             label="Existe alguma sazonalidade que influencie o faturamento?"
@@ -250,16 +253,18 @@ export function ClientBriefingFinanceForm({
           </BriefingChoiceCardGroup>
 
           {showSeasonalityNotes ? (
-            <Textarea
+            <Field>
+              <FieldLabel htmlFor="briefing-seasonality-notes">Quando e por quê?</FieldLabel>
+              <Textarea
               id="briefing-seasonality-notes"
-              label="Quando e por quê?"
               rows={4}
               value={payload.seasonalityNotes}
               onChange={(event) =>
                 patch({ seasonalityNotes: event.target.value })
               }
               placeholder="Quais meses ou datas mais importam, e o que costuma acontecer?"
-            />
+              />
+            </Field>
           ) : null}
         </BriefingSectionCard>
 
@@ -421,17 +426,13 @@ export function ClientBriefingFinanceForm({
                   type="button"
                   disabled={isCompleting || !ready}
                   onClick={handleComplete}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Salvando..."
                     : completed
                       ? "Etapa concluída"
                       : "Continuar"}
+                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
                 </Button>
                 )}
               </div>

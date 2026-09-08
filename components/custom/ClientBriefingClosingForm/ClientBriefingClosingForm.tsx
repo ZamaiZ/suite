@@ -20,9 +20,10 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import { Field, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Textarea } from "@/components/ui/textarea"
 import {
   CLOSING_ANSWER_IDS,
   CLOSING_MISSING_LABELS,
@@ -123,35 +124,47 @@ export function ClientBriefingClosingForm({
           title="Considerações finais"
           description="Espaço livre para o que não coube nas etapas anteriores."
         >
-          <RadioGroup
-            label="Existe alguma outra informação não perguntada que é relevante que a gente saiba?"
-            orientation="horizontal"
-            value={payload.hasAdditionalInfo ?? ""}
-            onValueChange={(next) =>
-              patch({
-                hasAdditionalInfo: (
-                  CLOSING_ANSWER_IDS as readonly string[]
-                ).includes(next)
-                  ? (next as ClosingAnswerId)
-                  : null,
-              })
-            }
-          >
-            <Radio value="yes" label="Sim" />
-            <Radio value="no" label="Não" />
-          </RadioGroup>
+          <FieldSet>
+            <FieldLegend variant="label">
+              Existe alguma outra informação não perguntada que é relevante que a gente saiba?
+            </FieldLegend>
+            <RadioGroup
+              className="flex flex-row flex-wrap items-center gap-3"
+              value={payload.hasAdditionalInfo ?? ""}
+              onValueChange={(next) =>
+                patch({
+                  hasAdditionalInfo: (
+                    CLOSING_ANSWER_IDS as readonly string[]
+                  ).includes(next)
+                    ? (next as ClosingAnswerId)
+                    : null,
+                })
+              }
+            >
+              <Field orientation="horizontal" className="w-auto">
+                <RadioGroupItem id="briefing-additional-info-yes" value="yes" />
+                <FieldLabel htmlFor="briefing-additional-info-yes">Sim</FieldLabel>
+              </Field>
+              <Field orientation="horizontal" className="w-auto">
+                <RadioGroupItem id="briefing-additional-info-no" value="no" />
+                <FieldLabel htmlFor="briefing-additional-info-no">Não</FieldLabel>
+              </Field>
+            </RadioGroup>
+          </FieldSet>
 
           {showAdditionalInfo ? (
-            <Textarea
-              id="briefing-additional-info"
-              label="O que mais devemos saber?"
-              rows={6}
-              value={payload.additionalInfo}
-              onChange={(event) =>
-                patch({ additionalInfo: event.target.value })
-              }
-              placeholder="Contexto, preferências, restrições, prazos ou qualquer detalhe importante…"
-            />
+            <Field>
+              <FieldLabel htmlFor="briefing-additional-info">O que mais devemos saber?</FieldLabel>
+              <Textarea
+                id="briefing-additional-info"
+                rows={6}
+                value={payload.additionalInfo}
+                onChange={(event) =>
+                  patch({ additionalInfo: event.target.value })
+                }
+                placeholder="Contexto, preferências, restrições, prazos ou qualquer detalhe importante…"
+              />
+            </Field>
           ) : null}
         </BriefingSectionCard>
 
@@ -224,17 +237,13 @@ export function ClientBriefingClosingForm({
                   type="button"
                   disabled={isCompleting || !ready}
                   onClick={handleFinalize}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Finalizando..."
                     : completed
                       ? "Etapa concluída"
                       : "Finalizar briefing"}
+                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
                 </Button>
                 )}
               </div>

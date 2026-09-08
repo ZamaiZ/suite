@@ -2,7 +2,7 @@
 
 import { RiCloseLine, RiUploadCloud2Line } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 export function LeadImportHeader({
   onClose,
@@ -28,6 +28,7 @@ export function LeadImportHeader({
       <Button
         type="button"
         variant="ghost"
+        size="icon-lg"
         aria-label="Fechar"
         onClick={onClose}
         disabled={closeDisabled}

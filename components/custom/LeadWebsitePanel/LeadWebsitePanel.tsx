@@ -17,7 +17,13 @@ import { LeadWebsiteScreenshots } from "./LeadWebsiteScreenshots"
 import { LeadWebsiteStepHeader } from "./LeadWebsiteStepHeader"
 import { LeadWebsiteSummaryCards } from "./LeadWebsiteSummaryCards"
 import type { LeadWebsitePanelProps } from "./LeadWebsitePanel.types"
-import { Select } from "@/components/ui/Select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   digitalChannelDisplay,
   hrefForDigitalChannel,
@@ -322,18 +328,17 @@ export function LeadWebsitePanel({
 
       {channels.length > 1 ? (
         <div className="max-w-sm">
-          <Select
-            id={`website-channel-${detail.lead.id}`}
-            items={channels.map((channel) => ({
-              value: channel.id ?? channel.normalized_key,
-              label: digitalChannelDisplay(channel.type, channel.value),
-            }))}
-            value={selected.id ?? ""}
-            searchable={false}
-            onValueChange={(value) => {
-              if (typeof value === "string" && value) setSelectedId(value)
-            }}
-          />
+          <Select value={selected.id ?? ""} onValueChange={(value) => setSelectedId(String(value))}>
+            <SelectTrigger id={`website-channel-${detail.lead.id}`} className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent align="start">
+              {channels.map((channel) => {
+                const value = channel.id ?? channel.normalized_key
+                return <SelectItem key={value} value={value}>{digitalChannelDisplay(channel.type, channel.value)}</SelectItem>
+              })}
+            </SelectContent>
+          </Select>
           {selected.is_primary ? (
             <p className="mt-2 inline-flex items-center gap-1 font-sans text-caption text-accent">
               <RiStarFill size={12} aria-hidden />

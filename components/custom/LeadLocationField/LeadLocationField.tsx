@@ -2,7 +2,14 @@
 
 import { useMemo } from "react"
 import { RiMapPinLine } from "react-icons/ri"
-import { Select } from "@/components/ui/Select"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   brStateOptions,
   cityOptionsForState,
@@ -30,45 +37,34 @@ export function LeadLocationField({
 
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      <Select
-        id={`${id}-state`}
-        label="UF"
-        items={stateItems}
-        value={value.state_code}
-        onValueChange={(next) => {
-          const stateCode = typeof next === "string" ? next : ""
+      <Field data-invalid={Boolean(stateError)}>
+        <FieldLabel htmlFor={`${id}-state`}>UF</FieldLabel>
+        <Select value={value.state_code} disabled={disabled} onValueChange={(next) => {
+          const stateCode = String(next)
           onValueChange({
             state_code: stateCode as BrazilStateCode | "",
             city: "",
           })
-        }}
-        searchable
-        clearable={false}
-        placeholder="Selecionar UF"
-        leadingIcon={<RiMapPinLine size={16} aria-hidden />}
-        error={stateError}
-        disabled={disabled}
-        onBlur={onBlur}
-      />
-      <Select
-        id={`${id}-city`}
-        label="Cidade"
-        items={cityItems}
-        value={value.city}
-        onValueChange={(next) => {
-          const city = typeof next === "string" ? next : ""
+        }}>
+          <SelectTrigger id={`${id}-state`} className="w-full" onBlur={onBlur}><RiMapPinLine size={16} aria-hidden /><SelectValue placeholder="Selecionar UF" /></SelectTrigger>
+          <SelectContent align="start">{stateItems.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+        </Select>
+        <FieldError>{stateError}</FieldError>
+      </Field>
+      <Field data-invalid={Boolean(cityError)}>
+        <FieldLabel htmlFor={`${id}-city`}>Cidade</FieldLabel>
+        <Select value={value.city} disabled={disabled || !value.state_code} onValueChange={(next) => {
+          const city = String(next)
           onValueChange({
             ...value,
             city,
           })
-        }}
-        searchable
-        clearable={false}
-        placeholder={value.state_code ? "Selecionar cidade" : "Selecione a UF primeiro"}
-        error={cityError}
-        disabled={disabled || !value.state_code}
-        onBlur={onBlur}
-      />
+        }}>
+          <SelectTrigger id={`${id}-city`} className="w-full" onBlur={onBlur}><SelectValue placeholder={value.state_code ? "Selecionar cidade" : "Selecione a UF primeiro"} /></SelectTrigger>
+          <SelectContent align="start">{cityItems.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+        </Select>
+        <FieldError>{cityError}</FieldError>
+      </Field>
     </div>
   )
 }

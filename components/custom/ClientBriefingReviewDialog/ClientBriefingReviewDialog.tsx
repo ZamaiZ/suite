@@ -41,8 +41,14 @@ import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFin
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
 import { ClientKickoffPanel } from "@/components/custom/ClientKickoffPanel"
-import { Button } from "@/components/ui/Button"
-import { Dialog } from "@/components/ui/Dialog"
+import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import {
   companyAddressFingerprint,
   companyFormattedAddress,
@@ -253,11 +259,20 @@ export function ClientBriefingReviewDialog({
   return (
     <Dialog
       open={open}
-      onClose={() => void closeDialog()}
-      title={title}
-      description="Acompanhamento do briefing do cliente"
-      size="xl"
-      header={
+      onOpenChange={(next) => {
+        if (!next) void closeDialog()
+      }}
+    >
+      <DialogContent
+        showCloseButton={false}
+        className="flex h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] grid-cols-1 grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-3xl p-0 sm:max-w-none"
+      >
+        <DialogHeader className="sr-only">
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>
+            Acompanhamento do briefing do cliente
+          </DialogDescription>
+        </DialogHeader>
         <ClientBriefingDialogHeader
           companyName={title}
           statusLabel={overview?.statusLabel}
@@ -266,9 +281,6 @@ export function ClientBriefingReviewDialog({
           closeDisabled={isFinishingEdit}
           onClose={() => void closeDialog()}
         />
-      }
-      bodyClassName="flex min-h-0 flex-1 flex-col overflow-hidden p-0"
-    >
       <BriefingWriterProvider clientId={clientId} flushRef={editorFlushRef}>
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden lg:flex-row">
           <ClientBriefingNavigationRail
@@ -458,6 +470,7 @@ export function ClientBriefingReviewDialog({
           </section>
         </div>
       </BriefingWriterProvider>
+      </DialogContent>
     </Dialog>
   )
 }

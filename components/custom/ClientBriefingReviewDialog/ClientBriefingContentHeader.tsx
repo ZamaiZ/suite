@@ -2,7 +2,7 @@
 
 import { RiArrowLeftLine, RiPencilLine } from "react-icons/ri"
 import type { StaffBriefingOverview } from "@/app/actions/briefing"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { formatDateTimeShort } from "@/lib/date-time"
 import type { ClientBriefingArea } from "./ClientBriefingNavigationRail"
 
@@ -42,7 +42,8 @@ export function ClientBriefingContentHeader({
               aria-label="Voltar ao briefing"
               disabled={busy}
               onClick={onBackToOverview}
-              className="mt-0.5 size-9 shrink-0 px-0"
+              size="icon-lg"
+              className="mt-0.5 shrink-0"
             >
               <RiArrowLeftLine size={18} aria-hidden />
             </Button>
@@ -82,9 +83,9 @@ export function ClientBriefingContentHeader({
           variant={editing ? "secondary" : "ghost"}
           disabled={busy}
           onClick={onEditToggle}
-          leadingIcon={editing ? undefined : <RiPencilLine size={16} aria-hidden />}
           className="shrink-0"
         >
+          {!editing ? <RiPencilLine size={16} aria-hidden data-icon="inline-start" /> : null}
           {editing ? "Concluir edição" : "Editar"}
         </Button>
       ) : null}

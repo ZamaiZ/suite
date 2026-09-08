@@ -3,7 +3,7 @@
 import * as React from "react"
 import { cn } from "cn"
 import { OTPInput, OTPInputContext } from "input-otp"
-import { MinusIcon } from "lucide-react"
+import { RiSubtractLine } from "react-icons/ri"
 
 function InputOTP({
   className,
@@ -77,8 +77,7 @@ function InputOTPSeparator({ ...props }: React.ComponentProps<"div">) {
       role="separator"
       {...props}
     >
-      <MinusIcon
-      />
+      <RiSubtractLine aria-hidden />
     </div>
   )
 }

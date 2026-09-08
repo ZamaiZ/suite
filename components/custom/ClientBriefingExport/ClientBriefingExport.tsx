@@ -14,7 +14,7 @@ import {
   loadClientBriefingExport,
   type ClientBriefingExportState,
 } from "@/app/actions/briefing"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { formatDateTimeShort } from "@/lib/date-time"
 
 type Props = {
@@ -81,8 +81,8 @@ export function ClientBriefingExport({ clientId, finalizedAt, contentUpdatedAt }
         {message ? <p role="alert" className="mt-2 flex items-center gap-1.5 font-sans text-caption text-danger"><RiErrorWarningLine size={15} aria-hidden />{message}</p> : null}
       </div>
       <div className="flex shrink-0 flex-wrap gap-2">
-        {hasCurrent ? <Button type="button" variant="ghost" disabled={pending} onClick={openCurrent} leadingIcon={<RiExternalLinkLine size={16} aria-hidden />}>Abrir atual</Button> : null}
-        <Button type="button" variant={hasCurrent ? "secondary" : "primary"} disabled={pending} onClick={generate} leadingIcon={pending ? <RiLoader4Line size={16} aria-hidden className="animate-spin" /> : hasCurrent ? <RiRefreshLine size={16} aria-hidden /> : <RiFileWordLine size={16} aria-hidden />}>{pending ? "Gerando…" : hasCurrent ? "Gerar nova versão" : "Gerar Word"}</Button>
+        {hasCurrent ? <Button type="button" variant="ghost" disabled={pending} onClick={openCurrent}><RiExternalLinkLine size={16} aria-hidden data-icon="inline-start" />Abrir atual</Button> : null}
+        <Button type="button" variant={hasCurrent ? "secondary" : "default"} disabled={pending} onClick={generate}>{pending ? <RiLoader4Line size={16} aria-hidden data-icon="inline-start" className="animate-spin" /> : hasCurrent ? <RiRefreshLine size={16} aria-hidden data-icon="inline-start" /> : <RiFileWordLine size={16} aria-hidden data-icon="inline-start" />}{pending ? "Gerando…" : hasCurrent ? "Gerar nova versão" : "Gerar Word"}</Button>
       </div>
     </section>
   )

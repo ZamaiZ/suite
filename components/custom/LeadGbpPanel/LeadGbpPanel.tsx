@@ -10,7 +10,7 @@ import { LeadDigitalPresencePanel } from "@/components/custom/LeadDigitalPresenc
 import { LeadDiagnosisPanel } from "@/components/custom/LeadDiagnosisPanel"
 import { LeadVisibilityPanel } from "@/components/custom/LeadVisibilityPanel"
 import { LeadWebsitePanel } from "@/components/custom/LeadWebsitePanel"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import { todayCivilDate } from "@/lib/date-time"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"

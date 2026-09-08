@@ -10,11 +10,12 @@ import {
 } from "react-icons/ri"
 import { listClosers, type CloserOption } from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
-import { Button, type ButtonVariant } from "@/components/ui/Button"
+import { BriefingTextField as Input } from "@/components/custom/BriefingFormControls/BriefingFormControls"
+import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/ui/DateTimePicker"
-import { Dialog } from "@/components/ui/Dialog"
-import { Input } from "@/components/ui/Input"
-import { Select } from "@/components/ui/Select"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { cn } from "@/lib/cn"
 import {
   datetimeLocalToCivilDate,
@@ -62,7 +63,7 @@ const DROP_KIND: Record<
     banner: string
     bannerClassName: string
     submitLabel: string
-    submitVariant: ButtonVariant
+    submitVariant: "default" | "destructive"
   }
 > = {
   follow_up: {
@@ -72,7 +73,7 @@ const DROP_KIND: Record<
     banner: "O lead vai para Retorno com a data e o horário definidos.",
     bannerClassName: "bg-warning/10 text-warning",
     submitLabel: "Agendar retorno",
-    submitVariant: "warning",
+    submitVariant: "default",
   },
   denied: {
     icon: RiCloseCircleLine,
@@ -82,7 +83,7 @@ const DROP_KIND: Record<
       "Sem retorno, vai para Negado. Com retorno, volta para Retorno marcado como negativa.",
     bannerClassName: "bg-danger/10 text-danger",
     submitLabel: "Registrar negativa",
-    submitVariant: "danger",
+    submitVariant: "destructive",
   },
   interested: {
     icon: RiCheckboxCircleLine,
@@ -91,7 +92,7 @@ const DROP_KIND: Record<
     banner: "O lead vira oportunidade com closer e reunião.",
     bannerClassName: "bg-success/10 text-success",
     submitLabel: "Registrar interesse",
-    submitVariant: "success",
+    submitVariant: "default",
   },
 }
 
@@ -267,13 +268,10 @@ export function LeadDropDialogs({
   }
 
   return (
-    <Dialog
-      open={open}
-      onClose={handleClose}
-      title={config.title}
-      description={request?.companyName}
-      bodyClassName="bg-canvas"
-      header={
+    <Dialog open={open} onOpenChange={(next) => { if (!next) handleClose() }}>
+      <DialogContent showCloseButton={false} className="max-h-[calc(100dvh-2rem)] max-w-xl overflow-y-auto bg-background p-0">
+        <DialogTitle className="sr-only">{config.title}</DialogTitle>
+        <DialogDescription className="sr-only">{request?.companyName}</DialogDescription>
         <LeadDropHeader
           icon={config.icon}
           wellClassName={config.wellClassName}
@@ -282,23 +280,8 @@ export function LeadDropDialogs({
           websiteDomain={request?.websiteDomain ?? ""}
           onClose={handleClose}
         />
-      }
-      footer={
-        <>
-          <Button type="button" variant="ghost" onClick={handleClose}>
-            Cancelar
-          </Button>
-          <Button
-            type="button"
-            variant={config.submitVariant}
-            onClick={handleSubmit}
-            leadingIcon={<SubmitIcon size={16} aria-hidden />}
-          >
-            {config.submitLabel}
-          </Button>
-        </>
-      }
-    >
+        <div className="p-4">
+        
       <div className="flex flex-col gap-4">
         <section className="rounded-xl bg-surface p-4 shadow-card">
           <div
@@ -347,22 +330,14 @@ export function LeadDropDialogs({
           ) : null}
           {kind === "interested" ? (
             <div className="mb-4">
-              <Select
-                id="lead-drop-closer"
-                label="Closer"
-                placeholder="Selecione o closer"
-                items={closers.map((closer) => ({
-                  value: closer.id,
-                  label: closer.name,
-                }))}
-                value={closerId}
-                onValueChange={(next) => {
-                  setCloserId(typeof next === "string" ? next : "")
+              <Field data-invalid={Boolean(closerError)}>
+                <FieldLabel htmlFor="lead-drop-closer">Closer</FieldLabel>
+                <Select value={closerId} onValueChange={(next) => {
+                  setCloserId(String(next))
                   setCloserError(null)
-                }}
-                error={closerError ?? undefined}
-                loading={closersLoading}
-              />
+                }} disabled={closersLoading}><SelectTrigger id="lead-drop-closer" className="h-10 w-full"><SelectValue placeholder={closersLoading ? "Carregando…" : "Selecione o closer"} /></SelectTrigger><SelectContent align="start">{closers.map((closer) => <SelectItem key={closer.id} value={closer.id}>{closer.name}</SelectItem>)}</SelectContent></Select>
+                <FieldError>{closerError}</FieldError>
+              </Field>
             </div>
           ) : null}
           <div className="mb-4">
@@ -422,6 +397,9 @@ export function LeadDropDialogs({
           </p>
         ) : null}
       </div>
+      <DialogFooter className="border-t border-border p-4"><Button type="button" variant="ghost" onClick={handleClose}>Cancelar</Button><Button type="button" variant={config.submitVariant} onClick={handleSubmit}><SubmitIcon size={16} aria-hidden />{config.submitLabel}</Button></DialogFooter>
+      </div>
+      </DialogContent>
     </Dialog>
   )
 }

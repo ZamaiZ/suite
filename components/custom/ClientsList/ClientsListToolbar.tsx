@@ -9,18 +9,24 @@ import {
   RiSearchLine,
   RiUser3Line,
 } from "react-icons/ri"
-import { Select, type SelectItem } from "@/components/ui/Select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import type { ClientCloserOption } from "@/app/actions/clients"
 import { clientsListHref, type ClientsListParams } from "@/lib/clients/href"
 import { CLIENT_KICKOFF_STAGE_LABELS } from "@/lib/clients/kickoff"
 
-const BRIEFING_ITEMS: SelectItem[] = [
+const BRIEFING_ITEMS = [
   { value: "in_progress", label: "Em andamento" },
   { value: "finalized", label: "Finalizado" },
   { value: "edited_after_submit", label: "Editado após envio" },
 ]
 
-const KICKOFF_ITEMS: SelectItem[] = Object.entries(
+const KICKOFF_ITEMS = Object.entries(
   CLIENT_KICKOFF_STAGE_LABELS,
 ).map(([value, label]) => ({
   value,
@@ -84,7 +90,7 @@ export function ClientsListToolbar({
       listParams.kickoff ||
       listParams.closer,
   )
-  const closerItems: SelectItem[] = closerOptions.map((closer) => ({
+  const closerItems = closerOptions.map((closer) => ({
     value: closer.id,
     label: closer.name,
   }))
@@ -118,51 +124,13 @@ export function ClientsListToolbar({
           Filtros
         </span>
         <div className="w-40 shrink-0">
-          <Select
-            id="clients-briefing-filter"
-            items={BRIEFING_ITEMS}
-            value={listParams.briefing ?? ""}
-            onValueChange={(value) => {
-              const briefing = typeof value === "string" ? value : ""
-              replace({
-                briefing: (briefing || null) as ClientsListParams["briefing"],
-              })
-            }}
-            searchable={true}
-            clearable
-            placeholder="Briefing"
-          />
+          <Select value={listParams.briefing ?? "all"} onValueChange={(value) => replace({ briefing: (value === "all" ? null : String(value)) as ClientsListParams["briefing"] })}><SelectTrigger id="clients-briefing-filter" className="h-10 w-full"><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="all">Todos os briefings</SelectItem>{BRIEFING_ITEMS.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent></Select>
         </div>
         <div className="w-40 shrink-0">
-          <Select
-            id="clients-kickoff-filter"
-            items={KICKOFF_ITEMS}
-            value={listParams.kickoff ?? ""}
-            onValueChange={(value) => {
-              const kickoff = typeof value === "string" ? value : ""
-              replace({
-                kickoff: (kickoff || null) as ClientsListParams["kickoff"],
-              })
-            }}
-            searchable={false}
-            clearable
-            placeholder="Kickoff"
-            leadingIcon={<RiCalendarEventLine size={16} aria-hidden />}
-          />
+          <Select value={listParams.kickoff ?? "all"} onValueChange={(value) => replace({ kickoff: (value === "all" ? null : String(value)) as ClientsListParams["kickoff"] })}><SelectTrigger id="clients-kickoff-filter" className="h-10 w-full"><RiCalendarEventLine size={16} aria-hidden /><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="all">Todos os kickoffs</SelectItem>{KICKOFF_ITEMS.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent></Select>
         </div>
         <div className="w-40 shrink-0">
-          <Select
-            id="clients-closer-filter"
-            items={closerItems}
-            value={listParams.closer ?? ""}
-            onValueChange={(value) => {
-              const closer = typeof value === "string" ? value : ""
-              replace({ closer: closer || null })
-            }}
-            clearable
-            placeholder="Closer"
-            leadingIcon={<RiUser3Line size={16} aria-hidden />}
-          />
+          <Select value={listParams.closer ?? "all"} onValueChange={(value) => replace({ closer: value === "all" ? null : String(value) })}><SelectTrigger id="clients-closer-filter" className="h-10 w-full"><RiUser3Line size={16} aria-hidden /><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="all">Todos os closers</SelectItem>{closerItems.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent></Select>
         </div>
         {hasFilters ? (
           <button

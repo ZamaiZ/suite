@@ -32,12 +32,15 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Checkbox } from "@/components/ui/Checkbox"
-import { Input } from "@/components/ui/Input"
-import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
-import { Slider } from "@/components/ui/Slider"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import {
+  BriefingCheckbox as Checkbox,
+  BriefingRadio as Radio,
+  BriefingRadioGroup as RadioGroup,
+  BriefingSliderField as Slider,
+  BriefingTextareaField as Textarea,
+  BriefingTextField as Input,
+} from "@/components/custom/BriefingFormControls/BriefingFormControls"
 import {
   AUDIENCE_MISSING_LABELS,
   PERSONA_AGE_RANGE_IDS,
@@ -598,17 +601,13 @@ export function ClientBriefingAudienceForm({
                   type="button"
                   disabled={isCompleting || !ready}
                   onClick={handleComplete}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Salvando..."
                     : completed
                       ? "Etapa concluída"
                       : "Continuar"}
+                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
                 </Button>
                 )}
               </div>

@@ -28,9 +28,12 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
+import { Button } from "@/components/ui/button"
+import {
+  BriefingRadio as Radio,
+  BriefingRadioGroup as RadioGroup,
+  BriefingTextField as Input,
+} from "@/components/custom/BriefingFormControls/BriefingFormControls"
 import {
   ACCESS_ANSWER_IDS,
   ACCESSES_MISSING_LABELS,
@@ -897,17 +900,13 @@ export function ClientBriefingAccessesForm({
                   type="button"
                   disabled={isCompleting || isSavingSecret || !ready}
                   onClick={handleComplete}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Salvando..."
                     : completed
                       ? "Etapa concluída"
                       : "Continuar"}
+                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
                 </Button>
                 )}
               </div>

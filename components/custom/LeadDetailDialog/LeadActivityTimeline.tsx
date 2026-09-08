@@ -5,7 +5,13 @@ import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
 import { RiFilter3Line } from "react-icons/ri"
 import { LEAD_ACTIVITY_CHANNEL_ICONS } from "@/components/custom/LeadActivityChannelPicker"
-import { Select } from "@/components/ui/Select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import {
@@ -69,19 +75,13 @@ export function LeadActivityTimeline({
           Histórico de atividades
         </h3>
         <div className="w-48 shrink-0">
-          <Select
-            id="lead-activity-channel-filter"
-            items={FILTER_ITEMS}
-            value={channelFilter}
-            onValueChange={(value) => {
-              if (typeof value !== "string") return
-              if (value === "all" || isLeadActivityChannel(value)) {
-                setChannelFilter(value)
-              }
-            }}
-            searchable={false}
-            leadingIcon={<RiFilter3Line size={14} aria-hidden />}
-          />
+          <Select value={channelFilter} onValueChange={(value) => {
+            const next = String(value)
+            if (next === "all" || isLeadActivityChannel(next)) setChannelFilter(next)
+          }}>
+            <SelectTrigger id="lead-activity-channel-filter" className="w-full"><RiFilter3Line size={14} aria-hidden /><SelectValue /></SelectTrigger>
+            <SelectContent align="start">{FILTER_ITEMS.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent>
+          </Select>
         </div>
       </div>
 

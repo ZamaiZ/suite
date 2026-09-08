@@ -20,13 +20,17 @@ import {
 import type { ConvertLeadState } from "@/app/actions/clients"
 import { ClientPortalCodeReveal } from "@/components/custom/ClientPortalCodeReveal"
 import { LeadGbpPanel } from "@/components/custom/LeadGbpPanel"
-import { Dialog } from "@/components/ui/Dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { cn } from "@/lib/cn"
 import { leadAccessFlags } from "@/lib/leads/board-item"
 import { isClosingStage } from "@/lib/leads/closing"
 import { countActivitiesByChannel } from "@/lib/leads/channel"
 import { matchWebsiteKey, websiteKeysFromChannels } from "@/lib/leads/gbp"
-import { leadDetailDialogSize } from "@/lib/leads/detail-dialog-layout"
 import { isLeadStatus } from "@/lib/leads/status"
 import type { LeadTag } from "@/lib/leads/tags"
 import type { LeadWritePayload } from "@/lib/leads/types"
@@ -400,13 +404,16 @@ export function LeadDetailDialog({
 
   return (
     <>
-    <Dialog
-      open={open}
-      onClose={handleRequestClose}
-      title={companyName}
-      description={domain || "Atividade e cadastro do lead"}
-      size={leadDetailDialogSize(tab)}
-      header={
+    <Dialog open={open} onOpenChange={(next) => { if (!next) handleRequestClose() }}>
+      <DialogContent
+        showCloseButton={false}
+        className={cn(
+          "h-[min(50rem,calc(100dvh-2rem))] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl gap-0 overflow-hidden bg-background p-0",
+          tab === "opportunity" && "max-w-6xl",
+        )}
+      >
+        <DialogTitle className="sr-only">{companyName}</DialogTitle>
+        <DialogDescription className="sr-only">{domain || "Atividade e cadastro do lead"}</DialogDescription>
         <LeadDetailHeader
           tab={tab}
           onTabChange={setTab}
@@ -432,9 +439,6 @@ export function LeadDetailDialog({
           onClaimPending={setClaimPending}
           onClaimError={setClaimError}
         />
-      }
-      bodyClassName="bg-canvas p-0 sm:p-0"
-    >
       <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
         {claimError ? (
           <p
@@ -542,6 +546,7 @@ export function LeadDetailDialog({
           </div>
         ) : null}
       </div>
+      </DialogContent>
     </Dialog>
       <ClientPortalCodeReveal
         open={portalReveal !== null}

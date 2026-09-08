@@ -5,7 +5,6 @@ import { Popover } from "@base-ui/react/popover"
 import { useReducedMotion } from "motion/react"
 import { RiCloseLine, RiKeyboardLine, RiTimeLine } from "react-icons/ri"
 import { cn } from "@/lib/cn"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { formatCivilTime, isCivilTime, nowCivilTime } from "@/lib/date-time"
 import {
   CLOCK_MIN_HEIGHT_PX,
@@ -36,7 +35,6 @@ export function TimePicker({
   className,
   onBlur,
 }: TimePickerProps) {
-  const portalContainer = useDialogPortalContainer()
   const reduced = !!useReducedMotion()
   const popupRef = useRef<HTMLDivElement>(null)
   const draftRef = useRef(value && isCivilTime(value) ? value : nowCivilTime())
@@ -183,7 +181,7 @@ export function TimePicker({
           ) : null}
         </Popover.Trigger>
 
-        <Popover.Portal container={portalContainer ?? undefined}>
+        <Popover.Portal>
           <Popover.Positioner
             className="z-50 outline-none"
             sideOffset={4}

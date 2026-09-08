@@ -3,7 +3,7 @@
 import { RiCalendarEventLine, RiChat3Line, RiTimeLine } from "react-icons/ri"
 import { LEAD_ACTIVITY_CHANNEL_ICONS } from "@/components/custom/LeadActivityChannelPicker"
 import { LeadTagChips } from "@/components/custom/LeadTagField"
-import { Tooltip } from "@/components/ui/Tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/cn"
 import {
   formatDateTimeShort,
@@ -44,13 +44,12 @@ function ScheduleMark({ at, label }: { at: string; label: string }) {
 
   if (kind === "later") {
     return (
-      <Tooltip content={full} side="top" tone="accent">
-        <span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent">
+      <Tooltip>
+        <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent" />}>
           <RiCalendarEventLine size={14} aria-hidden />
-          <span className="sr-only">
-            {label} {full}
-          </span>
-        </span>
+          <span className="sr-only">{label} {full}</span>
+        </TooltipTrigger>
+        <TooltipContent side="top">{full}</TooltipContent>
       </Tooltip>
     )
   }
@@ -124,11 +123,12 @@ export function LeadBoardCardFace({
         pendingActivity ? (
           <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-2">
             {pendingActivity ? (
-              <Tooltip content="Sem atividade hoje" side="right" tone="accent">
-                <span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent">
+              <Tooltip>
+                <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent" />}>
                   <RiChat3Line size={14} aria-hidden />
                   <span className="sr-only">Sem atividade hoje</span>
-                </span>
+                </TooltipTrigger>
+                <TooltipContent side="right">Sem atividade hoje</TooltipContent>
               </Tooltip>
             ) : null}
             {visibleChannels.map((channel) => {

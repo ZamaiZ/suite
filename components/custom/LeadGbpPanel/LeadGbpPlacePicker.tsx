@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react"
 import { Combobox } from "@base-ui/react/combobox"
 import { RiLoader4Line, RiSearchLine } from "react-icons/ri"
 import { suggestPlaces } from "@/app/actions/leads"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import { PLACES_SUGGEST_MIN_CHARS } from "@/lib/places"
 import type { PlaceSuggestion } from "@/lib/places"
@@ -26,7 +25,6 @@ export function LeadGbpPlacePicker({
   locationHint?: string | null
   onPick: (placeId: string, sessionToken: string) => void
 }) {
-  const portalContainer = useDialogPortalContainer()
   const sessionTokenRef = useRef(newSessionToken())
   const requestIdRef = useRef(0)
   const [query, setQuery] = useState("")
@@ -149,7 +147,7 @@ export function LeadGbpPlacePicker({
           ) : null}
         </div>
 
-        <Combobox.Portal container={portalContainer ?? undefined}>
+        <Combobox.Portal>
           <Combobox.Positioner
             className="z-50 outline-none"
             sideOffset={4}

@@ -18,9 +18,28 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { Select } from "@/components/ui/Select"
+import { Button } from "@/components/ui/button"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { joinBrazilianAddress } from "@/lib/briefing/address"
 import {
   COMPANY_MISSING_LABELS,
@@ -34,6 +53,8 @@ import {
 import { BR_STATES } from "@/lib/br-locations"
 import {
   digitsOnly,
+  formatCnpj,
+  formatCpf,
   formatPhone,
   formatPostalCode,
 } from "@/lib/br-documents"
@@ -325,30 +346,42 @@ export function ClientBriefingCompanyForm({
         title="Identidade"
         description="Dados básicos da empresa e do responsável."
       >
-        <Input
-          id="briefing-company-name"
-          label="Nome da empresa"
-          value={payload.companyName}
-          onChange={(event) => patch({ companyName: event.target.value })}
-          leadingIcon={<RiBuilding4Line size={16} aria-hidden />}
-        />
-        <Input
-          id="briefing-contact-name"
-          label="Nome do responsável"
-          value={payload.contactName}
-          onChange={(event) => patch({ contactName: event.target.value })}
-          leadingIcon={<RiUserLine size={16} aria-hidden />}
-        />
-        <Input
-          id="briefing-tax-id"
-          label="CNPJ ou CPF"
-          variant={taxVariant === "cpf" ? "cpf" : "cnpj"}
-          value={payload.taxId}
-          onChange={(event) =>
-            patch({ taxId: digitsOnly(event.target.value) })
-          }
-          leadingIcon={<RiFileList3Line size={16} aria-hidden />}
-        />
+        <Field>
+          <FieldLabel htmlFor="briefing-company-name">Nome da empresa</FieldLabel>
+          <InputGroup>
+            <InputGroupAddon><RiBuilding4Line size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupInput
+              id="briefing-company-name"
+              value={payload.companyName}
+              onChange={(event) => patch({ companyName: event.target.value })}
+            />
+          </InputGroup>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="briefing-contact-name">Nome do responsável</FieldLabel>
+          <InputGroup>
+            <InputGroupAddon><RiUserLine size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupInput
+              id="briefing-contact-name"
+              value={payload.contactName}
+              onChange={(event) => patch({ contactName: event.target.value })}
+            />
+          </InputGroup>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="briefing-tax-id">CNPJ ou CPF</FieldLabel>
+          <InputGroup>
+            <InputGroupAddon><RiFileList3Line size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupInput
+              id="briefing-tax-id"
+              inputMode="numeric"
+              value={taxVariant === "cpf" ? formatCpf(payload.taxId) : formatCnpj(payload.taxId)}
+              onChange={(event) =>
+                patch({ taxId: digitsOnly(event.target.value) })
+              }
+            />
+          </InputGroup>
+        </Field>
       </BriefingSectionCard>
 
       <BriefingSectionCard
@@ -357,23 +390,36 @@ export function ClientBriefingCompanyForm({
         description="Busque pelo CEP ou pelo nome da rua."
       >
         <div className="grid gap-3 sm:grid-cols-[10rem_1fr]">
-          <Input
-            id="briefing-postal-code"
-            label="CEP"
-            variant="cep"
-            value={formatPostalCode(payload.postalCode)}
-            onChange={(event) => {
-              setPostalStatus("idle")
-              setPostalError(null)
-              patchAddress({ postalCode: digitsOnly(event.target.value) })
-            }}
-            onBlur={() => {
-              void handlePostalBlur()
-            }}
-            status={postalStatus}
-            error={postalError ?? undefined}
-            leadingIcon={<RiInboxLine size={16} aria-hidden />}
-          />
+          <Field data-invalid={Boolean(postalError)}>
+            <FieldLabel htmlFor="briefing-postal-code">CEP</FieldLabel>
+            <InputGroup>
+              <InputGroupAddon><RiInboxLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput
+                id="briefing-postal-code"
+                inputMode="numeric"
+                value={formatPostalCode(payload.postalCode)}
+                onChange={(event) => {
+                  setPostalStatus("idle")
+                  setPostalError(null)
+                  patchAddress({ postalCode: digitsOnly(event.target.value) })
+                }}
+                onBlur={() => {
+                  void handlePostalBlur()
+                }}
+                aria-busy={postalStatus === "loading" || undefined}
+                aria-invalid={Boolean(postalError)}
+                aria-describedby={postalError ? "briefing-postal-code-error" : undefined}
+              />
+              {postalStatus !== "idle" ? (
+                <InputGroupAddon align="inline-end">
+                  {postalStatus === "loading" ? <RiLoader4Line aria-hidden className="animate-spin" /> : null}
+                  {postalStatus === "success" ? <RiCheckLine aria-hidden className="text-primary" /> : null}
+                  {postalStatus === "error" ? <RiCloseLine aria-hidden className="text-destructive" /> : null}
+                </InputGroupAddon>
+              ) : null}
+            </InputGroup>
+            {postalError ? <FieldError id="briefing-postal-code-error">{postalError}</FieldError> : null}
+          </Field>
           <BriefingAddressSearch
             id="briefing-street-search"
             value={payload.street}
@@ -384,55 +430,63 @@ export function ClientBriefingCompanyForm({
           />
         </div>
         <div className="grid gap-3 sm:grid-cols-[8rem_1fr]">
-          <Input
-            id="briefing-number"
-            label="Número"
-            value={payload.number}
-            onChange={(event) => patchAddress({ number: event.target.value })}
-            leadingIcon={<RiHashtag size={16} aria-hidden />}
-          />
-          <Input
-            id="briefing-complement"
-            label="Complemento (opcional)"
-            value={payload.complement}
-            onChange={(event) =>
-              patchAddress({ complement: event.target.value })
-            }
-            leadingIcon={<RiHomeGearLine size={16} aria-hidden />}
-          />
+          <Field>
+            <FieldLabel htmlFor="briefing-number">Número</FieldLabel>
+            <InputGroup>
+              <InputGroupAddon><RiHashtag size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput id="briefing-number" value={payload.number} onChange={(event) => patchAddress({ number: event.target.value })} />
+            </InputGroup>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="briefing-complement">Complemento (opcional)</FieldLabel>
+            <InputGroup>
+              <InputGroupAddon><RiHomeGearLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput id="briefing-complement" value={payload.complement} onChange={(event) => patchAddress({ complement: event.target.value })} />
+            </InputGroup>
+          </Field>
         </div>
-        <Input
-          id="briefing-neighborhood"
-          label="Bairro"
-          value={payload.neighborhood}
-          onChange={(event) =>
-            patchAddress({ neighborhood: event.target.value })
-          }
-          leadingIcon={<RiCommunityLine size={16} aria-hidden />}
-        />
+        <Field>
+          <FieldLabel htmlFor="briefing-neighborhood">Bairro</FieldLabel>
+          <InputGroup>
+            <InputGroupAddon><RiCommunityLine size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupInput id="briefing-neighborhood" value={payload.neighborhood} onChange={(event) => patchAddress({ neighborhood: event.target.value })} />
+          </InputGroup>
+        </Field>
         <div className="grid gap-3 sm:grid-cols-[1fr_8rem]">
-          <Input
-            id="briefing-city"
-            label="Cidade"
-            value={payload.city}
-            onChange={(event) => patchAddress({ city: event.target.value })}
-            leadingIcon={<RiBuilding2Line size={16} aria-hidden />}
-          />
-          <Select
-            id="briefing-state"
-            label="UF"
-            items={STATE_ITEMS}
-            value={payload.stateCode}
-            onValueChange={(value) =>
-              patchAddress({
-                stateCode: typeof value === "string" ? value : "",
-              })
-            }
-            leadingIcon={<RiFlagLine size={16} aria-hidden />}
-            searchable
-            clearable
-            placeholder="UF"
-          />
+          <Field>
+            <FieldLabel htmlFor="briefing-city">Cidade</FieldLabel>
+            <InputGroup>
+              <InputGroupAddon><RiBuilding2Line size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput id="briefing-city" value={payload.city} onChange={(event) => patchAddress({ city: event.target.value })} />
+            </InputGroup>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="briefing-state">UF</FieldLabel>
+            <Combobox
+              items={STATE_ITEMS}
+              value={STATE_ITEMS.find((item) => item.value === payload.stateCode) ?? null}
+              onValueChange={(item) => patchAddress({ stateCode: item?.value ?? "" })}
+              itemToStringLabel={(item) => item.label}
+              isItemEqualToValue={(item, selected) => item.value === selected.value}
+            >
+              <ComboboxInput id="briefing-state" placeholder="UF" showClear className="w-full">
+                <InputGroupAddon align="inline-start"><RiFlagLine size={16} aria-hidden /></InputGroupAddon>
+              </ComboboxInput>
+              <ComboboxContent>
+                <ComboboxEmpty>Nenhum estado encontrado.</ComboboxEmpty>
+                <ComboboxList>
+                  {STATE_ITEMS.map((item) => (
+                    <ComboboxItem key={item.value} value={item}>
+                      <span className="flex min-w-0 flex-col">
+                        <span>{item.label}</span>
+                        <span className="text-muted-foreground">{item.description}</span>
+                      </span>
+                    </ComboboxItem>
+                  ))}
+                </ComboboxList>
+              </ComboboxContent>
+            </Combobox>
+          </Field>
         </div>
         <BriefingChipField
           id="briefing-served-areas"
@@ -449,31 +503,28 @@ export function ClientBriefingCompanyForm({
         description="Telefone, WhatsApp e e-mail principais."
       >
         <div className="grid gap-3 sm:grid-cols-2">
-          <Input
-            id="briefing-phone"
-            label="Telefone principal"
-            variant="phone"
-            value={formatPhone(payload.phone)}
-            onChange={(event) => patch({ phone: event.target.value })}
-            leadingIcon={<RiPhoneLine size={16} aria-hidden />}
-          />
-          <Input
-            id="briefing-whatsapp"
-            label="WhatsApp"
-            variant="phone"
-            value={formatPhone(payload.whatsapp)}
-            onChange={(event) => patch({ whatsapp: event.target.value })}
-            leadingIcon={<RiWhatsappLine size={16} aria-hidden />}
-          />
+          <Field>
+            <FieldLabel htmlFor="briefing-phone">Telefone principal</FieldLabel>
+            <InputGroup>
+              <InputGroupAddon><RiPhoneLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput id="briefing-phone" type="tel" inputMode="tel" value={formatPhone(payload.phone)} onChange={(event) => patch({ phone: event.target.value })} />
+            </InputGroup>
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="briefing-whatsapp">WhatsApp</FieldLabel>
+            <InputGroup>
+              <InputGroupAddon><RiWhatsappLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput id="briefing-whatsapp" type="tel" inputMode="tel" value={formatPhone(payload.whatsapp)} onChange={(event) => patch({ whatsapp: event.target.value })} />
+            </InputGroup>
+          </Field>
         </div>
-        <Input
-          id="briefing-email"
-          label="E-mail de contato"
-          variant="email"
-          value={payload.email}
-          onChange={(event) => patch({ email: event.target.value })}
-          leadingIcon={<RiMailLine size={16} aria-hidden />}
-        />
+        <Field>
+          <FieldLabel htmlFor="briefing-email">E-mail de contato</FieldLabel>
+          <InputGroup>
+            <InputGroupAddon><RiMailLine size={16} aria-hidden /></InputGroupAddon>
+            <InputGroupInput id="briefing-email" type="email" value={payload.email} onChange={(event) => patch({ email: event.target.value })} />
+          </InputGroup>
+        </Field>
       </BriefingSectionCard>
 
       <BriefingSectionCard
@@ -493,24 +544,28 @@ export function ClientBriefingCompanyForm({
             Site
           </p>
           {websiteChannel && websiteIndex >= 0 ? (
-            <Input
-              id="briefing-website"
-              label="Endereço do site"
-              value={websiteChannel.value}
-              placeholder={DIGITAL_CHANNEL_PLACEHOLDERS.website}
-              onChange={(event) =>
-                updateChannel(websiteIndex, {
-                  type: "website",
-                  value: event.target.value,
-                })
-              }
-              leadingIcon={
-                (() => {
-                  const WebsiteIcon = CHANNEL_ICONS.website
-                  return <WebsiteIcon size={16} aria-hidden />
-                })()
-              }
-            />
+            <Field>
+              <FieldLabel htmlFor="briefing-website">Endereço do site</FieldLabel>
+              <InputGroup>
+                <InputGroupAddon>
+                  {(() => {
+                    const WebsiteIcon = CHANNEL_ICONS.website
+                    return <WebsiteIcon size={16} aria-hidden />
+                  })()}
+                </InputGroupAddon>
+                <InputGroupInput
+                  id="briefing-website"
+                  value={websiteChannel.value}
+                  placeholder={DIGITAL_CHANNEL_PLACEHOLDERS.website}
+                  onChange={(event) =>
+                    updateChannel(websiteIndex, {
+                      type: "website",
+                      value: event.target.value,
+                    })
+                  }
+                />
+              </InputGroup>
+            </Field>
           ) : null}
 
           <div className="flex items-center justify-between gap-2">
@@ -521,10 +576,10 @@ export function ClientBriefingCompanyForm({
             <Button
               type="button"
               variant="ghost"
-              leadingIcon={<RiAddLine size={16} aria-hidden />}
               disabled={payload.channels.length >= DIGITAL_CHANNELS_MAX}
               onClick={addSocialChannel}
             >
+              <RiAddLine size={16} aria-hidden data-icon="inline-start" />
               Adicionar
             </Button>
           </div>
@@ -541,46 +596,62 @@ export function ClientBriefingCompanyForm({
                   key={`channel-${index}`}
                   className="grid gap-2 sm:grid-cols-[10rem_1fr_auto] sm:items-end"
                 >
-                  <Select
-                    id={`briefing-channel-type-${index}`}
-                    label={index === websiteIndex + 1 ? "Tipo" : undefined}
-                    items={SOCIAL_TYPE_ITEMS}
-                    value={channel.type}
-                    onValueChange={(value) => {
-                      const type =
-                        typeof value === "string" && isSocialChannelType(value)
+                  <Field>
+                    {index === websiteIndex + 1 ? (
+                      <FieldLabel htmlFor={`briefing-channel-type-${index}`}>Tipo</FieldLabel>
+                    ) : null}
+                    <Select
+                      value={channel.type}
+                      onValueChange={(value) => {
+                        const type = isSocialChannelType(value)
                           ? value
                           : (channel.type as SocialChannelType)
-                      updateChannel(index, {
-                        type: type as DigitalChannelType,
-                        value: channel.value,
-                      })
-                    }}
-                    searchable={false}
-                  />
-                  <Input
-                    id={`briefing-channel-value-${index}`}
-                    label={
-                      index === websiteIndex + 1 ? "Link ou @perfil" : undefined
-                    }
-                    value={channel.value}
-                    placeholder={DIGITAL_CHANNEL_PLACEHOLDERS[channel.type]}
-                    onChange={(event) =>
-                      updateChannel(index, {
-                        ...channel,
-                        value: event.target.value,
-                      })
-                    }
-                    leadingIcon={<ChannelIcon size={16} aria-hidden />}
-                  />
+                        updateChannel(index, {
+                          type: type as DigitalChannelType,
+                          value: channel.value,
+                        })
+                      }}
+                    >
+                      <SelectTrigger id={`briefing-channel-type-${index}`} className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {SOCIAL_TYPE_ITEMS.map((item) => (
+                          <SelectItem key={item.value} value={item.value}>
+                            {item.icon}
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                  <Field>
+                    {index === websiteIndex + 1 ? (
+                      <FieldLabel htmlFor={`briefing-channel-value-${index}`}>Link ou @perfil</FieldLabel>
+                    ) : null}
+                    <InputGroup>
+                      <InputGroupAddon><ChannelIcon size={16} aria-hidden /></InputGroupAddon>
+                      <InputGroupInput
+                        id={`briefing-channel-value-${index}`}
+                        value={channel.value}
+                        placeholder={DIGITAL_CHANNEL_PLACEHOLDERS[channel.type]}
+                        onChange={(event) =>
+                          updateChannel(index, {
+                            ...channel,
+                            value: event.target.value,
+                          })
+                        }
+                      />
+                    </InputGroup>
+                  </Field>
                   <Button
                     type="button"
                     variant="ghost"
                     aria-label="Remover canal"
                     onClick={() => removeChannel(index)}
                     className="sm:mb-0"
-                    leadingIcon={<RiDeleteBinLine size={16} aria-hidden />}
                   >
+                    <RiDeleteBinLine size={16} aria-hidden data-icon="inline-start" />
                     Remover
                   </Button>
                 </div>
@@ -653,17 +724,13 @@ export function ClientBriefingCompanyForm({
               type="button"
               disabled={isCompleting || !ready}
               onClick={handleComplete}
-              trailingIcon={
-                completed ? (
-                  <RiCheckLine size={16} aria-hidden />
-                ) : undefined
-              }
             >
               {isCompleting
                 ? "Salvando..."
                 : completed
                   ? "Continuar"
                   : "Continuar"}
+              {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
             </Button>
             )}
           </div>

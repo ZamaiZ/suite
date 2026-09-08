@@ -8,7 +8,7 @@ import {
   RiRefreshLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 
 export function LeadGbpStepHeader({
@@ -50,14 +50,12 @@ export function LeadGbpStepHeader({
             variant="secondary"
             disabled={collecting}
             onClick={onEnrich}
-            leadingIcon={
-              collecting ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiRefreshLine size={16} aria-hidden />
-              )
-            }
           >
+            {collecting ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiRefreshLine data-icon="inline-start" aria-hidden />
+            )}
             Atualizar coleta
           </Button>
         ) : null}
@@ -65,13 +63,13 @@ export function LeadGbpStepHeader({
           <Button
             type="button"
             variant="outline"
-            className="border-accent/30 text-accent hover:bg-accent/10"
-            trailingIcon={<RiExternalLinkLine size={14} aria-hidden />}
+            className="border-primary/30 text-primary hover:bg-primary/10 hover:text-primary"
             onClick={() =>
               window.open(mapsHref, "_blank", "noopener,noreferrer")
             }
           >
             Ver no Google
+            <RiExternalLinkLine data-icon="inline-end" aria-hidden />
           </Button>
         ) : null}
       </div>

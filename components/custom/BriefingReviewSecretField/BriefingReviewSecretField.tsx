@@ -9,7 +9,7 @@ import {
   RiLoader4Line,
 } from "react-icons/ri"
 import { revealStaffBriefingSecret } from "@/app/actions/briefing"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import type { BriefingReviewSecretFieldProps } from "./BriefingReviewSecretField.types"
 
 export function BriefingReviewSecretField({
@@ -69,7 +69,7 @@ export function BriefingReviewSecretField({
               <Button
                 type="button"
                 variant="ghost"
-                className="size-8 px-0"
+                size="icon-lg"
                 aria-label="Ocultar"
                 onClick={hide}
               >
@@ -78,7 +78,7 @@ export function BriefingReviewSecretField({
               <Button
                 type="button"
                 variant="ghost"
-                className="size-8 px-0"
+                size="icon-lg"
                 aria-label="Copiar"
                 onClick={() => void copy()}
               >

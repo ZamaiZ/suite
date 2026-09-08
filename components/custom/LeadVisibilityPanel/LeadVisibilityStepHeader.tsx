@@ -7,7 +7,7 @@ import {
   RiRefreshLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 import { visibilitySourceLabel } from "@/lib/leads/visibility-presenters"
 import type { VisibilitySource } from "@/lib/leads/visibility-audit"
@@ -56,14 +56,12 @@ export function LeadVisibilityStepHeader({
             variant="secondary"
             disabled={collecting}
             onClick={onAnalyze}
-            leadingIcon={
-              collecting ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiRefreshLine size={16} aria-hidden />
-              )
-            }
           >
+            {collecting ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiRefreshLine data-icon="inline-start" aria-hidden />
+            )}
             {updatedAt ? "Atualizar análise" : "Analisar visibilidade"}
           </Button>
         ) : null}

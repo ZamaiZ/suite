@@ -3,7 +3,13 @@
 import { useEffect, useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
-import { Select } from "@/components/ui/Select"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/cn"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import { gbpBusinessStatusLabel } from "@/lib/leads/gbp-presenters"
@@ -84,18 +90,14 @@ export function LeadGbpIdentity({
         ) : null}
         {profiles.length > 1 ? (
           <div className="mt-3 max-w-sm">
-            <Select
-              id={`gbp-profile-${profile.lead_id}`}
-              items={profiles.map((item) => ({
-                value: item.id,
-                label: item.payload.displayName ?? item.place_id,
-              }))}
-              value={profile.id}
-              searchable={false}
-              onValueChange={(value) => {
-                if (typeof value === "string" && value) onSelectProfile(value)
-              }}
-            />
+            <Select value={profile.id} onValueChange={(value) => onSelectProfile(String(value))}>
+              <SelectTrigger id={`gbp-profile-${profile.lead_id}`} className="w-full">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent align="start">
+                {profiles.map((item) => <SelectItem key={item.id} value={item.id}>{item.payload.displayName ?? item.place_id}</SelectItem>)}
+              </SelectContent>
+            </Select>
           </div>
         ) : null}
       </div>

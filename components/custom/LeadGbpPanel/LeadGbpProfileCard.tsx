@@ -29,7 +29,6 @@ import { LeadGbpRankBlock } from "./LeadGbpRankBlock"
 import { LeadGbpReviewsBlock } from "./LeadGbpReviewsBlock"
 import { LeadGbpStepHeader } from "./LeadGbpStepHeader"
 import { LeadGbpSummaryCards } from "./LeadGbpSummaryCards"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
 import { mergeGbpOpportunities } from "@/lib/leads/gbp-opportunities"
@@ -80,7 +79,6 @@ export function LeadGbpProfileCard({
   onRemoved: (profileId: string) => void
   onPendingChange: (pending: boolean) => void
 }) {
-  const portalContainer = useDialogPortalContainer()
   const reduced = !!useReducedMotion()
   const container = {
     hidden: {},
@@ -393,7 +391,7 @@ export function LeadGbpProfileCard({
               >
                 <RiMore2Line size={16} aria-hidden />
               </Menu.Trigger>
-              <Menu.Portal container={portalContainer ?? undefined}>
+              <Menu.Portal>
                 <Menu.Positioner
                   className="z-50 outline-none"
                   sideOffset={4}

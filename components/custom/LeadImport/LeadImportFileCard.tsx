@@ -8,7 +8,6 @@ import {
   RiLoader4Line,
   RiMore2Line,
 } from "react-icons/ri"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import { summarizeEvaluatedRows } from "@/lib/leads/spreadsheet-model"
@@ -56,7 +55,6 @@ export function LeadImportFileCard({
   onEdit: () => void
   onRemove: () => void
 }) {
-  const portalContainer = useDialogPortalContainer()
   const analyzing = entry.status === "analyzing"
   const queued = entry.status === "queued"
   const failed = entry.status === "failed"
@@ -166,7 +164,7 @@ export function LeadImportFileCard({
           >
             <RiMore2Line size={16} aria-hidden />
           </Menu.Trigger>
-          <Menu.Portal container={portalContainer ?? undefined}>
+          <Menu.Portal>
             <Menu.Positioner className="z-50 outline-none" sideOffset={4} align="end">
               <Menu.Popup
                 className={cn(

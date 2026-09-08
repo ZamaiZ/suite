@@ -6,7 +6,7 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiArrowDownSLine, RiArrowRightSLine, RiLoader4Line } from "react-icons/ri"
 import { cn } from "@/lib/cn"
-import { Tooltip } from "@/components/ui/Tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { isGroupActive, isHrefActive } from "@/components/custom/navigation"
 import type { NavGroup, NavLeaf } from "@/components/custom/navigation.types"
 import type { NavTreeDensity, NavTreeProps } from "./NavTree.types"
@@ -459,8 +459,11 @@ function NavLeafRow({
 
   if (collapsed) {
     return (
-      <Tooltip content={item.label} side="right" arrow wrapperClassName="w-full">
-        {row}
+      <Tooltip>
+        <TooltipTrigger render={<span className="block w-full" />}>
+          {row}
+        </TooltipTrigger>
+        <TooltipContent side="right">{item.label}</TooltipContent>
       </Tooltip>
     )
   }

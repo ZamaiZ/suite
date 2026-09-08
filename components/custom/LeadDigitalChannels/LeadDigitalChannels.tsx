@@ -20,10 +20,16 @@ import {
   RiStarLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { Select } from "@/components/ui/Select"
+import { Button } from "@/components/ui/button"
+import { Field, FieldError } from "@/components/ui/field"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { cn } from "@/lib/cn"
 import {
   DIGITAL_CHANNEL_DUPLICATE_MESSAGE,
@@ -75,14 +81,6 @@ function ChannelGlyph({
   return <Icon size={size} aria-hidden />
 }
 
-function typeItems() {
-  return DIGITAL_CHANNEL_TYPES.map((type) => ({
-    value: type,
-    label: DIGITAL_CHANNEL_LABELS[type],
-    icon: <ChannelGlyph type={type} />,
-  }))
-}
-
 function websiteCount(channels: DigitalChannelDraft[]) {
   return channels.filter((channel) => channel.type === "website").length
 }
@@ -131,7 +129,6 @@ export function LeadDigitalChannels({
   onDraftChange,
   ref,
 }: LeadDigitalChannelsProps & { ref?: Ref<LeadDigitalChannelsHandle> }) {
-  const portalContainer = useDialogPortalContainer()
   const allowFocusRef = useRef(false)
   const [draft, setDraft] = useState<DraftState | null>(() =>
     value.length === 0
@@ -264,7 +261,6 @@ export function LeadDigitalChannels({
             canRemove={
               channel.type !== "website" || websiteCount(value) > 1
             }
-            portalContainer={portalContainer}
             onOpen={() => startEdit(index)}
             onPrimary={() => markPrimary(index)}
             onRemove={() => removeAt(index)}
@@ -274,14 +270,8 @@ export function LeadDigitalChannels({
 
       {draft ? (
         <div className="flex flex-col gap-2 sm:grid sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-start">
-          <Select
-            id={`${id}-type`}
-            items={typeItems()}
-            value={draft.type}
-            searchable={false}
-            disabled={disabled}
-            onValueChange={(next) => {
-              const type = Array.isArray(next) ? next[0] : next
+          <Select value={draft.type} disabled={disabled} onValueChange={(next) => {
+              const type = String(next)
               if (!isDigitalChannelType(type)) return
               setDraft({
                 ...draft,
@@ -291,24 +281,14 @@ export function LeadDigitalChannels({
                   !value.some((channel) => channel.type === type),
               })
               setDraftError(null)
-            }}
-            className="w-full"
-          />
-          <Input
-            id={`${id}-value`}
-            value={draft.value}
-            placeholder={DIGITAL_CHANNEL_PLACEHOLDERS[draft.type]}
-            error={draftError ?? undefined}
-            disabled={disabled}
-            autoComplete="url"
-            leadingIcon={<ChannelGlyph type={draft.type} />}
-            onChange={(event) => {
-              setDraft({ ...draft, value: event.target.value })
-              if (draftError) setDraftError(null)
-            }}
-            onBlur={onValueBlur}
-            onKeyDown={onDraftKeyDown}
-          />
+            }}>
+            <SelectTrigger id={`${id}-type`} className="h-10 w-full"><SelectValue /></SelectTrigger>
+            <SelectContent align="start">{DIGITAL_CHANNEL_TYPES.map((type) => <SelectItem key={type} value={type}><ChannelGlyph type={type} />{DIGITAL_CHANNEL_LABELS[type]}</SelectItem>)}</SelectContent>
+          </Select>
+          <Field data-invalid={Boolean(draftError)}>
+            <InputGroup className="h-10"><InputGroupAddon><ChannelGlyph type={draft.type} /></InputGroupAddon><InputGroupInput id={`${id}-value`} value={draft.value} placeholder={DIGITAL_CHANNEL_PLACEHOLDERS[draft.type]} aria-invalid={Boolean(draftError)} disabled={disabled} autoComplete="url" onChange={(event) => { setDraft({ ...draft, value: event.target.value }); if (draftError) setDraftError(null) }} onBlur={onValueBlur} onKeyDown={onDraftKeyDown} /></InputGroup>
+            <FieldError>{draftError}</FieldError>
+          </Field>
         </div>
       ) : null}
 
@@ -317,9 +297,9 @@ export function LeadDigitalChannels({
         variant="outline"
         disabled={disabled || atLimit}
         onClick={addChannel}
-        leadingIcon={<RiAddLine size={16} aria-hidden />}
         className="w-full border-dashed"
       >
+        <RiAddLine size={16} aria-hidden />
         Adicionar canal
       </Button>
 
@@ -337,7 +317,6 @@ function ChannelItem({
   disabled,
   reduced,
   canRemove,
-  portalContainer,
   onOpen,
   onPrimary,
   onRemove,
@@ -346,7 +325,6 @@ function ChannelItem({
   disabled?: boolean
   reduced: boolean
   canRemove: boolean
-  portalContainer: HTMLElement | null
   onOpen: () => void
   onPrimary: () => void
   onRemove: () => void
@@ -400,7 +378,7 @@ function ChannelItem({
         >
           <RiMore2Line size={16} aria-hidden />
         </Menu.Trigger>
-        <Menu.Portal container={portalContainer ?? undefined}>
+        <Menu.Portal>
           <Menu.Positioner className="z-50 outline-none" sideOffset={4} align="end">
             <Menu.Popup
               className={cn(

@@ -8,7 +8,7 @@ import {
 } from "motion/react"
 import * as m from "motion/react-m"
 import { RiCheckLine } from "react-icons/ri"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import type { ClientBriefingCompleteScreenProps } from "./ClientBriefingCompleteScreen.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]

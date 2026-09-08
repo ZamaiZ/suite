@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { RiUploadCloud2Line } from "react-icons/ri"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/cn"
 import { LEAD_SPREADSHEET_ACCEPT } from "@/lib/leads/spreadsheet-model"
 
@@ -49,14 +49,14 @@ export function LeadImportDropzone({
         "rounded-xl border border-dashed px-4 py-8 text-center",
         "transition-[border-color,background-color] duration-150 ease-out",
         dragOver && !disabled
-          ? "border-accent bg-accent/10"
+          ? "border-primary bg-primary/10"
           : "border-border bg-canvas",
         disabled && "pointer-events-none opacity-50",
       )}
     >
       <span
         aria-hidden
-        className="mx-auto mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-hover text-accent"
+        className="mx-auto mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-muted text-primary"
       >
         <RiUploadCloud2Line size={20} />
       </span>

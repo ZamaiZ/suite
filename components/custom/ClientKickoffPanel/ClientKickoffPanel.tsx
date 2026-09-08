@@ -4,9 +4,10 @@ import { useEffect, useState, useTransition } from "react"
 import { RiCalendarCheckLine, RiCheckboxCircleLine, RiLoader4Line, RiStickyNoteLine, RiUserUnfollowLine } from "react-icons/ri"
 import { loadClientKickoff, logClientKickoffEvent, type ClientKickoffDetail } from "@/app/actions/clients"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/ui/DateTimePicker"
-import { Textarea } from "@/components/ui/Textarea"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Textarea } from "@/components/ui/textarea"
 import { CLIENT_KICKOFF_ACTIVITY_LABELS, CLIENT_KICKOFF_STAGE_LABELS, type ClientKickoffActivityType } from "@/lib/clients/kickoff"
 import { cn } from "@/lib/cn"
 import { formatDateTimeShort, toDatetimeLocalInput } from "@/lib/date-time"
@@ -90,17 +91,17 @@ export function ClientKickoffPanel({ clientId }: { clientId: string }) {
         </div>
 
         {detail.canLog && detail.stage !== "completed" ? <div className="mt-4 flex flex-wrap gap-2 border-t border-border-subtle pt-4">
-          {detail.stage === "none" ? <Button type="button" variant="secondary" onClick={() => selectAction("kickoff_scheduled")} leadingIcon={<RiCalendarCheckLine size={16} aria-hidden />}>Agendar kickoff</Button> : null}
-          {detail.stage === "scheduled" || detail.stage === "no_show" ? <><Button type="button" variant="secondary" onClick={() => selectAction("kickoff_rescheduled")} leadingIcon={<RiCalendarCheckLine size={16} aria-hidden />}>Reagendar</Button><Button type="button" variant="secondary" onClick={() => selectAction("kickoff_completed")} leadingIcon={<RiCheckboxCircleLine size={16} aria-hidden />}>Kickoff feito</Button></> : null}
-          {detail.stage === "scheduled" ? <Button type="button" variant="ghost" onClick={() => selectAction("kickoff_no_show")} leadingIcon={<RiUserUnfollowLine size={16} aria-hidden />}>No-show</Button> : null}
-          <Button type="button" variant="ghost" onClick={() => selectAction("kickoff_note")} leadingIcon={<RiStickyNoteLine size={16} aria-hidden />}>Nota</Button>
+          {detail.stage === "none" ? <Button type="button" variant="secondary" onClick={() => selectAction("kickoff_scheduled")}><RiCalendarCheckLine size={16} aria-hidden data-icon="inline-start" />Agendar kickoff</Button> : null}
+          {detail.stage === "scheduled" || detail.stage === "no_show" ? <><Button type="button" variant="secondary" onClick={() => selectAction("kickoff_rescheduled")}><RiCalendarCheckLine size={16} aria-hidden data-icon="inline-start" />Reagendar</Button><Button type="button" variant="secondary" onClick={() => selectAction("kickoff_completed")}><RiCheckboxCircleLine size={16} aria-hidden data-icon="inline-start" />Kickoff feito</Button></> : null}
+          {detail.stage === "scheduled" ? <Button type="button" variant="ghost" onClick={() => selectAction("kickoff_no_show")}><RiUserUnfollowLine size={16} aria-hidden data-icon="inline-start" />No-show</Button> : null}
+          <Button type="button" variant="ghost" onClick={() => selectAction("kickoff_note")}><RiStickyNoteLine size={16} aria-hidden data-icon="inline-start" />Nota</Button>
         </div> : null}
 
         {action ? <div className="mt-4 flex flex-col gap-3 border-t border-border-subtle pt-4">
           <div><p className="font-sans text-body-sm font-semibold text-fg">{CLIENT_KICKOFF_ACTIVITY_LABELS[action]}</p><p className="mt-1 font-sans text-caption text-fg-muted">Registre o contexto para manter o onboarding rastreável.</p></div>
           {scheduling ? <DateTimePicker id="client-kickoff-meeting-at" label="Data e horário" value={meetingAt} onValueChange={setMeetingAt} /> : null}
           {needsChannel ? <LeadActivityChannelPicker id="client-kickoff-channel-detail" value={channel as never} detail={channelDetail} onValueChange={setChannel} onDetailChange={setChannelDetail} disabled={pending} /> : null}
-          {action === "kickoff_note" || action === "kickoff_no_show" || action === "kickoff_completed" ? <Textarea id="client-kickoff-note" label="Observação" value={note} onChange={(event) => setNote(event.target.value)} /> : null}
+          {action === "kickoff_note" || action === "kickoff_no_show" || action === "kickoff_completed" ? <Field><FieldLabel htmlFor="client-kickoff-note">Observação</FieldLabel><Textarea id="client-kickoff-note" value={note} onChange={(event) => setNote(event.target.value)} /></Field> : null}
           {error ? <p role="alert" className="font-sans text-caption text-danger">{error}</p> : null}
           <div className="flex flex-wrap gap-2"><Button type="button" onClick={submit} disabled={pending}>{pending ? "Salvando…" : "Registrar"}</Button><Button type="button" variant="ghost" disabled={pending} onClick={() => setAction(null)}>Cancelar</Button></div>
         </div> : null}

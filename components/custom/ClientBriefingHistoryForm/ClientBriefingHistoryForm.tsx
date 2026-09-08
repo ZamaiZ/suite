@@ -21,9 +21,10 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
-import { Button } from "@/components/ui/Button"
-import { Radio, RadioGroup } from "@/components/ui/RadioGroup"
-import { Textarea } from "@/components/ui/Textarea"
+import { Button } from "@/components/ui/button"
+import { Field, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Textarea } from "@/components/ui/textarea"
 import {
   getHistoryMissingGroups,
   HISTORY_ANSWER_IDS,
@@ -123,9 +124,10 @@ export function ClientBriefingHistoryForm({
           title="Experiências anteriores"
           description="Histórico de investimento em marketing e relação com prestadores."
         >
-          <RadioGroup
-            label="Já investiu em marketing?"
-            orientation="horizontal"
+          <FieldSet>
+            <FieldLegend variant="label">Já investiu em marketing?</FieldLegend>
+            <RadioGroup
+            className="flex flex-row flex-wrap items-center gap-3"
             value={payload.hasMarketingInvestment ?? ""}
             onValueChange={(next) =>
               patch({
@@ -136,36 +138,42 @@ export function ClientBriefingHistoryForm({
                   : null,
               })
             }
-          >
-            <Radio value="yes" label="Sim" />
-            <Radio value="no" label="Não" />
-          </RadioGroup>
+            >
+              <Field orientation="horizontal" className="w-auto"><RadioGroupItem id="briefing-marketing-investment-yes" value="yes" /><FieldLabel htmlFor="briefing-marketing-investment-yes">Sim</FieldLabel></Field>
+              <Field orientation="horizontal" className="w-auto"><RadioGroupItem id="briefing-marketing-investment-no" value="no" /><FieldLabel htmlFor="briefing-marketing-investment-no">Não</FieldLabel></Field>
+            </RadioGroup>
+          </FieldSet>
 
           {showInvestmentDetails ? (
             <>
-              <Textarea
+              <Field>
+                <FieldLabel htmlFor="briefing-marketing-channels">Em que investiu?</FieldLabel>
+                <Textarea
                 id="briefing-marketing-channels"
-                label="Em que investiu?"
                 rows={4}
                 value={payload.marketingChannels}
                 onChange={(event) =>
                   patch({ marketingChannels: event.target.value })
                 }
                 placeholder="Canais, campanhas ou ações em que já investiu…"
-              />
-              <Textarea
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="briefing-marketing-results">Quais resultados teve?</FieldLabel>
+                <Textarea
                 id="briefing-marketing-results"
-                label="Quais resultados teve?"
                 rows={4}
                 value={payload.marketingResults}
                 onChange={(event) =>
                   patch({ marketingResults: event.target.value })
                 }
                 placeholder="O que funcionou, o que não funcionou, números se tiver…"
-              />
-              <RadioGroup
-                label="Tinha algo que não te agradava no antigo prestador de serviço?"
-                orientation="horizontal"
+                />
+              </Field>
+              <FieldSet>
+                <FieldLegend variant="label">Tinha algo que não te agradava no antigo prestador de serviço?</FieldLegend>
+                <RadioGroup
+                className="flex flex-row flex-wrap items-center gap-3"
                 value={payload.hasProviderDissatisfaction ?? ""}
                 onValueChange={(next) =>
                   patch({
@@ -176,24 +184,27 @@ export function ClientBriefingHistoryForm({
                       : null,
                   })
                 }
-              >
-                <Radio value="yes" label="Sim" />
-                <Radio value="no" label="Não" />
-              </RadioGroup>
+                >
+                  <Field orientation="horizontal" className="w-auto"><RadioGroupItem id="briefing-provider-dissatisfaction-yes" value="yes" /><FieldLabel htmlFor="briefing-provider-dissatisfaction-yes">Sim</FieldLabel></Field>
+                  <Field orientation="horizontal" className="w-auto"><RadioGroupItem id="briefing-provider-dissatisfaction-no" value="no" /><FieldLabel htmlFor="briefing-provider-dissatisfaction-no">Não</FieldLabel></Field>
+                </RadioGroup>
+              </FieldSet>
             </>
           ) : null}
 
           {showDissatisfactionNotes ? (
-            <Textarea
+            <Field>
+              <FieldLabel htmlFor="briefing-provider-dissatisfaction-notes">O que não agradava?</FieldLabel>
+              <Textarea
               id="briefing-provider-dissatisfaction-notes"
-              label="O que não agradava?"
               rows={4}
               value={payload.providerDissatisfactionNotes}
               onChange={(event) =>
                 patch({ providerDissatisfactionNotes: event.target.value })
               }
               placeholder="Comunique, prazo, resultado, relacionamento…"
-            />
+              />
+            </Field>
           ) : null}
         </BriefingSectionCard>
 
@@ -203,22 +214,26 @@ export function ClientBriefingHistoryForm({
           title="Expectativas"
           description="Objetivos do projeto e o que define uma parceria nota 10."
         >
-          <Textarea
+          <Field>
+            <FieldLabel htmlFor="briefing-project-goals">O que espera do projeto? Quais objetivos?</FieldLabel>
+            <Textarea
             id="briefing-project-goals"
-            label="O que espera do projeto? Quais objetivos?"
             rows={5}
             value={payload.projectGoals}
             onChange={(event) => patch({ projectGoals: event.target.value })}
             placeholder="Resultados, prazos, prioridades…"
-          />
-          <Textarea
+            />
+          </Field>
+          <Field>
+            <FieldLabel htmlFor="briefing-nps-ten-criteria">O que precisa acontecer na prestação de serviço, além das metas, para que você nos dê uma nota 10 de NPS e nos indique futuramente para algum parceiro?</FieldLabel>
+            <Textarea
             id="briefing-nps-ten-criteria"
-            label="O que precisa acontecer na prestação de serviço, além das metas, para que você nos dê uma nota 10 de NPS e nos indique futuramente para algum parceiro?"
             rows={5}
             value={payload.npsTenCriteria}
             onChange={(event) => patch({ npsTenCriteria: event.target.value })}
             placeholder="Comunicação, proatividade, clareza, suporte…"
-          />
+            />
+          </Field>
         </BriefingSectionCard>
 
         {errorMessage ? (
@@ -290,17 +305,13 @@ export function ClientBriefingHistoryForm({
                   type="button"
                   disabled={isCompleting || !ready}
                   onClick={handleComplete}
-                  trailingIcon={
-                    completed ? (
-                      <RiCheckLine size={16} aria-hidden />
-                    ) : undefined
-                  }
                 >
                   {isCompleting
                     ? "Salvando..."
                     : completed
                       ? "Etapa concluída"
                       : "Continuar"}
+                  {completed ? <RiCheckLine size={16} aria-hidden data-icon="inline-end" /> : null}
                 </Button>
                 )}
               </div>

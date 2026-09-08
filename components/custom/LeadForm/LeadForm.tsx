@@ -25,8 +25,14 @@ import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { LeadLocationField } from "@/components/custom/LeadLocationField"
 import { LeadSegmentField } from "@/components/custom/LeadSegmentField"
 import { LeadTagField } from "@/components/custom/LeadTagField"
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
+import { Button } from "@/components/ui/button"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+import { formatPhone } from "@/lib/br-documents"
 import { cn } from "@/lib/cn"
 import { toDigitalChannelDrafts } from "@/lib/leads/digital-channels"
 import {
@@ -207,19 +213,28 @@ export function LeadForm({
         <Controller
           name="company_name"
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              id="lead-company-name"
-              label="Nome da empresa"
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              disabled={fieldsDisabled}
-              autoComplete="organization"
-              leadingIcon={<RiBuilding4Line size={16} aria-hidden />}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const errorId = "lead-company-name-error"
+            return (
+              <Field data-invalid={!!fieldState.error}>
+                <FieldLabel htmlFor="lead-company-name">Nome da empresa</FieldLabel>
+                <InputGroup>
+                  <InputGroupAddon><RiBuilding4Line aria-hidden /></InputGroupAddon>
+                  <InputGroupInput
+                    id="lead-company-name"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    disabled={fieldsDisabled}
+                    autoComplete="organization"
+                    aria-invalid={!!fieldState.error}
+                    aria-describedby={fieldState.error ? errorId : undefined}
+                  />
+                </InputGroup>
+                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+              </Field>
+            )
+          }}
         />
       </FormSection>
 
@@ -330,56 +345,84 @@ export function LeadForm({
         <Controller
           name="contact_name"
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              id="lead-contact-name"
-              label="Nome do contato"
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              disabled={fieldsDisabled}
-              autoComplete="name"
-              leadingIcon={<RiUserLine size={16} aria-hidden />}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const errorId = "lead-contact-name-error"
+            return (
+              <Field data-invalid={!!fieldState.error}>
+                <FieldLabel htmlFor="lead-contact-name">Nome do contato</FieldLabel>
+                <InputGroup>
+                  <InputGroupAddon><RiUserLine aria-hidden /></InputGroupAddon>
+                  <InputGroupInput
+                    id="lead-contact-name"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    disabled={fieldsDisabled}
+                    autoComplete="name"
+                    aria-invalid={!!fieldState.error}
+                    aria-describedby={fieldState.error ? errorId : undefined}
+                  />
+                </InputGroup>
+                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+              </Field>
+            )
+          }}
         />
         <Controller
           name="phone"
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              id="lead-phone"
-              variant="phone"
-              label="Telefone"
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              disabled={fieldsDisabled}
-              autoComplete="tel"
-              leadingIcon={<RiPhoneLine size={16} aria-hidden />}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const errorId = "lead-phone-error"
+            return (
+              <Field data-invalid={!!fieldState.error}>
+                <FieldLabel htmlFor="lead-phone">Telefone</FieldLabel>
+                <InputGroup>
+                  <InputGroupAddon><RiPhoneLine aria-hidden /></InputGroupAddon>
+                  <InputGroupInput
+                    id="lead-phone"
+                    type="tel"
+                    inputMode="tel"
+                    placeholder="(11) 98765-4321"
+                    value={formatPhone(field.value)}
+                    onChange={(event) => field.onChange(formatPhone(event.target.value))}
+                    onBlur={field.onBlur}
+                    disabled={fieldsDisabled}
+                    autoComplete="tel"
+                    aria-invalid={!!fieldState.error}
+                    aria-describedby={fieldState.error ? errorId : undefined}
+                  />
+                </InputGroup>
+                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+              </Field>
+            )
+          }}
         />
         <Controller
           name="email"
           control={form.control}
-          render={({ field, fieldState }) => (
-            <Input
-              id="lead-email"
-              variant="email"
-              label="E-mail"
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              error={fieldState.error?.message}
-              disabled={fieldsDisabled}
-              autoComplete="email"
-              className="sm:col-span-2"
-              leadingIcon={<RiMailLine size={16} aria-hidden />}
-            />
-          )}
+          render={({ field, fieldState }) => {
+            const errorId = "lead-email-error"
+            return (
+              <Field className="sm:col-span-2" data-invalid={!!fieldState.error}>
+                <FieldLabel htmlFor="lead-email">E-mail</FieldLabel>
+                <InputGroup>
+                  <InputGroupAddon><RiMailLine aria-hidden /></InputGroupAddon>
+                  <InputGroupInput
+                    id="lead-email"
+                    type="email"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    disabled={fieldsDisabled}
+                    autoComplete="email"
+                    aria-invalid={!!fieldState.error}
+                    aria-describedby={fieldState.error ? errorId : undefined}
+                  />
+                </InputGroup>
+                <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+              </Field>
+            )
+          }}
         />
       </FormSection>
 
@@ -411,14 +454,12 @@ export function LeadForm({
           <Button
             type="submit"
             disabled={isPending || (mode === "edit" && !form.formState.isDirty)}
-            leadingIcon={
-              isPending ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiSaveLine size={16} aria-hidden />
-              )
-            }
           >
+            {isPending ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiSaveLine data-icon="inline-start" aria-hidden />
+            )}
             {isPending
               ? "Salvando…"
               : mode === "create"

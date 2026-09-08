@@ -13,9 +13,9 @@ import {
 import { cn } from "@/lib/cn"
 import { APP_MONOGRAM, APP_NAME } from "@/lib/brand"
 import { logout } from "@/app/actions/logout"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
-import { Tooltip } from "@/components/ui/Tooltip"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { NAV_ITEMS } from "@/components/custom/navigation"
 import { NavTree } from "@/components/custom/NavTree"
 
@@ -162,8 +162,11 @@ export function Sidebar() {
 
         <div className="shrink-0 border-t border-sidebar-border px-2 py-3 flex flex-col gap-1">
           {!expanded ? (
-            <Tooltip content="Tema" side="right" arrow wrapperClassName="w-full">
-              <ThemeToggle className="w-full h-10 rounded-md" />
+            <Tooltip>
+              <TooltipTrigger render={<span className="block w-full" />}>
+                <ThemeToggle className="h-10 w-full rounded-md" />
+              </TooltipTrigger>
+              <TooltipContent side="right">Tema</TooltipContent>
             </Tooltip>
           ) : (
             <ThemeToggle label="Tema" />
@@ -171,26 +174,29 @@ export function Sidebar() {
 
           <form action={logout} className="w-full">
             {!expanded ? (
-              <Tooltip content="Sair" side="right" arrow tone="danger" wrapperClassName="w-full">
-                <Button
-                  type="submit"
-                  variant="soft"
-                  tone="danger"
-                  aria-label="Sair"
-                  className="relative h-10 w-full justify-center px-0"
-                  leadingIcon={<RiLogoutBoxLine size={18} aria-hidden />}
-                >
-                  <FormPendingSurface />
-                </Button>
+              <Tooltip>
+                <TooltipTrigger render={<span className="block w-full" />}>
+                  <Button
+                    type="submit"
+                    variant="destructive"
+                    size="lg"
+                    aria-label="Sair"
+                    className="relative h-10 w-full justify-center px-0"
+                  >
+                    <RiLogoutBoxLine size={18} aria-hidden />
+                    <FormPendingSurface />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">Sair</TooltipContent>
               </Tooltip>
             ) : (
               <Button
                 type="submit"
-                variant="soft"
-                tone="danger"
+                variant="destructive"
+                size="lg"
                 className="relative h-10 w-full justify-start gap-3 px-3"
-                leadingIcon={<RiLogoutBoxLine size={18} aria-hidden />}
               >
+                <RiLogoutBoxLine size={18} aria-hidden />
                 <FormPendingSurface>
                 <m.span
                   className="overflow-hidden whitespace-nowrap leading-none"

@@ -12,11 +12,19 @@ import {
   RiUserLine,
   RiMailLine,
   RiLockPasswordLine,
+  RiEyeLine,
+  RiEyeOffLine,
 } from "react-icons/ri"
 import { createUserSchema, type CreateUserInput } from "@/lib/validations/create-user"
 import { createUser } from "@/app/actions/create-user"
-import { Input } from "@/components/ui/Input"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
@@ -43,6 +51,7 @@ const FIELD_ITEM_REDUCED = {
 export function CreateUserForm() {
   const [isPending, startTransition] = useTransition()
   const [serverMessage, setServerMessage] = useState<string | null>(null)
+  const [passwordVisible, setPasswordVisible] = useState(false)
   const reduced = !!useReducedMotion()
 
   const form = useForm<CreateUserInput>({
@@ -93,44 +102,70 @@ export function CreateUserForm() {
         className="flex flex-col gap-4"
       >
         <m.div variants={fieldItem}>
-          <Input
-            id="name"
-            label="Nome"
-            autoComplete="name"
-            placeholder="Seu nome"
-            disabled={isPending}
-            error={form.formState.errors.name?.message}
-            leadingIcon={<RiUserLine size={16} aria-hidden />}
-            {...form.register("name")}
-          />
+          <Field data-invalid={Boolean(form.formState.errors.name)}>
+            <FieldLabel htmlFor="name">Nome</FieldLabel>
+            <InputGroup className="h-10">
+              <InputGroupAddon><RiUserLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput
+                id="name"
+                autoComplete="name"
+                placeholder="Seu nome"
+                disabled={isPending}
+                aria-invalid={Boolean(form.formState.errors.name)}
+                {...form.register("name")}
+              />
+            </InputGroup>
+            <FieldError errors={[form.formState.errors.name]} />
+          </Field>
         </m.div>
 
         <m.div variants={fieldItem}>
-          <Input
-            id="email"
-            label="E-mail"
-            variant="email"
-            autoComplete="email"
-            placeholder="seu@email.com"
-            disabled={isPending}
-            error={form.formState.errors.email?.message}
-            leadingIcon={<RiMailLine size={16} aria-hidden />}
-            {...form.register("email")}
-          />
+          <Field data-invalid={Boolean(form.formState.errors.email)}>
+            <FieldLabel htmlFor="email">E-mail</FieldLabel>
+            <InputGroup className="h-10">
+              <InputGroupAddon><RiMailLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput
+                id="email"
+                type="email"
+                autoComplete="email"
+                placeholder="seu@email.com"
+                disabled={isPending}
+                aria-invalid={Boolean(form.formState.errors.email)}
+                {...form.register("email")}
+              />
+            </InputGroup>
+            <FieldError errors={[form.formState.errors.email]} />
+          </Field>
         </m.div>
 
         <m.div variants={fieldItem}>
-          <Input
-            id="password"
-            label="Senha"
-            variant="password"
-            autoComplete="new-password"
-            placeholder="Mínimo 12 caracteres"
-            disabled={isPending}
-            error={form.formState.errors.password?.message}
-            leadingIcon={<RiLockPasswordLine size={16} aria-hidden />}
-            {...form.register("password")}
-          />
+          <Field data-invalid={Boolean(form.formState.errors.password)}>
+            <FieldLabel htmlFor="password">Senha</FieldLabel>
+            <InputGroup className="h-10">
+              <InputGroupAddon><RiLockPasswordLine size={16} aria-hidden /></InputGroupAddon>
+              <InputGroupInput
+                id="password"
+                type={passwordVisible ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Mínimo 12 caracteres"
+                disabled={isPending}
+                aria-invalid={Boolean(form.formState.errors.password)}
+                {...form.register("password")}
+              />
+              <InputGroupAddon align="inline-end">
+                <InputGroupButton
+                  type="button"
+                  size="icon-sm"
+                  disabled={isPending}
+                  onClick={() => setPasswordVisible((visible) => !visible)}
+                  aria-label={passwordVisible ? "Ocultar senha" : "Exibir senha"}
+                >
+                  {passwordVisible ? <RiEyeOffLine aria-hidden /> : <RiEyeLine aria-hidden />}
+                </InputGroupButton>
+              </InputGroupAddon>
+            </InputGroup>
+            <FieldError errors={[form.formState.errors.password]} />
+          </Field>
         </m.div>
 
         {serverMessage && (
@@ -139,7 +174,7 @@ export function CreateUserForm() {
             aria-live="polite"
             initial={{ opacity: 0, y: 4 }}
             animate={{ opacity: 1, y: 0, transition: { duration: 0.18, ease: EASE } }}
-            className="font-sans text-body-sm text-danger"
+            className="text-sm text-destructive"
           >
             {serverMessage}
           </m.p>
@@ -148,29 +183,24 @@ export function CreateUserForm() {
         <m.div variants={fieldItem}>
           <Button
             type="submit"
-            variant="primary"
+            variant="default"
             disabled={isPending}
-            className="w-full"
-            leadingIcon={
-              isPending ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiUserAddLine size={16} aria-hidden />
-              )
-            }
+            size="lg"
+            className="h-10 w-full"
           >
+            {isPending ? <RiLoader4Line aria-hidden className="animate-spin" /> : <RiUserAddLine aria-hidden />}
             {isPending ? "Criando conta…" : "Criar conta"}
           </Button>
         </m.div>
 
         <m.p
           variants={fieldItem}
-          className="font-sans text-body-sm text-fg-muted text-center"
+          className="text-center text-sm text-muted-foreground"
         >
           Já tem uma conta?{" "}
           <Link
             href="/login"
-            className="font-medium text-accent hover:text-accent-hover transition-colors"
+            className="font-medium text-primary transition-colors hover:text-primary/80"
           >
             Entrar
           </Link>

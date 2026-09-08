@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useRef, useState, useTransition } from "react"
+import { useEffect, useRef, useState, useTransition } from "react"
 import {
   AnimatePresence,
   LazyMotion,
@@ -18,7 +18,8 @@ import {
   type AppRole,
 } from "@/lib/auth/roles"
 import { cn } from "@/lib/cn"
-import { Select, type SelectItem } from "@/components/ui/Select"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
 import type {
   TeamMember,
   TeamRoleManagerProps,
@@ -100,19 +101,6 @@ function TeamMemberRoleRow({
   const canEdit = currentUserIsAdmin
   const isCurrentUser = member.id === currentUserId
   const isBusy = saveState === "saving" || isPending
-  const roleItems = useMemo<SelectItem[]>(
-    () =>
-      APP_ROLES.map((role) => ({
-        value: role,
-        label: APP_ROLE_LABELS[role],
-        icon:
-          role === "admin" ? (
-            <RiShieldUserLine size={14} aria-hidden />
-          ) : undefined,
-      })),
-    [],
-  )
-
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
@@ -221,17 +209,13 @@ function TeamMemberRoleRow({
 
       <div className="min-w-0">
         {canEdit ? (
-          <Select
-            id={`team-member-roles-${member.id}`}
-            items={roleItems}
-            value={roles}
-            onValueChange={handleRolesChange}
-            placeholder="Sem papel"
-            error={message ?? undefined}
-            multiple
-            maxVisibleChips={APP_ROLES.length}
-            className="min-h-0 border-transparent bg-transparent px-0 py-0 active:scale-100 data-pressed:scale-100"
-          />
+          <FieldSet className="flex-row flex-wrap gap-2" aria-label={`Papéis de ${member.name}`}>
+            {APP_ROLES.map((role) => {
+              const inputId = `team-member-${member.id}-${role}`
+              return <Field key={role} orientation="horizontal" className="w-auto"><Checkbox id={inputId} checked={roles.includes(role)} disabled={isBusy} onCheckedChange={(next) => handleRolesChange(next === true ? [...roles, role] : roles.filter((item) => item !== role))} /><FieldLabel htmlFor={inputId}>{role === "admin" ? <><RiShieldUserLine size={14} aria-hidden />{APP_ROLE_LABELS[role]}</> : APP_ROLE_LABELS[role]}</FieldLabel></Field>
+            })}
+            <FieldError>{message}</FieldError>
+          </FieldSet>
         ) : (
           <RoleChips roles={member.roles} />
         )}

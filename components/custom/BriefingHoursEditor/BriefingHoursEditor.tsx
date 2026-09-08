@@ -1,6 +1,7 @@
 "use client"
 
-import { Switch } from "@/components/ui/Switch"
+import { Field, FieldLabel } from "@/components/ui/field"
+import { Switch } from "@/components/ui/switch"
 import { TimePicker } from "@/components/ui/TimePicker"
 import {
   parseHoursLines,
@@ -51,15 +52,19 @@ export function BriefingHoursEditor({
                 <span className="font-sans text-body-sm font-medium text-fg">
                   {label}
                 </span>
-                <Switch
-                  id={`${id}-${day.weekday}-open`}
-                  checked={!day.closed}
-                  label={day.closed ? "Fechado" : "Aberto"}
-                  disabled={disabled}
-                  onCheckedChange={(checked) =>
-                    updateDay(index, { closed: !checked })
-                  }
-                />
+                <Field orientation="horizontal" className="w-auto">
+                  <FieldLabel htmlFor={`${id}-${day.weekday}-open`}>
+                    {day.closed ? "Fechado" : "Aberto"}
+                  </FieldLabel>
+                  <Switch
+                    id={`${id}-${day.weekday}-open`}
+                    checked={!day.closed}
+                    disabled={disabled}
+                    onCheckedChange={(checked) =>
+                      updateDay(index, { closed: !checked })
+                    }
+                  />
+                </Field>
               </div>
               <div className="mt-2 grid gap-2 sm:grid-cols-2">
                 <TimePicker

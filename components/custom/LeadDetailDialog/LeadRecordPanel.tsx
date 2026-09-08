@@ -24,7 +24,12 @@ import {
 import { LeadLocationField } from "@/components/custom/LeadLocationField"
 import { LeadSegmentField } from "@/components/custom/LeadSegmentField"
 import { LeadTagChips, LeadTagField } from "@/components/custom/LeadTagField"
-import { Input } from "@/components/ui/Input"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
 import { cn } from "@/lib/cn"
 import { toDigitalChannelDrafts, type DigitalChannelDraft } from "@/lib/leads/digital-channels"
@@ -302,19 +307,28 @@ function CompanyCard({
               <Controller
                 name="company_name"
                 control={form.control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-company-name"
-                    label="Nome da empresa"
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    error={fieldState.error?.message}
-                    disabled={isPending}
-                    autoComplete="organization"
-                    leadingIcon={<RiBuilding4Line size={16} aria-hidden />}
-                  />
-                )}
+                render={({ field, fieldState }) => {
+                  const errorId = "lead-record-company-name-error"
+                  return (
+                    <Field data-invalid={!!fieldState.error}>
+                      <FieldLabel htmlFor="lead-record-company-name">Nome da empresa</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon><RiBuilding4Line aria-hidden /></InputGroupAddon>
+                        <InputGroupInput
+                          id="lead-record-company-name"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          disabled={isPending}
+                          autoComplete="organization"
+                          aria-invalid={!!fieldState.error}
+                          aria-describedby={fieldState.error ? errorId : undefined}
+                        />
+                      </InputGroup>
+                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                    </Field>
+                  )
+                }}
               />
               <Controller
                 name="channels"
@@ -531,55 +545,84 @@ function ContactCard({
               <Controller
                 name="contact_name"
                 control={form.control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-contact-name"
-                    label="Nome do contato"
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    error={fieldState.error?.message}
-                    disabled={isPending}
-                    autoComplete="name"
-                    leadingIcon={<RiUserLine size={16} aria-hidden />}
-                  />
-                )}
+                render={({ field, fieldState }) => {
+                  const errorId = "lead-record-contact-name-error"
+                  return (
+                    <Field data-invalid={!!fieldState.error}>
+                      <FieldLabel htmlFor="lead-record-contact-name">Nome do contato</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon><RiUserLine aria-hidden /></InputGroupAddon>
+                        <InputGroupInput
+                          id="lead-record-contact-name"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          disabled={isPending}
+                          autoComplete="name"
+                          aria-invalid={!!fieldState.error}
+                          aria-describedby={fieldState.error ? errorId : undefined}
+                        />
+                      </InputGroup>
+                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                    </Field>
+                  )
+                }}
               />
               <Controller
                 name="phone"
                 control={form.control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-phone"
-                    variant="phone"
-                    label="Telefone"
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    error={fieldState.error?.message}
-                    disabled={isPending}
-                    autoComplete="tel"
-                    leadingIcon={<RiPhoneLine size={16} aria-hidden />}
-                  />
-                )}
+                render={({ field, fieldState }) => {
+                  const errorId = "lead-record-phone-error"
+                  return (
+                    <Field data-invalid={!!fieldState.error}>
+                      <FieldLabel htmlFor="lead-record-phone">Telefone</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon><RiPhoneLine aria-hidden /></InputGroupAddon>
+                        <InputGroupInput
+                          id="lead-record-phone"
+                          type="tel"
+                          inputMode="tel"
+                          placeholder="(11) 98765-4321"
+                          value={formatPhone(field.value)}
+                          onChange={(event) => field.onChange(formatPhone(event.target.value))}
+                          onBlur={field.onBlur}
+                          disabled={isPending}
+                          autoComplete="tel"
+                          aria-invalid={!!fieldState.error}
+                          aria-describedby={fieldState.error ? errorId : undefined}
+                        />
+                      </InputGroup>
+                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                    </Field>
+                  )
+                }}
               />
               <Controller
                 name="email"
                 control={form.control}
-                render={({ field, fieldState }) => (
-                  <Input
-                    id="lead-record-email"
-                    variant="email"
-                    label="E-mail"
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={field.onBlur}
-                    error={fieldState.error?.message}
-                    disabled={isPending}
-                    autoComplete="email"
-                    leadingIcon={<RiMailLine size={16} aria-hidden />}
-                  />
-                )}
+                render={({ field, fieldState }) => {
+                  const errorId = "lead-record-email-error"
+                  return (
+                    <Field data-invalid={!!fieldState.error}>
+                      <FieldLabel htmlFor="lead-record-email">E-mail</FieldLabel>
+                      <InputGroup>
+                        <InputGroupAddon><RiMailLine aria-hidden /></InputGroupAddon>
+                        <InputGroupInput
+                          id="lead-record-email"
+                          type="email"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          disabled={isPending}
+                          autoComplete="email"
+                          aria-invalid={!!fieldState.error}
+                          aria-describedby={fieldState.error ? errorId : undefined}
+                        />
+                      </InputGroup>
+                      <FieldError id={errorId}>{fieldState.error?.message}</FieldError>
+                    </Field>
+                  )
+                }}
               />
             </div>
             {serverMessage ? <ServerMessage text={serverMessage} /> : null}

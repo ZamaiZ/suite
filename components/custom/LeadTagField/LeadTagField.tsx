@@ -4,7 +4,6 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { Combobox } from "@base-ui/react/combobox"
 import { RiAddLine, RiCloseLine } from "react-icons/ri"
 import { listLeadTags } from "@/app/actions/leads"
-import { useDialogPortalContainer } from "@/components/ui/Dialog"
 import { cn } from "@/lib/cn"
 import {
   normalizeTagName,
@@ -36,7 +35,6 @@ export function LeadTagField({
   disabled,
   onBlur,
 }: LeadTagFieldProps) {
-  const portalContainer = useDialogPortalContainer()
   const fieldRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const [catalog, setCatalog] = useState<LeadTag[]>([])
@@ -252,7 +250,7 @@ export function LeadTagField({
           />
         </div>
 
-        <Combobox.Portal container={portalContainer ?? undefined}>
+        <Combobox.Portal>
           <Combobox.Positioner
             className="z-50 outline-none"
             sideOffset={4}

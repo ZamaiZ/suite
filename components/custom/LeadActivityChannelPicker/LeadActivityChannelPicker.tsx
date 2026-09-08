@@ -10,7 +10,8 @@ import {
   RiPhoneLine,
   RiWhatsappLine,
 } from "react-icons/ri"
-import { Input } from "@/components/ui/Input"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/cn"
 import {
   LEAD_ACTIVITY_CHANNEL_LABELS,
@@ -120,15 +121,18 @@ export function LeadActivityChannelPicker({
         </p>
       ) : null}
       <FieldReveal show={showDetail} id="channel-detail">
-        <Input
-          id={id}
-          label="Qual canal?"
-          value={detail}
-          onChange={(event) => onDetailChange(event.target.value)}
-          error={detailError}
-          disabled={disabled}
-          className="mt-3"
-        />
+        <Field className="mt-3" data-invalid={!!detailError}>
+          <FieldLabel htmlFor={id}>Qual canal?</FieldLabel>
+          <Input
+            id={id}
+            value={detail}
+            onChange={(event) => onDetailChange(event.target.value)}
+            disabled={disabled}
+            aria-invalid={!!detailError}
+            aria-describedby={detailError ? `${id}-error` : undefined}
+          />
+          <FieldError id={`${id}-error`}>{detailError}</FieldError>
+        </Field>
       </FieldReveal>
     </div>
   )

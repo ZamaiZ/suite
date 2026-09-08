@@ -8,7 +8,7 @@ import {
   RiRefreshLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 
 export function LeadWebsiteStepHeader({
@@ -50,14 +50,12 @@ export function LeadWebsiteStepHeader({
             variant="secondary"
             disabled={collecting}
             onClick={onAnalyze}
-            leadingIcon={
-              collecting ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-              ) : (
-                <RiRefreshLine size={16} aria-hidden />
-              )
-            }
           >
+            {collecting ? (
+              <RiLoader4Line data-icon="inline-start" aria-hidden className="animate-spin" />
+            ) : (
+              <RiRefreshLine data-icon="inline-start" aria-hidden />
+            )}
             {updatedAt ? "Atualizar coleta" : "Analisar site"}
           </Button>
         ) : null}
@@ -65,13 +63,13 @@ export function LeadWebsiteStepHeader({
           <Button
             type="button"
             variant="outline"
-            className="border-accent/30 text-accent hover:bg-accent/10"
-            trailingIcon={<RiExternalLinkLine size={14} aria-hidden />}
+            className="border-primary/30 text-primary hover:bg-primary/10 hover:text-primary"
             onClick={() =>
               window.open(siteHref, "_blank", "noopener,noreferrer")
             }
           >
             Abrir site
+            <RiExternalLinkLine data-icon="inline-end" aria-hidden />
           </Button>
         ) : null}
       </div>
