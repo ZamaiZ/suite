@@ -20,8 +20,11 @@ import type { createClient } from "@/lib/supabase/server"
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
+export const GRID_SCAN_SELECT =
+  "id, lead_id, profile_id, keyword, center_lat, center_lng, size, radius_km, zoom, source, mode, status, processed, total, points, cost_usd, task_ids, error_message, started_at, captured_at"
+
 const GBP_SELECT =
-  "id, lead_id, place_id, is_primary, sort_order, google_maps_uri, fetched_at, fetched_by, payload, matched_website_key, notes, reputation_note, cid, rank_keywords, lead_gbp_jobs(kind, status, error_message), lead_gbp_rank_checks(keyword, maps_position, in_top3, competitors, check_url, checked_at), lead_gbp_snapshots(id, profile_id, captured_at, payload, enrichment, reviews, posts, qna)"
+  `id, lead_id, place_id, is_primary, sort_order, google_maps_uri, fetched_at, fetched_by, payload, matched_website_key, notes, reputation_note, cid, rank_keywords, lead_gbp_jobs(kind, status, error_message), lead_gbp_rank_checks(keyword, maps_position, in_top3, competitors, check_url, checked_at), lead_gbp_snapshots(id, profile_id, captured_at, payload, enrichment, reviews, posts, qna), lead_gbp_grid_scans(${GRID_SCAN_SELECT})`
 
 export type GbpLeadContext = {
   id: string

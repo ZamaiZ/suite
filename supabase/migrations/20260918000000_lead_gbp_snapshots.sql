@@ -18,18 +18,21 @@ create index if not exists lead_gbp_snapshots_profile_recent_idx
 
 alter table public.lead_gbp_snapshots enable row level security;
 
+drop policy if exists "lead_gbp_snapshots_select_commercial" on public.lead_gbp_snapshots;
 create policy "lead_gbp_snapshots_select_commercial"
   on public.lead_gbp_snapshots
   for select
   to authenticated
   using (public.is_commercial_member());
 
+drop policy if exists "lead_gbp_snapshots_insert_commercial" on public.lead_gbp_snapshots;
 create policy "lead_gbp_snapshots_insert_commercial"
   on public.lead_gbp_snapshots
   for insert
   to authenticated
   with check (public.is_commercial_member());
 
+drop policy if exists "lead_gbp_snapshots_update_commercial" on public.lead_gbp_snapshots;
 create policy "lead_gbp_snapshots_update_commercial"
   on public.lead_gbp_snapshots
   for update
@@ -37,6 +40,7 @@ create policy "lead_gbp_snapshots_update_commercial"
   using (public.is_commercial_member())
   with check (public.is_commercial_member());
 
+drop policy if exists "lead_gbp_snapshots_delete_commercial" on public.lead_gbp_snapshots;
 create policy "lead_gbp_snapshots_delete_commercial"
   on public.lead_gbp_snapshots
   for delete
@@ -49,35 +53,52 @@ grant select, insert, update, delete on table public.lead_gbp_snapshots to authe
 -- Carga inicial: cada perfil vira um primeiro snapshot, datado pelo timestamp
 -- mais recente que ele tiver entre enriquecimento, reviews, posts e coleta.
 
-insert into public.lead_gbp_snapshots (
-  profile_id,
-  captured_at,
-  payload,
-  enrichment,
-  reviews,
-  posts,
-  qna
-)
-select
-  profile.id,
-  greatest(
-    coalesce(profile.enrichment_at, profile.fetched_at),
-    coalesce(profile.reviews_at, profile.fetched_at),
-    coalesce(profile.posts_at, profile.fetched_at),
-    coalesce(profile.qna_at, profile.fetched_at),
-    profile.fetched_at
-  ),
-  profile.payload,
-  profile.enrichment,
-  profile.reviews,
-  profile.posts,
-  profile.qna
-from public.lead_gbp_profiles as profile
-where not exists (
-  select 1
-  from public.lead_gbp_snapshots as existing
-  where existing.profile_id = profile.id
-);
+-- Em SQL estático o parser resolve as colunas antes de executar, então uma
+-- segunda execução falharia ao mencionar `enrichment`, `reviews`, `posts` e
+-- `qna`, que esta mesma migration derruba logo abaixo. O bloco dinâmico só
+-- roda enquanto elas existirem.
+do $$
+begin
+  if exists (
+    select 1
+    from information_schema.columns
+    where table_schema = 'public'
+      and table_name = 'lead_gbp_profiles'
+      and column_name = 'enrichment'
+  ) then
+    execute $backfill$
+      insert into public.lead_gbp_snapshots (
+        profile_id,
+        captured_at,
+        payload,
+        enrichment,
+        reviews,
+        posts,
+        qna
+      )
+      select
+        profile.id,
+        greatest(
+          coalesce(profile.enrichment_at, profile.fetched_at),
+          coalesce(profile.reviews_at, profile.fetched_at),
+          coalesce(profile.posts_at, profile.fetched_at),
+          coalesce(profile.qna_at, profile.fetched_at),
+          profile.fetched_at
+        ),
+        profile.payload,
+        profile.enrichment,
+        profile.reviews,
+        profile.posts,
+        profile.qna
+      from public.lead_gbp_profiles as profile
+      where not exists (
+        select 1
+        from public.lead_gbp_snapshots as existing
+        where existing.profile_id = profile.id
+      )
+    $backfill$;
+  end if;
+end $$;
 
 alter table public.lead_gbp_profiles
   drop constraint if exists lead_gbp_profiles_enrichment_at_chk,

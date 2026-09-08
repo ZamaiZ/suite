@@ -506,8 +506,10 @@ export function LeadGbpProfileCard({
         >
           <m.div variants={item}>
             <LeadGbpRankBlock
+              profileId={profile.id}
               keywords={profile.rank_keywords}
               checks={profile.rankChecks}
+              gridScan={profile.gridScan}
               canEdit={canEdit}
               pending={actionPending || busy}
               onSave={handleSaveRankKeywords}

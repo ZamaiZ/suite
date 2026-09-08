@@ -474,6 +474,39 @@ function readMapsItems(items: unknown): MapsRankItem[] {
   })
 }
 
+export type GbpGridPointResult = {
+  position: number | null
+  competitors: GbpRankCompetitor[]
+}
+
+/**
+ * Um ponto da malha, a partir de um resultado de Maps.
+ *
+ * Difere de `mapDataForSeoMapsRank` em uma coisa que importa: os concorrentes
+ * são o top 3 daquele ponto **sem filtrar pela posição do cliente**. Na malha,
+ * o ponto onde o cliente não aparece é justamente aquele em que interessa
+ * saber quem está lá — e reescanear depois custaria outra requisição paga.
+ */
+export function mapDataForSeoGridPoint(input: {
+  placeId: string
+  result: Record<string, unknown> | null
+}): GbpGridPointResult {
+  const items = readMapsItems(input.result?.items).slice(0, GBP_MAPS_DEPTH)
+  const target = items.find((item) => item.placeId === input.placeId) ?? null
+  return {
+    position: target?.position ?? null,
+    competitors: items
+      .slice()
+      .sort((left, right) => left.position - right.position)
+      .slice(0, 3)
+      .map((item) => ({
+        title: item.title,
+        placeId: item.placeId,
+        position: item.position,
+      })),
+  }
+}
+
 export function mapDataForSeoMapsRank(input: {
   keyword: string
   placeId: string

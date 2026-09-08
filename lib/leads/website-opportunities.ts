@@ -1,5 +1,6 @@
 import {
   WEBSITE_GAP_LABELS,
+  type NapCheck,
   type WebsiteCrawl,
   type WebsiteGapId,
 } from "./website-audit.ts"
@@ -30,6 +31,23 @@ export type WebsiteOpportunityContext = {
   minPerformance?: number | null
   /** Rótulos dos headers ausentes, para o detalhe de weak_security_headers. */
   missingSecurityHeaders?: string[]
+  /** Componentes do NAP que divergem, para o detalhe de nap_mismatch. */
+  napMismatches?: string[]
+}
+
+const NAP_COMPONENT_LABELS: Record<keyof NapCheck, string> = {
+  phone: "telefone",
+  address: "endereço",
+}
+
+/**
+ * Só os componentes divergentes. `absent` fica de fora do detalhe da
+ * oportunidade — ele é estado a exibir, não algo a corrigir no site.
+ */
+export function napMismatchLabels(check: NapCheck): string[] {
+  return (Object.keys(NAP_COMPONENT_LABELS) as Array<keyof NapCheck>)
+    .filter((key) => check[key] === "mismatch")
+    .map((key) => NAP_COMPONENT_LABELS[key])
 }
 
 /**
@@ -128,6 +146,7 @@ export function websiteOpportunitiesFromGaps(
   context: WebsiteOpportunityContext = {},
 ): WebsiteOpportunityItem[] {
   const missing = context.missingSecurityHeaders ?? []
+  const napMismatches = context.napMismatches ?? []
   const items = gaps.map((id) => ({
     id,
     title: OPPORTUNITY_TITLES[id] ?? WEBSITE_GAP_LABELS[id],
@@ -135,6 +154,9 @@ export function websiteOpportunitiesFromGaps(
     source: "machine" as const,
     ...(id === "weak_security_headers" && missing.length > 0
       ? { detail: `Ausentes: ${missing.join(", ")}` }
+      : {}),
+    ...(id === "nap_mismatch" && napMismatches.length > 0
+      ? { detail: `Divergentes: ${napMismatches.join(", ")}` }
       : {}),
   }))
   items.sort((left, right) => {

@@ -1,0 +1,406 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+import { RiLoader4Line, RiGridLine } from "react-icons/ri"
+import { LeadGbpGridMap } from "./LeadGbpGridMap"
+import { Button } from "@/components/ui/Button"
+import { Select } from "@/components/ui/Select"
+import { Slider } from "@/components/ui/Slider"
+import { cn } from "@/lib/cn"
+import {
+  pollLeadGbpGridScan,
+  startLeadGbpGridScan,
+} from "@/app/actions/leads"
+import {
+  GBP_GRID_RADIUS_KM_DEFAULT,
+  GBP_GRID_RADIUS_KM_MAX,
+  GBP_GRID_RADIUS_KM_MIN,
+  GBP_GRID_SIZE_DEFAULT,
+  GBP_GRID_SIZES,
+  gbpGridCost,
+  gbpGridFailedCount,
+  gbpGridMetrics,
+  gbpGridExecutionMode,
+  gbpGridScanActive,
+  type GbpGridMode,
+  type LeadGbpGridScan,
+} from "@/lib/leads/gbp-grid"
+import { formatUsd } from "@/lib/dataforseo/usage"
+
+/**
+ * A fila padrão responde em minutos, então bater de 2,5 em 2,5 segundos era só
+ * ruído. O modo live responde em segundos e continua no ritmo curto.
+ */
+const POLL_LIVE_MS = 2500
+const POLL_QUEUED_MS = 8000
+const POLL_MAX_MS = 600_000
+
+const MODE_ITEMS = [
+  { value: "live", label: "Modo live" },
+  { value: "queued", label: "Fila padrão" },
+]
+
+const QUEUE_WAITING =
+  "A malha continua na fila do provedor. Volte mais tarde e clique em Retomar."
+
+function metricLabel(value: number | null, suffix = ""): string {
+  if (value === null) return "—"
+  return `${value.toLocaleString("pt-BR")}${suffix}`
+}
+
+/** O Select devolve `string | string[]`; aqui o uso é sempre simples. */
+function firstValue(value: string | string[]): string {
+  return Array.isArray(value) ? (value[0] ?? "") : value
+}
+
+export function LeadGbpGridSection({
+  profileId,
+  keywords,
+  initialScan,
+  canEdit,
+}: {
+  profileId: string
+  keywords: string[]
+  initialScan: LeadGbpGridScan | null
+  canEdit: boolean
+}) {
+  const [open, setOpen] = useState(false)
+  const [scan, setScan] = useState<LeadGbpGridScan | null>(initialScan)
+  const [keyword, setKeyword] = useState(keywords[0] ?? "")
+  const [source, setSource] = useState(
+    `${profileId}:${initialScan?.id ?? ""}`,
+  )
+  const [size, setSize] = useState<number>(GBP_GRID_SIZE_DEFAULT)
+  const [mode, setMode] = useState<GbpGridMode>(
+    gbpGridExecutionMode(GBP_GRID_SIZE_DEFAULT),
+  )
+  const [radiusKm, setRadiusKm] = useState(GBP_GRID_RADIUS_KM_DEFAULT)
+  const [busy, setBusy] = useState(false)
+  const [timedOut, setTimedOut] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  /** Impede que um tick comece antes de o anterior terminar. */
+  const inFlightRef = useRef(false)
+
+  // Troca de perfil ou de malha reinicia o painel. Ajustar durante a render é o
+  // caminho recomendado para estado derivado de prop; num efeito, viraria uma
+  // renderização em cascata.
+  const nextSource = `${profileId}:${initialScan?.id ?? ""}`
+  if (nextSource !== source) {
+    setSource(nextSource)
+    setScan(initialScan)
+    setError(null)
+    setTimedOut(false)
+  }
+
+  // A keyword vigente é derivada, não sincronizada: se a lista mudou e a
+  // escolhida sumiu, a primeira vale.
+  const activeKeyword = keywords.includes(keyword)
+    ? keyword
+    : (keywords[0] ?? "")
+
+  const active = gbpGridScanActive(scan)
+  const scanId = scan?.id ?? null
+  const scanMode = scan?.mode ?? null
+
+  // Enquanto houver ponto em aberto, o poll continua e a malha preenche na
+  // tela. O teto de tempo evita laço infinito se algo travar do outro lado.
+  useEffect(() => {
+    if (!active || !scanId || !scanMode) return
+    const id = scanId
+    const intervalMs = scanMode === "queued" ? POLL_QUEUED_MS : POLL_LIVE_MS
+    let cancelled = false
+    const startedAt = Date.now()
+
+    async function tick() {
+      // Sem esta guarda o intervalo empilhava chamadas quando uma passada
+      // demorava mais que o intervalo, e cada uma era uma server action inteira.
+      if (cancelled || inFlightRef.current) return
+      if (Date.now() - startedAt >= POLL_MAX_MS) {
+        setTimedOut(true)
+        return
+      }
+      inFlightRef.current = true
+      try {
+        const formData = new FormData()
+        formData.set("scan_id", id)
+        const result = await pollLeadGbpGridScan(formData)
+        if (cancelled) return
+        if (result.status === "error") {
+          setError(result.message)
+          return
+        }
+        setScan(result.scan)
+      } finally {
+        inFlightRef.current = false
+      }
+    }
+
+    void tick()
+    const timer = window.setInterval(() => {
+      void tick()
+    }, intervalMs)
+    return () => {
+      cancelled = true
+      window.clearInterval(timer)
+    }
+  }, [active, scanId, scanMode])
+
+  async function handleStart() {
+    if (!activeKeyword) return
+    setBusy(true)
+    setError(null)
+    setTimedOut(false)
+    const formData = new FormData()
+    formData.set("profile_id", profileId)
+    formData.set("keyword", activeKeyword)
+    formData.set("size", String(size))
+    formData.set("radius_km", String(radiusKm))
+    formData.set("mode", mode)
+    const result = await startLeadGbpGridScan(formData)
+    setBusy(false)
+    if (result.status === "error") {
+      setError(result.message)
+      return
+    }
+    setScan(result.scan)
+  }
+
+  async function handleResume() {
+    if (!scan) return
+    setBusy(true)
+    setError(null)
+    setTimedOut(false)
+    const formData = new FormData()
+    formData.set("scan_id", scan.id)
+    // Só o clique explícito libera nova tentativa nos pontos falhos.
+    formData.set("reset_failed", "1")
+    const result = await pollLeadGbpGridScan(formData)
+    setBusy(false)
+    if (result.status === "error") {
+      setError(result.message)
+      return
+    }
+    setScan(result.scan)
+  }
+
+  const metrics = scan ? gbpGridMetrics(scan.points) : null
+  const requests = gbpGridCost(size)
+  const failed = scan ? gbpGridFailedCount(scan.points) : 0
+  const stalled = scan?.status === "partial" || scan?.status === "failed"
+  const canResume = canEdit && Boolean(scan) && (stalled || (timedOut && active))
+
+  return (
+    <div className="mt-3 border-t border-border-subtle pt-3">
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className="flex items-center gap-2 font-sans text-caption text-fg-secondary hover:text-fg"
+      >
+        <RiGridLine aria-hidden size={14} />
+        Malha geográfica
+        <span className="text-fg-muted">{open ? "−" : "+"}</span>
+      </button>
+
+      {open ? (
+        <div className="mt-3 flex flex-col gap-3">
+          {canEdit ? (
+            <div className="flex flex-wrap items-end gap-3">
+              <label className="flex min-w-44 flex-col gap-1">
+                <span className="font-sans text-caption text-fg-muted">
+                  Keyword
+                </span>
+                <Select
+                  id={`gbp-grid-keyword-${profileId}`}
+                  items={keywords.map((item) => ({
+                    value: item,
+                    label: item,
+                  }))}
+                  value={activeKeyword}
+                  searchable={false}
+                  disabled={busy || active || keywords.length === 0}
+                  onValueChange={(value) => setKeyword(firstValue(value))}
+                />
+              </label>
+
+              <label className="flex min-w-28 flex-col gap-1">
+                <span className="font-sans text-caption text-fg-muted">
+                  Malha
+                </span>
+                <Select
+                  id={`gbp-grid-size-${profileId}`}
+                  items={GBP_GRID_SIZES.map((item) => ({
+                    value: String(item),
+                    label: `${item}×${item}`,
+                  }))}
+                  value={String(size)}
+                  searchable={false}
+                  disabled={busy || active}
+                  onValueChange={(value) => {
+                    const next = Number(firstValue(value))
+                    setSize(next)
+                    // O modo acompanha o tamanho, e o usuário pode trocar depois.
+                    setMode(gbpGridExecutionMode(next))
+                  }}
+                />
+              </label>
+
+              <label className="flex min-w-32 flex-col gap-1">
+                <span className="font-sans text-caption text-fg-muted">
+                  Execução
+                </span>
+                <Select
+                  id={`gbp-grid-mode-${profileId}`}
+                  items={MODE_ITEMS}
+                  value={mode}
+                  searchable={false}
+                  disabled={busy || active}
+                  onValueChange={(value) => {
+                    const next = firstValue(value)
+                    if (next === "live" || next === "queued") setMode(next)
+                  }}
+                />
+              </label>
+
+              <label className="flex min-w-44 flex-col gap-1">
+                <span className="font-sans text-caption text-fg-muted">
+                  Raio · {radiusKm.toLocaleString("pt-BR")} km
+                </span>
+                <Slider
+                  id={`gbp-grid-radius-${profileId}`}
+                  min={GBP_GRID_RADIUS_KM_MIN}
+                  max={GBP_GRID_RADIUS_KM_MAX}
+                  step={1}
+                  value={radiusKm}
+                  disabled={busy || active}
+                  onValueChange={(value) => {
+                    const next = Array.isArray(value) ? value[0] : value
+                    if (typeof next === "number") setRadiusKm(next)
+                  }}
+                />
+              </label>
+
+              <Button
+                type="button"
+                variant="outline"
+                className="border-accent/30 text-accent hover:bg-accent/10"
+                disabled={busy || active || !activeKeyword}
+                onClick={() => {
+                  void handleStart()
+                }}
+                leadingIcon={
+                  busy ? (
+                    <RiLoader4Line
+                      size={16}
+                      aria-hidden
+                      className="animate-spin"
+                    />
+                  ) : null
+                }
+              >
+                Rodar malha
+              </Button>
+
+              {/* Requisições e modo antes do disparo: cada ponto é pago. */}
+              <span className="pb-2 font-sans text-caption text-fg-muted">
+                {requests.toLocaleString("pt-BR")} requisições ·{" "}
+                {mode === "live" ? "modo live" : "fila padrão"}
+              </span>
+            </div>
+          ) : null}
+
+          {error ? (
+            <p className="font-sans text-caption text-danger">{error}</p>
+          ) : null}
+
+          {scan ? (
+            <>
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="font-sans text-caption text-fg-secondary">
+                  “{scan.keyword}” · {scan.size}×{scan.size} ·{" "}
+                  {scan.radius_km.toLocaleString("pt-BR")} km ·{" "}
+                  {scan.mode === "live" ? "live" : "fila"}
+                </span>
+                <span className="font-sans text-caption text-fg-muted">
+                  {scan.processed.toLocaleString("pt-BR")} de{" "}
+                  {scan.total.toLocaleString("pt-BR")} pontos
+                  {failed > 0
+                    ? ` · ${failed.toLocaleString("pt-BR")} falharam`
+                    : ""}
+                </span>
+                {/* Custo real devolvido pela API, não estimativa. */}
+                <span className="font-sans text-caption tabular-nums text-fg-muted">
+                  {formatUsd(scan.cost_usd)}
+                </span>
+                {active ? (
+                  <RiLoader4Line
+                    aria-hidden
+                    size={14}
+                    className="animate-spin text-fg-muted"
+                  />
+                ) : null}
+              </div>
+
+              {metrics ? (
+                <div className="flex flex-wrap gap-4">
+                  <Metric label="ARP" value={metricLabel(metrics.arp)} />
+                  <Metric label="ATRP" value={metricLabel(metrics.atrp)} />
+                  <Metric label="SoLV" value={metricLabel(metrics.solv, "%")} />
+                </div>
+              ) : null}
+
+              <LeadGbpGridMap
+                centerLat={scan.center_lat}
+                centerLng={scan.center_lng}
+                points={scan.points}
+                className="h-72"
+              />
+
+              {canResume ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <p className="font-sans text-caption text-fg-muted">
+                    {timedOut && active
+                      ? QUEUE_WAITING
+                      : (scan.error_message ??
+                        "A malha parou antes de terminar.")}
+                  </p>
+                  {/* Retoma nos pendentes; só o ponto falho volta a ser pago. */}
+                  {failed > 0 ? (
+                    <p className="font-sans text-caption text-fg-muted">
+                      {failed.toLocaleString("pt-BR")} ponto(s) serão cobrados
+                      de novo.
+                    </p>
+                  ) : null}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    disabled={busy}
+                    onClick={() => {
+                      void handleResume()
+                    }}
+                  >
+                    Retomar
+                  </Button>
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <p className="font-sans text-caption text-fg-muted">
+              Nenhuma malha rodada para este perfil.
+            </p>
+          )}
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function Metric({ label, value }: { label: string; value: string }) {
+  return (
+    <div className={cn("flex flex-col")}>
+      <span className="font-sans text-caption text-fg-muted">{label}</span>
+      <span className="font-sans text-body-sm tabular-nums text-fg">
+        {value}
+      </span>
+    </div>
+  )
+}

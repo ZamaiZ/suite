@@ -48,6 +48,14 @@ export {
   type CheckLeadGbpRankingState,
 } from "./check-gbp-ranking"
 export {
+  startLeadGbpGridScan,
+  type StartLeadGbpGridScanState,
+} from "./start-gbp-grid-scan"
+export {
+  pollLeadGbpGridScan,
+  type PollLeadGbpGridScanState,
+} from "./poll-gbp-grid-scan"
+export {
   removeLeadGbpProfile,
   type RemoveLeadGbpState,
 } from "./remove-gbp-profile"

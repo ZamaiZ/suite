@@ -2,17 +2,17 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { DATAFORSEO_UNCONFIGURED } from "@/lib/dataforseo/client"
+import {
+  DATAFORSEO_NOT_CONFIGURED,
+  isDataForSeoConfigured,
+} from "@/lib/dataforseo/configured"
 import { fetchGoogleMapsRank } from "@/lib/dataforseo/google-maps"
-import { GBP_VENDOR_UNCONFIGURED } from "@/lib/gbp-vendor"
-import { resolveGbpDataProvider } from "@/lib/gbp-vendor/resolve"
 import {
   hasGbpCoordinates,
   snapshotFromPlace,
   type LeadGbpProfile,
 } from "@/lib/leads/gbp"
 import { fetchPlaceDetails } from "@/lib/places"
-import { requireSerpApiQuota } from "@/lib/serpapi/client"
-import { fetchSerpApiMapsRank } from "@/lib/serpapi/google-maps-rank"
 import {
   gbpProfileIdSchema,
   readGbpProfileIdFields,
@@ -59,9 +59,8 @@ export async function checkLeadGbpRanking(
     return { status: "error", message: NO_KEYWORDS }
   }
 
-  const vendor = await resolveGbpDataProvider()
-  if (vendor.status === "error") {
-    return { status: "error", message: vendor.message }
+  if (!isDataForSeoConfigured()) {
+    return { status: "error", message: DATAFORSEO_NOT_CONFIGURED }
   }
 
   let snapshot = loaded.profile.payload
@@ -93,50 +92,24 @@ export async function checkLeadGbpRanking(
     return { status: "error", message: RANK_FAILED }
   }
 
-  if (vendor.provider === "serpapi") {
-    const quota = await requireSerpApiQuota(loaded.profile.rank_keywords.length)
-    if (quota.status === "error") {
-      return { status: "error", message: quota.message }
-    }
-  }
-
   const checkedAt = new Date().toISOString()
-  const results =
-    vendor.provider === "serpapi"
-      ? await Promise.all(
-          loaded.profile.rank_keywords.map((keyword) =>
-            fetchSerpApiMapsRank({
-              keyword,
-              placeId: snapshot.placeId,
-              latitude,
-              longitude,
-              checkedAt,
-            }),
-          ),
-        )
-      : await Promise.all(
-          loaded.profile.rank_keywords.map((keyword) =>
-            fetchGoogleMapsRank({
-              keyword,
-              placeId: snapshot.placeId,
-              latitude,
-              longitude,
-              checkedAt,
-            }),
-          ),
-        )
+  const results = await Promise.all(
+    loaded.profile.rank_keywords.map((keyword) =>
+      fetchGoogleMapsRank({
+        keyword,
+        placeId: snapshot.placeId,
+        latitude,
+        longitude,
+        checkedAt,
+      }),
+    ),
+  )
 
-  const source =
-    vendor.provider === "serpapi" ? "serpapi_maps" : "dataforseo_maps"
+  const source = "dataforseo_maps"
 
   for (const result of results) {
     if (result.status === "error") {
-      if (
-        result.message === DATAFORSEO_UNCONFIGURED ||
-        result.message === GBP_VENDOR_UNCONFIGURED
-      ) {
-        return result
-      }
+      if (result.message === DATAFORSEO_UNCONFIGURED) return result
       return { status: "error", message: RANK_FAILED }
     }
   }

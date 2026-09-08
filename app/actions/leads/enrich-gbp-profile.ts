@@ -6,15 +6,16 @@ import { fetchGoogleBusinessInfo } from "@/lib/dataforseo/google-info"
 import { fetchGoogleQna } from "@/lib/dataforseo/google-qna"
 import { postGoogleReviewsTask } from "@/lib/dataforseo/google-reviews"
 import { postGoogleUpdatesTask } from "@/lib/dataforseo/google-updates"
-import { resolveGbpDataProvider } from "@/lib/gbp-vendor/resolve"
+import {
+  DATAFORSEO_NOT_CONFIGURED,
+  isDataForSeoConfigured,
+} from "@/lib/dataforseo/configured"
 import {
   hasGbpCoordinates,
   snapshotFromPlace,
   type LeadGbpProfile,
 } from "@/lib/leads/gbp"
 import { fetchPlaceDetails } from "@/lib/places"
-import { fetchSerpApiPlacePack } from "@/lib/serpapi/google-maps-place"
-import { requireSerpApiQuota } from "@/lib/serpapi/client"
 import {
   gbpProfileIdSchema,
   readGbpProfileIdFields,
@@ -22,7 +23,6 @@ import {
 import { createClient } from "@/lib/supabase/server"
 import {
   denyGbpEdit,
-  deleteGbpJobs,
   GBP_SELECT,
   insertGbpSnapshot,
   loadGbpProfileRow,
@@ -59,9 +59,8 @@ export async function enrichLeadGbpProfile(
   const denied = denyGbpEdit(loaded.lead, user.id, roles)
   if (denied) return { status: "error", message: denied }
 
-  const vendor = await resolveGbpDataProvider()
-  if (vendor.status === "error") {
-    return { status: "error", message: vendor.message }
+  if (!isDataForSeoConfigured()) {
+    return { status: "error", message: DATAFORSEO_NOT_CONFIGURED }
   }
 
   let snapshot = loaded.profile.payload
@@ -91,67 +90,6 @@ export async function enrichLeadGbpProfile(
   const longitude = snapshot.longitude
   if (latitude === null || longitude === null) {
     return { status: "error", message: ENRICH_FAILED }
-  }
-
-  if (vendor.provider === "serpapi") {
-    const quota = await requireSerpApiQuota(1)
-    if (quota.status === "error") {
-      return { status: "error", message: quota.message }
-    }
-
-    const pack = await fetchSerpApiPlacePack({
-      placeId: snapshot.placeId,
-      establishmentTitle: snapshot.displayName,
-    })
-    if (pack.status === "error") {
-      return { status: "error", message: pack.message }
-    }
-    if (pack.status === "not_found") {
-      return { status: "error", message: pack.message }
-    }
-
-    const deleted = await deleteGbpJobs(supabase, parsed.data.profile_id)
-    if (!deleted) {
-      return { status: "error", message: ENRICH_FAILED }
-    }
-
-    const now = pack.pack.enrichment.fetchedAt
-    // O snapshot precisa existir antes da releitura, porque GBP_SELECT o embeda.
-    const snapshotted = await insertGbpSnapshot(
-      supabase,
-      parsed.data.profile_id,
-      {
-        enrichment: pack.pack.enrichment,
-        posts: pack.pack.posts,
-        reviews: pack.pack.reviews,
-        qna: pack.pack.qna,
-      },
-      now,
-    )
-    if (!snapshotted) {
-      return { status: "error", message: ENRICH_FAILED }
-    }
-
-    const { data, error } = await supabase
-      .from("lead_gbp_profiles")
-      .update({
-        ...payloadPatch,
-        cid: pack.pack.enrichment.cid,
-      })
-      .eq("id", parsed.data.profile_id)
-      .select(GBP_SELECT)
-      .single()
-
-    if (error || !data) {
-      return { status: "error", message: ENRICH_FAILED }
-    }
-
-    const profile = rowToGbpProfile(data as Record<string, unknown>)
-    if (!profile) {
-      return { status: "error", message: ENRICH_FAILED }
-    }
-
-    return { status: "success", profile }
   }
 
   const info = await fetchGoogleBusinessInfo({

@@ -40,12 +40,14 @@ import {
 import { mergeVisibilityOpportunities } from "./visibility-opportunities.ts"
 import { formatVisibilityMetric } from "./visibility-presenters.ts"
 import {
+  napCheckForCrawl,
   websiteGapsForAudit,
   type LeadWebsiteAudit,
 } from "./website-audit.ts"
 import {
   mergeWebsiteOpportunities,
   missingSecurityHeaderLabels,
+  napMismatchLabels,
 } from "./website-opportunities.ts"
 import { websiteMinPerformance } from "./website-pagespeed.ts"
 import { gbpJobQueued } from "./gbp-audit.ts"
@@ -278,16 +280,17 @@ export function compileDiagnosisFacts(
   const googleItems: DiagnosisOpportunityRef[] = input.gbpProfile
     ? googleOpportunities(input.gbpProfile, input.companyName).map(toRef)
     : []
+  const nap = input.gbpProfile
+    ? {
+        phone: input.gbpProfile.payload.nationalPhoneNumber,
+        address: input.gbpProfile.payload.formattedAddress,
+      }
+    : null
   const websiteGaps = input.websiteAudit
     ? websiteGapsForAudit(
         input.websiteAudit.crawl,
         input.companyName,
-        input.gbpProfile
-          ? {
-              phone: input.gbpProfile.payload.nationalPhoneNumber,
-              address: input.gbpProfile.payload.formattedAddress,
-            }
-          : null,
+        nap,
         input.websiteAudit.pagespeed,
         input.gbpProfile?.enrichment?.services.map((item) => item.title) ?? [],
       )
@@ -299,6 +302,9 @@ export function compileDiagnosisFacts(
           minPerformance: websiteMinPerformance(input.websiteAudit.pagespeed),
           missingSecurityHeaders: missingSecurityHeaderLabels(
             input.websiteAudit.crawl,
+          ),
+          napMismatches: napMismatchLabels(
+            napCheckForCrawl(input.websiteAudit.crawl, nap),
           ),
         },
         input.websiteAudit.review,

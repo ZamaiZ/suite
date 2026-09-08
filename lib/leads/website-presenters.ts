@@ -4,10 +4,14 @@ import {
   WEBSITE_SITEMAP_BLOAT_MIN_URLS,
   WEBSITE_SITEMAP_BLOAT_NOT_FOUND_RATIO,
   WEBSITE_THIN_CONTENT_WORDS,
+  napCheckForCrawl,
   websiteHomePage,
   websiteTitleIsGeneric,
+  type NapCheck,
+  type NapComponentState,
   type WebsiteCrawl,
   type WebsiteGapId,
+  type WebsiteNapInput,
   type WebsitePageSnapshot,
 } from "./website-audit.ts"
 import {
@@ -295,10 +299,26 @@ function clipReviewNote(note: string, empty: string): string {
   return `${trimmed.slice(0, 79)}…`
 }
 
+const NAP_STATE_TEXT: Record<NapComponentState, string> = {
+  absent: "não informado no perfil",
+  match: "confere",
+  mismatch: "não encontrado na home",
+}
+
+/**
+ * Mostra os dois componentes, sempre. O texto anterior dizia "Telefone do
+ * perfil primário não aparece na home" mesmo quando quem divergia era o
+ * endereço, e escondia o estado real quando não havia gap.
+ */
+function napEvidence(check: NapCheck): string {
+  return `Telefone ${NAP_STATE_TEXT[check.phone]} · Endereço ${NAP_STATE_TEXT[check.address]}`
+}
+
 export function websiteReviewEvidence(
   crawl: WebsiteCrawl,
   pagespeed: WebsitePagespeedSnapshot | null,
   gaps: readonly WebsiteGapId[],
+  nap: WebsiteNapInput | null = null,
 ): Record<WebsiteReviewCriterionId, string> {
   const gapSet = new Set(gaps)
   const home = websiteHomePage(crawl)
@@ -318,9 +338,7 @@ export function websiteReviewEvidence(
       : "Tel/WhatsApp no HTML",
     narrow_layout: viewport,
     sample_pages: `${crawl.pages.length.toLocaleString("pt-BR")} na amostra · ${crawl.sitemap.urlCount.toLocaleString("pt-BR")} no sitemap`,
-    nap_group: gapSet.has("nap_mismatch")
-      ? "Telefone do perfil primário não aparece na home"
-      : "Conferir endereço se o grupo tiver mais de um ponto",
+    nap_group: napEvidence(napCheckForCrawl(crawl, nap)),
     content_quality: `${(home?.wordCount ?? 0).toLocaleString("pt-BR")} palavras na inicial`,
     other: "",
   }

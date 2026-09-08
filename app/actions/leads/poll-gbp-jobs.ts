@@ -4,7 +4,7 @@ import { requireCommercialMember } from "@/lib/auth/session"
 import { DATAFORSEO_COLLECT_ERROR } from "@/lib/dataforseo/client"
 import { getGoogleReviewsTask } from "@/lib/dataforseo/google-reviews"
 import { getGoogleUpdatesTask } from "@/lib/dataforseo/google-updates"
-import { resolveGbpDataProvider } from "@/lib/gbp-vendor/resolve"
+import { isDataForSeoConfigured } from "@/lib/dataforseo/configured"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import {
   gbpProfileIdSchema,
@@ -49,13 +49,14 @@ export async function pollLeadGbpJobs(
   const denied = denyGbpEdit(loaded.lead, user.id, roles)
   if (denied) return { status: "error", message: denied }
 
-  const vendor = await resolveGbpDataProvider()
   const queued = await loadQueuedGbpJobs(supabase, parsed.data.profile_id)
   if (queued.status === "error") {
     return { status: "error", message: POLL_FAILED }
   }
 
-  if (vendor.status !== "ok" || vendor.provider !== "dataforseo") {
+  // Sem credencial não há como concluir job algum; os pendentes são
+  // descartados para não ficarem presos em "coletando" para sempre.
+  if (!isDataForSeoConfigured()) {
     if (queued.jobs.length === 0) {
       return { status: "success", profile: loaded.profile }
     }

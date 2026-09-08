@@ -1,36 +1,32 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import type { GbpDataProvider, SerpApiQuota } from "@/lib/gbp-vendor"
+import { isDataForSeoConfigured } from "@/lib/dataforseo/configured"
 import {
-  isDataForSeoConfigured,
-  isSerpApiConfigured,
-  loadGbpDataProviderSetting,
-} from "@/lib/gbp-vendor/resolve"
-import { getSerpApiAccount } from "@/lib/serpapi/client"
+  fetchDataForSeoUserData,
+  type DataForSeoUserData,
+} from "@/lib/dataforseo/user-data"
 
 export type ToolsSettingsState = {
-  selected: GbpDataProvider | null
-  dataForSeoConfigured: boolean
-  serpApiConfigured: boolean
-  serpApiQuota: SerpApiQuota | null
+  configured: boolean
+  usage: DataForSeoUserData | null
+  errorMessage: string | null
 }
 
 export async function getToolsSettings(): Promise<ToolsSettingsState> {
   await requireCommercialMember()
-  const selected = await loadGbpDataProviderSetting()
-  const serpApiConfigured = isSerpApiConfigured()
-  let serpApiQuota: SerpApiQuota | null = null
-  if (serpApiConfigured) {
-    const account = await getSerpApiAccount()
-    if (account.status === "ok") {
-      serpApiQuota = account.data
+
+  if (!isDataForSeoConfigured()) {
+    return {
+      configured: false,
+      usage: null,
+      errorMessage: null,
     }
   }
-  return {
-    selected,
-    dataForSeoConfigured: isDataForSeoConfigured(),
-    serpApiConfigured,
-    serpApiQuota,
+
+  const fetched = await fetchDataForSeoUserData()
+  if (fetched.status === "error") {
+    return { configured: true, usage: null, errorMessage: fetched.message }
   }
+  return { configured: true, usage: fetched.data, errorMessage: null }
 }

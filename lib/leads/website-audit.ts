@@ -886,6 +886,47 @@ function addressMatches(address: string, page: WebsitePageSnapshot): boolean {
   return hits.length >= needed
 }
 
+/**
+ * Estado de cada componente do NAP, avaliado de forma independente.
+ *
+ * `absent` é distinto de `match` de propósito: antes desta separação,
+ * "o perfil não tem endereço", "o endereço confere" e "o endereço nem foi
+ * conferido" produziam exatamente o mesmo resultado — silêncio —, porque as
+ * funções de comparação retornam `true` quando não há o que verificar e o
+ * telefone curto-circuitava a checagem do endereço.
+ */
+export type NapComponentState = "absent" | "match" | "mismatch"
+
+export type NapCheck = {
+  phone: NapComponentState
+  address: NapComponentState
+}
+
+export function napCheckForPage(
+  nap: WebsiteNapInput | null | undefined,
+  page: WebsitePageSnapshot,
+): NapCheck {
+  const check: NapCheck = { phone: "absent", address: "absent" }
+  if (!nap) return check
+  if (nap.phone && digits(nap.phone).length >= 8) {
+    check.phone = phoneMatches(nap.phone, page) ? "match" : "mismatch"
+  }
+  if (nap.address && addressTokens(nap.address).length > 0) {
+    check.address = addressMatches(nap.address, page) ? "match" : "mismatch"
+  }
+  return check
+}
+
+/** Conveniência para quem tem o crawl em mãos: avalia contra a home. */
+export function napCheckForCrawl(
+  crawl: WebsiteCrawl,
+  nap: WebsiteNapInput | null | undefined,
+): NapCheck {
+  const home = websiteHomePage(crawl)
+  if (!home) return { phone: "absent", address: "absent" }
+  return napCheckForPage(nap, home)
+}
+
 const SERVICE_TITLE_MIN = 4
 
 function foldToken(value: string): string {
@@ -1059,12 +1100,11 @@ export function websiteGapsForAudit(
     gaps.push("contact_only_in_footer")
   }
 
-  if (nap && (nap.phone || nap.address)) {
-    if (nap.phone && digits(nap.phone).length >= 8) {
-      if (!phoneMatches(nap.phone, home)) gaps.push("nap_mismatch")
-    } else if (nap.address && !addressMatches(nap.address, home)) {
-      gaps.push("nap_mismatch")
-    }
+  // Telefone e endereço são avaliados de forma independente: um telefone que
+  // confere não pode mais impedir a checagem do endereço.
+  const napCheck = napCheckForPage(nap, home)
+  if (napCheck.phone === "mismatch" || napCheck.address === "mismatch") {
+    gaps.push("nap_mismatch")
   }
 
   gaps.push(...websitePagespeedGaps(crawl.https, pagespeed ?? null))

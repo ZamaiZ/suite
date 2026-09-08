@@ -1,9 +1,7 @@
-import type { GbpDataProvider, SerpApiQuota } from "@/lib/gbp-vendor"
+import type { DataForSeoUserData } from "@/lib/dataforseo/usage"
 
 export type ToolsSettingsProps = {
-  selected: GbpDataProvider | null
-  dataForSeoConfigured: boolean
-  serpApiConfigured: boolean
-  serpApiQuota: SerpApiQuota | null
-  currentUserIsAdmin: boolean
+  configured: boolean
+  usage: DataForSeoUserData | null
+  errorMessage: string | null
 }

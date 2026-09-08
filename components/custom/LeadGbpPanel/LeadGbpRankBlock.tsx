@@ -7,7 +7,9 @@ import {
   RiLoader4Line,
 } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
+import { LeadGbpGridSection } from "./LeadGbpGridSection"
 import { Button } from "@/components/ui/Button"
+import type { LeadGbpGridScan } from "@/lib/leads/gbp-grid"
 import { cn } from "@/lib/cn"
 import { formatDate } from "@/lib/date-time"
 import {
@@ -44,15 +46,19 @@ function checkForKeyword(
 }
 
 export function LeadGbpRankBlock({
+  profileId,
   keywords,
   checks,
+  gridScan,
   canEdit,
   pending,
   onSave,
   onCheck,
 }: {
+  profileId: string
   keywords: string[]
   checks: GbpRankCheck[]
+  gridScan: LeadGbpGridScan | null
   canEdit: boolean
   pending: boolean
   onSave: (keywords: string[]) => Promise<void>
@@ -263,6 +269,13 @@ export function LeadGbpRankBlock({
           </Button>
         </div>
       ) : null}
+
+      <LeadGbpGridSection
+        profileId={profileId}
+        keywords={keywords}
+        initialScan={gridScan}
+        canEdit={canEdit}
+      />
     </LeadGbpCard>
   )
 }

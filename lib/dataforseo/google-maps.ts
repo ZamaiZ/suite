@@ -1,11 +1,8 @@
 import "server-only"
 
+import { postDataForSeo } from "@/lib/dataforseo/client"
+import { GBP_MAPS_ZOOM, googleMapsTask } from "@/lib/dataforseo/maps-task"
 import {
-  dataForSeoMapsCoordinate,
-  postDataForSeo,
-} from "@/lib/dataforseo/client"
-import {
-  GBP_MAPS_DEPTH,
   mapDataForSeoMapsRank,
   type GbpRankCheck,
 } from "@/lib/leads/gbp-audit"
@@ -25,16 +22,12 @@ export async function fetchGoogleMapsRank(input: {
 }): Promise<FetchGoogleMapsRankResult> {
   const posted = await postDataForSeo<MapsLiveResult>(
     "/serp/google/maps/live/advanced",
-    {
-      language_code: "pt",
+    googleMapsTask({
       keyword: input.keyword,
-      location_coordinate: dataForSeoMapsCoordinate(
-        input.latitude,
-        input.longitude,
-      ),
-      depth: GBP_MAPS_DEPTH,
-      search_this_area: true,
-    },
+      latitude: input.latitude,
+      longitude: input.longitude,
+      zoom: GBP_MAPS_ZOOM,
+    }),
   )
   if (posted.status === "error") return posted
   return {

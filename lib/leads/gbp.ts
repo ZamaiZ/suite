@@ -23,6 +23,10 @@ import {
   type GbpReviewSummary,
 } from "@/lib/leads/gbp-audit"
 import {
+  latestGbpGridScan,
+  type LeadGbpGridScan,
+} from "@/lib/leads/gbp-grid"
+import {
   pickLatestGbpSnapshotRow,
   type LeadGbpSnapshot,
 } from "@/lib/leads/gbp-snapshot"
@@ -136,6 +140,8 @@ export type LeadGbpProfile = {
   qna_at: string | null
   /** Snapshot append-only que originou os campos variaveis acima. */
   snapshot: LeadGbpSnapshot<GbpSnapshot> | null
+  /** Malha geográfica mais recente deste perfil, quando houver. */
+  gridScan: LeadGbpGridScan | null
   jobs: GbpJob[]
   rank_keywords: string[]
   rankChecks: GbpRankCheck[]
@@ -449,6 +455,7 @@ export function readLeadGbpProfileRow(
       : null
   return {
     snapshot,
+    gridScan: latestGbpGridScan(row.lead_gbp_grid_scans),
     id,
     lead_id,
     place_id,

@@ -23,10 +23,14 @@ import {
   hrefForDigitalChannel,
   type LeadDigitalChannel,
 } from "@/lib/leads/digital-channels"
-import { websiteGapsForAudit } from "@/lib/leads/website-audit"
+import {
+  napCheckForCrawl,
+  websiteGapsForAudit,
+} from "@/lib/leads/website-audit"
 import {
   mergeWebsiteOpportunities,
   missingSecurityHeaderLabels,
+  napMismatchLabels,
 } from "@/lib/leads/website-opportunities"
 import {
   websiteMinPerformance,
@@ -172,16 +176,17 @@ export function LeadWebsitePanel({
     null
   const serviceTitles =
     primaryGbp?.enrichment?.services.map((item) => item.title) ?? []
+  const nap = primaryGbp
+    ? {
+        phone: primaryGbp.payload.nationalPhoneNumber,
+        address: primaryGbp.payload.formattedAddress,
+      }
+    : null
   const gaps = audit
     ? websiteGapsForAudit(
         audit.crawl,
         detail.lead.company_name,
-        primaryGbp
-          ? {
-              phone: primaryGbp.payload.nationalPhoneNumber,
-              address: primaryGbp.payload.formattedAddress,
-            }
-          : null,
+        nap,
         audit.pagespeed,
         serviceTitles,
       )
@@ -193,6 +198,9 @@ export function LeadWebsitePanel({
         {
           minPerformance: websiteMinPerformance(audit.pagespeed),
           missingSecurityHeaders: missingSecurityHeaderLabels(audit.crawl),
+          napMismatches: napMismatchLabels(
+            napCheckForCrawl(audit.crawl, nap),
+          ),
         },
         review ?? audit.review,
       )
@@ -208,7 +216,7 @@ export function LeadWebsitePanel({
       )
     : []
   const reviewEvidence = audit
-    ? websiteReviewEvidence(audit.crawl, audit.pagespeed, gaps)
+    ? websiteReviewEvidence(audit.crawl, audit.pagespeed, gaps, nap)
     : null
   const siteHref = selected
     ? hrefForDigitalChannel(selected.type, selected.value)

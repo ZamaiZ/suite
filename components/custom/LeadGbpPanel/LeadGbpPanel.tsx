@@ -21,10 +21,14 @@ import {
 } from "@/lib/leads/gbp"
 import { type GbpAuditRailStepId } from "@/lib/leads/gbp-audit-rail"
 import { diagnosisFactsFingerprint } from "@/lib/leads/diagnosis-document"
-import { websiteGapsForAudit } from "@/lib/leads/website-audit"
+import {
+  napCheckForCrawl,
+  websiteGapsForAudit,
+} from "@/lib/leads/website-audit"
 import {
   mergeWebsiteOpportunities,
   missingSecurityHeaderLabels,
+  napMismatchLabels,
 } from "@/lib/leads/website-opportunities"
 import { websiteMinPerformance } from "@/lib/leads/website-pagespeed"
 import {
@@ -186,16 +190,17 @@ export function LeadGbpPanel({
     null
   const primaryGbp =
     profiles.find((item) => item.is_primary) ?? profiles[0] ?? null
+  const nap = primaryGbp
+    ? {
+        phone: primaryGbp.payload.nationalPhoneNumber,
+        address: primaryGbp.payload.formattedAddress,
+      }
+    : null
   const websiteGaps = websiteAudit
     ? websiteGapsForAudit(
         websiteAudit.crawl,
         detail.lead.company_name,
-        primaryGbp
-          ? {
-              phone: primaryGbp.payload.nationalPhoneNumber,
-              address: primaryGbp.payload.formattedAddress,
-            }
-          : null,
+        nap,
         websiteAudit.pagespeed,
         primaryGbp?.enrichment?.services.map((item) => item.title) ?? [],
       )
@@ -206,6 +211,9 @@ export function LeadGbpPanel({
         {
           minPerformance: websiteMinPerformance(websiteAudit.pagespeed),
           missingSecurityHeaders: missingSecurityHeaderLabels(websiteAudit.crawl),
+          napMismatches: napMismatchLabels(
+            napCheckForCrawl(websiteAudit.crawl, nap),
+          ),
         },
         websiteAudit.review,
       ).length
