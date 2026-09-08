@@ -56,27 +56,40 @@ Esta seção é a mais importante do documento. São classes de erro, não ocorr
 
 **Coleta de site ampliada** — pronto. Canonical (6 regras + 2 de convergência por sondagem), 6 headers de segurança, headings H1–H6 ordenados, robots interpretado com agentes de IA, `llms.txt`, noindex em toda a amostra, IDs de medição. Gaps de site: 25 → 37.
 
-**Reputação** — parcial. Gaps de Q&A sem resposta e negativa sem resposta, mais o campo humano. Gaps de GBP: 18 → 20. **A matemática cronológica não foi escrita** — ver pendências.
+**Reputação** — a matemática saiu na onda 3, em `lib/leads/gbp-reputation.ts`: média histórica por subtração, janelas de 30/60/90 dias, cobertura da amostra e taxa de resposta, com as três guardas e bloqueio que diz o motivo. Falta a metade que depende de segundo snapshot, e o tempo de resposta segue preso na validação dos mapeadores.
 
-**NAP** — corrigido. Telefone e endereço avaliados de forma independente (o `else if` impedia checar endereço quando havia telefone), com três estados por componente: `absent`, `match`, `mismatch`.
+**NAP** — corrigido. Telefone e endereço avaliados de forma independente (o `else if` impedia checar endereço quando havia telefone), com três estados por componente: `absent`, `match`, `mismatch`. Continua rodando só na home.
 
 **Malha geográfica** — implementada e endurecida. Tamanhos 3/5/7/11, raio 1–25 km, modos live e fila, lease, readoção de tarefas órfãs, teto de tentativas, custo real acumulado. Migrations `20260921`–`20260923`.
 
 **Migração DataForSEO** — feita. `lib/serpapi/` e `lib/gbp-vendor/` removidos, cinco actions sem ramo de provider, página de Ferramentas com saldo, uso e calculadora alimentados por `user_data`.
 
+## O que a onda 3 entregou
+
+Tudo sobre dado que já estava gravado ou sobre o crawler próprio — nenhuma
+chamada paga nova:
+
+- **LGPD** (`website-compliance.ts`) — dois gaps a partir dos `internalPaths`, retroativos.
+- **Reputação** (`gbp-reputation.ts`) — a metade da matemática que roda com um snapshot só, retroativa.
+- **Concorrentes do Maps** — teto 3 → 5 na checagem avulsa, filtro do Top 20 removido, seleção unificada com a malha.
+- **Cadeia de redirect** (`website-redirects.ts`) — quatro gaps, sobre saltos que o `safeFetch` já percorria e descartava.
+- **Duas regras que mentiam** — `no_services` e `no_local_top20`. Ver a seção "Onda 3" no documento de alterações.
+
 ## Pendências, em ordem de dependência
 
-1. **Validar os mapeadores contra payload real.** Nenhum jamais executou até a assinatura entrar. `dataForSeoTimeToIso`, `mapDataForSeoReviews`, `mapRankedKeywordsLiveResult`, `google-info`, `google-qna`, `google-updates`. **Bloqueia tudo que vier depois.** Duas perguntas a responder na mesma sessão: reviews trazem timestamp da resposta do proprietário (destrava tempo médio de resposta sem OAuth)? Items do Maps trazem `url`/`domain` (destrava domínio do concorrente de graça)?
-2. **Matemática de reputação.** Média histórica por subtração da distribuição (`(S − S₅₀) / (N − 50)`), velocidade, frequência, taxa de resposta. Três guardas obrigatórias: bloquear quando `sortBy !== "newest"`; não calcular se `S₅₀ > S` ou `N ≤ 50` (a distribuição e a amostra vêm de chamadas diferentes); ignorar reviews sem nota. E toda métrica de janela declara a janela que mediu.
-3. **Evolução no tempo** — nota, volume, reviews removidas. Nasce escura até cada lead ser coletado uma segunda vez.
-4. **Decisão de pilar.** Backlinks e concorrentes não têm slot nos quatro pilares (`google`, `website`, `presence`, `visibility`). Quinto pilar de autoridade ou dentro de visibilidade. **Sem isso a etapa de autoridade não tem spec.**
-5. **Backlinks** (`/backlinks/summary/live`) e **concorrentes** (Maps até 5 sem exigir que o cliente apareça; parar de descartar a SERP orgânica; tabela nova para concorrente orgânico).
-6. **LGPD** — continua em zero, e é o item mais barato do mapa: os caminhos `/politica-de-privacidade` e `/termos` já estão em `internalPaths`, falta a regra.
-7. **Âncoras 5–6** — teto de 3 travado em quatro lugares.
+1. **Validar os mapeadores contra payload real.** Nenhum jamais executou até a assinatura entrar. `dataForSeoTimeToIso`, `mapDataForSeoReviews`, `mapRankedKeywordsLiveResult`, `google-info`, `google-qna`, `google-updates`. **Bloqueia tudo que vier depois.** Três perguntas a responder na mesma sessão: reviews trazem timestamp da resposta do proprietário (destrava tempo médio de resposta sem OAuth)? Items do Maps trazem `url`/`domain` (destrava domínio do concorrente de graça)? E `my_business_info` traz mesmo uma chave `services` (a onda 3 neutralizou o gap falso, mas não sabe a resposta)?
+2. **Evolução no tempo** — nota, volume, reviews removidas. Nasce escura até cada lead ser coletado uma segunda vez.
+3. **Quinto pilar de autoridade.** Decidido: autoridade vira o quinto pilar, e não entra dentro de `visibility`. Mas **sobe junto com backlinks**, não antes — `diagnosis-read.ts` cai em `emptyPillarScore()` para pilar ausente, que vale **score 100**, então um pilar vazio faria todo diagnóstico salvo exibir "Autoridade: 100", que lê como perfeito e significa não medido.
+4. **Backlinks** (`/backlinks/summary/live`), com a tabela `lead_backlink_audits` append-only. É o que dá conteúdo ao quinto pilar.
+5. **Concorrentes orgânicos** — `/dataforseo_labs/google/competitors_domain/live`, endpoint novo, tabela nova.
+6. **Âncoras 5–6** — teto de 3 travado em três lugares; multiplica o custo da malha.
+7. **Resto do crawl ampliado** — formulários, banner de cookies, schema validado, links quebrados, sitemap além do teto, NAP fora da home.
 
 ## Regras de trabalho desta linha
 
-- **Sem build, typecheck, lint, teste ou Git.** Regra do repositório, registrada nas Global Constraints dos planos. A verificação é manual e por leitura.
+- **Isto é MVP.** O critério é capacidade entregue e custo, não rigor de produção. Segurança, hardening e cobertura de teste não são objetivo desta fase — o que continua valendo são as restrições que causam quebra de verdade: a fronteira `server-only`, migrations reexecutáveis, e leitores que toleram o passado.
+- **Sem build, typecheck, lint, teste ou Git.** Regra do repositório. A verificação é manual e por leitura. Os dois `.test.mjs` que existem são documentação do formato esperado, não evidência: nunca rodaram.
+- **`.env.local` é versionado de propósito.** O `.gitignore` foi trocado para `!.env*` deliberadamente. Não "consertar" — a consequência (segredos saem da máquina no primeiro push) está registrada e foi aceita.
 - **Sem subagentes.** Foram recusados explicitamente.
 - Specs e planos seguem o formato da casa em `docs/superpowers/`. Documentos de referência em `docs/auditoria/`.
 - Comentário explica **por quê**, não o quê.

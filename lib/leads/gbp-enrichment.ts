@@ -33,7 +33,11 @@ export type GbpEnrichment = {
   additionalCategories: string[]
   totalPhotos: number | null
   mainImageUrl: string | null
-  services: GbpEnrichmentService[]
+  /**
+   * `null` significa que a coleta não trouxe o campo. Ausente é diferente de
+   * vazio, e só o vazio é um gap.
+   */
+  services: GbpEnrichmentService[] | null
   ratingDistribution: GbpRatingDistribution | null
   peopleAlsoSearch: GbpPeopleAlsoSearch[]
   checkUrl: string | null
@@ -122,7 +126,13 @@ export function readGbpEnrichment(value: unknown): GbpEnrichment | null {
   ) {
     return null
   }
-  if (row.services !== undefined && !Array.isArray(row.services)) return null
+  if (
+    row.services !== undefined &&
+    row.services !== null &&
+    !Array.isArray(row.services)
+  ) {
+    return null
+  }
   if (row.peopleAlsoSearch !== undefined && !Array.isArray(row.peopleAlsoSearch)) {
     return null
   }
@@ -155,7 +165,7 @@ export function readGbpEnrichment(value: unknown): GbpEnrichment | null {
     additionalCategories: asStringList(row.additionalCategories),
     totalPhotos,
     mainImageUrl: asString(row.mainImageUrl),
-    services: readServices(row.services),
+    services: Array.isArray(row.services) ? readServices(row.services) : null,
     ratingDistribution,
     peopleAlsoSearch: readPeopleAlsoSearch(row.peopleAlsoSearch),
     checkUrl: asString(row.checkUrl),
@@ -177,7 +187,9 @@ export function mapDataForSeoInfoItem(
     additionalCategories: asStringList(item.additional_categories),
     totalPhotos: asCount(item.total_photos),
     mainImageUrl: asString(item.main_image),
-    services: readServices(item.services),
+    // Ausente vira `null`, não `[]`: um perfil sem a chave não é um perfil sem
+    // serviços, e tratar os dois igual inventa gap em toda coleta nova.
+    services: Array.isArray(item.services) ? readServices(item.services) : null,
     ratingDistribution: readRatingDistribution(item.rating_distribution),
     peopleAlsoSearch: readPeopleAlsoSearch(item.people_also_search),
     checkUrl: asString(item.check_url),

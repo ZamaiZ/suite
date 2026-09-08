@@ -1,151 +1,56 @@
-/* ─── Semantic tokens ────────────────────────────────────────────────────────
- * Maps the primitive scale (--p-*) to role-based tokens.
- * Components reference ONLY vars from this file — never --p-* directly.
- * This file is brand-agnostic: swap --p-* values via data-brand to re-theme.
- * ─────────────────────────────────────────────────────────────────────────── */
+/*
+ * Compatibility aliases for existing components.
+ * The canonical color tokens are the shadcn Mira/Mist variables in globals.css.
+ * No product palette values belong in this file.
+ */
 
-
-/* ── Light (default) ────────────────────────────────────────────────────── */
 :root {
+  --bg-canvas: var(--background);
+  --bg-surface: var(--card);
+  --bg-elevated: var(--popover);
+  --bg-hover: var(--accent);
+  --bg-active: var(--secondary);
 
-  /* Backgrounds ─────────────────────────────────────────────────────────── */
-  --bg-canvas:   var(--p-neutral-0);    /* page background */
-  --bg-surface:  var(--p-neutral-1);    /* cards, panels */
-  --bg-elevated: var(--p-neutral-2);    /* dropdowns, popovers, tooltips */
-  --bg-hover:    var(--p-neutral-hover);
-  --bg-active:   var(--p-neutral-active);
+  --fg-primary: var(--foreground);
+  --fg-secondary: var(--muted-foreground);
+  --fg-muted: var(--muted-foreground);
+  --fg-disabled: var(--muted-foreground);
 
-  /* Text ────────────────────────────────────────────────────────────────── */
-  --fg-primary:   var(--p-ink-primary);
-  --fg-secondary: var(--p-ink-secondary);
-  --fg-muted:     var(--p-ink-muted);
-  --fg-disabled:  var(--p-ink-disabled);
+  --border-default: var(--border);
+  --border-subtle: color-mix(in oklch, var(--border) 70%, transparent);
 
-  /* Borders — fallback rgb() para browsers sem CSS Color Level 5 ────────── */
-  --border-default: rgb(0 0 0 / 14%);
-  --border-subtle:  rgb(0 0 0 / 7%);
+  --accent-hover: color-mix(in oklch, var(--primary) 88%, var(--background));
+  --accent-muted: var(--primary);
+  --accent-subtle: color-mix(in oklch, var(--primary) 12%, var(--background));
+  --accent-fg: var(--primary-foreground);
 
-  /* Accent ──────────────────────────────────────────────────────────────── */
-  --accent:        var(--p-accent);
-  --accent-hover:  var(--p-accent-hover);
-  --accent-muted:  var(--p-accent-muted);
-  --accent-subtle: var(--p-accent-subtle);
-  --accent-fg:     var(--p-accent-fg);   /* text ON solid accent background */
+  --success: var(--chart-2);
+  --success-fg: var(--primary-foreground);
+  --danger: var(--destructive);
+  --danger-fg: var(--primary-foreground);
+  --warning: var(--chart-3);
+  --warning-hover: var(--chart-4);
+  --warning-subtle: color-mix(in oklch, var(--chart-3) 12%, var(--background));
+  --warning-fg: var(--primary-foreground);
 
-  /* States ──────────────────────────────────────────────────────────────── */
-  --success:    var(--p-success);
-  --success-fg: var(--p-success-fg);
-  --danger:     var(--p-danger);
-  --danger-fg:  var(--p-danger-fg);
-  --warning:        var(--p-warning);
-  --warning-hover:  var(--p-warning-hover);
-  --warning-subtle: var(--p-warning-subtle);
-  --warning-fg:     var(--p-warning-fg);
+  --link: var(--primary);
 
-  /* Interactive ─────────────────────────────────────────────────────────── */
-  --link: var(--p-link);
-  --ring: var(--p-accent);   /* focus ring follows accent */
+  --sidebar-bg: var(--sidebar);
+  --sidebar-fg: var(--sidebar-foreground);
+  --sidebar-active: var(--sidebar-accent);
+  --sidebar-rail: color-mix(in oklch, var(--sidebar-foreground) 40%, transparent);
 
-  /* ── Component slots ─────────────────────────────────────────────────────
-   * Defaults cascade from base semantic vars above.
-   * Components use these slots so a single primitive change can re-skin
-   * a specific component without touching others.
-   * ─────────────────────────────────────────────────────────────────────── */
+  --input-bg: var(--background);
+  --input-border: var(--input);
+  --input-fg: var(--foreground);
+  --input-placeholder: var(--muted-foreground);
+  --control-bg: var(--secondary);
+  --control-border: var(--border);
+  --popover-bg: var(--popover);
+  --popover-border: var(--border);
+  --overlay-scrim: color-mix(in oklch, var(--foreground) 45%, transparent);
 
-  /* Sidebar */
-  --sidebar-bg:     var(--bg-surface);
-  --sidebar-fg:     var(--fg-primary);
-  --sidebar-border: var(--border-default);
-  --sidebar-active: color-mix(in oklch, var(--accent) 10%, transparent);
-  --sidebar-rail:   color-mix(in oklch, var(--fg-primary) 40%, transparent);
-
-  /* Inputs */
-  --input-bg:          var(--bg-surface);
-  --input-border:      var(--border-default);
-  --input-fg:          var(--fg-primary);
-  --input-placeholder: var(--fg-muted);
-
-  /* Generic controls (button secondary, switch track, etc.) */
-  --control-bg:     var(--bg-surface);
-  --control-border: var(--border-default);
-
-  /* Popover / Dropdown */
-  --popover-bg:     var(--bg-elevated);
-  --popover-border: var(--border-default);
-
-  /* Overlay */
-  --overlay-scrim: rgb(0 0 0 / 0.4);
-
-  /* Elevation — card/panel shadows */
-  --elevation-card:  0 1px 3px rgb(0 0 0 / 0.06), 0 4px 12px rgb(0 0 0 / 0.05);
-  --elevation-raised: 0 2px 8px rgb(0 0 0 / 0.08), 0 8px 24px rgb(0 0 0 / 0.07);
-  --elevation-dialog: 0 0 0 1px rgb(0 0 0 / 0.04), 0 4px 12px rgb(0 0 0 / 0.08), 0 24px 48px rgb(0 0 0 / 0.16);
-}
-
-
-/* ── Dark ───────────────────────────────────────────────────────────────── */
-.dark {
-
-  /* Backgrounds */
-  --bg-canvas:   var(--p-dark-0);
-  --bg-surface:  var(--p-dark-1);
-  --bg-elevated: var(--p-dark-2);
-  --bg-hover:    var(--p-dark-hover);
-  --bg-active:   var(--p-dark-active);
-
-  /* Text */
-  --fg-primary:   var(--p-dark-ink-primary);
-  --fg-secondary: var(--p-dark-ink-secondary);
-  --fg-muted:     var(--p-dark-ink-muted);
-  --fg-disabled:  var(--p-dark-ink-disabled);
-
-  /* Borders */
-  --border-default: rgb(255 255 255 / 14%);
-  --border-subtle:  rgb(255 255 255 / 7%);
-
-  --accent:        #E88992;
-  --accent-hover:  #F09AA3;
-  --accent-subtle: rgb(232 137 146 / 16%);
-
-  /* Interactive */
-  --link: var(--p-dark-link);
-
-  /* Warning — dark override: bright amber text on translucent dark fill */
-  --warning:        #F59E0B;   /* amber-400 — readable on dark bg */
-  --warning-hover:  #FBBF24;   /* amber-300 */
-  --warning-subtle: rgb(245 158 11 / 12%);   /* translucent amber fill */
-  --warning-fg:     #1C1101;   /* kept — only used for solid variant */
-
-  /* Component slots — cascade from updated base vars above automatically.
-     Only override here when a slot needs to differ from the base semantic. */
-  --sidebar-bg:     var(--bg-surface);
-  --sidebar-active: var(--bg-elevated);
-  --sidebar-rail:   color-mix(in oklch, var(--fg-primary) 38%, transparent);
-  --popover-bg:    var(--bg-elevated);
-  --overlay-scrim: rgb(0 0 0 / 0.6);  /* stronger scrim in dark context */
-
-  /* Elevation — dark: very subtle; shadows barely visible on dark bg */
-  --elevation-card:  0 1px 2px rgb(0 0 0 / 0.3), 0 4px 12px rgb(0 0 0 / 0.25);
-  --elevation-raised: 0 2px 8px rgb(0 0 0 / 0.4), 0 8px 24px rgb(0 0 0 / 0.32);
-  --elevation-dialog: 0 0 0 1px rgb(255 255 255 / 0.06), 0 4px 12px rgb(0 0 0 / 0.45), 0 24px 48px rgb(0 0 0 / 0.4);
-}
-
-
-/* ── Borders adaptativas via OKLCH relative colors ────────────────────────
- * Deriva lightness + chroma do --fg-primary com baixa opacidade.
- * Light: fg escuro → borda escura translúcida sobre branco → cinza suave.
- * Dark:  fg claro → borda clara translúcida sobre near-black → separação sutil.
- * Adapta automaticamente a qualquer marca sem valores hardcoded.
- * Requer CSS Color Level 5 — fallback rgb() definido nos blocos :root/.dark acima.
- * ─────────────────────────────────────────────────────────────────────────── */
-@supports (color: oklch(from white l c h)) {
-  :root {
-    --border-default: oklch(from var(--fg-primary) l calc(c * 0.4) h / 18%);
-    --border-subtle:  oklch(from var(--fg-primary) l calc(c * 0.4) h / 9%);
-  }
-
-  .dark {
-    --border-default: oklch(from var(--fg-primary) l calc(c * 0.4) h / 20%);
-    --border-subtle:  oklch(from var(--fg-primary) l calc(c * 0.4) h / 10%);
-  }
+  --elevation-card: 0 1px 3px color-mix(in oklch, var(--foreground) 6%, transparent), 0 4px 12px color-mix(in oklch, var(--foreground) 5%, transparent);
+  --elevation-raised: 0 2px 8px color-mix(in oklch, var(--foreground) 8%, transparent), 0 8px 24px color-mix(in oklch, var(--foreground) 7%, transparent);
+  --elevation-dialog: 0 0 0 1px color-mix(in oklch, var(--foreground) 4%, transparent), 0 4px 12px color-mix(in oklch, var(--foreground) 8%, transparent), 0 24px 48px color-mix(in oklch, var(--foreground) 16%, transparent);
 }

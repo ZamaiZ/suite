@@ -1,11 +1,14 @@
 # Caminho com o DataForSEO configurado
 
-> **Estado em 2026-09-04:** as etapas 1 e parte da 3 foram executadas. O SerpAPI
-> foi removido, o DataForSEO é o provider único, a malha opera em modo híbrido
-> e a página de Ferramentas passou a mostrar saldo, uso e calculadora a partir
-> de `/v3/appendix/user_data`. **A etapa 0 continua pendente** — os mapeadores
-> ainda não foram validados contra payload real. Falta a etapa 2 inteira
-> (matemática de reputação) e, da etapa 3, backlinks, concorrentes e âncoras.
+> **Estado em 2026-09-08:** as etapas 1 e 2 e parte da 3 foram executadas. O
+> SerpAPI foi removido, o DataForSEO é o provider único, a malha opera em modo
+> híbrido e a página de Ferramentas mostra saldo, uso e calculadora a partir de
+> `/v3/appendix/user_data`. A onda 3 entregou a metade da etapa 2 que roda com
+> um snapshot só, mais a correção de concorrentes do Maps.
+>
+> **A etapa 0 continua pendente** — os mapeadores ainda não foram validados
+> contra payload real, e é ela que decide se "tempo médio de resposta" existe.
+> Da etapa 3 faltam backlinks, concorrentes orgânicos e âncoras.
 
 Plano para o cenário em que a assinatura do DataForSEO está ativa: validar o que existe, tornar o DataForSEO o provider único de todas as operações que dependem de ferramenta, remover o SerpAPI e implementar a etapa final das atualizações de auditoria.
 
@@ -53,7 +56,9 @@ Os valores precisam continuar **legíveis** mesmo depois de deixarem de ser **pr
 
 ## Etapa 2 — A matemática de reputação
 
-Agora sim, escrita contra um mapeador validado e com dado cronológico real.
+> **Feita na onda 3**, em `lib/leads/gbp-reputation.ts`, com as três guardas e a
+> regra de apresentação abaixo. A metade que depende de segundo snapshot
+> continua pendente, e o tempo de resposta segue preso na etapa 0.
 
 **Funciona com um único snapshot**, sobre o que já está gravado:
 
@@ -85,16 +90,15 @@ Vale separar as duas metades na entrega, com estado vazio explicando a espera. S
 
 Duas observações: a seção de backlinks é precificada separado de Labs e SERP no DataForSEO, então vale confirmar cobertura do plano; e backlinks enxerga apenas citação **com link** — a citação local clássica, NAP num diretório sem link, não aparece. O item "Diretórios / citações locais" fica meio atendido.
 
-**Concorrentes.** Três mudanças pequenas e uma de modelo:
+**Concorrentes.** As duas primeiras mudanças já saíram na onda 3: o teto subiu para 5 na checagem avulsa e o filtro que exigia o cliente no Top 20 caiu, com a seleção unificada num construtor só ao lado da malha. O que sobrou é orgânico.
 
-- Subir o `slice(0, 3)` para 5 no Maps.
-- Remover a dependência de o cliente aparecer no Top 20 — hoje o filtro `item.position < maps_position` exige `maps_position !== null`, então quando o cliente não aparece salva-se zero concorrente, que é o pior caso possível.
-- Parar de descartar a SERP orgânica em `findOrganicRankForDomain`, que hoje devolve só a posição do próprio domínio.
-- **Modelo:** concorrente orgânico não tem onde morar. `lead_gbp_rank_checks.competitors` guarda os do Maps; `lead_visibility_audits` só guarda keywords do próprio domínio. Precisa de tabela, append-only, com `captured_at`.
+**Correção deste plano.** A versão anterior mandava "parar de descartar a SERP orgânica em `findOrganicRankForDomain`". Essa função **não existe mais** — saiu junto com o SerpAPI, e com `ranked_keywords` não há SERP para descartar: o endpoint devolve só o que o próprio domínio posiciona. Concorrente orgânico agora é `/dataforseo_labs/google/competitors_domain/live`, endpoint novo e chamada nova, não reaproveitamento.
+
+**Modelo:** concorrente orgânico não tem onde morar. `lead_gbp_rank_checks.competitors` guarda os do Maps; `lead_visibility_audits` só guarda keywords do próprio domínio. Precisa de tabela, append-only, com `captured_at`.
 
 Comparação de keywords em comum, participação de visibilidade e páginas que cada concorrente usa para ranquear são outro endpoint do Labs — não saem do que já é chamado.
 
-**Âncoras 5–6.** O teto de 3 está travado em quatro lugares: `GBP_RANK_KEYWORDS_MAX`, a constraint `cardinality(rank_keywords) <= 3`, o zod em `lib/validations/lead-gbp.ts` e a interface em `LeadGbpRankBlock`. Exige migration.
+**Âncoras 5–6.** O teto de 3 está travado em três lugares, não quatro: `GBP_RANK_KEYWORDS_MAX`, a constraint `cardinality(rank_keywords) <= 3` e a cópia "Máximo de 3 termos" em `LeadGbpRankBlock`. O zod de `lib/validations/lead-gbp.ts` importa a constante e acompanha sozinho. Exige migration — e multiplica o custo da malha, que é pontos × âncoras.
 
 **Consolidação da malha geográfica.** A malha já existe e roda em SerpAPI (`lead_gbp_grid_scans`, `lib/leads/gbp-grid.ts`, `LeadGbpGridSection`). Consolidá-la no DataForSEO tem três itens, nenhum deles estrutural:
 

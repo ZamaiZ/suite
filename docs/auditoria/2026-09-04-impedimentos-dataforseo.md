@@ -8,7 +8,7 @@ O SerpAPI foi removido e o DataForSEO passou a ser o provider único de todas as
 
 - **A chave global de provider.** `lib/gbp-vendor/` inteiro deixou de existir. Não há mais escolha a fazer nem ramo a manter.
 - **A cota mensal como limite estrutural.** O SerpAPI cobrava uma busca de plano por requisição; num plano de 5.000/mês, uma malha 11×11 consumia 121 delas. O DataForSEO cobra por requisição e a malha inteira sai por centavos.
-- **A amostra de reviews por relevância.** O SerpAPI devolvia `most_relevant`, sem `owner_answer` e com `replied` fixo em zero, o que inviabilizava velocidade de avaliações, taxa de resposta e evolução de nota. O DataForSEO devolve as mais recentes, com resposta do proprietário.
+- **A amostra de reviews por relevância.** O SerpAPI devolvia `most_relevant`, sem `owner_answer` e com `replied` fixo em zero, o que inviabilizava velocidade de avaliações, taxa de resposta e evolução de nota. O DataForSEO devolve as mais recentes, com resposta do proprietário. **A matemática saiu na onda 3** — média histórica por subtração, janelas de 30/60/90 dias e taxa de resposta —, com bloqueio explícito quando o snapshot é do SerpAPI, porque ali a subtração produziria lixo com cara de número.
 - **A ausência de backlinks.** O SerpAPI não tem o produto. O DataForSEO tem — falta implementar, mas deixou de ser impossível.
 - **O conjunto sintético de keywords.** A visibilidade orgânica no SerpAPI era medida contra keywords que o próprio sistema inventava a partir do nome da empresa. Agora vem de `ranked_keywords`, que devolve o que o domínio de fato posiciona, com volume, dificuldade, intenção e tráfego estimado.
 

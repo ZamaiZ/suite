@@ -294,7 +294,12 @@ export function gbpGapsForProfile(
     else if (enrichment.description.length < GBP_THIN_DESCRIPTION) {
       gaps.push("thin_description")
     }
-    if (enrichment.source !== "serpapi" && enrichment.services.length === 0) {
+    // `null` significa que a coleta não trouxe o campo — só lista vazia é gap.
+    if (
+      enrichment.source !== "serpapi" &&
+      enrichment.services !== null &&
+      enrichment.services.length === 0
+    ) {
       gaps.push("no_services")
     }
     if (enrichment.isClaimed === false) gaps.push("unclaimed")

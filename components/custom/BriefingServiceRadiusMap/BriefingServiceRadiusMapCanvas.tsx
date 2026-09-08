@@ -4,18 +4,19 @@ import { useEffect, useRef, useState } from "react"
 import { RiLoader4Line, RiMapPinLine, RiRefreshLine } from "react-icons/ri"
 import { Button } from "@/components/ui/Button"
 import { cn } from "@/lib/cn"
+import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
 import {
   GOOGLE_MAPS_DARK_STYLES,
   loadGoogleMaps,
 } from "@/lib/google-maps"
 import type { BriefingServiceRadiusMapProps } from "./BriefingServiceRadiusMap.types"
 
-function readAccentColor(): string {
-  if (typeof window === "undefined") return "#E88992"
+function readPrimaryColor(): string {
+  if (typeof window === "undefined") return SHADCN_PALETTE.light.primary
   const value = getComputedStyle(document.documentElement)
-    .getPropertyValue("--accent")
+    .getPropertyValue("--primary")
     .trim()
-  return value || "#E88992"
+  return value || SHADCN_PALETTE.light.primary
 }
 
 function isDarkMode(): boolean {
@@ -81,7 +82,7 @@ export function BriefingServiceRadiusMapCanvas({
         lat: latitude as number,
         lng: longitude as number,
       }
-      const accent = readAccentColor()
+      const accent = readPrimaryColor()
 
       const map = new Map(containerRef.current, {
         center,

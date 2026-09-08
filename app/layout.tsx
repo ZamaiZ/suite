@@ -3,6 +3,7 @@ import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/providers/theme-provider"
 import "./globals.css"
 import { APP_NAME } from "@/lib/brand"
+import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#7A2432",
+  themeColor: SHADCN_PALETTE.light.primary,
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

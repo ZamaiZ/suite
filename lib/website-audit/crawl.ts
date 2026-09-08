@@ -52,10 +52,14 @@ async function probeVariants(
     ? slashed.pathname.slice(0, -1) || "/"
     : `${slashed.pathname}/`
 
-  const [base, hostVariant, slashVariant] = await Promise.all([
+  const insecure = new URL(homeUrl.toString())
+  insecure.protocol = "http:"
+
+  const [base, hostVariant, slashVariant, insecureVariant] = await Promise.all([
     safeFetch(homeUrl.toString(), "HEAD"),
     safeFetch(withHost.toString(), "HEAD"),
     safeFetch(slashed.toString(), "HEAD"),
+    safeFetch(insecure.toString(), "HEAD"),
   ])
 
   if (base.status !== "ok") return null
@@ -85,6 +89,14 @@ async function probeVariants(
       slashVariant.status === "ok" &&
       slashVariant.statusCode < 400 &&
       settle(slashVariant.url) !== target,
+    // `settle` compara host e caminho de proposito, ignorando o protocolo —
+    // entao a convergencia http/https precisa da comparacao propria. So faz
+    // sentido perguntar em site que ja e https; senao `no_https` ja responde.
+    httpsMismatch:
+      homeUrl.protocol === "https:" &&
+      insecureVariant.status === "ok" &&
+      insecureVariant.statusCode < 400 &&
+      !insecureVariant.url.startsWith("https:"),
   }
 }
 
@@ -123,7 +135,7 @@ async function fetchPage(
   // tamanho para o comparativo fazer sentido.
   if (fetched.status === "error") {
     return {
-      page: emptyPageSnapshot(url, 0),
+      page: emptyPageSnapshot(url, 0, fetched.redirects ?? null),
       signals: {
         ...EMPTY_WEBSITE_CRAWL_SIGNALS,
         socialUrls: emptyWebsiteCrawlSocialUrls(),
@@ -133,7 +145,11 @@ async function fetchPage(
   }
   if (fetched.statusCode >= 400) {
     return {
-      page: emptyPageSnapshot(fetched.url, fetched.statusCode),
+      page: emptyPageSnapshot(
+        fetched.url,
+        fetched.statusCode,
+        fetched.redirects,
+      ),
       signals: {
         ...EMPTY_WEBSITE_CRAWL_SIGNALS,
         socialUrls: emptyWebsiteCrawlSocialUrls(),
@@ -147,6 +163,7 @@ async function fetchPage(
       fetched.url,
       fetched.statusCode,
       fetched.headers,
+      fetched.redirects,
     ),
     signals: extractHtmlSignals(fetched.body, fetched.url),
   }
@@ -219,6 +236,7 @@ export async function crawlWebsite(
     homeFetch.url,
     homeFetch.statusCode,
     homeFetch.headers,
+    homeFetch.redirects,
   )
   const homeSignals = extractHtmlSignals(homeFetch.body, homeFetch.url)
   const usedPaths =

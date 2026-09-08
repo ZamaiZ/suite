@@ -5,6 +5,7 @@ import { RiLoader4Line, RiMapPinLine } from "react-icons/ri"
 import { cn } from "@/lib/cn"
 import { GOOGLE_MAPS_DARK_STYLES, loadGoogleMaps } from "@/lib/google-maps"
 import type { GbpGridPoint } from "@/lib/leads/gbp-grid"
+import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
 
 /**
  * Uma faixa só alimenta a cor do ponto e a legenda, para que as duas não
@@ -25,48 +26,48 @@ export const GBP_GRID_BANDS: readonly GbpGridBand[] = [
   {
     id: "failed",
     label: "Falhou",
-    color: "#475569",
+    color: SHADCN_PALETTE.light.mutedForeground,
     match: (point) => point.status === "failed",
   },
   {
     id: "waiting",
     label: "Na fila",
-    color: "#94a3b8",
+    color: SHADCN_PALETTE.light.mutedForeground,
     match: (point) => point.status !== "done",
   },
   {
     id: "top",
     label: "Top 3",
-    color: "#15803d",
+    color: SHADCN_PALETTE.light.chart[0],
     match: (point) => point.position !== null && point.position <= 3,
   },
   {
     id: "good",
     label: "4–10",
-    color: "#65a30d",
+    color: SHADCN_PALETTE.light.chart[1],
     match: (point) => point.position !== null && point.position <= 10,
   },
   {
     id: "mid",
     label: "11–20",
-    color: "#ca8a04",
+    color: SHADCN_PALETTE.light.chart[2],
     match: (point) => point.position !== null && point.position <= 20,
   },
   {
     id: "low",
     label: "21+",
-    color: "#ea580c",
+    color: SHADCN_PALETTE.light.chart[3],
     match: (point) => point.position !== null,
   },
   {
     id: "absent",
     label: "Não aparece",
-    color: "#b91c1c",
+    color: SHADCN_PALETTE.light.destructive,
     match: () => true,
   },
 ]
 
-const FALLBACK_COLOR = "#94a3b8"
+const FALLBACK_COLOR = SHADCN_PALETTE.light.mutedForeground
 
 function pointBand(point: GbpGridPoint): GbpGridBand | null {
   return GBP_GRID_BANDS.find((band) => band.match(point)) ?? null
@@ -172,7 +173,7 @@ export function LeadGbpGridMap({
         title: pointTitle(point),
         label: {
           text: pointLabel(point),
-          color: "#ffffff",
+          color: SHADCN_PALETTE.light.primaryForeground,
           fontSize: "11px",
           fontWeight: "600",
         },
@@ -181,7 +182,7 @@ export function LeadGbpGridMap({
           scale: 12,
           fillColor: pointColor(point),
           fillOpacity: collected ? 0.95 : 0.45,
-          strokeColor: "#ffffff",
+          strokeColor: SHADCN_PALETTE.light.primaryForeground,
           strokeWeight: 1.5,
         },
       })

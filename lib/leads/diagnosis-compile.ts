@@ -292,7 +292,7 @@ export function compileDiagnosisFacts(
         input.companyName,
         nap,
         input.websiteAudit.pagespeed,
-        input.gbpProfile?.enrichment?.services.map((item) => item.title) ?? [],
+        input.gbpProfile?.enrichment?.services?.map((item) => item.title) ?? [],
       )
     : []
   const websiteItems: DiagnosisOpportunityRef[] = input.websiteAudit

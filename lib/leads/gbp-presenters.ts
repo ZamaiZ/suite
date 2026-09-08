@@ -1,5 +1,9 @@
 import { GBP_PHOTO_API_MAX, type LeadGbpProfile } from "@/lib/leads/gbp"
 import type { GbpRankCheck } from "@/lib/leads/gbp-audit"
+import type {
+  GbpReputationHistoryBlock,
+  GbpReputationWindow,
+} from "@/lib/leads/gbp-reputation"
 
 const HOURS_24 = /24\s*hora/i
 
@@ -107,4 +111,49 @@ export function gbpPhotosLabel(profile: LeadGbpProfile): {
 export function gbpBusinessStatusLabel(status: string | null): string | null {
   if (!status) return null
   return GBP_BUSINESS_STATUS_LABEL[status] ?? status
+}
+
+const REPUTATION_BLOCK_LABEL: Record<GbpReputationHistoryBlock, string> = {
+  no_distribution: "A distribuição por estrela ainda não foi coletada.",
+  not_chronological:
+    "Esta coleta trouxe as avaliações por relevância, não em ordem cronológica.",
+  no_rated_reviews: "Nenhuma avaliação da amostra tem nota.",
+  sample_covers_all: "A amostra já cobre todas as avaliações do perfil.",
+  out_of_sync:
+    "A distribuição e a amostra vieram de coletas em momentos diferentes.",
+}
+
+export function gbpReputationBlockLabel(
+  reason: GbpReputationHistoryBlock,
+): string {
+  return REPUTATION_BLOCK_LABEL[reason]
+}
+
+/**
+ * Janela truncada vira "ou mais". A amostra tem teto, então um número absoluto
+ * afirmaria um total que ninguém mediu.
+ */
+export function gbpReputationWindowLabel(window: GbpReputationWindow): string {
+  const count = window.count.toLocaleString("pt-BR")
+  return window.complete
+    ? `${count} em ${window.days} dias`
+    : `${count} ou mais em ${window.days} dias`
+}
+
+/**
+ * O período que a amostra cobre. Cinquenta avaliações são três semanas num
+ * perfil grande e três anos num pequeno — sem declarar, comparar duas coletas
+ * compara períodos diferentes.
+ */
+export function gbpReputationSpanLabel(spanDays: number | null): string | null {
+  if (spanDays === null || spanDays <= 0) return null
+  if (spanDays < 60) return `${spanDays} dias`
+  const months = Math.round(spanDays / 30)
+  if (months < 24) return `${months} meses`
+  return `${Math.round(spanDays / 365)} anos`
+}
+
+export function gbpReplyRateLabel(rate: number | null): string | null {
+  if (rate === null) return null
+  return `${Math.round(rate * 100)}%`
 }

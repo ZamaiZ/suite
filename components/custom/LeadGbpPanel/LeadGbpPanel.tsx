@@ -202,7 +202,7 @@ export function LeadGbpPanel({
         detail.lead.company_name,
         nap,
         websiteAudit.pagespeed,
-        primaryGbp?.enrichment?.services.map((item) => item.title) ?? [],
+        primaryGbp?.enrichment?.services?.map((item) => item.title) ?? [],
       )
     : []
   const websiteAlertCount = websiteAudit

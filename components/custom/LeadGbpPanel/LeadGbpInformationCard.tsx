@@ -237,7 +237,7 @@ export function LeadGbpInformationCard({
             "—"
           )}
         </FieldRow>
-        {enrichment && enrichment.services.length > 0 ? (
+        {enrichment && enrichment.services && enrichment.services.length > 0 ? (
           <FieldRow icon={RiStackLine} label="Serviços">
             <ul className="flex flex-col gap-0.5">
               {enrichment.services.map((service, index) => (

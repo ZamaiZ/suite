@@ -4,13 +4,18 @@ import { useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { cn } from "@/lib/cn"
-import { formatDateTimeShort } from "@/lib/date-time"
+import { formatDateTimeShort, todayCivilDate } from "@/lib/date-time"
 import type { GbpReviewSummary } from "@/lib/leads/gbp-audit"
 import {
   formatGbpCount,
   formatGbpRating,
+  gbpReplyRateLabel,
+  gbpReputationBlockLabel,
+  gbpReputationSpanLabel,
+  gbpReputationWindowLabel,
 } from "@/lib/leads/gbp-presenters"
 import type { GbpRatingDistribution } from "@/lib/leads/gbp-enrichment"
+import { gbpReputation } from "@/lib/leads/gbp-reputation"
 
 const FEATURED_PREVIEW = 2
 const STARS = ["5", "4", "3", "2", "1"] as const
@@ -72,6 +77,15 @@ export function LeadGbpReviewsBlock({
   const hiddenCount = Math.max(0, items.length - FEATURED_PREVIEW)
   const ratingLabel = formatGbpRating(rating)
   const countLabel = formatGbpCount(ratingCount)
+  const reputation = gbpReputation({
+    reviews,
+    distribution,
+    today: todayCivilDate(),
+  })
+  const spanLabel = gbpReputationSpanLabel(
+    reputation?.sample.spanDays ?? null,
+  )
+  const replyLabel = gbpReplyRateLabel(reputation?.sample.replyRate ?? null)
 
   return (
     <LeadGbpCard title="Reputação">
@@ -89,6 +103,30 @@ export function LeadGbpReviewsBlock({
         </div>
         {distribution ? <RatingBars distribution={distribution} /> : null}
       </div>
+
+      {reputation ? (
+        <div className="mt-4 flex flex-col gap-1 rounded-lg border border-border-subtle bg-canvas px-3 py-2">
+          <p className="font-sans text-caption text-fg">
+            {reputation.history.status === "ok"
+              ? `Nas ${formatGbpCount(reputation.history.recentCount)} mais recentes a média é ${formatGbpRating(reputation.history.recentAverage)}; nas ${formatGbpCount(reputation.history.priorCount)} anteriores era ${formatGbpRating(reputation.history.priorAverage)}.`
+              : gbpReputationBlockLabel(reputation.history.reason)}
+          </p>
+          <p className="font-sans text-caption text-fg-secondary">
+            {reputation.sample.windows.map(gbpReputationWindowLabel).join(" · ")}
+          </p>
+          <p className="font-sans text-caption text-fg-muted">
+            {[
+              `Amostra de ${formatGbpCount(reputation.sample.size)}`,
+              spanLabel ? `cobrindo ${spanLabel}` : null,
+              replyLabel
+                ? `${formatGbpCount(reputation.sample.repliedCount)} respondidas (${replyLabel})`
+                : null,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+          </p>
+        </div>
+      ) : null}
 
       {items.length === 0 ? (
         <p className="mt-4 font-sans text-caption text-fg-muted">

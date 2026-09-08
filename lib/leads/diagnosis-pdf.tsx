@@ -9,6 +9,7 @@ import {
   pdf,
 } from "@react-pdf/renderer"
 import { formatDateTimeShort } from "@/lib/date-time"
+import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
 import {
   DIAGNOSIS_PILLAR_LABELS,
   DIAGNOSIS_PILLARS,
@@ -17,15 +18,16 @@ import {
 } from "@/lib/leads/diagnosis-document"
 
 const colors = {
-  accent: "#7A2432",
-  accentSubtle: "#F6E8EA",
-  ink: "#1A1216",
-  muted: "#7A7276",
-  secondary: "#5C5356",
-  border: "#E8D0D4",
-  canvas: "#FBF8F8",
-  white: "#FFFFFF",
-  warning: "#B45309",
+  accent: SHADCN_PALETTE.light.primary,
+  accentSubtle: SHADCN_PALETTE.light.accent,
+  ink: SHADCN_PALETTE.light.foreground,
+  muted: SHADCN_PALETTE.light.mutedForeground,
+  secondary: SHADCN_PALETTE.light.secondaryForeground,
+  border: SHADCN_PALETTE.light.border,
+  canvas: SHADCN_PALETTE.light.background,
+  white: SHADCN_PALETTE.light.background,
+  onPrimary: SHADCN_PALETTE.light.primaryForeground,
+  warning: SHADCN_PALETTE.light.chart[2],
 }
 
 const styles = StyleSheet.create({
@@ -48,14 +50,14 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
   brand: {
-    color: colors.white,
+    color: colors.onPrimary,
     fontSize: 11,
     letterSpacing: 2,
     textTransform: "uppercase",
     marginBottom: 18,
   },
   coverTitle: {
-    color: colors.white,
+    color: colors.onPrimary,
     fontSize: 26,
     fontFamily: "Helvetica-Bold",
     marginBottom: 8,

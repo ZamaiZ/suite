@@ -330,7 +330,17 @@ export function visibilityGapsForSnapshot(input: {
     (row) =>
       (row.position ?? 999) <= 20 && isLocalKeyword(row.keyword, city),
   )
-  if (!localTop20) {
+  /**
+   * A amostra do `ranked_keywords` vem truncada e ordenada por tráfego, então
+   * num domínio grande as locais podem simplesmente não estar nela. Sem
+   * cobertura do footprint, "não encontrei" não é "não existe" — e não saber
+   * não é um gap. Nos snapshots SerpAPI `keywordCount` era o tamanho da própria
+   * amostra, então a regra antiga continua valendo para eles.
+   */
+  const sampleCoversFootprint =
+    snapshot.metrics.keywordCount === null ||
+    snapshot.metrics.keywordCount <= snapshot.keywords.length
+  if (sampleCoversFootprint && !localTop20) {
     gaps.push("no_local_top20")
   }
 

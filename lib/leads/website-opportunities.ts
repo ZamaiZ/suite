@@ -87,6 +87,9 @@ const HIGH_IMPACT = new Set<WebsiteGapId>([
   "canonical_vs_noindex",
   "noindex_internal_pages",
   "robots_blocks_search",
+  "no_privacy_policy",
+  "redirect_loop",
+  "https_canonicalization",
 ])
 
 const OPPORTUNITY_TITLES: Partial<Record<WebsiteGapId, string>> = {
@@ -127,6 +130,12 @@ const OPPORTUNITY_TITLES: Partial<Record<WebsiteGapId, string>> = {
   heading_hierarchy: "Corrigir a hierarquia de títulos",
   noindex_internal_pages: "Remover noindex das páginas internas",
   robots_blocks_search: "Liberar o rastreamento no robots.txt",
+  no_privacy_policy: "Publicar a política de privacidade",
+  no_terms: "Publicar os termos de uso",
+  redirect_chain: "Encurtar os redirects para um salto",
+  temporary_redirect: "Trocar redirect temporário por permanente",
+  redirect_loop: "Quebrar o laço de redirect",
+  https_canonicalization: "Redirecionar HTTP para HTTPS",
 }
 
 function impactFor(

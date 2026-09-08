@@ -13,6 +13,7 @@ import {
   type WebsiteCrawlSignals,
   type WebsitePageSnapshot,
 } from "../leads/website-audit.ts"
+import type { WebsiteRedirectHop } from "../leads/website-redirects.ts"
 import { normalizeCanonical } from "../leads/website-canonical.ts"
 import { headerBlocksIndexing } from "../leads/website-headers.ts"
 import {
@@ -229,6 +230,7 @@ export function extractHtmlSignals(
 export function emptyPageSnapshot(
   url: string,
   status: number,
+  redirects: WebsiteRedirectHop[] | null = null,
 ): WebsitePageSnapshot {
   return {
     url,
@@ -253,6 +255,7 @@ export function emptyPageSnapshot(
     headings: [],
     headers: {},
     indexable: true,
+    redirects,
   }
 }
 
@@ -261,6 +264,7 @@ export function parseHtmlPage(
   pageUrl: string,
   status: number,
   headers: Record<string, string> = {},
+  redirects: WebsiteRedirectHop[] | null = null,
 ): WebsitePageSnapshot {
   const url = new URL(pageUrl)
   const $ = load(html)
@@ -393,6 +397,7 @@ export function parseHtmlPage(
     headers,
     // O header X-Robots-Tag pesa tanto quanto a meta robots para indexacao.
     indexable: pageIsIndexable($) && !headerBlocksIndexing(headers),
+    redirects,
   }
 }
 

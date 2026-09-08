@@ -18,6 +18,11 @@ import {
   type RobotsGroup,
 } from "../website-audit/robots.ts"
 import { canonicalIssuesForSample } from "./website-canonical.ts"
+import { complianceIssuesForPaths } from "./website-compliance.ts"
+import {
+  redirectIssuesForPages,
+  type WebsiteRedirectHop,
+} from "./website-redirects.ts"
 import {
   missingSecurityHeaders,
   readSecurityHeaders,
@@ -86,6 +91,12 @@ export const WEBSITE_GAP_IDS = [
   "heading_hierarchy",
   "noindex_internal_pages",
   "robots_blocks_search",
+  "no_privacy_policy",
+  "no_terms",
+  "redirect_chain",
+  "temporary_redirect",
+  "redirect_loop",
+  "https_canonicalization",
 ] as const
 
 export type WebsiteGapId = (typeof WEBSITE_GAP_IDS)[number]
@@ -128,7 +139,16 @@ export const WEBSITE_GAP_LABELS: Record<WebsiteGapId, string> = {
   heading_hierarchy: "Hierarquia de headings quebrada",
   noindex_internal_pages: "Páginas internas com noindex",
   robots_blocks_search: "robots.txt bloqueia a busca",
+  no_privacy_policy: "Sem política de privacidade",
+  no_terms: "Sem termos de uso",
+  redirect_chain: "Redirect em cadeia",
+  temporary_redirect: "Redirect temporário onde cabe permanente",
+  redirect_loop: "Redirect em laço",
+  https_canonicalization: "HTTP não redireciona para HTTPS",
 }
+
+/** Reexportado para quem já lê os tipos da coleta a partir deste módulo. */
+export type { WebsiteRedirectHop }
 
 export type WebsiteSitemapSampleStatus = {
   url: string
@@ -159,6 +179,12 @@ export type WebsitePageSnapshot = {
   headings: WebsiteHeading[]
   headers: Record<string, string>
   indexable: boolean
+  /**
+   * Saltos ate esta pagina. `null` significa coleta anterior a este campo —
+   * ausente nao e "sem redirect", e confundir os dois faria todo snapshot
+   * antigo passar no teste sem ter sido medido.
+   */
+  redirects: WebsiteRedirectHop[] | null
 }
 
 export type WebsiteCrawlSocialUrls = Record<SocialChannelType, string | null>
@@ -228,6 +254,8 @@ export type WebsiteLlmsTxtSnapshot = {
 export type WebsiteVariantSnapshot = {
   hostMismatch: boolean
   slashMismatch: boolean
+  /** Sondagem posterior as duas primeiras: ausente vale `false`. */
+  httpsMismatch: boolean
 }
 
 export type WebsiteSitemapSnapshot = {
@@ -523,7 +551,22 @@ function readPage(value: unknown): WebsitePageSnapshot | null {
     headings: readHeadings(row.headings),
     headers: readSecurityHeaders(row.headers),
     indexable,
+    redirects: readRedirects(row.redirects),
   }
+}
+
+function readRedirects(value: unknown): WebsiteRedirectHop[] | null {
+  if (!Array.isArray(value)) return null
+  const hops: WebsiteRedirectHop[] = []
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue
+    const row = item as Record<string, unknown>
+    const url = asString(row.url)
+    const status = asCount(row.status)
+    if (!url || status === null) continue
+    hops.push({ url, status })
+  }
+  return hops
 }
 
 function readRobots(value: unknown): WebsiteRobotsSnapshot | null {
@@ -701,7 +744,11 @@ function readVariants(value: unknown): WebsiteVariantSnapshot | null {
   const hostMismatch = asBool(row.hostMismatch)
   const slashMismatch = asBool(row.slashMismatch)
   if (hostMismatch === null || slashMismatch === null) return null
-  return { hostMismatch, slashMismatch }
+  return {
+    hostMismatch,
+    slashMismatch,
+    httpsMismatch: asBool(row.httpsMismatch) ?? false,
+  }
 }
 
 export function readLeadWebsiteAuditRow(
@@ -990,6 +1037,8 @@ export function websiteGapsForAudit(
   )
   if (crawl.variants?.hostMismatch) gaps.push("host_canonicalization")
   if (crawl.variants?.slashMismatch) gaps.push("slash_canonicalization")
+  if (crawl.variants?.httpsMismatch) gaps.push("https_canonicalization")
+  gaps.push(...redirectIssuesForPages(crawl.pages))
 
   // Um unico gap para os headers, com o detalhe listando quais faltam: seis
   // gaps separados poluiriam o roadmap sem ganho de leitura.
@@ -1044,6 +1093,7 @@ export function websiteGapsForAudit(
     gaps.push("no_service_pages")
   }
   if (!paths.some((path) => BLOG_PATH.test(path))) gaps.push("no_blog")
+  gaps.push(...complianceIssuesForPaths(paths))
 
   if (
     crawl.pages.some((page) => websiteTitleIsGeneric(page.title, companyName))

@@ -7,6 +7,14 @@ export const GBP_RANK_KEYWORDS_MAX = 3
 export const GBP_RANK_KEYWORD_MAX_LEN = 80
 export const GBP_MAPS_DEPTH = 20
 
+/**
+ * Quantos concorrentes cada superfície guarda. A checagem avulsa exibe a lista
+ * na tela, então cinco cabem; a malha guarda por ponto e multiplica por até 121
+ * pontos de jsonb, então três. A diferença é deliberada.
+ */
+export const GBP_RANK_COMPETITORS = 5
+export const GBP_GRID_COMPETITORS = 3
+
 export type GbpPost = {
   text: string | null
   publishedAt: string | null
@@ -474,6 +482,34 @@ function readMapsItems(items: unknown): MapsRankItem[] {
   })
 }
 
+/**
+ * Os primeiros colocados do resultado, sem filtrar pela posição do cliente.
+ *
+ * O filtro antigo da checagem avulsa — "só quem está acima dele" — exigia que o
+ * cliente aparecesse no top 20; quando ele não aparecia, gravávamos zero
+ * concorrente, justamente no caso em que saber quem está lá é o que mais
+ * interessa. A malha já fazia certo, e as duas divergiram por montarem a mesma
+ * lista em dois lugares. Agora é uma função só.
+ *
+ * O próprio cliente sai da lista: ele não é concorrente de si mesmo.
+ */
+function topCompetitors(
+  items: readonly MapsRankItem[],
+  placeId: string,
+  max: number,
+): GbpRankCompetitor[] {
+  return items
+    .filter((item) => item.placeId !== placeId)
+    .slice()
+    .sort((left, right) => left.position - right.position)
+    .slice(0, max)
+    .map((item) => ({
+      title: item.title,
+      placeId: item.placeId,
+      position: item.position,
+    }))
+}
+
 export type GbpGridPointResult = {
   position: number | null
   competitors: GbpRankCompetitor[]
@@ -482,10 +518,9 @@ export type GbpGridPointResult = {
 /**
  * Um ponto da malha, a partir de um resultado de Maps.
  *
- * Difere de `mapDataForSeoMapsRank` em uma coisa que importa: os concorrentes
- * são o top 3 daquele ponto **sem filtrar pela posição do cliente**. Na malha,
- * o ponto onde o cliente não aparece é justamente aquele em que interessa
- * saber quem está lá — e reescanear depois custaria outra requisição paga.
+ * Guarda menos concorrentes que a checagem avulsa porque multiplica por ponto —
+ * e reescanear depois custaria outra requisição paga, então descartar não é
+ * opção.
  */
 export function mapDataForSeoGridPoint(input: {
   placeId: string
@@ -495,15 +530,7 @@ export function mapDataForSeoGridPoint(input: {
   const target = items.find((item) => item.placeId === input.placeId) ?? null
   return {
     position: target?.position ?? null,
-    competitors: items
-      .slice()
-      .sort((left, right) => left.position - right.position)
-      .slice(0, 3)
-      .map((item) => ({
-        title: item.title,
-        placeId: item.placeId,
-        position: item.position,
-      })),
+    competitors: topCompetitors(items, input.placeId, GBP_GRID_COMPETITORS),
   }
 }
 
@@ -516,15 +543,11 @@ export function mapDataForSeoMapsRank(input: {
   const items = readMapsItems(input.result?.items)
   const target = items.find((item) => item.placeId === input.placeId) ?? null
   const maps_position = target?.position ?? null
-  const competitors = items
-    .filter((item) => maps_position !== null && item.position < maps_position)
-    .sort((left, right) => left.position - right.position)
-    .slice(0, 3)
-    .map((item) => ({
-      title: item.title,
-      placeId: item.placeId,
-      position: item.position,
-    }))
+  const competitors = topCompetitors(
+    items,
+    input.placeId,
+    GBP_RANK_COMPETITORS,
+  )
   return {
     keyword: input.keyword,
     maps_position,

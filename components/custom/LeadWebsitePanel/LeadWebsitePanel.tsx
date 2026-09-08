@@ -175,7 +175,7 @@ export function LeadWebsitePanel({
     detail.gbpProfiles[0] ??
     null
   const serviceTitles =
-    primaryGbp?.enrichment?.services.map((item) => item.title) ?? []
+    primaryGbp?.enrichment?.services?.map((item) => item.title) ?? []
   const nap = primaryGbp
     ? {
         phone: primaryGbp.payload.nationalPhoneNumber,

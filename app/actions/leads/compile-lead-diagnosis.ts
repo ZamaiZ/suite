@@ -94,10 +94,14 @@ export async function compileLeadDiagnosis(
       .select(DIGITAL_PRESENCE_SELECT)
       .eq("lead_id", leadId)
       .maybeSingle(),
+    // Append-only desde a migration 20260917: sem `order`/`limit` a consulta
+    // devolve varias linhas e o `maybeSingle` falha na segunda analise do lead.
     supabase
       .from("lead_visibility_audits")
       .select(VISIBILITY_SELECT)
       .eq("lead_id", leadId)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
       .maybeSingle(),
   ])
 
