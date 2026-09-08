@@ -40,7 +40,7 @@ export function LeadGbpAuditStep({
           "relative inline-flex size-8 shrink-0 items-center justify-center rounded-full border font-sans text-caption font-semibold",
           "transition-[background-color,border-color,color,transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]",
           (step.state === "current" || isProcessing || isComplete) &&
-            "border-accent bg-accent text-accent-fg",
+            "border-primary bg-primary text-primary-foreground",
           isError && "border-danger bg-danger text-danger-fg",
           step.state === "upcoming" &&
             "border-border bg-elevated text-fg-secondary",

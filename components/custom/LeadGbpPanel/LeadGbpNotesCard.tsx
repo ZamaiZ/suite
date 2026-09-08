@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { RiCheckLine, RiLoader4Line } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/cn"
+import { Textarea } from "@/components/ui/textarea"
 import { GBP_NOTES_MAX } from "@/lib/leads/gbp"
 
 export type GbpNotesStatus = "idle" | "saving" | "saved" | "error"
@@ -66,18 +66,13 @@ export function LeadGbpNotesCard({
       <label htmlFor={id} className="sr-only">
         {title}
       </label>
-      <textarea
+      <Textarea
         id={id}
         value={value}
         maxLength={GBP_NOTES_MAX}
         rows={6}
         onChange={(event) => handleChange(event.target.value)}
-        className={cn(
-          "w-full resize-y rounded-md border border-input-border bg-input px-3 py-2",
-          "font-sans text-body-sm text-fg outline-none",
-          "placeholder:text-fg-muted",
-          "focus-visible:border-accent",
-        )}
+        className="min-h-0 resize-y"
         placeholder={placeholder}
       />
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">

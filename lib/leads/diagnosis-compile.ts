@@ -38,6 +38,8 @@ import {
   type LeadVisibilityAudit,
 } from "./visibility-audit.ts"
 import { mergeVisibilityOpportunities } from "./visibility-opportunities.ts"
+import type { BacklinkSnapshot } from "./backlinks-audit.ts"
+import { backlinkOpportunitiesFromSnapshot } from "./backlinks-opportunities.ts"
 import { formatVisibilityMetric } from "./visibility-presenters.ts"
 import {
   napCheckForCrawl,
@@ -63,6 +65,8 @@ export type DiagnosisCompileInput = {
   presenceReview: DigitalPresenceReview
   presenceToday: string
   visibilityAudit: LeadVisibilityAudit | null
+  /** Autoridade externa. Opcional: nasce ausente em todo lead já auditado. */
+  backlinkSnapshot?: BacklinkSnapshot | null
   generatedAt: string
   previousProse?: DiagnosisProse | null
   leadCity: string | null
@@ -295,21 +299,32 @@ export function compileDiagnosisFacts(
         input.gbpProfile?.enrichment?.services?.map((item) => item.title) ?? [],
       )
     : []
-  const websiteItems: DiagnosisOpportunityRef[] = input.websiteAudit
-    ? mergeWebsiteOpportunities(
-        websiteGaps,
-        {
-          minPerformance: websiteMinPerformance(input.websiteAudit.pagespeed),
-          missingSecurityHeaders: missingSecurityHeaderLabels(
-            input.websiteAudit.crawl,
-          ),
-          napMismatches: napMismatchLabels(
-            napCheckForCrawl(input.websiteAudit.crawl, nap),
-          ),
-        },
-        input.websiteAudit.review,
-      ).map(toRef)
-    : []
+  // Backlinks entra no pilar de Website, ao lado do crawl e da revisão do
+  // analista. É a mesma junção que já existe entre máquina e analista — o
+  // catálogo é separado porque `websiteGapsForAudit` não recebe backlinks.
+  const websiteItems: DiagnosisOpportunityRef[] = [
+    ...(input.websiteAudit
+      ? mergeWebsiteOpportunities(
+          websiteGaps,
+          {
+            minPerformance: websiteMinPerformance(input.websiteAudit.pagespeed),
+            missingSecurityHeaders: missingSecurityHeaderLabels(
+              input.websiteAudit.crawl,
+            ),
+            napMismatches: napMismatchLabels(
+              napCheckForCrawl(input.websiteAudit.crawl, nap),
+            ),
+          },
+          input.websiteAudit.review,
+        ).map(toRef)
+      : []),
+    ...backlinkOpportunitiesFromSnapshot(
+      input.backlinkSnapshot ?? null,
+    ).map(toRef),
+  ].sort((left, right) => {
+    if (left.impact !== right.impact) return left.impact === "high" ? -1 : 1
+    return 0
+  })
 
   const presenceRaw = mergeDigitalPresenceOpportunities({
     signals: input.websiteAudit?.crawl.signals ?? null,

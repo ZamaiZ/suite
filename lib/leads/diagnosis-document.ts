@@ -161,6 +161,9 @@ export function diagnosisFactsFingerprint(input: {
   websitePagespeedAt: string | null
   presenceUpdatedAt: string | null
   visibilityFetchedAt: string | null
+  /** Backlinks tem cadência própria: sem ele aqui, recoletar não marca o
+   * rascunho como desatualizado e a tela segue exibindo autoridade antiga. */
+  backlinksFetchedAt: string | null
 }): string {
   return [
     input.gbpFetchedAt ?? "",
@@ -169,5 +172,6 @@ export function diagnosisFactsFingerprint(input: {
     input.websitePagespeedAt ?? "",
     input.presenceUpdatedAt ?? "",
     input.visibilityFetchedAt ?? "",
+    input.backlinksFetchedAt ?? "",
   ].join("|")
 }

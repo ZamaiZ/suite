@@ -12,6 +12,7 @@ export {
   type LeadWebsiteAudit,
   type LeadDigitalPresenceAudit,
   type LeadVisibilityAudit,
+  type LeadBacklinkAudit,
   type LeadDiagnosisDraft,
   type LeadDiagnosisExport,
 } from "./get-lead"
@@ -79,6 +80,10 @@ export {
   analyzeLeadVisibility,
   type AnalyzeLeadVisibilityState,
 } from "./analyze-visibility"
+export {
+  analyzeLeadBacklinks,
+  type AnalyzeLeadBacklinksState,
+} from "./analyze-backlinks"
 export {
   compileLeadDiagnosis,
   type CompileLeadDiagnosisState,

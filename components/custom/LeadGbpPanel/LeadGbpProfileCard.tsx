@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import { Menu } from "@base-ui/react/menu"
 import {
   RiDeleteBinLine,
   RiMore2Line,
@@ -29,7 +28,13 @@ import { LeadGbpRankBlock } from "./LeadGbpRankBlock"
 import { LeadGbpReviewsBlock } from "./LeadGbpReviewsBlock"
 import { LeadGbpStepHeader } from "./LeadGbpStepHeader"
 import { LeadGbpSummaryCards } from "./LeadGbpSummaryCards"
-import { cn } from "@/lib/cn"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
 import { mergeGbpOpportunities } from "@/lib/leads/gbp-opportunities"
 import {
@@ -37,13 +42,6 @@ import {
   type LeadGbpProfile,
 } from "@/lib/leads/gbp"
 import { latestGbpCollectedAt } from "@/lib/leads/gbp-presenters"
-
-const MENU_ITEM = cn(
-  "flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5",
-  "font-sans text-body-sm text-fg outline-none",
-  "data-highlighted:bg-hover",
-  "data-disabled:pointer-events-none data-disabled:opacity-50",
-)
 
 const POLL_MS = 5000
 const POLL_MAX_MS = 120_000
@@ -376,56 +374,31 @@ export function LeadGbpProfileCard({
             onEnrich={handleEnrich}
           />
           {canEdit ? (
-            <Menu.Root>
-              <Menu.Trigger
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={<Button variant="ghost" size="icon" />}
                 aria-label="Ações do perfil"
-                className={cn(
-                  "mt-0.5 inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md",
-                  "text-fg-muted transition-[background-color,color,transform] duration-150 ease-out",
-                  "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-hover",
-                  "[@media(hover:hover)_and_(pointer:fine)]:hover:text-fg",
-                  "data-popup-open:bg-hover data-popup-open:text-fg",
-                  "active:scale-[0.97]",
-                  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                )}
               >
                 <RiMore2Line size={16} aria-hidden />
-              </Menu.Trigger>
-              <Menu.Portal>
-                <Menu.Positioner
-                  className="z-50 outline-none"
-                  sideOffset={4}
-                  align="end"
-                >
-                  <Menu.Popup
-                    className={cn(
-                      "pointer-events-auto min-w-44 rounded-md border border-popover-border bg-popover p-1 shadow-raised",
-                      "origin-[var(--transform-origin)]",
-                      "transition-[transform,opacity] duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-                      "data-starting-style:opacity-0 data-starting-style:scale-[0.96]",
-                      "data-ending-style:opacity-0 data-ending-style:scale-[0.96] data-ending-style:duration-[140ms]",
-                    )}
-                  >
-                    <Menu.Item
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="min-w-44">
+                    <DropdownMenuItem
                       disabled={profile.is_primary}
                       onClick={handlePrimary}
-                      className={MENU_ITEM}
                     >
                       <RiStarLine size={16} aria-hidden />
                       Definir como principal
-                    </Menu.Item>
-                    <Menu.Item onClick={handleRefresh} className={MENU_ITEM}>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleRefresh}>
                       <RiRefreshLine size={16} aria-hidden />
                       Atualizar dados do Places
-                    </Menu.Item>
-                    <Menu.Item onClick={handleRemove} className={MENU_ITEM}>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleRemove} variant="destructive">
                       <RiDeleteBinLine size={16} aria-hidden />
                       Remover
-                    </Menu.Item>
-                  </Menu.Popup>
-                </Menu.Positioner>
-              </Menu.Portal>
-            </Menu.Root>
+                    </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : null}
         </m.div>
 

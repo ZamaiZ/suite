@@ -16,6 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
 import type { ClientCloserOption } from "@/app/actions/clients"
 import { clientsListHref, type ClientsListParams } from "@/lib/clients/href"
 import { CLIENT_KICKOFF_STAGE_LABELS } from "@/lib/clients/kickoff"
@@ -97,25 +103,26 @@ export function ClientsListToolbar({
 
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-border-subtle bg-surface/80 p-3 shadow-card sm:flex-row sm:items-center">
-      <div className="relative min-w-0 flex-1">
-        <RiSearchLine
-          className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-fg-muted"
-          size={17}
-          aria-hidden
-        />
-        <input
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          placeholder="Buscar cliente ou domínio…"
-          aria-label="Buscar clientes"
-          className="h-10 w-full rounded-lg border border-border-subtle bg-canvas pl-9 pr-10 font-sans text-body-sm text-fg outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/15"
-        />
-        {pending ? (
-          <span
-            className="absolute right-3 top-1/2 size-4 -translate-y-1/2 animate-spin rounded-full border-2 border-accent/25 border-t-accent"
-            aria-label="Buscando"
+      <div className="min-w-0 flex-1">
+        <InputGroup className="h-10 rounded-lg bg-canvas">
+          <InputGroupAddon>
+            <RiSearchLine size={17} aria-hidden />
+          </InputGroupAddon>
+          <InputGroupInput
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            placeholder="Buscar cliente ou domínio…"
+            aria-label="Buscar clientes"
           />
-        ) : null}
+          {pending ? (
+            <InputGroupAddon align="inline-end">
+              <span
+                className="size-4 animate-spin rounded-full border-2 border-primary/25 border-t-primary"
+                aria-label="Buscando"
+              />
+            </InputGroupAddon>
+          ) : null}
+        </InputGroup>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -133,17 +140,19 @@ export function ClientsListToolbar({
           <Select value={listParams.closer ?? "all"} onValueChange={(value) => replace({ closer: value === "all" ? null : String(value) })}><SelectTrigger id="clients-closer-filter" className="h-10 w-full"><RiUser3Line size={16} aria-hidden /><SelectValue /></SelectTrigger><SelectContent align="start"><SelectItem value="all">Todos os closers</SelectItem>{closerItems.map((item) => <SelectItem key={item.value} value={item.value}>{item.label}</SelectItem>)}</SelectContent></Select>
         </div>
         {hasFilters ? (
-          <button
+          <Button
             type="button"
             onClick={() => {
               setDraft("")
               replace({ q: "", briefing: null, kickoff: null, closer: null })
             }}
-            className="inline-flex size-9 items-center justify-center rounded-lg text-fg-muted transition hover:bg-hover hover:text-fg"
+            variant="ghost"
+            size="icon"
+            className="size-9"
             aria-label="Limpar filtros"
           >
             <RiCloseLine size={17} />
-          </button>
+          </Button>
         ) : null}
       </div>
     </div>

@@ -5,14 +5,21 @@
  */
 
 :root {
+  /* Content hierarchy is derived from the active Mira/Mist theme. It avoids
+   * rendering ordinary product copy as absolute black/white while keeping
+   * headings and controls sufficiently contrasty. */
+  --content-foreground-strong: color-mix(in oklch, var(--foreground) 88%, var(--muted-foreground));
+  --content-foreground: color-mix(in oklch, var(--foreground) 78%, var(--muted-foreground));
+  --content-foreground-secondary: color-mix(in oklch, var(--foreground) 48%, var(--muted-foreground));
+
   --bg-canvas: var(--background);
   --bg-surface: var(--card);
   --bg-elevated: var(--popover);
   --bg-hover: var(--accent);
   --bg-active: var(--secondary);
 
-  --fg-primary: var(--foreground);
-  --fg-secondary: var(--muted-foreground);
+  --fg-primary: var(--content-foreground-strong);
+  --fg-secondary: var(--content-foreground-secondary);
   --fg-muted: var(--muted-foreground);
   --fg-disabled: var(--muted-foreground);
 

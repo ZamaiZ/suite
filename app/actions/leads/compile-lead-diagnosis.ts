@@ -17,6 +17,7 @@ import {
 } from "@/lib/leads/digital-presence"
 import { readLeadGbpProfiles } from "@/lib/leads/gbp"
 import { readLeadVisibilityAuditRow } from "@/lib/leads/visibility-audit"
+import { readLeadBacklinkAuditRow } from "@/lib/leads/backlinks-audit"
 import { readLeadWebsiteAudits } from "@/lib/leads/website-audit"
 import {
   diagnosisLeadIdSchema,
@@ -31,6 +32,7 @@ import {
 } from "./diagnosis-access"
 import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
+import { BACKLINKS_SELECT } from "./backlinks-access"
 import { loadWebsiteReviewsForLead, WEBSITE_SELECT } from "./website-access"
 import {
   readLeadDiagnosisDraftRow,
@@ -78,6 +80,7 @@ export async function compileLeadDiagnosis(
     { data: websiteRows, error: websiteError },
     { data: presenceRow, error: presenceError },
     { data: visibilityRow, error: visibilityError },
+    { data: backlinkRow, error: backlinkError },
   ] = await Promise.all([
     supabase
       .from("lead_digital_channels")
@@ -103,6 +106,13 @@ export async function compileLeadDiagnosis(
       .order("fetched_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
+    supabase
+      .from("lead_backlink_audits")
+      .select(BACKLINKS_SELECT)
+      .eq("lead_id", leadId)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
   ])
 
   if (
@@ -110,7 +120,8 @@ export async function compileLeadDiagnosis(
     gbpError ||
     websiteError ||
     presenceError ||
-    visibilityError
+    visibilityError ||
+    backlinkError
   ) {
     return { status: "error", message: FAILED }
   }
@@ -146,6 +157,11 @@ export async function compileLeadDiagnosis(
   const visibilityAudit = visibilityRow
     ? readLeadVisibilityAuditRow(visibilityRow as Record<string, unknown>)
     : null
+  // Backlinks é opcional no gate: ele não bloqueia o diagnóstico, entra como
+  // mais uma fonte de oportunidade do pilar de Website quando existir.
+  const backlinkAudit = backlinkRow
+    ? readLeadBacklinkAuditRow(backlinkRow as Record<string, unknown>)
+    : null
 
   const domain =
     primaryWebsite?.normalized_key ??
@@ -178,6 +194,7 @@ export async function compileLeadDiagnosis(
     presenceReview,
     presenceToday: todayCivilDate(),
     visibilityAudit,
+    backlinkSnapshot: backlinkAudit?.snapshot ?? null,
     generatedAt,
     previousProse: loaded.draft?.document.prose ?? null,
     leadCity: loaded.lead.city,
@@ -192,6 +209,7 @@ export async function compileLeadDiagnosis(
     websitePagespeedAt: websiteAudit.pagespeed_at,
     presenceUpdatedAt: presenceAudit?.updated_at ?? null,
     visibilityFetchedAt: visibilityAudit.fetched_at,
+    backlinksFetchedAt: backlinkAudit?.fetched_at ?? null,
   })
 
   const { data: upserted, error: upsertError } = await supabase

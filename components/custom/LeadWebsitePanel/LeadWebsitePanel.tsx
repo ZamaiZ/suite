@@ -16,6 +16,7 @@ import { LeadWebsiteReview } from "./LeadWebsiteReview"
 import { LeadWebsiteScreenshots } from "./LeadWebsiteScreenshots"
 import { LeadWebsiteStepHeader } from "./LeadWebsiteStepHeader"
 import { LeadWebsiteSummaryCards } from "./LeadWebsiteSummaryCards"
+import { LeadWebsiteBacklinksCard } from "./LeadWebsiteBacklinksCard"
 import type { LeadWebsitePanelProps } from "./LeadWebsitePanel.types"
 import {
   Select,
@@ -38,6 +39,7 @@ import {
   missingSecurityHeaderLabels,
   napMismatchLabels,
 } from "@/lib/leads/website-opportunities"
+import { backlinkOpportunitiesFromSnapshot } from "@/lib/leads/backlinks-opportunities"
 import {
   websiteMinPerformance,
   websitePsiJobsActive,
@@ -82,6 +84,7 @@ export function LeadWebsitePanel({
   detail,
   canEdit,
   onAuditChange,
+  onBacklinkAuditChange,
   onPendingChange,
 }: LeadWebsitePanelProps) {
   const reduced = !!useReducedMotion()
@@ -198,19 +201,29 @@ export function LeadWebsitePanel({
       )
     : []
   const review = liveReview ?? audit?.review ?? null
-  const opportunities = audit
-    ? mergeWebsiteOpportunities(
-        gaps,
-        {
-          minPerformance: websiteMinPerformance(audit.pagespeed),
-          missingSecurityHeaders: missingSecurityHeaderLabels(audit.crawl),
-          napMismatches: napMismatchLabels(
-            napCheckForCrawl(audit.crawl, nap),
-          ),
-        },
-        review ?? audit.review,
-      )
-    : []
+  // Backlinks entra na mesma lista: é o pilar de Website, e a contagem tem que
+  // bater com o badge da trilha, que soma os dois do mesmo jeito.
+  const opportunities = [
+    ...(audit
+      ? mergeWebsiteOpportunities(
+          gaps,
+          {
+            minPerformance: websiteMinPerformance(audit.pagespeed),
+            missingSecurityHeaders: missingSecurityHeaderLabels(audit.crawl),
+            napMismatches: napMismatchLabels(
+              napCheckForCrawl(audit.crawl, nap),
+            ),
+          },
+          review ?? audit.review,
+        )
+      : []),
+    ...backlinkOpportunitiesFromSnapshot(
+      detail.backlinkAudit?.snapshot ?? null,
+    ),
+  ].sort((left, right) => {
+    if (left.impact !== right.impact) return left.impact === "high" ? -1 : 1
+    return 0
+  })
   const sections = audit
     ? websiteCheckSections(
         audit.crawl,
@@ -383,6 +396,13 @@ export function LeadWebsitePanel({
         <>
           <LeadWebsiteSummaryCards crawl={audit.crawl} />
           <LeadWebsiteScreenshots pagespeed={audit.pagespeed} />
+          <LeadWebsiteBacklinksCard
+            leadId={detail.lead.id}
+            audit={detail.backlinkAudit}
+            canEdit={canEdit}
+            onAuditChange={onBacklinkAuditChange}
+            onPendingChange={onPendingChange}
+          />
           {reviewEvidence ? (
             <LeadWebsiteReview
               auditId={audit.id}

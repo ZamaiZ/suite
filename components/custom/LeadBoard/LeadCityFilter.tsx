@@ -1,10 +1,18 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Combobox } from "@base-ui/react/combobox"
 import { RiLoader4Line, RiMapPinLine } from "react-icons/ri"
 import { searchLeadCities } from "@/app/actions/leads"
-import { cn } from "@/lib/cn"
+import { Button } from "@/components/ui/button"
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "@/components/ui/combobox"
+import { InputGroupAddon } from "@/components/ui/input-group"
 import type { CitySearchItem } from "@/lib/br-locations"
 
 const DEBOUNCE_MS = 300
@@ -32,7 +40,6 @@ export function LeadCityFilter({
   onValueChange: (next: { city: string | null; state: string | null }) => void
   disabled?: boolean
 }) {
-  const fieldRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const requestIdRef = useRef(0)
   const [query, setQuery] = useState("")
@@ -96,7 +103,7 @@ export function LeadCityFilter({
   }
 
   return (
-    <Combobox.Root
+    <Combobox
       items={items}
       value={selectedItem}
       onValueChange={(next) => {
@@ -121,20 +128,7 @@ export function LeadCityFilter({
       inputValue={open ? query : (selectedItem?.label ?? query)}
       onInputValueChange={setQuery}
     >
-      <div
-        ref={fieldRef}
-        onClick={() => {
-          if (!disabled) inputRef.current?.focus()
-        }}
-        className={cn(
-          "flex h-[var(--control-height)] w-full items-center gap-1.5 rounded-md border border-input-border bg-input px-2.5",
-          "transition-[background-color,border-color,color,opacity] duration-150 ease-out",
-          "focus-within:border-accent",
-          disabled && "pointer-events-none opacity-50",
-        )}
-      >
-        <RiMapPinLine size={16} aria-hidden className="shrink-0 text-fg-muted" />
-        <Combobox.Input
+      <ComboboxInput
           ref={inputRef}
           id={id}
           disabled={disabled}
@@ -143,49 +137,44 @@ export function LeadCityFilter({
           onFocus={() => {
             if (!disabled) setOpen(true)
           }}
-          className="min-w-0 flex-1 bg-transparent py-2 font-sans text-body-sm text-fg outline-none placeholder:text-fg-muted"
-        />
-        {loading ? (
-          <RiLoader4Line size={16} aria-hidden className="animate-spin text-fg-muted" />
-        ) : null}
-      </div>
-
-      <Combobox.Portal>
-        <Combobox.Positioner
-          className="z-50 outline-none"
-          sideOffset={4}
-          align="start"
-          anchor={fieldRef}
+          showTrigger={false}
+          className="h-[var(--control-height)]"
         >
-          <Combobox.Popup className="pointer-events-auto w-[var(--anchor-width)] rounded-md border border-popover-border bg-popover shadow-raised">
+        <InputGroupAddon align="inline-start"><RiMapPinLine size={16} aria-hidden /></InputGroupAddon>
+        {loading ? (
+          <InputGroupAddon align="inline-end"><RiLoader4Line size={16} aria-hidden className="animate-spin" /></InputGroupAddon>
+        ) : null}
+      </ComboboxInput>
+
+      <ComboboxContent>
             <div className="max-h-[min(16rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-              <Combobox.Empty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
+              <ComboboxEmpty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
                 Nenhuma cidade
-              </Combobox.Empty>
-              <Combobox.List>
+              </ComboboxEmpty>
+              <ComboboxList>
                 {(item: CityOption) => (
-                  <Combobox.Item
+                  <ComboboxItem
                     key={item.value}
                     value={item}
                     className="flex min-h-9 cursor-pointer items-center rounded-md px-2 py-1.5 font-sans text-body-sm text-fg outline-none select-none data-highlighted:bg-hover"
                   >
                     {item.label}
-                  </Combobox.Item>
+                  </ComboboxItem>
                 )}
-              </Combobox.List>
+              </ComboboxList>
               {hasMore ? (
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => void loadMore()}
-                  className="mt-1 w-full rounded-md px-2 py-2 font-sans text-body-sm text-accent hover:bg-hover"
+                  className="mt-1 h-9 w-full px-2 font-sans text-body-sm text-primary hover:bg-accent"
                 >
                   Carregar mais
-                </button>
+                </Button>
               ) : null}
             </div>
-          </Combobox.Popup>
-        </Combobox.Positioner>
-      </Combobox.Portal>
-    </Combobox.Root>
+      </ComboboxContent>
+    </Combobox>
   )
 }

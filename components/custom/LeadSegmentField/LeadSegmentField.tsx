@@ -1,10 +1,10 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Combobox } from "@base-ui/react/combobox"
 import { RiAddLine } from "react-icons/ri"
 import { listLeadSegments } from "@/app/actions/leads"
 import { cn } from "@/lib/cn"
+import { Combobox, ComboboxContent, ComboboxEmpty, ComboboxInput, ComboboxItem, ComboboxList, ComboboxRootLabel } from "@/components/ui/combobox"
 import {
   normalizeSegmentName,
   segmentSlug,
@@ -110,7 +110,7 @@ export function LeadSegmentField({
 
   return (
     <div className="flex w-full flex-col gap-1.5">
-      <Combobox.Root
+      <Combobox
         items={suggestionItems}
         value={selectedItem}
         onValueChange={(next) => {
@@ -130,7 +130,7 @@ export function LeadSegmentField({
         onInputValueChange={setQuery}
       >
         {label ? (
-          <Combobox.Label
+          <ComboboxRootLabel
             className={cn(
               "font-sans text-body-sm font-medium text-fg-secondary",
               disabled ? "opacity-50" : "cursor-text",
@@ -141,7 +141,7 @@ export function LeadSegmentField({
             }}
           >
             {label}
-          </Combobox.Label>
+          </ComboboxRootLabel>
         ) : null}
 
         <div
@@ -158,7 +158,7 @@ export function LeadSegmentField({
             error && "border-danger focus-within:border-danger",
           )}
         >
-          <Combobox.Input
+          <ComboboxInput
             ref={inputRef}
             id={id}
             disabled={disabled}
@@ -173,29 +173,18 @@ export function LeadSegmentField({
               "w-full bg-transparent py-2 font-sans text-body-sm text-fg outline-none",
               "placeholder:text-fg-muted",
             )}
+            showTrigger={false}
           />
         </div>
 
-        <Combobox.Portal>
-          <Combobox.Positioner
-            className="z-50 outline-none"
-            sideOffset={4}
-            align="start"
-            anchor={fieldRef}
-          >
-            <Combobox.Popup
-              className={cn(
-                "pointer-events-auto w-[var(--anchor-width)] max-w-[var(--available-width)]",
-                "origin-[var(--transform-origin)] rounded-md border border-popover-border bg-popover shadow-raised",
-              )}
-            >
+        <ComboboxContent anchor={fieldRef}>
               <div className="max-h-[min(16rem,var(--available-height))] overflow-y-auto overscroll-contain p-1">
-                <Combobox.Empty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
+                <ComboboxEmpty className="px-2 py-2.5 font-sans text-body-sm text-fg-muted">
                   Nenhum segmento
-                </Combobox.Empty>
-                <Combobox.List>
+                </ComboboxEmpty>
+                <ComboboxList>
                   {(item: SegmentOption) => (
-                    <Combobox.Item
+                    <ComboboxItem
                       key={item.value}
                       value={item}
                       className={cn(
@@ -216,14 +205,12 @@ export function LeadSegmentField({
                       ) : (
                         <span className="truncate">{item.label}</span>
                       )}
-                    </Combobox.Item>
+                    </ComboboxItem>
                   )}
-                </Combobox.List>
+                </ComboboxList>
               </div>
-            </Combobox.Popup>
-          </Combobox.Positioner>
-        </Combobox.Portal>
-      </Combobox.Root>
+        </ComboboxContent>
+      </Combobox>
 
       {error ? (
         <p id={errorId} role="alert" className="font-sans text-body-sm text-danger">

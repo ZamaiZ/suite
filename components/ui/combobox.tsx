@@ -19,6 +19,19 @@ function ComboboxValue({ ...props }: ComboboxPrimitive.Value.Props) {
   return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />
 }
 
+function ComboboxRootLabel({
+  className,
+  ...props
+}: ComboboxPrimitive.Label.Props) {
+  return (
+    <ComboboxPrimitive.Label
+      data-slot="combobox-root-label"
+      className={cn("text-sm font-medium text-foreground", className)}
+      {...props}
+    />
+  )
+}
+
 function ComboboxTrigger({
   className,
   children,
@@ -49,20 +62,27 @@ function ComboboxClear({ className, ...props }: ComboboxPrimitive.Clear.Props) {
   )
 }
 
-function ComboboxInput({
-  className,
-  children,
-  disabled = false,
-  showTrigger = true,
-  showClear = false,
-  ...props
-}: ComboboxPrimitive.Input.Props & {
-  showTrigger?: boolean
-  showClear?: boolean
-}) {
+const ComboboxInput = React.forwardRef<
+  HTMLInputElement,
+  ComboboxPrimitive.Input.Props & {
+    showTrigger?: boolean
+    showClear?: boolean
+  }
+>(function ComboboxInput(
+  {
+    className,
+    children,
+    disabled = false,
+    showTrigger = true,
+    showClear = false,
+    ...props
+  },
+  ref,
+) {
   return (
     <InputGroup className={cn("w-auto", className)}>
       <ComboboxPrimitive.Input
+        ref={ref}
         render={<InputGroupInput disabled={disabled} />}
         {...props}
       />
@@ -82,7 +102,7 @@ function ComboboxInput({
       {children}
     </InputGroup>
   )
-}
+})
 
 function ComboboxContent({
   className,
@@ -293,5 +313,6 @@ export {
   ComboboxChipsInput,
   ComboboxTrigger,
   ComboboxValue,
+  ComboboxRootLabel,
   useComboboxAnchor,
 }

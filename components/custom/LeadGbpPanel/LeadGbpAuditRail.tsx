@@ -218,7 +218,7 @@ export function LeadGbpAuditRail({
                       step.selected
                         ? model.status === "error"
                           ? "border-danger bg-danger text-danger-fg"
-                          : "border-accent bg-accent text-accent-fg"
+                          : "border-primary bg-primary text-primary-foreground"
                         : "border-border text-fg-secondary",
                     )}
                     aria-label={step.label}

@@ -224,6 +224,7 @@ export type DataForSeoOperationId =
   | "gbp_updates"
   | "maps_rank"
   | "organic_visibility"
+  | "backlink_summary"
 
 export type DataForSeoOperation = {
   id: DataForSeoOperationId
@@ -311,6 +312,14 @@ export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
     fnSuffix: "ranked_keywords/live",
     requests: 1,
     detail: "Até 100 keywords do domínio",
+  },
+  {
+    id: "backlink_summary",
+    label: "Autoridade externa",
+    api: "backlinks",
+    fnSuffix: "summary/live",
+    requests: 1,
+    detail: "Resumo de backlinks do domínio",
   },
 ]
 

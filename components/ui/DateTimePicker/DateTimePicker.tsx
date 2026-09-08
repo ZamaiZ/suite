@@ -32,7 +32,7 @@ import type { DateTimePickerProps } from "./DateTimePicker.types"
 type Step = "date" | "time"
 
 const FOOTER_BUTTON = cn(
-  "h-8 rounded-md font-sans text-body-sm font-medium text-accent",
+  "h-8 rounded-md font-sans text-body-sm font-medium text-primary",
   "scale-100 transition-[background-color,transform,opacity,scale] duration-150 ease-out",
   "active:scale-[0.97]",
   "focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-accent",
@@ -202,11 +202,11 @@ export function DateTimePicker({
           aria-label={displayValue || placeholder || "Selecionar data e horário"}
           onBlur={onBlur}
           className={cn(
-            "group flex h-[var(--control-height)] w-full items-center gap-2 rounded-md border border-input-border bg-input px-3 py-0",
+            "group flex h-[var(--control-height)] w-full items-center gap-2 rounded-md border border-input bg-background px-3 py-0 shadow-xs",
             "font-sans text-body-sm text-fg outline-none",
             "transition-[background-color,border-color,color,opacity,transform,scale] duration-150 ease-out",
-            "focus-visible:border-accent",
-            "data-popup-open:border-accent",
+            "focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30",
+            "data-popup-open:border-ring data-popup-open:ring-2 data-popup-open:ring-ring/30",
             "scale-100 active:scale-[0.97] data-pressed:scale-[0.97]",
             "disabled:pointer-events-none disabled:opacity-50",
             "cursor-pointer",
@@ -255,7 +255,7 @@ export function DateTimePicker({
                   onClick={() => setStep("date")}
                   className={cn(
                     CHIP,
-                    step === "date" ? "bg-accent-muted text-fg" : "bg-hover text-fg-muted",
+                    step === "date" ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
                   )}
                 >
                   {dateLabel}
@@ -266,7 +266,7 @@ export function DateTimePicker({
                   onClick={() => setStep("time")}
                   className={cn(
                     CHIP,
-                    step === "time" ? "bg-accent-muted text-fg" : "bg-hover text-fg-muted",
+                    step === "time" ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
                   )}
                 >
                   {timeLabel}

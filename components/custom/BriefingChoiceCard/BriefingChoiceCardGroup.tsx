@@ -1,7 +1,7 @@
 "use client"
 
 import { useId } from "react"
-import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group"
+import { RadioGroup } from "@/components/ui/radio-group"
 import { cn } from "@/lib/cn"
 import type { BriefingChoiceCardGroupProps } from "./BriefingChoiceCard.types"
 
@@ -34,7 +34,7 @@ export function BriefingChoiceCardGroup({
         </span>
       ) : null}
 
-      <RadioGroupPrimitive
+      <RadioGroup
         value={value}
         onValueChange={(next) => onValueChange?.(String(next))}
         name={name}
@@ -43,7 +43,7 @@ export function BriefingChoiceCardGroup({
         className={cn("grid gap-2", contentClassName)}
       >
         {children}
-      </RadioGroupPrimitive>
+      </RadioGroup>
     </div>
   )
 }

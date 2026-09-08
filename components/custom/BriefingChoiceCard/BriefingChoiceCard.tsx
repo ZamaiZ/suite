@@ -1,7 +1,7 @@
 "use client"
 
 import { useId } from "react"
-import { Radio as RadioPrimitive } from "@base-ui/react/radio"
+import { RadioGroupItem } from "@/components/ui/radio-group"
 import { cn } from "@/lib/cn"
 import type { BriefingChoiceCardProps } from "./BriefingChoiceCard.types"
 
@@ -17,16 +17,16 @@ export function BriefingChoiceCard({
   const inputId = id ?? generatedId
 
   return (
-    <RadioPrimitive.Root
+    <RadioGroupItem
       id={inputId}
       value={value}
       disabled={disabled}
       className={cn(
-        "group relative flex w-full items-start gap-3 rounded-xl border border-border bg-elevated p-3.5 text-left shadow-card",
+        "group relative flex h-auto w-full aspect-auto items-start gap-3 rounded-xl border border-border bg-elevated p-3.5 text-left shadow-card [&>[data-slot=radio-group-indicator]]:hidden",
         "transition-[background-color,border-color,box-shadow] duration-150 ease-out motion-reduce:transition-none",
         "hover:border-accent/40",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-        "data-checked:border-accent data-checked:bg-accent/10 data-checked:shadow-none",
+        "data-checked:border-primary data-checked:bg-primary/10 data-checked:shadow-none",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         "cursor-pointer",
         className,
@@ -37,15 +37,10 @@ export function BriefingChoiceCard({
         className={cn(
           "relative mt-0.5 inline-flex size-4 shrink-0 items-center justify-center rounded-full border border-input-border bg-input",
           "transition-[background-color,border-color] duration-150 ease-out motion-reduce:transition-none",
-          "group-data-[checked]:border-accent",
+          "group-data-[checked]:border-primary group-data-[checked]:bg-primary",
         )}
       >
-        <RadioPrimitive.Indicator
-          className={cn(
-            "size-2 rounded-full bg-accent",
-            "transition-opacity duration-150 ease-out motion-reduce:transition-none",
-          )}
-        />
+        <span className="size-2 rounded-full bg-primary-foreground opacity-0 transition-opacity group-data-[checked]:opacity-100" />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block font-sans text-body-sm font-medium text-fg">
@@ -57,6 +52,6 @@ export function BriefingChoiceCard({
           </span>
         ) : null}
       </span>
-    </RadioPrimitive.Root>
+    </RadioGroupItem>
   )
 }

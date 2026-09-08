@@ -86,9 +86,16 @@ Vale separar as duas metades na entrega, com estado vazio explicando a espera. S
 
 ## Etapa 3 — Autoridade e concorrência
 
-**Backlinks.** `/backlinks/summary/live` numa tabela `lead_backlink_audits` append-only, no padrão que a onda 1 estabeleceu: total de backlinks, domínios de referência, domínios principais, rank de autoridade, nofollow e quebrados. Uma chamada.
+**Backlinks — feito na onda 4.** `/backlinks/summary/live` em
+`lead_backlink_audits` append-only, com seis gaps contando para o pilar de
+**Website** (não um quinto pilar) e o card no passo de Website. A cobertura do
+plano se confere na tela de Ferramentas, que já lê
+`backlinks_subscription_expiry_date` de `/appendix/user_data`.
 
-Duas observações: a seção de backlinks é precificada separado de Labs e SERP no DataForSEO, então vale confirmar cobertura do plano; e backlinks enxerga apenas citação **com link** — a citação local clássica, NAP num diretório sem link, não aparece. O item "Diretórios / citações locais" fica meio atendido.
+Duas observações que continuam valendo: backlinks enxerga apenas citação **com
+link** — a citação local clássica, NAP num diretório sem link, não aparece, então
+"Diretórios / citações locais" fica meio atendido; e `summary` devolve contagens,
+não a lista de domínios, que exige outro endpoint.
 
 **Concorrentes.** As duas primeiras mudanças já saíram na onda 3: o teto subiu para 5 na checagem avulsa e o filtro que exigia o cliente no Top 20 caiu, com a seleção unificada num construtor só ao lado da malha. O que sobrou é orgânico.
 

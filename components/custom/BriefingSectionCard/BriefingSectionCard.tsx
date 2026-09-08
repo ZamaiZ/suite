@@ -28,7 +28,7 @@ export function BriefingSectionCard({
         <span className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
           {icon}
           {typeof index === "number" ? (
-            <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-accent font-sans text-[10px] font-semibold text-accent-fg">
+            <span className="absolute -top-1.5 -right-1.5 inline-flex size-4 items-center justify-center rounded-full bg-primary font-sans text-[10px] font-semibold text-primary-foreground">
               {index}
             </span>
           ) : null}

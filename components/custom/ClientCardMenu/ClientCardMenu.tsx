@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { Menu } from "@base-ui/react/menu"
 import {
   RiCheckLine,
   RiFileCopyLine,
@@ -16,14 +15,14 @@ import {
   rotatePortalAccess,
 } from "@/app/actions/clients"
 import { ClientPortalCodeReveal } from "@/components/custom/ClientPortalCodeReveal"
-import { cn } from "@/lib/cn"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import type { ClientCardMenuProps } from "./ClientCardMenu.types"
-
-const MENU_ITEM = cn(
-  "flex cursor-pointer items-center gap-2 rounded-sm px-2 py-1.5 font-sans text-body-sm text-fg outline-none select-none",
-  "data-highlighted:bg-hover",
-  "data-disabled:pointer-events-none data-disabled:opacity-50",
-)
 
 type PortalState = {
   hasPortalAccess: boolean
@@ -121,36 +120,16 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
 
   return (
     <>
-      <Menu.Root onOpenChange={onOpenChange}>
-        <Menu.Trigger
+      <DropdownMenu onOpenChange={onOpenChange}>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="icon" />}
           aria-label="Ações do portal"
           onClick={(event) => event.stopPropagation()}
           onPointerDown={(event) => event.stopPropagation()}
-          className={cn(
-            "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md",
-            "text-fg-muted transition-[background-color,color,transform] duration-150 ease-out",
-            "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-active-bg",
-            "[@media(hover:hover)_and_(pointer:fine)]:hover:text-fg",
-            "data-popup-open:bg-active-bg data-popup-open:text-fg",
-            "active:scale-[0.97]",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-          )}
         >
           <RiMore2Line size={16} aria-hidden />
-        </Menu.Trigger>
-        <Menu.Portal>
-          <Menu.Positioner className="z-50 outline-none" sideOffset={4} align="end">
-            <Menu.Popup
-              className={cn(
-                "pointer-events-auto min-w-44 rounded-md border border-popover-border bg-popover p-1 shadow-raised",
-                "origin-[var(--transform-origin)]",
-                "transition-[transform,opacity] duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-                "data-starting-style:opacity-0 data-starting-style:scale-[0.96]",
-                "data-ending-style:opacity-0 data-ending-style:scale-[0.96] data-ending-style:duration-[140ms]",
-                "motion-reduce:transition-opacity motion-reduce:duration-150",
-                "motion-reduce:data-starting-style:scale-100 motion-reduce:data-ending-style:scale-100",
-              )}
-            >
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="min-w-44">
               {loadingDetail && !portal ? (
                 <div className="flex items-center gap-2 px-2 py-1.5 font-sans text-body-sm text-fg-muted">
                   <RiLoader4Line size={16} aria-hidden className="animate-spin" />
@@ -166,21 +145,19 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
                 </p>
               ) : null}
               {portal && !portal.hasPortalAccess ? (
-                <Menu.Item
+                <DropdownMenuItem
                   disabled={isPending}
                   onClick={runIssue}
-                  className={MENU_ITEM}
                 >
                   <RiKey2Line size={16} aria-hidden />
                   {isPending ? "Gerando…" : "Gerar acesso"}
-                </Menu.Item>
+                </DropdownMenuItem>
               ) : null}
               {portal?.hasPortalAccess ? (
                 <>
-                  <Menu.Item
+                  <DropdownMenuItem
                     disabled={isPending || !portal.portalUrl}
                     onClick={() => void copyLink()}
-                    className={MENU_ITEM}
                   >
                     {copied ? (
                       <RiCheckLine size={16} aria-hidden />
@@ -188,26 +165,25 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
                       <RiFileCopyLine size={16} aria-hidden />
                     )}
                     {copied ? "Link copiado" : "Copiar link"}
-                  </Menu.Item>
+                  </DropdownMenuItem>
                   {confirmRotate ? (
-                    <Menu.Item
+                    <DropdownMenuItem
                       disabled={isPending}
                       onClick={runRotate}
-                      className={cn(MENU_ITEM, "text-danger data-highlighted:bg-danger/10")}
+                      variant="destructive"
                     >
                       <RiRefreshLine size={16} aria-hidden />
                       {isPending ? "Rotacionando…" : "Confirmar rotação"}
-                    </Menu.Item>
+                    </DropdownMenuItem>
                   ) : (
-                    <Menu.Item
+                    <DropdownMenuItem
                       closeOnClick={false}
                       disabled={isPending}
                       onClick={() => setConfirmRotate(true)}
-                      className={MENU_ITEM}
                     >
                       <RiRefreshLine size={16} aria-hidden />
                       Rotacionar código
-                    </Menu.Item>
+                    </DropdownMenuItem>
                   )}
                 </>
               ) : null}
@@ -224,10 +200,8 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
                   {actionError}
                 </p>
               ) : null}
-            </Menu.Popup>
-          </Menu.Positioner>
-        </Menu.Portal>
-      </Menu.Root>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <ClientPortalCodeReveal
         open={reveal !== null}

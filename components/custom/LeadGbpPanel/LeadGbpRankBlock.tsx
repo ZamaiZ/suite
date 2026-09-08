@@ -9,6 +9,7 @@ import {
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridSection } from "./LeadGbpGridSection"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import type { LeadGbpGridScan } from "@/lib/leads/gbp-grid"
 import { cn } from "@/lib/cn"
 import { formatDate } from "@/lib/date-time"
@@ -213,7 +214,7 @@ export function LeadGbpRankBlock({
 
       {canEdit ? (
         <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-          <input
+          <Input
             value={input}
             maxLength={GBP_RANK_KEYWORD_MAX_LEN}
             disabled={!canAdd || pending}
@@ -228,13 +229,7 @@ export function LeadGbpRankBlock({
                 ? "Adicionar termo para checar ranking"
                 : "Máximo de 3 termos"
             }
-            className={cn(
-              "h-[var(--control-height)] min-w-0 flex-1 rounded-md border border-input-border bg-input px-3",
-              "font-sans text-body-sm text-fg outline-none",
-              "placeholder:text-fg-muted",
-              "focus-visible:border-accent",
-              "disabled:opacity-50",
-            )}
+            className="h-[var(--control-height)] min-w-0 flex-1"
           />
           <Button
             type="button"

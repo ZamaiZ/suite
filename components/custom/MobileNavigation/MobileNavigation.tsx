@@ -15,6 +15,7 @@ import {
 } from "react-icons/ri"
 import { cn } from "@/lib/cn"
 import { logout } from "@/app/actions/logout"
+import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { NAV_ITEMS } from "@/components/custom/navigation"
 import { NavTree } from "@/components/custom/NavTree"
@@ -69,7 +70,7 @@ function HomePendingSurface({ children }: { children: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-canvas/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line size={20} aria-hidden className="relative animate-spin text-fg" />
+          <RiLoader4Line size={20} aria-hidden className="relative animate-spin text-foreground" />
         </span>
       ) : null}
     </>
@@ -87,7 +88,7 @@ function FormPendingSurface({ children }: { children?: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-canvas/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line size={16} aria-hidden className="relative animate-spin text-fg" />
+          <RiLoader4Line size={16} aria-hidden className="relative animate-spin text-foreground" />
         </span>
       ) : null}
     </>
@@ -248,12 +249,14 @@ export function MobileNavigation() {
             <ThemeToggle label="Alternar tema" className="rounded-xl" />
 
             <form action={logout}>
-              <button
+              <Button
                 type="submit"
+                variant="ghost"
+                size="lg"
                 className={cn(
                   "relative w-full flex items-center gap-3 h-11 px-3 rounded-xl",
-                  "font-sans text-body-sm font-medium text-danger",
-                  "hover:bg-danger/10",
+                  "font-sans text-body-sm font-medium text-destructive",
+                  "hover:bg-destructive/10",
                   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                   "[transition:background-color_150ms_ease-out,transform_100ms_ease-out]",
                   "active:scale-[0.97]",
@@ -263,7 +266,7 @@ export function MobileNavigation() {
                   <RiLogoutBoxLine size={17} aria-hidden className="shrink-0" />
                   Sair
                 </FormPendingSurface>
-              </button>
+              </Button>
             </form>
           </m.div>
         )}
@@ -324,9 +327,11 @@ export function MobileNavigation() {
           )}
         >
           <div className="flex justify-start">
-            <button
+            <Button
               ref={profileBtnRef}
               type="button"
+              variant="ghost"
+              size="icon-lg"
               onClick={() => togglePanel("profile")}
               aria-label={panel === "profile" ? "Fechar perfil" : "Abrir perfil"}
               aria-expanded={panel === "profile"}
@@ -336,11 +341,11 @@ export function MobileNavigation() {
                 "[transition:background-color_150ms_cubic-bezier(0.23,1,0.32,1),color_150ms_cubic-bezier(0.23,1,0.32,1),transform_100ms_ease-out]",
                 "hover:bg-hover hover:text-fg active:scale-[0.93]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                panel === "profile" ? "bg-active-bg text-fg" : "text-fg-muted",
+                panel === "profile" ? "bg-sidebar-accent text-foreground" : "text-muted-foreground",
               )}
             >
               <RiUser3Line size={21} aria-hidden />
-            </button>
+            </Button>
           </div>
 
           <div className="flex justify-center">
@@ -357,8 +362,8 @@ export function MobileNavigation() {
                 "active:scale-[0.92]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
                 isHome
-                  ? "bg-accent text-accent-fg"
-                  : "bg-elevated border border-border text-fg-muted hover:bg-hover hover:text-fg",
+                  ? "bg-primary text-primary-foreground"
+                  : "bg-elevated border border-border text-muted-foreground hover:bg-hover hover:text-foreground",
               )}
             >
               <HomePendingSurface>
@@ -368,9 +373,11 @@ export function MobileNavigation() {
           </div>
 
           <div className="flex justify-end">
-            <button
+            <Button
               ref={menuBtnRef}
               type="button"
+              variant="ghost"
+              size="icon-lg"
               onClick={() => togglePanel("pages")}
               aria-label={panel === "pages" ? "Fechar navegação" : "Abrir navegação"}
               aria-expanded={panel === "pages"}
@@ -380,11 +387,11 @@ export function MobileNavigation() {
                 "[transition:background-color_150ms_cubic-bezier(0.23,1,0.32,1),color_150ms_cubic-bezier(0.23,1,0.32,1),transform_100ms_ease-out]",
                 "hover:bg-hover hover:text-fg active:scale-[0.93]",
                 "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                panel === "pages" ? "bg-active-bg text-fg" : "text-fg-muted",
+                panel === "pages" ? "bg-sidebar-accent text-foreground" : "text-muted-foreground",
               )}
             >
               <RiMenuLine size={21} aria-hidden />
-            </button>
+            </Button>
           </div>
         </div>
       </nav>

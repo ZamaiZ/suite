@@ -10,6 +10,7 @@ import {
   type LeadDetail,
   type LeadDigitalPresenceAudit,
   type LeadVisibilityAudit,
+  type LeadBacklinkAudit,
   type LeadDiagnosisDraft,
   type LeadDiagnosisExport,
   type LeadGbpProfile,
@@ -238,6 +239,14 @@ export function LeadDetailDialog({
     setDetail((current) =>
       current && current.lead.id === leadId
         ? { ...current, visibilityAudit: audit }
+        : current,
+    )
+  }
+
+  function applyBacklinks(leadId: string, audit: LeadBacklinkAudit | null) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, backlinkAudit: audit }
         : current,
     )
   }
@@ -508,6 +517,7 @@ export function LeadDetailDialog({
                     onWebsiteAuditsChange={applyWebsiteAudits}
                     onDigitalPresenceChange={applyDigitalPresence}
                     onVisibilityChange={applyVisibility}
+                    onBacklinksChange={applyBacklinks}
                     onDiagnosisDraftChange={applyDiagnosisDraft}
                     onDiagnosisExportsChange={applyDiagnosisExports}
                     onPendingChange={setGbpPending}

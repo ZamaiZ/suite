@@ -16,6 +16,7 @@ import { DateTimePicker } from "@/components/ui/DateTimePicker"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogTitle } from "@/components/ui/dialog"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/cn"
 import {
   datetimeLocalToCivilDate,
@@ -347,7 +348,7 @@ export function LeadDropDialogs({
             >
               O que aconteceu?
             </label>
-            <textarea
+            <Textarea
               id="lead-drop-note"
               rows={3}
               value={note}
@@ -358,14 +359,7 @@ export function LeadDropDialogs({
               maxLength={2000}
               placeholder="Descreva o que aconteceu neste contato..."
               aria-invalid={noteError ? true : undefined}
-              className={cn(
-                "w-full resize-none rounded-md border border-input-border bg-input px-3 py-2",
-                "font-sans text-body-sm text-fg outline-none",
-                "placeholder:text-fg-muted",
-                "transition-[border-color,opacity] duration-150 ease-out",
-                "focus-visible:border-accent",
-                noteError && "border-danger focus-visible:border-danger",
-              )}
+              className="min-h-0 resize-none"
             />
             <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
               {note.length}/2000

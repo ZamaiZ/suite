@@ -30,6 +30,7 @@ import {
   missingSecurityHeaderLabels,
   napMismatchLabels,
 } from "@/lib/leads/website-opportunities"
+import { backlinkOpportunitiesFromSnapshot } from "@/lib/leads/backlinks-opportunities"
 import { websiteMinPerformance } from "@/lib/leads/website-pagespeed"
 import {
   digitalPresenceReviewForChannels,
@@ -60,6 +61,7 @@ export function LeadGbpPanel({
   onWebsiteAuditsChange,
   onDigitalPresenceChange,
   onVisibilityChange,
+  onBacklinksChange,
   onDiagnosisDraftChange,
   onDiagnosisExportsChange,
   onPendingChange,
@@ -205,19 +207,26 @@ export function LeadGbpPanel({
         primaryGbp?.enrichment?.services?.map((item) => item.title) ?? [],
       )
     : []
-  const websiteAlertCount = websiteAudit
-    ? mergeWebsiteOpportunities(
-        websiteGaps,
-        {
-          minPerformance: websiteMinPerformance(websiteAudit.pagespeed),
-          missingSecurityHeaders: missingSecurityHeaderLabels(websiteAudit.crawl),
-          napMismatches: napMismatchLabels(
-            napCheckForCrawl(websiteAudit.crawl, nap),
-          ),
-        },
-        websiteAudit.review,
-      ).length
-    : 0
+  // Backlinks conta junto: o badge da trilha tem que bater com a lista da tela,
+  // e as duas contas moram em arquivos diferentes.
+  const websiteAlertCount =
+    (websiteAudit
+      ? mergeWebsiteOpportunities(
+          websiteGaps,
+          {
+            minPerformance: websiteMinPerformance(websiteAudit.pagespeed),
+            missingSecurityHeaders: missingSecurityHeaderLabels(
+              websiteAudit.crawl,
+            ),
+            napMismatches: napMismatchLabels(
+              napCheckForCrawl(websiteAudit.crawl, nap),
+            ),
+          },
+          websiteAudit.review,
+        ).length
+      : 0) +
+    backlinkOpportunitiesFromSnapshot(detail.backlinkAudit?.snapshot ?? null)
+      .length
   const presenceReview = digitalPresenceReviewForChannels(
     detail.digitalPresenceAudit?.review ?? emptyDigitalPresenceReview(),
     detail.lead.channels,
@@ -275,6 +284,7 @@ export function LeadGbpPanel({
     websitePagespeedAt: websiteAudit?.pagespeed_at ?? null,
     presenceUpdatedAt: detail.digitalPresenceAudit?.updated_at ?? null,
     visibilityFetchedAt: detail.visibilityAudit?.fetched_at ?? null,
+    backlinksFetchedAt: detail.backlinkAudit?.fetched_at ?? null,
   })
   const diagnosisStale = Boolean(
     detail.diagnosisDraft &&
@@ -415,6 +425,9 @@ export function LeadGbpPanel({
                 ),
                 audit,
               ])
+            }}
+            onBacklinkAuditChange={(audit) => {
+              onBacklinksChange(detail.lead.id, audit)
             }}
             onPendingChange={onPendingChange}
           />

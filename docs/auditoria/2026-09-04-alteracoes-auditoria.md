@@ -99,7 +99,22 @@ Os concorrentes do top 3 são guardados **por ponto**, mesmo sem tela que os exi
 
 ### F. Autoridade & Externa
 
-Backlinks continua com zero ocorrências no código.
+**Backlinks saiu na onda 4** e o pilar deixou de ser zero. Uma chamada a
+`/backlinks/summary/live` por domínio, gravada em `lead_backlink_audits`
+append-only, com seis gaps: sem backlinks, poucos domínios de referência,
+autoridade baixa, backlinks quebrados, quase tudo nofollow e perfil com sinal de
+spam.
+
+Duas decisões de projeto valem registro. **Os gaps contam para o pilar de
+Website**, não para um quinto pilar — autoridade externa é sobre o mesmo domínio,
+e criar pilar novo obrigaria a inventar um estado de "não medido" no scorecard,
+já que `emptyPillarScore()` vale 100 e um pilar vazio afirmaria perfeição. E a
+**tabela é própria, não colunas em `lead_website_audits`**: backlinks tem cadência
+e custo próprios, e recrawlear o site não pode zerar o que foi pago.
+
+Uma limitação registrada em vez de escondida: `/backlinks/summary` devolve
+contagens e distribuições, **não a lista de domínios** que apontam para o site.
+Ver quem são exige outro endpoint e outra chamada.
 
 Concorrentes mudou na onda 3. A checagem avulsa filtrava `item.position < maps_position` exigindo `maps_position !== null`: quando o cliente não aparecia no Top 20, gravava **zero** concorrente — justamente o caso em que saber quem está lá é o que mais interessa. A malha já fazia certo, e as duas divergiram por montarem a mesma lista em dois lugares. Agora é uma função só, o cliente sai da própria lista, e a checagem avulsa guarda cinco em vez de três. A malha continua em três de propósito, porque ali multiplica por até 121 pontos de jsonb.
 
@@ -185,9 +200,19 @@ diferentes.
 
 **Gaps de GBP:** 18 → **20**. Perguntas sem resposta e avaliação negativa sem resposta.
 
-**Migrations:** 6. Três na onda 1 (versionamento, snapshots de GBP, revisão por canal), uma na onda 2 (nota de reputação), uma da malha geográfica e uma da migração (modo, custo e tarefas da malha).
+**Migrations:** 7. Três na onda 1 (versionamento, snapshots de GBP, revisão por canal), uma na onda 2 (nota de reputação), uma da malha geográfica, uma da migração (modo, custo e tarefas da malha) e uma na onda 4 (`lead_backlink_audits`, que nasce append-only em vez de precisar ser convertida depois).
 
-**Módulos novos:** 11 nas ondas 1 e 2 — `website-canonical`, `website-headers`, `website-headings`, `website-audit/robots`, `gbp-snapshot`, `audit-baseline`, `gbp-grid`, `dataforseo/configured`, `dataforseo/user-data`, `dataforseo/operations`, `dataforseo/google-maps-grid` — mais três na onda 3: `website-compliance`, `website-redirects` e `gbp-reputation`, os três puros.
+**Regressão corrigida na onda 4.** `compile-lead-diagnosis.ts` lia
+`lead_visibility_audits` com `.maybeSingle()` sem `order` nem `limit`, depois de
+a migration `20260917` ter derrubado o índice único da tabela. Na **segunda**
+análise de visibilidade de qualquer lead, compilar o diagnóstico falhava. Os
+outros dois pontos de leitura já tinham recebido o `.order().limit(1)`; este
+ficou para trás e ninguém percebeu porque só aparece na recoleta.
+
+**Módulos novos:** 11 nas ondas 1 e 2 — `website-canonical`, `website-headers`, `website-headings`, `website-audit/robots`, `gbp-snapshot`, `audit-baseline`, `gbp-grid`, `dataforseo/configured`, `dataforseo/user-data`, `dataforseo/operations`, `dataforseo/google-maps-grid` — mais três na onda 3 — `website-compliance`, `website-redirects` e
+`gbp-reputation` — e quatro na onda 4: `backlinks-audit`, `backlinks-map`,
+`backlinks-opportunities` e `dataforseo/backlinks`. Todos puros menos o último,
+que é o cliente.
 
 **Módulos removidos:** `lib/serpapi/` (4 arquivos), `lib/gbp-vendor/` (3), `visibility-seeds.ts`, `visibility-organic-parse.ts`, `validations/gbp-vendor.ts` e a action de troca de provider.
 

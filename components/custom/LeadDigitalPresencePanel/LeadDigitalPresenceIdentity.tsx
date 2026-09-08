@@ -4,6 +4,7 @@ import type { ReactNode } from "react"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/cn"
 import {
   DIGITAL_PRESENCE_IDENTITY,
@@ -162,7 +163,7 @@ export function LeadDigitalPresenceIdentity({
           <label htmlFor={`${reviewKey}-identity-note`} className="sr-only">
             {DIGITAL_PRESENCE_IDENTITY.placeholder}
           </label>
-          <textarea
+          <Textarea
             id={`${reviewKey}-identity-note`}
             value={answer.note}
             maxLength={DIGITAL_PRESENCE_REVIEW_NOTE_MAX}
@@ -170,13 +171,7 @@ export function LeadDigitalPresenceIdentity({
             disabled={!canEdit}
             placeholder={DIGITAL_PRESENCE_IDENTITY.placeholder}
             onChange={(event) => patch({ note: event.target.value })}
-            className={cn(
-              "w-full resize-y rounded-md border border-input-border bg-input px-3 py-2",
-              "font-sans text-body-sm text-fg outline-none",
-              "placeholder:text-fg-muted",
-              "focus-visible:border-accent",
-              "disabled:pointer-events-none disabled:opacity-50",
-            )}
+            className="min-h-0 resize-y"
           />
           <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
             {answer.note.length}/{DIGITAL_PRESENCE_REVIEW_NOTE_MAX}

@@ -7,6 +7,7 @@ import * as m from "motion/react-m"
 import { RiCheckLine, RiLoader4Line } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/cn"
 import {
   WEBSITE_REVIEW_CATALOG,
@@ -78,7 +79,7 @@ function NoteField({
       <label htmlFor={id} className="sr-only">
         {placeholder}
       </label>
-      <textarea
+      <Textarea
         id={id}
         value={value}
         maxLength={WEBSITE_REVIEW_NOTE_MAX}
@@ -86,13 +87,7 @@ function NoteField({
         disabled={disabled}
         placeholder={placeholder}
         onChange={(event) => onChange(event.target.value)}
-        className={cn(
-          "w-full resize-y rounded-md border border-input-border bg-input px-3 py-2",
-          "font-sans text-body-sm text-fg outline-none",
-          "placeholder:text-fg-muted",
-          "focus-visible:border-accent",
-          "disabled:pointer-events-none disabled:opacity-50",
-        )}
+        className="min-h-0 resize-y"
       />
       <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
         {value.length}/{WEBSITE_REVIEW_NOTE_MAX}

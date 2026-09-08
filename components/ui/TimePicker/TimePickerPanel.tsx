@@ -272,7 +272,7 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "cursor-pointer active:scale-[0.97]",
-                hourActive ? "bg-accent-muted" : "bg-hover",
+                hourActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
               )}
             >
               {pad2(displayHour)}
@@ -297,7 +297,7 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "min-w-0 border-0 p-0 outline-none",
-                hourActive ? "bg-accent-muted" : "bg-hover",
+                hourActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
               )}
             />
           )}
@@ -329,7 +329,7 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "cursor-pointer active:scale-[0.97]",
-                minuteActive ? "bg-accent-muted" : "bg-hover",
+                minuteActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
               )}
             >
               {pad2(minute)}
@@ -354,7 +354,7 @@ export function TimePickerPanel({
               className={cn(
                 SEGMENT_BOX,
                 "min-w-0 border-0 p-0 outline-none",
-                minuteActive ? "bg-accent-muted" : "bg-hover",
+                minuteActive ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground",
               )}
             />
           )}
@@ -373,7 +373,7 @@ export function TimePickerPanel({
               className={cn(
                 PERIOD_BUTTON,
                 hour12.period === "am"
-                  ? "bg-accent text-accent-fg"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-transparent text-fg-muted",
               )}
             >
@@ -387,7 +387,7 @@ export function TimePickerPanel({
               className={cn(
                 PERIOD_BUTTON,
                 hour12.period === "pm"
-                  ? "bg-accent text-accent-fg"
+                  ? "bg-primary text-primary-foreground"
                   : "bg-transparent text-fg-muted",
               )}
             >

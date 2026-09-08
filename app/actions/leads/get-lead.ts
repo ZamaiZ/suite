@@ -31,6 +31,10 @@ import {
   readLeadVisibilityAuditRow,
   type LeadVisibilityAudit,
 } from "@/lib/leads/visibility-audit"
+import {
+  readLeadBacklinkAuditRow,
+  type LeadBacklinkAudit,
+} from "@/lib/leads/backlinks-audit"
 import type {
   LeadDiagnosisDraft,
   LeadDiagnosisExport,
@@ -51,6 +55,7 @@ import {
 } from "./diagnosis-access"
 import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
+import { BACKLINKS_SELECT } from "./backlinks-access"
 import { WEBSITE_REVIEW_SELECT, WEBSITE_SELECT } from "./website-access"
 import { websiteReviewsByChannel } from "@/lib/leads/website-review"
 
@@ -62,6 +67,7 @@ export type {
   LeadWebsiteAudit,
   LeadDigitalPresenceAudit,
   LeadVisibilityAudit,
+  LeadBacklinkAudit,
   LeadDiagnosisDraft,
   LeadDiagnosisExport,
 }
@@ -74,6 +80,7 @@ export type LeadDetail = {
   websiteAudits: LeadWebsiteAudit[]
   digitalPresenceAudit: LeadDigitalPresenceAudit | null
   visibilityAudit: LeadVisibilityAudit | null
+  backlinkAudit: LeadBacklinkAudit | null
   diagnosisDraft: LeadDiagnosisDraft | null
   diagnosisExports: LeadDiagnosisExport[]
   assigneeName: string | null
@@ -116,6 +123,7 @@ export async function getLeadDetail(
     { data: websiteReviewRows },
     { data: digitalPresenceRow, error: digitalPresenceError },
     { data: visibilityRow, error: visibilityError },
+    { data: backlinkRow, error: backlinkError },
     { data: diagnosisDraftRow, error: diagnosisDraftError },
     { data: diagnosisExportRows, error: diagnosisExportError },
   ] = await Promise.all([
@@ -155,6 +163,13 @@ export async function getLeadDetail(
     supabase
       .from("lead_visibility_audits")
       .select(VISIBILITY_SELECT)
+      .eq("lead_id", id)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("lead_backlink_audits")
+      .select(BACKLINKS_SELECT)
       .eq("lead_id", id)
       .order("fetched_at", { ascending: false })
       .limit(1)
@@ -215,6 +230,13 @@ export async function getLeadDetail(
       status: "error",
       message:
         "Não foi possível carregar a visibilidade. Tente novamente.",
+    }
+  }
+
+  if (backlinkError) {
+    return {
+      status: "error",
+      message: "Não foi possível carregar os backlinks. Tente novamente.",
     }
   }
 
@@ -329,6 +351,11 @@ export async function getLeadDetail(
       visibilityAudit: visibilityRow
         ? (readLeadVisibilityAuditRow(
             visibilityRow as Record<string, unknown>,
+          ) ?? null)
+        : null,
+      backlinkAudit: backlinkRow
+        ? (readLeadBacklinkAuditRow(
+            backlinkRow as Record<string, unknown>,
           ) ?? null)
         : null,
       diagnosisDraft: diagnosisDraftRow

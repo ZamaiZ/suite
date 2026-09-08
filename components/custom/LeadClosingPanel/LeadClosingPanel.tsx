@@ -13,6 +13,7 @@ import { BriefingTextField as Input } from "@/components/custom/BriefingFormCont
 import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/ui/DateTimePicker"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Textarea } from "@/components/ui/textarea"
 import {
   Select,
   SelectContent,
@@ -383,20 +384,14 @@ function ClosingEventForm({
           >
             Observação
           </label>
-          <textarea
+          <Textarea
             id="closing-note"
             rows={3}
             value={note}
             onChange={(event) => setNote(event.target.value)}
             disabled={isPending}
             maxLength={2000}
-            className={cn(
-              "mb-3 w-full resize-none rounded-md border border-input-border bg-input px-3 py-2",
-              "font-sans text-body-sm text-fg outline-none",
-              "placeholder:text-fg-muted",
-              "focus-visible:border-accent",
-              "disabled:opacity-50",
-            )}
+            className="mb-3 min-h-0 resize-none"
           />
 
           <div className="flex items-end gap-3">

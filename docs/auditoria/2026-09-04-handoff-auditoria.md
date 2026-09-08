@@ -64,6 +64,16 @@ Esta seção é a mais importante do documento. São classes de erro, não ocorr
 
 **Migração DataForSEO** — feita. `lib/serpapi/` e `lib/gbp-vendor/` removidos, cinco actions sem ramo de provider, página de Ferramentas com saldo, uso e calculadora alimentados por `user_data`.
 
+## O que a onda 4 entregou
+
+- **Backlinks** — `lib/leads/backlinks-audit.ts`, `backlinks-map.ts`,
+  `backlinks-opportunities.ts` e `lib/dataforseo/backlinks.ts`, mais a migration
+  `20260924`, a action `analyze-backlinks` e o card no passo de Website. Seis
+  gaps, contando para o pilar `website`.
+- **Uma regressão da onda 1** — `compile-lead-diagnosis.ts` lia
+  `lead_visibility_audits` sem `order`/`limit` depois de a tabela virar
+  append-only, e o diagnóstico falhava na segunda análise de qualquer lead.
+
 ## O que a onda 3 entregou
 
 Tudo sobre dado que já estava gravado ou sobre o crawler próprio — nenhuma
@@ -79,9 +89,10 @@ chamada paga nova:
 
 1. **Validar os mapeadores contra payload real.** Nenhum jamais executou até a assinatura entrar. `dataForSeoTimeToIso`, `mapDataForSeoReviews`, `mapRankedKeywordsLiveResult`, `google-info`, `google-qna`, `google-updates`. **Bloqueia tudo que vier depois.** Três perguntas a responder na mesma sessão: reviews trazem timestamp da resposta do proprietário (destrava tempo médio de resposta sem OAuth)? Items do Maps trazem `url`/`domain` (destrava domínio do concorrente de graça)? E `my_business_info` traz mesmo uma chave `services` (a onda 3 neutralizou o gap falso, mas não sabe a resposta)?
 2. **Evolução no tempo** — nota, volume, reviews removidas. Nasce escura até cada lead ser coletado uma segunda vez.
-3. **Quinto pilar de autoridade.** Decidido: autoridade vira o quinto pilar, e não entra dentro de `visibility`. Mas **sobe junto com backlinks**, não antes — `diagnosis-read.ts` cai em `emptyPillarScore()` para pilar ausente, que vale **score 100**, então um pilar vazio faria todo diagnóstico salvo exibir "Autoridade: 100", que lê como perfeito e significa não medido.
-4. **Backlinks** (`/backlinks/summary/live`), com a tabela `lead_backlink_audits` append-only. É o que dá conteúdo ao quinto pilar.
-5. **Concorrentes orgânicos** — `/dataforseo_labs/google/competitors_domain/live`, endpoint novo, tabela nova.
+3. **Concorrentes orgânicos** — `/dataforseo_labs/google/competitors_domain/live`, endpoint novo, tabela nova. O item do plano antigo que mandava mexer em `findOrganicRankForDomain` está errado: essa função saiu com o SerpAPI.
+
+   **Não existe quinto pilar**, e a decisão é deliberada: autoridade externa fala do mesmo domínio, então backlinks entrou no pilar de `website`. Um pilar novo obrigaria a inventar estado de "não medido" no scorecard, porque `emptyPillarScore()` vale **100** e um pilar vazio afirmaria perfeição. Se algum dia autoridade virar pilar, esse estado vem antes.
+4. **A lista de domínios de referência** — `summary` devolve contagem, não quem aponta. Exige outro endpoint e outra chamada.
 6. **Âncoras 5–6** — teto de 3 travado em três lugares; multiplica o custo da malha.
 7. **Resto do crawl ampliado** — formulários, banner de cookies, schema validado, links quebrados, sitemap além do teto, NAP fora da home.
 

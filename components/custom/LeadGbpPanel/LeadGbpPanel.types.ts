@@ -4,6 +4,7 @@ import type {
   LeadWebsiteAudit,
   LeadDigitalPresenceAudit,
   LeadVisibilityAudit,
+  LeadBacklinkAudit,
   LeadDiagnosisDraft,
   LeadDiagnosisExport,
 } from "@/app/actions/leads"
@@ -21,6 +22,10 @@ export type LeadGbpPanelProps = {
   onVisibilityChange: (
     leadId: string,
     audit: LeadVisibilityAudit | null,
+  ) => void
+  onBacklinksChange: (
+    leadId: string,
+    audit: LeadBacklinkAudit | null,
   ) => void
   onDiagnosisDraftChange: (
     leadId: string,

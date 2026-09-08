@@ -6,6 +6,7 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiArrowDownSLine, RiArrowRightSLine, RiLoader4Line } from "react-icons/ri"
 import { cn } from "@/lib/cn"
+import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { isGroupActive, isHrefActive } from "@/components/custom/navigation"
 import type { NavGroup, NavLeaf } from "@/components/custom/navigation.types"
@@ -188,7 +189,7 @@ function SheetTreeChild({
   const inner = (
     <>
       {Icon && (
-        <span className={cn("inline-flex shrink-0", isActive && "text-accent")}>
+        <span className={cn("inline-flex shrink-0", isActive && "text-primary")}>
           <Icon size={20} aria-hidden />
         </span>
       )}
@@ -265,7 +266,7 @@ function NavChildLink({
         <span
           className={cn(
             "flex size-8 shrink-0 items-center justify-center rounded-md",
-            isActive ? "bg-accent-subtle text-accent" : "bg-hover text-fg-muted",
+            isActive ? "bg-accent text-primary" : "bg-hover text-fg-muted",
           )}
         >
           <Icon size={16} aria-hidden />
@@ -297,7 +298,7 @@ function NavChildLink({
   ) : (
     <>
       {Icon && (
-        <span className={cn("inline-flex shrink-0", isActive && "text-accent")}>
+        <span className={cn("inline-flex shrink-0", isActive && "text-primary")}>
           <Icon size={16} aria-hidden />
         </span>
       )}
@@ -387,7 +388,7 @@ function NavLeafRow({
           <span
             className={cn(
               "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-150",
-              isActive ? "bg-accent text-accent-fg" : "bg-hover text-fg-muted",
+              isActive ? "bg-primary/10 text-primary" : "bg-hover text-fg-muted",
             )}
           >
             <Icon size={20} aria-hidden />
@@ -434,7 +435,7 @@ function NavLeafRow({
   )
 
   const icon = (
-    <span className={cn("inline-flex shrink-0", isActive && "text-accent")}>
+    <span className={cn("inline-flex shrink-0", isActive && "text-primary")}>
       <Icon size={18} aria-hidden />
     </span>
   )
@@ -612,8 +613,10 @@ function NavGroupBlock({
           open && "bg-hover p-1",
         )}
       >
-        <button
+        <Button
           type="button"
+          variant="ghost"
+          size="lg"
           aria-expanded={open}
           aria-controls={panelId}
           onClick={() => setOpen((v) => !v)}
@@ -629,7 +632,7 @@ function NavGroupBlock({
           <span
             className={cn(
               "flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-150",
-              parentLit ? "bg-accent text-accent-fg" : "bg-hover text-fg-muted",
+              parentLit ? "bg-primary/10 text-primary" : "bg-hover text-fg-muted",
             )}
           >
             <Icon size={20} aria-hidden />
@@ -650,7 +653,7 @@ function NavGroupBlock({
             )}
           </span>
           {chevron}
-        </button>
+        </Button>
         <m.div
           initial={false}
           animate={{ height: open ? "auto" : 0 }}
@@ -690,8 +693,10 @@ function NavGroupBlock({
         hideFlyout()
       }}
     >
-      <button
+      <Button
         type="button"
+        variant="ghost"
+        size="lg"
         aria-label={collapsed ? item.label : undefined}
         aria-expanded={collapsed ? flyoutOpen : open}
         aria-controls={collapsed ? (flyoutOpen ? panelId : undefined) : panelId}
@@ -721,14 +726,14 @@ function NavGroupBlock({
               ),
         )}
       >
-        <span className={cn("inline-flex shrink-0", (collapsed ? groupActive : parentLit) && "text-accent")}>
+        <span className={cn("inline-flex shrink-0", (collapsed ? groupActive : parentLit) && "text-primary")}>
           <Icon size={18} aria-hidden />
         </span>
         <SidebarLabel expanded={!collapsed} animate={animate} delay={index * 0.03}>
           {item.label}
         </SidebarLabel>
         {chevron}
-      </button>
+      </Button>
       <AnimatePresence>
         {collapsed && flyoutOpen && (
           <m.div
@@ -768,9 +773,9 @@ function NavGroupBlock({
             <div className="relative mb-1 flex items-start gap-2.5 px-2 py-2">
               <span
                 aria-hidden
-                className="absolute top-2.5 bottom-2.5 left-0 w-0.5 rounded-full bg-accent"
+                className="absolute top-2.5 bottom-2.5 left-0 w-0.5 rounded-full bg-primary"
               />
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent-subtle text-accent">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-accent text-primary">
                 <Icon size={16} aria-hidden />
               </span>
               <span className="min-w-0 pt-0.5">

@@ -84,7 +84,7 @@ export function LeadBoardColumn({
         "flex min-h-0 w-72 shrink-0 flex-col overflow-hidden rounded-xl border bg-surface",
         "transition-[border-color,background-color] duration-150 ease-out",
         isDropTarget && legalTarget
-          ? "border-accent bg-accent/5"
+          ? "border-primary bg-primary/5"
           : "border-border",
       )}
     >
@@ -137,11 +137,11 @@ export function LeadBoardColumn({
         {showDrop ? (
           <div
             className={cn(
-              "mt-auto rounded-lg border border-dashed border-accent px-3 py-2.5",
+              "mt-auto rounded-lg border border-dashed border-primary/60 px-3 py-2.5",
               "text-center transition-opacity duration-150 ease-out",
             )}
           >
-            <p className="inline-flex items-center gap-1.5 font-sans text-caption font-medium text-accent">
+            <p className="inline-flex items-center gap-1.5 font-sans text-caption font-medium text-primary">
               <RiDragMoveLine size={14} aria-hidden />
               Solte os leads aqui
             </p>

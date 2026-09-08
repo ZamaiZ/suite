@@ -30,6 +30,7 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group"
+import { Textarea } from "@/components/ui/textarea"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
 import { cn } from "@/lib/cn"
 import { toDigitalChannelDrafts, type DigitalChannelDraft } from "@/lib/leads/digital-channels"
@@ -744,7 +745,7 @@ function NotesCard({
                   >
                     Observação
                   </label>
-                  <textarea
+                  <Textarea
                     id="lead-record-observations"
                     rows={5}
                     value={field.value}
@@ -754,16 +755,7 @@ function NotesCard({
                     maxLength={LEAD_OBSERVATIONS_MAX}
                     placeholder="Informações importantes ou observações sobre este lead"
                     aria-invalid={fieldState.error ? true : undefined}
-                    className={cn(
-                      "w-full resize-none rounded-md border border-input-border bg-input px-3 py-2",
-                      "font-sans text-body-sm text-fg outline-none",
-                      "placeholder:text-fg-muted",
-                      "transition-[border-color,opacity] duration-150 ease-out",
-                      "focus-visible:border-accent",
-                      "disabled:opacity-50",
-                      fieldState.error &&
-                        "border-danger focus-visible:border-danger",
-                    )}
+                    className="min-h-0 resize-none"
                   />
                   <p className="mt-1 text-right font-sans text-caption tabular-nums text-fg-muted">
                     {observations.length}/{LEAD_OBSERVATIONS_MAX}

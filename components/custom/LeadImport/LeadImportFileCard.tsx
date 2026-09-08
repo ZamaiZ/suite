@@ -1,6 +1,5 @@
 "use client"
 
-import { Menu } from "@base-ui/react/menu"
 import {
   RiDeleteBinLine,
   RiEditLine,
@@ -9,16 +8,16 @@ import {
   RiMore2Line,
 } from "react-icons/ri"
 import { cn } from "@/lib/cn"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { formatDateTimeShort } from "@/lib/date-time"
 import { summarizeEvaluatedRows } from "@/lib/leads/spreadsheet-model"
 import type { ImportFileEntry } from "./LeadImport.types"
-
-const MENU_ITEM = cn(
-  "flex w-full cursor-pointer items-center gap-2 rounded-md px-2 py-1.5",
-  "font-sans text-body-sm text-fg outline-none",
-  "data-highlighted:bg-hover",
-  "data-disabled:pointer-events-none data-disabled:opacity-50",
-)
 
 function Metric({
   label,
@@ -149,50 +148,27 @@ export function LeadImportFileCard({
             </span>
           </div>
         ) : null}
-        <Menu.Root>
-          <Menu.Trigger
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={<Button variant="ghost" size="icon" />}
             aria-label={`Ações de ${entry.name}`}
-            className={cn(
-              "inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-md",
-              "text-fg-muted transition-[background-color,color,transform] duration-150 ease-out",
-              "[@media(hover:hover)_and_(pointer:fine)]:hover:bg-active-bg",
-              "[@media(hover:hover)_and_(pointer:fine)]:hover:text-fg",
-              "data-popup-open:bg-active-bg data-popup-open:text-fg",
-              "active:scale-[0.97]",
-              "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-            )}
           >
             <RiMore2Line size={16} aria-hidden />
-          </Menu.Trigger>
-          <Menu.Portal>
-            <Menu.Positioner className="z-50 outline-none" sideOffset={4} align="end">
-              <Menu.Popup
-                className={cn(
-                  "pointer-events-auto min-w-40 rounded-md border border-popover-border bg-popover p-1 shadow-raised",
-                  "origin-[var(--transform-origin)]",
-                  "transition-[transform,opacity] duration-[180ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-                  "data-starting-style:opacity-0 data-starting-style:scale-[0.96]",
-                  "data-ending-style:opacity-0 data-ending-style:scale-[0.96] data-ending-style:duration-[140ms]",
-                  "motion-reduce:transition-opacity motion-reduce:duration-150",
-                  "motion-reduce:data-starting-style:scale-100 motion-reduce:data-ending-style:scale-100",
-                )}
-              >
-                <Menu.Item
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="min-w-40">
+                <DropdownMenuItem
                   disabled={!ready}
                   onClick={onEdit}
-                  className={MENU_ITEM}
                 >
                   <RiEditLine size={16} aria-hidden />
                   Editar
-                </Menu.Item>
-                <Menu.Item onClick={onRemove} className={MENU_ITEM}>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={onRemove} variant="destructive">
                   <RiDeleteBinLine size={16} aria-hidden />
                   Remover
-                </Menu.Item>
-              </Menu.Popup>
-            </Menu.Positioner>
-          </Menu.Portal>
-        </Menu.Root>
+                </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <div className={cn("h-0.5", barTone)} />
     </article>

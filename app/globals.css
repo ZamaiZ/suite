@@ -165,10 +165,25 @@
     background-color: var(--fg-muted);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--content-foreground);
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Transitional compatibility for the previous product vocabulary. These
+ * selectors are intentionally limited to text: `accent` remains Mist for
+ * shadcn surfaces while legacy product copy keeps the teal meaning until its
+ * consumers are migrated to `text-primary`. */
+@layer utilities {
+  .text-accent {
+    color: var(--primary);
+  }
+
+  .text-accent-fg {
+    color: var(--accent-foreground);
   }
 }
 

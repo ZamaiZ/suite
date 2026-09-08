@@ -17,6 +17,7 @@ import {
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
 import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import {
@@ -32,8 +33,7 @@ import type { LeadDiagnosisPanelProps } from "./LeadDiagnosisPanel.types"
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
-const TEXTAREA =
-  "w-full resize-y rounded-md border border-input-border bg-input px-3 py-2 font-sans text-body-sm text-fg outline-none placeholder:text-fg-muted focus-visible:border-accent disabled:pointer-events-none disabled:opacity-50"
+const TEXTAREA = "min-h-0 resize-y"
 
 export function LeadDiagnosisPanel({
   detail,
@@ -250,7 +250,7 @@ export function LeadDiagnosisPanel({
             <LeadGbpCard title="Gancho comercial">
               {canEdit ? (
                 <>
-                  <textarea
+                  <Textarea
                     id="diagnosis-hook"
                     value={commercialHook}
                     maxLength={DIAGNOSIS_HOOK_MAX}
@@ -274,7 +274,7 @@ export function LeadDiagnosisPanel({
           <LeadGbpCard title="Resumo executivo">
             {canEdit ? (
               <>
-                <textarea
+                <Textarea
                   id="diagnosis-summary"
                   value={executiveSummary}
                   maxLength={DIAGNOSIS_PROSE_MAX}
@@ -352,7 +352,7 @@ export function LeadDiagnosisPanel({
               </div>
               {canEdit ? (
                 <>
-                  <textarea
+                  <Textarea
                     id={`diagnosis-narrative-${pillar}`}
                     value={narratives[pillar]}
                     maxLength={DIAGNOSIS_PROSE_MAX}

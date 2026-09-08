@@ -45,7 +45,7 @@ function ScheduleMark({ at, label }: { at: string; label: string }) {
   if (kind === "later") {
     return (
       <Tooltip>
-        <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent" />}>
+        <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary" />}>
           <RiCalendarEventLine size={14} aria-hidden />
           <span className="sr-only">{label} {full}</span>
         </TooltipTrigger>
@@ -99,7 +99,7 @@ export function LeadBoardCardFace({
     <div className="flex min-w-0 items-start gap-3">
       <span
         aria-hidden
-        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-accent/10 font-sans text-caption font-semibold tracking-caption text-accent"
+        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 font-sans text-caption font-semibold tracking-caption text-primary"
       >
         {getLeadInitials(lead.company_name)}
       </span>
@@ -124,7 +124,7 @@ export function LeadBoardCardFace({
           <div className="mt-1.5 flex min-w-0 flex-wrap items-center gap-2">
             {pendingActivity ? (
               <Tooltip>
-                <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-accent/10 text-accent" />}>
+                <TooltipTrigger render={<span className="inline-flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary" />}>
                   <RiChat3Line size={14} aria-hidden />
                   <span className="sr-only">Sem atividade hoje</span>
                 </TooltipTrigger>

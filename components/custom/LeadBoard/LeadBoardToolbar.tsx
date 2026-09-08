@@ -11,6 +11,7 @@ import {
   RiUserLine,
 } from "react-icons/ri"
 import { LeadImport } from "@/components/custom/LeadImport"
+import { Button } from "@/components/ui/button"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import {
   Select,
@@ -117,7 +118,6 @@ export function LeadBoardToolbar({
           </div>
           <LeadBoardToolbarToggle
             pressed={listParams.today}
-            activeTone="warning"
             badgeCount={dueTodayCount}
             label="Ligar hoje"
             ariaLabel={
@@ -130,7 +130,6 @@ export function LeadBoardToolbar({
           />
           <LeadBoardToolbarToggle
             pressed={listParams.pending}
-            activeTone="accent"
             badgeCount={pendingCount}
             label="Atividade pendente"
             ariaLabel={
@@ -169,8 +168,10 @@ export function LeadBoardToolbar({
           </div>
         ) : null}
         {hasCatalogFilters ? (
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="lg"
             onClick={() =>
               replaceParams({
                 segment: null,
@@ -179,10 +180,10 @@ export function LeadBoardToolbar({
                 tag: null,
               })
             }
-            className="ml-auto h-[var(--control-height)] shrink-0 rounded-md px-3 font-sans text-body-sm font-medium text-fg-secondary transition-[background-color,color,transform] duration-150 ease-out hover:bg-hover hover:text-fg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97]"
+            className="ml-auto h-[var(--control-height)] shrink-0 px-3 font-sans text-body-sm text-fg-secondary"
           >
             Limpar filtros
-          </button>
+          </Button>
         ) : null}
       </div>
     </div>

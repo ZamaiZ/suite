@@ -180,7 +180,7 @@ export function TimePickerClock({
                 className={cn(
                   "pointer-events-none absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
                   "font-sans text-caption font-medium tabular-nums",
-                  selected ? "bg-accent text-accent-fg" : "text-fg",
+                  selected ? "bg-primary text-primary-foreground" : "text-fg",
                 )}
                 style={labelPosition(index, OUTER_PCT)}
               >
@@ -197,7 +197,7 @@ export function TimePickerClock({
                 className={cn(
                   "pointer-events-none absolute flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
                   "font-sans text-caption font-medium tabular-nums",
-                  selected ? "bg-accent text-accent-fg" : "text-fg",
+                  selected ? "bg-primary text-primary-foreground" : "text-fg",
                 )}
                 style={labelPosition(index, OUTER_PCT)}
               >
@@ -215,7 +215,7 @@ export function TimePickerClock({
                 className={cn(
                   "pointer-events-none absolute flex size-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full",
                   "font-sans text-caption font-medium tabular-nums",
-                  selected ? "bg-accent text-accent-fg" : "text-fg-muted",
+                  selected ? "bg-primary text-primary-foreground" : "text-fg-muted",
                 )}
                 style={labelPosition(index, INNER_PCT)}
               >

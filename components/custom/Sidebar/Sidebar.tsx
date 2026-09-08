@@ -40,7 +40,7 @@ function FormPendingSurface({ children }: { children?: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-canvas/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line size={16} aria-hidden className="relative animate-spin text-fg" />
+          <RiLoader4Line size={16} aria-hidden className="relative animate-spin text-foreground" />
         </span>
       ) : null}
     </>
@@ -104,18 +104,18 @@ export function Sidebar() {
         animate={{ width: expanded ? EXPANDED_W : COLLAPSED_W }}
         transition={animate ? SIDEBAR_T : INSTANT}
       >
-        <button
+        <Button
           type="button"
+          variant="outline"
+          size="icon-lg"
           onClick={toggle}
           aria-label={expanded ? "Recolher menu lateral" : "Expandir menu lateral"}
           title={expanded ? "Recolher (Ctrl+B)" : "Expandir (Ctrl+B)"}
           className={cn(
             "absolute top-3 right-0 translate-x-1/2 z-20",
-            "size-8 rounded-full border-2 border-dashed border-border bg-sidebar",
-            "flex items-center justify-center text-fg-muted",
+            "rounded-full border-2 border-dashed border-sidebar-border bg-sidebar text-muted-foreground",
             "[transition:color_150ms_cubic-bezier(0.23,1,0.32,1),border-color_150ms_cubic-bezier(0.23,1,0.32,1),transform_100ms_ease-out]",
-            "hover:border-accent hover:text-fg active:scale-95",
-            "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring cursor-pointer",
+            "hover:border-primary hover:bg-sidebar-accent hover:text-foreground active:scale-95",
           )}
         >
           <m.span
@@ -125,7 +125,7 @@ export function Sidebar() {
           >
             <RiArrowLeftSLine size={16} aria-hidden />
           </m.span>
-        </button>
+        </Button>
 
         <div
           role="img"
@@ -134,7 +134,7 @@ export function Sidebar() {
         >
           <m.span
             aria-hidden
-            className="overflow-hidden whitespace-nowrap font-display text-body-sm font-semibold tracking-widest text-fg-muted uppercase select-none leading-none"
+            className="overflow-hidden whitespace-nowrap font-display text-body-sm font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
             animate={{ maxWidth: expanded ? 220 : 0, opacity: expanded ? 1 : 0 }}
             transition={labelT()}
           >
@@ -142,7 +142,7 @@ export function Sidebar() {
           </m.span>
           <m.span
             aria-hidden
-            className="pointer-events-none absolute inset-0 flex items-center justify-center font-display text-body-sm font-semibold tracking-widest text-fg-muted uppercase select-none leading-none"
+            className="pointer-events-none absolute inset-0 flex items-center justify-center font-display text-body-sm font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
             animate={{ opacity: expanded ? 0 : 1 }}
             transition={labelT()}
           >
