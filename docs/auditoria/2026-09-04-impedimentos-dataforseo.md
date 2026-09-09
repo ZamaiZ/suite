@@ -33,6 +33,39 @@ e a onda 6 corrigiu isso.
 
 **Uma pergunta continua em aberto**, e a primeira coleta real responde: os items do Maps trazem `url` ou `domain` do negócio? Se sim, o domínio dos concorrentes sai sem chamada extra.
 
+## Citações em diretórios: o SERP `site:` foi testado e reprovado
+
+A Task 0 do plano de citações rodou em 2026-09-09 e **matou o desenho antes de
+qualquer linha de código**. Três chamadas, US$ 0,029 no total.
+
+**O operador `site:` é honrado de forma inconsistente.** Em
+`"Busca Orgânica" site:facebook.com` ele valeu — 9 dos 10 orgânicos vieram do
+domínio pedido. Em `"Busca Orgânica" site:apontador.com.br` ele foi **ignorado**:
+voltaram Reddit, YouTube e Instagram. E as aspas não impõem correspondência
+exata em nenhum dos dois.
+
+Com a regra simples (`found` = existe resultado), o Apontador seria marcado como
+encontrado por causa de um post do Reddit. Com a guarda de duas condições —
+domínio do resultado casando com o diretório **e** nome da empresa no título ou
+na URL — os três alvos deram `found: false`, incluindo Facebook e Instagram,
+onde a empresa tem página. Falso positivo de um lado, falso negativo do outro.
+
+**A tabela da conta não fecha a conta do SERP.** `/appendix/user_data` declara
+`serp/live/advanced` a US$ 0,002 e `serp/task_post` a US$ 0,0006; as chamadas
+cobraram **US$ 0,01** no live avançado do Maps e **US$ 0,003** num `task_post`
+orgânico com `depth: 10`, mas **US$ 0,006** com `depth: 100`. Não é um
+multiplicador único: a seção `serp` tem um preço só por método — existe
+`live/advanced`, e não um por Maps ou por Orgânico — e nem motor nem
+profundidade aparecem nela. A tabela serve de piso, não de orçamento, e a
+calculadora passou a dizer isso na tela.
+
+A 20 diretórios, o desenho custaria da ordem de US$ 0,06 por lead na fila, e
+não os US$ 0,012 orçados.
+
+**O que ficou validado e continua valendo:** o `task_post` em lote aceita `tag`
+por tarefa e devolve o valor em `tasks[i].data.tag`, como a malha já usa; e
+`task_get` é gratuito depois do post.
+
 ## O que nunca foi impedimento do provider
 
 Continuam ausentes por escopo, e não mudam com a assinatura:

@@ -4,12 +4,15 @@ import {
   DATAFORSEO_COLLECT_ERROR,
   postDataForSeo,
 } from "@/lib/dataforseo/client"
+import {
+  BACKLINK_CITATIONS_LIMIT,
+  BACKLINK_COMPETITORS_LIMIT,
+} from "@/lib/dataforseo/limits"
 import type {
   BacklinkCitation,
   BacklinkCompetitor,
   BacklinkSnapshot,
 } from "@/lib/leads/backlinks-audit"
-import { gbpCitationDomains } from "@/lib/leads/gbp-analyst-review"
 import {
   mapBacklinkCitations,
   mapBacklinkCompetitors,
@@ -58,9 +61,6 @@ export async function fetchBacklinkSummaryLive(input: {
   }
 }
 
-/** Quantos concorrentes o benchmark traz. Cinco cabem na tela e na leitura. */
-export const BACKLINK_COMPETITORS_LIMIT = 5
-
 /**
  * Quem compartilha domínios de referência com o alvo, com os números de cada
  * um — é o que responde "404 domínios é muito ou pouco?".
@@ -81,21 +81,31 @@ export async function fetchBacklinkCompetitorsLive(input: {
     },
   )
   if (posted.status === "error") return { status: "error" }
+  // Mesmo motivo do que está logo abaixo: resposta sem resultado vira erro, e
+  // não lista vazia. "Não coletado" e "sem concorrente" são coisas diferentes,
+  // e só a segunda é um achado.
+  if (posted.data === null) return { status: "error" }
   return { status: "ok", competitors: mapBacklinkCompetitors(posted.data) }
 }
 
 /**
- * Teto de linhas da checagem de citações. Com `one_per_domain` cada diretório
- * ocupa uma linha só, então o teto sobra para o catálogo inteiro.
- */
-export const BACKLINK_CITATIONS_LIMIT = 100
-
-/**
  * Quais diretórios do catálogo linkam para o site.
  *
- * Uma chamada cobre a lista inteira: o filtro `in` conta como **um** filtro
- * (o teto da API é de oito filtros, não de oito valores), e a cobrança é por
- * requisição, então vinte domínios custam o mesmo que oito.
+ * **Sem filtro de domínio, de propósito.** A versão anterior mandava
+ * `["domain_from", "in", [...]]`, e `in` não existe para esse campo — ele
+ * aceita `=`, `<>`, `like`, `not_like`, `ilike`, `not_ilike`, `match` e
+ * `not_match`, só. A tarefa voltava com erro, o erro virava resultado ausente,
+ * e o ausente virava "nenhum diretório linka". Encadear os vinte e dois
+ * domínios com `or` também não serve: o teto é de oito filtros.
+ *
+ * Então a chamada traz os domínios de referência como eles vêm, e o casamento
+ * com o catálogo acontece aqui, em `mapBacklinkCitations` — por sufixo, que é
+ * o que tolera `pt.foursquare.com` no lugar de `foursquare.com`.
+ *
+ * O preço tem parcela por linha devolvida, e o teto está dimensionado para
+ * caber o perfil inteiro de um negócio local. Se ainda assim truncar, o efeito
+ * é o corroborador **calar** sobre um diretório, nunca afirmar que ele não
+ * linka: a tela só usa a citação para exibir o selo de link encontrado.
  *
  * Devolve também a URL da página do cadastro, que é o que o analista abre para
  * conferir o NAP — a parte que nenhuma API julga.
@@ -105,21 +115,22 @@ export async function fetchBacklinkCitationsLive(input: {
 }): Promise<
   { status: "ok"; citations: BacklinkCitation[] } | { status: "error" }
 > {
-  const domains = gbpCitationDomains()
-  if (domains.length === 0) return { status: "ok", citations: [] }
   const posted = await postDataForSeo<BacklinkCitationsResult>(
     "/backlinks/backlinks/live",
     {
       target: input.domain,
       // Uma linha por domínio de origem. Com `as_is`, um diretório que linka de
-      // centenas de páginas encheria o teto e expulsaria os outros do
-      // resultado — o filtro passa, mas a resposta mente por truncamento.
+      // centenas de páginas encheria o teto sozinho e expulsaria os outros.
       mode: "one_per_domain",
       limit: BACKLINK_CITATIONS_LIMIT,
       backlinks_status_type: "live",
-      filters: [["domain_from", "in", domains]],
     },
   )
   if (posted.status === "error") return { status: "error" }
+  // Resposta sem resultado não é resposta com resultado vazio. Devolver `[]`
+  // aqui fazia a action gravar "checado, e nenhum diretório linka" quando o
+  // que houve foi a chamada não trazer nada — ausente virando zero, no próprio
+  // código que invoca a regra.
+  if (posted.data === null) return { status: "error" }
   return { status: "ok", citations: mapBacklinkCitations(posted.data) }
 }

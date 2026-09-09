@@ -359,7 +359,13 @@ export function gbpDirectoryIsVerifiable(id: GbpDirectoryId): boolean {
   return (item?.linkDomains.length ?? 0) > 0
 }
 
-/** Lista achatada para o filtro da chamada — uma só, com todas as variantes. */
+/**
+ * Lista achatada dos domínios que a corroboração por link alcança.
+ *
+ * Não serve mais para filtrar a chamada: `domain_from` não aceita `in`, e o
+ * casamento passou a acontecer do nosso lado, em `gbpDirectoryForDomain`.
+ * Continua sendo a leitura do catálogo por domínio.
+ */
 export function gbpCitationDomains(): string[] {
   return GBP_DIRECTORIES.flatMap((item) => item.linkDomains)
 }

@@ -296,6 +296,19 @@ export function ToolsSettings({
                     . Verifique se a seção está habilitada no plano.
                   </p>
                 ) : null}
+
+                {estimate?.fn ? (
+                  <p className="mt-3 text-xs/relaxed text-muted-foreground">
+                    Preço lido da tabela da conta em{" "}
+                    <code className="font-mono">
+                      {estimate.operation.api}/{estimate.fn}
+                    </code>
+                    , prioridade normal.
+                    {estimate.operation.caveat
+                      ? ` ${estimate.operation.caveat}`
+                      : null}
+                  </p>
+                ) : null}
               </CardContent>
             </Card>
           </>

@@ -4,6 +4,7 @@ import {
   DATAFORSEO_COLLECT_ERROR,
   postDataForSeo,
 } from "@/lib/dataforseo/client"
+import { RANKED_KEYWORDS_LIMIT } from "@/lib/dataforseo/limits"
 import {
   mapRankedKeywordsLiveResult,
   type RankedKeywordsLiveResult,
@@ -24,7 +25,7 @@ export async function fetchRankedKeywordsLive(input: {
       target: input.domain,
       location_name: "Brazil",
       language_code: "pt",
-      limit: 100,
+      limit: RANKED_KEYWORDS_LIMIT,
       item_types: ["organic"],
       order_by: ["ranked_serp_element.serp_item.etv,desc"],
     },
