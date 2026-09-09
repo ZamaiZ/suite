@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
 import {
   RiErrorWarningLine,
   RiExternalLinkLine,
@@ -34,14 +34,24 @@ export function ClientBriefingExport({
   const [message, setMessage] = useState<string | null>(null)
   const [pending, startTransition] = useTransition()
 
-  const refresh = useCallback(async () => {
+  // A mensagem some quando a chave muda; o fetch fica no efeito.
+  const exportKey = finalizedAt ? `${clientId}|${contentUpdatedAt ?? ""}` : null
+  const [syncedExportKey, setSyncedExportKey] = useState(exportKey)
+  if (syncedExportKey !== exportKey) {
+    setSyncedExportKey(exportKey)
     setMessage(null)
-    setState(await loadClientBriefingExport(clientId))
-  }, [clientId])
+  }
 
   useEffect(() => {
-    if (finalizedAt) void refresh()
-  }, [contentUpdatedAt, finalizedAt, refresh])
+    if (!finalizedAt) return
+    let cancelled = false
+    void loadClientBriefingExport(clientId).then((next) => {
+      if (!cancelled) setState(next)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [clientId, contentUpdatedAt, finalizedAt])
 
   if (!finalizedAt) return null
 

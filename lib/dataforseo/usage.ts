@@ -225,6 +225,7 @@ export type DataForSeoOperationId =
   | "maps_rank"
   | "organic_visibility"
   | "backlink_summary"
+  | "backlink_competitors"
 
 export type DataForSeoOperation = {
   id: DataForSeoOperationId
@@ -320,6 +321,14 @@ export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
     fnSuffix: "summary/live",
     requests: 1,
     detail: "Resumo de backlinks do domínio",
+  },
+  {
+    id: "backlink_competitors",
+    label: "Benchmark de backlinks",
+    api: "backlinks",
+    fnSuffix: "competitors/live",
+    requests: 1,
+    detail: "Até 5 concorrentes, na mesma análise",
   },
 ]
 

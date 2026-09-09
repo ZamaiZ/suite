@@ -10,7 +10,13 @@ import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
-import type { BacklinkSnapshot } from "@/lib/leads/backlinks-audit"
+import { backlinkMetrics } from "@/lib/leads/backlinks-audit"
+import {
+  backlinkProfileShape,
+  formatBacklinkDistribution,
+  formatBacklinkShare,
+  formatLinksPerDomain,
+} from "@/lib/leads/backlinks-presenters"
 
 function count(value: number | null): string {
   return value === null ? "—" : value.toLocaleString("pt-BR")
@@ -31,14 +37,6 @@ function Metric({ label, value }: { label: string; value: string }) {
   )
 }
 
-function nofollowShare(snapshot: BacklinkSnapshot): string {
-  if (snapshot.nofollowBacklinks === null || !snapshot.backlinks) return "—"
-  const share = Math.round(
-    (snapshot.nofollowBacklinks / snapshot.backlinks) * 100,
-  )
-  return `${share}%`
-}
-
 export function LeadWebsiteBacklinksCard({
   leadId,
   audit,
@@ -55,6 +53,23 @@ export function LeadWebsiteBacklinksCard({
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const snapshot = audit?.snapshot ?? null
+  const metrics = snapshot
+    ? backlinkMetrics(snapshot)
+    : {
+        linksPerDomain: null,
+        dofollowShare: null,
+        subdomainSpread: null,
+        topTldShare: null,
+        topCountryShare: null,
+      }
+  const shape = snapshot ? backlinkProfileShape(snapshot) : null
+  const tldLine = snapshot ? formatBacklinkDistribution(snapshot.topTlds) : null
+  const countryLine = snapshot
+    ? formatBacklinkDistribution(snapshot.topCountries)
+    : null
+  const locationLine = snapshot?.linkLocations
+    ? formatBacklinkDistribution(snapshot.linkLocations)
+    : null
 
   function handleAnalyze() {
     if (busy) return
@@ -111,6 +126,9 @@ export function LeadWebsiteBacklinksCard({
 
         {snapshot ? (
           <>
+            {shape ? (
+              <p className="text-xs/relaxed text-foreground">{shape}</p>
+            ) : null}
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               <Metric label="Rank" value={count(snapshot.rank)} />
               <Metric label="Backlinks" value={count(snapshot.backlinks)} />
@@ -119,10 +137,17 @@ export function LeadWebsiteBacklinksCard({
                 value={count(snapshot.referringDomains)}
               />
               <Metric
+                label="Links por domínio"
+                value={formatLinksPerDomain(metrics.linksPerDomain) ?? "—"}
+              />
+              <Metric
+                label="Dofollow"
+                value={formatBacklinkShare(metrics.dofollowShare) ?? "—"}
+              />
+              <Metric
                 label="Quebrados"
                 value={count(snapshot.brokenBacklinks)}
               />
-              <Metric label="Nofollow" value={nofollowShare(snapshot)} />
               <Metric
                 label="Spam score"
                 value={
@@ -131,13 +156,56 @@ export function LeadWebsiteBacklinksCard({
                     : count(Math.round(snapshot.spamScore))
                 }
               />
+              {/* `—` aqui significa não coletado, não zero. */}
+              <Metric
+                label="Sub-redes"
+                value={count(snapshot.referringSubnets)}
+              />
             </div>
-            {snapshot.topTlds.length > 0 ? (
+            {/*
+              As distribuições contam links, não domínios, e ficam ao lado de
+              "Domínios" — sem dizer isso o leitor soma errado.
+            */}
+            {tldLine ? (
               <p className="text-xs/relaxed text-muted-foreground">
-                Principais TLDs:{" "}
-                {snapshot.topTlds
-                  .map((item) => `${item.label} (${count(item.count)})`)
-                  .join(" · ")}
+                Links por TLD: {tldLine}
+              </p>
+            ) : null}
+            {countryLine ? (
+              <p className="text-xs/relaxed text-muted-foreground">
+                Links por país: {countryLine}
+              </p>
+            ) : null}
+            {locationLine ? (
+              <p className="text-xs/relaxed text-muted-foreground">
+                Onde o link mora: {locationLine}
+              </p>
+            ) : null}
+            {snapshot.competitors && snapshot.competitors.length > 0 ? (
+              <div className="flex flex-col gap-1">
+                <p className="text-xs/relaxed text-foreground">
+                  Quem divide os mesmos domínios de referência
+                </p>
+                <ul className="flex flex-col gap-0.5">
+                  {snapshot.competitors.map((competitor) => (
+                    <li
+                      key={competitor.domain}
+                      className="flex items-baseline justify-between gap-2 text-xs/relaxed text-muted-foreground"
+                    >
+                      <span className="truncate">{competitor.domain}</span>
+                      <span className="shrink-0 tabular-nums">
+                        {count(competitor.referringDomains)} domínios ·{" "}
+                        {count(competitor.backlinks)} links
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {snapshot.linkLocations === null ? (
+              <p className="text-xs/relaxed text-muted-foreground">
+                Origem e rede dos links entram na próxima análise — esta coleta
+                é anterior a esses campos.
               </p>
             ) : null}
           </>

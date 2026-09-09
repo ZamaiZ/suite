@@ -1,6 +1,6 @@
 "use client"
 
-import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
+import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiLockLine } from "react-icons/ri"
 import { ThemeToggle } from "@/components/custom/ThemeToggle"
@@ -90,96 +90,94 @@ export function AuthPageShell({
   const V = makeVariants({ reduced })
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="relative min-h-dvh overflow-hidden bg-background">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 select-none"
-        >
-          <m.div
-            variants={V.glowA}
-            initial="hidden"
-            animate="visible"
-            className="absolute -top-40 -right-40 size-[560px] rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
-            }}
-          />
-          <m.div
-            variants={V.glowB}
-            initial="hidden"
-            animate="visible"
-            className="absolute -bottom-56 -left-32 size-[480px] rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
-            }}
-          />
-        </div>
-
-        <header className="relative z-10 flex h-14 items-center justify-between px-[var(--page-padding-x)]">
-          <m.span
-            variants={V.brand}
-            initial="hidden"
-            animate="visible"
-            className="font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none"
-          >
-            {APP_NAME}
-          </m.span>
-          <m.div variants={V.toggle} initial="hidden" animate="visible">
-            <ThemeToggle />
-          </m.div>
-        </header>
-
-        <main className="relative z-10 flex min-h-[calc(100dvh-3.5rem)] items-center justify-center px-[var(--page-padding-x)] py-10">
-          <div className="w-full max-w-[26rem] flex flex-col gap-4">
-            <m.div
-              variants={V.badge}
-              initial="hidden"
-              animate="visible"
-              className="flex items-center gap-2"
-            >
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs/relaxed font-medium text-muted-foreground shadow-xs">
-                <RiLockLine size={12} aria-hidden className="text-primary" />
-                Acesso interno
-              </span>
-            </m.div>
-
-            <m.h1
-              variants={V.title}
-              initial="hidden"
-              animate="visible"
-              className="font-heading text-2xl font-semibold tracking-tight leading-tight text-foreground"
-            >
-              {title}
-            </m.h1>
-
-            <m.p
-              variants={V.desc}
-              initial="hidden"
-              animate="visible"
-              className="text-sm text-muted-foreground leading-normal -mt-4"
-            >
-              {description}
-            </m.p>
-
-            <m.div variants={V.card} initial="hidden" animate="visible">
-              <Card className="relative p-6">
-                <div
-                  aria-hidden
-                  className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
-                  style={{
-                    background:
-                      "linear-gradient(to right, transparent, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
-                  }}
-                />
-                {children}
-              </Card>
-            </m.div>
-          </div>
-        </main>
+    <div className="relative min-h-dvh overflow-hidden bg-background">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 select-none"
+      >
+        <m.div
+          variants={V.glowA}
+          initial="hidden"
+          animate="visible"
+          className="absolute -top-40 -right-40 size-[560px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
+          }}
+        />
+        <m.div
+          variants={V.glowB}
+          initial="hidden"
+          animate="visible"
+          className="absolute -bottom-56 -left-32 size-[480px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
+          }}
+        />
       </div>
-    </LazyMotion>
+
+      <header className="relative z-10 flex h-14 items-center justify-between px-[var(--page-padding-x)]">
+        <m.span
+          variants={V.brand}
+          initial="hidden"
+          animate="visible"
+          className="font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none"
+        >
+          {APP_NAME}
+        </m.span>
+        <m.div variants={V.toggle} initial="hidden" animate="visible">
+          <ThemeToggle />
+        </m.div>
+      </header>
+
+      <main className="relative z-10 flex min-h-[calc(100dvh-3.5rem)] items-center justify-center px-[var(--page-padding-x)] py-10">
+        <div className="w-full max-w-[26rem] flex flex-col gap-4">
+          <m.div
+            variants={V.badge}
+            initial="hidden"
+            animate="visible"
+            className="flex items-center gap-2"
+          >
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs/relaxed font-medium text-muted-foreground shadow-xs">
+              <RiLockLine size={12} aria-hidden className="text-primary" />
+              Acesso interno
+            </span>
+          </m.div>
+
+          <m.h1
+            variants={V.title}
+            initial="hidden"
+            animate="visible"
+            className="font-heading text-2xl font-semibold tracking-tight leading-tight text-foreground"
+          >
+            {title}
+          </m.h1>
+
+          <m.p
+            variants={V.desc}
+            initial="hidden"
+            animate="visible"
+            className="text-sm text-muted-foreground leading-normal -mt-4"
+          >
+            {description}
+          </m.p>
+
+          <m.div variants={V.card} initial="hidden" animate="visible">
+            <Card className="relative p-6">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
+                style={{
+                  background:
+                    "linear-gradient(to right, transparent, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
+                }}
+              />
+              {children}
+            </Card>
+          </m.div>
+        </div>
+      </main>
+    </div>
   )
 }

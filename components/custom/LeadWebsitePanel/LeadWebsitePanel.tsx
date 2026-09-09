@@ -114,26 +114,34 @@ export function LeadWebsitePanel({
   const reviewTimerRef = useRef(0)
   const auditRef = useRef<LeadWebsiteAudit | null>(null)
   const onAuditChangeRef = useRef(onAuditChange)
-  onAuditChangeRef.current = onAuditChange
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    onAuditChangeRef.current = onAuditChange
+  })
 
   const channelKey = channels.map((channel) => channel.id).join(",")
 
-  useEffect(() => {
-    const next = websiteChannels(detail.lead.channels)
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const channelsKey = `${detail.lead.id}|${channelKey}`
+  const [syncedChannelsKey, setSyncedChannelsKey] = useState(channelsKey)
+  if (syncedChannelsKey !== channelsKey) {
+    setSyncedChannelsKey(channelsKey)
     setSelectedId((current) => {
-      if (current && next.some((channel) => channel.id === current)) {
+      if (current && channels.some((channel) => channel.id === current)) {
         return current
       }
-      return next[0]?.id ?? null
+      return channels[0]?.id ?? null
     })
-  }, [detail.lead.id, channelKey])
+  }
 
   const selected =
     channels.find((channel) => channel.id === selectedId) ?? channels[0] ?? null
   const audit =
     detail.websiteAudits.find((item) => item.channel_id === selected?.id) ??
     null
-  auditRef.current = audit
+  useEffect(() => {
+    auditRef.current = audit
+  })
   const jobsKey = websiteJobsKey(audit)
 
   // Resets ligados à troca de auditoria: no render, não em efeito.

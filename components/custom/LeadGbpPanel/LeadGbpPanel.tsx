@@ -86,28 +86,37 @@ export function LeadGbpPanel({
   const [selectedStep, setSelectedStep] =
     useState<GbpAuditRailStepId>("google-profile")
   const leadIdRef = useRef<string | null>(detail?.lead.id ?? null)
-  leadIdRef.current = detail?.lead.id ?? null
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    leadIdRef.current = detail?.lead.id ?? null
+  })
 
   const profiles = detail?.gbpProfiles ?? []
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const panelLeadId = detail?.lead.id ?? null
+  const [syncedPanelLeadId, setSyncedPanelLeadId] = useState(panelLeadId)
+  if (syncedPanelLeadId !== panelLeadId) {
+    setSyncedPanelLeadId(panelLeadId)
     setLinkError(null)
     setExistingLeadId(null)
     setLinking(false)
     setPickerOpen(false)
     setSelectedStep("google-profile")
-  }, [detail?.lead.id])
+  }
 
-  useEffect(() => {
-    const preferred =
-      profiles.find((item) => item.is_primary)?.id ?? profiles[0]?.id ?? null
+  const [syncedProfiles, setSyncedProfiles] = useState(profiles)
+  if (syncedProfiles !== profiles) {
+    setSyncedProfiles(profiles)
     setSelectedId((current) => {
       if (current && profiles.some((item) => item.id === current)) {
         return current
       }
-      return preferred
+      return (
+        profiles.find((item) => item.is_primary)?.id ?? profiles[0]?.id ?? null
+      )
     })
-  }, [profiles])
+  }
 
   const selected =
     profiles.find((item) => item.id === selectedId) ?? profiles[0] ?? null

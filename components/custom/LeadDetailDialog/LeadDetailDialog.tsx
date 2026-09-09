@@ -73,55 +73,47 @@ export function LeadDetailDialog({
 
   const isBusy = formPending || claimPending || activityPending || gbpPending
 
-  const loadDetail = useCallback(
-    async (id: string, mode: "replace" | "refresh") => {
-      const requestId = ++requestIdRef.current
-      if (mode === "replace") {
-        setDetail(null)
-        setErrorMessage(null)
-        setLoadState("loading")
-      }
+  // Reset ao abrir/trocar de lead: no render. O carregamento continua no efeito.
+  const dialogKey = open && leadId ? `${leadId}|${preview?.status ?? ""}` : null
+  const [syncedDialogKey, setSyncedDialogKey] = useState(dialogKey)
+  if (syncedDialogKey !== dialogKey) {
+    setSyncedDialogKey(dialogKey)
+    if (dialogKey !== null) {
+      setTab(preview?.status === "interested" ? "opportunity" : "activity")
+      setEditing(false)
+      setClaimError(null)
+      setEnteredActivityId(null)
+      setGbpPending(false)
+      setDetail(null)
+      setErrorMessage(null)
+      setLoadState("loading")
+    }
+  }
 
-      const result = await getLeadDetail(id)
+  useEffect(() => {
+    if (!open || !leadId) return
+    const requestId = ++requestIdRef.current
+    void getLeadDetail(leadId).then((result) => {
       if (requestId !== requestIdRef.current) return
-
       if (result.status === "success") {
         setDetail(result.data)
         setErrorMessage(null)
         setLoadState("ready")
-        if (mode === "replace") {
-          setTab(
-            result.data.lead.status === "interested"
-              ? "opportunity"
-              : "activity",
-          )
-        }
+        setTab(
+          result.data.lead.status === "interested" ? "opportunity" : "activity",
+        )
         return
       }
-
+      setDetail(null)
       if (result.status === "not_found") {
-        if (mode === "replace") setDetail(null)
         setLoadState("not_found")
         setErrorMessage(null)
         return
       }
-
-      if (mode === "replace") setDetail(null)
       setLoadState("error")
       setErrorMessage(result.message)
-    },
-    [],
-  )
-
-  useEffect(() => {
-    if (!open || !leadId) return
-    setTab(preview?.status === "interested" ? "opportunity" : "activity")
-    setEditing(false)
-    setClaimError(null)
-    setEnteredActivityId(null)
-    setGbpPending(false)
-    void loadDetail(leadId, "replace")
-  }, [open, leadId, loadDetail, preview?.status])
+    })
+  }, [open, leadId])
 
   const companyName =
     preview?.company_name ?? detail?.lead.company_name ?? "Lead"

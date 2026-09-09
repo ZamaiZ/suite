@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { RiCloseLine, RiExternalLinkLine } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridSection } from "./LeadGbpGridSection"
@@ -71,10 +71,13 @@ export function LeadGbpRankBlock({
   const [draft, setDraft] = useState(keywords)
   const [input, setInput] = useState("")
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedKeywords, setSyncedKeywords] = useState(keywords)
+  if (syncedKeywords !== keywords) {
+    setSyncedKeywords(keywords)
     setDraft(keywords)
     setInput("")
-  }, [keywords])
+  }
 
   const dirty = !sameKeywords(draft, keywords)
   const canAdd = draft.length < GBP_RANK_KEYWORDS_MAX

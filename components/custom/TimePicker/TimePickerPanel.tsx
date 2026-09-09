@@ -69,7 +69,10 @@ export function TimePickerPanel({
   const hourInputRef = useRef<HTMLInputElement>(null)
   const minuteInputRef = useRef<HTMLInputElement>(null)
   const valueRef = useRef(value)
-  valueRef.current = value
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    valueRef.current = value
+  })
 
   const [segment, setSegment] = useState<TimeSegment>("hour")
   const [hourText, setHourText] = useState("00")
@@ -96,16 +99,18 @@ export function TimePickerPanel({
     syncTexts(next)
   }
 
-  useEffect(() => {
-    if (!active) return
-    setSegment("hour")
-    syncTexts(valueRef.current)
-  }, [active])
-
-  useEffect(() => {
-    if (!active) return
-    syncTexts(value)
-  }, [value, hourCycle, active])
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const panelKey = `${active}|${value}|${hourCycle}`
+  const [syncedPanelKey, setSyncedPanelKey] = useState(panelKey)
+  const [syncedActive, setSyncedActive] = useState(active)
+  if (syncedActive !== active) {
+    setSyncedActive(active)
+    if (active) setSegment("hour")
+  }
+  if (syncedPanelKey !== panelKey) {
+    setSyncedPanelKey(panelKey)
+    if (active) syncTexts(value)
+  }
 
   useEffect(() => {
     if (!active) return

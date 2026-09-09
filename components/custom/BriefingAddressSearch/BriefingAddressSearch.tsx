@@ -41,17 +41,26 @@ export function BriefingAddressSearch({
   const [lookupError, setLookupError] = useState<string | null>(null)
   const [items, setItems] = useState<PlaceSuggestion[]>([])
 
-  useEffect(() => {
-    const trimmed = value.trim()
-    if (trimmed.length < PLACES_SUGGEST_MIN_CHARS) {
+  // O reset e o flag de carregamento são derivados da busca no render; o efeito
+  // fica só com a parte assíncrona.
+  const trimmedValue = value.trim()
+  const canSearch = trimmedValue.length >= PLACES_SUGGEST_MIN_CHARS
+  const [syncedValue, setSyncedValue] = useState(trimmedValue)
+  if (syncedValue !== trimmedValue) {
+    setSyncedValue(trimmedValue)
+    setLookupError(null)
+    if (canSearch) {
+      setLoading(true)
+    } else {
       setItems([])
       setLoading(false)
-      setLookupError(null)
-      return
     }
+  }
 
+  useEffect(() => {
+    if (!canSearch) return
+    const trimmed = trimmedValue
     const requestId = ++requestIdRef.current
-    setLoading(true)
     const timer = window.setTimeout(() => {
       void suggestBriefingAddresses({
         query: trimmed,
@@ -76,7 +85,7 @@ export function BriefingAddressSearch({
     }, DEBOUNCE_MS)
 
     return () => window.clearTimeout(timer)
-  }, [value, writerClientId])
+  }, [trimmedValue, canSearch, writerClientId])
 
   function handlePick(item: PlaceSuggestion | null) {
     if (!item) return
@@ -89,7 +98,6 @@ export function BriefingAddressSearch({
 
   const errorId = `${id}-error`
   const shownError = error ?? lookupError
-  const canSearch = value.trim().length >= PLACES_SUGGEST_MIN_CHARS
 
   return (
     <div className="flex w-full flex-col gap-1.5">

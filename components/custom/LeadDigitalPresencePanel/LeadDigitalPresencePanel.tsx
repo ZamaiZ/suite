@@ -61,20 +61,34 @@ export function LeadDigitalPresencePanel({
   const reviewTimerRef = useRef(0)
   const auditRef = useRef<LeadDigitalPresenceAudit | null>(stored ?? null)
   const onAuditChangeRef = useRef(onAuditChange)
-  onAuditChangeRef.current = onAuditChange
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    onAuditChangeRef.current = onAuditChange
+  })
+
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const presenceKey = `${detail.lead.id}|${detail.digitalPresenceAudit?.id ?? ""}`
+  const [syncedPresenceKey, setSyncedPresenceKey] = useState(presenceKey)
+  if (syncedPresenceKey !== presenceKey) {
+    setSyncedPresenceKey(presenceKey)
+    setLiveReview(
+      digitalPresenceReviewForChannels(
+        detail.digitalPresenceAudit?.review ?? emptyDigitalPresenceReview(),
+        detail.lead.channels,
+      ),
+    )
+    setSaveStatus("idle")
+    setSaveError(null)
+  }
 
   useEffect(() => {
-    const next = digitalPresenceReviewForChannels(
+    reviewRef.current = digitalPresenceReviewForChannels(
       detail.digitalPresenceAudit?.review ?? emptyDigitalPresenceReview(),
       detail.lead.channels,
     )
-    setLiveReview(next)
-    reviewRef.current = next
     auditRef.current = detail.digitalPresenceAudit
     window.clearTimeout(reviewTimerRef.current)
-    setSaveStatus("idle")
-    setSaveError(null)
-  }, [detail.lead.id, detail.digitalPresenceAudit?.id])
+  }, [detail.lead.channels, detail.digitalPresenceAudit])
 
   useEffect(() => {
     return () => window.clearTimeout(reviewTimerRef.current)

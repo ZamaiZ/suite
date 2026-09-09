@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useRef, useState } from "react"
+import { useLayoutEffect, useMemo, useRef, useState } from "react"
 import { formatPhone } from "@/lib/br-documents"
 import { cn } from "cn"
 import {
@@ -49,13 +49,25 @@ export function LeadImportEditGrid({
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null)
   const [scrollTop, setScrollTop] = useState(0)
+  // A altura do viewport vem de um observer, não de ler o ref durante o render.
+  const [viewportHeight, setViewportHeight] = useState(320)
   const virtualize = rows.length > VIRTUALIZE_AFTER
+
+  useLayoutEffect(() => {
+    const node = scrollerRef.current
+    if (!node) return
+    const observer = new ResizeObserver(() => {
+      setViewportHeight(node.clientHeight || 320)
+    })
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
 
   const { start, end, padTop, padBottom } = useMemo(() => {
     if (!virtualize) {
       return { start: 0, end: rows.length, padTop: 0, padBottom: 0 }
     }
-    const viewport = scrollerRef.current?.clientHeight ?? 320
+    const viewport = viewportHeight
     const visible = Math.ceil((viewport - HEADER_HEIGHT) / ROW_HEIGHT)
     const first = Math.max(0, Math.floor(scrollTop / ROW_HEIGHT) - OVERSCAN)
     const last = Math.min(rows.length, first + visible + OVERSCAN * 2)

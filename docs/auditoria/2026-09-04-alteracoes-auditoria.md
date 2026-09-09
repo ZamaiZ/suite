@@ -80,7 +80,7 @@ Sem alteração nas duas ondas. Continua com volume de palavras e detecção de 
 | ----------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
 | Google Business Profile | ✅ completo                                     | agora **versionado** — existe histórico da ficha                                                                                                                     | —                                                                                                     |
 | NAP                     | ✅ parcial (site × GBP, só home)                | **telefone e endereço avaliados de forma independente**, com três estados por componente — o `else if` já não existe                                                 | a checagem ainda roda só na home                                                                      |
-| **Citations** | ❌ inexistente | **checklist de 8 diretórios BR** preenchido pelo analista, com três estados por item — cadastrado, ausente, NAP divergente | agregadores; e a cobertura é declarada, não medida |
+| **Citations**           | ❌ inexistente                                  | **checklist de 8 diretórios BR** preenchido pelo analista, com três estados por item — cadastrado, ausente, NAP divergente                                           | agregadores; e a cobertura é declarada, não medida                                                    |
 | **Reviews / Reputação** | ✅ nota, volume, distribuição, taxa de resposta | **negativa sem resposta virou gap** · **campo de leitura humana** · **média histórica por subtração**, velocidade por janela de 30/60/90 dias e cobertura da amostra | tempo de resposta (depende de timestamp da resposta do dono) · evolução (depende de segundo snapshot) |
 | **Q&A**                 | ✅ coletado e exibido                           | **passou a virar gap** e chegar ao roadmap e ao PDF                                                                                                                  | —                                                                                                     |
 | Local Pack              | ✅ Maps por coordenada única                    | **malha geográfica** de 5×5, 7×7 ou 11×11 pontos, raio de 1 a 25 km, com ARP, ATRP e SoLV · histórico por keyword                                                    | Local Pack web, teto de 3 âncoras                                                                     |
@@ -94,6 +94,8 @@ Três decisões de projeto valem registro porque cada ponto é uma busca paga:
 - Um índice único parcial no banco impede um segundo scan ativo para a mesma keyword — dois cliques simultâneos passariam pela validação da aplicação, mas não por ele.
 
 E uma economia que sai de graça: numa malha ímpar o ponto central coincide com a coordenada do perfil, então o scan grava também um `lead_gbp_rank_checks` com aquele resultado. Rodar a malha atualiza o ranking avulso sem chamada adicional.
+
+**Os concorrentes por ponto ganharam tela na onda 6.** Eles eram guardados desde o começo — até 3 por ponto, em até 121 pontos, mais de trezentos registros por scan — e nenhuma tela os exibia. A agregação é pura e retroativa a toda malha já coletada: quem aparece em quantas células, posição média, melhor posição e em quantas células fica à frente do perfil, mais a cobertura do próprio perfil. A chave de agrupamento é o `placeId` quando existe e o título normalizado quando não, porque agrupar só por título juntaria franquias homônimas em bairros diferentes.
 
 Os concorrentes do top 3 são guardados **por ponto**, mesmo sem tela que os exiba: a resposta já os traz, e descartá-los obrigaria a reescanear — que é justamente a parte cara. Diferente da checagem avulsa, eles são capturados mesmo onde o perfil não aparece, que é o ponto em que saber quem está lá mais interessa.
 
@@ -112,9 +114,37 @@ já que `emptyPillarScore()` vale 100 e um pilar vazio afirmaria perfeição. E 
 **tabela é própria, não colunas em `lead_website_audits`**: backlinks tem cadência
 e custo próprios, e recrawlear o site não pode zerar o que foi pago.
 
-Uma limitação registrada em vez de escondida: `/backlinks/summary` devolve
-contagens e distribuições, **não a lista de domínios** que apontam para o site.
-Ver quem são exige outro endpoint e outra chamada.
+**A onda 6 corrigiu a leitura**, depois que a primeira coleta real mostrou o
+problema. O perfil de `buscaorganica.com.br` voltou com 769.391 backlinks de
+**404 domínios** — 1.904 links por domínio, quando o normal fica entre 10 e 50.
+É a assinatura de link _sitewide_. E as seis regras ficaram **em silêncio**:
+`spamScore` 2, `rank` 528, nofollow 7%, nenhum limiar cruzado. Elas sabiam
+reconhecer perfil fraco e não sabiam reconhecer perfil concentrado.
+
+Três coisas mudaram. **Razões derivadas** — links por domínio, dofollow,
+dispersão de subdomínio, concentração de TLD e país — calculadas sobre o que já
+estava gravado, retroativas. **Dois gaps novos**: `sitewide_link_pattern`, com o
+número no detalhe, e `behind_on_referring_domains`, que compara contra a mediana
+dos concorrentes em vez de contra um limiar absoluto. E o card **passou a ler**:
+abre com a frase que nomeia a forma do perfil em vez de listar seis números e
+deixar a conclusão por conta de quem olha.
+
+A mesma resposta trazia a família `referring_links_*` inteira e o mapeador
+guardava dois de seis. Agora guarda `semantic_locations` — que diz se o link
+mora no artigo ou no rodapé, e é o que **prova** o sitewide —, mais
+`platform_types`, `types`, `referring_ips` e `referring_subnets`. Sem chamada
+extra; vem na mesma resposta. Não é retroativo, e a tela diz "não coletado" em
+vez de zero.
+
+**O benchmark de volume** entrou por `/backlinks/competitors/live`, que recebe o
+próprio domínio e devolve quem compartilha domínios de referência já com os
+números de cada um — sem precisar de lista de concorrentes nem de uma chamada
+por concorrente. Sai na mesma coleta que o resumo, de propósito: comparar os
+meus backlinks de hoje com os do concorrente do mês passado não compara nada. A
+coleta passou de uma para duas chamadas pagas.
+
+Uma limitação continua: `summary` devolve contagens, **não a lista de domínios**
+que apontam para o site.
 
 Concorrentes mudou na onda 3. A checagem avulsa filtrava `item.position < maps_position` exigindo `maps_position !== null`: quando o cliente não aparecia no Top 20, gravava **zero** concorrente — justamente o caso em que saber quem está lá é o que mais interessa. A malha já fazia certo, e as duas divergiram por montarem a mesma lista em dois lugares. Agora é uma função só, o cliente sai da própria lista, e a checagem avulsa guarda cinco em vez de três. A malha continua em três de propósito, porque ali multiplica por até 121 pontos de jsonb.
 

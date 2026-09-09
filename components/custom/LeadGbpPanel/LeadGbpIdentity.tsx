@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { Card } from "@/components/ui/card"

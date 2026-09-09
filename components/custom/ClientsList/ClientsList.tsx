@@ -42,14 +42,19 @@ export function ClientsList({
     return () => window.removeEventListener("popstate", onPopState)
   }, [])
 
+  // Cliente inacessível é derivado no render; o histórico continua no efeito.
+  const visibleClient = clientId
+    ? (clients.find((entry) => entry.id === clientId) ?? null)
+    : null
+  const clientUnavailable = Boolean(
+    clientId && (!visibleClient || !visibleClient.canViewClient),
+  )
+  if (clientUnavailable) setClientId(null)
+
   useEffect(() => {
-    if (!clientId) return
-    const item = clients.find((entry) => entry.id === clientId)
-    if (!item || !item.canViewClient) {
-      setClientId(null)
-      window.history.replaceState(null, "", clientsListHref(listParams))
-    }
-  }, [clientId, clients])
+    if (!clientUnavailable) return
+    window.history.replaceState(null, "", clientsListHref(listParams))
+  }, [clientUnavailable, listParams])
 
   function openClient(id: string) {
     setClientId(id)

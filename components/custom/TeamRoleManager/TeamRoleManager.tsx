@@ -1,12 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, useTransition } from "react"
-import {
-  AnimatePresence,
-  LazyMotion,
-  domAnimation,
-  useReducedMotion,
-} from "motion/react"
+import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiCheckLine, RiShieldUserLine } from "react-icons/ri"
 import { updateTeamMemberRoles } from "@/app/actions/team"
@@ -349,86 +344,82 @@ export function TeamRoleManager({
       }
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="px-[var(--page-padding-x)] py-8">
-        <m.div
-          initial="hidden"
-          animate="show"
+    <div className="px-[var(--page-padding-x)] py-8">
+      <m.div
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: reduced ? 0 : 0.16,
+            },
+          },
+        }}
+        className="mx-auto flex max-w-6xl flex-col gap-6"
+      >
+        <m.header
           variants={{
             hidden: {},
             show: {
               transition: {
-                staggerChildren: reduced ? 0 : 0.16,
+                staggerChildren: reduced ? 0 : 0.05,
               },
             },
           }}
-          className="mx-auto flex max-w-6xl flex-col gap-6"
+          className="flex flex-col gap-1"
         >
-          <m.header
-            variants={{
-              hidden: {},
-              show: {
-                transition: {
-                  staggerChildren: reduced ? 0 : 0.05,
-                },
-              },
-            }}
-            className="flex flex-col gap-1"
+          <m.p
+            variants={fadeUp}
+            className="text-xs/relaxed font-medium uppercase tracking-widest text-muted-foreground"
           >
-            <m.p
-              variants={fadeUp}
-              className="text-xs/relaxed font-medium uppercase tracking-widest text-muted-foreground"
-            >
-              Configurações
-            </m.p>
-            <m.div
-              variants={fadeUp}
-              className="flex flex-wrap items-baseline justify-between gap-2"
-            >
-              <h1 className="font-heading text-2xl font-semibold text-foreground">
-                Equipe
-              </h1>
-              <p className="text-xs/relaxed text-muted-foreground">
-                {formatMemberCount(members.length)}
-              </p>
-            </m.div>
-            <m.p
-              variants={fadeUp}
-              className="max-w-3xl text-xs/relaxed text-muted-foreground"
-            >
-              Papéis definem o acesso. Só administradores alteram.
-            </m.p>
-          </m.header>
+            Configurações
+          </m.p>
+          <m.div
+            variants={fadeUp}
+            className="flex flex-wrap items-baseline justify-between gap-2"
+          >
+            <h1 className="font-heading text-2xl font-semibold text-foreground">
+              Equipe
+            </h1>
+            <p className="text-xs/relaxed text-muted-foreground">
+              {formatMemberCount(members.length)}
+            </p>
+          </m.div>
+          <m.p
+            variants={fadeUp}
+            className="max-w-3xl text-xs/relaxed text-muted-foreground"
+          >
+            Papéis definem o acesso. Só administradores alteram.
+          </m.p>
+        </m.header>
 
-          {members.length === 0 ? (
-            <m.div variants={fadeUp}>
-              <Empty className="rounded-xl border border-border bg-card px-6 py-10 shadow-xs">
-                <EmptyHeader>
-                  <EmptyDescription>
-                    Nenhum usuário encontrado.
-                  </EmptyDescription>
-                </EmptyHeader>
-              </Empty>
-            </m.div>
-          ) : (
-            <m.ul
-              variants={panelFade}
-              className="divide-y divide-border/70 overflow-hidden rounded-xl border border-border bg-card shadow-xs"
-            >
-              {members.map((member, index) => (
-                <TeamMemberRoleRow
-                  key={member.id}
-                  member={member}
-                  currentUserId={currentUserId}
-                  currentUserIsAdmin={currentUserIsAdmin}
-                  index={index}
-                  reduced={reduced}
-                />
-              ))}
-            </m.ul>
-          )}
-        </m.div>
-      </div>
-    </LazyMotion>
+        {members.length === 0 ? (
+          <m.div variants={fadeUp}>
+            <Empty className="rounded-xl border border-border bg-card px-6 py-10 shadow-xs">
+              <EmptyHeader>
+                <EmptyDescription>Nenhum usuário encontrado.</EmptyDescription>
+              </EmptyHeader>
+            </Empty>
+          </m.div>
+        ) : (
+          <m.ul
+            variants={panelFade}
+            className="divide-y divide-border/70 overflow-hidden rounded-xl border border-border bg-card shadow-xs"
+          >
+            {members.map((member, index) => (
+              <TeamMemberRoleRow
+                key={member.id}
+                member={member}
+                currentUserId={currentUserId}
+                currentUserIsAdmin={currentUserIsAdmin}
+                index={index}
+                reduced={reduced}
+              />
+            ))}
+          </m.ul>
+        )}
+      </m.div>
+    </div>
   )
 }

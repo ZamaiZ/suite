@@ -44,17 +44,25 @@ export function LeadGbpPlacePicker({
   const [error, setError] = useState<string | null>(null)
   const [items, setItems] = useState<PlaceSuggestion[]>([])
 
-  useEffect(() => {
-    const trimmed = query.trim()
-    if (trimmed.length < PLACES_SUGGEST_MIN_CHARS) {
+  // Reset e flag de carregamento derivados no render; efeito só para o async.
+  const trimmedQuery = query.trim()
+  const canSearch = trimmedQuery.length >= PLACES_SUGGEST_MIN_CHARS
+  const [syncedQuery, setSyncedQuery] = useState(trimmedQuery)
+  if (syncedQuery !== trimmedQuery) {
+    setSyncedQuery(trimmedQuery)
+    setError(null)
+    if (canSearch) {
+      setLoading(true)
+    } else {
       setItems([])
       setLoading(false)
-      setError(null)
-      return
     }
+  }
 
+  useEffect(() => {
+    if (!canSearch) return
+    const trimmed = trimmedQuery
     const requestId = ++requestIdRef.current
-    setLoading(true)
     const timer = window.setTimeout(() => {
       const formData = new FormData()
       formData.set("query", trimmed)
@@ -76,7 +84,7 @@ export function LeadGbpPlacePicker({
     }, DEBOUNCE_MS)
 
     return () => window.clearTimeout(timer)
-  }, [query, locationHint])
+  }, [trimmedQuery, canSearch, locationHint])
 
   function handlePick(item: PlaceSuggestion | null) {
     if (!item) return
@@ -89,7 +97,6 @@ export function LeadGbpPlacePicker({
   }
 
   const errorId = `${id}-error`
-  const canSearch = query.trim().length >= PLACES_SUGGEST_MIN_CHARS
 
   return (
     <Field data-invalid={Boolean(error)}>

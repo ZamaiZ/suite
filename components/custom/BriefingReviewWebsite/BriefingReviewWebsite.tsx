@@ -30,12 +30,18 @@ function AssetLink({
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedCanOpen, setSyncedCanOpen] = useState(canOpen)
+  if (syncedCanOpen !== canOpen) {
+    setSyncedCanOpen(canOpen)
     if (!canOpen) {
       setUrl(null)
       setLoading(false)
-      return
     }
+  }
+
+  useEffect(() => {
+    if (!canOpen) return
     let cancelled = false
     void signStaffBriefingWebsiteAsset(clientId, asset.storagePath).then(
       (result) => {

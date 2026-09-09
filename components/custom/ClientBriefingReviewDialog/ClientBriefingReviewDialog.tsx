@@ -1,12 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import {
-  AnimatePresence,
-  LazyMotion,
-  domAnimation,
-  useReducedMotion,
-} from "motion/react"
+import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiErrorWarningLine } from "react-icons/ri"
 import {
@@ -124,7 +119,6 @@ export function ClientBriefingReviewDialog({
 
   const loadOverview = useCallback(async (id: string) => {
     const requestId = ++requestIdRef.current
-    setOverviewState({ status: "loading" })
     const result = await loadStaffBriefingOverview(id)
     if (requestId !== requestIdRef.current) return
     if (result.status === "error") {
@@ -134,21 +128,38 @@ export function ClientBriefingReviewDialog({
     setOverviewState({ status: "ready", overview: result.overview })
   }, [])
 
-  useEffect(() => {
-    if (!open || !clientId) {
+  // Reset ao abrir/fechar: no render. O carregamento continua no efeito.
+  const dialogKey = open && clientId ? clientId : null
+  const [syncedDialogKey, setSyncedDialogKey] = useState(dialogKey)
+  if (syncedDialogKey !== dialogKey) {
+    setSyncedDialogKey(dialogKey)
+    if (dialogKey === null) {
       reset()
-      return
+    } else {
+      setActiveStep(null)
+      setStepCache({})
+      setStepLoad({ status: "idle" })
+      setDirection(1)
+      setEditing(false)
+      setIsFinishingEdit(false)
+      setArea("briefing")
+      setOverviewState({ status: "loading" })
     }
-    setActiveStep(null)
-    setStepCache({})
-    setStepLoad({ status: "idle" })
-    setDirection(1)
-    setEditing(false)
-    setIsFinishingEdit(false)
-    setArea("briefing")
+  }
+
+  useEffect(() => {
+    if (!open || !clientId) return
     editorFlushRef.current = null
-    void loadOverview(clientId)
-  }, [open, clientId, loadOverview, reset])
+    const requestId = ++requestIdRef.current
+    void loadStaffBriefingOverview(clientId).then((result) => {
+      if (requestId !== requestIdRef.current) return
+      setOverviewState(
+        result.status === "error"
+          ? { status: "error", message: result.message }
+          : { status: "ready", overview: result.overview },
+      )
+    })
+  }, [open, clientId])
 
   async function openStep(stepId: BriefingStepId) {
     if (!clientId) return

@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useMemo, useState, useTransition } from "react"
-import { LazyMotion, domAnimation } from "motion/react"
 import {
   RiCheckLine,
   RiCloseLine,
@@ -378,76 +377,281 @@ export function ClientBriefingAccessesForm({
   const otherNames = payload.otherTools.items.map((item) => item.name)
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 pb-24">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 pb-24">
+      <BriefingSectionCard
+        index={1}
+        icon={<RiGlobalLine size={18} aria-hidden />}
+        title="Acesso ao site (WordPress)"
+        description="Caso tenha painel WordPress, informe login e senha."
+      >
+        <RadioGroup
+          label="Tem acesso ao WordPress?"
+          orientation="horizontal"
+          value={payload.wordpress.status ?? ""}
+          onValueChange={handleWordpressStatus}
+        >
+          <Radio value="yes" label="Sim" />
+          <Radio value="no" label="Não" />
+        </RadioGroup>
+        {payload.wordpress.status === "yes" ? (
+          <>
+            <Input
+              id="briefing-wp-login-url"
+              label="URL de login"
+              value={payload.wordpress.loginUrl}
+              onChange={(event) =>
+                patch({
+                  wordpress: {
+                    ...payload.wordpress,
+                    loginUrl: event.target.value,
+                  },
+                })
+              }
+              placeholder="https://seusite.com/wp-admin"
+            />
+            <Input
+              id="briefing-wp-username"
+              label="Usuário"
+              value={payload.wordpress.username}
+              onChange={(event) =>
+                patch({
+                  wordpress: {
+                    ...payload.wordpress,
+                    username: event.target.value,
+                  },
+                })
+              }
+              placeholder="Usuário ou e-mail"
+              autoComplete="username"
+            />
+            <Input
+              id="briefing-wp-password"
+              type="password"
+              label="Senha"
+              value={wordpressPassword}
+              onChange={(event) => {
+                setWordpressPassword(event.target.value)
+                clearError()
+              }}
+              onBlur={() => {
+                void persistSecret("wordpress", wordpressPassword).then(
+                  (ok) => {
+                    if (ok && wordpressPassword.trim()) {
+                      setWordpressPassword("")
+                    }
+                  },
+                )
+              }}
+              placeholder={
+                secretFlags.wordpress
+                  ? "Senha salva — digite para trocar"
+                  : "Senha do WordPress"
+              }
+              autoComplete="new-password"
+            />
+          </>
+        ) : null}
+      </BriefingSectionCard>
+
+      <BriefingSectionCard
+        index={2}
+        icon={<RiGoogleLine size={18} aria-hidden />}
+        title="Search Console"
+        description="Caso tenha, informe o e-mail para receber o convite."
+      >
+        <RadioGroup
+          label="Tem acesso ao Search Console?"
+          orientation="horizontal"
+          value={payload.searchConsole.status ?? ""}
+          onValueChange={(next) =>
+            patch({
+              searchConsole: {
+                status: parseAnswer(next),
+                inviteEmail:
+                  parseAnswer(next) === "yes"
+                    ? payload.searchConsole.inviteEmail
+                    : "",
+              },
+            })
+          }
+        >
+          <Radio value="yes" label="Sim" />
+          <Radio value="no" label="Não" />
+        </RadioGroup>
+        {payload.searchConsole.status === "yes" ? (
+          <Input
+            id="briefing-sc-email"
+            type="email"
+            label="E-mail para o convite"
+            value={payload.searchConsole.inviteEmail}
+            onChange={(event) =>
+              patch({
+                searchConsole: {
+                  ...payload.searchConsole,
+                  inviteEmail: event.target.value,
+                },
+              })
+            }
+            placeholder="voce@empresa.com"
+          />
+        ) : null}
+      </BriefingSectionCard>
+
+      <BriefingSectionCard
+        index={3}
+        icon={<RiGoogleLine size={18} aria-hidden />}
+        title="Google Analytics"
+        description="Caso tenha, informe o e-mail para receber o convite."
+      >
+        <RadioGroup
+          label="Tem acesso ao Google Analytics?"
+          orientation="horizontal"
+          value={payload.analytics.status ?? ""}
+          onValueChange={(next) =>
+            patch({
+              analytics: {
+                status: parseAnswer(next),
+                inviteEmail:
+                  parseAnswer(next) === "yes"
+                    ? payload.analytics.inviteEmail
+                    : "",
+              },
+            })
+          }
+        >
+          <Radio value="yes" label="Sim" />
+          <Radio value="no" label="Não" />
+        </RadioGroup>
+        {payload.analytics.status === "yes" ? (
+          <Input
+            id="briefing-ga-email"
+            type="email"
+            label="E-mail para o convite"
+            value={payload.analytics.inviteEmail}
+            onChange={(event) =>
+              patch({
+                analytics: {
+                  ...payload.analytics,
+                  inviteEmail: event.target.value,
+                },
+              })
+            }
+            placeholder="voce@empresa.com"
+          />
+        ) : null}
+      </BriefingSectionCard>
+
+      <BriefingSectionCard
+        index={4}
+        icon={<RiKey2Line size={18} aria-hidden />}
+        title="Google Meu Negócio"
+        description="Convite para gerenciamento do perfil."
+      >
+        <RadioGroup
+          label="Tem acesso ao Google Meu Negócio?"
+          orientation="horizontal"
+          value={payload.gbp.status ?? ""}
+          onValueChange={(next) =>
+            patch({
+              gbp: {
+                status: parseAnswer(next),
+                inviteEmail:
+                  parseAnswer(next) === "yes" ? payload.gbp.inviteEmail : "",
+              },
+            })
+          }
+        >
+          <Radio value="yes" label="Sim" />
+          <Radio value="no" label="Não" />
+        </RadioGroup>
+        {payload.gbp.status === "yes" ? (
+          <Input
+            id="briefing-gbp-email"
+            type="email"
+            label="E-mail para o convite"
+            value={payload.gbp.inviteEmail}
+            onChange={(event) =>
+              patch({
+                gbp: {
+                  ...payload.gbp,
+                  inviteEmail: event.target.value,
+                },
+              })
+            }
+            placeholder="voce@empresa.com"
+          />
+        ) : null}
+      </BriefingSectionCard>
+
+      <div className="grid items-start gap-4 lg:grid-cols-2">
         <BriefingSectionCard
-          index={1}
-          icon={<RiGlobalLine size={18} aria-hidden />}
-          title="Acesso ao site (WordPress)"
-          description="Caso tenha painel WordPress, informe login e senha."
+          index={5}
+          icon={<RiServerLine size={18} aria-hidden />}
+          title="Hospedagem"
+          description="Painel onde o site está hospedado."
         >
           <RadioGroup
-            label="Tem acesso ao WordPress?"
+            label="Tem acesso à hospedagem?"
             orientation="horizontal"
-            value={payload.wordpress.status ?? ""}
-            onValueChange={handleWordpressStatus}
+            value={payload.hosting.status ?? ""}
+            onValueChange={handleHostingStatus}
           >
             <Radio value="yes" label="Sim" />
             <Radio value="no" label="Não" />
           </RadioGroup>
-          {payload.wordpress.status === "yes" ? (
+          {payload.hosting.status === "yes" ? (
             <>
               <Input
-                id="briefing-wp-login-url"
-                label="URL de login"
-                value={payload.wordpress.loginUrl}
+                id="briefing-hosting-url"
+                label="URL do painel"
+                value={payload.hosting.panelUrl}
                 onChange={(event) =>
                   patch({
-                    wordpress: {
-                      ...payload.wordpress,
-                      loginUrl: event.target.value,
+                    hosting: {
+                      ...payload.hosting,
+                      panelUrl: event.target.value,
                     },
                   })
                 }
-                placeholder="https://seusite.com/wp-admin"
+                placeholder="https://painel.provedor.com"
               />
               <Input
-                id="briefing-wp-username"
+                id="briefing-hosting-username"
                 label="Usuário"
-                value={payload.wordpress.username}
+                value={payload.hosting.username}
                 onChange={(event) =>
                   patch({
-                    wordpress: {
-                      ...payload.wordpress,
+                    hosting: {
+                      ...payload.hosting,
                       username: event.target.value,
                     },
                   })
                 }
-                placeholder="Usuário ou e-mail"
+                placeholder="Usuário do painel"
                 autoComplete="username"
               />
               <Input
-                id="briefing-wp-password"
+                id="briefing-hosting-password"
                 type="password"
                 label="Senha"
-                value={wordpressPassword}
+                value={hostingPassword}
                 onChange={(event) => {
-                  setWordpressPassword(event.target.value)
+                  setHostingPassword(event.target.value)
                   clearError()
                 }}
                 onBlur={() => {
-                  void persistSecret("wordpress", wordpressPassword).then(
+                  void persistSecret("hosting_domain", hostingPassword).then(
                     (ok) => {
-                      if (ok && wordpressPassword.trim()) {
-                        setWordpressPassword("")
+                      if (ok && hostingPassword.trim()) {
+                        setHostingPassword("")
                       }
                     },
                   )
                 }}
                 placeholder={
-                  secretFlags.wordpress
+                  secretFlags.hosting_domain
                     ? "Senha salva — digite para trocar"
-                    : "Senha do WordPress"
+                    : "Senha do painel"
                 }
                 autoComplete="new-password"
               />
@@ -456,460 +660,249 @@ export function ClientBriefingAccessesForm({
         </BriefingSectionCard>
 
         <BriefingSectionCard
-          index={2}
-          icon={<RiGoogleLine size={18} aria-hidden />}
-          title="Search Console"
-          description="Caso tenha, informe o e-mail para receber o convite."
+          index={6}
+          icon={<RiEarthLine size={18} aria-hidden />}
+          title="Domínio"
+          description="Painel onde o domínio está registrado (Registro.br, provedor, etc.)."
         >
           <RadioGroup
-            label="Tem acesso ao Search Console?"
+            label="Tem acesso ao domínio?"
             orientation="horizontal"
-            value={payload.searchConsole.status ?? ""}
-            onValueChange={(next) =>
-              patch({
-                searchConsole: {
-                  status: parseAnswer(next),
-                  inviteEmail:
-                    parseAnswer(next) === "yes"
-                      ? payload.searchConsole.inviteEmail
-                      : "",
-                },
-              })
-            }
+            value={payload.domain.status ?? ""}
+            onValueChange={handleDomainStatus}
           >
             <Radio value="yes" label="Sim" />
             <Radio value="no" label="Não" />
           </RadioGroup>
-          {payload.searchConsole.status === "yes" ? (
-            <Input
-              id="briefing-sc-email"
-              type="email"
-              label="E-mail para o convite"
-              value={payload.searchConsole.inviteEmail}
-              onChange={(event) =>
-                patch({
-                  searchConsole: {
-                    ...payload.searchConsole,
-                    inviteEmail: event.target.value,
-                  },
-                })
-              }
-              placeholder="voce@empresa.com"
-            />
+          {payload.domain.status === "yes" ? (
+            <>
+              <Input
+                id="briefing-domain-url"
+                label="URL do painel"
+                value={payload.domain.panelUrl}
+                onChange={(event) =>
+                  patch({
+                    domain: {
+                      ...payload.domain,
+                      panelUrl: event.target.value,
+                    },
+                  })
+                }
+                placeholder="https://registro.br"
+              />
+              <Input
+                id="briefing-domain-username"
+                label="Usuário"
+                value={payload.domain.username}
+                onChange={(event) =>
+                  patch({
+                    domain: {
+                      ...payload.domain,
+                      username: event.target.value,
+                    },
+                  })
+                }
+                placeholder="Usuário do registro"
+                autoComplete="username"
+              />
+              <Input
+                id="briefing-domain-password"
+                type="password"
+                label="Senha"
+                value={domainPassword}
+                onChange={(event) => {
+                  setDomainPassword(event.target.value)
+                  clearError()
+                }}
+                onBlur={() => {
+                  void persistSecret("domain", domainPassword).then((ok) => {
+                    if (ok && domainPassword.trim()) {
+                      setDomainPassword("")
+                    }
+                  })
+                }}
+                placeholder={
+                  secretFlags.domain
+                    ? "Senha salva — digite para trocar"
+                    : "Senha do painel"
+                }
+                autoComplete="new-password"
+              />
+            </>
           ) : null}
         </BriefingSectionCard>
+      </div>
 
-        <BriefingSectionCard
-          index={3}
-          icon={<RiGoogleLine size={18} aria-hidden />}
-          title="Google Analytics"
-          description="Caso tenha, informe o e-mail para receber o convite."
+      <BriefingSectionCard
+        index={7}
+        icon={<RiToolsLine size={18} aria-hidden />}
+        title="Outras ferramentas"
+        description="CRM, e-mail marketing, chat ou qualquer outra ferramenta relevante."
+      >
+        <RadioGroup
+          label="Usa outras ferramentas?"
+          orientation="horizontal"
+          value={payload.otherTools.status ?? ""}
+          onValueChange={handleOtherStatus}
         >
-          <RadioGroup
-            label="Tem acesso ao Google Analytics?"
-            orientation="horizontal"
-            value={payload.analytics.status ?? ""}
-            onValueChange={(next) =>
-              patch({
-                analytics: {
-                  status: parseAnswer(next),
-                  inviteEmail:
-                    parseAnswer(next) === "yes"
-                      ? payload.analytics.inviteEmail
-                      : "",
-                },
-              })
-            }
-          >
-            <Radio value="yes" label="Sim" />
-            <Radio value="no" label="Não" />
-          </RadioGroup>
-          {payload.analytics.status === "yes" ? (
-            <Input
-              id="briefing-ga-email"
-              type="email"
-              label="E-mail para o convite"
-              value={payload.analytics.inviteEmail}
-              onChange={(event) =>
-                patch({
-                  analytics: {
-                    ...payload.analytics,
-                    inviteEmail: event.target.value,
-                  },
-                })
-              }
-              placeholder="voce@empresa.com"
+          <Radio value="yes" label="Sim" />
+          <Radio value="no" label="Não" />
+        </RadioGroup>
+        {payload.otherTools.status === "yes" ? (
+          <>
+            <BriefingChipField
+              id="briefing-other-tools"
+              label="Quais ferramentas?"
+              values={otherNames}
+              onChange={handleOtherNames}
+              placeholder="Digite o nome e pressione Enter"
             />
-          ) : null}
-        </BriefingSectionCard>
-
-        <BriefingSectionCard
-          index={4}
-          icon={<RiKey2Line size={18} aria-hidden />}
-          title="Google Meu Negócio"
-          description="Convite para gerenciamento do perfil."
-        >
-          <RadioGroup
-            label="Tem acesso ao Google Meu Negócio?"
-            orientation="horizontal"
-            value={payload.gbp.status ?? ""}
-            onValueChange={(next) =>
-              patch({
-                gbp: {
-                  status: parseAnswer(next),
-                  inviteEmail:
-                    parseAnswer(next) === "yes" ? payload.gbp.inviteEmail : "",
-                },
-              })
-            }
-          >
-            <Radio value="yes" label="Sim" />
-            <Radio value="no" label="Não" />
-          </RadioGroup>
-          {payload.gbp.status === "yes" ? (
-            <Input
-              id="briefing-gbp-email"
-              type="email"
-              label="E-mail para o convite"
-              value={payload.gbp.inviteEmail}
-              onChange={(event) =>
-                patch({
-                  gbp: {
-                    ...payload.gbp,
-                    inviteEmail: event.target.value,
-                  },
-                })
-              }
-              placeholder="voce@empresa.com"
-            />
-          ) : null}
-        </BriefingSectionCard>
-
-        <div className="grid items-start gap-4 lg:grid-cols-2">
-          <BriefingSectionCard
-            index={5}
-            icon={<RiServerLine size={18} aria-hidden />}
-            title="Hospedagem"
-            description="Painel onde o site está hospedado."
-          >
-            <RadioGroup
-              label="Tem acesso à hospedagem?"
-              orientation="horizontal"
-              value={payload.hosting.status ?? ""}
-              onValueChange={handleHostingStatus}
-            >
-              <Radio value="yes" label="Sim" />
-              <Radio value="no" label="Não" />
-            </RadioGroup>
-            {payload.hosting.status === "yes" ? (
-              <>
+            {payload.otherTools.items.map((item) => (
+              <div
+                key={item.id}
+                className="flex flex-col gap-3 rounded-lg border border-border bg-background/40 p-3"
+              >
+                <p className="text-xs/relaxed font-semibold text-foreground">
+                  {item.name}
+                </p>
                 <Input
-                  id="briefing-hosting-url"
-                  label="URL do painel"
-                  value={payload.hosting.panelUrl}
+                  id={`briefing-other-user-${item.id}`}
+                  label="Usuário (opcional)"
+                  value={item.username}
                   onChange={(event) =>
                     patch({
-                      hosting: {
-                        ...payload.hosting,
-                        panelUrl: event.target.value,
+                      otherTools: {
+                        ...payload.otherTools,
+                        items: payload.otherTools.items.map((entry) =>
+                          entry.id === item.id
+                            ? { ...entry, username: event.target.value }
+                            : entry,
+                        ),
                       },
                     })
                   }
-                  placeholder="https://painel.provedor.com"
-                />
-                <Input
-                  id="briefing-hosting-username"
-                  label="Usuário"
-                  value={payload.hosting.username}
-                  onChange={(event) =>
-                    patch({
-                      hosting: {
-                        ...payload.hosting,
-                        username: event.target.value,
-                      },
-                    })
-                  }
-                  placeholder="Usuário do painel"
+                  placeholder="Usuário, se houver"
                   autoComplete="username"
                 />
                 <Input
-                  id="briefing-hosting-password"
+                  id={`briefing-other-pass-${item.id}`}
                   type="password"
-                  label="Senha"
-                  value={hostingPassword}
+                  label="Senha (opcional)"
+                  value={otherPasswords[item.id] ?? ""}
                   onChange={(event) => {
-                    setHostingPassword(event.target.value)
+                    setOtherPasswords((current) => ({
+                      ...current,
+                      [item.id]: event.target.value,
+                    }))
                     clearError()
                   }}
                   onBlur={() => {
-                    void persistSecret("hosting_domain", hostingPassword).then(
+                    const draft = otherPasswords[item.id] ?? ""
+                    void persistSecret(otherSecretKind(item.id), draft).then(
                       (ok) => {
-                        if (ok && hostingPassword.trim()) {
-                          setHostingPassword("")
+                        if (ok && draft.trim()) {
+                          setOtherPasswords((current) => {
+                            const next = { ...current }
+                            delete next[item.id]
+                            return next
+                          })
                         }
                       },
                     )
                   }}
                   placeholder={
-                    secretFlags.hosting_domain
+                    secretFlags[otherSecretKind(item.id)]
                       ? "Senha salva — digite para trocar"
-                      : "Senha do painel"
+                      : "Senha, se houver"
                   }
                   autoComplete="new-password"
                 />
-              </>
-            ) : null}
-          </BriefingSectionCard>
+              </div>
+            ))}
+          </>
+        ) : null}
+      </BriefingSectionCard>
 
-          <BriefingSectionCard
-            index={6}
-            icon={<RiEarthLine size={18} aria-hidden />}
-            title="Domínio"
-            description="Painel onde o domínio está registrado (Registro.br, provedor, etc.)."
-          >
-            <RadioGroup
-              label="Tem acesso ao domínio?"
-              orientation="horizontal"
-              value={payload.domain.status ?? ""}
-              onValueChange={handleDomainStatus}
-            >
-              <Radio value="yes" label="Sim" />
-              <Radio value="no" label="Não" />
-            </RadioGroup>
-            {payload.domain.status === "yes" ? (
-              <>
-                <Input
-                  id="briefing-domain-url"
-                  label="URL do painel"
-                  value={payload.domain.panelUrl}
-                  onChange={(event) =>
-                    patch({
-                      domain: {
-                        ...payload.domain,
-                        panelUrl: event.target.value,
-                      },
-                    })
-                  }
-                  placeholder="https://registro.br"
-                />
-                <Input
-                  id="briefing-domain-username"
-                  label="Usuário"
-                  value={payload.domain.username}
-                  onChange={(event) =>
-                    patch({
-                      domain: {
-                        ...payload.domain,
-                        username: event.target.value,
-                      },
-                    })
-                  }
-                  placeholder="Usuário do registro"
-                  autoComplete="username"
-                />
-                <Input
-                  id="briefing-domain-password"
-                  type="password"
-                  label="Senha"
-                  value={domainPassword}
-                  onChange={(event) => {
-                    setDomainPassword(event.target.value)
-                    clearError()
-                  }}
-                  onBlur={() => {
-                    void persistSecret("domain", domainPassword).then((ok) => {
-                      if (ok && domainPassword.trim()) {
-                        setDomainPassword("")
-                      }
-                    })
-                  }}
-                  placeholder={
-                    secretFlags.domain
-                      ? "Senha salva — digite para trocar"
-                      : "Senha do painel"
-                  }
-                  autoComplete="new-password"
-                />
-              </>
-            ) : null}
-          </BriefingSectionCard>
-        </div>
-
-        <BriefingSectionCard
-          index={7}
-          icon={<RiToolsLine size={18} aria-hidden />}
-          title="Outras ferramentas"
-          description="CRM, e-mail marketing, chat ou qualquer outra ferramenta relevante."
+      {errorMessage ? (
+        <p
+          role="alert"
+          className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
         >
-          <RadioGroup
-            label="Usa outras ferramentas?"
-            orientation="horizontal"
-            value={payload.otherTools.status ?? ""}
-            onValueChange={handleOtherStatus}
-          >
-            <Radio value="yes" label="Sim" />
-            <Radio value="no" label="Não" />
-          </RadioGroup>
-          {payload.otherTools.status === "yes" ? (
-            <>
-              <BriefingChipField
-                id="briefing-other-tools"
-                label="Quais ferramentas?"
-                values={otherNames}
-                onChange={handleOtherNames}
-                placeholder="Digite o nome e pressione Enter"
-              />
-              {payload.otherTools.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex flex-col gap-3 rounded-lg border border-border bg-background/40 p-3"
-                >
-                  <p className="text-xs/relaxed font-semibold text-foreground">
-                    {item.name}
-                  </p>
-                  <Input
-                    id={`briefing-other-user-${item.id}`}
-                    label="Usuário (opcional)"
-                    value={item.username}
-                    onChange={(event) =>
-                      patch({
-                        otherTools: {
-                          ...payload.otherTools,
-                          items: payload.otherTools.items.map((entry) =>
-                            entry.id === item.id
-                              ? { ...entry, username: event.target.value }
-                              : entry,
-                          ),
-                        },
-                      })
-                    }
-                    placeholder="Usuário, se houver"
-                    autoComplete="username"
-                  />
-                  <Input
-                    id={`briefing-other-pass-${item.id}`}
-                    type="password"
-                    label="Senha (opcional)"
-                    value={otherPasswords[item.id] ?? ""}
-                    onChange={(event) => {
-                      setOtherPasswords((current) => ({
-                        ...current,
-                        [item.id]: event.target.value,
-                      }))
-                      clearError()
-                    }}
-                    onBlur={() => {
-                      const draft = otherPasswords[item.id] ?? ""
-                      void persistSecret(otherSecretKind(item.id), draft).then(
-                        (ok) => {
-                          if (ok && draft.trim()) {
-                            setOtherPasswords((current) => {
-                              const next = { ...current }
-                              delete next[item.id]
-                              return next
-                            })
-                          }
-                        },
-                      )
-                    }}
-                    placeholder={
-                      secretFlags[otherSecretKind(item.id)]
-                        ? "Senha salva — digite para trocar"
-                        : "Senha, se houver"
-                    }
-                    autoComplete="new-password"
-                  />
-                </div>
-              ))}
-            </>
-          ) : null}
-        </BriefingSectionCard>
+          {errorMessage}
+        </p>
+      ) : null}
 
-        {errorMessage ? (
-          <p
-            role="alert"
-            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
-          >
-            {errorMessage}
-          </p>
-        ) : null}
+      {completed ? (
+        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
+          Etapa concluída. Você pode continuar editando; as alterações seguem
+          sendo salvas.
+        </div>
+      ) : null}
 
-        {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
-            Etapa concluída. Você pode continuar editando; as alterações seguem
-            sendo salvas.
-          </div>
-        ) : null}
-
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
-          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
-              <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
-                  {saveState === "saving" || isCompleting || isSavingSecret ? (
-                    <>
-                      <Spinner aria-hidden className="size-3.5" />
-                      Salvando…
-                    </>
-                  ) : saveState === "saved" && savedAt ? (
-                    <>
-                      <RiCheckLine
-                        size={14}
-                        aria-hidden
-                        className="text-success"
-                      />
-                      Salvo · {formatTimeShort(savedAt)}
-                    </>
-                  ) : saveState === "error" ? (
-                    <>
-                      <RiCloseLine
-                        size={14}
-                        aria-hidden
-                        className="text-destructive"
-                      />
-                      Não foi possível salvar
-                    </>
-                  ) : (
-                    "Rascunho salvo automaticamente"
-                  )}
-                </p>
-                {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
-                    Falta: {missingLabels.join(", ")}
-                  </p>
-                ) : null}
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
-                {onBack ? (
-                  <Button type="button" variant="ghost" onClick={onBack}>
-                    Voltar
-                  </Button>
-                ) : null}
-                {variant === "staff" ? null : (
-                  <Button
-                    type="button"
-                    disabled={isCompleting || isSavingSecret || !ready}
-                    onClick={handleComplete}
-                  >
-                    {isCompleting
-                      ? "Salvando..."
-                      : completed
-                        ? "Etapa concluída"
-                        : "Continuar"}
-                    {completed ? (
-                      <RiCheckLine
-                        size={16}
-                        aria-hidden
-                        data-icon="inline-end"
-                      />
-                    ) : null}
-                  </Button>
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
+        <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
+            <div className="min-w-0">
+              <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+                {saveState === "saving" || isCompleting || isSavingSecret ? (
+                  <>
+                    <Spinner aria-hidden className="size-3.5" />
+                    Salvando…
+                  </>
+                ) : saveState === "saved" && savedAt ? (
+                  <>
+                    <RiCheckLine
+                      size={14}
+                      aria-hidden
+                      className="text-success"
+                    />
+                    Salvo · {formatTimeShort(savedAt)}
+                  </>
+                ) : saveState === "error" ? (
+                  <>
+                    <RiCloseLine
+                      size={14}
+                      aria-hidden
+                      className="text-destructive"
+                    />
+                    Não foi possível salvar
+                  </>
+                ) : (
+                  "Rascunho salvo automaticamente"
                 )}
-              </div>
+              </p>
+              {!ready && missingLabels.length > 0 ? (
+                <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
+                  Falta: {missingLabels.join(", ")}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {onBack ? (
+                <Button type="button" variant="ghost" onClick={onBack}>
+                  Voltar
+                </Button>
+              ) : null}
+              {variant === "staff" ? null : (
+                <Button
+                  type="button"
+                  disabled={isCompleting || isSavingSecret || !ready}
+                  onClick={handleComplete}
+                >
+                  {isCompleting
+                    ? "Salvando..."
+                    : completed
+                      ? "Etapa concluída"
+                      : "Continuar"}
+                  {completed ? (
+                    <RiCheckLine size={16} aria-hidden data-icon="inline-end" />
+                  ) : null}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </LazyMotion>
+    </div>
   )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useSyncExternalStore } from "react"
 import { useTheme } from "next-themes"
 import { RiComputerLine, RiMoonLine, RiSunLine } from "react-icons/ri"
 import { cn } from "cn"
@@ -16,6 +16,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { ThemeToggleProps } from "./ThemeToggle.types"
+
+const subscribeNoop = () => () => {}
 
 const THEME_OPTIONS: Array<{
   value: ThemeValue
@@ -36,10 +38,14 @@ export function ThemeToggle({
   label,
   "aria-describedby": ariaDescribedby,
 }: ThemeToggleProps) {
-  const [mounted, setMounted] = useState(false)
+  // Hidratação como sistema externo: o servidor devolve false, o cliente true,
+  // sem efeito nem render extra.
+  const mounted = useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
+  )
   const { theme, setTheme } = useTheme()
-
-  useEffect(() => setMounted(true), [])
 
   const current = mounted && isThemeValue(theme) ? theme : "system"
   const currentOption =

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { RiCheckLine } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { Spinner } from "@/components/ui/spinner"

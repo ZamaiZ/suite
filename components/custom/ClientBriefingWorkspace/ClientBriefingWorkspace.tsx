@@ -1,12 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import {
-  AnimatePresence,
-  LazyMotion,
-  domAnimation,
-  useReducedMotion,
-} from "motion/react"
+import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiErrorWarningLine } from "react-icons/ri"
 import {
@@ -332,11 +327,16 @@ export function ClientBriefingWorkspace({
     }
   }, [])
 
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedLoadStatus, setSyncedLoadStatus] = useState(loadState.status)
+  if (syncedLoadStatus !== loadState.status) {
+    setSyncedLoadStatus(loadState.status)
+    if (loadState.status === "error") setPhaseState("wizard")
+  }
+
   useEffect(() => {
-    if (loadState.status === "error") {
-      setPhaseState("wizard")
-      onPhaseChange?.("wizard")
-    }
+    if (loadState.status !== "error") return
+    onPhaseChange?.("wizard")
   }, [loadState.status, onPhaseChange])
 
   const highestReachedIndex = useMemo(() => {
@@ -467,414 +467,411 @@ export function ClientBriefingWorkspace({
   }
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="flex flex-col gap-5">
-        <AnimatePresence mode="wait" initial={false}>
-          {isBooting || (loadState.status === "loading" && phase === null) ? (
-            <m.div
-              key="booting"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
-            >
-              <Spinner aria-hidden className="size-4.5" />
-              Carregando seus dados…
-            </m.div>
-          ) : null}
+    <div className="flex flex-col gap-5">
+      <AnimatePresence mode="wait" initial={false}>
+        {isBooting || (loadState.status === "loading" && phase === null) ? (
+          <m.div
+            key="booting"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
+          >
+            <Spinner aria-hidden className="size-4.5" />
+            Carregando seus dados…
+          </m.div>
+        ) : null}
 
-          {loadState.status === "error" ? (
-            <m.div
-              key="error-root"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              role="alert"
-              className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5 text-xs/relaxed text-destructive"
-            >
-              {loadState.message}
-            </m.div>
-          ) : null}
+        {loadState.status === "error" ? (
+          <m.div
+            key="error-root"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="alert"
+            className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5 text-xs/relaxed text-destructive"
+          >
+            {loadState.message}
+          </m.div>
+        ) : null}
 
-          {phase === "complete" && loadState.status === "ready" ? (
+        {phase === "complete" && loadState.status === "ready" ? (
+          <m.div
+            key="complete-phase"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: reduced ? 0.12 : 0.35, ease: EASE }}
+          >
+            <ClientBriefingCompleteScreen
+              companyName={companyName}
+              editedAfterSubmit={editedAfterSubmit}
+              onEdit={() => updatePhase("editing")}
+            />
+          </m.div>
+        ) : null}
+
+        {showWizard ? (
+          <m.div
+            key="wizard-phase"
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
+            transition={{ duration: reduced ? 0.12 : 0.32, ease: EASE }}
+            className="flex flex-col gap-5"
+          >
             <m.div
-              key="complete-phase"
-              initial={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-              transition={{ duration: reduced ? 0.12 : 0.35, ease: EASE }}
+              initial={sectionEnter}
+              animate={sectionVisible}
+              transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
+              className="mx-auto flex w-full max-w-3xl flex-col gap-3"
             >
-              <ClientBriefingCompleteScreen
-                companyName={companyName}
-                editedAfterSubmit={editedAfterSubmit}
-                onEdit={() => updatePhase("editing")}
+              <div>
+                <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
+                  {companyName}
+                </p>
+                <AnimatePresence mode="wait" initial={false}>
+                  <m.div
+                    key={stepIndex}
+                    initial={reduced ? { opacity: 0 } : { opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={reduced ? { opacity: 0 } : { opacity: 0, y: -4 }}
+                    transition={{
+                      duration: reduced ? 0.1 : 0.22,
+                      ease: EASE,
+                    }}
+                  >
+                    <p className="mt-1 text-xs/relaxed font-semibold text-foreground">
+                      {stepCopy.title}
+                    </p>
+                    <p className="mt-1 text-xs/relaxed text-muted-foreground">
+                      {stepCopy.description}
+                    </p>
+                  </m.div>
+                </AnimatePresence>
+              </div>
+              <Stepper
+                steps={[...BRIEFING_STEPS]}
+                currentIndex={stepIndex}
+                highestReachedIndex={highestReachedIndex}
+                onStepSelect={goToStep}
               />
             </m.div>
-          ) : null}
 
-          {showWizard ? (
-            <m.div
-              key="wizard-phase"
-              initial={reduced ? { opacity: 0 } : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-              transition={{ duration: reduced ? 0.12 : 0.32, ease: EASE }}
-              className="flex flex-col gap-5"
-            >
+            {isEditing ? (
+              <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 shadow-xs sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-xs/relaxed font-semibold text-foreground">
+                    Briefing já enviado
+                  </p>
+                  <p className="mt-1 text-xs/relaxed leading-relaxed text-muted-foreground">
+                    Alterações ficam registradas para a equipe.
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="shrink-0"
+                  onClick={() => {
+                    void loadBriefingMeta().then((meta) => {
+                      if (meta.status === "success") {
+                        setLoadState((current) => {
+                          if (current.status !== "ready") return current
+                          return {
+                            ...current,
+                            finalizedAt: meta.finalizedAt,
+                            contentUpdatedAt: meta.contentUpdatedAt,
+                          }
+                        })
+                      }
+                      updatePhase("complete")
+                    })
+                  }}
+                >
+                  Voltar ao resumo
+                </Button>
+              </div>
+            ) : (
               <m.div
                 initial={sectionEnter}
                 animate={sectionVisible}
-                transition={{ duration: reduced ? 0.12 : 0.28, ease: EASE }}
-                className="mx-auto flex w-full max-w-3xl flex-col gap-3"
+                transition={{
+                  duration: reduced ? 0.12 : 0.3,
+                  ease: EASE,
+                  delay: reduced ? 0 : 0.06,
+                }}
+                className="mx-auto flex w-full max-w-3xl gap-3 rounded-xl border border-border bg-card px-4 py-3 shadow-xs"
               >
-                <div>
-                  <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
-                    {companyName}
+                <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <RiErrorWarningLine size={16} aria-hidden />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-xs/relaxed font-semibold text-foreground">
+                    Complete para avançar
                   </p>
-                  <AnimatePresence mode="wait" initial={false}>
-                    <m.div
-                      key={stepIndex}
-                      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={reduced ? { opacity: 0 } : { opacity: 0, y: -4 }}
-                      transition={{
-                        duration: reduced ? 0.1 : 0.22,
-                        ease: EASE,
-                      }}
-                    >
-                      <p className="mt-1 text-xs/relaxed font-semibold text-foreground">
-                        {stepCopy.title}
-                      </p>
-                      <p className="mt-1 text-xs/relaxed text-muted-foreground">
-                        {stepCopy.description}
-                      </p>
-                    </m.div>
-                  </AnimatePresence>
+                  <p className="mt-1 text-xs/relaxed leading-relaxed text-muted-foreground">
+                    O rascunho é salvo automaticamente. O botão Continuar libera
+                    quando todos os campos obrigatórios estiverem preenchidos.
+                  </p>
                 </div>
-                <Stepper
-                  steps={[...BRIEFING_STEPS]}
-                  currentIndex={stepIndex}
-                  highestReachedIndex={highestReachedIndex}
-                  onStepSelect={goToStep}
-                />
               </m.div>
+            )}
 
-              {isEditing ? (
-                <div className="mx-auto flex w-full max-w-3xl flex-col gap-3 rounded-xl border border-primary/25 bg-primary/5 px-4 py-3 shadow-xs sm:flex-row sm:items-center sm:justify-between">
-                  <div className="min-w-0">
-                    <p className="text-xs/relaxed font-semibold text-foreground">
-                      Briefing já enviado
-                    </p>
-                    <p className="mt-1 text-xs/relaxed leading-relaxed text-muted-foreground">
-                      Alterações ficam registradas para a equipe.
-                    </p>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    className="shrink-0"
-                    onClick={() => {
-                      void loadBriefingMeta().then((meta) => {
-                        if (meta.status === "success") {
-                          setLoadState((current) => {
-                            if (current.status !== "ready") return current
-                            return {
-                              ...current,
-                              finalizedAt: meta.finalizedAt,
-                              contentUpdatedAt: meta.contentUpdatedAt,
-                            }
-                          })
-                        }
-                        updatePhase("complete")
-                      })
-                    }}
-                  >
-                    Voltar ao resumo
-                  </Button>
-                </div>
-              ) : (
+            <AnimatePresence mode="wait" initial={false} custom={direction}>
+              {loadState.status === "loading" ? (
                 <m.div
-                  initial={sectionEnter}
-                  animate={sectionVisible}
-                  transition={{
-                    duration: reduced ? 0.12 : 0.3,
-                    ease: EASE,
-                    delay: reduced ? 0 : 0.06,
-                  }}
-                  className="mx-auto flex w-full max-w-3xl gap-3 rounded-xl border border-border bg-card px-4 py-3 shadow-xs"
+                  key="loading"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
                 >
-                  <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                    <RiErrorWarningLine size={16} aria-hidden />
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-xs/relaxed font-semibold text-foreground">
-                      Complete para avançar
-                    </p>
-                    <p className="mt-1 text-xs/relaxed leading-relaxed text-muted-foreground">
-                      O rascunho é salvo automaticamente. O botão Continuar
-                      libera quando todos os campos obrigatórios estiverem
-                      preenchidos.
-                    </p>
-                  </div>
+                  <Spinner aria-hidden className="size-4.5" />
+                  Carregando seus dados…
                 </m.div>
-              )}
+              ) : null}
 
-              <AnimatePresence mode="wait" initial={false} custom={direction}>
-                {loadState.status === "loading" ? (
-                  <m.div
-                    key="loading"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
-                  >
-                    <Spinner aria-hidden className="size-4.5" />
-                    Carregando seus dados…
-                  </m.div>
-                ) : null}
+              {loadState.status === "error" ? (
+                <m.div
+                  key="error"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  role="alert"
+                  className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5 text-xs/relaxed text-destructive"
+                >
+                  {loadState.message}
+                </m.div>
+              ) : null}
 
-                {loadState.status === "error" ? (
-                  <m.div
-                    key="error"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    role="alert"
-                    className="mx-auto w-full max-w-3xl rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-5 text-xs/relaxed text-destructive"
-                  >
-                    {loadState.message}
-                  </m.div>
-                ) : null}
-
-                {loadState.status === "ready" && stepIndex === 0 ? (
-                  <m.div
-                    key="company"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 0 ? (
+                <m.div
+                  key="company"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingCompanyForm
+                    initialPayload={loadState.company.payload}
+                    sourceSnapshot={loadState.company.sourceSnapshot}
+                    initialUpdatedAt={loadState.company.updatedAt}
+                    initialCompletedAt={loadState.company.completedAt}
+                    onContinue={(completedAt) => {
+                      markCompanyCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(1)
                     }}
-                  >
-                    <ClientBriefingCompanyForm
-                      initialPayload={loadState.company.payload}
-                      sourceSnapshot={loadState.company.sourceSnapshot}
-                      initialUpdatedAt={loadState.company.updatedAt}
-                      initialCompletedAt={loadState.company.completedAt}
-                      onContinue={(completedAt) => {
-                        markCompanyCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(1)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 1 ? (
-                  <m.div
-                    key="brand"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 1 ? (
+                <m.div
+                  key="brand"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingBrandForm
+                    initialPayload={loadState.brand.payload}
+                    initialUpdatedAt={loadState.brand.updatedAt}
+                    initialCompletedAt={loadState.brand.completedAt}
+                    onBack={() => goToStep(0)}
+                    onContinue={(completedAt) => {
+                      markBrandCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(2)
                     }}
-                  >
-                    <ClientBriefingBrandForm
-                      initialPayload={loadState.brand.payload}
-                      initialUpdatedAt={loadState.brand.updatedAt}
-                      initialCompletedAt={loadState.brand.completedAt}
-                      onBack={() => goToStep(0)}
-                      onContinue={(completedAt) => {
-                        markBrandCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(2)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 2 ? (
-                  <m.div
-                    key="audience"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 2 ? (
+                <m.div
+                  key="audience"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingAudienceForm
+                    initialPayload={loadState.audience.payload}
+                    initialUpdatedAt={loadState.audience.updatedAt}
+                    initialCompletedAt={loadState.audience.completedAt}
+                    companyCity={loadState.company.payload.city}
+                    companyFormattedAddress={companyFormattedAddress(
+                      loadState.company.payload,
+                    )}
+                    companyAddressKey={companyAddressFingerprint(
+                      loadState.company.payload,
+                    )}
+                    onBack={() => goToStep(1)}
+                    onContinue={(completedAt) => {
+                      markAudienceCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(3)
                     }}
-                  >
-                    <ClientBriefingAudienceForm
-                      initialPayload={loadState.audience.payload}
-                      initialUpdatedAt={loadState.audience.updatedAt}
-                      initialCompletedAt={loadState.audience.completedAt}
-                      companyCity={loadState.company.payload.city}
-                      companyFormattedAddress={companyFormattedAddress(
-                        loadState.company.payload,
-                      )}
-                      companyAddressKey={companyAddressFingerprint(
-                        loadState.company.payload,
-                      )}
-                      onBack={() => goToStep(1)}
-                      onContinue={(completedAt) => {
-                        markAudienceCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(3)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 3 ? (
-                  <m.div
-                    key="history"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 3 ? (
+                <m.div
+                  key="history"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingHistoryForm
+                    initialPayload={loadState.history.payload}
+                    initialUpdatedAt={loadState.history.updatedAt}
+                    initialCompletedAt={loadState.history.completedAt}
+                    onBack={() => goToStep(2)}
+                    onContinue={(completedAt) => {
+                      markHistoryCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(4)
                     }}
-                  >
-                    <ClientBriefingHistoryForm
-                      initialPayload={loadState.history.payload}
-                      initialUpdatedAt={loadState.history.updatedAt}
-                      initialCompletedAt={loadState.history.completedAt}
-                      onBack={() => goToStep(2)}
-                      onContinue={(completedAt) => {
-                        markHistoryCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(4)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 4 ? (
-                  <m.div
-                    key="finance"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 4 ? (
+                <m.div
+                  key="finance"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingFinanceForm
+                    initialPayload={loadState.finance.payload}
+                    initialUpdatedAt={loadState.finance.updatedAt}
+                    initialCompletedAt={loadState.finance.completedAt}
+                    productsAndServices={
+                      loadState.brand.payload.productsAndServices
+                    }
+                    onBack={() => goToStep(3)}
+                    onContinue={(completedAt) => {
+                      markFinanceCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(5)
                     }}
-                  >
-                    <ClientBriefingFinanceForm
-                      initialPayload={loadState.finance.payload}
-                      initialUpdatedAt={loadState.finance.updatedAt}
-                      initialCompletedAt={loadState.finance.completedAt}
-                      productsAndServices={
-                        loadState.brand.payload.productsAndServices
-                      }
-                      onBack={() => goToStep(3)}
-                      onContinue={(completedAt) => {
-                        markFinanceCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(5)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 5 ? (
-                  <m.div
-                    key="website"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 5 ? (
+                <m.div
+                  key="website"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingWebsiteForm
+                    initialPayload={loadState.website.payload}
+                    initialUpdatedAt={loadState.website.updatedAt}
+                    initialCompletedAt={loadState.website.completedAt}
+                    onBack={() => goToStep(4)}
+                    onContinue={(completedAt) => {
+                      markWebsiteCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(6)
                     }}
-                  >
-                    <ClientBriefingWebsiteForm
-                      initialPayload={loadState.website.payload}
-                      initialUpdatedAt={loadState.website.updatedAt}
-                      initialCompletedAt={loadState.website.completedAt}
-                      onBack={() => goToStep(4)}
-                      onContinue={(completedAt) => {
-                        markWebsiteCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(6)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 6 ? (
-                  <m.div
-                    key="accesses"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 6 ? (
+                <m.div
+                  key="accesses"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingAccessesForm
+                    initialPayload={loadState.accesses.payload}
+                    initialSecretFlags={loadState.accesses.secretFlags}
+                    initialUpdatedAt={loadState.accesses.updatedAt}
+                    initialCompletedAt={loadState.accesses.completedAt}
+                    onBack={() => goToStep(5)}
+                    onContinue={(completedAt) => {
+                      markAccessesCompleted(completedAt)
+                      setDirection(1)
+                      setStepIndex(7)
                     }}
-                  >
-                    <ClientBriefingAccessesForm
-                      initialPayload={loadState.accesses.payload}
-                      initialSecretFlags={loadState.accesses.secretFlags}
-                      initialUpdatedAt={loadState.accesses.updatedAt}
-                      initialCompletedAt={loadState.accesses.completedAt}
-                      onBack={() => goToStep(5)}
-                      onContinue={(completedAt) => {
-                        markAccessesCompleted(completedAt)
-                        setDirection(1)
-                        setStepIndex(7)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
+                  />
+                </m.div>
+              ) : null}
 
-                {loadState.status === "ready" && stepIndex === 7 ? (
-                  <m.div
-                    key="closing"
-                    custom={direction}
-                    variants={slideVariants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{
-                      duration: reduced ? 0.12 : 0.32,
-                      ease: EASE,
+              {loadState.status === "ready" && stepIndex === 7 ? (
+                <m.div
+                  key="closing"
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{
+                    duration: reduced ? 0.12 : 0.32,
+                    ease: EASE,
+                  }}
+                >
+                  <ClientBriefingClosingForm
+                    initialPayload={loadState.closing.payload}
+                    initialUpdatedAt={loadState.closing.updatedAt}
+                    initialCompletedAt={loadState.closing.completedAt}
+                    onBack={() => goToStep(6)}
+                    onFinalize={(finalizedAt, completedAt) => {
+                      markClosingFinalized(finalizedAt, completedAt)
                     }}
-                  >
-                    <ClientBriefingClosingForm
-                      initialPayload={loadState.closing.payload}
-                      initialUpdatedAt={loadState.closing.updatedAt}
-                      initialCompletedAt={loadState.closing.completedAt}
-                      onBack={() => goToStep(6)}
-                      onFinalize={(finalizedAt, completedAt) => {
-                        markClosingFinalized(finalizedAt, completedAt)
-                      }}
-                    />
-                  </m.div>
-                ) : null}
-              </AnimatePresence>
-            </m.div>
-          ) : null}
-        </AnimatePresence>
-      </div>
-    </LazyMotion>
+                  />
+                </m.div>
+              ) : null}
+            </AnimatePresence>
+          </m.div>
+        ) : null}
+      </AnimatePresence>
+    </div>
   )
 }

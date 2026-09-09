@@ -8,7 +8,6 @@ import {
   useState,
   useTransition,
 } from "react"
-import { LazyMotion, domAnimation } from "motion/react"
 import {
   RiCheckLine,
   RiCloseLine,
@@ -86,6 +85,14 @@ export function ClientBriefingAudienceForm({
   const [mapAddressLabel, setMapAddressLabel] = useState(
     companyFormattedAddress,
   )
+  // O rótulo acompanha o endereço da empresa até uma geocodificação substituí-lo.
+  const [syncedCompanyAddress, setSyncedCompanyAddress] = useState(
+    companyFormattedAddress,
+  )
+  if (syncedCompanyAddress !== companyFormattedAddress) {
+    setSyncedCompanyAddress(companyFormattedAddress)
+    if (companyFormattedAddress) setMapAddressLabel(companyFormattedAddress)
+  }
   const [isCompleting, startComplete] = useTransition()
 
   const {
@@ -102,7 +109,10 @@ export function ClientBriefingAudienceForm({
   useBriefingWriterFlushRegistration(flushPending)
 
   const payloadRef = useRef(payload)
-  payloadRef.current = payload
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    payloadRef.current = payload
+  })
   const geocodeAttemptKeyRef = useRef<string | null>(null)
 
   const patch = useCallback(
@@ -160,7 +170,6 @@ export function ClientBriefingAudienceForm({
       payload.mapLongitude === null ||
       payload.mapAddressKey !== companyAddressKey
     if (!needsGeocode) {
-      if (companyFormattedAddress) setMapAddressLabel(companyFormattedAddress)
       geocodeAttemptKeyRef.current = companyAddressKey
       return
     }
@@ -254,362 +263,352 @@ export function ClientBriefingAudienceForm({
     : "Digite e pressione Enter"
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
-        <BriefingSectionCard
-          index={1}
-          icon={<RiUserHeartLine size={18} aria-hidden />}
-          title="Sobre a persona"
-          description="Descreva o cliente ideal. Quanto mais específico, melhor o direcionamento."
-        >
-          <div className="flex flex-col gap-2">
-            <p className="text-xs/relaxed font-medium text-muted-foreground">
-              Faixa etária
-            </p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {PERSONA_AGE_RANGE_IDS.map((id) => (
-                <Checkbox
-                  key={id}
-                  id={`briefing-age-${id}`}
-                  label={PERSONA_AGE_RANGE_LABELS[id]}
-                  checked={payload.personaAgeRanges.includes(id)}
-                  onCheckedChange={(checked) => toggleAgeRange(id, checked)}
-                />
-              ))}
-            </div>
-          </div>
-
-          <RadioGroup
-            label="Sexo"
-            orientation="horizontal"
-            value={payload.personaSex ?? ""}
-            onValueChange={(next) =>
-              patch({
-                personaSex: (PERSONA_SEX_IDS as readonly string[]).includes(
-                  next,
-                )
-                  ? (next as PersonaSexId)
-                  : null,
-              })
-            }
-          >
-            {PERSONA_SEX_IDS.map((id) => (
-              <Radio key={id} value={id} label={PERSONA_SEX_LABELS[id]} />
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4">
+      <BriefingSectionCard
+        index={1}
+        icon={<RiUserHeartLine size={18} aria-hidden />}
+        title="Sobre a persona"
+        description="Descreva o cliente ideal. Quanto mais específico, melhor o direcionamento."
+      >
+        <div className="flex flex-col gap-2">
+          <p className="text-xs/relaxed font-medium text-muted-foreground">
+            Faixa etária
+          </p>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+            {PERSONA_AGE_RANGE_IDS.map((id) => (
+              <Checkbox
+                key={id}
+                id={`briefing-age-${id}`}
+                label={PERSONA_AGE_RANGE_LABELS[id]}
+                checked={payload.personaAgeRanges.includes(id)}
+                onCheckedChange={(checked) => toggleAgeRange(id, checked)}
+              />
             ))}
-          </RadioGroup>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Input
-              id="briefing-persona-city"
-              label="Cidade do cliente ideal"
-              value={payload.personaCity}
-              onChange={(event) => patch({ personaCity: event.target.value })}
-            />
-            <Input
-              id="briefing-persona-profession"
-              label="Profissão"
-              value={payload.personaProfession}
-              onChange={(event) =>
-                patch({ personaProfession: event.target.value })
-              }
-            />
           </div>
+        </div>
 
-          <div className="flex flex-col gap-2">
-            <p className="text-xs/relaxed font-medium text-muted-foreground">
-              Renda média mensal
-            </p>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-3">
-              {PERSONA_INCOME_RANGE_IDS.map((id) => (
-                <Checkbox
-                  key={id}
-                  id={`briefing-income-${id}`}
-                  label={PERSONA_INCOME_RANGE_LABELS[id]}
-                  checked={payload.personaIncomeRanges.includes(id)}
-                  onCheckedChange={(checked) => toggleIncomeRange(id, checked)}
-                />
-              ))}
-            </div>
-          </div>
+        <RadioGroup
+          label="Sexo"
+          orientation="horizontal"
+          value={payload.personaSex ?? ""}
+          onValueChange={(next) =>
+            patch({
+              personaSex: (PERSONA_SEX_IDS as readonly string[]).includes(next)
+                ? (next as PersonaSexId)
+                : null,
+            })
+          }
+        >
+          {PERSONA_SEX_IDS.map((id) => (
+            <Radio key={id} value={id} label={PERSONA_SEX_LABELS[id]} />
+          ))}
+        </RadioGroup>
 
-          <BriefingChipField
-            id="briefing-persona-pains"
-            label="Dores"
-            values={payload.personaPains}
-            onChange={(personaPains) => patch({ personaPains })}
-            placeholder="Digite e pressione Enter"
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Input
+            id="briefing-persona-city"
+            label="Cidade do cliente ideal"
+            value={payload.personaCity}
+            onChange={(event) => patch({ personaCity: event.target.value })}
           />
-
-          <BriefingChipField
-            id="briefing-persona-behaviors"
-            label="Comportamentos"
-            values={payload.personaBehaviors}
-            onChange={(personaBehaviors) => patch({ personaBehaviors })}
-            placeholder="Digite e pressione Enter"
-          />
-
-          <Textarea
-            id="briefing-persona-objections"
-            label="Objeções mais comuns"
-            rows={4}
-            value={payload.personaObjections}
+          <Input
+            id="briefing-persona-profession"
+            label="Profissão"
+            value={payload.personaProfession}
             onChange={(event) =>
-              patch({ personaObjections: event.target.value })
+              patch({ personaProfession: event.target.value })
             }
           />
+        </div>
 
-          <Textarea
-            id="briefing-persona-traits"
-            label="Características importantes"
-            rows={4}
-            value={payload.personaTraits}
-            onChange={(event) => patch({ personaTraits: event.target.value })}
-          />
+        <div className="flex flex-col gap-2">
+          <p className="text-xs/relaxed font-medium text-muted-foreground">
+            Renda média mensal
+          </p>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-3">
+            {PERSONA_INCOME_RANGE_IDS.map((id) => (
+              <Checkbox
+                key={id}
+                id={`briefing-income-${id}`}
+                label={PERSONA_INCOME_RANGE_LABELS[id]}
+                checked={payload.personaIncomeRanges.includes(id)}
+                onCheckedChange={(checked) => toggleIncomeRange(id, checked)}
+              />
+            ))}
+          </div>
+        </div>
 
-          <Textarea
-            id="briefing-voice-tone"
-            label="Tom de voz nos conteúdos"
-            rows={4}
-            value={payload.voiceTone}
-            onChange={(event) => patch({ voiceTone: event.target.value })}
-            placeholder="Ex.: próximo, técnico, descontraído…"
-          />
-        </BriefingSectionCard>
+        <BriefingChipField
+          id="briefing-persona-pains"
+          label="Dores"
+          values={payload.personaPains}
+          onChange={(personaPains) => patch({ personaPains })}
+          placeholder="Digite e pressione Enter"
+        />
 
-        <BriefingSectionCard
-          index={2}
-          icon={<RiMapPin2Line size={18} aria-hidden />}
-          title="Localização e atuação"
-          description="Onde vocês querem aparecer e atender — diferente de onde já atendem hoje."
-        >
-          <Checkbox
-            id="briefing-radius-na"
-            label="Atendimento sem raio físico"
-            checked={payload.serviceRadiusNotApplicable}
-            onCheckedChange={(checked) => {
-              patch({ serviceRadiusNotApplicable: checked })
-              if (!checked) {
-                geocodeAttemptKeyRef.current = companyAddressKey
-                void resolveMap()
-              }
-            }}
-          />
+        <BriefingChipField
+          id="briefing-persona-behaviors"
+          label="Comportamentos"
+          values={payload.personaBehaviors}
+          onChange={(personaBehaviors) => patch({ personaBehaviors })}
+          placeholder="Digite e pressione Enter"
+        />
 
-          {!payload.serviceRadiusNotApplicable ? (
-            <>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs/relaxed font-medium text-muted-foreground">
-                    Raio de atendimento
-                  </p>
-                  <span className="text-xs/relaxed tabular-nums text-muted-foreground">
-                    {payload.serviceRadiusKm} km
-                  </span>
-                </div>
-                <Slider
-                  id="briefing-service-radius"
-                  min={SERVICE_RADIUS_KM_MIN}
-                  max={SERVICE_RADIUS_KM_MAX}
-                  step={1}
-                  value={payload.serviceRadiusKm}
-                  onValueChange={(value) => {
-                    const next = Array.isArray(value) ? value[0] : value
-                    patch({
-                      serviceRadiusKm:
-                        typeof next === "number"
-                          ? next
-                          : SERVICE_RADIUS_KM_DEFAULT,
-                    })
-                  }}
-                />
+        <Textarea
+          id="briefing-persona-objections"
+          label="Objeções mais comuns"
+          rows={4}
+          value={payload.personaObjections}
+          onChange={(event) => patch({ personaObjections: event.target.value })}
+        />
+
+        <Textarea
+          id="briefing-persona-traits"
+          label="Características importantes"
+          rows={4}
+          value={payload.personaTraits}
+          onChange={(event) => patch({ personaTraits: event.target.value })}
+        />
+
+        <Textarea
+          id="briefing-voice-tone"
+          label="Tom de voz nos conteúdos"
+          rows={4}
+          value={payload.voiceTone}
+          onChange={(event) => patch({ voiceTone: event.target.value })}
+          placeholder="Ex.: próximo, técnico, descontraído…"
+        />
+      </BriefingSectionCard>
+
+      <BriefingSectionCard
+        index={2}
+        icon={<RiMapPin2Line size={18} aria-hidden />}
+        title="Localização e atuação"
+        description="Onde vocês querem aparecer e atender — diferente de onde já atendem hoje."
+      >
+        <Checkbox
+          id="briefing-radius-na"
+          label="Atendimento sem raio físico"
+          checked={payload.serviceRadiusNotApplicable}
+          onCheckedChange={(checked) => {
+            patch({ serviceRadiusNotApplicable: checked })
+            if (!checked) {
+              geocodeAttemptKeyRef.current = companyAddressKey
+              void resolveMap()
+            }
+          }}
+        />
+
+        {!payload.serviceRadiusNotApplicable ? (
+          <>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs/relaxed font-medium text-muted-foreground">
+                  Raio de atendimento
+                </p>
+                <span className="text-xs/relaxed tabular-nums text-muted-foreground">
+                  {payload.serviceRadiusKm} km
+                </span>
               </div>
-
-              <BriefingServiceRadiusMap
-                latitude={payload.mapLatitude}
-                longitude={payload.mapLongitude}
-                radiusKm={payload.serviceRadiusKm}
-                formattedAddress={mapAddressLabel}
-                loading={mapLoading}
-                errorMessage={mapError}
-                onRetry={() => {
-                  void resolveMap()
+              <Slider
+                id="briefing-service-radius"
+                min={SERVICE_RADIUS_KM_MIN}
+                max={SERVICE_RADIUS_KM_MAX}
+                step={1}
+                value={payload.serviceRadiusKm}
+                onValueChange={(value) => {
+                  const next = Array.isArray(value) ? value[0] : value
+                  patch({
+                    serviceRadiusKm:
+                      typeof next === "number"
+                        ? next
+                        : SERVICE_RADIUS_KM_DEFAULT,
+                  })
                 }}
               />
-            </>
-          ) : null}
+            </div>
 
-          <BriefingChipField
-            id="briefing-target-neighborhoods"
-            label="Bairros para aparecer no Google"
-            values={payload.targetNeighborhoods}
-            onChange={(targetNeighborhoods) => patch({ targetNeighborhoods })}
-            placeholder="Opcional — digite e pressione Enter"
-          />
-
-          <BriefingChipField
-            id="briefing-target-cities"
-            label="Cidades para aparecer no Google"
-            values={payload.targetCities}
-            onChange={(targetCities) => patch({ targetCities })}
-            placeholder={citiesPlaceholder}
-          />
-
-          <Input
-            id="briefing-priority-region"
-            label="Região prioridade para dominar"
-            value={payload.priorityRegion}
-            onChange={(event) => patch({ priorityRegion: event.target.value })}
-          />
-
-          <div className="flex flex-col gap-2">
-            <BriefingChipField
-              id="briefing-keywords"
-              label="Palavras-chave"
-              values={payload.keywords}
-              onChange={(keywords) => {
-                const primaryStillExists = keywords.some(
-                  (item) =>
-                    item.toLowerCase() ===
-                    payload.primaryKeyword.trim().toLowerCase(),
-                )
-                patch({
-                  keywords,
-                  primaryKeyword: primaryStillExists
-                    ? payload.primaryKeyword
-                    : "",
-                })
-                if (!primaryStillExists) setPrimaryDraft("")
+            <BriefingServiceRadiusMap
+              latitude={payload.mapLatitude}
+              longitude={payload.mapLongitude}
+              radiusKm={payload.serviceRadiusKm}
+              formattedAddress={mapAddressLabel}
+              loading={mapLoading}
+              errorMessage={mapError}
+              onRetry={() => {
+                void resolveMap()
               }}
-              placeholder="Digite e pressione Enter"
             />
-            {payload.keywords.length > 0 ? (
-              <div className="flex flex-wrap gap-1.5">
-                {payload.keywords.map((item) => {
-                  const selected =
-                    item.toLowerCase() ===
-                    payload.primaryKeyword.trim().toLowerCase()
-                  return (
-                    <button
-                      key={item}
-                      type="button"
-                      onClick={() => promoteKeyword(item)}
-                      className={cn(
-                        "rounded-md border px-2 py-1 text-xs/relaxed transition-colors",
-                        selected
-                          ? "border-primary bg-primary/10 font-medium text-primary"
-                          : "border-border bg-popover text-muted-foreground hover:border-primary/40 hover:text-foreground",
-                      )}
-                    >
-                      {selected ? "Principal · " : "Definir principal · "}
-                      {item}
-                    </button>
-                  )
-                })}
-              </div>
-            ) : null}
-          </div>
+          </>
+        ) : null}
 
-          <Input
-            id="briefing-primary-keyword"
-            label="Palavra-chave principal"
-            value={primaryDraft}
-            onChange={(event) => setPrimaryDraft(event.target.value)}
-            onBlur={() => commitPrimaryKeyword(primaryDraft)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault()
-                commitPrimaryKeyword(primaryDraft)
-              }
+        <BriefingChipField
+          id="briefing-target-neighborhoods"
+          label="Bairros para aparecer no Google"
+          values={payload.targetNeighborhoods}
+          onChange={(targetNeighborhoods) => patch({ targetNeighborhoods })}
+          placeholder="Opcional — digite e pressione Enter"
+        />
+
+        <BriefingChipField
+          id="briefing-target-cities"
+          label="Cidades para aparecer no Google"
+          values={payload.targetCities}
+          onChange={(targetCities) => patch({ targetCities })}
+          placeholder={citiesPlaceholder}
+        />
+
+        <Input
+          id="briefing-priority-region"
+          label="Região prioridade para dominar"
+          value={payload.priorityRegion}
+          onChange={(event) => patch({ priorityRegion: event.target.value })}
+        />
+
+        <div className="flex flex-col gap-2">
+          <BriefingChipField
+            id="briefing-keywords"
+            label="Palavras-chave"
+            values={payload.keywords}
+            onChange={(keywords) => {
+              const primaryStillExists = keywords.some(
+                (item) =>
+                  item.toLowerCase() ===
+                  payload.primaryKeyword.trim().toLowerCase(),
+              )
+              patch({
+                keywords,
+                primaryKeyword: primaryStillExists
+                  ? payload.primaryKeyword
+                  : "",
+              })
+              if (!primaryStillExists) setPrimaryDraft("")
             }}
-            leadingIcon={<RiMegaphoneLine size={16} aria-hidden />}
+            placeholder="Digite e pressione Enter"
           />
-        </BriefingSectionCard>
-
-        {errorMessage ? (
-          <p
-            role="alert"
-            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
-          >
-            {errorMessage}
-          </p>
-        ) : null}
-
-        {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
-            Etapa concluída. Você pode continuar editando; as alterações seguem
-            sendo salvas.
-          </div>
-        ) : null}
-
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
-          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
-              <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
-                  {saveState === "saving" || isCompleting ? (
-                    <>
-                      <Spinner aria-hidden className="size-3.5" />
-                      Salvando…
-                    </>
-                  ) : saveState === "saved" && savedAt ? (
-                    <>
-                      <RiCheckLine
-                        size={14}
-                        aria-hidden
-                        className="text-success"
-                      />
-                      Salvo · {formatTimeShort(savedAt)}
-                    </>
-                  ) : saveState === "error" ? (
-                    <>
-                      <RiCloseLine
-                        size={14}
-                        aria-hidden
-                        className="text-destructive"
-                      />
-                      Não foi possível salvar
-                    </>
-                  ) : (
-                    "Rascunho salvo automaticamente"
-                  )}
-                </p>
-                {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
-                    Falta: {missingLabels.join(", ")}
-                  </p>
-                ) : null}
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
-                {onBack ? (
-                  <Button type="button" variant="ghost" onClick={onBack}>
-                    Voltar
-                  </Button>
-                ) : null}
-                {variant === "staff" ? null : (
-                  <Button
+          {payload.keywords.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5">
+              {payload.keywords.map((item) => {
+                const selected =
+                  item.toLowerCase() ===
+                  payload.primaryKeyword.trim().toLowerCase()
+                return (
+                  <button
+                    key={item}
                     type="button"
-                    disabled={isCompleting || !ready}
-                    onClick={handleComplete}
+                    onClick={() => promoteKeyword(item)}
+                    className={cn(
+                      "rounded-md border px-2 py-1 text-xs/relaxed transition-colors",
+                      selected
+                        ? "border-primary bg-primary/10 font-medium text-primary"
+                        : "border-border bg-popover text-muted-foreground hover:border-primary/40 hover:text-foreground",
+                    )}
                   >
-                    {isCompleting
-                      ? "Salvando..."
-                      : completed
-                        ? "Etapa concluída"
-                        : "Continuar"}
-                    {completed ? (
-                      <RiCheckLine
-                        size={16}
-                        aria-hidden
-                        data-icon="inline-end"
-                      />
-                    ) : null}
-                  </Button>
+                    {selected ? "Principal · " : "Definir principal · "}
+                    {item}
+                  </button>
+                )
+              })}
+            </div>
+          ) : null}
+        </div>
+
+        <Input
+          id="briefing-primary-keyword"
+          label="Palavra-chave principal"
+          value={primaryDraft}
+          onChange={(event) => setPrimaryDraft(event.target.value)}
+          onBlur={() => commitPrimaryKeyword(primaryDraft)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              event.preventDefault()
+              commitPrimaryKeyword(primaryDraft)
+            }
+          }}
+          leadingIcon={<RiMegaphoneLine size={16} aria-hidden />}
+        />
+      </BriefingSectionCard>
+
+      {errorMessage ? (
+        <p
+          role="alert"
+          className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
+        >
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {completed ? (
+        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
+          Etapa concluída. Você pode continuar editando; as alterações seguem
+          sendo salvas.
+        </div>
+      ) : null}
+
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
+        <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
+            <div className="min-w-0">
+              <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+                {saveState === "saving" || isCompleting ? (
+                  <>
+                    <Spinner aria-hidden className="size-3.5" />
+                    Salvando…
+                  </>
+                ) : saveState === "saved" && savedAt ? (
+                  <>
+                    <RiCheckLine
+                      size={14}
+                      aria-hidden
+                      className="text-success"
+                    />
+                    Salvo · {formatTimeShort(savedAt)}
+                  </>
+                ) : saveState === "error" ? (
+                  <>
+                    <RiCloseLine
+                      size={14}
+                      aria-hidden
+                      className="text-destructive"
+                    />
+                    Não foi possível salvar
+                  </>
+                ) : (
+                  "Rascunho salvo automaticamente"
                 )}
-              </div>
+              </p>
+              {!ready && missingLabels.length > 0 ? (
+                <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
+                  Falta: {missingLabels.join(", ")}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {onBack ? (
+                <Button type="button" variant="ghost" onClick={onBack}>
+                  Voltar
+                </Button>
+              ) : null}
+              {variant === "staff" ? null : (
+                <Button
+                  type="button"
+                  disabled={isCompleting || !ready}
+                  onClick={handleComplete}
+                >
+                  {isCompleting
+                    ? "Salvando..."
+                    : completed
+                      ? "Etapa concluída"
+                      : "Continuar"}
+                  {completed ? (
+                    <RiCheckLine size={16} aria-hidden data-icon="inline-end" />
+                  ) : null}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </LazyMotion>
+    </div>
   )
 }

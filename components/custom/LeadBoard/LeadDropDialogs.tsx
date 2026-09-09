@@ -150,7 +150,11 @@ export function LeadDropDialogs({
   const config = DROP_KIND[kind]
   const SubmitIcon = config.icon
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const requestKey = `${request?.leadId ?? ""}|${request?.kind ?? ""}`
+  const [syncedRequestKey, setSyncedRequestKey] = useState(requestKey)
+  if (syncedRequestKey !== requestKey) {
+    setSyncedRequestKey(requestKey)
     setFollowUpAt("")
     setDeniedReason("")
     setCloserId("")
@@ -164,12 +168,19 @@ export function LeadDropDialogs({
     setCloserError(null)
     setChannelError(null)
     setChannelDetailError(null)
-  }, [request?.leadId, request?.kind])
+  }
+
+  // Flag de carregamento derivado no render; o efeito fica só com o fetch.
+  const needsClosers = request?.kind === "interested"
+  const [syncedNeedsClosers, setSyncedNeedsClosers] = useState(needsClosers)
+  if (syncedNeedsClosers !== needsClosers) {
+    setSyncedNeedsClosers(needsClosers)
+    if (needsClosers) setClosersLoading(true)
+  }
 
   useEffect(() => {
-    if (request?.kind !== "interested") return
+    if (!needsClosers) return
     let cancelled = false
-    setClosersLoading(true)
     void listClosers().then((rows) => {
       if (cancelled) return
       setClosers(rows)

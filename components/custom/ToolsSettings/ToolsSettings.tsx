@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
+import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiAlertLine } from "react-icons/ri"
 import {
@@ -97,217 +97,211 @@ export function ToolsSettings({
   }, [operationId, quantity, usage?.prices])
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="px-[var(--page-padding-x)] py-8">
-        <m.div
-          initial="hidden"
-          animate="show"
-          variants={{
-            hidden: {},
-            show: { transition: { staggerChildren: reduced ? 0 : 0.12 } },
-          }}
-          className="mx-auto flex max-w-6xl flex-col gap-6"
-        >
-          <m.header variants={fadeUp} className="flex flex-col gap-1">
-            <p className="text-xs/relaxed font-medium uppercase tracking-widest text-muted-foreground">
-              Configurações
-            </p>
-            <h1 className="font-heading text-2xl font-semibold text-foreground">
-              Ferramentas
-            </h1>
-            <p className="max-w-3xl text-xs/relaxed text-muted-foreground">
-              O DataForSEO é a fonte de todas as coletas da auditoria. Saldo,
-              consumo e preços vêm da própria conta — nada aqui é estimativa
-              gravada no código.
-            </p>
-          </m.header>
+    <div className="px-[var(--page-padding-x)] py-8">
+      <m.div
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: {},
+          show: { transition: { staggerChildren: reduced ? 0 : 0.12 } },
+        }}
+        className="mx-auto flex max-w-6xl flex-col gap-6"
+      >
+        <m.header variants={fadeUp} className="flex flex-col gap-1">
+          <p className="text-xs/relaxed font-medium uppercase tracking-widest text-muted-foreground">
+            Configurações
+          </p>
+          <h1 className="font-heading text-2xl font-semibold text-foreground">
+            Ferramentas
+          </h1>
+          <p className="max-w-3xl text-xs/relaxed text-muted-foreground">
+            O DataForSEO é a fonte de todas as coletas da auditoria. Saldo,
+            consumo e preços vêm da própria conta — nada aqui é estimativa
+            gravada no código.
+          </p>
+        </m.header>
 
-          {!configured ? (
-            <m.div variants={fadeUp}>
-              <Alert>
-                <RiAlertLine aria-hidden className="text-warning" />
-                <AlertDescription>
-                  Credencial ausente. Defina{" "}
-                  <code className="font-mono text-xs/relaxed">
-                    DATAFORSEO_LOGIN
-                  </code>{" "}
-                  e{" "}
-                  <code className="font-mono text-xs/relaxed">
-                    DATAFORSEO_PASSWORD
-                  </code>{" "}
-                  para liberar as coletas.
-                </AlertDescription>
-              </Alert>
-            </m.div>
-          ) : null}
+        {!configured ? (
+          <m.div variants={fadeUp}>
+            <Alert>
+              <RiAlertLine aria-hidden className="text-warning" />
+              <AlertDescription>
+                Credencial ausente. Defina{" "}
+                <code className="font-mono text-xs/relaxed">
+                  DATAFORSEO_LOGIN
+                </code>{" "}
+                e{" "}
+                <code className="font-mono text-xs/relaxed">
+                  DATAFORSEO_PASSWORD
+                </code>{" "}
+                para liberar as coletas.
+              </AlertDescription>
+            </Alert>
+          </m.div>
+        ) : null}
 
-          {errorMessage ? (
-            <m.p variants={fadeUp} className="text-xs/relaxed text-destructive">
-              {errorMessage}
-            </m.p>
-          ) : null}
+        {errorMessage ? (
+          <m.p variants={fadeUp} className="text-xs/relaxed text-destructive">
+            {errorMessage}
+          </m.p>
+        ) : null}
 
-          {usage ? (
-            <>
-              <Card
-                render={<m.section variants={fadeUp} />}
-                className="sm:[--card-spacing:--spacing(6)]"
-              >
-                <CardHeader>
-                  <CardTitle render={<h2 />} className="font-semibold">
-                    Saldo
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <dl className="mt-3 grid gap-4 sm:grid-cols-3">
-                    <Stat
-                      label="Disponível"
-                      value={formatUsd(usage.money.balance)}
-                      tone={
-                        usage.money.balance !== null && usage.money.balance < 5
-                          ? "warning"
-                          : "default"
+        {usage ? (
+          <>
+            <Card
+              render={<m.section variants={fadeUp} />}
+              className="sm:[--card-spacing:--spacing(6)]"
+            >
+              <CardHeader>
+                <CardTitle render={<h2 />} className="font-semibold">
+                  Saldo
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <dl className="mt-3 grid gap-4 sm:grid-cols-3">
+                  <Stat
+                    label="Disponível"
+                    value={formatUsd(usage.money.balance)}
+                    tone={
+                      usage.money.balance !== null && usage.money.balance < 5
+                        ? "warning"
+                        : "default"
+                    }
+                  />
+                  <Stat
+                    label="Depositado"
+                    value={formatUsd(usage.money.total)}
+                  />
+                  <Stat label="Conta" value={usage.login ?? "—"} />
+                </dl>
+                {Object.keys(usage.money.statistics).length > 0 ? (
+                  <div className="mt-4 flex flex-wrap gap-4">
+                    {Object.entries(usage.money.statistics).map(
+                      ([period, value]) => (
+                        <Stat
+                          key={period}
+                          label={`Gasto · ${period}`}
+                          value={formatUsd(value)}
+                        />
+                      ),
+                    )}
+                  </div>
+                ) : null}
+              </CardContent>
+            </Card>
+
+            <Card
+              render={<m.section variants={fadeUp} />}
+              className="sm:[--card-spacing:--spacing(6)]"
+            >
+              <CardHeader>
+                <CardTitle render={<h2 />} className="font-semibold">
+                  Uso e limites
+                </CardTitle>
+                <CardDescription>
+                  O limite por minuto é o que trava uma malha grande.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="mt-4 grid gap-6 lg:grid-cols-2">
+                  <RateGroup title="Por minuto" entries={usage.rates.minute} />
+                  <RateGroup title="Por dia" entries={usage.rates.day} />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card
+              render={<m.section variants={fadeUp} />}
+              className="sm:[--card-spacing:--spacing(6)]"
+            >
+              <CardHeader>
+                <CardTitle render={<h2 />} className="font-semibold">
+                  Calculadora
+                </CardTitle>
+                <CardDescription>
+                  Preço unitário lido da tabela da conta, não de valores fixos.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="mt-4 flex flex-wrap items-end gap-3">
+                  <label className="flex min-w-56 flex-col gap-1">
+                    <span className="text-xs/relaxed text-muted-foreground">
+                      Operação
+                    </span>
+                    <Select
+                      items={OPERATION_ITEMS}
+                      value={operationId}
+                      onValueChange={(value) =>
+                        setOperationId(value as DataForSeoOperationId)
+                      }
+                    >
+                      <SelectTrigger
+                        id="dataforseo-operation"
+                        className="w-full"
+                      >
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent align="start">
+                        {DATAFORSEO_OPERATIONS.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </label>
+
+                  <label className="flex w-32 flex-col gap-1">
+                    <span className="text-xs/relaxed text-muted-foreground">
+                      Quantidade
+                    </span>
+                    <Input
+                      id="dataforseo-quantity"
+                      type="number"
+                      min={1}
+                      value={String(quantity)}
+                      onChange={(event) =>
+                        setQuantity(
+                          Math.max(Number(event.target.value) || 0, 0),
+                        )
                       }
                     />
+                  </label>
+                </div>
+
+                {estimate ? (
+                  <dl className="mt-4 grid gap-4 sm:grid-cols-3">
                     <Stat
-                      label="Depositado"
-                      value={formatUsd(usage.money.total)}
+                      label="Requisições"
+                      value={estimate.requests.toLocaleString("pt-BR")}
                     />
-                    <Stat label="Conta" value={usage.login ?? "—"} />
+                    <Stat
+                      label="Preço unitário"
+                      value={formatUsd(estimate.unitCost)}
+                    />
+                    <Stat
+                      label="Custo estimado"
+                      value={formatUsd(estimate.totalCost)}
+                      tone="accent"
+                    />
                   </dl>
-                  {Object.keys(usage.money.statistics).length > 0 ? (
-                    <div className="mt-4 flex flex-wrap gap-4">
-                      {Object.entries(usage.money.statistics).map(
-                        ([period, value]) => (
-                          <Stat
-                            key={period}
-                            label={`Gasto · ${period}`}
-                            value={formatUsd(value)}
-                          />
-                        ),
-                      )}
-                    </div>
-                  ) : null}
-                </CardContent>
-              </Card>
+                ) : null}
 
-              <Card
-                render={<m.section variants={fadeUp} />}
-                className="sm:[--card-spacing:--spacing(6)]"
-              >
-                <CardHeader>
-                  <CardTitle render={<h2 />} className="font-semibold">
-                    Uso e limites
-                  </CardTitle>
-                  <CardDescription>
-                    O limite por minuto é o que trava uma malha grande.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="mt-4 grid gap-6 lg:grid-cols-2">
-                    <RateGroup
-                      title="Por minuto"
-                      entries={usage.rates.minute}
-                    />
-                    <RateGroup title="Por dia" entries={usage.rates.day} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card
-                render={<m.section variants={fadeUp} />}
-                className="sm:[--card-spacing:--spacing(6)]"
-              >
-                <CardHeader>
-                  <CardTitle render={<h2 />} className="font-semibold">
-                    Calculadora
-                  </CardTitle>
-                  <CardDescription>
-                    Preço unitário lido da tabela da conta, não de valores
-                    fixos.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="mt-4 flex flex-wrap items-end gap-3">
-                    <label className="flex min-w-56 flex-col gap-1">
-                      <span className="text-xs/relaxed text-muted-foreground">
-                        Operação
-                      </span>
-                      <Select
-                        items={OPERATION_ITEMS}
-                        value={operationId}
-                        onValueChange={(value) =>
-                          setOperationId(value as DataForSeoOperationId)
-                        }
-                      >
-                        <SelectTrigger
-                          id="dataforseo-operation"
-                          className="w-full"
-                        >
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent align="start">
-                          {DATAFORSEO_OPERATIONS.map((item) => (
-                            <SelectItem key={item.id} value={item.id}>
-                              {item.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </label>
-
-                    <label className="flex w-32 flex-col gap-1">
-                      <span className="text-xs/relaxed text-muted-foreground">
-                        Quantidade
-                      </span>
-                      <Input
-                        id="dataforseo-quantity"
-                        type="number"
-                        min={1}
-                        value={String(quantity)}
-                        onChange={(event) =>
-                          setQuantity(
-                            Math.max(Number(event.target.value) || 0, 0),
-                          )
-                        }
-                      />
-                    </label>
-                  </div>
-
-                  {estimate ? (
-                    <dl className="mt-4 grid gap-4 sm:grid-cols-3">
-                      <Stat
-                        label="Requisições"
-                        value={estimate.requests.toLocaleString("pt-BR")}
-                      />
-                      <Stat
-                        label="Preço unitário"
-                        value={formatUsd(estimate.unitCost)}
-                      />
-                      <Stat
-                        label="Custo estimado"
-                        value={formatUsd(estimate.totalCost)}
-                        tone="accent"
-                      />
-                    </dl>
-                  ) : null}
-
-                  {estimate && estimate.unitCost === null ? (
-                    <p className="mt-3 text-xs/relaxed text-muted-foreground">
-                      A conta não expõe preço para{" "}
-                      <code className="font-mono">
-                        {estimate.operation.api}/{estimate.operation.fnSuffix}
-                      </code>
-                      . Verifique se a seção está habilitada no plano.
-                    </p>
-                  ) : null}
-                </CardContent>
-              </Card>
-            </>
-          ) : null}
-        </m.div>
-      </div>
-    </LazyMotion>
+                {estimate && estimate.unitCost === null ? (
+                  <p className="mt-3 text-xs/relaxed text-muted-foreground">
+                    A conta não expõe preço para{" "}
+                    <code className="font-mono">
+                      {estimate.operation.api}/{estimate.operation.fnSuffix}
+                    </code>
+                    . Verifique se a seção está habilitada no plano.
+                  </p>
+                ) : null}
+              </CardContent>
+            </Card>
+          </>
+        ) : null}
+      </m.div>
+    </div>
   )
 }
 

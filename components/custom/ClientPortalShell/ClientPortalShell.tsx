@@ -1,6 +1,6 @@
 "use client"
 
-import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
+import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiShieldKeyholeLine } from "react-icons/ri"
 import { ThemeToggle } from "@/components/custom/ThemeToggle"
@@ -98,138 +98,136 @@ export function ClientPortalShell({
   const isWorkspace = variant === "workspace"
 
   return (
-    <LazyMotion features={domAnimation} strict>
+    <div
+      className={cn(
+        "relative min-h-dvh bg-background",
+        isWorkspace ? "overflow-x-hidden" : "overflow-hidden",
+      )}
+    >
       <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 select-none"
+      >
+        <m.div
+          variants={V.glowA}
+          initial="hidden"
+          animate="visible"
+          className="absolute -top-40 -right-40 size-[560px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
+          }}
+        />
+        <m.div
+          variants={V.glowB}
+          initial="hidden"
+          animate="visible"
+          className="absolute -bottom-56 -left-32 size-[480px] rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
+          }}
+        />
+      </div>
+
+      <header className="relative z-10 flex h-14 items-center justify-between px-[var(--page-padding-x)]">
+        <m.span
+          variants={V.brand}
+          initial="hidden"
+          animate="visible"
+          className="font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none"
+        >
+          {APP_NAME}
+        </m.span>
+        <m.div variants={V.toggle} initial="hidden" animate="visible">
+          <ThemeToggle />
+        </m.div>
+      </header>
+
+      <main
         className={cn(
-          "relative min-h-dvh bg-background",
-          isWorkspace ? "overflow-x-hidden" : "overflow-hidden",
+          "relative z-10 flex min-h-[calc(100dvh-3.5rem)] px-[var(--page-padding-x)]",
+          isWorkspace
+            ? "items-start justify-center py-8 pb-28"
+            : "items-center justify-center py-10",
         )}
       >
         <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 select-none"
-        >
-          <m.div
-            variants={V.glowA}
-            initial="hidden"
-            animate="visible"
-            className="absolute -top-40 -right-40 size-[560px] rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
-            }}
-          />
-          <m.div
-            variants={V.glowB}
-            initial="hidden"
-            animate="visible"
-            className="absolute -bottom-56 -left-32 size-[480px] rounded-full"
-            style={{
-              background:
-                "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
-            }}
-          />
-        </div>
-
-        <header className="relative z-10 flex h-14 items-center justify-between px-[var(--page-padding-x)]">
-          <m.span
-            variants={V.brand}
-            initial="hidden"
-            animate="visible"
-            className="font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none"
-          >
-            {APP_NAME}
-          </m.span>
-          <m.div variants={V.toggle} initial="hidden" animate="visible">
-            <ThemeToggle />
-          </m.div>
-        </header>
-
-        <main
           className={cn(
-            "relative z-10 flex min-h-[calc(100dvh-3.5rem)] px-[var(--page-padding-x)]",
-            isWorkspace
-              ? "items-start justify-center py-8 pb-28"
-              : "items-center justify-center py-10",
+            "flex w-full flex-col gap-4",
+            isWorkspace ? "max-w-7xl" : "max-w-[26rem]",
           )}
         >
           <div
             className={cn(
               "flex w-full flex-col gap-4",
-              isWorkspace ? "max-w-7xl" : "max-w-[26rem]",
+              isWorkspace && "max-w-3xl",
             )}
           >
-            <div
+            <m.div
+              variants={V.badge}
+              initial="hidden"
+              animate="visible"
+              className="flex items-center gap-2"
+            >
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs/relaxed font-medium text-muted-foreground shadow-xs">
+                <RiShieldKeyholeLine
+                  size={12}
+                  aria-hidden
+                  className="text-primary"
+                />
+                Área do cliente
+              </span>
+            </m.div>
+
+            <m.h1
+              variants={V.title}
+              initial="hidden"
+              animate="visible"
               className={cn(
-                "flex w-full flex-col gap-4",
-                isWorkspace && "max-w-3xl",
+                "font-heading font-semibold tracking-tight leading-tight text-foreground",
+                isWorkspace ? "text-xl" : "text-2xl",
               )}
             >
-              <m.div
-                variants={V.badge}
-                initial="hidden"
-                animate="visible"
-                className="flex items-center gap-2"
-              >
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs/relaxed font-medium text-muted-foreground shadow-xs">
-                  <RiShieldKeyholeLine
-                    size={12}
-                    aria-hidden
-                    className="text-primary"
-                  />
-                  Área do cliente
-                </span>
-              </m.div>
+              {title}
+            </m.h1>
 
-              <m.h1
-                variants={V.title}
-                initial="hidden"
-                animate="visible"
-                className={cn(
-                  "font-heading font-semibold tracking-tight leading-tight text-foreground",
-                  isWorkspace ? "text-xl" : "text-2xl",
-                )}
-              >
-                {title}
-              </m.h1>
-
-              <m.p
-                variants={V.desc}
-                initial="hidden"
-                animate="visible"
-                className="-mt-4 text-sm leading-normal text-muted-foreground"
-              >
-                {description}
-              </m.p>
-            </div>
-
-            {isWorkspace ? (
-              <m.div
-                variants={V.card}
-                initial="hidden"
-                animate="visible"
-                className="w-full"
-              >
-                {children}
-              </m.div>
-            ) : (
-              <m.div variants={V.card} initial="hidden" animate="visible">
-                <Card className="relative p-6">
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
-                    style={{
-                      background:
-                        "linear-gradient(to right, transparent, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
-                    }}
-                  />
-                  {children}
-                </Card>
-              </m.div>
-            )}
+            <m.p
+              variants={V.desc}
+              initial="hidden"
+              animate="visible"
+              className="-mt-4 text-sm leading-normal text-muted-foreground"
+            >
+              {description}
+            </m.p>
           </div>
-        </main>
-      </div>
-    </LazyMotion>
+
+          {isWorkspace ? (
+            <m.div
+              variants={V.card}
+              initial="hidden"
+              animate="visible"
+              className="w-full"
+            >
+              {children}
+            </m.div>
+          ) : (
+            <m.div variants={V.card} initial="hidden" animate="visible">
+              <Card className="relative p-6">
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
+                  style={{
+                    background:
+                      "linear-gradient(to right, transparent, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
+                  }}
+                />
+                {children}
+              </Card>
+            </m.div>
+          )}
+        </div>
+      </main>
+    </div>
   )
 }

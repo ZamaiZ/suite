@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiAlertLine, RiLightbulbLine, RiSaveLine } from "react-icons/ri"
@@ -73,7 +73,10 @@ export function LeadDiagnosisPanel({
   const [error, setError] = useState<string | null>(null)
   const [savedFlash, setSavedFlash] = useState(false)
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedDraft, setSyncedDraft] = useState(draft)
+  if (syncedDraft !== draft) {
+    setSyncedDraft(draft)
     setExecutiveSummary(draft?.document.prose.executiveSummary ?? "")
     setCommercialHook(draft?.document.prose.commercialHook ?? "")
     setNarratives(
@@ -84,7 +87,7 @@ export function LeadDiagnosisPanel({
         visibility: "",
       },
     )
-  }, [draft])
+  }
 
   const dirty =
     draft != null &&

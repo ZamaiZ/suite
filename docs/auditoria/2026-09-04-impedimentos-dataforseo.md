@@ -20,7 +20,14 @@ O SerpAPI foi removido e o DataForSEO passou a ser o provider único de todas as
 
 **O histórico coletado antes da migração veio todo do SerpAPI** e não é comparável com o novo. `keywordCount` significava "quantas keywords buscamos" e agora significa o footprint do domínio; `estimatedTraffic` era nulo e agora vem preenchido; a amostra de reviews era por relevância e agora é cronológica. Os dados antigos continuam legíveis de propósito — os valores `serpapi_maps`, `serpapi_organic` e `serpapi` permanecem nos tipos e nas constraints —, mas a fronteira precisa ficar visível na interface. O primeiro comparativo depois da virada vai mostrar saltos que não aconteceram no site do cliente.
 
-**Os mapeadores do DataForSEO nunca executaram contra resposta real** até agora. Foram escritos contra documentação: `dataForSeoTimeToIso` assume um formato de timestamp, `mapDataForSeoReviews` assume `rating.value` aninhado e `owner_answer` como string, `mapRankedKeywordsLiveResult` assume a presença de `rank_group` e de `metrics.organic`. A primeira coleta real é também a primeira validação — e é o passo que ainda não foi feito.
+**O mapeador de backlinks executou.** A coleta em `buscaorganica.com.br` trouxe
+os 14 campos e todos mapearam, com `first_seen` no formato
+`YYYY-MM-DD HH:MM:SS +00:00` — o mesmo que `dataForSeoTimeToIso` assume, o que
+reforça a suposição do mapeador de avaliações. O que a coleta reprovou não foi o
+mapeamento e sim a leitura: as regras de gap não reconheciam perfil concentrado,
+e a onda 6 corrigiu isso.
+
+**Os demais mapeadores do DataForSEO nunca executaram contra resposta real** até agora. Foram escritos contra documentação: `dataForSeoTimeToIso` assume um formato de timestamp, `mapDataForSeoReviews` assume `rating.value` aninhado e `owner_answer` como string, `mapRankedKeywordsLiveResult` assume a presença de `rank_group` e de `metrics.organic`. A primeira coleta real é também a primeira validação — e é o passo que ainda não foi feito.
 
 **Uma pergunta foi respondida.** A resposta do proprietário **não traz data no corpo** — só existe a data de quem avaliou. Tempo médio de resposta deixou de ser calculável e virou **campo do analista**, numa faixa fechada gravada em `lead_gbp_profiles.analyst_review`. Não depende mais de OAuth nem de provider: depende de alguém olhar.
 

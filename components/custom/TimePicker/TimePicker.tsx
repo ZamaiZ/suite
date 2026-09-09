@@ -37,11 +37,13 @@ export function TimePicker({
 }: TimePickerProps) {
   const reduced = !!useReducedMotion()
   const popupRef = useRef<HTMLDivElement>(null)
-  const draftRef = useRef(value && isCivilTime(value) ? value : nowCivilTime())
   const dirtyRef = useRef(false)
 
   const [open, setOpen] = useState(false)
-  const [draft, setDraft] = useState(draftRef.current)
+  const [draft, setDraft] = useState(() =>
+    value && isCivilTime(value) ? value : nowCivilTime(),
+  )
+  const draftRef = useRef(draft)
   const [view, setView] = useState<TimePickerView>("input")
   const [clockAllowed, setClockAllowed] = useState(true)
 

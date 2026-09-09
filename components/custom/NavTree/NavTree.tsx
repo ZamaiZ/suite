@@ -579,9 +579,14 @@ function NavGroupBlock({
     setFlyoutOpen(true)
   }
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const navKey = `${pathname}|${collapsed}`
+  const [syncedNavKey, setSyncedNavKey] = useState(navKey)
+  if (syncedNavKey !== navKey) {
+    setSyncedNavKey(navKey)
     if (groupActive) setOpen(true)
-  }, [pathname, groupActive])
+    setFlyoutOpen(false)
+  }
 
   useEffect(() => {
     if (openTimer.current !== null) {
@@ -592,7 +597,6 @@ function NavGroupBlock({
       clearTimeout(closeTimer.current)
       closeTimer.current = null
     }
-    setFlyoutOpen(false)
   }, [pathname, collapsed])
 
   useEffect(() => {

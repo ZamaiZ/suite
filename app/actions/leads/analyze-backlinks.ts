@@ -1,7 +1,10 @@
 "use server"
 
 import { requireCommercialMember } from "@/lib/auth/session"
-import { fetchBacklinkSummaryLive } from "@/lib/dataforseo/backlinks"
+import {
+  fetchBacklinkCompetitorsLive,
+  fetchBacklinkSummaryLive,
+} from "@/lib/dataforseo/backlinks"
 import {
   DATAFORSEO_NOT_CONFIGURED,
   isDataForSeoConfigured,
@@ -81,18 +84,28 @@ export async function analyzeLeadBacklinks(
   }
 
   const collectedAt = new Date().toISOString()
-  const fetched = await fetchBacklinkSummaryLive({
-    domain: websiteDomain,
-    collectedAt,
-  })
+  // As duas chamadas saem juntas para que os números do alvo e os dos
+  // concorrentes descrevam o mesmo instante. Comparar medidas de momentos
+  // diferentes não compara nada.
+  const [fetched, benchmark] = await Promise.all([
+    fetchBacklinkSummaryLive({ domain: websiteDomain, collectedAt }),
+    fetchBacklinkCompetitorsLive({ domain: websiteDomain }),
+  ])
   if (fetched.status === "error") {
     return { status: "error", message: fetched.message }
+  }
+
+  // O resumo é a entrega; o benchmark falhando vira ausência declarada, não
+  // erro — e a tela distingue "não coletado" de "sem concorrente".
+  const snapshot = {
+    ...fetched.snapshot,
+    competitors: benchmark.status === "ok" ? benchmark.competitors : null,
   }
 
   const payload = {
     lead_id: parsed.data.lead_id,
     domain: websiteDomain,
-    snapshot: fetched.snapshot,
+    snapshot,
     fetched_at: collectedAt,
     fetched_by: user.id,
   }

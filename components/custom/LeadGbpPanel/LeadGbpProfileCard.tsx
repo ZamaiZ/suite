@@ -100,14 +100,19 @@ export function LeadGbpProfileCard({
   const [pollTimedOut, setPollTimedOut] = useState(false)
   const [busy, setBusy] = useState(false)
   const onUpdatedRef = useRef(onUpdated)
-  onUpdatedRef.current = onUpdated
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    onUpdatedRef.current = onUpdated
+  })
   const notesRef = useRef(profile.notes ?? "")
   // A leitura de reputação divide o mesmo ciclo de salvamento das notas: são
   // duas colunas da mesma linha, gravadas pela mesma action.
   const reputationRef = useRef(profile.reputation_note ?? "")
   const notesTimerRef = useRef(0)
   const profileRef = useRef(profile)
-  profileRef.current = profile
+  useEffect(() => {
+    profileRef.current = profile
+  })
 
   const queuedKey = queuedKindsKey(profile)
 

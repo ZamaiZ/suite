@@ -152,9 +152,12 @@ export function LeadRecordPanel({
   const [section, setSection] = useState<LeadRecordSection>("all")
   const [sectionEditing, setSectionEditing] = useState<EditSection | null>(null)
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedEditing, setSyncedEditing] = useState(editing)
+  if (syncedEditing !== editing) {
+    setSyncedEditing(editing)
     if (!editing) setSectionEditing(null)
-  }, [editing])
+  }
 
   if (loading && !detail) {
     return <RecordSkeleton />
@@ -267,11 +270,15 @@ function CompanyCard({
     return () => onPendingChange(false)
   }, [isPending, onPendingChange])
 
-  useEffect(() => {
-    if (!editing) return
-    form.reset(companyDefaults(detail))
-    setServerMessage(null)
-  }, [editing])
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedEditing, setSyncedEditing] = useState(editing)
+  if (syncedEditing !== editing) {
+    setSyncedEditing(editing)
+    if (editing) {
+      form.reset(companyDefaults(detail))
+      setServerMessage(null)
+    }
+  }
 
   function onSubmit(values: CompanyValues) {
     setServerMessage(null)
@@ -522,11 +529,15 @@ function ContactCard({
     return () => onPendingChange(false)
   }, [isPending, onPendingChange])
 
-  useEffect(() => {
-    if (!editing) return
-    form.reset(contactDefaults(lead))
-    setServerMessage(null)
-  }, [editing])
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const [syncedEditing, setSyncedEditing] = useState(editing)
+  if (syncedEditing !== editing) {
+    setSyncedEditing(editing)
+    if (editing) {
+      form.reset(contactDefaults(lead))
+      setServerMessage(null)
+    }
+  }
 
   function onSubmit(values: ContactValues) {
     setServerMessage(null)

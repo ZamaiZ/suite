@@ -64,6 +64,20 @@ Esta seção é a mais importante do documento. São classes de erro, não ocorr
 
 **Migração DataForSEO** — feita. `lib/serpapi/` e `lib/gbp-vendor/` removidos, cinco actions sem ramo de provider, página de Ferramentas com saldo, uso e calculadora alimentados por `user_data`.
 
+## O que a onda 6 entregou
+
+A primeira coleta real de backlinks **validou o mapeador e reprovou a leitura**:
+769.391 links de 404 domínios, e as seis regras em silêncio.
+
+- **Razões derivadas** e dois gaps novos — `sitewide_link_pattern` e
+  `behind_on_referring_domains`. Retroativos ao snapshot que já existe.
+- **A família `referring_links_*` inteira** passa a ser guardada, incluindo
+  `semantic_locations`, que é o campo que prova o padrão sitewide. Sem chamada
+  extra; não é retroativo.
+- **Benchmark de volume** por `/backlinks/competitors/live`, na mesma coleta que
+  o resumo. A análise passou de uma para duas chamadas pagas.
+- **Concorrentes da malha ganharam tela** — dado já pago, nunca exibido.
+
 ## O que a onda 5 entregou
 
 Julgamento do analista, em `lead_gbp_profiles.analyst_review` (jsonb), fora do

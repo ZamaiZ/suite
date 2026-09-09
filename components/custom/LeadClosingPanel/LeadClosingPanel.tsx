@@ -198,7 +198,11 @@ function ClosingEventForm({
     return () => onPendingChange(false)
   }, [isPending, onPendingChange])
 
-  useEffect(() => {
+  // Reset ligado à mudança de chave: no render, não em efeito.
+  const closingKey = `${stage}|${detail.lead.id}|${detail.lead.assigned_closer_id ?? ""}`
+  const [syncedClosingKey, setSyncedClosingKey] = useState(closingKey)
+  if (syncedClosingKey !== closingKey) {
+    setSyncedClosingKey(closingKey)
     setAction("")
     setNote("")
     setDeniedReason("")
@@ -207,7 +211,7 @@ function ClosingEventForm({
     setChannel("")
     setChannelDetail("")
     setCloserId(detail.lead.assigned_closer_id ?? "")
-  }, [stage, detail.lead.id, detail.lead.assigned_closer_id])
+  }
 
   const showCloser = action === "meeting_rescheduled"
   const showFollowUp =
@@ -217,10 +221,16 @@ function ClosingEventForm({
   const showChannel = action === "closing_standby"
   const showDenied = action === "closing_lost"
 
+  // Flag de carregamento derivado no render; o efeito fica só com o fetch.
+  const [syncedShowCloser, setSyncedShowCloser] = useState(showCloser)
+  if (syncedShowCloser !== showCloser) {
+    setSyncedShowCloser(showCloser)
+    if (showCloser) setClosersLoading(true)
+  }
+
   useEffect(() => {
     if (!showCloser) return
     let cancelled = false
-    setClosersLoading(true)
     void listClosers().then((rows) => {
       if (cancelled) return
       setClosers(rows)

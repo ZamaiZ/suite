@@ -4,12 +4,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import Link, { useLinkStatus } from "next/link"
 import { useFormStatus } from "react-dom"
 import { usePathname } from "next/navigation"
-import {
-  AnimatePresence,
-  LazyMotion,
-  domAnimation,
-  useReducedMotion,
-} from "motion/react"
+import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import {
   RiHomeLine,
@@ -225,7 +220,7 @@ export function MobileNavigation() {
   const popoverVars = reduced ? POPOVER_REDUCED : POPOVER_VARIANTS
 
   return (
-    <LazyMotion features={domAnimation} strict>
+    <>
       <AnimatePresence>
         {panel === "pages" && (
           <m.div
@@ -447,6 +442,6 @@ export function MobileNavigation() {
           </div>
         </div>
       </nav>
-    </LazyMotion>
+    </>
   )
 }

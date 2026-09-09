@@ -101,6 +101,8 @@ não a lista de domínios, que exige outro endpoint.
 
 **Correção deste plano.** A versão anterior mandava "parar de descartar a SERP orgânica em `findOrganicRankForDomain`". Essa função **não existe mais** — saiu junto com o SerpAPI, e com `ranked_keywords` não há SERP para descartar: o endpoint devolve só o que o próprio domínio posiciona. Concorrente orgânico agora é `/dataforseo_labs/google/competitors_domain/live`, endpoint novo e chamada nova, não reaproveitamento.
 
+**Concorrente de backlinks já saiu**, na onda 6, por outro endpoint: `/backlinks/competitors/live` devolve quem compartilha domínios de referência com o alvo, com os números de cada um, sem exigir lista de concorrentes nem uma chamada por concorrente. E **o retrato de posicionamento no Maps também**, agregando os concorrentes que a malha já guardava por ponto — sem chamada nenhuma.
+
 **Modelo:** concorrente orgânico não tem onde morar. `lead_gbp_rank_checks.competitors` guarda os do Maps; `lead_visibility_audits` só guarda keywords do próprio domínio. Precisa de tabela, append-only, com `captured_at`.
 
 Comparação de keywords em comum, participação de visibilidade e páginas que cada concorrente usa para ranquear são outro endpoint do Labs — não saem do que já é chamado.

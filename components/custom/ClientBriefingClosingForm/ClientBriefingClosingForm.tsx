@@ -1,7 +1,6 @@
 "use client"
 
 import { useCallback, useMemo, useState, useTransition } from "react"
-import { LazyMotion, domAnimation } from "motion/react"
 import { RiCheckLine, RiCloseLine, RiSpeakLine } from "react-icons/ri"
 import {
   completeBriefingClosing,
@@ -108,150 +107,142 @@ export function ClientBriefingClosingForm({
   }
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 pb-24">
-        <BriefingSectionCard
-          index={1}
-          icon={<RiSpeakLine size={18} aria-hidden />}
-          title="Considerações finais"
-          description="Espaço livre para o que não coube nas etapas anteriores."
-        >
-          <FieldSet>
-            <FieldLegend variant="label">
-              Existe alguma outra informação não perguntada que é relevante que
-              a gente saiba?
-            </FieldLegend>
-            <RadioGroup
-              className="flex flex-row flex-wrap items-center gap-3"
-              value={payload.hasAdditionalInfo ?? ""}
-              onValueChange={(next) =>
-                patch({
-                  hasAdditionalInfo: (
-                    CLOSING_ANSWER_IDS as readonly string[]
-                  ).includes(next)
-                    ? (next as ClosingAnswerId)
-                    : null,
-                })
-              }
-            >
-              <Field orientation="horizontal" className="w-auto">
-                <RadioGroupItem id="briefing-additional-info-yes" value="yes" />
-                <FieldLabel htmlFor="briefing-additional-info-yes">
-                  Sim
-                </FieldLabel>
-              </Field>
-              <Field orientation="horizontal" className="w-auto">
-                <RadioGroupItem id="briefing-additional-info-no" value="no" />
-                <FieldLabel htmlFor="briefing-additional-info-no">
-                  Não
-                </FieldLabel>
-              </Field>
-            </RadioGroup>
-          </FieldSet>
-
-          {showAdditionalInfo ? (
-            <Field>
-              <FieldLabel htmlFor="briefing-additional-info">
-                O que mais devemos saber?
-              </FieldLabel>
-              <Textarea
-                id="briefing-additional-info"
-                rows={6}
-                value={payload.additionalInfo}
-                onChange={(event) =>
-                  patch({ additionalInfo: event.target.value })
-                }
-                placeholder="Contexto, preferências, restrições, prazos ou qualquer detalhe importante…"
-              />
-            </Field>
-          ) : null}
-        </BriefingSectionCard>
-
-        {errorMessage ? (
-          <p
-            role="alert"
-            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 pb-24">
+      <BriefingSectionCard
+        index={1}
+        icon={<RiSpeakLine size={18} aria-hidden />}
+        title="Considerações finais"
+        description="Espaço livre para o que não coube nas etapas anteriores."
+      >
+        <FieldSet>
+          <FieldLegend variant="label">
+            Existe alguma outra informação não perguntada que é relevante que a
+            gente saiba?
+          </FieldLegend>
+          <RadioGroup
+            className="flex flex-row flex-wrap items-center gap-3"
+            value={payload.hasAdditionalInfo ?? ""}
+            onValueChange={(next) =>
+              patch({
+                hasAdditionalInfo: (
+                  CLOSING_ANSWER_IDS as readonly string[]
+                ).includes(next)
+                  ? (next as ClosingAnswerId)
+                  : null,
+              })
+            }
           >
-            {errorMessage}
-          </p>
-        ) : null}
+            <Field orientation="horizontal" className="w-auto">
+              <RadioGroupItem id="briefing-additional-info-yes" value="yes" />
+              <FieldLabel htmlFor="briefing-additional-info-yes">
+                Sim
+              </FieldLabel>
+            </Field>
+            <Field orientation="horizontal" className="w-auto">
+              <RadioGroupItem id="briefing-additional-info-no" value="no" />
+              <FieldLabel htmlFor="briefing-additional-info-no">Não</FieldLabel>
+            </Field>
+          </RadioGroup>
+        </FieldSet>
 
-        {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
-            Briefing finalizado. Você pode continuar editando; as alterações
-            ficam registradas para a equipe.
-          </div>
+        {showAdditionalInfo ? (
+          <Field>
+            <FieldLabel htmlFor="briefing-additional-info">
+              O que mais devemos saber?
+            </FieldLabel>
+            <Textarea
+              id="briefing-additional-info"
+              rows={6}
+              value={payload.additionalInfo}
+              onChange={(event) =>
+                patch({ additionalInfo: event.target.value })
+              }
+              placeholder="Contexto, preferências, restrições, prazos ou qualquer detalhe importante…"
+            />
+          </Field>
         ) : null}
+      </BriefingSectionCard>
 
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
-          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
-              <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
-                  {saveState === "saving" || isCompleting ? (
-                    <>
-                      <Spinner aria-hidden className="size-3.5" />
-                      Salvando…
-                    </>
-                  ) : saveState === "saved" && savedAt ? (
-                    <>
-                      <RiCheckLine
-                        size={14}
-                        aria-hidden
-                        className="text-success"
-                      />
-                      Salvo · {formatTimeShort(savedAt)}
-                    </>
-                  ) : saveState === "error" ? (
-                    <>
-                      <RiCloseLine
-                        size={14}
-                        aria-hidden
-                        className="text-destructive"
-                      />
-                      Não foi possível salvar
-                    </>
-                  ) : (
-                    "Rascunho salvo automaticamente"
-                  )}
-                </p>
-                {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
-                    Falta: {missingLabels.join(", ")}
-                  </p>
-                ) : null}
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
-                {onBack ? (
-                  <Button type="button" variant="ghost" onClick={onBack}>
-                    Voltar
-                  </Button>
-                ) : null}
-                {variant === "staff" ? null : (
-                  <Button
-                    type="button"
-                    disabled={isCompleting || !ready}
-                    onClick={handleFinalize}
-                  >
-                    {isCompleting
-                      ? "Finalizando..."
-                      : completed
-                        ? "Etapa concluída"
-                        : "Finalizar briefing"}
-                    {completed ? (
-                      <RiCheckLine
-                        size={16}
-                        aria-hidden
-                        data-icon="inline-end"
-                      />
-                    ) : null}
-                  </Button>
+      {errorMessage ? (
+        <p
+          role="alert"
+          className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
+        >
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {completed ? (
+        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
+          Briefing finalizado. Você pode continuar editando; as alterações ficam
+          registradas para a equipe.
+        </div>
+      ) : null}
+
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
+        <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
+            <div className="min-w-0">
+              <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+                {saveState === "saving" || isCompleting ? (
+                  <>
+                    <Spinner aria-hidden className="size-3.5" />
+                    Salvando…
+                  </>
+                ) : saveState === "saved" && savedAt ? (
+                  <>
+                    <RiCheckLine
+                      size={14}
+                      aria-hidden
+                      className="text-success"
+                    />
+                    Salvo · {formatTimeShort(savedAt)}
+                  </>
+                ) : saveState === "error" ? (
+                  <>
+                    <RiCloseLine
+                      size={14}
+                      aria-hidden
+                      className="text-destructive"
+                    />
+                    Não foi possível salvar
+                  </>
+                ) : (
+                  "Rascunho salvo automaticamente"
                 )}
-              </div>
+              </p>
+              {!ready && missingLabels.length > 0 ? (
+                <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
+                  Falta: {missingLabels.join(", ")}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {onBack ? (
+                <Button type="button" variant="ghost" onClick={onBack}>
+                  Voltar
+                </Button>
+              ) : null}
+              {variant === "staff" ? null : (
+                <Button
+                  type="button"
+                  disabled={isCompleting || !ready}
+                  onClick={handleFinalize}
+                >
+                  {isCompleting
+                    ? "Finalizando..."
+                    : completed
+                      ? "Etapa concluída"
+                      : "Finalizar briefing"}
+                  {completed ? (
+                    <RiCheckLine size={16} aria-hidden data-icon="inline-end" />
+                  ) : null}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </LazyMotion>
+    </div>
   )
 }

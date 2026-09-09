@@ -78,7 +78,10 @@ export function useLeadImportSession() {
   const processingIdRef = useRef<string | null>(null)
   const progressTimersRef = useRef<Map<string, number>>(new Map())
   const filesRef = useRef(files)
-  filesRef.current = files
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    filesRef.current = files
+  })
   const [queueEpoch, setQueueEpoch] = useState(0)
 
   const stopProgress = useCallback((id: string) => {
@@ -380,11 +383,10 @@ export function useLeadImportSession() {
     setIsRevalidating(false)
   }, [stopProgress])
 
-  useEffect(() => {
-    if (files.length === 0 && sidebarMode !== "hidden" && !editingId) {
-      setSidebarMode("hidden")
-    }
-  }, [editingId, files.length, sidebarMode])
+  // Sem arquivos e sem edição a barra lateral não existe: derivado no render.
+  if (files.length === 0 && sidebarMode !== "hidden" && !editingId) {
+    setSidebarMode("hidden")
+  }
 
   const totals = useMemo<ImportTotals>(() => {
     let found = 0

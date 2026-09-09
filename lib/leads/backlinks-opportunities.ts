@@ -1,5 +1,7 @@
 import {
   backlinkGapLabel,
+  backlinkMetrics,
+  competitorReferringDomainsMedian,
   type BacklinkGapId,
   type BacklinkSnapshot,
   backlinkGapsForSnapshot,
@@ -28,6 +30,9 @@ const HIGH_IMPACT = new Set<BacklinkGapId>([
   "no_backlinks",
   "few_referring_domains",
   "toxic_backlinks",
+  // Ficar atrás do mercado é o achado mais acionável do conjunto, e o único
+  // com um número de destino.
+  "behind_on_referring_domains",
 ])
 
 const OPPORTUNITY_TITLES: Record<BacklinkGapId, string> = {
@@ -37,6 +42,8 @@ const OPPORTUNITY_TITLES: Record<BacklinkGapId, string> = {
   broken_backlinks: "Recuperar os backlinks que apontam para erro",
   mostly_nofollow: "Conquistar links que transferem autoridade",
   toxic_backlinks: "Limpar o perfil de links suspeitos",
+  sitewide_link_pattern: "Conquistar links de domínios novos",
+  behind_on_referring_domains: "Alcançar o volume de domínios do mercado",
 }
 
 function impactFor(id: BacklinkGapId): BacklinkOpportunityImpact {
@@ -73,6 +80,23 @@ function detailFor(
   }
   if (id === "toxic_backlinks" && snapshot.spamScore !== null) {
     return `Spam score ${count(Math.round(snapshot.spamScore))} de 100`
+  }
+  if (id === "behind_on_referring_domains" && snapshot.competitors) {
+    const median = competitorReferringDomainsMedian(snapshot.competitors)
+    if (median !== null && snapshot.referringDomains !== null) {
+      return (
+        `${count(snapshot.referringDomains)} domínios;` +
+        ` mediana dos concorrentes: ${count(Math.round(median))}`
+      )
+    }
+  }
+  if (id === "sitewide_link_pattern") {
+    const perDomain = backlinkMetrics(snapshot).linksPerDomain
+    // O número é a explicação: sem ele, "conquistar domínios novos" não diz
+    // por que o volume atual não conta.
+    if (perDomain !== null) {
+      return `${count(Math.round(perDomain))} links por domínio`
+    }
   }
   return undefined
 }

@@ -8,7 +8,6 @@ import {
   useState,
   useTransition,
 } from "react"
-import { LazyMotion, domAnimation } from "motion/react"
 import {
   RiCheckLine,
   RiCloseLine,
@@ -236,286 +235,279 @@ export function ClientBriefingWebsiteForm({
   }
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 pb-24">
-        <BriefingSectionCard
-          index={1}
-          icon={<RiBrushLine size={18} aria-hidden />}
-          title="Identidade visual"
-          description="Logo, o que vocês já têm de marca e links do kit."
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 pb-24">
+      <BriefingSectionCard
+        index={1}
+        icon={<RiBrushLine size={18} aria-hidden />}
+        title="Identidade visual"
+        description="Logo, o que vocês já têm de marca e links do kit."
+      >
+        <BriefingChoiceCardGroup
+          label="Sobre o logo da marca"
+          value={payload.logoStatus ?? ""}
+          onValueChange={(next) => {
+            const logoStatus = (LOGO_STATUS_IDS as readonly string[]).includes(
+              next,
+            )
+              ? (next as LogoStatusId)
+              : null
+            patch({ logoStatus })
+          }}
+          contentClassName="grid-cols-1 sm:grid-cols-2"
         >
-          <BriefingChoiceCardGroup
-            label="Sobre o logo da marca"
-            value={payload.logoStatus ?? ""}
-            onValueChange={(next) => {
-              const logoStatus = (
-                LOGO_STATUS_IDS as readonly string[]
-              ).includes(next)
-                ? (next as LogoStatusId)
-                : null
-              patch({ logoStatus })
-            }}
-            contentClassName="grid-cols-1 sm:grid-cols-2"
-          >
-            {LOGO_STATUS_IDS.map((id) => (
-              <BriefingChoiceCard
-                key={id}
-                value={id}
-                title={LOGO_STATUS_LABELS[id]}
-                description={LOGO_STATUS_DESCRIPTIONS[id]}
-              />
-            ))}
-          </BriefingChoiceCardGroup>
-
-          {showLogoUpload ? (
-            <BriefingAssetUpload
-              id="briefing-website-logos"
-              label="Arquivos de logo"
-              description="PNG ou SVG, até 3 arquivos, 2 MB cada."
-              kind="logo"
-              accept="image/png,image/svg+xml"
-              multiple
-              maxFiles={WEBSITE_LOGOS_MAX}
-              assets={payload.logos}
-              previewUrls={previewUrls}
-              onUploaded={handleAssetUploaded}
-              onRemoved={handleAssetRemoved}
+          {LOGO_STATUS_IDS.map((id) => (
+            <BriefingChoiceCard
+              key={id}
+              value={id}
+              title={LOGO_STATUS_LABELS[id]}
+              description={LOGO_STATUS_DESCRIPTIONS[id]}
             />
-          ) : null}
-
-          {(
-            [
-              ["brandBook", "Vocês têm brand book / manual de marca?"],
-              ["icons", "Vocês têm kit de ícones da marca?"],
-              ["documentedPalette", "Vocês têm paleta de cores documentada?"],
-              ["otherGuidelines", "Há outras guidelines de marca?"],
-            ] as const
-          ).map(([key, label]) => (
-            <BriefingChoiceCardGroup
-              key={key}
-              label={label}
-              value={payload.assetInventory[key] ?? ""}
-              onValueChange={(next) => {
-                const answer = (
-                  INVENTORY_ANSWER_IDS as readonly string[]
-                ).includes(next)
-                  ? (next as InventoryAnswerId)
-                  : null
-                patch({
-                  assetInventory: {
-                    ...payload.assetInventory,
-                    [key]: answer,
-                  },
-                })
-              }}
-              contentClassName="grid-cols-2"
-            >
-              {INVENTORY_ANSWER_IDS.map((id) => (
-                <BriefingChoiceCard
-                  key={id}
-                  value={id}
-                  title={INVENTORY_YES_NO_LABELS[id]}
-                />
-              ))}
-            </BriefingChoiceCardGroup>
           ))}
+        </BriefingChoiceCardGroup>
 
-          {showBrandBookUpload ? (
-            <BriefingAssetUpload
-              id="briefing-website-brand-book"
-              label="Brand book (PDF)"
-              description="Ou envie um link do kit abaixo. PDF até 10 MB."
-              kind="brand_book"
-              accept="application/pdf"
-              maxFiles={1}
-              assets={payload.brandBook ? [payload.brandBook] : []}
-              previewUrls={previewUrls}
-              onUploaded={handleAssetUploaded}
-              onRemoved={handleAssetRemoved}
-            />
-          ) : null}
-
-          {showIconUpload ? (
-            <BriefingAssetUpload
-              id="briefing-website-icons"
-              label="Ícones da marca"
-              description="PNG ou SVG, até 10 arquivos — ou um link do kit abaixo."
-              kind="icon"
-              accept="image/png,image/svg+xml"
-              multiple
-              maxFiles={WEBSITE_ICONS_MAX}
-              assets={payload.iconKit}
-              previewUrls={previewUrls}
-              onUploaded={handleAssetUploaded}
-              onRemoved={handleAssetRemoved}
-            />
-          ) : null}
-
-          <BriefingChipField
-            id="briefing-website-asset-links"
-            label="Links do kit (Drive, Figma…)"
-            values={payload.assetLinks}
-            onChange={(assetLinks) => patch({ assetLinks })}
-            placeholder="Cole o link e pressione Enter"
+        {showLogoUpload ? (
+          <BriefingAssetUpload
+            id="briefing-website-logos"
+            label="Arquivos de logo"
+            description="PNG ou SVG, até 3 arquivos, 2 MB cada."
+            kind="logo"
+            accept="image/png,image/svg+xml"
+            multiple
+            maxFiles={WEBSITE_LOGOS_MAX}
+            assets={payload.logos}
+            previewUrls={previewUrls}
+            onUploaded={handleAssetUploaded}
+            onRemoved={handleAssetRemoved}
           />
+        ) : null}
 
-          <Field>
-            <FieldLabel htmlFor="briefing-website-notes">
-              Observações (opcional)
-            </FieldLabel>
-            <Textarea
-              id="briefing-website-notes"
-              rows={4}
-              value={payload.notes}
-              onChange={(event) => patch({ notes: event.target.value })}
-              placeholder="Restrições de uso do logo, tipografia, o que evitar…"
-            />
-          </Field>
-        </BriefingSectionCard>
-
-        <BriefingSectionCard
-          index={2}
-          icon={<RiPaletteLine size={18} aria-hidden />}
-          title="Cores"
-          description="Como devemos tratar a paleta no site novo."
-        >
+        {(
+          [
+            ["brandBook", "Vocês têm brand book / manual de marca?"],
+            ["icons", "Vocês têm kit de ícones da marca?"],
+            ["documentedPalette", "Vocês têm paleta de cores documentada?"],
+            ["otherGuidelines", "Há outras guidelines de marca?"],
+          ] as const
+        ).map(([key, label]) => (
           <BriefingChoiceCardGroup
-            label="Política de cores"
-            value={payload.colorPolicy ?? ""}
+            key={key}
+            label={label}
+            value={payload.assetInventory[key] ?? ""}
             onValueChange={(next) => {
-              const colorPolicy = (
-                COLOR_POLICY_IDS as readonly string[]
+              const answer = (
+                INVENTORY_ANSWER_IDS as readonly string[]
               ).includes(next)
-                ? (next as ColorPolicyId)
+                ? (next as InventoryAnswerId)
                 : null
-              patch({ colorPolicy })
+              patch({
+                assetInventory: {
+                  ...payload.assetInventory,
+                  [key]: answer,
+                },
+              })
             }}
-            contentClassName="grid-cols-1 sm:grid-cols-2"
+            contentClassName="grid-cols-2"
           >
-            {COLOR_POLICY_IDS.map((id) => (
+            {INVENTORY_ANSWER_IDS.map((id) => (
               <BriefingChoiceCard
                 key={id}
                 value={id}
-                title={COLOR_POLICY_LABELS[id]}
-                description={COLOR_POLICY_DESCRIPTIONS[id]}
+                title={INVENTORY_YES_NO_LABELS[id]}
               />
             ))}
           </BriefingChoiceCardGroup>
-          {payload.colorPolicy === "keep_current" ? (
-            <p className="text-xs/relaxed text-muted-foreground">
-              Usaremos o site informado na etapa Empresa como referência de
-              cores.
-            </p>
-          ) : null}
-        </BriefingSectionCard>
+        ))}
 
-        <BriefingSectionCard
-          index={3}
-          icon={<RiGlobalLine size={18} aria-hidden />}
-          title="Referências"
-          description="Sites que você gosta e não gosta, em aparência e funcionalidade."
+        {showBrandBookUpload ? (
+          <BriefingAssetUpload
+            id="briefing-website-brand-book"
+            label="Brand book (PDF)"
+            description="Ou envie um link do kit abaixo. PDF até 10 MB."
+            kind="brand_book"
+            accept="application/pdf"
+            maxFiles={1}
+            assets={payload.brandBook ? [payload.brandBook] : []}
+            previewUrls={previewUrls}
+            onUploaded={handleAssetUploaded}
+            onRemoved={handleAssetRemoved}
+          />
+        ) : null}
+
+        {showIconUpload ? (
+          <BriefingAssetUpload
+            id="briefing-website-icons"
+            label="Ícones da marca"
+            description="PNG ou SVG, até 10 arquivos — ou um link do kit abaixo."
+            kind="icon"
+            accept="image/png,image/svg+xml"
+            multiple
+            maxFiles={WEBSITE_ICONS_MAX}
+            assets={payload.iconKit}
+            previewUrls={previewUrls}
+            onUploaded={handleAssetUploaded}
+            onRemoved={handleAssetRemoved}
+          />
+        ) : null}
+
+        <BriefingChipField
+          id="briefing-website-asset-links"
+          label="Links do kit (Drive, Figma…)"
+          values={payload.assetLinks}
+          onChange={(assetLinks) => patch({ assetLinks })}
+          placeholder="Cole o link e pressione Enter"
+        />
+
+        <Field>
+          <FieldLabel htmlFor="briefing-website-notes">
+            Observações (opcional)
+          </FieldLabel>
+          <Textarea
+            id="briefing-website-notes"
+            rows={4}
+            value={payload.notes}
+            onChange={(event) => patch({ notes: event.target.value })}
+            placeholder="Restrições de uso do logo, tipografia, o que evitar…"
+          />
+        </Field>
+      </BriefingSectionCard>
+
+      <BriefingSectionCard
+        index={2}
+        icon={<RiPaletteLine size={18} aria-hidden />}
+        title="Cores"
+        description="Como devemos tratar a paleta no site novo."
+      >
+        <BriefingChoiceCardGroup
+          label="Política de cores"
+          value={payload.colorPolicy ?? ""}
+          onValueChange={(next) => {
+            const colorPolicy = (
+              COLOR_POLICY_IDS as readonly string[]
+            ).includes(next)
+              ? (next as ColorPolicyId)
+              : null
+            patch({ colorPolicy })
+          }}
+          contentClassName="grid-cols-1 sm:grid-cols-2"
         >
-          <BriefingChipField
-            id="briefing-website-liked-sites"
-            label="Sites que você gosta"
-            values={payload.likedSites}
-            onChange={(likedSites) => patch({ likedSites })}
-            placeholder="https://exemplo.com"
-          />
-          <BriefingChipField
-            id="briefing-website-disliked-sites"
-            label="Sites que você não gosta"
-            values={payload.dislikedSites}
-            onChange={(dislikedSites) => patch({ dislikedSites })}
-            placeholder="https://exemplo.com"
-          />
-        </BriefingSectionCard>
-
-        {errorMessage ? (
-          <p
-            role="alert"
-            className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
-          >
-            {errorMessage}
+          {COLOR_POLICY_IDS.map((id) => (
+            <BriefingChoiceCard
+              key={id}
+              value={id}
+              title={COLOR_POLICY_LABELS[id]}
+              description={COLOR_POLICY_DESCRIPTIONS[id]}
+            />
+          ))}
+        </BriefingChoiceCardGroup>
+        {payload.colorPolicy === "keep_current" ? (
+          <p className="text-xs/relaxed text-muted-foreground">
+            Usaremos o site informado na etapa Empresa como referência de cores.
           </p>
         ) : null}
+      </BriefingSectionCard>
 
-        {completed ? (
-          <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
-            Etapa concluída. Você pode continuar editando; as alterações seguem
-            sendo salvas.
-          </div>
-        ) : null}
+      <BriefingSectionCard
+        index={3}
+        icon={<RiGlobalLine size={18} aria-hidden />}
+        title="Referências"
+        description="Sites que você gosta e não gosta, em aparência e funcionalidade."
+      >
+        <BriefingChipField
+          id="briefing-website-liked-sites"
+          label="Sites que você gosta"
+          values={payload.likedSites}
+          onChange={(likedSites) => patch({ likedSites })}
+          placeholder="https://exemplo.com"
+        />
+        <BriefingChipField
+          id="briefing-website-disliked-sites"
+          label="Sites que você não gosta"
+          values={payload.dislikedSites}
+          onChange={(dislikedSites) => patch({ dislikedSites })}
+          placeholder="https://exemplo.com"
+        />
+      </BriefingSectionCard>
 
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
-          <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
-            <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
-              <div className="min-w-0">
-                <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
-                  {saveState === "saving" || isCompleting ? (
-                    <>
-                      <Spinner aria-hidden className="size-3.5" />
-                      Salvando…
-                    </>
-                  ) : saveState === "saved" && savedAt ? (
-                    <>
-                      <RiCheckLine
-                        size={14}
-                        aria-hidden
-                        className="text-success"
-                      />
-                      Salvo · {formatTimeShort(savedAt)}
-                    </>
-                  ) : saveState === "error" ? (
-                    <>
-                      <RiCloseLine
-                        size={14}
-                        aria-hidden
-                        className="text-destructive"
-                      />
-                      Não foi possível salvar
-                    </>
-                  ) : (
-                    "Rascunho salvo automaticamente"
-                  )}
-                </p>
-                {!ready && missingLabels.length > 0 ? (
-                  <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
-                    Falta: {missingLabels.join(", ")}
-                  </p>
-                ) : null}
-              </div>
-              <div className="flex shrink-0 items-center gap-2">
-                {onBack ? (
-                  <Button type="button" variant="ghost" onClick={onBack}>
-                    Voltar
-                  </Button>
-                ) : null}
-                {variant === "staff" ? null : (
-                  <Button
-                    type="button"
-                    disabled={isCompleting || !ready}
-                    onClick={handleComplete}
-                  >
-                    {isCompleting
-                      ? "Salvando..."
-                      : completed
-                        ? "Etapa concluída"
-                        : "Continuar"}
-                    {completed ? (
-                      <RiCheckLine
-                        size={16}
-                        aria-hidden
-                        data-icon="inline-end"
-                      />
-                    ) : null}
-                  </Button>
+      {errorMessage ? (
+        <p
+          role="alert"
+          className="rounded-xl border border-destructive/25 bg-destructive/10 px-4 py-3 text-xs/relaxed text-destructive"
+        >
+          {errorMessage}
+        </p>
+      ) : null}
+
+      {completed ? (
+        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
+          Etapa concluída. Você pode continuar editando; as alterações seguem
+          sendo salvas.
+        </div>
+      ) : null}
+
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
+        <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
+          <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
+            <div className="min-w-0">
+              <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+                {saveState === "saving" || isCompleting ? (
+                  <>
+                    <Spinner aria-hidden className="size-3.5" />
+                    Salvando…
+                  </>
+                ) : saveState === "saved" && savedAt ? (
+                  <>
+                    <RiCheckLine
+                      size={14}
+                      aria-hidden
+                      className="text-success"
+                    />
+                    Salvo · {formatTimeShort(savedAt)}
+                  </>
+                ) : saveState === "error" ? (
+                  <>
+                    <RiCloseLine
+                      size={14}
+                      aria-hidden
+                      className="text-destructive"
+                    />
+                    Não foi possível salvar
+                  </>
+                ) : (
+                  "Rascunho salvo automaticamente"
                 )}
-              </div>
+              </p>
+              {!ready && missingLabels.length > 0 ? (
+                <p className="mt-0.5 truncate text-xs/relaxed text-muted-foreground">
+                  Falta: {missingLabels.join(", ")}
+                </p>
+              ) : null}
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              {onBack ? (
+                <Button type="button" variant="ghost" onClick={onBack}>
+                  Voltar
+                </Button>
+              ) : null}
+              {variant === "staff" ? null : (
+                <Button
+                  type="button"
+                  disabled={isCompleting || !ready}
+                  onClick={handleComplete}
+                >
+                  {isCompleting
+                    ? "Salvando..."
+                    : completed
+                      ? "Etapa concluída"
+                      : "Continuar"}
+                  {completed ? (
+                    <RiCheckLine size={16} aria-hidden data-icon="inline-end" />
+                  ) : null}
+                </Button>
+              )}
             </div>
           </div>
         </div>
       </div>
-    </LazyMotion>
+    </div>
   )
 }

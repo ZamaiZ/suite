@@ -1,4 +1,5 @@
 import type {
+  BacklinkCompetitor,
   BacklinkDistributionItem,
   BacklinkSnapshot,
 } from "./backlinks-audit.ts"
@@ -55,9 +56,47 @@ function mapDistribution(value: unknown): BacklinkDistributionItem[] {
   return items.slice(0, BACKLINK_DISTRIBUTION_MAX)
 }
 
+/** Ausente vira `null`, não lista vazia: "não veio" não é "veio sem nada". */
+function optionalDistribution(
+  value: unknown,
+): BacklinkDistributionItem[] | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null
+  return mapDistribution(value)
+}
+
 function nofollowFromAttributes(value: unknown): number | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null
   return asCount((value as Record<string, unknown>).nofollow)
+}
+
+export type BacklinkCompetitorsResult = {
+  items?: unknown
+}
+
+/**
+ * `/backlinks/competitors/live` — quem compartilha domínios de referência com o
+ * alvo, com os números de cada um. **Escrito contra documentação**, como todos
+ * os outros: campo ausente vira `null`, e a primeira coleta é que valida.
+ */
+export function mapBacklinkCompetitors(
+  result: BacklinkCompetitorsResult | null,
+): BacklinkCompetitor[] {
+  const items = Array.isArray(result?.items) ? result.items : []
+  const mapped: BacklinkCompetitor[] = []
+  for (const item of items) {
+    if (!item || typeof item !== "object") continue
+    const row = item as Record<string, unknown>
+    const domain = asString(row.domain) ?? asString(row.target)
+    if (!domain) continue
+    mapped.push({
+      domain,
+      rank: asCount(row.rank),
+      backlinks: asCount(row.backlinks),
+      referringDomains: asCount(row.referring_domains),
+      intersections: asCount(row.intersections),
+    })
+  }
+  return mapped
 }
 
 export function mapBacklinkSummaryResult(input: {
@@ -83,5 +122,17 @@ export function mapBacklinkSummaryResult(input: {
     lostDate: asString(row.lost_date),
     topTlds: mapDistribution(row.referring_links_tld),
     topCountries: mapDistribution(row.referring_links_countries),
+    referringPages: asCount(row.referring_pages),
+    referringIps: asCount(row.referring_ips),
+    referringSubnets: asCount(row.referring_subnets),
+    // A resposta traz a família `referring_links_*` inteira e a primeira
+    // versão guardava só duas. `semantic_locations` é a que explica volume
+    // concentrado: diz se o link mora no artigo ou no rodapé.
+    linkLocations: optionalDistribution(row.referring_links_semantic_locations),
+    linkPlatforms: optionalDistribution(row.referring_links_platform_types),
+    linkTypes: optionalDistribution(row.referring_links_types),
+    // Preenchido pelo chamador depois da segunda chamada; `null` enquanto o
+    // benchmark não vier.
+    competitors: null,
   }
 }

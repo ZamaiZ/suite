@@ -60,11 +60,19 @@ export function LeadCityFilter({
         }
       : null
 
+  // Flag de carregamento derivado no render; o efeito fica só com o fetch.
+  const trimmedQuery = query.trim()
+  const searchKey = open ? trimmedQuery : null
+  const [syncedSearchKey, setSyncedSearchKey] = useState(searchKey)
+  if (syncedSearchKey !== searchKey) {
+    setSyncedSearchKey(searchKey)
+    if (searchKey !== null) setLoading(true)
+  }
+
   useEffect(() => {
     if (!open) return
-    const trimmed = query.trim()
+    const trimmed = trimmedQuery
     const requestId = ++requestIdRef.current
-    setLoading(true)
     const timer = window.setTimeout(() => {
       void searchLeadCities({ q: trimmed, offset: 0 }).then((result) => {
         if (requestId !== requestIdRef.current) return

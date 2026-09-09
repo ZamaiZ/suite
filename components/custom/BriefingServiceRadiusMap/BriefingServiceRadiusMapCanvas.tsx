@@ -43,8 +43,11 @@ export function BriefingServiceRadiusMapCanvas({
   const markerRef = useRef<google.maps.Marker | null>(null)
   const radiusRef = useRef(radiusKm)
   const addressRef = useRef(formattedAddress)
-  radiusRef.current = radiusKm
-  addressRef.current = formattedAddress
+  // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
+  useEffect(() => {
+    radiusRef.current = radiusKm
+    addressRef.current = formattedAddress
+  })
 
   const [scriptError, setScriptError] = useState<string | null>(null)
   const [scriptReady, setScriptReady] = useState(false)

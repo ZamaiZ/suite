@@ -80,13 +80,13 @@ export function DateTimePicker({
   const reduced = !!useReducedMotion()
   const popupRef = useRef<HTMLDivElement>(null)
   const dateRef = useRef("")
-  const timeRef = useRef(nowCivilTime())
   const dirtyRef = useRef(false)
 
   const [open, setOpen] = useState(false)
   const [step, setStep] = useState<Step>("date")
   const [draftDate, setDraftDate] = useState("")
-  const [draftTime, setDraftTime] = useState(timeRef.current)
+  const [draftTime, setDraftTime] = useState(nowCivilTime)
+  const timeRef = useRef(draftTime)
   const [view, setView] = useState<TimePickerView>("input")
   const [clockAllowed, setClockAllowed] = useState(true)
 

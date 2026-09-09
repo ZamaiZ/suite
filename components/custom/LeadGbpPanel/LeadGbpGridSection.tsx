@@ -29,6 +29,7 @@ import {
   type GbpGridMode,
   type LeadGbpGridScan,
 } from "@/lib/leads/gbp-grid"
+import { gbpGridPositionSnapshot } from "@/lib/leads/gbp-grid-competitors"
 import { formatUsd } from "@/lib/dataforseo/usage"
 
 /**
@@ -181,6 +182,9 @@ export function LeadGbpGridSection({
   }
 
   const metrics = scan ? gbpGridMetrics(scan.points) : null
+  // Retrato de posicionamento sobre os concorrentes que a malha já guardava
+  // por ponto e nenhuma tela exibia.
+  const position = scan ? gbpGridPositionSnapshot(scan.points) : null
   const requests = gbpGridCost(size)
   const failed = scan ? gbpGridFailedCount(scan.points) : 0
   const stalled = scan?.status === "partial" || scan?.status === "failed"
@@ -387,6 +391,38 @@ export function LeadGbpGridSection({
                 points={scan.points}
                 className="h-72"
               />
+
+              {position && position.competitors.length > 0 ? (
+                <div className="flex flex-col gap-1.5 rounded-lg border border-border/70 bg-background px-3 py-2">
+                  <p className="text-xs/relaxed text-foreground">
+                    Quem aparece na região, em{" "}
+                    {position.measured.toLocaleString("pt-BR")} células medidas
+                    {position.ownAbsent > 0
+                      ? ` · o perfil não aparece em ${position.ownAbsent.toLocaleString("pt-BR")}`
+                      : ""}
+                  </p>
+                  <ul className="flex flex-col gap-0.5">
+                    {position.competitors.slice(0, 8).map((competitor) => (
+                      <li
+                        key={competitor.key}
+                        className="flex items-baseline justify-between gap-2 text-xs/relaxed text-muted-foreground"
+                      >
+                        <span className="truncate">{competitor.title}</span>
+                        <span className="shrink-0 tabular-nums">
+                          {competitor.cells.toLocaleString("pt-BR")} células ·
+                          pos. média{" "}
+                          {competitor.averagePosition.toLocaleString("pt-BR", {
+                            maximumFractionDigits: 1,
+                          })}
+                          {competitor.cellsAhead > 0
+                            ? ` · à frente em ${competitor.cellsAhead.toLocaleString("pt-BR")}`
+                            : ""}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : null}
 
               {canResume ? (
                 <div className="flex flex-wrap items-center gap-2">
