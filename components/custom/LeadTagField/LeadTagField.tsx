@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
 import { RiAddLine, RiCloseLine } from "react-icons/ri"
-import { listLeadTags } from "@/app/actions/leads"
+import { createLeadTag, listLeadTags } from "@/app/actions/leads"
 import { cn } from "cn"
 import {
   Combobox,
@@ -51,15 +51,42 @@ export function LeadTagField({
   const errorId = `${id}-error`
   const atLimit = value.length >= TAGS_PER_LEAD_MAX
 
+  const mountedRef = useRef(true)
   useEffect(() => {
+    mountedRef.current = true
     let cancelled = false
     void listLeadTags().then((tags) => {
       if (!cancelled) setCatalog(tags)
     })
     return () => {
       cancelled = true
+      mountedRef.current = false
     }
   }, [])
+
+  /**
+   * Grava a tag e a traz para o catálogo local, sem esperar o save do lead.
+   *
+   * O chip já apareceu quando isto roda: a escrita é de fundo, para o campo não
+   * piscar esperando a rede. Falha não desfaz o chip — o `syncLeadTags` do save
+   * continua sendo a rede, e é o mesmo `ensureTags` que esta ação chama.
+   */
+  function registerTag(name: string) {
+    void createLeadTag(name).then((created) => {
+      if (!created || !mountedRef.current) return
+      setCatalog((prev) =>
+        prev.some((item) => item.id === created.id) ? prev : [...prev, created],
+      )
+    })
+  }
+
+  /** Só grava o que ainda não existe: selecionar tag do catálogo não escreve. */
+  function registerIfNew(name: string) {
+    const slug = tagSlug(name)
+    if (!slug) return
+    if (catalog.some((tag) => tagSlug(tag.name) === slug)) return
+    registerTag(name)
+  }
 
   const selectedSlugs = useMemo(
     () => new Set(value.map((name) => tagSlug(name)).filter(Boolean)),
@@ -132,6 +159,9 @@ export function LeadTagField({
     const name = normalizeTagName(raw)
     if (!name || !tagSlug(name)) return
     commitNames([...value, name])
+    // Vale para vírgula, ponto e vírgula e Tab, não só para o item "Criar":
+    // todo caminho que inventa uma tag precisa registrá-la.
+    registerIfNew(name)
   }
 
   function removeName(name: string) {
@@ -149,6 +179,7 @@ export function LeadTagField({
     const names = [...value, ...added]
     if (created && normalizedQuery) names.push(normalizedQuery)
     commitNames(names)
+    if (created && normalizedQuery) registerIfNew(normalizedQuery)
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {

@@ -20,10 +20,21 @@ function parseStateFromFormattedAddress(
   return code && /^[A-Z]{2}$/.test(code) ? (code as BrazilStateCode) : null
 }
 
+/**
+ * Nomeado para poder ser exigido como argumento. A cobertura de termos é
+ * montada dentro de `gbpGapsForProfile`, e os três montadores precisam entregar
+ * a mesma coisa — tipo anônimo deixaria cada um inventar a sua.
+ */
+export type LeadLocation = {
+  city: string | null
+  stateCode: BrazilStateCode | null
+  segmentName: string | null
+}
+
 export function resolveLeadLocation(
   lead: LeadLocationInput,
   gbpProfile?: GbpLocationInput,
-) {
+): LeadLocation {
   const gbpAddress = gbpProfile?.formattedAddress ?? null
   return {
     city: lead.city ?? cityFromFormattedAddress(gbpAddress),

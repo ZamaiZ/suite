@@ -13,11 +13,20 @@ import {
   type DiagnosisProse,
   type DiagnosisRoadmapItem,
   type DiagnosisSourceLabel,
+  type DiagnosisStrength,
 } from "./diagnosis-document.ts"
 import { diagnosisFindingsFromThemes } from "./diagnosis-themes.ts"
+import {
+  googleStrengths,
+  presenceStrengths,
+  visibilityStrengths,
+  websiteStrengths,
+} from "./diagnosis-strengths.ts"
+import { DIGITAL_CHANNEL_LABELS } from "./digital-channels.ts"
+import { backlinkGapsForSnapshot } from "./backlinks-audit.ts"
 import { seedDiagnosisProse } from "./diagnosis-templates.ts"
 import type { LeadDigitalChannel } from "./digital-channels.ts"
-import { resolveLeadLocation } from "./resolve-location.ts"
+import { resolveLeadLocation, type LeadLocation } from "./resolve-location.ts"
 import {
   mergeDigitalPresenceOpportunities,
   type DigitalPresenceOpportunityItem,
@@ -154,6 +163,7 @@ function googleOpportunities(
   profile: LeadGbpProfile,
   companyName: string,
   today: string,
+  location: LeadLocation,
 ): GbpOpportunityItem[] {
   const gaps = gbpGapsForProfile(
     profile.payload,
@@ -173,6 +183,7 @@ function googleOpportunities(
       analystReview: profile.analyst_review,
       today,
       reviewsDelta: profile.reviews_delta,
+      location,
     },
   )
   const reputation = gbpReputation({
@@ -188,6 +199,8 @@ function googleOpportunities(
     rankChecks: profile.rankChecks,
     keywords: profile.rank_keywords,
     reputationNote: profile.reputation_note,
+    enrichment: profile.enrichment,
+    location,
   })
 }
 
@@ -290,6 +303,7 @@ export function compileDiagnosisFacts(
         input.gbpProfile,
         input.companyName,
         input.presenceToday,
+        location,
       ).map(toRef)
     : []
   const nap = input.gbpProfile
@@ -369,7 +383,53 @@ export function compileDiagnosisFacts(
     ].includes(channel.type),
   ).length
 
+  // Pontos fortes. Fora do scorecard de propósito: entram no documento, não na
+  // nota. Cada um traz o número que o sustenta — elogio sem medida é enfeite.
+  const strengths: DiagnosisStrength[] = [
+    ...(input.gbpProfile
+      ? googleStrengths({
+          rating: input.gbpProfile.payload.rating,
+          userRatingCount: input.gbpProfile.payload.userRatingCount,
+          weekdayDescriptions: input.gbpProfile.payload.weekdayDescriptions,
+          enrichment: input.gbpProfile.enrichment,
+          reputation: gbpReputation({
+            reviews: input.gbpProfile.reviews,
+            distribution:
+              input.gbpProfile.enrichment?.ratingDistribution ?? null,
+            today: input.presenceToday,
+          }),
+          rankChecks: input.gbpProfile.rankChecks,
+        })
+      : []),
+    ...(input.websiteAudit
+      ? websiteStrengths({
+          pagespeed: input.websiteAudit.pagespeed,
+          https: input.websiteAudit.crawl.https,
+          missingSecurityHeaders: missingSecurityHeaderLabels(
+            input.websiteAudit.crawl,
+          ),
+          gaps: websiteGaps,
+          backlinkGaps: input.backlinkSnapshot
+            ? backlinkGapsForSnapshot(input.backlinkSnapshot)
+            : null,
+        })
+      : []),
+    ...presenceStrengths({
+      networks: input.channels
+        .filter((channel) => channel.type !== "website")
+        .map((channel) => ({
+          label: DIGITAL_CHANNEL_LABELS[channel.type],
+          lastPostedOn:
+            input.presenceReview.networks[channel.id]?.lastPostedOn ?? null,
+        })),
+      today: input.presenceToday,
+      measurementIds: input.websiteAudit?.crawl.signals.measurementIds ?? null,
+    }),
+    ...visibilityStrengths(input.visibilityAudit?.snapshot ?? null),
+  ]
+
   return {
+    strengths,
     scorecard: {
       google: scorePillarOpportunities(googleItems),
       website: scorePillarOpportunities(websiteItems),

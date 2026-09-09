@@ -111,3 +111,142 @@ Continuam ausentes por escopo, e não mudam com a assinatura:
 - **Links quebrados, formulários, schema validado e deep-research** — escopo não implementado.
 
 LGPD saiu na onda 3. **Citations saiu na onda 5**, mas por outro caminho: não há API que responda "este negócio está cadastrado no Apontador?", então virou checklist fixo preenchido pelo analista. Cobertura declarada, não medida — e a interface diz isso.
+
+## Onda 0 do plano do Report 0 — as sete respostas
+
+Executada em 2026-09-09 contra **Funerária Benttus** — a empresa do próprio
+documento de referência, escolhida para poder conferir o payload contra o que o
+relatório afirma. Custo total: **US$ 0,0432**.
+
+### T0.2 — o item do Maps traz 33 campos, e o mapeador lê 3
+
+O achado mais valioso da onda. `readMapsItems()` lê `rank_absolute`, `title` e
+`place_id`. A resposta **já paga** traz também:
+
+`rating` (objeto com `value` e `votes_count`), `rating_distribution`, `url`,
+`domain`, `category`, `additional_categories`, `address`, `address_info`,
+`phone`, `cid`, `feature_id`, `total_photos`, `main_image`, `is_claimed`,
+`work_hours`, `snippet`, `contact_url`, `book_online_url`, `price_level`,
+`local_justifications`, `latitude`, `longitude`.
+
+Duas consequências:
+
+- **A pergunta aberta desde a migração foi respondida: sim, os items trazem
+  `url` e `domain`.** O domínio do concorrente sai de graça, sem chamada ao
+  Places por concorrente.
+- **O concorrente deixa de ser título e posição e vira perfil.** Nota, volume de
+  avaliações, categoria, contagem de fotos e status de reivindicação — em até
+  121 pontos da malha, sem uma requisição a mais.
+
+### T0.1 — `services` existe; links sociais não; foto não tem data
+
+- **`services` volta como array real** (9 itens em Benttus). Fecha o resíduo da
+  onda 3: a chave existe, então `[]` é vazio de verdade e o gap é legítimo.
+- **`local_business_links` volta `null`** e não há `social_links`, `links` nem
+  `profiles`. **Links sociais do perfil não são coletáveis** — o item vira campo
+  do analista, como a contingência previa.
+- **Não há array de fotos, nem data, nem vídeo.** Só `total_photos` (101),
+  `main_image` e `logo`. A galeria continua dependendo do `photoNames` do
+  Places, e **`stale_photos` não é implementável** — não se inventa recência.
+- Campos que a resposta traz e o mapeador ignora: `attributes` (acessibilidade,
+  ofertas, público), `place_topics`, `work_time`, `popular_times`, `logo`,
+  `snippet`, `price_level`, `directory`.
+
+**`place_topics` merece registro à parte.** Vem com os temas que as avaliações
+mencionam, contados — em Benttus: gratidão 39, processo 16, empresa 14,
+agilidade 12, translado 10. Não é sentimento, mas é *sobre o que o cliente
+fala*, quantificado, de graça, numa chamada que já é feita. A decisão de que
+sentimento é campo humano continua válida; isto é outra coisa, e está disponível.
+
+### T0.3 — aprovada, e resolve um problema que estava dado como perdido
+
+`"Funerária Benttus" "(11) 5198-6979"` devolveu **9 resultados, todos do
+negócio**: wanderboat.ai, hotfrog.com.br, maptons.com em vários idiomas,
+encontrabelavista.com.br. Nada de Reddit e YouTube — o contrário do que o
+operador `site:` fez na Task 0 da onda 8.
+
+**E encontrou `hotfrog.com.br`, que está no catálogo dos 22 diretórios e que o
+método por backlink não achou.** A busca por telefone descobre citação e valida
+NAP na mesma chamada, que é o que os dois canais reprovados tentavam fazer
+separadamente.
+
+**A limitação precisa ficar escrita, senão vira defeito depois:** casar o
+telefone exato acha onde o NAP está **certo**, não onde está errado. Página com
+telefone divergente não casa a consulta e fica invisível. Para achar divergência
+é preciso buscar só o nome e comparar os telefones — outra consulta, outra
+decisão.
+
+### T0.4 — aprovada; o snippet basta
+
+`reclame aqui "Funerária Benttus"` devolveu a ficha nas posições 1, 3, 4, 7 e 9,
+com a URL canônica `/empresa/grupo-funeraria-benttus/`, títulos de reclamações
+individuais e, **no próprio snippet, o estado da reputação**: "Sem reputação
+definida. Essa empresa ainda não possui 10 reclamações avaliadas".
+
+A busca também trouxe `jusbrasil.com.br` (ação judicial) e o Instagram — sinal
+de que a mesma chamada serve de base para menções de marca.
+
+### T0.6 — reprovada. O Reclame Aqui bloqueia
+
+`on_page/instant_pages` com `enable_javascript` e `enable_browser_rendering` na
+ficha do RA devolveu **HTTP 403**, sem conteúdo. A página é protegida contra
+leitura automatizada.
+
+**A decisão original fica de pé:** Reclame Aqui entra com o que a busca entrega
+— existência, URL, reputação do snippet e títulos de reclamação. Sem resumo dos
+conteúdos, e sem navegador headless.
+
+**E cobrou US$ 0,0051 contra os US$ 0,00015 da tabela — 34 vezes mais.** A
+regra de que a tabela da conta é piso, e não orçamento, não vale só para a seção
+`serp`.
+
+### T0.7 — reprovada na prática
+
+`content_analysis/search/live` custou **US$ 0,02472** e devolveu 33 documentos
+no total, 20 na página, **oito dos primeiros nove do mesmo domínio obscuro**
+(`seccor.net`) e com título vazio. O índice é raso para marca brasileira.
+
+A SERP orgânica da T0.4, por **US$ 0,004**, trouxe Reclame Aqui, Instagram,
+JusBrasil e o site próprio — menções de verdade. **A SERP é o método das
+menções de marca**, seis vezes mais barata e com resultado melhor.
+
+Ressalva honesta: uma marca não é amostra. O que a medição estabelece é que o
+produto não é obviamente superior o bastante para justificar 6× o preço.
+
+### T0.5 — a conta expõe três seções que nunca foram olhadas
+
+`GET /appendix/user_data`, gratuita. Saldo na conta: US$ 48,79.
+
+**A conta expõe doze seções**, e três delas nunca foram olhadas: `on_page`,
+`content_analysis` e `domain_analytics`. A pergunta original era só se `on_page`
+existia; a resposta trouxe mais que isso.
+
+Preços relevantes, lidos da tabela da própria conta (`priority_normal`):
+
+| Função | Preço | Para quê |
+|---|---|---|
+| `on_page/page_screenshot` | US$ 0,0048 `per_result` | captura da ficha do GMB — **item aprovado** |
+| `on_page/instant_pages` | US$ 0,00015 `per_result` | busca uma página **renderizada**, sem fila |
+| `on_page/content_parsing_live` | US$ 0,00015 `per_result` | conteúdo estruturado de uma página |
+| `on_page/raw_html` | grátis `per_request` | HTML cru de página já rastreada |
+| `content_analysis/search/live` | US$ 0,024 + US$ 0,000036/resultado | busca de **menções** no índice próprio |
+| `content_analysis/rating_distribution/live` | US$ 0,024 `per_request` | distribuição de sentimento das menções |
+| `on_page/lighthouse/live` | US$ 0,005 `per_request` | alternativa ao PSI, hoje não usada |
+
+A tabela reabriu duas decisões do plano — Reclame Aqui e menções de marca — e as
+medições T0.6 e T0.7 **fecharam as duas de volta no lugar original**. O saldo da
+seção é `page_screenshot`, que confirma a captura da ficha do GMB por US$ 0,0048.
+
+Fica registrado como aviso: **preço na tabela prova que a função existe na
+conta, não o que ela devolve nem quanto ela cobra.** As duas foram testadas e as
+duas decepcionaram — uma por bloqueio do alvo, outra por índice raso, e a
+primeira cobrando 34× o previsto.
+
+### Correção de uma medição anterior
+
+O `SERP_CAVEAT` em `lib/dataforseo/usage.ts` afirma "medimos US$ 0,01 num live
+avançado do Maps contra US$ 0,002 na tabela". Nesta onda, `serp/google/maps/
+live/advanced` com `depth: 20` cobrou **exatamente US$ 0,002** — o preço de
+tabela. A ressalva continua verdadeira para a SERP orgânica, onde `depth: 20`
+cobrou US$ 0,002 na T0.3 e US$ 0,004 na T0.4 com a mesma profundidade, mas o
+número do Maps citado ali não se repetiu e deve ser revisto.

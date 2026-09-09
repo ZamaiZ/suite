@@ -1,4 +1,12 @@
-import { GBP_GAP_LABELS, type GbpGapId } from "@/lib/leads/gbp"
+import {
+  gbpDescriptionCoverage,
+  GBP_GAP_LABELS,
+  type GbpGapId,
+} from "@/lib/leads/gbp"
+import type { GbpEnrichment } from "@/lib/leads/gbp-enrichment"
+import type { LeadLocation } from "@/lib/leads/resolve-location"
+import { segmentCategoryDetail } from "@/lib/leads/segment-categories"
+import { missingTermsDetail, type TermCoverage } from "@/lib/leads/term-coverage"
 import type { GbpRankCheck } from "@/lib/leads/gbp-audit"
 import type { GbpReputation } from "@/lib/leads/gbp-reputation"
 import type { GbpReputationDelta } from "@/lib/leads/gbp-reputation-compare"
@@ -59,6 +67,8 @@ const HIGH_IMPACT = new Set<GbpGapId>([
   "reviews_removed",
   "negative_replies_ignored",
   "latest_review_unanswered",
+  // Categoria errada não é omissão, é o perfil concorrendo na busca errada.
+  "category_off_segment",
 ])
 
 const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
@@ -89,6 +99,32 @@ const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
   negative_replies_ignored: "Responder também as avaliações negativas",
   dormant_reviews: "Retomar a captação de avaliações",
   reviews_removed: "Investigar as avaliações que sumiram",
+  category_off_segment: "Revisar a categoria do perfil",
+  description_missing_services: "Citar os serviços na descrição",
+  description_missing_region: "Citar a região atendida na descrição",
+  description_missing_category: "Citar o ramo de atuação na descrição",
+}
+
+/**
+ * O detalhe nomeia os termos que faltam. "Descrição não cita os serviços" é
+ * rótulo; "Não menciona: Cremação, Embalsamamento, Planos funerários" é o texto
+ * que o analista cola no relatório.
+ */
+function coverageDetail(
+  id: GbpGapId,
+  coverage: TermCoverage | null,
+): string | undefined {
+  if (!coverage) return undefined
+  if (id === "description_missing_services") {
+    return missingTermsDetail(coverage.services) ?? undefined
+  }
+  if (id === "description_missing_region") {
+    return missingTermsDetail(coverage.region) ?? undefined
+  }
+  if (id === "description_missing_category") {
+    return missingTermsDetail(coverage.category) ?? undefined
+  }
+  return undefined
 }
 
 /**
@@ -186,17 +222,34 @@ function worstRankKeyword(
   return worst.keyword
 }
 
+export type GbpOpportunityContext = {
+  rankChecks?: GbpRankCheck[]
+  keywords?: string[]
+  analystReview?: GbpAnalystReview
+  reputation?: GbpReputation | null
+  reviewsDelta?: GbpReputationDelta
+  /** De `gbpDescriptionCoverage`. `null` quando não havia o que medir. */
+  descriptionCoverage?: TermCoverage | null
+  /** De `segmentCategoryDetail`: os dois lados do desalinhamento. */
+  categoryDetail?: string
+}
+
+/**
+ * Objeto em vez de seis posicionais: a lista cresceu a cada onda, e trocar dois
+ * argumentos de mesmo tipo é um erro que nada aqui pegaria.
+ */
 export function gbpOpportunitiesFromGaps(
   gaps: GbpGapId[],
-  rankChecks: GbpRankCheck[] = [],
-  keywords: string[] = [],
-  analystReview: GbpAnalystReview = emptyGbpAnalystReview(),
-  reputation: GbpReputation | null = null,
-  reviewsDelta: GbpReputationDelta = {
-    status: "blocked",
-    reason: "no_previous",
-  },
+  context: GbpOpportunityContext = {},
 ): GbpOpportunityItem[] {
+  const rankChecks = context.rankChecks ?? []
+  const keywords = context.keywords ?? []
+  const analystReview = context.analystReview ?? emptyGbpAnalystReview()
+  const reputation = context.reputation ?? null
+  const reviewsDelta = context.reviewsDelta ?? {
+    status: "blocked" as const,
+    reason: "no_previous" as const,
+  }
   const items = gaps.map((id) => {
     if (id === "not_in_map_top3") {
       const keyword = worstRankKeyword(rankChecks, keywords)
@@ -208,10 +261,11 @@ export function gbpOpportunitiesFromGaps(
         impact: "high" as const,
       }
     }
-    const detail = ANALYST_GAPS.has(id)
-      ? (analystDetail(id, analystReview) ??
-        reputationDetail(id, reputation, reviewsDelta))
-      : reputationDetail(id, reputation, reviewsDelta)
+    const detail =
+      (ANALYST_GAPS.has(id) ? analystDetail(id, analystReview) : undefined) ??
+      reputationDetail(id, reputation, reviewsDelta) ??
+      coverageDetail(id, context.descriptionCoverage ?? null) ??
+      (id === "category_off_segment" ? context.categoryDetail : undefined)
     return {
       id,
       title: OPPORTUNITY_TITLES[id] ?? GBP_GAP_LABELS[id],
@@ -239,16 +293,30 @@ export function mergeGbpOpportunities(input: {
   analystReview: GbpAnalystReview
   reputation: GbpReputation | null
   reviewsDelta: GbpReputationDelta
+  /**
+   * Enriquecimento e localização, para os achados de descrição e categoria
+   * nomearem o que falta. Obrigatórios pelo mesmo motivo dos vizinhos: sem
+   * eles o detalhe sairia vazio em silêncio.
+   */
+  enrichment: GbpEnrichment | null | undefined
+  location: LeadLocation | null | undefined
 }): GbpOpportunityItem[] {
   const items = [
-    ...gbpOpportunitiesFromGaps(
-      input.gaps,
-      input.rankChecks ?? [],
-      input.keywords ?? [],
-      input.analystReview,
-      input.reputation,
-      input.reviewsDelta,
-    ),
+    ...gbpOpportunitiesFromGaps(input.gaps, {
+      rankChecks: input.rankChecks,
+      keywords: input.keywords,
+      analystReview: input.analystReview,
+      reputation: input.reputation,
+      reviewsDelta: input.reviewsDelta,
+      descriptionCoverage: gbpDescriptionCoverage(
+        input.enrichment,
+        input.location,
+      ),
+      categoryDetail: segmentCategoryDetail({
+        segmentName: input.location?.segmentName,
+        category: input.enrichment?.category,
+      }),
+    }),
     ...gbpReputationOpportunity(input.reputationNote),
   ]
   items.sort((left, right) => {

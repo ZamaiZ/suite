@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { RiAddLine } from "react-icons/ri"
-import { listLeadSegments } from "@/app/actions/leads"
+import { createLeadSegment, listLeadSegments } from "@/app/actions/leads"
 import { cn } from "cn"
 import {
   Combobox,
@@ -48,15 +48,41 @@ export function LeadSegmentField({
   const [open, setOpen] = useState(false)
   const errorId = `${id}-error`
 
+  const mountedRef = useRef(true)
   useEffect(() => {
+    mountedRef.current = true
     let cancelled = false
     void listLeadSegments().then((segments) => {
       if (!cancelled) setCatalog(segments)
     })
     return () => {
       cancelled = true
+      mountedRef.current = false
     }
   }, [])
+
+  /**
+   * Grava o segmento e o traz para o catálogo local, sem esperar o save do lead.
+   *
+   * A seleção acontece antes, de forma otimista: o campo não pode piscar
+   * esperando a rede. Se a gravação falhar, o texto continua no formulário e o
+   * `ensureSegment` do save é a rede — nada do que a pessoa digitou se perde.
+   */
+  function registerSegment(name: string) {
+    void createLeadSegment(name).then((created) => {
+      if (!created || !mountedRef.current) return
+      setCatalog((prev) =>
+        prev.some((item) => item.id === created.id)
+          ? prev
+          : [...prev, created].sort((left, right) =>
+              left.name.localeCompare(right.name, "pt-BR"),
+            ),
+      )
+      // O servidor normaliza o nome; se ele voltar diferente, o formulário passa
+      // a carregar a forma canônica em vez da digitada.
+      if (created.name !== name) onValueChange(created.name)
+    })
+  }
 
   const trimmedQuery = query.trim()
   const querySlug = segmentSlug(trimmedQuery)
@@ -81,8 +107,18 @@ export function LeadSegmentField({
     segmentSlug(value) !== querySlug,
   )
 
+  /**
+   * Abrir o campo semeia a busca com o rótulo selecionado, para que ele não
+   * suma do input. Isso faria a lista filtrar para um item só — então, enquanto
+   * a busca for exatamente o que já está selecionado, ela não filtra nada.
+   */
+  const queryIsSelection = Boolean(
+    selectedItem && trimmedQuery === selectedItem.label,
+  )
+
   const suggestionItems = useMemo<SegmentOption[]>(() => {
-    const filtered = trimmedQuery
+    const filtered =
+      trimmedQuery && !queryIsSelection
       ? catalog.filter((item) => {
           const name = item.name.toLocaleLowerCase("pt-BR")
           const needle = trimmedQuery.toLocaleLowerCase("pt-BR")
@@ -103,7 +139,14 @@ export function LeadSegmentField({
       })
     }
     return items
-  }, [canCreate, catalog, normalizedQuery, querySlug, trimmedQuery])
+  }, [
+    canCreate,
+    catalog,
+    normalizedQuery,
+    queryIsSelection,
+    querySlug,
+    trimmedQuery,
+  ])
 
   function handleValueChange(next: SegmentOption | SegmentOption[] | null) {
     const item = Array.isArray(next) ? next[0] : next
@@ -113,11 +156,12 @@ export function LeadSegmentField({
     }
     if (item.value === CREATE_VALUE && normalizedQuery) {
       onValueChange(normalizedQuery)
-      setQuery("")
+      registerSegment(normalizedQuery)
+      setQuery(normalizedQuery)
       return
     }
     onValueChange(item.label)
-    setQuery("")
+    setQuery(item.label)
   }
 
   return (
@@ -136,7 +180,10 @@ export function LeadSegmentField({
         open={open && !disabled}
         onOpenChange={(next) => {
           setOpen(next)
-          if (!next) setQuery("")
+          // Abrir e fechar sempre voltam ao que está selecionado. Zerar aqui
+          // era o que fazia o segmento escolhido sumir do campo: `inputValue`
+          // renderiza `query` enquanto aberto, e `query` acabava de ser zerado.
+          setQuery(selectedItem?.label ?? "")
         }}
         inputValue={open ? query : (selectedItem?.label ?? query)}
         onInputValueChange={setQuery}

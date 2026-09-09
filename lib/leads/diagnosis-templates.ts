@@ -40,8 +40,21 @@ export function seedDiagnosisProse(
     (left, right) => facts.scorecard[left].score - facts.scorecard[right].score,
   )[0]
 
+  // O resumo abre pelo que já funciona, quando há. O documento de referência faz
+  // isso, e é o que separa diagnóstico de lista de defeitos. Sem ponto forte a
+  // frase some, em vez de virar texto vazio dizendo que não há nada de bom.
+  const strengths = facts.strengths ?? []
+  const strengthText =
+    strengths.length > 0
+      ? `Do lado positivo: ${strengths
+          .slice(0, 2)
+          .map((item) => item.title.toLowerCase())
+          .join(" e ")}.`
+      : ""
+
   const executiveSummary = [
     `Diagnóstico digital de ${meta.companyName}${place} (${meta.domain}).`,
+    strengthText,
     `Os principais temas observados são: ${findingText}.`,
     weakest
       ? `O pilar com maior espaço de ganho imediato é ${DIAGNOSIS_PILLAR_LABELS[weakest]}.`

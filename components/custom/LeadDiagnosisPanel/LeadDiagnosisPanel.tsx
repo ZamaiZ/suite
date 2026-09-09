@@ -3,7 +3,12 @@
 import { useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import { RiAlertLine, RiLightbulbLine, RiSaveLine } from "react-icons/ri"
+import {
+  RiAlertLine,
+  RiCheckLine,
+  RiLightbulbLine,
+  RiSaveLine,
+} from "react-icons/ri"
 import {
   compileLeadDiagnosis,
   exportLeadDiagnosisPdf,
@@ -290,6 +295,36 @@ export function LeadDiagnosisPanel({
               </p>
             )}
           </LeadGbpCard>
+
+          {/* Antes dos achados, na mesma ordem do PDF e do documento de
+              referência: o que funciona vem primeiro. */}
+          {(draft.document.facts.strengths?.length ?? 0) > 0 ? (
+            <LeadGbpCard title="Pontos fortes">
+              <ul className="flex flex-col gap-3">
+                {(draft.document.facts.strengths ?? []).map((item) => (
+                  <li key={item.id} className="flex items-start gap-2.5">
+                    <span
+                      aria-hidden
+                      className="mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-success/10 text-success"
+                    >
+                      <RiCheckLine size={14} />
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-xs/relaxed font-semibold text-foreground">
+                        {item.title}
+                      </p>
+                      <p className="mt-0.5 text-xs/relaxed text-muted-foreground">
+                        {item.detail}
+                      </p>
+                      <p className="mt-1 text-xs/relaxed text-muted-foreground">
+                        {DIAGNOSIS_PILLAR_LABELS[item.pillar]}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </LeadGbpCard>
+          ) : null}
 
           {draft.document.facts.findings.length > 0 ? (
             <LeadGbpCard title="Achados prioritários">

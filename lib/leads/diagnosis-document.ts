@@ -51,6 +51,18 @@ export type DiagnosisFinding = {
   pillars: DiagnosisPillar[]
 }
 
+/**
+ * O que está bom, com o número que prova. Exibição apenas: não entra em
+ * `scorePillarOpportunities()`, senão o scorecard passaria a somar duas escalas
+ * e o score de todo lead já auditado mudaria de significado.
+ */
+export type DiagnosisStrength = {
+  id: string
+  title: string
+  pillar: DiagnosisPillar
+  detail: string
+}
+
 export type DiagnosisRoadmapItem = {
   id: string
   pillar: DiagnosisPillar
@@ -69,6 +81,11 @@ export type DiagnosisFacts = {
   findings: DiagnosisFinding[]
   roadmap: DiagnosisRoadmapItem[]
   pillars: Record<DiagnosisPillar, DiagnosisPillarFacts>
+  /**
+   * Opcional na leitura: rascunho salvo antes da onda 9 não tem o campo, e
+   * exigi-lo faria todo documento antigo deixar de abrir.
+   */
+  strengths?: DiagnosisStrength[]
 }
 
 export type DiagnosisProse = {
@@ -154,6 +171,22 @@ export function scorePillarOpportunities(
   }
 }
 
+/**
+ * Versão do catálogo de achados. Incrementar sempre que uma onda mudar quais
+ * achados existem ou como eles são calculados.
+ *
+ * Sem isto o fingerprint é feito só de timestamps de coleta, e uma regra nova
+ * não marca rascunho nenhum como desatualizado: o achado passa a existir no
+ * código e não aparece em nenhum documento já salvo, porque ninguém sabe que
+ * precisa recompilar. A onda 9 é inteiramente retroativa e seria invisível.
+ *
+ * Não recompila sozinho — recompilar é decisão de quem vende, e a prosa escrita
+ * pelo analista está no rascunho.
+ *
+ * 2 = onda 9: cobertura de descrição, categoria × segmento, pontos fortes.
+ */
+export const DIAGNOSIS_RULES_VERSION = 2
+
 export function diagnosisFactsFingerprint(input: {
   gbpEnrichmentAt: string | null
   gbpFetchedAt: string | null
@@ -166,6 +199,7 @@ export function diagnosisFactsFingerprint(input: {
   backlinksFetchedAt: string | null
 }): string {
   return [
+    `v${DIAGNOSIS_RULES_VERSION}`,
     input.gbpFetchedAt ?? "",
     input.gbpEnrichmentAt ?? "",
     input.websiteFetchedAt ?? "",

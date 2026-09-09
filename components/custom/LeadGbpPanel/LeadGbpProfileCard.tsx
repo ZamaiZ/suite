@@ -43,6 +43,7 @@ import {
 import { gbpJobQueued } from "@/lib/leads/gbp-audit"
 import { mergeGbpOpportunities } from "@/lib/leads/gbp-opportunities"
 import { gbpGapsForProfile, type LeadGbpProfile } from "@/lib/leads/gbp"
+import type { LeadLocation } from "@/lib/leads/resolve-location"
 import { latestGbpCollectedAt } from "@/lib/leads/gbp-presenters"
 
 const POLL_MS = 5000
@@ -62,6 +63,7 @@ export function LeadGbpProfileCard({
   profile,
   profiles,
   companyName,
+  location,
   canEdit,
   actionPending,
   onSelectProfile,
@@ -72,6 +74,8 @@ export function LeadGbpProfileCard({
   profile: LeadGbpProfile
   profiles: LeadGbpProfile[]
   companyName: string
+  /** Resolvida no painel e repassada, para os dois montadores concordarem. */
+  location: LeadLocation
   /**
    * Citações encontradas na coleta de backlinks. `null` quando a checagem não
    * foi feita — que é diferente de nenhum diretório linkar.
@@ -214,6 +218,7 @@ export function LeadGbpProfileCard({
       analystReview: profile.analyst_review,
       today: todayCivilDate(),
       reviewsDelta: profile.reviews_delta,
+      location,
     },
   )
   const reputation = gbpReputation({
@@ -229,6 +234,8 @@ export function LeadGbpProfileCard({
     keywords: profile.rank_keywords,
     reputationNote: profile.reputation_note,
     analystReview: profile.analyst_review,
+    enrichment,
+    location,
   })
   const collectingPosts = profile.jobs.some(
     (job) => job.kind === "updates" && job.status === "queued",

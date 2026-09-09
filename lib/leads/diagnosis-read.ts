@@ -13,6 +13,7 @@ import {
   type DiagnosisPillar,
   type DiagnosisProse,
   type DiagnosisRoadmapItem,
+  type DiagnosisStrength,
   type DiagnosisSourceLabel,
   type LeadDiagnosisDraft,
   type LeadDiagnosisExport,
@@ -82,6 +83,17 @@ function readFinding(value: unknown): DiagnosisFinding | null {
       })
     : []
   return { id, title, detail, pillars }
+}
+
+function readStrength(value: unknown): DiagnosisStrength | null {
+  const row = objectRecord(value)
+  if (!row) return null
+  const id = asString(row.id)
+  const title = asString(row.title)
+  const detail = asString(row.detail)
+  const pillar = asPillar(row.pillar)
+  if (!id || !title || !detail || !pillar) return null
+  return { id, title, detail, pillar }
 }
 
 function readRoadmapItem(value: unknown): DiagnosisRoadmapItem | null {
@@ -177,7 +189,23 @@ function readFacts(value: unknown): DiagnosisFacts | null {
       })
     : []
 
-  return { scorecard, findings, roadmap, pillars }
+  // Ausente é ausente, não lista vazia: rascunho salvo antes da onda 9 não tem
+  // o campo, e devolver `[]` faria a tela afirmar que o lead não tem nenhum
+  // ponto forte quando ninguém mediu.
+  const strengths = Array.isArray(row.strengths)
+    ? row.strengths.flatMap((item) => {
+        const parsed = readStrength(item)
+        return parsed ? [parsed] : []
+      })
+    : undefined
+
+  return {
+    scorecard,
+    findings,
+    roadmap,
+    pillars,
+    ...(strengths ? { strengths } : {}),
+  }
 }
 
 function readMeta(value: unknown): DiagnosisMeta | null {

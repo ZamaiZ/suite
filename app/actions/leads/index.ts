@@ -128,4 +128,5 @@ export {
   type ImportLeadsState,
 } from "./spreadsheet"
 export { listLeadSegments } from "./list-segments"
+export { createLeadSegment, createLeadTag } from "./create-catalog-entry"
 export { searchLeadCities, type SearchCitiesState } from "./search-cities"

@@ -3,25 +3,22 @@ import type { createClient } from "@/lib/supabase/server"
 
 type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 
-export async function syncLeadTags(
+/**
+ * Garante as tags no catálogo e devolve as linhas, na ordem de entrada.
+ *
+ * Extraído de `syncLeadTags` para que a criação pelo combobox use o mesmo
+ * caminho de escrita do save. Duas implementações da mesma tabela divergem —
+ * foi o que aconteceu com a lista de concorrentes até a onda 3 uni-las.
+ */
+export async function ensureTags(
   supabase: SupabaseClient,
-  leadId: string,
   names: string[],
 ): Promise<LeadTag[] | null> {
-  const parsed = parseTagNames(names)
-
-  if (parsed.length === 0) {
-    const { error } = await supabase
-      .from("lead_tags")
-      .delete()
-      .eq("lead_id", leadId)
-    return error ? null : []
-  }
-
-  const rows = parsed.map((name) => ({
+  const rows = parseTagNames(names).map((name) => ({
     name,
     slug: tagSlug(name),
   }))
+  if (rows.length === 0) return []
 
   const { error: upsertError } = await supabase.from("tags").upsert(rows, {
     onConflict: "slug",
@@ -47,6 +44,26 @@ export async function syncLeadTags(
     if (!tag) return null
     tags.push(tag)
   }
+  return tags
+}
+
+export async function syncLeadTags(
+  supabase: SupabaseClient,
+  leadId: string,
+  names: string[],
+): Promise<LeadTag[] | null> {
+  const parsed = parseTagNames(names)
+
+  if (parsed.length === 0) {
+    const { error } = await supabase
+      .from("lead_tags")
+      .delete()
+      .eq("lead_id", leadId)
+    return error ? null : []
+  }
+
+  const tags = await ensureTags(supabase, parsed)
+  if (!tags) return null
 
   const { data: current, error: currentError } = await supabase
     .from("lead_tags")

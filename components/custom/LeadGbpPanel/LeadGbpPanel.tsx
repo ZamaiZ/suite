@@ -174,6 +174,13 @@ export function LeadGbpPanel({
   const coverage = gbpWebsiteCoverage(websiteKeys, profiles)
   const showPicker = canEdit && (profiles.length === 0 || pickerOpen)
   const uncoveredCount = coverage.uncoveredWebsiteKeys.length
+  // Construída aqui e repassada ao card: os dois montadores de gap precisam da
+  // mesma localização, e resolver duas vezes é como as listas de concorrente
+  // divergiram até a onda 3.
+  const leadLocation = resolveLeadLocation(
+    detail.lead,
+    selected?.payload ?? null,
+  )
   const alertCount = selected
     ? gbpGapsForProfile(
         selected.payload,
@@ -194,6 +201,7 @@ export function LeadGbpPanel({
           analystReview: selected.analyst_review,
           today: todayCivilDate(),
           reviewsDelta: selected.reviews_delta,
+          location: leadLocation,
         },
       ).length
     : 0
@@ -567,6 +575,7 @@ export function LeadGbpPanel({
                 profile={selected}
                 profiles={profiles}
                 companyName={detail.lead.company_name}
+                location={leadLocation}
                 canEdit={canEdit}
                 actionPending={linking}
                 onSelectProfile={setSelectedId}

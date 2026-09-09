@@ -43,6 +43,14 @@ import {
   type LeadGbpSnapshot,
 } from "@/lib/leads/gbp-snapshot"
 import { normalizeWebsiteDomain } from "@/lib/leads/website"
+import type { LeadLocation } from "@/lib/leads/resolve-location"
+import { segmentCategoryVerdict } from "@/lib/leads/segment-categories"
+import {
+  buildTermSet,
+  termCoverage,
+  termSetIsEmpty,
+  type TermCoverage,
+} from "@/lib/leads/term-coverage"
 import type { PlacesPlace } from "@/lib/places"
 
 export type { GbpEnrichment }
@@ -99,6 +107,10 @@ export const GBP_GAP_IDS = [
   "negative_replies_ignored",
   "dormant_reviews",
   "reviews_removed",
+  "category_off_segment",
+  "description_missing_services",
+  "description_missing_region",
+  "description_missing_category",
 ] as const
 
 export type GbpGapId = (typeof GBP_GAP_IDS)[number]
@@ -132,6 +144,10 @@ export const GBP_GAP_LABELS: Record<GbpGapId, string> = {
   negative_replies_ignored: "Responde elogio e ignora crítica",
   dormant_reviews: "Sem avaliações novas há muito tempo",
   reviews_removed: "Avaliações desapareceram desde a última coleta",
+  category_off_segment: "Categoria não corresponde ao segmento",
+  description_missing_services: "Descrição não cita os serviços",
+  description_missing_region: "Descrição não cita a região atendida",
+  description_missing_category: "Descrição não cita o ramo de atuação",
 }
 
 export type GbpSnapshot = {
@@ -292,6 +308,34 @@ export function readGbpSnapshot(value: unknown): GbpSnapshot | null {
   }
 }
 
+/**
+ * Cobertura da descrição do perfil, numa função só.
+ *
+ * A regra de gap e o detalhe do achado precisam do mesmo resultado — os termos
+ * ausentes são a prova que transforma "descrição pouco otimizada" em
+ * diagnóstico. Calcular nos dois lugares abriria a porta para eles discordarem,
+ * que é como as listas de concorrente divergiram até a onda 3.
+ *
+ * `null` quando não há o que medir: sem descrição, sem localização, ou sem
+ * nenhum termo de referência.
+ */
+export function gbpDescriptionCoverage(
+  enrichment: GbpEnrichment | null | undefined,
+  location: LeadLocation | null | undefined,
+): TermCoverage | null {
+  if (!enrichment?.description || !location) return null
+  const termSet = buildTermSet({
+    services: enrichment.services?.map((item) => item.title) ?? null,
+    category: enrichment.category,
+    additionalCategories: enrichment.additionalCategories,
+    segmentName: location.segmentName,
+    city: location.city,
+    stateCode: location.stateCode,
+  })
+  if (termSetIsEmpty(termSet)) return null
+  return termCoverage([enrichment.description], termSet)
+}
+
 export function gbpGapsForProfile(
   snapshot: GbpSnapshot,
   companyName: string,
@@ -314,6 +358,12 @@ export function gbpGapsForProfile(
     /** Referência de "hoje" para janelas e dormência. */
     today: string
     reviewsDelta: GbpReputationDelta
+    /**
+     * Cidade, UF e segmento, de `resolveLeadLocation`. Obrigatório pelo mesmo
+     * motivo dos vizinhos: opcional deixaria a cobertura de termos ligada num
+     * montador e desligada noutro, e a divergência seria silenciosa.
+     */
+    location: LeadLocation
   },
 ): GbpGapId[] {
   const gaps: GbpGapId[] = []
@@ -351,6 +401,41 @@ export function gbpGapsForProfile(
     if (!enrichment.description) gaps.push("missing_description")
     else if (enrichment.description.length < GBP_THIN_DESCRIPTION) {
       gaps.push("thin_description")
+    }
+    // Cobertura da descrição. Só roda com descrição presente: os três achados
+    // sobre um campo vazio seriam três formas de repetir `missing_description`.
+    //
+    // Comprimento e cobertura medem coisas diferentes, e a referência mostra o
+    // porquê: a descrição do perfil auditado tem 479 caracteres — passa no
+    // limiar de 200 — e não cita serviço, região nem ramo.
+    const coverage = gbpDescriptionCoverage(enrichment, audit?.location ?? null)
+    if (coverage) {
+      // `measured: false` é grupo sem fonte — nada a cobrir, e não um gap.
+      //
+      // A assimetria é proposital. Serviço é lista de coisas distintas, e deixar
+      // seis de nove fora é a omissão que a auditoria aponta. Região e categoria
+      // são o mesmo fato em variantes — cidade, sigla, nome do estado; categoria
+      // principal e secundárias —, e citar uma já cumpre. Exigir todas acusaria
+      // toda descrição de não repetir "SP" depois de escrever "São Paulo".
+      if (coverage.services.measured && coverage.services.missing.length > 0) {
+        gaps.push("description_missing_services")
+      }
+      if (coverage.region.measured && coverage.region.present.length === 0) {
+        gaps.push("description_missing_region")
+      }
+      if (coverage.category.measured && coverage.category.present.length === 0) {
+        gaps.push("description_missing_category")
+      }
+    }
+    if (
+      audit?.location &&
+      segmentCategoryVerdict({
+        segmentName: audit.location.segmentName,
+        category: enrichment.category,
+        additionalCategories: enrichment.additionalCategories,
+      }) === "misaligned"
+    ) {
+      gaps.push("category_off_segment")
     }
     // `null` significa que a coleta não trouxe o campo — só lista vazia é gap.
     if (

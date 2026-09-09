@@ -86,6 +86,15 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 4,
   },
+  strengthBlock: {
+    marginBottom: 8,
+  },
+  strengthPillar: {
+    fontSize: 10,
+    fontFamily: "Helvetica-Bold",
+    color: colors.secondary,
+    marginBottom: 3,
+  },
   scoreRow: {
     flexDirection: "row",
     gap: 8,
@@ -267,6 +276,32 @@ function DiagnosisPdfDocument({ document }: { document: DiagnosisDocument }) {
 
         <Text style={styles.sectionTitle}>Scorecard</Text>
         <Scorecard document={document} />
+
+        {/* Antes dos achados, como no documento de referência: o relatório abre
+            reconhecendo o que funciona, e só então aponta o que falta. */}
+        {(document.facts.strengths?.length ?? 0) > 0 ? (
+          <>
+            <Text style={styles.sectionTitle}>Pontos fortes</Text>
+            {DIAGNOSIS_PILLARS.map((pillar) => {
+              const items = (document.facts.strengths ?? []).filter(
+                (item) => item.pillar === pillar,
+              )
+              if (items.length === 0) return null
+              return (
+                <View key={pillar} style={styles.strengthBlock} wrap={false}>
+                  <Text style={styles.strengthPillar}>
+                    {DIAGNOSIS_PILLAR_LABELS[pillar]}
+                  </Text>
+                  {items.map((item) => (
+                    <Text key={item.id} style={styles.listItem}>
+                      • {item.title} — {item.detail}
+                    </Text>
+                  ))}
+                </View>
+              )
+            })}
+          </>
+        ) : null}
 
         {document.facts.findings.length > 0 ? (
           <>
