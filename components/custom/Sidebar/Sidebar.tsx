@@ -58,8 +58,8 @@ export function Sidebar() {
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored !== null) setExpanded(stored === "true")
 
-    let raf1: number, raf2: number
-    raf1 = requestAnimationFrame(() => {
+    let raf2: number
+    const raf1 = requestAnimationFrame(() => {
       raf2 = requestAnimationFrame(() => setLive(true))
     })
     return () => {

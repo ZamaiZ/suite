@@ -7,6 +7,14 @@ import { RiPencilLine, RiSaveLine } from "react-icons/ri"
 import type { IconType } from "react-icons"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { LeadIconWell } from "./LeadIconWell"
 
 const EASE = [0.23, 1, 0.32, 1] as const
@@ -41,23 +49,17 @@ export function LeadRecordSectionCard({
   const reduced = !!useReducedMotion()
 
   return (
-    <section className="rounded-xl bg-card p-4 shadow-xs">
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="flex min-w-0 items-center gap-2.5">
-          <LeadIconWell icon={icon} />
-          <div className="min-w-0">
-            <h3 className="font-heading text-sm font-semibold text-foreground">
-              {title}
-            </h3>
-            {subtitle ? (
-              <p className="text-xs/relaxed text-muted-foreground">
-                {subtitle}
-              </p>
-            ) : null}
-          </div>
+    <Card render={<section />}>
+      <CardHeader className="grid-cols-[auto_1fr] items-center gap-x-2.5">
+        <LeadIconWell icon={icon} />
+        <div className="min-w-0">
+          <CardTitle render={<h3 />} className="font-semibold">
+            {title}
+          </CardTitle>
+          {subtitle ? <CardDescription>{subtitle}</CardDescription> : null}
         </div>
         {readOnly || !showActions ? null : editing ? (
-          <div className="flex shrink-0 gap-2">
+          <CardAction className="flex shrink-0 gap-2">
             <Button
               type="button"
               variant="ghost"
@@ -78,25 +80,29 @@ export function LeadRecordSectionCard({
               )}
               {pending ? "Salvando…" : "Salvar"}
             </Button>
-          </div>
+          </CardAction>
         ) : (
-          <Button type="button" variant="outline" onClick={onEdit}>
-            <RiPencilLine data-icon="inline-start" aria-hidden />
-            {editLabel}
-          </Button>
+          <CardAction>
+            <Button type="button" variant="outline" onClick={onEdit}>
+              <RiPencilLine data-icon="inline-start" aria-hidden />
+              {editLabel}
+            </Button>
+          </CardAction>
         )}
-      </div>
-      <AnimatePresence mode="wait" initial={false}>
-        <m.div
-          key={editing ? "edit" : "view"}
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
-          animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
-          exit={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
-          transition={{ duration: reduced ? 0.12 : 0.16, ease: EASE }}
-        >
-          {children}
-        </m.div>
-      </AnimatePresence>
-    </section>
+      </CardHeader>
+      <CardContent>
+        <AnimatePresence mode="wait" initial={false}>
+          <m.div
+            key={editing ? "edit" : "view"}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
+            animate={reduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: 4 }}
+            transition={{ duration: reduced ? 0.12 : 0.16, ease: EASE }}
+          >
+            {children}
+          </m.div>
+        </AnimatePresence>
+      </CardContent>
+    </Card>
   )
 }

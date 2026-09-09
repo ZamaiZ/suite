@@ -1,4 +1,5 @@
 import { cn } from "cn"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type {
   BriefingReviewChipsProps,
   BriefingReviewFieldProps,
@@ -10,12 +11,14 @@ export function BriefingReviewSection({
   children,
 }: BriefingReviewSectionProps) {
   return (
-    <section className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 px-4 py-3">
-      <h3 className="font-heading text-sm font-semibold text-foreground">
-        {title}
-      </h3>
-      <div className="flex flex-col gap-3">{children}</div>
-    </section>
+    <Card size="sm" render={<section />} className="bg-card/60">
+      <CardHeader>
+        <CardTitle render={<h3 />} className="font-semibold">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-3">{children}</CardContent>
+    </Card>
   )
 }
 

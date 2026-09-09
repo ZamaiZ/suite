@@ -136,19 +136,27 @@ export function LeadWebsitePanel({
   auditRef.current = audit
   const jobsKey = websiteJobsKey(audit)
 
-  useEffect(() => {
-    window.clearTimeout(reviewTimerRef.current)
-    const current = auditRef.current
-    const draft = current ? websiteReviewDraft(current.review) : null
-    reviewRef.current = draft
-    setLiveReview(draft)
+  // Resets ligados à troca de auditoria: no render, não em efeito.
+  const auditId = audit?.id ?? null
+  const [syncedAuditId, setSyncedAuditId] = useState(auditId)
+  if (syncedAuditId !== auditId) {
+    setSyncedAuditId(auditId)
+    setLiveReview(audit ? websiteReviewDraft(audit.review) : null)
     setReviewStatus("idle")
     setReviewError(null)
-  }, [audit?.id])
+  }
+
+  const pollKey = `${auditId ?? ""}|${jobsKey}`
+  const [syncedPollKey, setSyncedPollKey] = useState(pollKey)
+  if (syncedPollKey !== pollKey) {
+    setSyncedPollKey(pollKey)
+    setPollTimedOut(false)
+  }
 
   useEffect(() => {
-    setPollTimedOut(false)
-  }, [audit?.id, jobsKey])
+    window.clearTimeout(reviewTimerRef.current)
+    reviewRef.current = audit ? websiteReviewDraft(audit.review) : null
+  }, [audit])
 
   useEffect(() => {
     if (!canEdit || !audit || !jobsKey) return

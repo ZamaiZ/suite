@@ -13,6 +13,7 @@ import {
   type ClientKickoffDetail,
 } from "@/app/actions/clients"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
+import { Card } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/custom/DateTimePicker"
@@ -135,7 +136,7 @@ export function ClientKickoffPanel({ clientId }: { clientId: string }) {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-4">
-      <section className="rounded-2xl border border-border/70 bg-card p-4 shadow-xs">
+      <Card render={<section />} className="p-4">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
@@ -295,9 +296,9 @@ export function ClientKickoffPanel({ clientId }: { clientId: string }) {
             </div>
           </div>
         ) : null}
-      </section>
+      </Card>
 
-      <section className="rounded-2xl border border-border/70 bg-card p-4 shadow-xs">
+      <Card render={<section />} className="p-4">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
@@ -338,7 +339,7 @@ export function ClientKickoffPanel({ clientId }: { clientId: string }) {
             ))}
           </ol>
         )}
-      </section>
+      </Card>
     </div>
   )
 }

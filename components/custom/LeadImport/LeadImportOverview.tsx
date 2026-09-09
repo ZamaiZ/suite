@@ -12,6 +12,14 @@ import {
   SPREADSHEET_FIELD_LABELS,
   type SpreadsheetValueKey,
 } from "@/lib/leads/spreadsheet-model"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Skeleton } from "@/components/ui/skeleton"
 import type {
   ImportIssueItem,
@@ -137,46 +145,46 @@ export function LeadImportOverview({
           </p>
         ) : (
           <div className="max-h-56 overflow-auto rounded-lg border border-border">
-            <table className="w-full min-w-[32rem] border-collapse text-left">
-              <thead className="sticky top-0 bg-popover">
-                <tr className="border-b border-border/70">
+            <Table className="w-full min-w-[32rem] border-collapse text-left">
+              <TableHeader className="sticky top-0 bg-popover">
+                <TableRow className="border-b border-border/70">
                   {["Nome", "Site", "Contato", "Telefone", "E-mail"].map(
                     (header) => (
-                      <th
+                      <TableHead
                         key={header}
                         className="px-2 py-1.5 text-xs/relaxed font-medium text-muted-foreground"
                       >
                         {header}
-                      </th>
+                      </TableHead>
                     ),
                   )}
-                </tr>
-              </thead>
-              <tbody>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
                 {previewRows.map((row) => (
-                  <tr
+                  <TableRow
                     key={`${row.fileId}-${row.row}`}
                     className="border-b border-border/70 last:border-b-0"
                   >
-                    <td className="truncate px-2 py-1.5 text-xs/relaxed text-foreground">
+                    <TableCell className="truncate px-2 py-1.5 text-xs/relaxed text-foreground">
                       {row.company_name}
-                    </td>
-                    <td className="truncate px-2 py-1.5 text-xs/relaxed text-muted-foreground">
+                    </TableCell>
+                    <TableCell className="truncate px-2 py-1.5 text-xs/relaxed text-muted-foreground">
                       {row.website}
-                    </td>
-                    <td className="truncate px-2 py-1.5 text-xs/relaxed text-foreground">
+                    </TableCell>
+                    <TableCell className="truncate px-2 py-1.5 text-xs/relaxed text-foreground">
                       {row.contact_name || "—"}
-                    </td>
-                    <td className="truncate px-2 py-1.5 text-xs/relaxed tabular-nums text-foreground">
+                    </TableCell>
+                    <TableCell className="truncate px-2 py-1.5 text-xs/relaxed tabular-nums text-foreground">
                       {row.phone ? formatPhone(row.phone) : "—"}
-                    </td>
-                    <td className="truncate px-2 py-1.5 text-xs/relaxed text-foreground">
+                    </TableCell>
+                    <TableCell className="truncate px-2 py-1.5 text-xs/relaxed text-foreground">
                       {row.email || "—"}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </div>
         )}
         {previewRows.length > 0 ? (

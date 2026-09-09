@@ -111,15 +111,24 @@ export function LeadGbpProfileCard({
 
   const queuedKey = queuedKindsKey(profile)
 
+  // Resets ligados à troca de perfil/coleta: no render, não em efeito.
+  const [syncedProfileId, setSyncedProfileId] = useState(profile.id)
+  if (syncedProfileId !== profile.id) {
+    setSyncedProfileId(profile.id)
+    setNotesStatus("idle")
+  }
+
+  const pollKey = `${profile.id}|${queuedKey}|${profile.enrichment_at ?? ""}`
+  const [syncedPollKey, setSyncedPollKey] = useState(pollKey)
+  if (syncedPollKey !== pollKey) {
+    setSyncedPollKey(pollKey)
+    setPollTimedOut(false)
+  }
+
   useEffect(() => {
     notesRef.current = profile.notes ?? ""
     reputationRef.current = profile.reputation_note ?? ""
-    setNotesStatus("idle")
-  }, [profile.id])
-
-  useEffect(() => {
-    setPollTimedOut(false)
-  }, [profile.id, queuedKey, profile.enrichment_at])
+  }, [profile.id, profile.notes, profile.reputation_note])
 
   useEffect(() => {
     if (!canEdit || !queuedKey) return

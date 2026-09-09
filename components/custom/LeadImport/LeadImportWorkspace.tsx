@@ -1,9 +1,11 @@
 "use client"
 
 import { RiDownloadLine, RiFileExcel2Line } from "react-icons/ri"
+import Link from "next/link"
 import { LeadImportDropzone } from "./LeadImportDropzone"
 import { LeadImportFileCard } from "./LeadImportFileCard"
 import type { ImportFileEntry, ImportTotals } from "./LeadImport.types"
+import { Button } from "@/components/ui/button"
 
 export function LeadImportWorkspace({
   files,
@@ -40,13 +42,14 @@ export function LeadImportWorkspace({
             arquivo.
           </p>
         </div>
-        <a
-          href="/leads/template"
-          className="inline-flex h-7 shrink-0 items-center justify-center gap-2 rounded-md border border-border bg-card px-4 text-xs/relaxed font-semibold text-foreground transition-[background-color,transform] duration-150 ease-out hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring active:scale-[0.97]"
+        <Button
+          variant="outline"
+          className="shrink-0 px-4 font-semibold"
+          render={<Link href="/leads/template" />}
         >
-          <RiDownloadLine size={16} aria-hidden />
+          <RiDownloadLine data-icon="inline-start" aria-hidden />
           Baixar template
-        </a>
+        </Button>
       </div>
 
       <LeadImportDropzone disabled={dropDisabled} onFiles={onFiles} />

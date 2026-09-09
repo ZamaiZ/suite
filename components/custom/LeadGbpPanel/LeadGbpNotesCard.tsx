@@ -37,9 +37,12 @@ export function LeadGbpNotesCard({
 }) {
   const [value, setValue] = useState(initialValue)
 
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: no render, não em efeito.
+  const [syncedProfileId, setSyncedProfileId] = useState(profileId)
+  if (syncedProfileId !== profileId) {
+    setSyncedProfileId(profileId)
     setValue(initialValue)
-  }, [profileId])
+  }
 
   function handleChange(next: string) {
     setValue(next)

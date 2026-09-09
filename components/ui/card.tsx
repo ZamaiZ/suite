@@ -1,22 +1,30 @@
 import * as React from "react"
+import { mergeProps } from "@base-ui/react/merge-props"
+import { useRender } from "@base-ui/react/use-render"
 import { cn } from "cn"
 
+// `render` segue o mesmo padrão do Badge: deixa o consumidor manter a tag
+// semântica (<section>, <article>) sem abrir mão dos slots do Card.
 function Card({
   className,
   size = "default",
+  render,
   ...props
-}: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
-  return (
-    <div
-      data-slot="card"
-      data-size={size}
-      className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] *:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
-        className,
-      )}
-      {...props}
-    />
-  )
+}: useRender.ComponentProps<"div"> & { size?: "default" | "sm" }) {
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(
+      {
+        className: cn(
+          "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-lg bg-card py-(--card-spacing) text-xs/relaxed text-card-foreground ring-1 ring-foreground/10 [--card-spacing:--spacing(4)] has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(3)] *:[img:first-child]:rounded-t-lg *:[img:last-child]:rounded-b-lg",
+          className,
+        ),
+      },
+      props,
+    ),
+    render,
+    state: { slot: "card", size },
+  })
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -32,14 +40,20 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
-function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
-  return (
-    <div
-      data-slot="card-title"
-      className={cn("font-heading text-sm font-medium", className)}
-      {...props}
-    />
-  )
+function CardTitle({
+  className,
+  render,
+  ...props
+}: useRender.ComponentProps<"div">) {
+  return useRender({
+    defaultTagName: "div",
+    props: mergeProps<"div">(
+      { className: cn("font-heading text-sm font-medium", className) },
+      props,
+    ),
+    render,
+    state: { slot: "card-title" },
+  })
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {

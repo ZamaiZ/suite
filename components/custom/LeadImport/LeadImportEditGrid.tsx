@@ -8,6 +8,14 @@ import {
   SPREADSHEET_VALUE_KEYS,
   type SpreadsheetValueKey,
 } from "@/lib/leads/spreadsheet-model"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import type { SpreadsheetEvaluatedRow } from "@/lib/leads/types"
 
 const ROW_HEIGHT = 34
@@ -88,41 +96,41 @@ export function LeadImportEditGrid({
         onScroll={(event) => setScrollTop(event.currentTarget.scrollTop)}
         className="min-h-0 flex-1 overflow-auto rounded-lg border border-border"
       >
-        <table className="w-full min-w-[80rem] border-collapse text-left">
-          <thead className="sticky top-0 z-10 bg-popover">
-            <tr className="border-b border-border/70">
-              <th className="w-14 px-2 py-1.5 text-xs/relaxed font-medium text-muted-foreground">
+        <Table className="w-full min-w-[80rem] border-collapse text-left">
+          <TableHeader className="sticky top-0 z-10 bg-popover">
+            <TableRow className="border-b border-border/70">
+              <TableHead className="w-14 px-2 py-1.5 text-xs/relaxed font-medium text-muted-foreground">
                 Linha
-              </th>
+              </TableHead>
               {SPREADSHEET_VALUE_KEYS.map((key) => (
-                <th
+                <TableHead
                   key={key}
                   className="px-2 py-1.5 text-xs/relaxed font-medium text-muted-foreground"
                 >
                   {SPREADSHEET_FIELD_LABELS[key]}
-                </th>
+                </TableHead>
               ))}
-            </tr>
-          </thead>
-          <tbody>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {padTop > 0 ? (
-              <tr>
-                <td colSpan={COLUMN_COUNT} style={{ height: padTop }} />
-              </tr>
+              <TableRow>
+                <TableCell colSpan={COLUMN_COUNT} style={{ height: padTop }} />
+              </TableRow>
             ) : null}
             {slice.map((row) => (
-              <tr
+              <TableRow
                 key={row.row}
                 className="border-b border-border/70 last:border-b-0"
               >
-                <td className="px-2 py-1 text-xs/relaxed tabular-nums text-muted-foreground">
+                <TableCell className="px-2 py-1 text-xs/relaxed tabular-nums text-muted-foreground">
                   {row.row}
-                </td>
+                </TableCell>
                 {SPREADSHEET_VALUE_KEYS.map((key) => {
                   const kind = fieldIssueKind(row, key)
                   const isPhone = key === "phone"
                   return (
-                    <td key={key} className="px-1 py-0.5">
+                    <TableCell key={key} className="px-1 py-0.5">
                       <input
                         value={
                           isPhone
@@ -153,18 +161,21 @@ export function LeadImportEditGrid({
                           !kind && "border-transparent",
                         )}
                       />
-                    </td>
+                    </TableCell>
                   )
                 })}
-              </tr>
+              </TableRow>
             ))}
             {padBottom > 0 ? (
-              <tr>
-                <td colSpan={COLUMN_COUNT} style={{ height: padBottom }} />
-              </tr>
+              <TableRow>
+                <TableCell
+                  colSpan={COLUMN_COUNT}
+                  style={{ height: padBottom }}
+                />
+              </TableRow>
             ) : null}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </div>
     </div>
   )

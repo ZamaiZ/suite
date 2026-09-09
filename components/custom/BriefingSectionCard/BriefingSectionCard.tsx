@@ -1,4 +1,11 @@
 import { cn } from "cn"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import type { BriefingSectionCardProps } from "./BriefingSectionCard.types"
 
 export function BriefingSectionCard({
@@ -10,21 +17,16 @@ export function BriefingSectionCard({
   className,
 }: BriefingSectionCardProps) {
   return (
-    <section
-      className={cn(
-        "relative overflow-hidden rounded-xl border border-border bg-card p-5 shadow-xs",
-        className,
-      )}
-    >
+    <Card render={<section />} className={cn("relative", className)}>
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
+        className="card-highlight pointer-events-none absolute inset-x-0 top-0 h-px"
         style={{
           background:
-            "linear-gradient(to right, transparent, var(--accent-subtle), transparent)",
+            "linear-gradient(to right, transparent, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
         }}
       />
-      <div className="mb-4 flex items-start gap-3">
+      <CardHeader className="grid-cols-[auto_1fr] items-start gap-x-3">
         <span className="relative inline-flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
           {icon}
           {typeof index === "number" ? (
@@ -34,15 +36,13 @@ export function BriefingSectionCard({
           ) : null}
         </span>
         <div className="min-w-0">
-          <h2 className="font-heading text-sm font-semibold text-foreground">
+          <CardTitle render={<h2 />} className="font-semibold">
             {title}
-          </h2>
-          <p className="mt-0.5 text-xs/relaxed text-muted-foreground">
-            {description}
-          </p>
+          </CardTitle>
+          <CardDescription>{description}</CardDescription>
         </div>
-      </div>
-      <div className="flex flex-col gap-3">{children}</div>
-    </section>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-3">{children}</CardContent>
+    </Card>
   )
 }

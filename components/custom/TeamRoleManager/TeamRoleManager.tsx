@@ -18,6 +18,7 @@ import {
   type AppRole,
 } from "@/lib/auth/roles"
 import { cn } from "cn"
+import { Empty, EmptyDescription, EmptyHeader } from "@/components/ui/empty"
 import { Spinner } from "@/components/ui/spinner"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
@@ -400,13 +401,14 @@ export function TeamRoleManager({
           </m.header>
 
           {members.length === 0 ? (
-            <m.div
-              variants={fadeUp}
-              className="rounded-xl border border-border bg-card px-6 py-10 text-center shadow-xs"
-            >
-              <p className="text-xs/relaxed text-muted-foreground">
-                Nenhum usuário encontrado.
-              </p>
+            <m.div variants={fadeUp}>
+              <Empty className="rounded-xl border border-border bg-card px-6 py-10 shadow-xs">
+                <EmptyHeader>
+                  <EmptyDescription>
+                    Nenhum usuário encontrado.
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
             </m.div>
           ) : (
             <m.ul

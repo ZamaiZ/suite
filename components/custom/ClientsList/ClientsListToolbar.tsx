@@ -9,6 +9,7 @@ import {
   RiSearchLine,
   RiUser3Line,
 } from "react-icons/ri"
+import { Card } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
 import {
   Select,
@@ -56,10 +57,13 @@ export function ClientsListToolbar({
   const router = useRouter()
   const [pending, startTransition] = useTransition()
   const [draft, setDraft] = useState(listParams.q)
-
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: feito no render, não em efeito.
+  // https://react.dev/learn/you-might-not-need-an-effect
+  const [syncedQuery, setSyncedQuery] = useState(listParams.q)
+  if (syncedQuery !== listParams.q) {
+    setSyncedQuery(listParams.q)
     setDraft(listParams.q)
-  }, [listParams.q])
+  }
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -111,7 +115,7 @@ export function ClientsListToolbar({
   )
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card/80 p-3 shadow-xs sm:flex-row sm:items-center">
+    <Card size="sm" className="bg-card/80 p-3 sm:flex-row sm:items-center">
       <div className="min-w-0 flex-1">
         <InputGroup className="rounded-lg bg-background">
           <InputGroupAddon>
@@ -225,6 +229,6 @@ export function ClientsListToolbar({
           </Button>
         ) : null}
       </div>
-    </div>
+    </Card>
   )
 }

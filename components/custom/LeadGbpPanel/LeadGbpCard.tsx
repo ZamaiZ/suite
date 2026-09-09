@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { cn } from "cn"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export function LeadGbpCard({
   title,
@@ -11,16 +12,13 @@ export function LeadGbpCard({
   className?: string
 }) {
   return (
-    <section
-      className={cn(
-        "flex min-h-0 flex-col rounded-xl border border-border/70 bg-card p-3 shadow-xs",
-        className,
-      )}
-    >
-      <h3 className="font-heading text-sm font-semibold text-foreground">
-        {title}
-      </h3>
-      <div className="mt-2 min-w-0 flex-1">{children}</div>
-    </section>
+    <Card size="sm" render={<section />} className={cn("min-h-0", className)}>
+      <CardHeader>
+        <CardTitle render={<h3 />} className="font-semibold">
+          {title}
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="min-w-0 flex-1">{children}</CardContent>
+    </Card>
   )
 }

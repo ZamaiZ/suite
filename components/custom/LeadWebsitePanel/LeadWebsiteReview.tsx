@@ -275,9 +275,12 @@ export function LeadWebsiteReview({
   const [value, setValue] = useState(() => websiteReviewDraft(review))
   const progress = websiteReviewProgress(value)
 
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: no render, não em efeito.
+  const [syncedAuditId, setSyncedAuditId] = useState(auditId)
+  if (syncedAuditId !== auditId) {
+    setSyncedAuditId(auditId)
     setValue(websiteReviewDraft(review))
-  }, [auditId])
+  }
 
   function handleChange(next: WebsiteReview) {
     const draft = websiteReviewDraft(next)

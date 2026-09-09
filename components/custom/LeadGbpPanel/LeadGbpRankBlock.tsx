@@ -4,6 +4,14 @@ import { useEffect, useState } from "react"
 import { RiCloseLine, RiExternalLinkLine } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridSection } from "./LeadGbpGridSection"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -110,97 +118,95 @@ export function LeadGbpRankBlock({
       ) : null}
 
       {draft.length > 0 ? (
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[28rem] border-collapse text-left">
-            <thead>
-              <tr className="border-b border-border/70">
-                <th className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
-                  Termo
-                </th>
-                <th className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
-                  Posição
-                </th>
-                <th className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
-                  Data
-                </th>
-                <th className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
-                  Concorrentes
-                </th>
-                <th className="pb-2" />
-              </tr>
-            </thead>
-            <tbody>
-              {draft.map((keyword) => {
-                const check = checkForKeyword(checks, keyword)
-                return (
-                  <tr
-                    key={keyword}
-                    className="border-b border-border/70 last:border-b-0"
-                  >
-                    <td className="py-2 pr-3 text-xs/relaxed text-foreground">
-                      <span className="inline-flex items-center gap-1">
-                        {keyword}
-                        {canEdit ? (
-                          <button
-                            type="button"
-                            aria-label={`Remover ${keyword}`}
-                            onClick={() =>
-                              setDraft((current) =>
-                                current.filter((item) => item !== keyword),
-                              )
-                            }
-                            className="inline-flex size-4 cursor-pointer items-center justify-center rounded-sm text-muted-foreground hover:text-foreground"
-                          >
-                            <RiCloseLine size={12} aria-hidden />
-                          </button>
-                        ) : null}
-                      </span>
-                    </td>
-                    <td className="py-2 pr-3">
-                      {check ? (
-                        <span
-                          className={cn(
-                            "inline-flex rounded-md px-1.5 py-0.5 text-xs/relaxed font-medium",
-                            positionTone(check.maps_position),
-                          )}
+        <Table className="w-full min-w-[28rem] border-collapse text-left">
+          <TableHeader>
+            <TableRow className="border-b border-border/70">
+              <TableHead className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
+                Termo
+              </TableHead>
+              <TableHead className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
+                Posição
+              </TableHead>
+              <TableHead className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
+                Data
+              </TableHead>
+              <TableHead className="pb-2 text-xs/relaxed font-medium text-muted-foreground">
+                Concorrentes
+              </TableHead>
+              <TableHead className="pb-2" />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {draft.map((keyword) => {
+              const check = checkForKeyword(checks, keyword)
+              return (
+                <TableRow
+                  key={keyword}
+                  className="border-b border-border/70 last:border-b-0"
+                >
+                  <TableCell className="py-2 pr-3 text-xs/relaxed text-foreground">
+                    <span className="inline-flex items-center gap-1">
+                      {keyword}
+                      {canEdit ? (
+                        <button
+                          type="button"
+                          aria-label={`Remover ${keyword}`}
+                          onClick={() =>
+                            setDraft((current) =>
+                              current.filter((item) => item !== keyword),
+                            )
+                          }
+                          className="inline-flex size-4 cursor-pointer items-center justify-center rounded-sm text-muted-foreground hover:text-foreground"
                         >
-                          {positionLabel(check.maps_position)}
-                        </span>
-                      ) : (
-                        <span className="text-xs/relaxed text-muted-foreground">
-                          Sem consulta
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-2 pr-3 text-xs/relaxed text-muted-foreground">
-                      {check ? formatDate(check.checked_at) : "—"}
-                    </td>
-                    <td className="py-2 pr-3 text-xs/relaxed text-muted-foreground">
-                      {check && check.competitors.length > 0
-                        ? check.competitors
-                            .map((competitor) => competitor.title)
-                            .join(", ")
-                        : "—"}
-                    </td>
-                    <td className="py-2">
-                      {check?.check_url ? (
-                        <a
-                          href={check.check_url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1 text-xs/relaxed font-medium text-primary hover:text-primary"
-                        >
-                          Maps
-                          <RiExternalLinkLine size={12} aria-hidden />
-                        </a>
+                          <RiCloseLine size={12} aria-hidden />
+                        </button>
                       ) : null}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
-        </div>
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-2 pr-3">
+                    {check ? (
+                      <span
+                        className={cn(
+                          "inline-flex rounded-md px-1.5 py-0.5 text-xs/relaxed font-medium",
+                          positionTone(check.maps_position),
+                        )}
+                      >
+                        {positionLabel(check.maps_position)}
+                      </span>
+                    ) : (
+                      <span className="text-xs/relaxed text-muted-foreground">
+                        Sem consulta
+                      </span>
+                    )}
+                  </TableCell>
+                  <TableCell className="py-2 pr-3 text-xs/relaxed text-muted-foreground">
+                    {check ? formatDate(check.checked_at) : "—"}
+                  </TableCell>
+                  <TableCell className="py-2 pr-3 text-xs/relaxed text-muted-foreground">
+                    {check && check.competitors.length > 0
+                      ? check.competitors
+                          .map((competitor) => competitor.title)
+                          .join(", ")
+                      : "—"}
+                  </TableCell>
+                  <TableCell className="py-2">
+                    {check?.check_url ? (
+                      <a
+                        href={check.check_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1 text-xs/relaxed font-medium text-primary hover:text-primary"
+                      >
+                        Maps
+                        <RiExternalLinkLine size={12} aria-hidden />
+                      </a>
+                    ) : null}
+                  </TableCell>
+                </TableRow>
+              )
+            })}
+          </TableBody>
+        </Table>
       ) : (
         <p className="text-xs/relaxed text-muted-foreground">
           Nenhum termo para checar ranking.

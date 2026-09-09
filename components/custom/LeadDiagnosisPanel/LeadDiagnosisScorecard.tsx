@@ -7,6 +7,7 @@ import {
   type DiagnosisPillar,
 } from "@/lib/leads/diagnosis-document"
 import { cn } from "cn"
+import { Card } from "@/components/ui/card"
 
 function toneForScore(score: number): string {
   if (score >= 80) return "text-success"
@@ -24,10 +25,7 @@ export function LeadDiagnosisScorecard({
       {DIAGNOSIS_PILLARS.map((pillar: DiagnosisPillar) => {
         const cell = document.facts.scorecard[pillar]
         return (
-          <article
-            key={pillar}
-            className="rounded-xl border border-border/70 bg-card px-3 py-3 shadow-xs"
-          >
+          <Card key={pillar} render={<article />} className="p-3">
             <p className="text-xs/relaxed text-muted-foreground">
               {DIAGNOSIS_PILLAR_LABELS[pillar]}
             </p>
@@ -44,7 +42,7 @@ export function LeadDiagnosisScorecard({
                 ? "Sem alertas"
                 : `${cell.highCount.toLocaleString("pt-BR")} altos · ${cell.mediumCount.toLocaleString("pt-BR")} médios`}
             </p>
-          </article>
+          </Card>
         )
       })}
     </div>

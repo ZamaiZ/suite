@@ -1,3 +1,4 @@
+import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 export default function ToolsSettingsLoading() {
   return (
@@ -15,13 +16,13 @@ export default function ToolsSettingsLoading() {
             administradores alteram.
           </p>
         </header>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6">
+        <Card className="p-4 sm:p-6">
           <Skeleton className="block h-10 w-full max-w-sm rounded-md" />
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <Skeleton className="block h-10 rounded-md" />
             <Skeleton className="block h-10 rounded-md" />
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )

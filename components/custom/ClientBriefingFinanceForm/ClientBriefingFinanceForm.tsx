@@ -24,6 +24,12 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Field, FieldLabel } from "@/components/ui/field"
@@ -275,14 +281,17 @@ export function ClientBriefingFinanceForm({
           description="O que mais lucra hoje e o ticket médio da operação."
         >
           {eligible.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-popover/40 px-4 py-8 text-center">
-              <p className="text-xs/relaxed font-medium text-foreground">
-                Cadastre produtos ou serviços na etapa Marca
-              </p>
-              <p className="mt-1 text-xs/relaxed text-muted-foreground">
-                Volte e complete o catálogo para escolher o item de maior lucro.
-              </p>
-            </div>
+            <Empty className="rounded-xl border border-dashed border-border bg-popover/40 px-4 py-8">
+              <EmptyHeader>
+                <EmptyTitle>
+                  Cadastre produtos ou serviços na etapa Marca
+                </EmptyTitle>
+                <EmptyDescription>
+                  Volte e complete o catálogo para escolher o item de maior
+                  lucro.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <div
               className={

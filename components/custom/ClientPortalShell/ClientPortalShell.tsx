@@ -6,6 +6,7 @@ import { RiShieldKeyholeLine } from "react-icons/ri"
 import { ThemeToggle } from "@/components/custom/ThemeToggle"
 import { APP_NAME } from "@/lib/brand"
 import { cn } from "cn"
+import { Card } from "@/components/ui/card"
 import type { ClientPortalShellProps } from "./ClientPortalShell.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -115,7 +116,7 @@ export function ClientPortalShell({
             className="absolute -top-40 -right-40 size-[560px] rounded-full"
             style={{
               background:
-                "radial-gradient(circle at center, var(--accent-subtle) 0%, transparent 70%)",
+                "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
             }}
           />
           <m.div
@@ -125,7 +126,7 @@ export function ClientPortalShell({
             className="absolute -bottom-56 -left-32 size-[480px] rounded-full"
             style={{
               background:
-                "radial-gradient(circle at center, var(--accent-subtle) 0%, transparent 70%)",
+                "radial-gradient(circle at center, color-mix(in oklch, var(--primary) 12%, transparent) 0%, transparent 70%)",
             }}
           />
         </div>
@@ -213,17 +214,17 @@ export function ClientPortalShell({
               </m.div>
             ) : (
               <m.div variants={V.card} initial="hidden" animate="visible">
-                <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-xs">
+                <Card className="relative p-6">
                   <div
                     aria-hidden
                     className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
                     style={{
                       background:
-                        "linear-gradient(to right, transparent, var(--accent-subtle), transparent)",
+                        "linear-gradient(to right, transparent, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
                     }}
                   />
                   {children}
-                </div>
+                </Card>
               </m.div>
             )}
           </div>

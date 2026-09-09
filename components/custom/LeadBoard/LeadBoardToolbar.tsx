@@ -53,9 +53,12 @@ export function LeadBoardToolbar({
   const [isPending, startTransition] = useTransition()
   const [draft, setDraft] = useState(listParams.q)
 
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: no render, não em efeito.
+  const [syncedQuery, setSyncedQuery] = useState(listParams.q)
+  if (syncedQuery !== listParams.q) {
+    setSyncedQuery(listParams.q)
     setDraft(listParams.q)
-  }, [listParams.q])
+  }
 
   useEffect(() => {
     const next = draft.trim()

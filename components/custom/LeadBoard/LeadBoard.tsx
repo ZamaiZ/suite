@@ -140,9 +140,12 @@ export function LeadBoard({
       applyLeadPatch(current, action.leadId, action.patch),
   )
 
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: no render, não em efeito.
+  const [syncedLeads, setSyncedLeads] = useState(leads)
+  if (syncedLeads !== leads) {
+    setSyncedLeads(leads)
     setItems(leads)
-  }, [leads])
+  }
 
   const canDrag = !listParams.team && finePointer
   const visibleLeads = useMemo(

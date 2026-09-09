@@ -24,6 +24,7 @@ import {
 } from "@/lib/leads/gbp-audit-rail"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import { GBP_AUDIT_STATUS_LABEL } from "@/lib/leads/gbp-presenters"
+import { Card } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 
 const EASE = [0.23, 1, 0.32, 1] as const
@@ -242,7 +243,10 @@ export function LeadGbpAuditRail({
             ))}
           </ol>
 
-          <div className="mt-4 flex items-center gap-3 rounded-xl border border-primary/20 bg-card/80 p-3 shadow-xs">
+          <Card
+            size="sm"
+            className="mt-4 flex-row items-center gap-3 bg-card/80 p-3 ring-primary/20"
+          >
             <span
               aria-hidden
               className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-primary/15 bg-popover text-primary"
@@ -257,7 +261,7 @@ export function LeadGbpAuditRail({
                 {mobileSubtitle()}
               </p>
             </div>
-          </div>
+          </Card>
         </div>
       </nav>
 

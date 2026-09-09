@@ -13,6 +13,7 @@ import {
   loadClientBriefingExport,
   type ClientBriefingExportState,
 } from "@/app/actions/briefing"
+import { Card } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -81,7 +82,10 @@ export function ClientBriefingExport({
   const ready = state?.status === "success" ? state : null
   const hasCurrent = Boolean(ready?.current)
   return (
-    <section className="mb-5 flex flex-col gap-3 rounded-2xl border border-border/70 bg-popover/60 p-4 sm:flex-row sm:items-center sm:justify-between">
+    <Card
+      render={<section />}
+      className="mb-5 bg-popover/60 p-4 sm:flex-row sm:items-center sm:justify-between"
+    >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="font-heading text-sm font-semibold text-foreground">
@@ -146,6 +150,6 @@ export function ClientBriefingExport({
               : "Gerar Word"}
         </Button>
       </div>
-    </section>
+    </Card>
   )
 }

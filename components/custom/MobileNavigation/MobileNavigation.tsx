@@ -183,9 +183,12 @@ export function MobileNavigation() {
     setPanel((prev) => (prev === p ? "none" : p))
   }, [])
 
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: no render, não em efeito.
+  const [syncedPathname, setSyncedPathname] = useState(pathname)
+  if (syncedPathname !== pathname) {
+    setSyncedPathname(pathname)
     setPanel("none")
-  }, [pathname])
+  }
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {

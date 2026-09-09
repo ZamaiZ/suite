@@ -38,6 +38,7 @@ import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFin
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
 import { ClientKickoffPanel } from "@/components/custom/ClientKickoffPanel"
+import { Empty, EmptyDescription, EmptyHeader } from "@/components/ui/empty"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
@@ -452,9 +453,13 @@ export function ClientBriefingReviewDialog({
                         ) : null}
                         {stepLoad.status === "ready" ? (
                           stepLoad.data.meta.state === "empty" && !editing ? (
-                            <p className="rounded-xl border border-border/70 bg-card/60 px-4 py-8 text-center text-xs/relaxed text-muted-foreground">
-                              O cliente ainda não preencheu esta etapa.
-                            </p>
+                            <Empty className="rounded-xl border border-border/70 bg-card/60 px-4 py-8">
+                              <EmptyHeader>
+                                <EmptyDescription>
+                                  O cliente ainda não preencheu esta etapa.
+                                </EmptyDescription>
+                              </EmptyHeader>
+                            </Empty>
                           ) : (
                             <StepBody
                               clientId={clientId!}

@@ -6,6 +6,7 @@ import {
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { formatVisibilityMetric } from "@/lib/leads/visibility-presenters"
+import { Card } from "@/components/ui/card"
 import type { VisibilitySnapshot } from "@/lib/leads/visibility-audit"
 
 function MetricCard({
@@ -18,13 +19,13 @@ function MetricCard({
   value: string
 }) {
   return (
-    <div className="flex min-h-16 items-center gap-2 rounded-xl border border-border/70 bg-card px-3 py-2">
+    <Card size="sm" className="min-h-16 flex-row items-center gap-2 px-3 py-2">
       <LeadIconWell icon={icon} />
       <div className="min-w-0">
         <p className="text-xs/relaxed text-muted-foreground">{label}</p>
         <p className="text-xs/relaxed font-semibold text-foreground">{value}</p>
       </div>
-    </div>
+    </Card>
   )
 }
 

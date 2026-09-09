@@ -11,6 +11,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { cn } from "cn"
 import {
@@ -115,22 +123,21 @@ export function ToolsSettings({
           </m.header>
 
           {!configured ? (
-            <m.div
-              variants={fadeUp}
-              className="flex items-start gap-2 rounded-xl border border-border bg-card p-4 shadow-xs"
-            >
-              <RiAlertLine aria-hidden className="mt-0.5 size-4 text-warning" />
-              <p className="text-xs/relaxed text-muted-foreground">
-                Credencial ausente. Defina{" "}
-                <code className="font-mono text-xs/relaxed">
-                  DATAFORSEO_LOGIN
-                </code>{" "}
-                e{" "}
-                <code className="font-mono text-xs/relaxed">
-                  DATAFORSEO_PASSWORD
-                </code>{" "}
-                para liberar as coletas.
-              </p>
+            <m.div variants={fadeUp}>
+              <Alert>
+                <RiAlertLine aria-hidden className="text-warning" />
+                <AlertDescription>
+                  Credencial ausente. Defina{" "}
+                  <code className="font-mono text-xs/relaxed">
+                    DATAFORSEO_LOGIN
+                  </code>{" "}
+                  e{" "}
+                  <code className="font-mono text-xs/relaxed">
+                    DATAFORSEO_PASSWORD
+                  </code>{" "}
+                  para liberar as coletas.
+                </AlertDescription>
+              </Alert>
             </m.div>
           ) : null}
 
@@ -142,145 +149,160 @@ export function ToolsSettings({
 
           {usage ? (
             <>
-              <m.section
-                variants={fadeUp}
-                className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
+              <Card
+                render={<m.section variants={fadeUp} />}
+                className="sm:[--card-spacing:--spacing(6)]"
               >
-                <h2 className="font-heading text-sm font-semibold text-foreground">
-                  Saldo
-                </h2>
-                <dl className="mt-3 grid gap-4 sm:grid-cols-3">
-                  <Stat
-                    label="Disponível"
-                    value={formatUsd(usage.money.balance)}
-                    tone={
-                      usage.money.balance !== null && usage.money.balance < 5
-                        ? "warning"
-                        : "default"
-                    }
-                  />
-                  <Stat
-                    label="Depositado"
-                    value={formatUsd(usage.money.total)}
-                  />
-                  <Stat label="Conta" value={usage.login ?? "—"} />
-                </dl>
-                {Object.keys(usage.money.statistics).length > 0 ? (
-                  <div className="mt-4 flex flex-wrap gap-4">
-                    {Object.entries(usage.money.statistics).map(
-                      ([period, value]) => (
-                        <Stat
-                          key={period}
-                          label={`Gasto · ${period}`}
-                          value={formatUsd(value)}
-                        />
-                      ),
-                    )}
-                  </div>
-                ) : null}
-              </m.section>
-
-              <m.section
-                variants={fadeUp}
-                className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
-              >
-                <h2 className="font-heading text-sm font-semibold text-foreground">
-                  Uso e limites
-                </h2>
-                <p className="mt-1 text-xs/relaxed text-muted-foreground">
-                  O limite por minuto é o que trava uma malha grande.
-                </p>
-                <div className="mt-4 grid gap-6 lg:grid-cols-2">
-                  <RateGroup title="Por minuto" entries={usage.rates.minute} />
-                  <RateGroup title="Por dia" entries={usage.rates.day} />
-                </div>
-              </m.section>
-
-              <m.section
-                variants={fadeUp}
-                className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
-              >
-                <h2 className="font-heading text-sm font-semibold text-foreground">
-                  Calculadora
-                </h2>
-                <p className="mt-1 text-xs/relaxed text-muted-foreground">
-                  Preço unitário lido da tabela da conta, não de valores fixos.
-                </p>
-
-                <div className="mt-4 flex flex-wrap items-end gap-3">
-                  <label className="flex min-w-56 flex-col gap-1">
-                    <span className="text-xs/relaxed text-muted-foreground">
-                      Operação
-                    </span>
-                    <Select
-                      items={OPERATION_ITEMS}
-                      value={operationId}
-                      onValueChange={(value) =>
-                        setOperationId(value as DataForSeoOperationId)
-                      }
-                    >
-                      <SelectTrigger
-                        id="dataforseo-operation"
-                        className="w-full"
-                      >
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent align="start">
-                        {DATAFORSEO_OPERATIONS.map((item) => (
-                          <SelectItem key={item.id} value={item.id}>
-                            {item.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </label>
-
-                  <label className="flex w-32 flex-col gap-1">
-                    <span className="text-xs/relaxed text-muted-foreground">
-                      Quantidade
-                    </span>
-                    <Input
-                      id="dataforseo-quantity"
-                      type="number"
-                      min={1}
-                      value={String(quantity)}
-                      onChange={(event) =>
-                        setQuantity(
-                          Math.max(Number(event.target.value) || 0, 0),
-                        )
+                <CardHeader>
+                  <CardTitle render={<h2 />} className="font-semibold">
+                    Saldo
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <dl className="mt-3 grid gap-4 sm:grid-cols-3">
+                    <Stat
+                      label="Disponível"
+                      value={formatUsd(usage.money.balance)}
+                      tone={
+                        usage.money.balance !== null && usage.money.balance < 5
+                          ? "warning"
+                          : "default"
                       }
                     />
-                  </label>
-                </div>
-
-                {estimate ? (
-                  <dl className="mt-4 grid gap-4 sm:grid-cols-3">
                     <Stat
-                      label="Requisições"
-                      value={estimate.requests.toLocaleString("pt-BR")}
+                      label="Depositado"
+                      value={formatUsd(usage.money.total)}
                     />
-                    <Stat
-                      label="Preço unitário"
-                      value={formatUsd(estimate.unitCost)}
-                    />
-                    <Stat
-                      label="Custo estimado"
-                      value={formatUsd(estimate.totalCost)}
-                      tone="accent"
-                    />
+                    <Stat label="Conta" value={usage.login ?? "—"} />
                   </dl>
-                ) : null}
+                  {Object.keys(usage.money.statistics).length > 0 ? (
+                    <div className="mt-4 flex flex-wrap gap-4">
+                      {Object.entries(usage.money.statistics).map(
+                        ([period, value]) => (
+                          <Stat
+                            key={period}
+                            label={`Gasto · ${period}`}
+                            value={formatUsd(value)}
+                          />
+                        ),
+                      )}
+                    </div>
+                  ) : null}
+                </CardContent>
+              </Card>
 
-                {estimate && estimate.unitCost === null ? (
-                  <p className="mt-3 text-xs/relaxed text-muted-foreground">
-                    A conta não expõe preço para{" "}
-                    <code className="font-mono">
-                      {estimate.operation.api}/{estimate.operation.fnSuffix}
-                    </code>
-                    . Verifique se a seção está habilitada no plano.
-                  </p>
-                ) : null}
-              </m.section>
+              <Card
+                render={<m.section variants={fadeUp} />}
+                className="sm:[--card-spacing:--spacing(6)]"
+              >
+                <CardHeader>
+                  <CardTitle render={<h2 />} className="font-semibold">
+                    Uso e limites
+                  </CardTitle>
+                  <CardDescription>
+                    O limite por minuto é o que trava uma malha grande.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mt-4 grid gap-6 lg:grid-cols-2">
+                    <RateGroup
+                      title="Por minuto"
+                      entries={usage.rates.minute}
+                    />
+                    <RateGroup title="Por dia" entries={usage.rates.day} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card
+                render={<m.section variants={fadeUp} />}
+                className="sm:[--card-spacing:--spacing(6)]"
+              >
+                <CardHeader>
+                  <CardTitle render={<h2 />} className="font-semibold">
+                    Calculadora
+                  </CardTitle>
+                  <CardDescription>
+                    Preço unitário lido da tabela da conta, não de valores
+                    fixos.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="mt-4 flex flex-wrap items-end gap-3">
+                    <label className="flex min-w-56 flex-col gap-1">
+                      <span className="text-xs/relaxed text-muted-foreground">
+                        Operação
+                      </span>
+                      <Select
+                        items={OPERATION_ITEMS}
+                        value={operationId}
+                        onValueChange={(value) =>
+                          setOperationId(value as DataForSeoOperationId)
+                        }
+                      >
+                        <SelectTrigger
+                          id="dataforseo-operation"
+                          className="w-full"
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent align="start">
+                          {DATAFORSEO_OPERATIONS.map((item) => (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </label>
+
+                    <label className="flex w-32 flex-col gap-1">
+                      <span className="text-xs/relaxed text-muted-foreground">
+                        Quantidade
+                      </span>
+                      <Input
+                        id="dataforseo-quantity"
+                        type="number"
+                        min={1}
+                        value={String(quantity)}
+                        onChange={(event) =>
+                          setQuantity(
+                            Math.max(Number(event.target.value) || 0, 0),
+                          )
+                        }
+                      />
+                    </label>
+                  </div>
+
+                  {estimate ? (
+                    <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+                      <Stat
+                        label="Requisições"
+                        value={estimate.requests.toLocaleString("pt-BR")}
+                      />
+                      <Stat
+                        label="Preço unitário"
+                        value={formatUsd(estimate.unitCost)}
+                      />
+                      <Stat
+                        label="Custo estimado"
+                        value={formatUsd(estimate.totalCost)}
+                        tone="accent"
+                      />
+                    </dl>
+                  ) : null}
+
+                  {estimate && estimate.unitCost === null ? (
+                    <p className="mt-3 text-xs/relaxed text-muted-foreground">
+                      A conta não expõe preço para{" "}
+                      <code className="font-mono">
+                        {estimate.operation.api}/{estimate.operation.fnSuffix}
+                      </code>
+                      . Verifique se a seção está habilitada no plano.
+                    </p>
+                  ) : null}
+                </CardContent>
+              </Card>
             </>
           ) : null}
         </m.div>

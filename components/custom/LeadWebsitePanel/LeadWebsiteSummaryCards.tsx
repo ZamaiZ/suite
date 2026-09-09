@@ -11,6 +11,7 @@ import {
   websiteHttpsLabel,
   websiteSitemapLabel,
 } from "@/lib/leads/website-presenters"
+import { Card } from "@/components/ui/card"
 
 function MetricCard({
   icon,
@@ -24,7 +25,7 @@ function MetricCard({
   complement: string
 }) {
   return (
-    <div className="flex min-h-16 items-center gap-2 rounded-xl border border-border/70 bg-card px-3 py-2">
+    <Card size="sm" className="min-h-16 flex-row items-center gap-2 px-3 py-2">
       <LeadIconWell icon={icon} />
       <div className="min-w-0">
         <p className="text-xs/relaxed text-muted-foreground">{label}</p>
@@ -37,7 +38,7 @@ function MetricCard({
           ) : null}
         </p>
       </div>
-    </div>
+    </Card>
   )
 }
 

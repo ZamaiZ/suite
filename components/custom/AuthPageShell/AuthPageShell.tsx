@@ -5,6 +5,7 @@ import * as m from "motion/react-m"
 import { RiLockLine } from "react-icons/ri"
 import { ThemeToggle } from "@/components/custom/ThemeToggle"
 import { APP_NAME } from "@/lib/brand"
+import { Card } from "@/components/ui/card"
 import type { AuthPageShellProps } from "./AuthPageShell.types"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
@@ -164,7 +165,7 @@ export function AuthPageShell({
             </m.p>
 
             <m.div variants={V.card} initial="hidden" animate="visible">
-              <div className="relative overflow-hidden rounded-xl border border-border bg-card p-6 shadow-xs">
+              <Card className="relative p-6">
                 <div
                   aria-hidden
                   className="pointer-events-none absolute inset-x-0 top-0 h-px card-highlight"
@@ -174,7 +175,7 @@ export function AuthPageShell({
                   }}
                 />
                 {children}
-              </div>
+              </Card>
             </m.div>
           </div>
         </main>

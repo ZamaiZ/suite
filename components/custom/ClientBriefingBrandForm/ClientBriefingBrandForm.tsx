@@ -50,6 +50,7 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
+import { Card } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -104,7 +105,7 @@ function TeamRoleBlock({
   onChange: (next: TeamRoleAnswer) => void
 }) {
   return (
-    <div className="rounded-xl border border-border bg-popover p-3.5">
+    <Card size="sm" className="bg-popover p-3.5">
       <FieldSet>
         <FieldLegend variant="label">{label}</FieldLegend>
         <RadioGroup
@@ -143,7 +144,7 @@ function TeamRoleBlock({
           />
         </Field>
       </div>
-    </div>
+    </Card>
   )
 }
 

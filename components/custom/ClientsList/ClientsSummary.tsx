@@ -4,6 +4,7 @@ import {
   RiFileList3Line,
   RiLoader4Line,
 } from "react-icons/ri"
+import { Card } from "@/components/ui/card"
 import type { ClientsSummary as Summary } from "@/app/actions/clients"
 export function ClientsSummary({ summary }: { summary: Summary }) {
   const items = [
@@ -35,10 +36,7 @@ export function ClientsSummary({ summary }: { summary: Summary }) {
   return (
     <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
       {items.map(({ label, value, icon: Icon, tone }) => (
-        <div
-          key={label}
-          className="rounded-xl border border-border/70 bg-card px-4 py-3 shadow-xs"
-        >
+        <Card key={label} className="px-4 py-3">
           <div
             className={`mb-2 inline-flex size-8 items-center justify-center rounded-lg bg-background ${tone}`}
           >
@@ -48,7 +46,7 @@ export function ClientsSummary({ summary }: { summary: Summary }) {
             {value}
           </p>
           <p className="text-xs/relaxed text-muted-foreground">{label}</p>
-        </div>
+        </Card>
       ))}
     </div>
   )

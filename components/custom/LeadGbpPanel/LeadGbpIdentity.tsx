@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
+import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
   Select,
@@ -31,9 +32,13 @@ export function LeadGbpIdentity({
   const cover = profile.enrichment?.mainImageUrl
   const claimed = profile.enrichment?.isClaimed
 
-  useEffect(() => {
+  // Ajuste de estado quando a prop muda: no render, não em efeito.
+  const coverKey = `${profile.id}|${cover ?? ""}`
+  const [syncedCoverKey, setSyncedCoverKey] = useState(coverKey)
+  if (syncedCoverKey !== coverKey) {
+    setSyncedCoverKey(coverKey)
     setCoverFailed(false)
-  }, [profile.id, cover])
+  }
 
   const profileItems = useMemo(
     () =>
@@ -45,7 +50,7 @@ export function LeadGbpIdentity({
   )
 
   return (
-    <div className="flex flex-col gap-2.5 rounded-xl border border-border/70 bg-card p-3 shadow-xs sm:flex-row sm:items-start">
+    <Card size="sm" className="gap-2.5 p-3 sm:flex-row sm:items-start">
       {cover && !coverFailed ? (
         <img
           src={cover}
@@ -120,6 +125,6 @@ export function LeadGbpIdentity({
           </div>
         ) : null}
       </div>
-    </div>
+    </Card>
   )
 }
