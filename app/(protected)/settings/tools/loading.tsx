@@ -1,3 +1,4 @@
+import { Skeleton } from "@/components/ui/skeleton"
 export default function ToolsSettingsLoading() {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto px-[var(--page-padding-x)] py-8">
@@ -15,10 +16,10 @@ export default function ToolsSettingsLoading() {
           </p>
         </header>
         <div className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6">
-          <span className="block h-10 w-full max-w-sm animate-pulse rounded-md bg-accent" />
+          <Skeleton className="block h-10 w-full max-w-sm rounded-md" />
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            <span className="block h-10 animate-pulse rounded-md bg-accent" />
-            <span className="block h-10 animate-pulse rounded-md bg-accent" />
+            <Skeleton className="block h-10 rounded-md" />
+            <Skeleton className="block h-10 rounded-md" />
           </div>
         </div>
       </div>

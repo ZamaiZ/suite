@@ -1,13 +1,9 @@
 "use client"
 
 import { useEffect, useState, useTransition } from "react"
-import {
-  RiLoader4Line,
-  RiMore2Line,
-  RiUserAddLine,
-  RiUserUnfollowLine,
-} from "react-icons/ri"
+import { RiMore2Line, RiUserAddLine, RiUserUnfollowLine } from "react-icons/ri"
 import { claimLead, unclaimLead } from "@/app/actions/leads"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -75,7 +71,7 @@ export function LeadClaimActions({
           onPointerDown={(event) => event.stopPropagation()}
         >
           {isPending ? (
-            <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+            <Spinner aria-hidden className="size-4" />
           ) : (
             <RiMore2Line size={18} aria-hidden />
           )}
@@ -116,10 +112,10 @@ export function LeadClaimActions({
             disabled={isPending}
           >
             {isPending ? (
-              <RiLoader4Line
+              <Spinner
                 data-icon="inline-start"
                 aria-hidden
-                className="animate-spin"
+                className="size-3.5"
               />
             ) : (
               <RiUserAddLine data-icon="inline-start" aria-hidden />
@@ -135,10 +131,10 @@ export function LeadClaimActions({
             disabled={isPending}
           >
             {isPending ? (
-              <RiLoader4Line
+              <Spinner
                 data-icon="inline-start"
                 aria-hidden
-                className="animate-spin"
+                className="size-3.5"
               />
             ) : (
               <RiUserUnfollowLine data-icon="inline-start" aria-hidden />

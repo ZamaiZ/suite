@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useState, useTransition } from "react"
-import { RiCloseLine, RiLoader4Line, RiUpload2Line } from "react-icons/ri"
+import { RiCloseLine, RiUpload2Line } from "react-icons/ri"
 import {
   removeBriefingWebsiteAsset,
   uploadBriefingWebsiteAsset,
@@ -9,6 +9,7 @@ import {
 import { useBriefingWriterClientId } from "@/components/custom/BriefingWriter"
 import { cn } from "cn"
 import type { BriefingAssetUploadProps } from "./BriefingAssetUpload.types"
+import { Spinner } from "@/components/ui/spinner"
 
 function formatBytes(size: number): string {
   if (size < 1024) return `${size} B`
@@ -122,11 +123,7 @@ export function BriefingAssetUpload({
         )}
       >
         {isUploading ? (
-          <RiLoader4Line
-            size={20}
-            aria-hidden
-            className="animate-spin text-primary"
-          />
+          <Spinner aria-hidden className="size-5 text-primary" />
         ) : (
           <RiUpload2Line size={20} aria-hidden className="text-primary" />
         )}

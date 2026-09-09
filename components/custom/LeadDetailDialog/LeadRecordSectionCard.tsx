@@ -3,8 +3,9 @@
 import type { ReactNode } from "react"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import { RiLoader4Line, RiPencilLine, RiSaveLine } from "react-icons/ri"
+import { RiPencilLine, RiSaveLine } from "react-icons/ri"
 import type { IconType } from "react-icons"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { LeadIconWell } from "./LeadIconWell"
 
@@ -45,7 +46,7 @@ export function LeadRecordSectionCard({
         <div className="flex min-w-0 items-center gap-2.5">
           <LeadIconWell icon={icon} />
           <div className="min-w-0">
-            <h3 className="text-xs/relaxed font-semibold text-foreground">
+            <h3 className="font-heading text-sm font-semibold text-foreground">
               {title}
             </h3>
             {subtitle ? (
@@ -67,10 +68,10 @@ export function LeadRecordSectionCard({
             </Button>
             <Button type="submit" disabled={pending || saveDisabled}>
               {pending ? (
-                <RiLoader4Line
+                <Spinner
                   data-icon="inline-start"
                   aria-hidden
-                  className="animate-spin"
+                  className="size-3.5"
                 />
               ) : (
                 <RiSaveLine data-icon="inline-start" aria-hidden />

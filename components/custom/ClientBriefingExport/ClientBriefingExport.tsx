@@ -5,7 +5,6 @@ import {
   RiErrorWarningLine,
   RiExternalLinkLine,
   RiFileWordLine,
-  RiLoader4Line,
   RiRefreshLine,
 } from "react-icons/ri"
 import {
@@ -14,6 +13,8 @@ import {
   loadClientBriefingExport,
   type ClientBriefingExportState,
 } from "@/app/actions/briefing"
+import { Spinner } from "@/components/ui/spinner"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { formatDateTimeShort } from "@/lib/date-time"
 
@@ -83,14 +84,10 @@ export function ClientBriefingExport({
     <section className="mb-5 flex flex-col gap-3 rounded-2xl border border-border/70 bg-popover/60 p-4 sm:flex-row sm:items-center sm:justify-between">
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
-          <h3 className="text-xs/relaxed font-semibold text-foreground">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
             Documento Word
           </h3>
-          {ready?.stale ? (
-            <span className="rounded-md bg-warning/10 px-2 py-0.5 text-xs/relaxed font-medium text-warning">
-              Desatualizado
-            </span>
-          ) : null}
+          {ready?.stale ? <Badge variant="warning">Desatualizado</Badge> : null}
         </div>
         {ready?.current ? (
           <p className="mt-1 truncate text-xs/relaxed text-muted-foreground">
@@ -136,12 +133,7 @@ export function ClientBriefingExport({
           onClick={generate}
         >
           {pending ? (
-            <RiLoader4Line
-              size={16}
-              aria-hidden
-              data-icon="inline-start"
-              className="animate-spin"
-            />
+            <Spinner data-icon="inline-start" aria-hidden className="size-4" />
           ) : hasCurrent ? (
             <RiRefreshLine size={16} aria-hidden data-icon="inline-start" />
           ) : (

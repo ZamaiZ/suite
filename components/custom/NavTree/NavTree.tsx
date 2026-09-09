@@ -1,15 +1,13 @@
 "use client"
 
 import { useEffect, useId, useRef, useState, type ReactNode } from "react"
+import { createPortal } from "react-dom"
 import Link, { useLinkStatus } from "next/link"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  RiArrowDownSLine,
-  RiArrowRightSLine,
-  RiLoader4Line,
-} from "react-icons/ri"
+import { RiArrowDownSLine, RiArrowRightSLine } from "react-icons/ri"
 import { cn } from "cn"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Tooltip,
@@ -24,6 +22,9 @@ const EASE = [0.23, 1, 0.32, 1] as const
 const INSTANT = { duration: 0 }
 const LABEL_T = (delay = 0) => ({ duration: 0.18, ease: EASE, delay })
 const FLYOUT_OPEN_DELAY = 250
+// Fecha com um respiro para o ponteiro atravessar o vão até o flyout, que hoje
+// vive em um portal e não é mais descendente do item.
+const FLYOUT_CLOSE_DELAY = 120
 
 const FLYOUT_VARIANTS = {
   hidden: {
@@ -146,11 +147,7 @@ function NavPendingSurface({ children }: { children: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-background/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line
-            size={16}
-            aria-hidden
-            className="relative animate-spin text-foreground"
-          />
+          <Spinner aria-hidden className="size-4 relative text-foreground" />
         </span>
       ) : null}
     </>
@@ -289,7 +286,7 @@ function NavChildLink({
           className={cn(
             "flex size-8 shrink-0 items-center justify-center rounded-md",
             isActive
-              ? "bg-primary text-primary"
+              ? "bg-primary/10 text-primary"
               : "bg-accent text-muted-foreground",
           )}
         >
@@ -524,7 +521,13 @@ function NavGroupBlock({
   const [open, setOpen] = useState(groupActive)
   const [flyoutOpen, setFlyoutOpen] = useState(false)
   const rootRef = useRef<HTMLDivElement>(null)
+  const flyoutRef = useRef<HTMLDivElement>(null)
   const openTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [flyoutPos, setFlyoutPos] = useState<{
+    top: number
+    left: number
+  } | null>(null)
   const panelId = useId()
   const Icon = item.icon
   const isSheet = density === "sheet"
@@ -537,14 +540,33 @@ function NavGroupBlock({
     openTimer.current = null
   }
 
+  function clearCloseTimer() {
+    if (closeTimer.current === null) return
+    clearTimeout(closeTimer.current)
+    closeTimer.current = null
+  }
+
+  // O flyout é `fixed` num portal: a posição vem do retângulo do item.
+  function measureFlyout() {
+    const rect = rootRef.current?.getBoundingClientRect()
+    if (!rect) return
+    setFlyoutPos({ top: rect.top, left: rect.right + 12 })
+  }
+
   function hideFlyout() {
     clearOpenTimer()
-    setFlyoutOpen(false)
+    clearCloseTimer()
+    closeTimer.current = setTimeout(() => {
+      setFlyoutOpen(false)
+      closeTimer.current = null
+    }, FLYOUT_CLOSE_DELAY)
   }
 
   function showFlyout() {
     clearOpenTimer()
+    clearCloseTimer()
     openTimer.current = setTimeout(() => {
+      measureFlyout()
       setFlyoutOpen(true)
       openTimer.current = null
     }, FLYOUT_OPEN_DELAY)
@@ -552,6 +574,8 @@ function NavGroupBlock({
 
   function openFlyoutNow() {
     clearOpenTimer()
+    clearCloseTimer()
+    measureFlyout()
     setFlyoutOpen(true)
   }
 
@@ -564,13 +588,17 @@ function NavGroupBlock({
       clearTimeout(openTimer.current)
       openTimer.current = null
     }
+    if (closeTimer.current !== null) {
+      clearTimeout(closeTimer.current)
+      closeTimer.current = null
+    }
     setFlyoutOpen(false)
   }, [pathname, collapsed])
 
   useEffect(() => {
     return () => {
-      if (openTimer.current === null) return
-      clearTimeout(openTimer.current)
+      if (openTimer.current !== null) clearTimeout(openTimer.current)
+      if (closeTimer.current !== null) clearTimeout(closeTimer.current)
     }
   }, [])
 
@@ -583,15 +611,26 @@ function NavGroupBlock({
     }
 
     function onPointerDown(e: PointerEvent) {
-      if (rootRef.current?.contains(e.target as Node)) return
+      const target = e.target as Node
+      if (rootRef.current?.contains(target)) return
+      if (flyoutRef.current?.contains(target)) return
       hideFlyout()
+    }
+
+    function onViewportChange() {
+      const rect = rootRef.current?.getBoundingClientRect()
+      if (rect) setFlyoutPos({ top: rect.top, left: rect.right + 12 })
     }
 
     window.addEventListener("keydown", onKeyDown)
     document.addEventListener("pointerdown", onPointerDown)
+    window.addEventListener("resize", onViewportChange)
+    window.addEventListener("scroll", onViewportChange, true)
     return () => {
       window.removeEventListener("keydown", onKeyDown)
       document.removeEventListener("pointerdown", onPointerDown)
+      window.removeEventListener("resize", onViewportChange)
+      window.removeEventListener("scroll", onViewportChange, true)
     }
   }, [flyoutOpen])
 
@@ -726,7 +765,9 @@ function NavGroupBlock({
       }}
       onBlurCapture={(e) => {
         if (!collapsed) return
-        if (e.currentTarget.contains(e.relatedTarget as Node)) return
+        const next = e.relatedTarget as Node | null
+        if (next && e.currentTarget.contains(next)) return
+        if (next && flyoutRef.current?.contains(next)) return
         hideFlyout()
       }}
     >
@@ -783,79 +824,94 @@ function NavGroupBlock({
         </SidebarLabel>
         {chevron}
       </Button>
-      <AnimatePresence>
-        {collapsed && flyoutOpen && (
-          <m.div
-            key="scrim"
-            aria-hidden
-            variants={reduceMotion ? SCRIM_REDUCED : SCRIM_VARIANTS}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className={cn(
-              "pointer-events-none fixed inset-y-0 right-0 left-16 z-0 hidden md:block",
-              reduceMotion
-                ? "bg-background/70"
-                : "bg-background/50 backdrop-blur-[6px]",
-            )}
-          />
-        )}
-        {collapsed && flyoutOpen && (
-          <m.div
-            key="flyout"
-            id={panelId}
-            role="menu"
-            aria-label={item.label}
-            variants={flyoutVariants}
-            initial="hidden"
-            animate="visible"
-            exit="hidden"
-            className={cn(
-              "absolute top-0 left-full z-50 ml-3 w-72 overflow-visible",
-              "rounded-xl border border-border bg-popover p-1.5 shadow-lg",
-            )}
-            style={{ transformOrigin: "left 20px" }}
-          >
-            <div aria-hidden className="absolute top-0 right-full h-10 w-3" />
-            <span
-              aria-hidden
-              className="absolute top-[15px] -left-[5px] z-10 size-2.5 rotate-45 border-b border-l border-border bg-popover"
-            />
-            <div className="relative mb-1 flex items-start gap-2.5 px-2 py-2">
-              <span
-                aria-hidden
-                className="absolute top-2.5 bottom-2.5 left-0 w-0.5 rounded-full bg-primary"
-              />
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary">
-                <Icon size={16} aria-hidden />
-              </span>
-              <span className="min-w-0 pt-0.5">
-                <span className="block text-xs/relaxed font-semibold leading-none text-foreground">
-                  {item.label}
-                </span>
-                {item.description && (
-                  <span className="mt-1 block text-xs/relaxed leading-snug text-muted-foreground">
-                    {item.description}
-                  </span>
-                )}
-              </span>
-            </div>
-            <div aria-hidden className="mx-1.5 mb-1 h-px bg-border/70" />
-            <ul className="flex max-h-[min(24rem,calc(100dvh-6rem))] flex-col gap-0.5 overflow-y-auto">
-              {item.children.map((child) => (
-                <li key={child.href || child.label}>
-                  <NavChildLink
-                    child={child}
-                    pathname={pathname}
-                    density="sidebar"
-                    inset="flyout"
+      {typeof document !== "undefined" && collapsed
+        ? createPortal(
+            <AnimatePresence>
+              {flyoutOpen && (
+                <m.div
+                  key="scrim"
+                  aria-hidden
+                  variants={reduceMotion ? SCRIM_REDUCED : SCRIM_VARIANTS}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  className={cn(
+                    "pointer-events-none fixed inset-y-0 right-0 left-16 z-scrim hidden md:block",
+                    reduceMotion
+                      ? "bg-background/70"
+                      : "bg-background/50 backdrop-blur-[6px]",
+                  )}
+                />
+              )}
+              {flyoutOpen && flyoutPos && (
+                <m.div
+                  key="flyout"
+                  ref={flyoutRef}
+                  id={panelId}
+                  role="menu"
+                  aria-label={item.label}
+                  variants={flyoutVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  onMouseEnter={openFlyoutNow}
+                  onMouseLeave={hideFlyout}
+                  className={cn(
+                    "fixed z-overlay w-72 overflow-visible",
+                    "rounded-xl border border-border bg-popover p-1.5 shadow-lg",
+                  )}
+                  style={{
+                    top: flyoutPos.top,
+                    left: flyoutPos.left,
+                    transformOrigin: "left 20px",
+                  }}
+                >
+                  <div
+                    aria-hidden
+                    className="absolute top-0 right-full h-10 w-3"
                   />
-                </li>
-              ))}
-            </ul>
-          </m.div>
-        )}
-      </AnimatePresence>
+                  <span
+                    aria-hidden
+                    className="absolute top-[15px] -left-[5px] size-2.5 rotate-45 border-b border-l border-border bg-popover"
+                  />
+                  <div className="relative mb-1 flex items-start gap-2.5 px-2 py-2">
+                    <span
+                      aria-hidden
+                      className="absolute top-2.5 bottom-2.5 left-0 w-0.5 rounded-full bg-primary"
+                    />
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon size={16} aria-hidden />
+                    </span>
+                    <span className="min-w-0 pt-0.5">
+                      <span className="block text-xs/relaxed leading-none font-semibold text-foreground">
+                        {item.label}
+                      </span>
+                      {item.description && (
+                        <span className="mt-1 block text-xs/relaxed leading-snug text-muted-foreground">
+                          {item.description}
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                  <div aria-hidden className="mx-1.5 mb-1 h-px bg-border/70" />
+                  <ul className="flex max-h-[min(24rem,calc(100dvh-6rem))] flex-col gap-0.5 overflow-y-auto">
+                    {item.children.map((child) => (
+                      <li key={child.href || child.label}>
+                        <NavChildLink
+                          child={child}
+                          pathname={pathname}
+                          density="sidebar"
+                          inset="flyout"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </m.div>
+              )}
+            </AnimatePresence>,
+            document.body,
+          )
+        : null}
       {!collapsed && (
         <m.div
           initial={false}

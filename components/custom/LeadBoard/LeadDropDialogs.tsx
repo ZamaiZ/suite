@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import type { IconType } from "react-icons"
 import {
   RiCalendarEventLine,
@@ -126,6 +126,11 @@ export function LeadDropDialogs({
   const [deniedReason, setDeniedReason] = useState("")
   const [closerId, setCloserId] = useState("")
   const [closers, setClosers] = useState<CloserOption[]>([])
+  // CloserOption é {id,name}; o Base UI espera {value,label} para o rótulo.
+  const closerItems = useMemo(
+    () => closers.map((closer) => ({ value: closer.id, label: closer.name })),
+    [closers],
+  )
   const [closersLoading, setClosersLoading] = useState(false)
   const [channel, setChannel] = useState<LeadActivityChannel | "">("")
   const [channelDetail, setChannelDetail] = useState("")
@@ -363,6 +368,7 @@ export function LeadDropDialogs({
                   <Field data-invalid={Boolean(closerError)}>
                     <FieldLabel htmlFor="lead-drop-closer">Closer</FieldLabel>
                     <Select
+                      items={closerItems}
                       value={closerId}
                       onValueChange={(next) => {
                         setCloserId(String(next))

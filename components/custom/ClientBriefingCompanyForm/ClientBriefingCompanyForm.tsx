@@ -18,6 +18,7 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Combobox,
@@ -82,7 +83,6 @@ import {
   RiHashtag,
   RiHomeGearLine,
   RiInboxLine,
-  RiLoader4Line,
   RiMailLine,
   RiMapPinLine,
   RiPhoneLine,
@@ -424,7 +424,7 @@ export function ClientBriefingCompanyForm({
               {postalStatus !== "idle" ? (
                 <InputGroupAddon align="inline-end">
                   {postalStatus === "loading" ? (
-                    <RiLoader4Line aria-hidden className="animate-spin" />
+                    <Spinner aria-hidden className="size-3.5" />
                   ) : null}
                   {postalStatus === "success" ? (
                     <RiCheckLine aria-hidden className="text-primary" />
@@ -697,6 +697,7 @@ export function ClientBriefingCompanyForm({
                       </FieldLabel>
                     ) : null}
                     <Select
+                      items={SOCIAL_TYPE_ITEMS}
                       value={channel.type}
                       onValueChange={(value) => {
                         const type =
@@ -786,18 +787,14 @@ export function ClientBriefingCompanyForm({
         </div>
       ) : null}
 
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
         <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
           <div className="mx-auto flex w-full max-w-3xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
             <div className="min-w-0">
               <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                 {saveState === "saving" || isCompleting ? (
                   <>
-                    <RiLoader4Line
-                      size={14}
-                      aria-hidden
-                      className="animate-spin"
-                    />
+                    <Spinner aria-hidden className="size-3.5" />
                     Salvando…
                   </>
                 ) : saveState === "saved" && savedAt ? (

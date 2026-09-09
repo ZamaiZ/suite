@@ -22,6 +22,12 @@ import {
 } from "@/lib/dataforseo/usage"
 import type { ToolsSettingsProps } from "./ToolsSettings.types"
 
+// DATAFORSEO_OPERATIONS usa {id,label}; o Base UI espera {value,label}.
+const OPERATION_ITEMS = DATAFORSEO_OPERATIONS.map((item) => ({
+  value: item.id,
+  label: item.label,
+}))
+
 const EASE = [0.23, 1, 0.32, 1] as const
 
 const API_LABELS: Record<string, string> = {
@@ -140,7 +146,9 @@ export function ToolsSettings({
                 variants={fadeUp}
                 className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
               >
-                <h2 className="text-sm font-semibold text-foreground">Saldo</h2>
+                <h2 className="font-heading text-sm font-semibold text-foreground">
+                  Saldo
+                </h2>
                 <dl className="mt-3 grid gap-4 sm:grid-cols-3">
                   <Stat
                     label="Disponível"
@@ -176,7 +184,7 @@ export function ToolsSettings({
                 variants={fadeUp}
                 className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
               >
-                <h2 className="text-sm font-semibold text-foreground">
+                <h2 className="font-heading text-sm font-semibold text-foreground">
                   Uso e limites
                 </h2>
                 <p className="mt-1 text-xs/relaxed text-muted-foreground">
@@ -192,7 +200,7 @@ export function ToolsSettings({
                 variants={fadeUp}
                 className="rounded-xl border border-border bg-card p-4 shadow-xs sm:p-6"
               >
-                <h2 className="text-sm font-semibold text-foreground">
+                <h2 className="font-heading text-sm font-semibold text-foreground">
                   Calculadora
                 </h2>
                 <p className="mt-1 text-xs/relaxed text-muted-foreground">
@@ -205,6 +213,7 @@ export function ToolsSettings({
                       Operação
                     </span>
                     <Select
+                      items={OPERATION_ITEMS}
                       value={operationId}
                       onValueChange={(value) =>
                         setOperationId(value as DataForSeoOperationId)
@@ -316,7 +325,9 @@ function RateGroup({
   if (entries.length === 0) {
     return (
       <div>
-        <h3 className="text-xs/relaxed font-medium text-foreground">{title}</h3>
+        <h3 className="font-heading text-sm font-medium text-foreground">
+          {title}
+        </h3>
         <p className="mt-2 text-xs/relaxed text-muted-foreground">
           Sem dados de limite.
         </p>
@@ -325,7 +336,9 @@ function RateGroup({
   }
   return (
     <div>
-      <h3 className="text-xs/relaxed font-medium text-foreground">{title}</h3>
+      <h3 className="font-heading text-sm font-medium text-foreground">
+        {title}
+      </h3>
       <ul className="mt-2 flex flex-col gap-2">
         {entries.map((entry) => {
           const ratio = usageRatio(entry)

@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import { RiLoader4Line, RiGridLine } from "react-icons/ri"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { RiGridLine } from "react-icons/ri"
 import { LeadGbpGridMap } from "./LeadGbpGridMap"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Select,
@@ -186,6 +187,19 @@ export function LeadGbpGridSection({
   const canResume =
     canEdit && Boolean(scan) && (stalled || (timedOut && active))
 
+  const keywordItems = useMemo(
+    () => keywords.map((item) => ({ value: item, label: item })),
+    [keywords],
+  )
+  const sizeItems = useMemo(
+    () =>
+      GBP_GRID_SIZES.map((item) => ({
+        value: String(item),
+        label: `${item}×${item}`,
+      })),
+    [],
+  )
+
   return (
     <div className="mt-3 border-t border-border/70 pt-3">
       <button
@@ -207,6 +221,7 @@ export function LeadGbpGridSection({
                   Keyword
                 </span>
                 <Select
+                  items={keywordItems}
                   value={activeKeyword}
                   onValueChange={(value) => setKeyword(String(value))}
                   disabled={busy || active || keywords.length === 0}
@@ -232,6 +247,7 @@ export function LeadGbpGridSection({
                   Malha
                 </span>
                 <Select
+                  items={sizeItems}
                   value={String(size)}
                   disabled={busy || active}
                   onValueChange={(value) => {
@@ -262,6 +278,7 @@ export function LeadGbpGridSection({
                   Execução
                 </span>
                 <Select
+                  items={MODE_ITEMS}
                   value={mode}
                   disabled={busy || active}
                   onValueChange={(value) => {
@@ -313,13 +330,7 @@ export function LeadGbpGridSection({
                   void handleStart()
                 }}
               >
-                {busy ? (
-                  <RiLoader4Line
-                    size={16}
-                    aria-hidden
-                    className="animate-spin"
-                  />
-                ) : null}
+                {busy ? <Spinner aria-hidden className="size-4" /> : null}
                 Rodar malha
               </Button>
 
@@ -355,10 +366,9 @@ export function LeadGbpGridSection({
                   {formatUsd(scan.cost_usd)}
                 </span>
                 {active ? (
-                  <RiLoader4Line
+                  <Spinner
                     aria-hidden
-                    size={14}
-                    className="animate-spin text-muted-foreground"
+                    className="size-3.5 text-muted-foreground"
                   />
                 ) : null}
               </div>

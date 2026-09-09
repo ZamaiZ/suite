@@ -1,8 +1,8 @@
 "use client"
 
 import dynamic from "next/dynamic"
-import { RiLoader4Line } from "react-icons/ri"
 import type { BriefingServiceRadiusMapProps } from "./BriefingServiceRadiusMap.types"
+import { Spinner } from "@/components/ui/spinner"
 
 const BriefingServiceRadiusMapCanvas = dynamic(
   () =>
@@ -13,7 +13,7 @@ const BriefingServiceRadiusMapCanvas = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex h-64 w-full items-center justify-center gap-2 rounded-xl border border-border bg-popover text-xs/relaxed text-muted-foreground sm:h-80">
-        <RiLoader4Line size={18} aria-hidden className="animate-spin" />
+        <Spinner aria-hidden className="size-4.5" />
         Carregando mapa…
       </div>
     ),

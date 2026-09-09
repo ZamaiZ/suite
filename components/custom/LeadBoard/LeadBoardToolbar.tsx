@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useMemo, useState, useTransition } from "react"
 import {
   RiChat3Line,
   RiPriceTag3Line,
@@ -115,6 +115,38 @@ export function LeadBoardToolbar({
     listParams.segment || listParams.city || listParams.tag,
   )
 
+  // `items` é o que faz o <SelectValue> renderizar o rótulo em vez do valor
+  // cru. Mantido como fonte única: as opções do popup saem daqui também.
+  const scopeItems = useMemo(
+    () => [
+      { value: "portfolio", label: "Minha carteira" },
+      ...(canViewTeamLeads ? [{ value: "team", label: "Todos" }] : []),
+    ],
+    [canViewTeamLeads],
+  )
+
+  const segmentItems = useMemo(
+    () => [
+      { value: "all", label: "Todos os segmentos" },
+      ...segmentOptions.map((option) => ({
+        value: option.slug,
+        label: option.name,
+      })),
+    ],
+    [segmentOptions],
+  )
+
+  const tagItems = useMemo(
+    () => [
+      { value: "all", label: "Todas as tags" },
+      ...tagOptions.map((option) => ({
+        value: option.slug,
+        label: option.name,
+      })),
+    ],
+    [tagOptions],
+  )
+
   return (
     <div className="flex min-w-0 shrink-0 flex-col gap-2">
       <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border/70 pb-2">
@@ -135,6 +167,7 @@ export function LeadBoardToolbar({
         <div className="flex shrink-0 items-center gap-2">
           <div className="w-40 shrink-0">
             <Select
+              items={scopeItems}
               value={listParams.team ? "team" : "portfolio"}
               onValueChange={(next) => replaceParams({ team: next === "team" })}
             >
@@ -143,10 +176,11 @@ export function LeadBoardToolbar({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="start">
-                <SelectItem value="portfolio">Minha carteira</SelectItem>
-                {canViewTeamLeads ? (
-                  <SelectItem value="team">Todos</SelectItem>
-                ) : null}
+                {scopeItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -184,6 +218,7 @@ export function LeadBoardToolbar({
         {segmentOptions.length > 0 ? (
           <div className="w-40 shrink-0">
             <Select
+              items={segmentItems}
               value={listParams.segment ?? "all"}
               onValueChange={(next) =>
                 replaceParams({ segment: next === "all" ? null : String(next) })
@@ -194,10 +229,9 @@ export function LeadBoardToolbar({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="start">
-                <SelectItem value="all">Todos os segmentos</SelectItem>
-                {segmentOptions.map((option) => (
-                  <SelectItem key={option.slug} value={option.slug}>
-                    {option.name}
+                {segmentItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -217,6 +251,7 @@ export function LeadBoardToolbar({
         {tagOptions.length > 0 ? (
           <div className="w-40 shrink-0">
             <Select
+              items={tagItems}
               value={listParams.tag ?? "all"}
               onValueChange={(next) =>
                 replaceParams({ tag: next === "all" ? null : String(next) })
@@ -227,10 +262,9 @@ export function LeadBoardToolbar({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent align="start">
-                <SelectItem value="all">Todas as tags</SelectItem>
-                {tagOptions.map((option) => (
-                  <SelectItem key={option.slug} value={option.slug}>
-                    {option.name}
+                {tagItems.map((item) => (
+                  <SelectItem key={item.value} value={item.value}>
+                    {item.label}
                   </SelectItem>
                 ))}
               </SelectContent>

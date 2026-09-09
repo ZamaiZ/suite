@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { RiCloseLine, RiExternalLinkLine, RiLoader4Line } from "react-icons/ri"
+import { RiCloseLine, RiExternalLinkLine } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridSection } from "./LeadGbpGridSection"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import type { LeadGbpGridScan } from "@/lib/leads/gbp-grid"
@@ -234,9 +235,7 @@ export function LeadGbpRankBlock({
               void handleCheck()
             }}
           >
-            {pending ? (
-              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
-            ) : null}
+            {pending ? <Spinner aria-hidden className="size-4" /> : null}
             Checar ranking
           </Button>
         </div>

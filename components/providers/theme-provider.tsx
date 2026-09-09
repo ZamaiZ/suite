@@ -10,7 +10,10 @@ function KeyboardShortcuts() {
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
+    function onKeyDown(e: Event) {
+      // Sensores de teclado (dnd-kit) e extensões despacham eventos `keydown`
+      // que não são KeyboardEvent — chamar getModifierState neles quebra a app.
+      if (!(e instanceof KeyboardEvent)) return
       if (e.repeat) return
 
       const isCtrlAlt = e.ctrlKey && e.altKey

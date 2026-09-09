@@ -22,6 +22,13 @@ import {
   type BoardColumnId,
 } from "@/lib/leads/board"
 import { LeadBoardCard } from "./LeadBoardCard"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
 import type { LeadBoardItem } from "./LeadBoard.types"
 
 const EMPTY_ICON = {
@@ -89,7 +96,7 @@ export function LeadBoardColumn({
       )}
     >
       <header className="relative z-10 flex shrink-0 items-center justify-between gap-2 border-b border-border/70 px-3 py-2.5">
-        <h2 className="flex min-w-0 items-center gap-2 text-xs/relaxed font-semibold text-foreground">
+        <h2 className="font-heading flex min-w-0 items-center gap-2 text-sm font-semibold text-foreground">
           <span
             aria-hidden
             className={cn(
@@ -108,19 +115,19 @@ export function LeadBoardColumn({
       </header>
       <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto p-2 scrollbar-none [&::-webkit-scrollbar]:hidden">
         {leads.length === 0 && !showDrop ? (
-          <div className="flex min-h-36 flex-1 flex-col items-center justify-center gap-1.5 px-3 py-6 text-center">
-            <EmptyIcon
-              size={22}
-              aria-hidden
-              className="text-muted-foreground opacity-60"
-            />
-            <p className="text-xs/relaxed font-medium text-muted-foreground">
-              {empty.title}
-            </p>
-            <p className="text-xs/relaxed text-muted-foreground">
-              {empty.body}
-            </p>
-          </div>
+          <Empty className="min-h-36 gap-3 p-3">
+            <EmptyHeader>
+              <EmptyMedia>
+                <EmptyIcon
+                  size={22}
+                  aria-hidden
+                  className="text-muted-foreground opacity-60"
+                />
+              </EmptyMedia>
+              <EmptyTitle>{empty.title}</EmptyTitle>
+              <EmptyDescription>{empty.body}</EmptyDescription>
+            </EmptyHeader>
+          </Empty>
         ) : null}
         {leads.map((lead) => (
           <LeadBoardCard

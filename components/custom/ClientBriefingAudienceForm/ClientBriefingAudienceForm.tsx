@@ -12,7 +12,6 @@ import { LazyMotion, domAnimation } from "motion/react"
 import {
   RiCheckLine,
   RiCloseLine,
-  RiLoader4Line,
   RiMapPin2Line,
   RiMegaphoneLine,
   RiUserHeartLine,
@@ -32,6 +31,7 @@ import {
   useBriefingWriterFlushRegistration,
   useWrappedBriefingSave,
 } from "@/components/custom/BriefingWriter"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   BriefingCheckbox as Checkbox,
@@ -541,18 +541,14 @@ export function ClientBriefingAudienceForm({
           </div>
         ) : null}
 
-        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-20">
+        <div className="pointer-events-none fixed inset-x-0 bottom-0 z-sticky">
           <div className="pointer-events-auto border-t border-border bg-background/90 backdrop-blur-md">
             <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-3 px-[var(--page-padding-x)] py-3">
               <div className="min-w-0">
                 <p className="inline-flex min-w-0 items-center gap-1.5 text-xs/relaxed text-muted-foreground">
                   {saveState === "saving" || isCompleting ? (
                     <>
-                      <RiLoader4Line
-                        size={14}
-                        aria-hidden
-                        className="animate-spin"
-                      />
+                      <Spinner aria-hidden className="size-3.5" />
                       Salvando…
                     </>
                   ) : saveState === "saved" && savedAt ? (

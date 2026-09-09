@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { RiLinksLine, RiLoader4Line, RiRefreshLine } from "react-icons/ri"
+import { RiLinksLine, RiRefreshLine } from "react-icons/ri"
 import {
   analyzeLeadBacklinks,
   type LeadBacklinkAudit,
 } from "@/app/actions/leads"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 import type { BacklinkSnapshot } from "@/lib/leads/backlinks-audit"
@@ -95,10 +96,10 @@ export function LeadWebsiteBacklinksCard({
               onClick={handleAnalyze}
             >
               {busy ? (
-                <RiLoader4Line
+                <Spinner
                   data-icon="inline-start"
                   aria-hidden
-                  className="animate-spin"
+                  className="size-3.5"
                 />
               ) : (
                 <RiRefreshLine data-icon="inline-start" aria-hidden />

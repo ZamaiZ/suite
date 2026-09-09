@@ -8,7 +8,7 @@ import {
   useReducedMotion,
 } from "motion/react"
 import * as m from "motion/react-m"
-import { RiCheckLine, RiLoader4Line, RiShieldUserLine } from "react-icons/ri"
+import { RiCheckLine, RiShieldUserLine } from "react-icons/ri"
 import { updateTeamMemberRoles } from "@/app/actions/team"
 import {
   APP_ROLES,
@@ -18,6 +18,7 @@ import {
   type AppRole,
 } from "@/lib/auth/roles"
 import { cn } from "cn"
+import { Spinner } from "@/components/ui/spinner"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
 import type { TeamMember, TeamRoleManagerProps } from "./TeamRoleManager.types"
@@ -274,7 +275,7 @@ function TeamMemberRoleRow({
               transition={{ duration: reduced ? 0.15 : 0.16, ease: EASE }}
               className="inline-flex text-muted-foreground"
             >
-              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-4" />
               <span className="sr-only">Salvando papéis</span>
             </m.span>
           ) : status === "saved" ? (

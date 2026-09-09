@@ -14,6 +14,7 @@ import {
 } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
@@ -99,10 +100,10 @@ export function LeadDigitalPresenceNetworks({
                     {display}
                   </p>
                   {channel.is_primary ? (
-                    <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
+                    <Badge variant="primary" className="shrink-0">
                       <RiStarFill size={12} aria-hidden />
                       Principal
-                    </span>
+                    </Badge>
                   ) : null}
                 </div>
                 {href ? (

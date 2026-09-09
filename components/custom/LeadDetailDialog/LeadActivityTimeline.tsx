@@ -5,6 +5,7 @@ import * as m from "motion/react-m"
 import { useReducedMotion } from "motion/react"
 import { RiFilter3Line } from "react-icons/ri"
 import { LEAD_ACTIVITY_CHANNEL_ICONS } from "@/components/custom/LeadActivityChannelPicker"
+import { Badge } from "@/components/ui/badge"
 import {
   Select,
   SelectContent,
@@ -71,11 +72,12 @@ export function LeadActivityTimeline({
   return (
     <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h3 className="text-xs/relaxed font-semibold text-foreground">
+        <h3 className="font-heading text-sm font-semibold text-foreground">
           Histórico de atividades
         </h3>
         <div className="w-48 shrink-0">
           <Select
+            items={FILTER_ITEMS}
             value={channelFilter}
             onValueChange={(value) => {
               const next = String(value)
@@ -157,7 +159,7 @@ export function LeadActivityTimeline({
                       {type ? LEAD_ACTIVITY_TYPE_LABELS[type] : activity.type}
                     </p>
                     {channelLabel ? (
-                      <span className="inline-flex items-center gap-1 rounded-md bg-accent px-1.5 py-0.5 text-xs/relaxed text-muted-foreground">
+                      <Badge variant="muted">
                         <span
                           aria-hidden
                           className={cn(
@@ -166,7 +168,7 @@ export function LeadActivityTimeline({
                           )}
                         />
                         {channelLabel}
-                      </span>
+                      </Badge>
                     ) : null}
                   </div>
                   <p className="text-xs/relaxed text-muted-foreground">

@@ -27,7 +27,7 @@ const colors = {
   canvas: SHADCN_PALETTE.light.background,
   white: SHADCN_PALETTE.light.background,
   onPrimary: SHADCN_PALETTE.light.primaryForeground,
-  warning: SHADCN_PALETTE.light.chart[2],
+  warning: SHADCN_PALETTE.light.warning,
 }
 
 const styles = StyleSheet.create({

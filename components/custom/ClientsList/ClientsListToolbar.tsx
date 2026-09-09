@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState, useTransition } from "react"
+import { useEffect, useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import {
   RiCalendarEventLine,
@@ -9,6 +9,7 @@ import {
   RiSearchLine,
   RiUser3Line,
 } from "react-icons/ri"
+import { Spinner } from "@/components/ui/spinner"
 import {
   Select,
   SelectContent,
@@ -27,17 +28,19 @@ import { clientsListHref, type ClientsListParams } from "@/lib/clients/href"
 import { CLIENT_KICKOFF_STAGE_LABELS } from "@/lib/clients/kickoff"
 
 const BRIEFING_ITEMS = [
+  { value: "all", label: "Todos os briefings" },
   { value: "in_progress", label: "Em andamento" },
   { value: "finalized", label: "Finalizado" },
   { value: "edited_after_submit", label: "Editado após envio" },
 ]
 
-const KICKOFF_ITEMS = Object.entries(CLIENT_KICKOFF_STAGE_LABELS).map(
-  ([value, label]) => ({
+const KICKOFF_ITEMS = [
+  { value: "all", label: "Todos os kickoffs" },
+  ...Object.entries(CLIENT_KICKOFF_STAGE_LABELS).map(([value, label]) => ({
     value,
     label: label || "Sem kickoff",
-  }),
-)
+  })),
+]
 
 type ClientsListToolbarProps = {
   listParams: ClientsListParams
@@ -96,10 +99,16 @@ export function ClientsListToolbar({
     listParams.kickoff ||
     listParams.closer,
   )
-  const closerItems = closerOptions.map((closer) => ({
-    value: closer.id,
-    label: closer.name,
-  }))
+  const closerItems = useMemo(
+    () => [
+      { value: "all", label: "Todos os closers" },
+      ...closerOptions.map((closer) => ({
+        value: closer.id,
+        label: closer.name,
+      })),
+    ],
+    [closerOptions],
+  )
 
   return (
     <div className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card/80 p-3 shadow-xs sm:flex-row sm:items-center">
@@ -116,8 +125,8 @@ export function ClientsListToolbar({
           />
           {pending ? (
             <InputGroupAddon align="inline-end">
-              <span
-                className="size-4 animate-spin rounded-full border-2 border-primary/25 border-t-primary"
+              <Spinner
+                className="size-3.5 text-primary"
                 aria-label="Buscando"
               />
             </InputGroupAddon>
@@ -132,6 +141,7 @@ export function ClientsListToolbar({
         </span>
         <div className="w-40 shrink-0">
           <Select
+            items={BRIEFING_ITEMS}
             value={listParams.briefing ?? "all"}
             onValueChange={(value) =>
               replace({
@@ -145,7 +155,6 @@ export function ClientsListToolbar({
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="start">
-              <SelectItem value="all">Todos os briefings</SelectItem>
               {BRIEFING_ITEMS.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
@@ -156,6 +165,7 @@ export function ClientsListToolbar({
         </div>
         <div className="w-40 shrink-0">
           <Select
+            items={KICKOFF_ITEMS}
             value={listParams.kickoff ?? "all"}
             onValueChange={(value) =>
               replace({
@@ -170,7 +180,6 @@ export function ClientsListToolbar({
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="start">
-              <SelectItem value="all">Todos os kickoffs</SelectItem>
               {KICKOFF_ITEMS.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}
@@ -181,6 +190,7 @@ export function ClientsListToolbar({
         </div>
         <div className="w-40 shrink-0">
           <Select
+            items={closerItems}
             value={listParams.closer ?? "all"}
             onValueChange={(value) =>
               replace({ closer: value === "all" ? null : String(value) })
@@ -191,7 +201,6 @@ export function ClientsListToolbar({
               <SelectValue />
             </SelectTrigger>
             <SelectContent align="start">
-              <SelectItem value="all">Todos os closers</SelectItem>
               {closerItems.map((item) => (
                 <SelectItem key={item.value} value={item.value}>
                   {item.label}

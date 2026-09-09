@@ -5,7 +5,9 @@ import * as m from "motion/react-m"
 import { RiCloseLine, RiExternalLinkLine, RiHistoryLine } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { LeadClaimActions } from "@/components/custom/LeadClaimActions"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "cn"
 import { LEAD_STATUS_LABELS, type LeadStatus } from "@/lib/leads/status"
 import { CLOSING_STAGE_LABELS, type ClosingStage } from "@/lib/leads/closing"
@@ -31,7 +33,7 @@ const TABS: { id: LeadDetailTab; label: string }[] = [
 
 export function LeadDetailHeader({
   tab,
-  onTabChange,
+  showOpportunityTab,
   companyName,
   domain,
   status,
@@ -51,7 +53,7 @@ export function LeadDetailHeader({
   onClaimError,
 }: {
   tab: LeadDetailTab
-  onTabChange: (tab: LeadDetailTab) => void
+  showOpportunityTab: boolean
   companyName: string
   domain?: string
   status: LeadStatus | null
@@ -109,50 +111,34 @@ export function LeadDetailHeader({
         </div>
       </div>
 
-      <div
-        role="tablist"
+      <TabsList
+        variant="line"
         aria-label="Seções do lead"
-        className="flex items-stretch gap-5"
+        className="h-auto items-stretch gap-5 self-center p-0"
       >
         {TABS.filter(
-          (item) =>
-            item.id !== "opportunity" ||
-            status === "interested" ||
-            status === "converted",
-        ).map((item) => {
-          const selected = tab === item.id
-          return (
-            <button
-              key={item.id}
-              type="button"
-              role="tab"
-              id={`lead-tab-${item.id}`}
-              aria-controls={`lead-detail-${item.id}`}
-              aria-selected={selected}
-              onClick={() => onTabChange(item.id)}
-              className={cn(
-                "relative cursor-pointer text-xs/relaxed font-medium transition-colors duration-150 ease-out",
-                "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
-                selected
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground",
-              )}
-            >
-              {item.label}
-              {selected ? (
-                <m.span
-                  layoutId={reduced ? undefined : "lead-detail-tab-underline"}
-                  className="absolute inset-x-0 bottom-0 h-0.5 bg-primary"
-                  transition={{
-                    duration: reduced ? 0.12 : 0.18,
-                    ease: [0.23, 1, 0.32, 1],
-                  }}
-                />
-              ) : null}
-            </button>
-          )
-        })}
-      </div>
+          (item) => item.id !== "opportunity" || showOpportunityTab,
+        ).map((item) => (
+          <TabsTrigger
+            key={item.id}
+            value={item.id}
+            // O sublinhado é o `m.span` com layoutId abaixo; o do registry sai.
+            className="relative h-auto flex-none cursor-pointer rounded-none border-0 px-0 py-2 text-xs/relaxed font-medium after:hidden data-active:text-foreground"
+          >
+            {item.label}
+            {tab === item.id ? (
+              <m.span
+                layoutId={reduced ? undefined : "lead-detail-tab-underline"}
+                className="absolute inset-x-0 bottom-0 h-0.5 bg-primary"
+                transition={{
+                  duration: reduced ? 0.12 : 0.18,
+                  ease: [0.23, 1, 0.32, 1],
+                }}
+              />
+            ) : null}
+          </TabsTrigger>
+        ))}
+      </TabsList>
 
       <div className="flex min-w-0 items-center justify-end gap-1.5 py-2">
         {status ? (
@@ -166,9 +152,7 @@ export function LeadDetailHeader({
           </span>
         ) : null}
         {status === "interested" && closingStage ? (
-          <span className="inline-flex rounded-md bg-accent px-2 py-0.5 text-xs/relaxed font-medium text-muted-foreground">
-            {CLOSING_STAGE_LABELS[closingStage]}
-          </span>
+          <Badge variant="muted">{CLOSING_STAGE_LABELS[closingStage]}</Badge>
         ) : null}
         <span
           className="inline-flex items-center gap-1 text-xs/relaxed tabular-nums text-muted-foreground"

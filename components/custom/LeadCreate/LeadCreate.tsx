@@ -3,13 +3,9 @@
 import { useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  RiAddLine,
-  RiInformationLine,
-  RiLoader4Line,
-  RiSendPlaneLine,
-} from "react-icons/ri"
+import { RiAddLine, RiInformationLine, RiSendPlaneLine } from "react-icons/ri"
 import { LeadForm, LEAD_FORM_ID } from "@/components/custom/LeadForm"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -115,10 +111,10 @@ export function LeadCreate({
             </Button>
             <Button type="submit" form={LEAD_FORM_ID} disabled={isPending}>
               {isPending ? (
-                <RiLoader4Line
+                <Spinner
                   data-icon="inline-start"
                   aria-hidden
-                  className="animate-spin"
+                  className="size-3.5"
                 />
               ) : (
                 <RiSendPlaneLine data-icon="inline-start" aria-hidden />

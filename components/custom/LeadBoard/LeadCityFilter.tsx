@@ -1,8 +1,9 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { RiLoader4Line, RiMapPinLine } from "react-icons/ri"
+import { RiMapPinLine } from "react-icons/ri"
 import { searchLeadCities } from "@/app/actions/leads"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Combobox,
@@ -146,7 +147,7 @@ export function LeadCityFilter({
         </InputGroupAddon>
         {loading ? (
           <InputGroupAddon align="inline-end">
-            <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+            <Spinner aria-hidden className="size-4" />
           </InputGroupAddon>
         ) : null}
       </ComboboxInput>

@@ -39,6 +39,13 @@ function DialogOverlay({
   )
 }
 
+/**
+ * O popup é um `grid`. Consumidor que fixa altura (`h-*`) precisa declarar o
+ * próprio `grid-rows-[...]`, senão o CSS Grid estica as linhas automáticas em
+ * partes iguais e o corpo não renderiza. E nunca troque o `display`: um `flex`
+ * na className vence o `grid` no merge e transforma as `grid-rows` em classes
+ * mortas.
+ */
 function DialogContent({
   className,
   children,

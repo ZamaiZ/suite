@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
+import { Badge } from "@/components/ui/badge"
 import {
   Select,
   SelectContent,
@@ -34,6 +35,15 @@ export function LeadGbpIdentity({
     setCoverFailed(false)
   }, [profile.id, cover])
 
+  const profileItems = useMemo(
+    () =>
+      profiles.map((item) => ({
+        value: item.id,
+        label: item.payload.displayName ?? item.place_id,
+      })),
+    [profiles],
+  )
+
   return (
     <div className="flex flex-col gap-2.5 rounded-xl border border-border/70 bg-card p-3 shadow-xs sm:flex-row sm:items-start">
       {cover && !coverFailed ? (
@@ -57,10 +67,10 @@ export function LeadGbpIdentity({
             {name}
           </p>
           {profile.is_primary ? (
-            <span className="inline-flex items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
+            <Badge variant="primary">
               <RiStarFill size={12} aria-hidden />
               Perfil principal
-            </span>
+            </Badge>
           ) : null}
           {statusLabel ? (
             <span
@@ -75,14 +85,10 @@ export function LeadGbpIdentity({
             </span>
           ) : null}
           {claimed === true ? (
-            <span className="rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
-              Reivindicado
-            </span>
+            <Badge variant="success">Reivindicado</Badge>
           ) : null}
           {claimed === false ? (
-            <span className="rounded-md bg-warning/10 px-2 py-0.5 text-xs/relaxed font-medium text-warning">
-              Não reivindicado
-            </span>
+            <Badge variant="warning">Não reivindicado</Badge>
           ) : null}
         </div>
         {snapshot.formattedAddress ? (
@@ -93,6 +99,7 @@ export function LeadGbpIdentity({
         {profiles.length > 1 ? (
           <div className="mt-3 max-w-sm">
             <Select
+              items={profileItems}
               value={profile.id}
               onValueChange={(value) => onSelectProfile(String(value))}
             >

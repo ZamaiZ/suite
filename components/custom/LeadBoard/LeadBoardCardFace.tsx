@@ -3,6 +3,7 @@
 import { RiCalendarEventLine, RiChat3Line, RiTimeLine } from "react-icons/ri"
 import { LEAD_ACTIVITY_CHANNEL_ICONS } from "@/components/custom/LeadActivityChannelPicker"
 import { LeadTagChips } from "@/components/custom/LeadTagField"
+import { Badge } from "@/components/ui/badge"
 import {
   Tooltip,
   TooltipContent,
@@ -182,14 +183,14 @@ export function LeadBoardCardFace({
           </div>
         ) : null}
         {lead.from_denial ? (
-          <span className="mt-1.5 inline-flex rounded-md bg-destructive/10 px-2 py-0.5 text-xs/relaxed font-medium text-destructive">
+          <Badge variant="destructive" className="mt-1.5">
             Negativa
-          </span>
+          </Badge>
         ) : null}
         {lead.from_closing_loss ? (
-          <span className="mt-1.5 inline-flex rounded-md bg-destructive/10 px-2 py-0.5 text-xs/relaxed font-medium text-destructive">
+          <Badge variant="destructive" className="mt-1.5">
             Fechamento
-          </span>
+          </Badge>
         ) : null}
         {lead.status === "interested" && isClosingStage(lead.closing_stage) ? (
           <span
@@ -215,9 +216,9 @@ export function LeadBoardCardFace({
           </span>
         ) : null}
         {lead.status === "converted" && lead.converted_at ? (
-          <span className="mt-1.5 inline-flex rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
+          <Badge variant="success" className="mt-1.5">
             Cliente desde {formatDateTimeShort(lead.converted_at)}
-          </span>
+          </Badge>
         ) : null}
         {showPeople ? (
           <div className="mt-1 flex flex-col gap-0.5">

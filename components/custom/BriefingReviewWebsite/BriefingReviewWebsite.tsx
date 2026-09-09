@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { RiExternalLinkLine, RiLoader4Line } from "react-icons/ri"
+import { RiExternalLinkLine } from "react-icons/ri"
 import { signStaffBriefingWebsiteAsset } from "@/app/actions/briefing"
 import {
   BriefingReviewChips,
@@ -15,6 +15,7 @@ import {
   type BriefingAssetRef,
 } from "@/lib/briefing/website"
 import type { BriefingReviewWebsiteProps } from "./BriefingReviewWebsite.types"
+import { Spinner } from "@/components/ui/spinner"
 
 function AssetLink({
   clientId,
@@ -62,7 +63,7 @@ function AssetLink({
       </p>
       {loading ? (
         <span className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground">
-          <RiLoader4Line size={14} aria-hidden className="animate-spin" />
+          <Spinner aria-hidden className="size-3.5" />
           Gerando link…
         </span>
       ) : null}

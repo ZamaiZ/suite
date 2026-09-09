@@ -4,8 +4,9 @@ import type { ReactNode } from "react"
 import { useEffect, useState } from "react"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import { RiCheckLine, RiLoader4Line } from "react-icons/ri"
+import { RiCheckLine } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "cn"
@@ -315,7 +316,7 @@ export function LeadWebsiteReview({
               className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground"
               aria-live="polite"
             >
-              <RiLoader4Line size={14} aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-3.5" />
               Salvando…
             </span>
           ) : null}

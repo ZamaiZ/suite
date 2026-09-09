@@ -4,10 +4,10 @@ import {
   RiDeleteBinLine,
   RiEditLine,
   RiFileExcel2Line,
-  RiLoader4Line,
   RiMore2Line,
 } from "react-icons/ri"
 import { cn } from "cn"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -86,7 +86,7 @@ export function LeadImportFileCard({
           )}
         >
           {analyzing || queued ? (
-            <RiLoader4Line size={16} className="animate-spin" />
+            <Spinner className="size-4" />
           ) : (
             <RiFileExcel2Line size={16} />
           )}

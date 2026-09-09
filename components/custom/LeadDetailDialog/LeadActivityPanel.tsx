@@ -12,6 +12,7 @@ import type {
 import type { ConvertLeadState } from "@/app/actions/clients"
 import { LeadActivityTimeline } from "./LeadActivityTimeline"
 import { LeadContextRail } from "./LeadContextRail"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export function LeadActivityPanel({
   detail,
@@ -95,14 +96,14 @@ function ActivitySkeleton() {
         <LeadContextRail detail={null} loading />
       </aside>
       <div className="flex min-w-0 flex-col gap-4 px-4 py-5 sm:px-5">
-        <span className="h-36 animate-pulse rounded-xl bg-accent motion-reduce:animate-none" />
-        <span
-          className="h-24 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
-          style={{ animationDelay: "40ms" }}
+        <Skeleton className="h-36 rounded-xl motion-reduce:animate-none" />
+        <Skeleton
+          className="h-24 rounded-xl motion-reduce:animate-none"
+          style={{ animationDelay: " 40ms" }}
         />
-        <span
-          className="h-24 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
-          style={{ animationDelay: "80ms" }}
+        <Skeleton
+          className="h-24 rounded-xl motion-reduce:animate-none"
+          style={{ animationDelay: " 80ms" }}
         />
       </div>
     </div>

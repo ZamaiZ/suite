@@ -16,6 +16,8 @@ import {
 } from "@/lib/date-time"
 import type { LeadDetail } from "@/app/actions/leads"
 import { LeadIconWell } from "./LeadIconWell"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Badge } from "@/components/ui/badge"
 
 const FOLLOW_UP_TONE: Record<TimestampUrgency, string> = {
   overdue: "text-destructive",
@@ -133,9 +135,9 @@ export function LeadContextRail({
               {formatDateTimeShort(lastAt)}
             </span>
             {isToday ? (
-              <span className="shrink-0 rounded-md bg-success/10 px-1.5 py-0.5 text-xs/relaxed font-medium text-success">
+              <Badge variant="success" className="shrink-0">
                 Hoje
-              </span>
+              </Badge>
             ) : null}
           </div>
         ) : (
@@ -238,18 +240,18 @@ export function LeadContextRail({
 function RailSkeleton() {
   return (
     <div className="flex flex-col gap-4 px-4 py-5 sm:px-5">
-      <span className="h-16 animate-pulse rounded-md bg-accent motion-reduce:animate-none" />
-      <span
-        className="h-10 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
-        style={{ animationDelay: "40ms" }}
+      <Skeleton className="h-16 rounded-md motion-reduce:animate-none" />
+      <Skeleton
+        className="h-10 rounded-md motion-reduce:animate-none"
+        style={{ animationDelay: " 40ms" }}
       />
-      <span
-        className="h-10 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
-        style={{ animationDelay: "80ms" }}
+      <Skeleton
+        className="h-10 rounded-md motion-reduce:animate-none"
+        style={{ animationDelay: " 80ms" }}
       />
-      <span
-        className="h-10 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
-        style={{ animationDelay: "120ms" }}
+      <Skeleton
+        className="h-10 rounded-md motion-reduce:animate-none"
+        style={{ animationDelay: " 120ms" }}
       />
     </div>
   )

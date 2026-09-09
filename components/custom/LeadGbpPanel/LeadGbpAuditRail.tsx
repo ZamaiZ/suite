@@ -24,6 +24,7 @@ import {
 } from "@/lib/leads/gbp-audit-rail"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import { GBP_AUDIT_STATUS_LABEL } from "@/lib/leads/gbp-presenters"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
@@ -123,7 +124,7 @@ export function LeadGbpAuditRail({
   return (
     <div className="flex h-auto min-h-0 flex-col px-3 py-4 sm:px-4 lg:h-full">
       <header className="shrink-0">
-        <h2 className="font-heading text-xs/relaxed font-semibold text-foreground">
+        <h2 className="font-heading text-sm font-semibold text-foreground">
           Auditoria digital
         </h2>
         <span
@@ -308,27 +309,27 @@ function AuditRailSkeleton() {
       className="flex h-auto min-h-0 flex-col gap-4 px-3 py-4 sm:px-4 lg:h-full"
     >
       <div className="flex flex-col gap-3">
-        <span className="h-6 w-40 animate-pulse rounded-md bg-accent motion-reduce:animate-none" />
-        <span className="h-8 w-28 animate-pulse rounded-lg bg-accent motion-reduce:animate-none" />
+        <Skeleton className="h-6 w-40 rounded-md motion-reduce:animate-none" />
+        <Skeleton className="h-8 w-28 rounded-lg motion-reduce:animate-none" />
       </div>
       <div className="flex flex-col gap-3">
-        <span className="h-4 w-24 animate-pulse rounded bg-accent motion-reduce:animate-none" />
-        <span className="h-1.5 w-full animate-pulse rounded-full bg-accent motion-reduce:animate-none" />
+        <Skeleton className="h-4 w-24 rounded motion-reduce:animate-none" />
+        <Skeleton className="h-1.5 w-full rounded-full motion-reduce:animate-none" />
       </div>
       <div className="hidden flex-col gap-2 lg:flex">
         {[0, 1, 2, 3, 4].map((item) => (
-          <span
+          <Skeleton
             key={item}
-            className="h-14 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
+            className="h-14 rounded-xl motion-reduce:animate-none"
             style={{ animationDelay: `${item * 40}ms` }}
           />
         ))}
       </div>
       <div className="flex flex-col gap-4 lg:hidden">
-        <span className="h-8 w-full animate-pulse rounded-full bg-accent motion-reduce:animate-none" />
-        <span className="h-[4.25rem] animate-pulse rounded-xl bg-accent motion-reduce:animate-none" />
+        <Skeleton className="h-8 w-full rounded-full motion-reduce:animate-none" />
+        <Skeleton className="h-[4.25rem] rounded-xl motion-reduce:animate-none" />
       </div>
-      <span className="mt-auto h-16 animate-pulse rounded-lg bg-accent motion-reduce:animate-none" />
+      <Skeleton className="mt-auto h-16 rounded-lg motion-reduce:animate-none" />
     </div>
   )
 }

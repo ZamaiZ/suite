@@ -31,6 +31,14 @@ import {
 import { LeadLocationField } from "@/components/custom/LeadLocationField"
 import { LeadSegmentField } from "@/components/custom/LeadSegmentField"
 import { LeadTagChips, LeadTagField } from "@/components/custom/LeadTagField"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
   InputGroup,
@@ -819,21 +827,16 @@ function NotesCard({
             {serverMessage ? <ServerMessage text={serverMessage} /> : null}
           </div>
         ) : empty ? (
-          <div className="flex flex-col items-center gap-3 px-4 py-6">
-            <span
-              aria-hidden
-              className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
-            >
-              <RiFileTextLine size={22} />
-            </span>
-            <div className="max-w-sm text-center">
-              <p className="text-xs/relaxed text-muted-foreground">
-                Nenhuma observação cadastrada
-              </p>
-              <p className="mt-1 text-xs/relaxed text-muted-foreground">
+          <Empty className="px-4 py-6">
+            <EmptyHeader>
+              <EmptyMedia variant="icon" className="size-12 rounded-xl">
+                <RiFileTextLine size={22} aria-hidden />
+              </EmptyMedia>
+              <EmptyTitle>Nenhuma observação cadastrada</EmptyTitle>
+              <EmptyDescription>
                 Informações importantes ou observações sobre este lead.
-              </p>
-            </div>
+              </EmptyDescription>
+            </EmptyHeader>
             {readOnly || !showActions ? null : (
               <button
                 type="button"
@@ -843,7 +846,7 @@ function NotesCard({
                 Adicionar observação
               </button>
             )}
-          </div>
+          </Empty>
         ) : (
           <p className="whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
             {lead.observations}
@@ -903,26 +906,26 @@ function RecordSkeleton() {
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[17rem_minmax(0,1fr)]">
       <aside className="border-b border-border/70 bg-popover lg:border-r lg:border-b-0">
         <div className="flex flex-col gap-3 px-4 py-5 sm:px-5">
-          <span className="h-12 animate-pulse rounded-lg bg-accent motion-reduce:animate-none" />
-          <span
-            className="h-12 animate-pulse rounded-lg bg-accent motion-reduce:animate-none"
-            style={{ animationDelay: "40ms" }}
+          <Skeleton className="h-12 rounded-lg motion-reduce:animate-none" />
+          <Skeleton
+            className="h-12 rounded-lg motion-reduce:animate-none"
+            style={{ animationDelay: " 40ms" }}
           />
-          <span
-            className="h-12 animate-pulse rounded-lg bg-accent motion-reduce:animate-none"
-            style={{ animationDelay: "80ms" }}
+          <Skeleton
+            className="h-12 rounded-lg motion-reduce:animate-none"
+            style={{ animationDelay: " 80ms" }}
           />
         </div>
       </aside>
       <div className="flex min-w-0 flex-col gap-4 px-4 py-5 sm:px-5">
-        <span className="h-44 animate-pulse rounded-xl bg-accent motion-reduce:animate-none" />
-        <span
-          className="h-36 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
-          style={{ animationDelay: "40ms" }}
+        <Skeleton className="h-44 rounded-xl motion-reduce:animate-none" />
+        <Skeleton
+          className="h-36 rounded-xl motion-reduce:animate-none"
+          style={{ animationDelay: " 40ms" }}
         />
-        <span
-          className="h-40 animate-pulse rounded-xl bg-accent motion-reduce:animate-none"
-          style={{ animationDelay: "80ms" }}
+        <Skeleton
+          className="h-40 rounded-xl motion-reduce:animate-none"
+          style={{ animationDelay: " 80ms" }}
         />
       </div>
     </div>

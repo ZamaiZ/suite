@@ -11,7 +11,9 @@ export function BriefingReviewSection({
 }: BriefingReviewSectionProps) {
   return (
     <section className="flex flex-col gap-3 rounded-xl border border-border/70 bg-card/60 px-4 py-3">
-      <h3 className="text-xs/relaxed font-semibold text-foreground">{title}</h3>
+      <h3 className="font-heading text-sm font-semibold text-foreground">
+        {title}
+      </h3>
       <div className="flex flex-col gap-3">{children}</div>
     </section>
   )

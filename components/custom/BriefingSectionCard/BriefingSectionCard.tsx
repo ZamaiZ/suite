@@ -34,7 +34,7 @@ export function BriefingSectionCard({
           ) : null}
         </span>
         <div className="min-w-0">
-          <h2 className="text-xs/relaxed font-semibold text-foreground">
+          <h2 className="font-heading text-sm font-semibold text-foreground">
             {title}
           </h2>
           <p className="mt-0.5 text-xs/relaxed text-muted-foreground">

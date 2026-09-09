@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
+import { MotionProvider } from "@/components/providers/motion-provider"
 import { ThemeProvider } from "@/components/providers/theme-provider"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import "./globals.css"
 import { APP_NAME } from "@/lib/brand"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
@@ -35,7 +37,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <MotionProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

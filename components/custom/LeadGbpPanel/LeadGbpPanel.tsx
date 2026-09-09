@@ -10,6 +10,14 @@ import { LeadDigitalPresencePanel } from "@/components/custom/LeadDigitalPresenc
 import { LeadDiagnosisPanel } from "@/components/custom/LeadDiagnosisPanel"
 import { LeadVisibilityPanel } from "@/components/custom/LeadVisibilityPanel"
 import { LeadWebsitePanel } from "@/components/custom/LeadWebsitePanel"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Button } from "@/components/ui/button"
 import { cn } from "cn"
 import { todayCivilDate } from "@/lib/date-time"
@@ -523,22 +531,19 @@ export function LeadGbpPanel({
                 initial={fade.initial}
                 animate={fade.animate}
                 transition={fade.transition}
-                className="flex flex-col items-center gap-3 px-4 py-8"
+                className="px-4 py-8"
               >
-                <span
-                  aria-hidden
-                  className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
-                >
-                  <RiMapPin2Line size={22} />
-                </span>
-                <div className="max-w-sm text-center">
-                  <p className="text-xs/relaxed text-muted-foreground">
-                    Nenhum perfil do Google vinculado
-                  </p>
-                  <p className="mt-1 text-xs/relaxed text-muted-foreground">
-                    Busque o estabelecimento para montar a análise do GBP.
-                  </p>
-                </div>
+                <Empty>
+                  <EmptyHeader>
+                    <EmptyMedia variant="icon" className="size-12 rounded-xl">
+                      <RiMapPin2Line size={22} aria-hidden />
+                    </EmptyMedia>
+                    <EmptyTitle>Nenhum perfil do Google vinculado</EmptyTitle>
+                    <EmptyDescription>
+                      Busque o estabelecimento para montar a análise do GBP.
+                    </EmptyDescription>
+                  </EmptyHeader>
+                </Empty>
               </m.div>
             ) : selected ? (
               <LeadGbpProfileCard
@@ -586,11 +591,8 @@ function UpcomingStepPlaceholder() {
 
 function Pulse({ className, delay }: { className: string; delay: number }) {
   return (
-    <span
-      className={cn(
-        "block animate-pulse rounded-xl bg-accent motion-reduce:animate-none",
-        className,
-      )}
+    <Skeleton
+      className={cn(" block rounded-xl motion-reduce:animate-none", className)}
       style={{ animationDelay: `${delay}ms` }}
     />
   )

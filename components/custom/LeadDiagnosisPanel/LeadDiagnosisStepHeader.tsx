@@ -4,10 +4,10 @@ import {
   RiCheckLine,
   RiExternalLinkLine,
   RiFileList3Line,
-  RiLoader4Line,
   RiRefreshLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 
@@ -39,7 +39,7 @@ export function LeadDiagnosisStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiFileList3Line} />
         <div className="min-w-0">
-          <h2 className="text-xs/relaxed font-semibold text-foreground">
+          <h2 className="font-heading text-sm font-semibold text-foreground">
             Diagnóstico
           </h2>
           <p className="text-xs/relaxed text-muted-foreground">
@@ -76,10 +76,10 @@ export function LeadDiagnosisStepHeader({
               onClick={onCompile}
             >
               {compiling ? (
-                <RiLoader4Line
+                <Spinner
                   data-icon="inline-start"
                   aria-hidden
-                  className="animate-spin"
+                  className="size-3.5"
                 />
               ) : (
                 <RiRefreshLine data-icon="inline-start" aria-hidden />
@@ -93,10 +93,10 @@ export function LeadDiagnosisStepHeader({
                 onClick={onExport}
               >
                 {exporting ? (
-                  <RiLoader4Line
+                  <Spinner
                     data-icon="inline-start"
                     aria-hidden
-                    className="animate-spin"
+                    className="size-3.5"
                   />
                 ) : null}
                 Exportar PDF

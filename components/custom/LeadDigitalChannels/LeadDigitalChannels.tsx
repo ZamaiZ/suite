@@ -19,6 +19,7 @@ import {
   RiStarLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -270,6 +271,7 @@ export function LeadDigitalChannels({
       {draft ? (
         <div className="flex flex-col gap-2 sm:grid sm:grid-cols-[11rem_minmax(0,1fr)] sm:items-start">
           <Select
+            items={DIGITAL_CHANNEL_LABELS}
             value={draft.type}
             disabled={disabled}
             onValueChange={(next) => {
@@ -386,10 +388,10 @@ function ChannelItem({
         </span>
       </button>
       {channel.is_primary ? (
-        <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
+        <Badge variant="primary" className="shrink-0">
           <RiStarFill size={12} aria-hidden />
           Principal
-        </span>
+        </Badge>
       ) : null}
       <DropdownMenu>
         <DropdownMenuTrigger
@@ -463,10 +465,10 @@ export function LeadDigitalChannelList({
               </p>
             </div>
             {channel.is_primary ? (
-              <span className="inline-flex shrink-0 items-center gap-1 rounded-md bg-primary/10 px-2 py-0.5 text-xs/relaxed font-medium text-primary">
+              <Badge variant="primary" className="shrink-0">
                 <RiStarFill size={12} aria-hidden />
                 Principal
-              </span>
+              </Badge>
             ) : null}
           </div>
         )

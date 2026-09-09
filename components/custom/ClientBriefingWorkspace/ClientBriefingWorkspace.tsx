@@ -8,7 +8,7 @@ import {
   useReducedMotion,
 } from "motion/react"
 import * as m from "motion/react-m"
-import { RiErrorWarningLine, RiLoader4Line } from "react-icons/ri"
+import { RiErrorWarningLine } from "react-icons/ri"
 import {
   loadBriefingAccesses,
   loadBriefingAudience,
@@ -29,6 +29,7 @@ import { ClientBriefingCompanyForm } from "@/components/custom/ClientBriefingCom
 import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFinanceForm"
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Stepper } from "@/components/custom/Stepper"
 import {
@@ -477,7 +478,7 @@ export function ClientBriefingWorkspace({
               exit={{ opacity: 0 }}
               className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
             >
-              <RiLoader4Line size={18} aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-4.5" />
               Carregando seus dados…
             </m.div>
           ) : null}
@@ -627,11 +628,7 @@ export function ClientBriefingWorkspace({
                     exit={{ opacity: 0 }}
                     className="mx-auto flex w-full max-w-3xl items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-16 text-xs/relaxed text-muted-foreground shadow-xs"
                   >
-                    <RiLoader4Line
-                      size={18}
-                      aria-hidden
-                      className="animate-spin"
-                    />
+                    <Spinner aria-hidden className="size-4.5" />
                     Carregando seus dados…
                   </m.div>
                 ) : null}

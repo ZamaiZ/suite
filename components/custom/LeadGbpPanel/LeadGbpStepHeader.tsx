@@ -3,11 +3,11 @@
 import {
   RiCheckLine,
   RiExternalLinkLine,
-  RiLoader4Line,
   RiMapPin2Line,
   RiRefreshLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
 
@@ -29,7 +29,7 @@ export function LeadGbpStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiMapPin2Line} />
         <div className="min-w-0">
-          <h2 className="text-xs/relaxed font-semibold text-foreground">
+          <h2 className="font-heading text-sm font-semibold text-foreground">
             Perfil no Google
           </h2>
           <p className="text-xs/relaxed text-muted-foreground">
@@ -52,10 +52,10 @@ export function LeadGbpStepHeader({
             onClick={onEnrich}
           >
             {collecting ? (
-              <RiLoader4Line
+              <Spinner
                 data-icon="inline-start"
                 aria-hidden
-                className="animate-spin"
+                className="size-3.5"
               />
             ) : (
               <RiRefreshLine data-icon="inline-start" aria-hidden />

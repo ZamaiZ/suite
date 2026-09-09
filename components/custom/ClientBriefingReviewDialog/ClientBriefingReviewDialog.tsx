@@ -8,7 +8,7 @@ import {
   useReducedMotion,
 } from "motion/react"
 import * as m from "motion/react-m"
-import { RiErrorWarningLine, RiLoader4Line } from "react-icons/ri"
+import { RiErrorWarningLine } from "react-icons/ri"
 import {
   loadStaffBriefingOverview,
   loadStaffBriefingStep,
@@ -38,6 +38,8 @@ import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFin
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
 import { ClientKickoffPanel } from "@/components/custom/ClientKickoffPanel"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -265,7 +267,7 @@ export function ClientBriefingReviewDialog({
     >
       <DialogContent
         showCloseButton={false}
-        className="flex h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] grid-cols-1 grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-3xl p-0"
+        className="h-[calc(100vh-2rem)] w-[calc(100vw-2rem)] max-w-[calc(100vw-2rem)] grid-cols-1 grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden rounded-3xl p-0"
       >
         <DialogHeader className="sr-only">
           <DialogTitle>{title}</DialogTitle>
@@ -328,7 +330,7 @@ export function ClientBriefingReviewDialog({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                       >
-                        <div className="mb-4 h-6 w-48 animate-pulse rounded-md bg-accent" />
+                        <Skeleton className="mb-4 h-6 w-48 rounded-md" />
                         <BriefingReviewOverview
                           steps={[]}
                           completedCount={0}
@@ -424,9 +426,9 @@ export function ClientBriefingReviewDialog({
                         {stepLoad.status === "loading" ? (
                           <div className="flex flex-col gap-3">
                             {Array.from({ length: 3 }, (_, index) => (
-                              <div
+                              <Skeleton
                                 key={index}
-                                className="h-28 animate-pulse rounded-xl bg-accent"
+                                className="h-28 rounded-xl"
                               />
                             ))}
                           </div>
@@ -470,11 +472,7 @@ export function ClientBriefingReviewDialog({
                         ) : null}
                         {stepLoad.status === "idle" ? (
                           <div className="flex items-center justify-center gap-2 py-16 text-xs/relaxed text-muted-foreground">
-                            <RiLoader4Line
-                              size={18}
-                              aria-hidden
-                              className="animate-spin"
-                            />
+                            <Spinner aria-hidden className="size-4.5" />
                             Carregando…
                           </div>
                         ) : null}

@@ -1,8 +1,6 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AnimatePresence, useReducedMotion } from "motion/react"
-import * as m from "motion/react-m"
 import {
   getLeadDetail,
   type ClosingChecklistPatch,
@@ -36,14 +34,13 @@ import { isLeadStatus } from "@/lib/leads/status"
 import type { LeadTag } from "@/lib/leads/tags"
 import type { LeadWritePayload } from "@/lib/leads/types"
 import { LeadActivityPanel } from "./LeadActivityPanel"
+import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { LeadDetailHeader } from "./LeadDetailHeader"
 import { LeadRecordPanel } from "./LeadRecordPanel"
 import type {
   LeadDetailDialogProps,
   LeadDetailTab,
 } from "./LeadDetailDialog.types"
-
-const EASE = [0.23, 1, 0.32, 1] as const
 
 type LoadState = "loading" | "ready" | "not_found" | "error"
 
@@ -56,7 +53,6 @@ export function LeadDetailDialog({
   onMutated,
 }: LeadDetailDialogProps) {
   const requestIdRef = useRef(0)
-  const reduced = !!useReducedMotion()
   const [tab, setTab] = useState<LeadDetailTab>("activity")
   const [editing, setEditing] = useState(false)
   const [detail, setDetail] = useState<LeadDetail | null>(null)
@@ -76,12 +72,6 @@ export function LeadDetailDialog({
   )
 
   const isBusy = formPending || claimPending || activityPending || gbpPending
-  const paneTransition = {
-    duration: reduced ? 0.12 : 0.18,
-    ease: EASE,
-  }
-  const paneEnter = reduced ? { opacity: 0 } : { opacity: 0, y: 6 }
-  const paneVisible = reduced ? { opacity: 1 } : { opacity: 1, y: 0 }
 
   const loadDetail = useCallback(
     async (id: string, mode: "replace" | "refresh") => {
@@ -412,7 +402,7 @@ export function LeadDetailDialog({
     })
   }
 
-  const keepRecordMounted = tab === "record" || editing
+  const showOpportunityTab = status === "interested" || status === "converted"
   const showBody =
     loadState === "loading" ||
     loadState === "ready" ||
@@ -429,7 +419,7 @@ export function LeadDetailDialog({
         <DialogContent
           showCloseButton={false}
           className={cn(
-            "h-[min(50rem,calc(100dvh-2rem))] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl gap-0 overflow-hidden bg-background p-0",
+            "h-[min(50rem,calc(100dvh-2rem))] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl grid-rows-[minmax(0,1fr)] gap-0 overflow-hidden bg-background p-0",
             tab === "opportunity" && "max-w-6xl",
           )}
         >
@@ -437,91 +427,80 @@ export function LeadDetailDialog({
           <DialogDescription className="sr-only">
             {domain || "Atividade e cadastro do lead"}
           </DialogDescription>
-          <LeadDetailHeader
-            tab={tab}
-            onTabChange={setTab}
-            companyName={companyName}
-            domain={domain}
-            status={status}
-            closingStage={
-              detail && isClosingStage(detail.lead.closing_stage)
-                ? detail.lead.closing_stage
-                : null
-            }
-            activityCount={activityCount}
-            leadId={leadId}
-            canClaim={detail?.canClaim ?? false}
-            canUnclaim={detail?.canUnclaim ?? false}
-            createdByName={detail?.createdByName ?? null}
-            clientId={detail?.client?.id ?? null}
-            canViewClient={detail?.client?.canView ?? false}
-            readOnly={readOnly}
-            closeDisabled={isBusy}
-            onClose={handleDismiss}
-            onClaimSuccess={applyAssignment}
-            onClaimPending={setClaimPending}
-            onClaimError={setClaimError}
-          />
-          <div className="flex h-full min-h-0 flex-1 flex-col overflow-hidden">
-            {claimError ? (
-              <p
-                role="alert"
-                className="mx-auto w-full max-w-2xl px-4 pt-4 text-xs/relaxed text-destructive sm:px-5"
-              >
-                {claimError}
-              </p>
-            ) : null}
+          <Tabs
+            value={tab}
+            onValueChange={(next) => setTab(next as LeadDetailTab)}
+            className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)] gap-0"
+          >
+            <LeadDetailHeader
+              tab={tab}
+              showOpportunityTab={showOpportunityTab}
+              companyName={companyName}
+              domain={domain}
+              status={status}
+              closingStage={
+                detail && isClosingStage(detail.lead.closing_stage)
+                  ? detail.lead.closing_stage
+                  : null
+              }
+              activityCount={activityCount}
+              leadId={leadId}
+              canClaim={detail?.canClaim ?? false}
+              canUnclaim={detail?.canUnclaim ?? false}
+              createdByName={detail?.createdByName ?? null}
+              clientId={detail?.client?.id ?? null}
+              canViewClient={detail?.client?.canView ?? false}
+              readOnly={readOnly}
+              closeDisabled={isBusy}
+              onClose={handleDismiss}
+              onClaimSuccess={applyAssignment}
+              onClaimPending={setClaimPending}
+              onClaimError={setClaimError}
+            />
+            <div className="flex min-h-0 flex-col overflow-hidden">
+              {claimError ? (
+                <p
+                  role="alert"
+                  className="mx-auto w-full max-w-2xl px-4 pt-4 text-xs/relaxed text-destructive sm:px-5"
+                >
+                  {claimError}
+                </p>
+              ) : null}
 
-            {loadState === "not_found" ? (
-              <p className="mx-auto w-full max-w-2xl px-4 py-5 text-xs/relaxed text-muted-foreground sm:px-5">
-                Lead não encontrado.
-              </p>
-            ) : loadState === "error" && !detail ? (
-              <p
-                role="alert"
-                className="mx-auto w-full max-w-2xl px-4 py-5 text-xs/relaxed text-destructive sm:px-5"
-              >
-                {errorMessage ?? "Não foi possível carregar o lead."}
-              </p>
-            ) : showBody ? (
-              <div className="relative h-full min-h-0 flex-1 overflow-hidden">
-                <AnimatePresence mode="wait" initial={false}>
-                  {tab === "activity" ? (
-                    <m.div
-                      key="activity"
-                      role="tabpanel"
-                      id="lead-detail-activity"
-                      aria-labelledby="lead-tab-activity"
-                      initial={paneEnter}
-                      animate={paneVisible}
-                      exit={paneEnter}
-                      transition={paneTransition}
-                      className="absolute inset-0 overflow-y-auto"
-                    >
-                      <LeadActivityPanel
-                        detail={detail}
-                        loading={loadState === "loading"}
-                        readOnly={readOnly}
-                        enteredActivityId={enteredActivityId}
-                        onActivitySuccess={handleActivitySuccess}
-                        onClosingEventSuccess={handleClosingEventSuccess}
-                        onChecklistSuccess={handleChecklistSuccess}
-                        onConvertSuccess={handleConvertSuccess}
-                        onPendingChange={setActivityPending}
-                      />
-                    </m.div>
-                  ) : null}
-                  {tab === "opportunity" ? (
-                    <m.div
-                      key="opportunity"
-                      role="tabpanel"
-                      id="lead-detail-opportunity"
-                      aria-labelledby="lead-tab-opportunity"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={paneTransition}
-                      className="absolute inset-0 overflow-hidden"
+              {loadState === "not_found" ? (
+                <p className="mx-auto w-full max-w-2xl px-4 py-5 text-xs/relaxed text-muted-foreground sm:px-5">
+                  Lead não encontrado.
+                </p>
+              ) : loadState === "error" && !detail ? (
+                <p
+                  role="alert"
+                  className="mx-auto w-full max-w-2xl px-4 py-5 text-xs/relaxed text-destructive sm:px-5"
+                >
+                  {errorMessage ?? "Não foi possível carregar o lead."}
+                </p>
+              ) : showBody ? (
+                <div className="relative min-h-0 flex-1 overflow-hidden">
+                  <TabsContent
+                    value="activity"
+                    className="absolute inset-0 overflow-y-auto duration-150 data-active:animate-in data-active:fade-in-0"
+                  >
+                    <LeadActivityPanel
+                      detail={detail}
+                      loading={loadState === "loading"}
+                      readOnly={readOnly}
+                      enteredActivityId={enteredActivityId}
+                      onActivitySuccess={handleActivitySuccess}
+                      onClosingEventSuccess={handleClosingEventSuccess}
+                      onChecklistSuccess={handleChecklistSuccess}
+                      onConvertSuccess={handleConvertSuccess}
+                      onPendingChange={setActivityPending}
+                    />
+                  </TabsContent>
+
+                  {showOpportunityTab ? (
+                    <TabsContent
+                      value="opportunity"
+                      className="absolute inset-0 overflow-hidden duration-150 data-active:animate-in data-active:fade-in-0"
                     >
                       <LeadGbpPanel
                         detail={detail}
@@ -536,24 +515,14 @@ export function LeadDetailDialog({
                         onDiagnosisExportsChange={applyDiagnosisExports}
                         onPendingChange={setGbpPending}
                       />
-                    </m.div>
+                    </TabsContent>
                   ) : null}
-                </AnimatePresence>
 
-                {keepRecordMounted ? (
-                  <m.div
-                    role="tabpanel"
-                    id="lead-detail-record"
-                    aria-labelledby="lead-tab-record"
-                    hidden={tab !== "record"}
-                    aria-hidden={tab !== "record"}
-                    initial={paneEnter}
-                    animate={paneVisible}
-                    transition={paneTransition}
-                    className={cn(
-                      "absolute inset-0 overflow-y-auto",
-                      tab !== "record" && "hidden",
-                    )}
+                  {/* keepMounted preserva o formulário em edição ao trocar de aba */}
+                  <TabsContent
+                    value="record"
+                    keepMounted
+                    className="absolute inset-0 overflow-y-auto"
                   >
                     <LeadRecordPanel
                       detail={detail}
@@ -565,11 +534,11 @@ export function LeadDetailDialog({
                       onSaved={applyFields}
                       onPendingChange={setFormPending}
                     />
-                  </m.div>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
+                  </TabsContent>
+                </div>
+              ) : null}
+            </div>
+          </Tabs>
         </DialogContent>
       </Dialog>
       <ClientPortalCodeReveal

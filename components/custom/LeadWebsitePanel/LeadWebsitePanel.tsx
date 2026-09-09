@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiGlobalLine, RiStarFill } from "react-icons/ri"
@@ -18,6 +18,13 @@ import { LeadWebsiteStepHeader } from "./LeadWebsiteStepHeader"
 import { LeadWebsiteSummaryCards } from "./LeadWebsiteSummaryCards"
 import { LeadWebsiteBacklinksCard } from "./LeadWebsiteBacklinksCard"
 import type { LeadWebsitePanelProps } from "./LeadWebsitePanel.types"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
 import {
   Select,
   SelectContent,
@@ -305,19 +312,25 @@ export function LeadWebsitePanel({
     })
   }
 
+  const channelItems = useMemo(
+    () =>
+      channels.map((channel) => ({
+        value: channel.id ?? channel.normalized_key,
+        label: digitalChannelDisplay(channel.type, channel.value),
+      })),
+    [channels],
+  )
+
   if (!selected) {
     return (
-      <div className="flex flex-col items-center gap-3 px-4 py-8">
-        <span
-          aria-hidden
-          className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
-        >
-          <RiGlobalLine size={22} />
-        </span>
-        <p className="text-xs/relaxed text-muted-foreground">
-          Nenhum site cadastrado neste lead.
-        </p>
-      </div>
+      <Empty className="px-4 py-8">
+        <EmptyHeader>
+          <EmptyMedia variant="icon" className="size-12 rounded-xl">
+            <RiGlobalLine size={22} aria-hidden />
+          </EmptyMedia>
+          <EmptyTitle>Nenhum site cadastrado neste lead.</EmptyTitle>
+        </EmptyHeader>
+      </Empty>
     )
   }
 
@@ -339,6 +352,7 @@ export function LeadWebsitePanel({
       {channels.length > 1 ? (
         <div className="max-w-sm">
           <Select
+            items={channelItems}
             value={selected.id ?? ""}
             onValueChange={(value) => setSelectedId(String(value))}
           >
@@ -428,22 +442,17 @@ export function LeadWebsitePanel({
           <LeadGbpOpportunitiesCard items={opportunities} />
         </>
       ) : (
-        <div className="flex flex-col items-center gap-3 px-4 py-8">
-          <span
-            aria-hidden
-            className="inline-flex size-12 items-center justify-center rounded-xl bg-accent text-muted-foreground"
-          >
-            <RiGlobalLine size={22} />
-          </span>
-          <div className="max-w-sm text-center">
-            <p className="text-xs/relaxed text-muted-foreground">
-              Nenhuma coleta deste site
-            </p>
-            <p className="mt-1 text-xs/relaxed text-muted-foreground">
+        <Empty className="px-4 py-8">
+          <EmptyHeader>
+            <EmptyMedia variant="icon" className="size-12 rounded-xl">
+              <RiGlobalLine size={22} aria-hidden />
+            </EmptyMedia>
+            <EmptyTitle>Nenhuma coleta deste site</EmptyTitle>
+            <EmptyDescription>
               Analise o website para montar a auditoria on-page.
-            </p>
-          </div>
-        </div>
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
       )}
     </m.div>
   )

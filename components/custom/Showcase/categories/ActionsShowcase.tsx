@@ -1,12 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import {
-  RiAddLine,
-  RiCheckLine,
-  RiDeleteBinLine,
-  RiLoader4Line,
-} from "react-icons/ri"
+import { RiAddLine, RiCheckLine, RiDeleteBinLine } from "react-icons/ri"
 import {
   Alert,
   AlertAction,
@@ -74,7 +69,7 @@ export function ActionsShowcase() {
             <RiAddLine aria-hidden />
           </Button>
           <Button disabled>
-            <RiLoader4Line aria-hidden className="animate-spin" />
+            <Spinner aria-hidden className="size-3.5" />
             Carregando
           </Button>
           <Button aria-invalid>

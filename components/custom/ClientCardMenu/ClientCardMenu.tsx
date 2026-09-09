@@ -5,7 +5,6 @@ import {
   RiCheckLine,
   RiFileCopyLine,
   RiKey2Line,
-  RiLoader4Line,
   RiMore2Line,
   RiRefreshLine,
 } from "react-icons/ri"
@@ -15,6 +14,7 @@ import {
   rotatePortalAccess,
 } from "@/app/actions/clients"
 import { ClientPortalCodeReveal } from "@/components/custom/ClientPortalCodeReveal"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -132,7 +132,7 @@ export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
         <DropdownMenuContent align="end" className="min-w-44">
           {loadingDetail && !portal ? (
             <div className="flex items-center gap-2 px-2 py-1.5 text-xs/relaxed text-muted-foreground">
-              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-4" />
               Carregando…
             </div>
           ) : null}

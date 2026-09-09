@@ -5,14 +5,11 @@ import { useFormStatus } from "react-dom"
 import { usePathname } from "next/navigation"
 import { LazyMotion, domAnimation, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
-import {
-  RiArrowLeftSLine,
-  RiLoader4Line,
-  RiLogoutBoxLine,
-} from "react-icons/ri"
+import { RiArrowLeftSLine, RiLogoutBoxLine } from "react-icons/ri"
 import { cn } from "cn"
 import { APP_MONOGRAM, APP_NAME } from "@/lib/brand"
 import { logout } from "@/app/actions/logout"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/custom/ThemeToggle"
 import {
@@ -44,11 +41,7 @@ function FormPendingSurface({ children }: { children?: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-background/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line
-            size={16}
-            aria-hidden
-            className="relative animate-spin text-foreground"
-          />
+          <Spinner aria-hidden className="size-4 relative text-foreground" />
         </span>
       ) : null}
     </>
@@ -107,7 +100,7 @@ export function Sidebar() {
     <LazyMotion features={domAnimation} strict>
       <m.aside
         aria-label="Navegação principal"
-        className="relative z-10 h-dvh shrink-0 flex flex-col bg-sidebar border-r border-sidebar-border"
+        className="relative z-nav h-dvh shrink-0 flex flex-col bg-sidebar border-r border-sidebar-border"
         style={{ width: EXPANDED_W }}
         animate={{ width: expanded ? EXPANDED_W : COLLAPSED_W }}
         transition={animate ? SIDEBAR_T : INSTANT}

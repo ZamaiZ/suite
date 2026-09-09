@@ -13,13 +13,13 @@ import {
 import * as m from "motion/react-m"
 import {
   RiHomeLine,
-  RiLoader4Line,
   RiMenuLine,
   RiUser3Line,
   RiLogoutBoxLine,
 } from "react-icons/ri"
 import { cn } from "cn"
 import { logout } from "@/app/actions/logout"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/custom/ThemeToggle"
 import { NAV_ITEMS } from "@/components/custom/navigation"
@@ -85,11 +85,7 @@ function HomePendingSurface({ children }: { children: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-background/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line
-            size={20}
-            aria-hidden
-            className="relative animate-spin text-foreground"
-          />
+          <Spinner aria-hidden className="size-5 relative text-foreground" />
         </span>
       ) : null}
     </>
@@ -107,11 +103,7 @@ function FormPendingSurface({ children }: { children?: ReactNode }) {
           className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center rounded-[inherit]"
         >
           <span className="absolute inset-0 rounded-[inherit] bg-background/25 backdrop-blur-[2px] motion-reduce:backdrop-blur-none" />
-          <RiLoader4Line
-            size={16}
-            aria-hidden
-            className="relative animate-spin text-foreground"
-          />
+          <Spinner aria-hidden className="size-4 relative text-foreground" />
         </span>
       ) : null}
     </>
@@ -239,7 +231,7 @@ export function MobileNavigation() {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 z-40 bg-foreground/45"
+            className="fixed inset-0 z-scrim bg-foreground/45"
             aria-hidden
             onClick={() => close(true)}
           />
@@ -248,7 +240,7 @@ export function MobileNavigation() {
 
       {panel === "profile" && (
         <div
-          className="fixed inset-0 z-40"
+          className="fixed inset-0 z-scrim"
           aria-hidden
           onClick={() => close(true)}
         />
@@ -268,7 +260,7 @@ export function MobileNavigation() {
             animate="visible"
             exit="exit"
             className={cn(
-              "fixed left-3 z-[51] w-56",
+              "fixed left-3 z-overlay w-56",
               "bg-popover/90 backdrop-blur-xl",
               "border border-border",
               "rounded-2xl shadow-md",
@@ -330,7 +322,7 @@ export function MobileNavigation() {
             animate="visible"
             exit="exit"
             className={cn(
-              "fixed left-3 right-3 z-[49]",
+              "fixed left-3 right-3 z-overlay",
               "bg-popover/90 backdrop-blur-xl",
               "border border-border",
               "rounded-2xl shadow-md",

@@ -4,7 +4,6 @@ import { useEffect, useState, useTransition } from "react"
 import {
   RiCalendarCheckLine,
   RiCheckboxCircleLine,
-  RiLoader4Line,
   RiStickyNoteLine,
   RiUserUnfollowLine,
 } from "react-icons/ri"
@@ -14,6 +13,7 @@ import {
   type ClientKickoffDetail,
 } from "@/app/actions/clients"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/custom/DateTimePicker"
 import { Field, FieldLabel } from "@/components/ui/field"
@@ -111,7 +111,7 @@ export function ClientKickoffPanel({ clientId }: { clientId: string }) {
   if (state.status === "loading")
     return (
       <div className="flex items-center gap-2 py-12 text-xs/relaxed text-muted-foreground">
-        <RiLoader4Line className="animate-spin" size={18} aria-hidden />
+        <Spinner aria-hidden className="size-4.5" />
         Carregando contato…
       </div>
     )

@@ -45,6 +45,12 @@ import { ShowcaseSection } from "../ShowcaseSection"
 const doc = (name: string) =>
   `https://ui.shadcn.com/docs/components/base/${name}`
 
+const STYLE_ITEMS = [
+  { value: "mira", label: "Mira" },
+  { value: "nova", label: "Nova" },
+  { value: "vega", label: "Vega" },
+]
+
 export function FormsShowcase() {
   const [date, setDate] = useState<Date>()
   const [checked, setChecked] = useState(false)
@@ -147,14 +153,16 @@ export function FormsShowcase() {
         documentationHref={doc("select")}
         composition="Select › Trigger/Value + Content › Item"
       >
-        <Select defaultValue="mira">
+        <Select items={STYLE_ITEMS} defaultValue="mira">
           <SelectTrigger className="w-48">
             <SelectValue placeholder="Escolha um estilo" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="mira">Mira</SelectItem>
-            <SelectItem value="nova">Nova</SelectItem>
-            <SelectItem value="vega">Vega</SelectItem>
+            {STYLE_ITEMS.map((item) => (
+              <SelectItem key={item.value} value={item.value}>
+                {item.label}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </ShowcaseSection>

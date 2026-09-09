@@ -1,11 +1,12 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { RiLoader4Line, RiMapPinLine } from "react-icons/ri"
+import { RiMapPinLine } from "react-icons/ri"
 import { cn } from "cn"
 import { GOOGLE_MAPS_DARK_STYLES, loadGoogleMaps } from "@/lib/google-maps"
 import type { GbpGridPoint } from "@/lib/leads/gbp-grid"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
+import { Spinner } from "@/components/ui/spinner"
 
 /**
  * Uma faixa só alimenta a cor do ponto e a legenda, para que as duas não
@@ -228,10 +229,7 @@ export function LeadGbpGridMap({
         <div ref={containerRef} className="size-full min-h-56" />
         {!ready ? (
           <div className="absolute inset-0 flex items-center justify-center bg-popover">
-            <RiLoader4Line
-              aria-hidden
-              className="size-5 animate-spin text-muted-foreground"
-            />
+            <Spinner aria-hidden className="size-5 text-muted-foreground" />
           </div>
         ) : null}
       </div>

@@ -8,7 +8,6 @@ import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import {
   RiUserAddLine,
-  RiLoader4Line,
   RiUserLine,
   RiMailLine,
   RiLockPasswordLine,
@@ -20,6 +19,7 @@ import {
   type CreateUserInput,
 } from "@/lib/validations/create-user"
 import { createUser } from "@/app/actions/create-user"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
@@ -205,7 +205,7 @@ export function CreateUserForm() {
             className="w-full"
           >
             {isPending ? (
-              <RiLoader4Line aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-4" />
             ) : (
               <RiUserAddLine aria-hidden />
             )}

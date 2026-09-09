@@ -1,6 +1,7 @@
 "use client"
 
-import { RiLoader4Line, RiSendPlaneLine } from "react-icons/ri"
+import { RiSendPlaneLine } from "react-icons/ri"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 
 export function LeadImportFooter({
@@ -65,10 +66,10 @@ export function LeadImportFooter({
             disabled={isRevalidating}
           >
             {isRevalidating ? (
-              <RiLoader4Line
+              <Spinner
                 data-icon="inline-start"
                 aria-hidden
-                className="animate-spin"
+                className="size-3.5"
               />
             ) : null}
             Reavaliar arquivo
@@ -80,10 +81,10 @@ export function LeadImportFooter({
             disabled={!canImport || isImporting}
           >
             {isImporting ? (
-              <RiLoader4Line
+              <Spinner
                 data-icon="inline-start"
                 aria-hidden
-                className="animate-spin"
+                className="size-3.5"
               />
             ) : (
               <RiSendPlaneLine data-icon="inline-start" aria-hidden />

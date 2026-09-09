@@ -19,6 +19,7 @@ import type { BriefingStepId } from "@/lib/briefing/steps"
 import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import type { BriefingReviewOverviewProps } from "./BriefingReviewOverview.types"
+import { Skeleton } from "@/components/ui/skeleton"
 
 const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1]
 
@@ -54,10 +55,7 @@ export function BriefingReviewOverview({
     return (
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 8 }, (_, index) => (
-          <div
-            key={index}
-            className="h-[7.5rem] animate-pulse rounded-2xl bg-accent"
-          />
+          <Skeleton key={index} className="h-[7.5rem] rounded-2xl" />
         ))}
       </div>
     )

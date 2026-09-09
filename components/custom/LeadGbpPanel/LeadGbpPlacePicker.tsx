@@ -1,9 +1,11 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { RiLoader4Line, RiSearchLine } from "react-icons/ri"
+import { RiSearchLine } from "react-icons/ri"
 import { suggestPlaces } from "@/app/actions/leads"
 import { cn } from "cn"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Spinner } from "@/components/ui/spinner"
 import {
   Combobox,
   ComboboxContent,
@@ -133,7 +135,7 @@ export function LeadGbpPlacePicker({
           </InputGroupAddon>
           {loading ? (
             <InputGroupAddon align="inline-end">
-              <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-4" />
             </InputGroupAddon>
           ) : null}
         </ComboboxInput>
@@ -143,10 +145,7 @@ export function LeadGbpPlacePicker({
             {loading ? (
               <div className="flex flex-col gap-1 p-1" aria-hidden>
                 {[0, 1, 2].map((row) => (
-                  <div
-                    key={row}
-                    className="h-10 animate-pulse rounded-md bg-muted"
-                  />
+                  <Skeleton key={row} className="h-10 rounded-md" />
                 ))}
               </div>
             ) : (

@@ -8,7 +8,6 @@ import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import {
   RiLoginBoxLine,
-  RiLoader4Line,
   RiMailLine,
   RiLockPasswordLine,
   RiEyeLine,
@@ -16,6 +15,7 @@ import {
 } from "react-icons/ri"
 import { loginSchema, type LoginInput } from "@/lib/validations/login"
 import { login } from "@/app/actions/login"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
@@ -177,7 +177,7 @@ export function LoginForm() {
             className="w-full"
           >
             {isPending ? (
-              <RiLoader4Line aria-hidden className="animate-spin" />
+              <Spinner aria-hidden className="size-4" />
             ) : (
               <RiLoginBoxLine aria-hidden />
             )}

@@ -46,6 +46,14 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
 
+  /* Camadas — escala nomeada. Overlays do registry usam z-50; qualquer coisa
+   * que precise empilhar deve sair daqui, nunca de um z-[N] avulso. */
+  --z-index-sticky: 20;
+  --z-index-nav: 30;
+  --z-index-scrim: 40;
+  --z-index-overlay: 50;
+  --z-index-toast: 60;
+
   /* Cores — estrutura */
   --color-border: var(--border);
   --color-input: var(--input);

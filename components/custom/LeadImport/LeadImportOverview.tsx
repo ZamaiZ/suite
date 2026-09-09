@@ -12,6 +12,7 @@ import {
   SPREADSHEET_FIELD_LABELS,
   type SpreadsheetValueKey,
 } from "@/lib/leads/spreadsheet-model"
+import { Skeleton } from "@/components/ui/skeleton"
 import type {
   ImportIssueItem,
   ImportPreviewRow,
@@ -65,9 +66,9 @@ function PreviewSkeleton() {
   return (
     <div className="flex flex-col gap-1.5">
       {Array.from({ length: 5 }, (_, index) => (
-        <span
+        <Skeleton
           key={index}
-          className="h-7 animate-pulse rounded-md bg-accent motion-reduce:animate-none"
+          className="h-7 rounded-md motion-reduce:animate-none"
           style={{ animationDelay: `${index * 40}ms` }}
         />
       ))}

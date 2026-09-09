@@ -8,6 +8,7 @@ import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace
 import { formatDateTimeShort } from "@/lib/date-time"
 import { cn } from "cn"
 import type { ClientListItem } from "@/app/actions/clients"
+import { Badge } from "@/components/ui/badge"
 export function ClientListRow({
   client,
   onOpen,
@@ -38,9 +39,7 @@ export function ClientListRow({
               <span className="truncate text-xs/relaxed font-semibold text-foreground">
                 {client.company_name}
               </span>
-              <span className="rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
-                Início
-              </span>
+              <Badge variant="success">Início</Badge>
               <span
                 className={cn(
                   "rounded-md px-2 py-0.5 text-xs/relaxed font-medium",

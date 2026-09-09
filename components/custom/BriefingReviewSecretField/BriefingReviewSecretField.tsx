@@ -6,9 +6,9 @@ import {
   RiEyeLine,
   RiEyeOffLine,
   RiFileCopyLine,
-  RiLoader4Line,
 } from "react-icons/ri"
 import { revealStaffBriefingSecret } from "@/app/actions/briefing"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import type { BriefingReviewSecretFieldProps } from "./BriefingReviewSecretField.types"
 
@@ -100,7 +100,7 @@ export function BriefingReviewSecretField({
               className="gap-1.5"
             >
               {isPending ? (
-                <RiLoader4Line size={16} aria-hidden className="animate-spin" />
+                <Spinner aria-hidden className="size-4" />
               ) : (
                 <RiEyeLine size={16} aria-hidden />
               )}

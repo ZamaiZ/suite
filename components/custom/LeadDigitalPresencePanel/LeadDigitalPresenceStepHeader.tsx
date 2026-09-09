@@ -1,7 +1,8 @@
 "use client"
 
-import { RiCheckLine, RiGroupLine, RiLoader4Line } from "react-icons/ri"
+import { RiCheckLine, RiGroupLine } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
+import { Spinner } from "@/components/ui/spinner"
 
 export function LeadDigitalPresenceStepHeader({
   saveStatus,
@@ -13,7 +14,7 @@ export function LeadDigitalPresenceStepHeader({
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiGroupLine} />
         <div className="min-w-0">
-          <h2 className="text-xs/relaxed font-semibold text-foreground">
+          <h2 className="font-heading text-sm font-semibold text-foreground">
             Presença digital
           </h2>
           <p className="text-xs/relaxed text-muted-foreground">
@@ -27,7 +28,7 @@ export function LeadDigitalPresenceStepHeader({
             className="inline-flex items-center gap-1 text-xs/relaxed text-muted-foreground"
             aria-live="polite"
           >
-            <RiLoader4Line size={14} aria-hidden className="animate-spin" />
+            <Spinner aria-hidden className="size-3.5" />
             Salvando…
           </span>
         ) : null}

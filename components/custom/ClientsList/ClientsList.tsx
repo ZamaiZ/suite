@@ -7,6 +7,12 @@ import type { ClientsListProps } from "./ClientsList.types"
 import { ClientsListToolbar } from "./ClientsListToolbar"
 import { ClientsSummary } from "./ClientsSummary"
 import { ClientListRow } from "./ClientListRow"
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyTitle,
+} from "@/components/ui/empty"
 
 function readClientIdFromLocation(): string | null {
   if (typeof window === "undefined") return null
@@ -88,14 +94,16 @@ export function ClientsList({
           />
           <ClientsSummary summary={summary} />
           {clients.length === 0 ? (
-            <div className="rounded-xl border border-dashed border-border bg-card px-6 py-14 text-center shadow-xs">
-              <p className="font-heading text-lg font-semibold text-foreground">
-                Nenhum cliente encontrado
-              </p>
-              <p className="mt-1 text-xs/relaxed text-muted-foreground">
-                Ajuste os filtros ou aguarde novas conversões.
-              </p>
-            </div>
+            <Empty className="rounded-xl border border-dashed border-border bg-card py-14 shadow-xs">
+              <EmptyHeader>
+                <EmptyTitle className="text-lg font-semibold">
+                  Nenhum cliente encontrado
+                </EmptyTitle>
+                <EmptyDescription>
+                  Ajuste os filtros ou aguarde novas conversões.
+                </EmptyDescription>
+              </EmptyHeader>
+            </Empty>
           ) : (
             <ul className="divide-border/70 overflow-hidden rounded-xl border border-border/70 bg-card shadow-xs divide-y">
               {clients.map((client) => (

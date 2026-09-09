@@ -17,7 +17,9 @@ export function LeadGbpCard({
         className,
       )}
     >
-      <h3 className="text-xs/relaxed font-semibold text-foreground">{title}</h3>
+      <h3 className="font-heading text-sm font-semibold text-foreground">
+        {title}
+      </h3>
       <div className="mt-2 min-w-0 flex-1">{children}</div>
     </section>
   )

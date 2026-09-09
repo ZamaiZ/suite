@@ -40,6 +40,7 @@ export function LeadLocationField({
       <Field data-invalid={Boolean(stateError)}>
         <FieldLabel htmlFor={`${id}-state`}>UF</FieldLabel>
         <Select
+          items={stateItems}
           value={value.state_code}
           disabled={disabled}
           onValueChange={(next) => {
@@ -67,6 +68,7 @@ export function LeadLocationField({
       <Field data-invalid={Boolean(cityError)}>
         <FieldLabel htmlFor={`${id}-city`}>Cidade</FieldLabel>
         <Select
+          items={cityItems}
           value={value.city}
           disabled={disabled || !value.state_code}
           onValueChange={(next) => {

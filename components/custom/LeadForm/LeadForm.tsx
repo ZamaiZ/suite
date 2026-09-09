@@ -15,7 +15,6 @@ import type { IconType } from "react-icons"
 import {
   RiBuilding4Line,
   RiGlobalLine,
-  RiLoader4Line,
   RiMailLine,
   RiPhoneLine,
   RiPriceTag3Line,
@@ -32,6 +31,7 @@ import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { LeadLocationField } from "@/components/custom/LeadLocationField"
 import { LeadSegmentField } from "@/components/custom/LeadSegmentField"
 import { LeadTagField } from "@/components/custom/LeadTagField"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
 import {
@@ -80,7 +80,7 @@ function FormSection({
       <div className="mb-4 flex items-center gap-2.5">
         <LeadIconWell icon={icon} />
         <div className="min-w-0">
-          <h3 className="text-xs/relaxed font-semibold text-foreground">
+          <h3 className="font-heading text-sm font-semibold text-foreground">
             {title}
           </h3>
           <p className="text-xs/relaxed text-muted-foreground">{subtitle}</p>
@@ -490,10 +490,10 @@ export function LeadForm({
             disabled={isPending || (mode === "edit" && !form.formState.isDirty)}
           >
             {isPending ? (
-              <RiLoader4Line
+              <Spinner
                 data-icon="inline-start"
                 aria-hidden
-                className="animate-spin"
+                className="size-3.5"
               />
             ) : (
               <RiSaveLine data-icon="inline-start" aria-hidden />

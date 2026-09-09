@@ -10,6 +10,7 @@ import {
 } from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
 import { BriefingTextField as Input } from "@/components/custom/BriefingFormControls/BriefingFormControls"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { DateTimePicker } from "@/components/custom/DateTimePicker"
 import { Field, FieldError, FieldLabel } from "@/components/ui/field"
@@ -175,6 +176,11 @@ function ClosingEventForm({
     {},
   )
   const [closers, setClosers] = useState<CloserOption[]>([])
+  // CloserOption é {id,name}; o Base UI espera {value,label} para o rótulo.
+  const closerItems = useMemo(
+    () => closers.map((closer) => ({ value: closer.id, label: closer.name })),
+    [closers],
+  )
   const [closersLoading, setClosersLoading] = useState(false)
 
   const actions = useMemo(
@@ -276,16 +282,12 @@ function ClosingEventForm({
   return (
     <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h3 className="text-xs/relaxed font-semibold text-foreground">
+        <h3 className="font-heading text-sm font-semibold text-foreground">
           Fechamento
         </h3>
-        <span className="inline-flex rounded-md bg-accent px-2 py-0.5 text-xs/relaxed font-medium text-muted-foreground">
-          {CLOSING_STAGE_LABELS[stage]}
-        </span>
+        <Badge variant="muted">{CLOSING_STAGE_LABELS[stage]}</Badge>
         {meetingOverdue ? (
-          <span className="inline-flex rounded-md bg-destructive/10 px-2 py-0.5 text-xs/relaxed font-medium text-destructive">
-            Reunião vencida
-          </span>
+          <Badge variant="destructive">Reunião vencida</Badge>
         ) : null}
       </div>
 
@@ -355,6 +357,7 @@ function ClosingEventForm({
               <Field data-invalid={Boolean(fieldError.closer_id)}>
                 <FieldLabel htmlFor="closing-closer">Closer</FieldLabel>
                 <Select
+                  items={closerItems}
                   value={closerId}
                   onValueChange={(next) => setCloserId(String(next))}
                   disabled={isPending || closersLoading}
@@ -544,12 +547,12 @@ function ClosingChecklist({
   return (
     <section className="rounded-xl bg-card p-4 shadow-xs">
       <div className="mb-3 flex flex-wrap items-center gap-2">
-        <h3 className="text-xs/relaxed font-semibold text-foreground">
+        <h3 className="font-heading text-sm font-semibold text-foreground">
           {converted ? "Cliente consolidado" : "Consolidação do acordo"}
         </h3>
-        <span className="inline-flex rounded-md bg-success/10 px-2 py-0.5 text-xs/relaxed font-medium text-success">
+        <Badge variant="success">
           {converted ? "Início" : CLOSING_STAGE_LABELS.won_pending}
-        </span>
+        </Badge>
       </div>
 
       <div className="flex flex-col gap-3">

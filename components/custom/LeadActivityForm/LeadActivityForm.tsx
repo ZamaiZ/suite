@@ -6,13 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { z } from "zod"
-import { RiEditBoxLine, RiLoader4Line, RiSendPlaneLine } from "react-icons/ri"
+import { RiEditBoxLine, RiSendPlaneLine } from "react-icons/ri"
 import {
   logLeadActivity,
   listClosers,
   type CloserOption,
 } from "@/app/actions/leads"
 import { LeadActivityChannelPicker } from "@/components/custom/LeadActivityChannelPicker"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import {
   Combobox,
@@ -248,7 +249,7 @@ export function LeadActivityForm({
       noValidate
       className="rounded-xl bg-card p-4 shadow-xs"
     >
-      <h3 className="mb-3 flex items-center gap-2 text-xs/relaxed font-semibold text-foreground">
+      <h3 className="font-heading mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
         <RiEditBoxLine size={16} aria-hidden className="text-primary" />
         Registrar atividade
       </h3>
@@ -507,10 +508,10 @@ export function LeadActivityForm({
         </AnimatePresence>
         <Button type="submit" disabled={isPending} className="ml-auto">
           {isPending ? (
-            <RiLoader4Line
+            <Spinner
               data-icon="inline-start"
               aria-hidden
-              className="animate-spin"
+              className="size-3.5"
             />
           ) : (
             <RiSendPlaneLine data-icon="inline-start" aria-hidden />

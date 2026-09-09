@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { RiLoader4Line, RiMapPinLine, RiRefreshLine } from "react-icons/ri"
+import { RiMapPinLine, RiRefreshLine } from "react-icons/ri"
+import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { cn } from "cn"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
@@ -171,11 +172,7 @@ export function BriefingServiceRadiusMapCanvas({
             <div ref={containerRef} className="size-full" />
             {!scriptReady ? (
               <div className="absolute inset-0 flex items-center justify-center gap-2 bg-popover text-xs/relaxed text-muted-foreground">
-                <RiLoader4Line
-                  size={18}
-                  aria-hidden
-                  className="animate-spin text-primary"
-                />
+                <Spinner aria-hidden className="size-4.5 text-primary" />
                 Carregando mapa…
               </div>
             ) : null}
@@ -184,11 +181,7 @@ export function BriefingServiceRadiusMapCanvas({
           <div className="flex h-64 w-full flex-col items-center justify-center gap-3 px-4 text-center sm:h-80">
             {loading ? (
               <>
-                <RiLoader4Line
-                  size={22}
-                  aria-hidden
-                  className="animate-spin text-primary"
-                />
+                <Spinner aria-hidden className="size-5.5 text-primary" />
                 <p className="text-xs/relaxed text-muted-foreground">
                   Localizando o endereço no mapa…
                 </p>
