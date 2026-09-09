@@ -226,6 +226,7 @@ export type DataForSeoOperationId =
   | "organic_visibility"
   | "backlink_summary"
   | "backlink_competitors"
+  | "backlink_citations"
 
 export type DataForSeoOperation = {
   id: DataForSeoOperationId
@@ -329,6 +330,14 @@ export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
     fnSuffix: "competitors/live",
     requests: 1,
     detail: "Até 5 concorrentes, na mesma análise",
+  },
+  {
+    id: "backlink_citations",
+    label: "Citações em diretórios",
+    api: "backlinks",
+    fnSuffix: "backlinks/live",
+    requests: 1,
+    detail: "Catálogo inteiro numa chamada",
   },
 ]
 

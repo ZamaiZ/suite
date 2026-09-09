@@ -21,6 +21,7 @@ import {
 } from "@/app/actions/leads"
 import { LeadGbpIdentity } from "./LeadGbpIdentity"
 import { todayCivilDate } from "@/lib/date-time"
+import type { BacklinkCitation } from "@/lib/leads/backlinks-audit"
 import { gbpReputation } from "@/lib/leads/gbp-reputation"
 import type { GbpReplyTimeBand } from "@/lib/leads/gbp-analyst-review"
 import { LeadGbpDirectoriesCard } from "./LeadGbpDirectoriesCard"
@@ -62,6 +63,7 @@ export function LeadGbpProfileCard({
   profile,
   profiles,
   companyName,
+  citations,
   canEdit,
   actionPending,
   onSelectProfile,
@@ -72,6 +74,11 @@ export function LeadGbpProfileCard({
   profile: LeadGbpProfile
   profiles: LeadGbpProfile[]
   companyName: string
+  /**
+   * Citações encontradas na coleta de backlinks. `null` quando a checagem não
+   * foi feita — que é diferente de nenhum diretório linkar.
+   */
+  citations: BacklinkCitation[] | null
   canEdit: boolean
   actionPending: boolean
   onSelectProfile: (profileId: string) => void
@@ -547,6 +554,7 @@ export function LeadGbpProfileCard({
           <LeadGbpDirectoriesCard
             profileId={profile.id}
             companyName={companyName}
+            citations={citations}
             review={profile.analyst_review}
             canEdit={canEdit}
             onProfileChange={onUpdated}

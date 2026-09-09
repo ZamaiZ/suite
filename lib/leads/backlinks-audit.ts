@@ -51,6 +51,21 @@ export type BacklinkCompetitor = {
   intersections: number | null
 }
 
+/**
+ * Citação encontrada num diretório: existe link daquele domínio para o site.
+ *
+ * `url` é a página do cadastro — é ela que o analista abre para conferir o NAP,
+ * que a máquina não sabe julgar.
+ */
+export type BacklinkCitation = {
+  /** Id do diretório em `GBP_DIRECTORIES`. */
+  directoryId: string
+  domain: string
+  url: string | null
+  dofollow: boolean | null
+  firstSeen: string | null
+}
+
 export type BacklinkSnapshot = {
   source: BacklinkSource
   domain: string
@@ -86,6 +101,11 @@ export type BacklinkSnapshot = {
   linkTypes: BacklinkDistributionItem[] | null
   /** `null` = benchmark não coletado; `[]` = coletado e sem concorrente. */
   competitors: BacklinkCompetitor[] | null
+  /**
+   * `null` = checagem de citações não feita; `[]` = feita e nenhum diretório
+   * linka. A segunda afirmação é precisa; a primeira não afirma nada.
+   */
+  citations: BacklinkCitation[] | null
 }
 
 export type LeadBacklinkAudit = {
@@ -146,6 +166,28 @@ function readDistribution(value: unknown): BacklinkDistributionItem[] {
     const count = asCount(row.count)
     if (!label || count === null) continue
     items.push({ label, count })
+  }
+  return items
+}
+
+export function readBacklinkCitations(
+  value: unknown,
+): BacklinkCitation[] | null {
+  if (!Array.isArray(value)) return null
+  const items: BacklinkCitation[] = []
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue
+    const row = item as Record<string, unknown>
+    const directoryId = asString(row.directoryId)
+    const domain = asString(row.domain)
+    if (!directoryId || !domain) continue
+    items.push({
+      directoryId,
+      domain,
+      url: asString(row.url),
+      dofollow: typeof row.dofollow === "boolean" ? row.dofollow : null,
+      firstSeen: asString(row.firstSeen),
+    })
   }
   return items
 }
@@ -226,6 +268,7 @@ export function readBacklinkSnapshot(value: unknown): BacklinkSnapshot | null {
     linkPlatforms: readOptionalDistribution(row.linkPlatforms),
     linkTypes: readOptionalDistribution(row.linkTypes),
     competitors: readBacklinkCompetitors(row.competitors),
+    citations: readBacklinkCitations(row.citations),
   }
 }
 

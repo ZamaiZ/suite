@@ -70,16 +70,149 @@ export type GbpDirectoryId = (typeof GBP_DIRECTORY_IDS)[number]
 export const GBP_DIRECTORIES: ReadonlyArray<{
   id: GbpDirectoryId
   label: string
+  /** Domínio usado na busca `site:` que o analista abre. */
   domain: string
+  /**
+   * Domínios que o índice de backlinks reconhece, com as variantes conhecidas.
+   * **Vazio significa que a máquina não enxerga** — Bing Places e Waze não
+   * publicam página rastreável com link, e nenhum método baseado em backlinks
+   * vai vê-los.
+   */
+  linkDomains: string[]
 }> = [
-  { id: "apontador", label: "Apontador", domain: "apontador.com.br" },
-  { id: "guiamais", label: "GuiaMais", domain: "guiamais.com.br" },
-  { id: "telelistas", label: "Telelistas", domain: "telelistas.net" },
-  { id: "foursquare", label: "Foursquare", domain: "foursquare.com" },
-  { id: "yelp", label: "Yelp", domain: "yelp.com.br" },
-  { id: "bing_places", label: "Bing Places", domain: "bing.com/maps" },
-  { id: "waze", label: "Waze", domain: "waze.com" },
-  { id: "kekanto", label: "Kekanto", domain: "kekanto.com.br" },
+  {
+    id: "apontador",
+    label: "Apontador",
+    domain: "apontador.com.br",
+    linkDomains: ["apontador.com.br"],
+  },
+  {
+    id: "guiamais",
+    label: "GuiaMais",
+    domain: "guiamais.com.br",
+    linkDomains: ["guiamais.com.br"],
+  },
+  {
+    id: "telelistas",
+    label: "Telelistas",
+    domain: "telelistas.net",
+    linkDomains: ["telelistas.net"],
+  },
+  {
+    id: "foursquare",
+    label: "Foursquare",
+    domain: "foursquare.com",
+    linkDomains: ["foursquare.com", "pt.foursquare.com"],
+  },
+  {
+    id: "yelp",
+    label: "Yelp",
+    domain: "yelp.com.br",
+    linkDomains: ["yelp.com.br", "yelp.com"],
+  },
+  {
+    id: "kekanto",
+    label: "Kekanto",
+    domain: "kekanto.com.br",
+    linkDomains: ["kekanto.com.br"],
+  },
+  {
+    id: "mapquest",
+    label: "MapQuest",
+    domain: "mapquest.com",
+    linkDomains: ["mapquest.com"],
+  },
+  {
+    id: "opendi",
+    label: "Opendi",
+    domain: "opendi.com.br",
+    linkDomains: ["opendi.com.br"],
+  },
+  {
+    id: "listamais",
+    label: "ListaMais",
+    domain: "listamais.com.br",
+    linkDomains: ["listamais.com.br"],
+  },
+  {
+    id: "listatudo",
+    label: "ListaTudo",
+    domain: "listatudo.com.br",
+    linkDomains: ["listatudo.com.br"],
+  },
+  {
+    id: "cylex",
+    label: "Cylex",
+    domain: "cylex.com.br",
+    linkDomains: ["cylex.com.br"],
+  },
+  {
+    id: "hotfrog",
+    label: "HotFrog",
+    domain: "hotfrog.com.br",
+    linkDomains: ["hotfrog.com.br"],
+  },
+  {
+    id: "solutudo",
+    label: "Solutudo",
+    domain: "solutudo.com.br",
+    linkDomains: ["solutudo.com.br"],
+  },
+  {
+    id: "encontrabrasil",
+    label: "EncontraBrasil",
+    domain: "encontrabrasil.com.br",
+    linkDomains: ["encontrabrasil.com.br"],
+  },
+  {
+    id: "tupalo",
+    label: "Tupalo",
+    domain: "tupalo.com",
+    linkDomains: ["tupalo.com"],
+  },
+  {
+    id: "brownbook",
+    label: "Brownbook",
+    domain: "brownbook.net",
+    linkDomains: ["brownbook.net"],
+  },
+  {
+    id: "iglobal",
+    label: "iGlobal",
+    domain: "iglobal.co",
+    linkDomains: ["iglobal.co", "iglobal.com.br"],
+  },
+  {
+    id: "infobel",
+    label: "Infobel",
+    domain: "infobel.com",
+    linkDomains: ["infobel.com"],
+  },
+  {
+    id: "infoisinfo",
+    label: "InfoIsInfo",
+    domain: "infoisinfo.com.br",
+    linkDomains: ["infoisinfo.com.br"],
+  },
+  {
+    id: "findopen",
+    label: "Find Open",
+    domain: "find-open.com",
+    linkDomains: ["find-open.com"],
+  },
+  // Sem página pública com link: `linkDomains` vazio, só manual.
+  {
+    id: "bing_places",
+    label: "Bing Places",
+    domain: "bing.com/maps",
+    linkDomains: [],
+  },
+  {
+    id: "waze",
+    label: "Waze",
+    domain: "waze.com",
+    linkDomains: [],
+  },
 ]
 
 /**
@@ -218,4 +351,35 @@ export function gbpDirectorySearchUrl(
 ): string {
   const query = `site:${domain} ${companyName}`.trim()
   return `https://www.google.com/search?q=${encodeURIComponent(query)}`
+}
+
+/** Só os diretórios que a checagem automática alcança. */
+export function gbpDirectoryIsVerifiable(id: GbpDirectoryId): boolean {
+  const item = GBP_DIRECTORIES.find((entry) => entry.id === id)
+  return (item?.linkDomains.length ?? 0) > 0
+}
+
+/** Lista achatada para o filtro da chamada — uma só, com todas as variantes. */
+export function gbpCitationDomains(): string[] {
+  return GBP_DIRECTORIES.flatMap((item) => item.linkDomains)
+}
+
+/**
+ * Casa o domínio devolvido pelo provider com o diretório.
+ *
+ * Por sufixo, e não por igualdade: não se sabe ainda se `domain_from` volta
+ * como domínio raiz ou com subdomínio, e um `in` exato erraria justamente onde
+ * o cadastro mora — `pt.foursquare.com` em vez de `foursquare.com`.
+ */
+export function gbpDirectoryForDomain(
+  domain: string,
+): GbpDirectoryId | null {
+  const host = domain.trim().toLowerCase().replace(/^www\./, "")
+  if (!host) return null
+  for (const item of GBP_DIRECTORIES) {
+    for (const known of item.linkDomains) {
+      if (host === known || host.endsWith(`.${known}`)) return item.id
+    }
+  }
+  return null
 }

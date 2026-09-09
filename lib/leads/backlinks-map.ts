@@ -1,8 +1,10 @@
 import type {
+  BacklinkCitation,
   BacklinkCompetitor,
   BacklinkDistributionItem,
   BacklinkSnapshot,
 } from "./backlinks-audit.ts"
+import { gbpDirectoryForDomain } from "./gbp-analyst-review.ts"
 
 /**
  * Leitura do resultado de `/backlinks/summary/live`.
@@ -131,8 +133,46 @@ export function mapBacklinkSummaryResult(input: {
     linkLocations: optionalDistribution(row.referring_links_semantic_locations),
     linkPlatforms: optionalDistribution(row.referring_links_platform_types),
     linkTypes: optionalDistribution(row.referring_links_types),
-    // Preenchido pelo chamador depois da segunda chamada; `null` enquanto o
-    // benchmark não vier.
+    // Preenchidos pelo chamador depois das outras chamadas; `null` enquanto
+    // não vierem.
     competitors: null,
+    citations: null,
   }
+}
+
+export type BacklinkCitationsResult = {
+  items?: unknown
+}
+
+/**
+ * Lê os backlinks vindos dos diretórios do catálogo.
+ *
+ * Um diretório pode linkar de várias páginas; só a primeira interessa, porque a
+ * pergunta é "existe cadastro", não "quantos links". Dofollow ganha da
+ * alternativa quando houver as duas, por ser o link de cadastro mais provável.
+ */
+export function mapBacklinkCitations(
+  result: BacklinkCitationsResult | null,
+): BacklinkCitation[] {
+  const items = Array.isArray(result?.items) ? result.items : []
+  const byDirectory = new Map<string, BacklinkCitation>()
+  for (const item of items) {
+    if (!item || typeof item !== "object") continue
+    const row = item as Record<string, unknown>
+    const domain = asString(row.domain_from)
+    if (!domain) continue
+    const directoryId = gbpDirectoryForDomain(domain)
+    if (!directoryId) continue
+    const dofollow = typeof row.dofollow === "boolean" ? row.dofollow : null
+    const current = byDirectory.get(directoryId)
+    if (current && !(dofollow === true && current.dofollow !== true)) continue
+    byDirectory.set(directoryId, {
+      directoryId,
+      domain,
+      url: asString(row.url_from),
+      dofollow,
+      firstSeen: asString(row.first_seen),
+    })
+  }
+  return [...byDirectory.values()]
 }

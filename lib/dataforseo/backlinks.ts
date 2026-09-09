@@ -5,12 +5,16 @@ import {
   postDataForSeo,
 } from "@/lib/dataforseo/client"
 import type {
+  BacklinkCitation,
   BacklinkCompetitor,
   BacklinkSnapshot,
 } from "@/lib/leads/backlinks-audit"
+import { gbpCitationDomains } from "@/lib/leads/gbp-analyst-review"
 import {
+  mapBacklinkCitations,
   mapBacklinkCompetitors,
   mapBacklinkSummaryResult,
+  type BacklinkCitationsResult,
   type BacklinkCompetitorsResult,
   type BacklinkSummaryResult,
 } from "@/lib/leads/backlinks-map"
@@ -78,4 +82,44 @@ export async function fetchBacklinkCompetitorsLive(input: {
   )
   if (posted.status === "error") return { status: "error" }
   return { status: "ok", competitors: mapBacklinkCompetitors(posted.data) }
+}
+
+/**
+ * Teto de linhas da checagem de citações. Com `one_per_domain` cada diretório
+ * ocupa uma linha só, então o teto sobra para o catálogo inteiro.
+ */
+export const BACKLINK_CITATIONS_LIMIT = 100
+
+/**
+ * Quais diretórios do catálogo linkam para o site.
+ *
+ * Uma chamada cobre a lista inteira: o filtro `in` conta como **um** filtro
+ * (o teto da API é de oito filtros, não de oito valores), e a cobrança é por
+ * requisição, então vinte domínios custam o mesmo que oito.
+ *
+ * Devolve também a URL da página do cadastro, que é o que o analista abre para
+ * conferir o NAP — a parte que nenhuma API julga.
+ */
+export async function fetchBacklinkCitationsLive(input: {
+  domain: string
+}): Promise<
+  { status: "ok"; citations: BacklinkCitation[] } | { status: "error" }
+> {
+  const domains = gbpCitationDomains()
+  if (domains.length === 0) return { status: "ok", citations: [] }
+  const posted = await postDataForSeo<BacklinkCitationsResult>(
+    "/backlinks/backlinks/live",
+    {
+      target: input.domain,
+      // Uma linha por domínio de origem. Com `as_is`, um diretório que linka de
+      // centenas de páginas encheria o teto e expulsaria os outros do
+      // resultado — o filtro passa, mas a resposta mente por truncamento.
+      mode: "one_per_domain",
+      limit: BACKLINK_CITATIONS_LIMIT,
+      backlinks_status_type: "live",
+      filters: [["domain_from", "in", domains]],
+    },
+  )
+  if (posted.status === "error") return { status: "error" }
+  return { status: "ok", citations: mapBacklinkCitations(posted.data) }
 }

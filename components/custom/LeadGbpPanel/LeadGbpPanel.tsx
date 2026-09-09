@@ -567,6 +567,7 @@ export function LeadGbpPanel({
                 profile={selected}
                 profiles={profiles}
                 companyName={detail.lead.company_name}
+                citations={detail.backlinkAudit?.snapshot.citations ?? null}
                 canEdit={canEdit}
                 actionPending={linking}
                 onSelectProfile={setSelectedId}

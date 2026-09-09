@@ -64,6 +64,30 @@ Esta seção é a mais importante do documento. São classes de erro, não ocorr
 
 **Migração DataForSEO** — feita. `lib/serpapi/` e `lib/gbp-vendor/` removidos, cinco actions sem ramo de provider, página de Ferramentas com saldo, uso e calculadora alimentados por `user_data`.
 
+## O que a onda 8 entregou
+
+Citações em diretórios deixaram de ser só checklist manual.
+
+- **Catálogo de 22** — 20 verificáveis automaticamente, 2 (Bing Places e Waze)
+  só manuais, porque não publicam página rastreável com link.
+- **Uma chamada** a `/backlinks/backlinks/live` com filtro `in` cobre o catálogo
+  inteiro: o filtro conta como **um** (o teto da API é de oito filtros, não de
+  oito valores) e a cobrança é por requisição, então 20 domínios custam o mesmo
+  que 8. A análise de backlinks passou de duas para três chamadas.
+- **`mode: "one_per_domain"`** — com `as_is`, um diretório que linka de centenas
+  de páginas encheria o teto e expulsaria os outros: o filtro passaria e a
+  resposta mentiria por truncamento.
+- **O resultado fica ao lado da resposta do analista, nunca por cima.** Ele vai
+  para `lead_backlink_audits.snapshot.citations`; uma ação de backlinks não
+  escreve no perfil do Google. Link encontrado prova o cadastro; link ausente
+  **não** prova ausência de cadastro, e o NAP segue humano.
+- Onde há citação, a linha do checklist aponta direto para a **página do
+  cadastro** em vez de para uma busca.
+
+**Risco aberto, que a primeira coleta resolve:** não se sabe se `domain_from`
+volta como domínio raiz ou com subdomínio. O filtro leva as variantes conhecidas
+e o casamento do nosso lado é por sufixo — mas só o payload real confirma.
+
 ## O que a onda 7 entregou
 
 A coleta real de avaliações mostrou que a auditoria de reputação lia **4 de ~25
