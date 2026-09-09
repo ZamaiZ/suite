@@ -2,8 +2,13 @@ import { GBP_PHOTO_API_MAX, type LeadGbpProfile } from "@/lib/leads/gbp"
 import type { GbpRankCheck } from "@/lib/leads/gbp-audit"
 import type {
   GbpReputationHistoryBlock,
+  GbpReputationSample,
   GbpReputationWindow,
 } from "@/lib/leads/gbp-reputation"
+import type {
+  GbpReputationDelta,
+  GbpReputationDeltaBlock,
+} from "@/lib/leads/gbp-reputation-compare"
 
 const HOURS_24 = /24\s*hora/i
 
@@ -154,4 +159,103 @@ export function gbpReputationSpanLabel(spanDays: number | null): string | null {
 export function gbpReplyRateLabel(rate: number | null): string | null {
   if (rate === null) return null
   return `${Math.round(rate * 100)}%`
+}
+
+/**
+ * A rajada em uma frase. É o achado que a média e as janelas não contam: um
+ * perfil pode ter nota alta e ritmo aparentemente saudável com quase tudo
+ * concentrado em dois dias.
+ */
+export function gbpBurstLabel(
+  sample: GbpReputationSample,
+): string | null {
+  const burst = sample.burst
+  if (!burst) return null
+  const dias = burst.days.length
+  const share = Math.round(burst.share * 100)
+  return (
+    `${burst.count.toLocaleString("pt-BR")} de` +
+    ` ${sample.size.toLocaleString("pt-BR")} avaliações em ${dias}` +
+    ` ${dias === 1 ? "dia" : "dias"} (${share}%)`
+  )
+}
+
+export function gbpFrequencyLabel(
+  sample: GbpReputationSample,
+): string | null {
+  const parts: string[] = []
+  if (sample.perMonth !== null) {
+    parts.push(
+      `${sample.perMonth.toLocaleString("pt-BR", {
+        maximumFractionDigits: 1,
+      })} por mês`,
+    )
+  }
+  if (sample.daysSinceLast !== null) {
+    parts.push(`última há ${sample.daysSinceLast.toLocaleString("pt-BR")} dias`)
+  }
+  if (sample.trend) {
+    parts.push(
+      `${sample.trend.recent} nos últimos ${sample.trend.days} dias` +
+        ` contra ${sample.trend.previous} nos ${sample.trend.days} anteriores`,
+    )
+  }
+  return parts.length > 0 ? parts.join(" · ") : null
+}
+
+/**
+ * Taxa por faixa de nota. A taxa geral esconde o caso em que se responde todo
+ * elogio e nenhuma crítica.
+ */
+export function gbpReplyByBandLabel(
+  sample: GbpReputationSample,
+): string | null {
+  const high = sample.replyByBand.find((band) => band.band === "high")
+  const low = sample.replyByBand.find((band) => band.band === "low")
+  if (high?.replyRate == null || low?.replyRate == null) return null
+  const pct = (value: number) => `${Math.round(value * 100)}%`
+  return (
+    `${pct(high.replyRate)} das notas altas respondidas` +
+    ` · ${pct(low.replyRate)} das baixas`
+  )
+}
+
+export function gbpAuthorsLabel(
+  sample: GbpReputationSample,
+): string | null {
+  const pct = (value: number | null) =>
+    value === null ? null : `${Math.round(value * 100)}%`
+  const parts: string[] = []
+  const withoutText = pct(sample.authors.withoutTextShare)
+  if (withoutText) parts.push(`${withoutText} sem texto`)
+  const withPhotos = pct(sample.authors.withPhotosShare)
+  if (withPhotos) parts.push(`${withPhotos} com foto`)
+  const localGuide = pct(sample.authors.localGuideShare)
+  if (localGuide) parts.push(`${localGuide} local guides`)
+  const lowActivity = pct(sample.authors.lowActivityShare)
+  if (lowActivity) parts.push(`${lowActivity} de autores novos`)
+  return parts.length > 0 ? parts.join(" · ") : null
+}
+
+const REVIEWS_DELTA_BLOCK_LABEL: Record<GbpReputationDeltaBlock, string> = {
+  no_previous:
+    "A comparação entre coletas aparece a partir da segunda análise.",
+  no_ids:
+    "A coleta anterior é antiga demais para comparar avaliação a avaliação.",
+  not_chronological: "Uma das coletas veio por relevância, não em ordem.",
+}
+
+export function gbpReviewsDeltaLabel(delta: GbpReputationDelta): string {
+  if (delta.status === "blocked") {
+    return REVIEWS_DELTA_BLOCK_LABEL[delta.reason]
+  }
+  const parts = [`${delta.added.toLocaleString("pt-BR")} novas`]
+  if (delta.removed > 0) {
+    parts.push(`${delta.removed.toLocaleString("pt-BR")} removidas`)
+  }
+  if (delta.totalDelta !== null && delta.totalDelta !== 0) {
+    const signal = delta.totalDelta > 0 ? "+" : ""
+    parts.push(`total ${signal}${delta.totalDelta.toLocaleString("pt-BR")}`)
+  }
+  return `Desde a coleta anterior: ${parts.join(" · ")}`
 }

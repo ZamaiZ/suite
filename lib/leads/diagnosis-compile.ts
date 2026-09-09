@@ -25,6 +25,7 @@ import {
 import type { DigitalPresenceReview } from "./digital-presence-review.ts"
 import type { LeadGbpProfile } from "./gbp.ts"
 import { gbpGapsForProfile } from "./gbp.ts"
+import { gbpReputation } from "./gbp-reputation.ts"
 import {
   mergeGbpOpportunities,
   type GbpOpportunityItem,
@@ -152,6 +153,7 @@ function buildLimitations(input: DiagnosisCompileInput): string[] {
 function googleOpportunities(
   profile: LeadGbpProfile,
   companyName: string,
+  today: string,
 ): GbpOpportunityItem[] {
   const gaps = gbpGapsForProfile(
     profile.payload,
@@ -169,10 +171,19 @@ function googleOpportunities(
       rankKeywords: profile.rank_keywords,
       rankChecks: profile.rankChecks,
       analystReview: profile.analyst_review,
+      today,
+      reviewsDelta: profile.reviews_delta,
     },
   )
+  const reputation = gbpReputation({
+    reviews: profile.reviews,
+    distribution: profile.enrichment?.ratingDistribution ?? null,
+    today,
+  })
   return mergeGbpOpportunities({
     gaps,
+    reputation,
+    reviewsDelta: profile.reviews_delta,
     analystReview: profile.analyst_review,
     rankChecks: profile.rankChecks,
     keywords: profile.rank_keywords,
@@ -275,7 +286,11 @@ export function compileDiagnosisFacts(
   const city = location.city
 
   const googleItems: DiagnosisOpportunityRef[] = input.gbpProfile
-    ? googleOpportunities(input.gbpProfile, input.companyName).map(toRef)
+    ? googleOpportunities(
+        input.gbpProfile,
+        input.companyName,
+        input.presenceToday,
+      ).map(toRef)
     : []
   const nap = input.gbpProfile
     ? {

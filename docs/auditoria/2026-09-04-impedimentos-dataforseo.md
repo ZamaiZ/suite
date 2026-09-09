@@ -29,7 +29,7 @@ e a onda 6 corrigiu isso.
 
 **Os demais mapeadores do DataForSEO nunca executaram contra resposta real** até agora. Foram escritos contra documentação: `dataForSeoTimeToIso` assume um formato de timestamp, `mapDataForSeoReviews` assume `rating.value` aninhado e `owner_answer` como string, `mapRankedKeywordsLiveResult` assume a presença de `rank_group` e de `metrics.organic`. A primeira coleta real é também a primeira validação — e é o passo que ainda não foi feito.
 
-**Uma pergunta foi respondida.** A resposta do proprietário **não traz data no corpo** — só existe a data de quem avaliou. Tempo médio de resposta deixou de ser calculável e virou **campo do analista**, numa faixa fechada gravada em `lead_gbp_profiles.analyst_review`. Não depende mais de OAuth nem de provider: depende de alguém olhar.
+**A pergunta do timestamp foi respondida duas vezes, e a segunda corrigiu a primeira.** A interface do Google mostra "2 meses atrás" para os dois lados, e a onda 5 concluiu daí que a data da resposta não existia. Existe: `owner_timestamp` está no endpoint **padrão** que já chamamos, em `yyyy-mm-dd hh:mm:ss +00:00`. A onda 7 passou a lê-lo e o tempo de resposta virou **medido**; a faixa do analista ficou como reserva para perfil ainda não recoletado. A lição é a mesma da etapa 0: o JSON tem mais que a tela, e concluir a partir da interface é concluir errado.
 
 **Uma pergunta continua em aberto**, e a primeira coleta real responde: os items do Maps trazem `url` ou `domain` do negócio? Se sim, o domínio dos concorrentes sai sem chamada extra.
 

@@ -38,9 +38,26 @@ export const GBP_DIRECTORY_IDS = [
   "telelistas",
   "foursquare",
   "yelp",
+  "kekanto",
+  "mapquest",
+  "opendi",
+  "listamais",
+  "listatudo",
+  "cylex",
+  "hotfrog",
+  "solutudo",
+  "encontrabrasil",
+  "tupalo",
+  "brownbook",
+  "iglobal",
+  "infobel",
+  "infoisinfo",
+  "findopen",
+  // Sem página pública com link: só verificação manual. Continuam no catálogo
+  // porque o analista ainda pode conferir, e porque resposta já dada não pode
+  // sumir na leitura.
   "bing_places",
   "waze",
-  "kekanto",
 ] as const
 
 export type GbpDirectoryId = (typeof GBP_DIRECTORY_IDS)[number]

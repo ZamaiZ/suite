@@ -55,3 +55,28 @@ export function pickLatestGbpSnapshotRow(
   }
   return latest
 }
+
+/**
+ * A penultima linha do embed — o "antes" da comparacao entre coletas.
+ *
+ * Nao custa consulta: `GBP_SELECT` ja embute todos os snapshots e
+ * `pickLatestGbpSnapshotRow` apenas descarta os antigos.
+ */
+export function pickPreviousGbpSnapshotRow(
+  embed: unknown,
+): Record<string, unknown> | null {
+  if (!Array.isArray(embed)) return null
+  const rows: Array<{ row: Record<string, unknown>; at: string }> = []
+  for (const item of embed) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) continue
+    const row = item as Record<string, unknown>
+    const capturedAt = asString(row.captured_at)
+    if (!capturedAt) continue
+    rows.push({ row, at: capturedAt })
+  }
+  if (rows.length < 2) return null
+  rows.sort((left, right) =>
+    left.at < right.at ? 1 : left.at > right.at ? -1 : 0,
+  )
+  return rows[1]?.row ?? null
+}

@@ -11,9 +11,11 @@ import {
   type GbpReviewSummary,
 } from "@/lib/leads/gbp-audit"
 
-type ReviewsTaskResult = {
-  items?: unknown
-}
+/**
+ * O resultado inteiro, não só `items`: `reviews_count` e `rating` moram neste
+ * nível e são o total e a média do perfil medidos na mesma chamada da amostra.
+ */
+type ReviewsTaskResult = Record<string, unknown>
 
 export async function postGoogleReviewsTask(input: {
   placeId: string
@@ -46,6 +48,6 @@ export async function getGoogleReviewsTask(
   if (got.status !== "ok") return got
   return {
     status: "ok",
-    reviews: mapDataForSeoReviews(got.data?.items),
+    reviews: mapDataForSeoReviews(got.data),
   }
 }

@@ -59,6 +59,8 @@ import type { LeadGbpPanelProps } from "./LeadGbpPanel.types"
 
 const EASE = [0.23, 1, 0.32, 1] as const
 
+const NO_PROFILES: LeadGbpProfile[] = []
+
 export function LeadGbpPanel({
   detail,
   loading,
@@ -91,7 +93,10 @@ export function LeadGbpPanel({
     leadIdRef.current = detail?.lead.id ?? null
   })
 
-  const profiles = detail?.gbpProfiles ?? []
+  // Referência estável: `?? []` criava um array novo a cada render, e a
+  // sincronização abaixo compara por identidade — com `detail` nulo e sem
+  // loading, isso virava setState infinito.
+  const profiles = detail?.gbpProfiles ?? NO_PROFILES
 
   // Reset ligado à mudança de chave: no render, não em efeito.
   const panelLeadId = detail?.lead.id ?? null
@@ -187,6 +192,8 @@ export function LeadGbpPanel({
           rankKeywords: selected.rank_keywords,
           rankChecks: selected.rankChecks,
           analystReview: selected.analyst_review,
+          today: todayCivilDate(),
+          reviewsDelta: selected.reviews_delta,
         },
       ).length
     : 0

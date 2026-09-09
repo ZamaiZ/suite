@@ -64,6 +64,24 @@ Esta seção é a mais importante do documento. São classes de erro, não ocorr
 
 **Migração DataForSEO** — feita. `lib/serpapi/` e `lib/gbp-vendor/` removidos, cinco actions sem ramo de provider, página de Ferramentas com saldo, uso e calculadora alimentados por `user_data`.
 
+## O que a onda 7 entregou
+
+A coleta real de avaliações mostrou que a auditoria de reputação lia **4 de ~25
+campos** por avaliação e descartava o objeto de resultado inteiro.
+
+- **Captura ampliada** — 12 campos por avaliação, mais `reviews_count` e
+  `rating` do nível do resultado. O total do perfil passa a vir da **mesma
+  chamada** da amostra, e é ele que detecta dessincronia com a distribuição em
+  vez da heurística antiga.
+- **Profundidade 50 → 200.** US$ 0,015 por coleta.
+- **As contas** — volume, frequência, dormência, tendência, **rajada**, mediana
+  do tempo de resposta, taxa por faixa de nota, e participação por tipo de autor.
+- **Cinco gaps novos.** No perfil real: `review_burst` (36 de 46 em dois dias),
+  `negative_replies_ignored` (0% das notas baixas contra 90% das altas) e
+  `latest_review_unanswered` disparam; `dormant_reviews` corretamente não.
+- **Comparação entre coletas** por `review_id` — avaliação removida deixa de ser
+  invisível. Não custa consulta: o snapshot anterior já vinha no mesmo embed.
+
 ## O que a onda 6 entregou
 
 A primeira coleta real de backlinks **validou o mapeador e reprovou a leitura**:

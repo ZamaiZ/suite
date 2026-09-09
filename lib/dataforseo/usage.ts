@@ -280,7 +280,7 @@ export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
     api: "business_data",
     fnSuffix: "reviews/task_post",
     requests: 1,
-    detail: "Amostra de 50 na fila",
+    detail: "Amostra de 200 na fila",
   },
   {
     id: "gbp_qna",

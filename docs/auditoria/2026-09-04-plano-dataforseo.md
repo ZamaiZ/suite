@@ -29,7 +29,7 @@ Rodar uma coleta completa em **um** lead de teste e conferir, campo a campo, con
 
 Duas perguntas específicas a responder nesse momento, porque destravam decisões que estão paradas:
 
-1. ~~**A resposta de reviews traz timestamp da resposta do proprietário?**~~ **Respondida: não.** O corpo traz só a data de quem avaliou. O item não saiu do escopo como o plano previa — virou campo do analista na onda 5, em faixa fechada.
+1. ~~**A resposta de reviews traz timestamp da resposta do proprietário?**~~ **Respondida: sim.** `owner_timestamp` está no endpoint padrão. A onda 5 concluiu que não existia lendo a interface do Google em vez do JSON; a onda 7 corrigiu e o tempo de resposta passou a ser medido, com a faixa do analista como reserva.
 2. **Os items do Maps trazem `url` ou `domain` do negócio?** Se sim, o domínio dos concorrentes sai de graça e não precisa de uma chamada extra ao Places por concorrente.
 
 Saída desta etapa: correções de mapeamento, se houver, e as duas respostas registradas.
@@ -65,7 +65,7 @@ Os valores precisam continuar **legíveis** mesmo depois de deixarem de ser **pr
 - **Média histórica por subtração.** A distribuição por estrela dá a soma exata `S = 1n₁ + … + 5n₅`; as 50 mais recentes dão `S₅₀`. A média do resto é `(S − S₅₀) / (N − 50)`. Isso permite dizer "nas 50 mais recentes a média é 4,1; nas 380 anteriores era 4,6" sem precisar de histórico nenhum — o achado mais comercial do conjunto.
 - **Velocidade e frequência** — reviews nos últimos 30/60/90 dias e a taxa da janela coberta.
 - **Taxa de resposta** — `replied / sampled`.
-- **Tempo de resposta** — a etapa 0 respondeu que o timestamp não existe, então **não é calculado**: virou faixa preenchida pelo analista, exibida ao lado das métricas e marcada como informada.
+- **Tempo de resposta** — **medido** desde a onda 7, em mediana e não em média, porque uma resposta dois anos depois destrói a média. Sai também por faixa de nota, que é o que separa "responde bem" de "responde elogio e ignora crítica".
 
 **Três guardas obrigatórias**, todas identificadas antes de escrever:
 

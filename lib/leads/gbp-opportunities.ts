@@ -1,5 +1,7 @@
 import { GBP_GAP_LABELS, type GbpGapId } from "@/lib/leads/gbp"
 import type { GbpRankCheck } from "@/lib/leads/gbp-audit"
+import type { GbpReputation } from "@/lib/leads/gbp-reputation"
+import type { GbpReputationDelta } from "@/lib/leads/gbp-reputation-compare"
 import {
   emptyGbpAnalystReview,
   GBP_REPLY_TIME_LABELS,
@@ -53,6 +55,10 @@ const HIGH_IMPACT = new Set<GbpGapId>([
   // Ausente é oportunidade; divergente é dano ativo — um cadastro com NAP
   // errado espalha o erro em vez de apenas não existir.
   "directory_nap_mismatch",
+  // Perder avaliação e ignorar crítica machucam mais que responder devagar.
+  "reviews_removed",
+  "negative_replies_ignored",
+  "latest_review_unanswered",
 ])
 
 const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
@@ -78,6 +84,11 @@ const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
   slow_review_replies: "Reduzir o tempo de resposta às avaliações",
   missing_directory_listings: "Cadastrar o negócio nos diretórios locais",
   directory_nap_mismatch: "Corrigir o NAP divergente nos diretórios",
+  review_burst: "Distribuir a captação de avaliações no tempo",
+  latest_review_unanswered: "Responder a avaliação mais recente",
+  negative_replies_ignored: "Responder também as avaliações negativas",
+  dormant_reviews: "Retomar a captação de avaliações",
+  reviews_removed: "Investigar as avaliações que sumiram",
 }
 
 /**
@@ -85,6 +96,52 @@ const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
  * dizendo de onde saíram. Nenhuma é medida — quem preencheu foi uma pessoa, e o
  * diagnóstico precisa deixar isso visível.
  */
+const percent = (value: number) => `${Math.round(value * 100)}%`
+const count = (value: number) => value.toLocaleString("pt-BR")
+
+/**
+ * O detalhe carrega o número que originou o achado. "Avaliações concentradas"
+ * sem "36 de 46 em dois dias" é rótulo; com ele é diagnóstico.
+ */
+function reputationDetail(
+  id: GbpGapId,
+  reputation: GbpReputation | null,
+  delta: GbpReputationDelta,
+): string | undefined {
+  const sample = reputation?.sample
+  if (id === "review_burst" && sample?.burst) {
+    const dias = sample.burst.days.length
+    return (
+      `${count(sample.burst.count)} de ${count(sample.size)} em` +
+      ` ${count(dias)} ${dias === 1 ? "dia" : "dias"}` +
+      ` (${percent(sample.burst.share)} da amostra)`
+    )
+  }
+  if (id === "dormant_reviews" && sample?.daysSinceLast != null) {
+    return `Sem avaliação nova há ${count(sample.daysSinceLast)} dias`
+  }
+  if (id === "weak_review_replies" && sample?.replyRate != null) {
+    return `${percent(sample.replyRate)} das avaliações da amostra respondidas`
+  }
+  if (id === "slow_review_replies" && sample?.replyMedianDays != null) {
+    return `Mediana de ${count(Math.round(sample.replyMedianDays))} dias`
+  }
+  if (id === "negative_replies_ignored" && sample) {
+    const high = sample.replyByBand.find((band) => band.band === "high")
+    const low = sample.replyByBand.find((band) => band.band === "low")
+    if (high?.replyRate != null && low?.replyRate != null) {
+      return (
+        `${percent(low.replyRate)} das notas baixas respondidas,` +
+        ` contra ${percent(high.replyRate)} das altas`
+      )
+    }
+  }
+  if (id === "reviews_removed" && delta.status === "ok") {
+    return `${count(delta.removed)} sumiram desde a coleta anterior`
+  }
+  return undefined
+}
+
 const ANALYST_GAPS = new Set<GbpGapId>([
   "slow_review_replies",
   "missing_directory_listings",
@@ -134,6 +191,11 @@ export function gbpOpportunitiesFromGaps(
   rankChecks: GbpRankCheck[] = [],
   keywords: string[] = [],
   analystReview: GbpAnalystReview = emptyGbpAnalystReview(),
+  reputation: GbpReputation | null = null,
+  reviewsDelta: GbpReputationDelta = {
+    status: "blocked",
+    reason: "no_previous",
+  },
 ): GbpOpportunityItem[] {
   const items = gaps.map((id) => {
     if (id === "not_in_map_top3") {
@@ -147,8 +209,9 @@ export function gbpOpportunitiesFromGaps(
       }
     }
     const detail = ANALYST_GAPS.has(id)
-      ? analystDetail(id, analystReview)
-      : undefined
+      ? (analystDetail(id, analystReview) ??
+        reputationDetail(id, reputation, reviewsDelta))
+      : reputationDetail(id, reputation, reviewsDelta)
     return {
       id,
       title: OPPORTUNITY_TITLES[id] ?? GBP_GAP_LABELS[id],
@@ -170,10 +233,12 @@ export function mergeGbpOpportunities(input: {
   keywords?: string[]
   reputationNote: string | null
   /**
-   * Obrigatório: sem ele o detalhe dos gaps do analista sairia vazio em
-   * silêncio, e os dois montadores divergiriam sem ninguém notar.
+   * Obrigatórios: sem eles o detalhe dos achados sairia vazio em silêncio, e os
+   * dois montadores divergiriam sem ninguém notar.
    */
   analystReview: GbpAnalystReview
+  reputation: GbpReputation | null
+  reviewsDelta: GbpReputationDelta
 }): GbpOpportunityItem[] {
   const items = [
     ...gbpOpportunitiesFromGaps(
@@ -181,6 +246,8 @@ export function mergeGbpOpportunities(input: {
       input.rankChecks ?? [],
       input.keywords ?? [],
       input.analystReview,
+      input.reputation,
+      input.reviewsDelta,
     ),
     ...gbpReputationOpportunity(input.reputationNote),
   ]

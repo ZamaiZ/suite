@@ -24,6 +24,14 @@ import {
 } from "@/lib/leads/gbp-audit"
 import { latestGbpGridScan, type LeadGbpGridScan } from "@/lib/leads/gbp-grid"
 import {
+  gbpReputation,
+  GBP_REPUTATION_DORMANT_DAYS,
+} from "@/lib/leads/gbp-reputation"
+import {
+  gbpReputationDelta,
+  type GbpReputationDelta,
+} from "@/lib/leads/gbp-reputation-compare"
+import {
   gbpDirectoriesInState,
   gbpReplyTimeIsSlow,
   readGbpAnalystReview,
@@ -31,6 +39,7 @@ import {
 } from "@/lib/leads/gbp-analyst-review"
 import {
   pickLatestGbpSnapshotRow,
+  pickPreviousGbpSnapshotRow,
   type LeadGbpSnapshot,
 } from "@/lib/leads/gbp-snapshot"
 import { normalizeWebsiteDomain } from "@/lib/leads/website"
@@ -42,6 +51,18 @@ export const GBP_NOTES_MAX = 2000
 export const GBP_LOW_RATING = 4
 export const GBP_FEW_REVIEWS = 10
 export const GBP_PHOTO_API_MAX = 10
+
+/** Fração da amostra em poucos dias a partir da qual o achado existe. */
+export const GBP_REVIEW_BURST_GAP_SHARE = 0.3
+
+/** Abaixo disto a faixa de nota baixa é pequena demais para comparar taxas. */
+export const GBP_REVIEW_BAND_MIN_COUNT = 2
+
+/** Taxa da faixa baixa em relação à alta a partir da qual há descaso. */
+export const GBP_REVIEW_BAND_GAP_RATIO = 0.5
+
+/** Mediana de resposta acima disto, em dias, deixa de ser resposta oportuna. */
+export const GBP_REPLY_SLOW_DAYS = 7
 
 export const GBP_EDIT_ROLES = [
   "analyst",
@@ -73,6 +94,11 @@ export const GBP_GAP_IDS = [
   "slow_review_replies",
   "missing_directory_listings",
   "directory_nap_mismatch",
+  "review_burst",
+  "latest_review_unanswered",
+  "negative_replies_ignored",
+  "dormant_reviews",
+  "reviews_removed",
 ] as const
 
 export type GbpGapId = (typeof GBP_GAP_IDS)[number]
@@ -101,6 +127,11 @@ export const GBP_GAP_LABELS: Record<GbpGapId, string> = {
   slow_review_replies: "Demora para responder avaliações",
   missing_directory_listings: "Ausente em diretórios locais",
   directory_nap_mismatch: "NAP divergente em diretórios",
+  review_burst: "Avaliações concentradas em poucos dias",
+  latest_review_unanswered: "Avaliação mais recente sem resposta",
+  negative_replies_ignored: "Responde elogio e ignora crítica",
+  dormant_reviews: "Sem avaliações novas há muito tempo",
+  reviews_removed: "Avaliações desapareceram desde a última coleta",
 }
 
 export type GbpSnapshot = {
@@ -140,6 +171,11 @@ export type LeadGbpProfile = {
   reputation_note: string | null
   /** Respostas estruturadas do analista: tempo de resposta e diretórios. */
   analyst_review: GbpAnalystReview
+  /**
+   * O que mudou desde a coleta anterior. Calculado na leitura, com o snapshot
+   * penúltimo que já vem no mesmo embed — sem consulta nova.
+   */
+  reviews_delta: GbpReputationDelta
   cid: string | null
   enrichment: GbpEnrichment | null
   enrichment_at: string | null
@@ -270,14 +306,19 @@ export function gbpGapsForProfile(
     rankKeywords?: string[]
     rankChecks?: GbpRankCheck[]
     /**
-     * Obrigatório de propósito: `gbpGapsForProfile` é montado em três lugares —
-     * o pilar, o contador da trilha e a lista da tela — e campo opcional
+     * Obrigatórios de propósito: `gbpGapsForProfile` é montado em três
+     * lugares — o pilar, o contador da trilha e a lista — e campo opcional
      * deixaria a divergência entre eles possível e silenciosa.
      */
     analystReview: GbpAnalystReview
+    /** Referência de "hoje" para janelas e dormência. */
+    today: string
+    reviewsDelta: GbpReputationDelta
   },
 ): GbpGapId[] {
   const gaps: GbpGapId[] = []
+  /** Mediana medida do tempo de resposta, quando a amostra a trouxer. */
+  let measuredReplyMedianDays: number | null = null
   const placeName = snapshot.displayName
   if (placeName && foldName(placeName) !== foldName(companyName)) {
     gaps.push("name_mismatch")
@@ -356,6 +397,51 @@ export function gbpGapsForProfile(
     if (audit.reviews.unrepliedLowRating > 0) {
       gaps.push("unreplied_negative_reviews")
     }
+
+    // As contas da amostra. Cada uma exige que o insumo tenha vindo: métrica
+    // nula é ausência de medida, não ausência de problema.
+    const reputation = gbpReputation({
+      reviews: audit.reviews,
+      distribution: enrichment?.ratingDistribution ?? null,
+      today: audit.today,
+    })
+    const sample = reputation?.sample ?? null
+
+    if (sample?.burst && sample.burst.share >= GBP_REVIEW_BURST_GAP_SHARE) {
+      gaps.push("review_burst")
+    }
+    if (sample?.latestUnanswered === true) {
+      gaps.push("latest_review_unanswered")
+    }
+    if (
+      sample?.daysSinceLast !== null &&
+      sample?.daysSinceLast !== undefined &&
+      sample.daysSinceLast > GBP_REPUTATION_DORMANT_DAYS
+    ) {
+      gaps.push("dormant_reviews")
+    }
+
+    // Responder elogio e ignorar crítica: a taxa geral esconde, a comparação
+    // entre faixas mostra.
+    measuredReplyMedianDays = sample?.replyMedianDays ?? null
+
+    const high = sample?.replyByBand.find((band) => band.band === "high")
+    const low = sample?.replyByBand.find((band) => band.band === "low")
+    if (
+      high?.replyRate != null &&
+      low?.replyRate != null &&
+      low.count >= GBP_REVIEW_BAND_MIN_COUNT &&
+      low.replyRate <= high.replyRate * GBP_REVIEW_BAND_GAP_RATIO
+    ) {
+      gaps.push("negative_replies_ignored")
+    }
+  }
+
+  if (
+    audit?.reviewsDelta.status === "ok" &&
+    audit.reviewsDelta.removed > 0
+  ) {
+    gaps.push("reviews_removed")
   }
 
   // Q&A ja era coletado e exibido nos dois provedores, mas nao chegava ao
@@ -384,7 +470,14 @@ export function gbpGapsForProfile(
   // é ausência de medida, não ausência de problema.
   const analystReview = audit?.analystReview
   if (analystReview) {
-    if (gbpReplyTimeIsSlow(analystReview)) {
+    // O medido manda; a faixa observada é reserva para perfil ainda sem
+    // `owner_timestamp` na amostra. Duas fontes para o mesmo número precisam de
+    // uma ordem, senão discordam sem ninguém saber qual seguir.
+    if (measuredReplyMedianDays !== null) {
+      if (measuredReplyMedianDays > GBP_REPLY_SLOW_DAYS) {
+        gaps.push("slow_review_replies")
+      }
+    } else if (gbpReplyTimeIsSlow(analystReview)) {
       gaps.push("slow_review_replies")
     }
     if (gbpDirectoriesInState(analystReview, "absent").length > 0) {
@@ -476,6 +569,13 @@ export function readLeadGbpProfileRow(
     : null
   const posts = readGbpPosts(snapshotRow?.posts)
   const reviews = readGbpReviews(snapshotRow?.reviews)
+  // O anterior sai do mesmo embed: comparar duas coletas não custa consulta.
+  const previousRow = pickPreviousGbpSnapshotRow(row.lead_gbp_snapshots)
+  const reviews_delta = gbpReputationDelta({
+    current: reviews,
+    previous: readGbpReviews(previousRow?.reviews),
+    previousAt: previousRow ? asString(previousRow.captured_at) : null,
+  })
   const qna = readGbpQna(snapshotRow?.qna)
   const snapshot: LeadGbpSnapshot<GbpSnapshot> | null =
     snapshotRow && typeof snapshotRow.id === "string" && captured_at
@@ -505,6 +605,7 @@ export function readLeadGbpProfileRow(
     matched_website_key: asString(matched_website_key),
     notes: asString(notes),
     reputation_note: asString(row.reputation_note),
+    reviews_delta,
     analyst_review: readGbpAnalystReview(row.analyst_review),
     cid: asCid(row.cid),
     enrichment,

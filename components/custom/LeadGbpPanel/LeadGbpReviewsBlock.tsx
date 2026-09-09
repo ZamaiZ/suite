@@ -4,7 +4,7 @@ import { useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { cn } from "cn"
-import { formatDateTimeShort, todayCivilDate } from "@/lib/date-time"
+import { formatDateTimeShort } from "@/lib/date-time"
 import type { GbpReviewSummary } from "@/lib/leads/gbp-audit"
 import {
   formatGbpCount,
@@ -13,9 +13,15 @@ import {
   gbpReputationBlockLabel,
   gbpReputationSpanLabel,
   gbpReputationWindowLabel,
+  gbpAuthorsLabel,
+  gbpBurstLabel,
+  gbpFrequencyLabel,
+  gbpReplyByBandLabel,
+  gbpReviewsDeltaLabel,
 } from "@/lib/leads/gbp-presenters"
 import type { GbpRatingDistribution } from "@/lib/leads/gbp-enrichment"
-import { gbpReputation } from "@/lib/leads/gbp-reputation"
+import type { GbpReputation } from "@/lib/leads/gbp-reputation"
+import type { GbpReputationDelta } from "@/lib/leads/gbp-reputation-compare"
 import {
   GBP_REPLY_TIME_BANDS,
   GBP_REPLY_TIME_LABELS,
@@ -89,6 +95,8 @@ export function LeadGbpReviewsBlock({
   canEdit,
   savingReplyTime,
   onReplyTimeChange,
+  reputation,
+  reviewsDelta,
 }: {
   reviews: GbpReviewSummary | null
   rating: number | null
@@ -102,6 +110,9 @@ export function LeadGbpReviewsBlock({
   canEdit: boolean
   savingReplyTime: boolean
   onReplyTimeChange: (band: GbpReplyTimeBand | null) => void
+  /** Calculada uma vez pelo cartão e reusada aqui, em vez de recomputada. */
+  reputation: GbpReputation | null
+  reviewsDelta: GbpReputationDelta
 }) {
   const [expanded, setExpanded] = useState(false)
   const items = reviews?.items ?? []
@@ -109,13 +120,14 @@ export function LeadGbpReviewsBlock({
   const hiddenCount = Math.max(0, items.length - FEATURED_PREVIEW)
   const ratingLabel = formatGbpRating(rating)
   const countLabel = formatGbpCount(ratingCount)
-  const reputation = gbpReputation({
-    reviews,
-    distribution,
-    today: todayCivilDate(),
-  })
   const spanLabel = gbpReputationSpanLabel(reputation?.sample.spanDays ?? null)
   const replyLabel = gbpReplyRateLabel(reputation?.sample.replyRate ?? null)
+  const sample = reputation?.sample ?? null
+  const burstLabel = sample ? gbpBurstLabel(sample) : null
+  const frequencyLabel = sample ? gbpFrequencyLabel(sample) : null
+  const bandLabel = sample ? gbpReplyByBandLabel(sample) : null
+  const authorsLabel = sample ? gbpAuthorsLabel(sample) : null
+  const measuredReplyDays = sample?.replyMedianDays ?? null
 
   return (
     <LeadGbpCard title="Reputação">
@@ -155,6 +167,30 @@ export function LeadGbpReviewsBlock({
               .filter(Boolean)
               .join(" · ")}
           </p>
+          {/* Rajada em destaque: é achado, não estatística de rodapé. */}
+          {burstLabel ? (
+            <p className="text-xs/relaxed text-foreground">
+              Concentração: {burstLabel}
+            </p>
+          ) : null}
+          {frequencyLabel ? (
+            <p className="text-xs/relaxed text-muted-foreground">
+              Ritmo: {frequencyLabel}
+            </p>
+          ) : null}
+          {bandLabel ? (
+            <p className="text-xs/relaxed text-muted-foreground">
+              Resposta por nota: {bandLabel}
+            </p>
+          ) : null}
+          {authorsLabel ? (
+            <p className="text-xs/relaxed text-muted-foreground">
+              Autores: {authorsLabel}
+            </p>
+          ) : null}
+          <p className="text-xs/relaxed text-muted-foreground">
+            {gbpReviewsDeltaLabel(reviewsDelta)}
+          </p>
         </div>
       ) : null}
 
@@ -166,7 +202,14 @@ export function LeadGbpReviewsBlock({
       <div className="mt-2 flex items-center justify-between gap-2">
         <span className="text-xs/relaxed text-muted-foreground">
           Tempo de resposta{" "}
-          <span className="text-muted-foreground/70">· informado</span>
+          {measuredReplyDays !== null ? (
+            <span className="text-foreground">
+              · mediana de {Math.round(measuredReplyDays).toLocaleString("pt-BR")}{" "}
+              dias
+            </span>
+          ) : (
+            <span className="text-muted-foreground/70">· informado</span>
+          )}
         </span>
         <Select
           items={REPLY_TIME_ITEMS}

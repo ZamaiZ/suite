@@ -20,6 +20,8 @@ import {
   updateLeadGbpRankKeywords,
 } from "@/app/actions/leads"
 import { LeadGbpIdentity } from "./LeadGbpIdentity"
+import { todayCivilDate } from "@/lib/date-time"
+import { gbpReputation } from "@/lib/leads/gbp-reputation"
 import type { GbpReplyTimeBand } from "@/lib/leads/gbp-analyst-review"
 import { LeadGbpDirectoriesCard } from "./LeadGbpDirectoriesCard"
 import { LeadGbpInformationCard } from "./LeadGbpInformationCard"
@@ -206,10 +208,19 @@ export function LeadGbpProfileCard({
       rankKeywords: profile.rank_keywords,
       rankChecks: profile.rankChecks,
       analystReview: profile.analyst_review,
+      today: todayCivilDate(),
+      reviewsDelta: profile.reviews_delta,
     },
   )
+  const reputation = gbpReputation({
+    reviews: profile.reviews,
+    distribution: profile.enrichment?.ratingDistribution ?? null,
+    today: todayCivilDate(),
+  })
   const opportunities = mergeGbpOpportunities({
     gaps,
+    reputation,
+    reviewsDelta: profile.reviews_delta,
     rankChecks: profile.rankChecks,
     keywords: profile.rank_keywords,
     reputationNote: profile.reputation_note,
@@ -500,6 +511,8 @@ export function LeadGbpProfileCard({
             canEdit={canEdit}
             savingReplyTime={savingReplyTime}
             onReplyTimeChange={handleReplyTimeChange}
+            reputation={reputation}
+            reviewsDelta={profile.reviews_delta}
           />
         </m.div>
         <m.div variants={item}>

@@ -1,4 +1,9 @@
-export const GBP_REVIEW_DEPTH = 50
+/**
+ * Amostra de avaliações. Subiu de 50 para 200 porque frequência, rajada e média
+ * por janela ficavam limitadas ao recorte que coubesse — num perfil ativo, 50
+ * cobrem poucas semanas. Custa US$ 0,00075 por 10.
+ */
+export const GBP_REVIEW_DEPTH = 200
 export const GBP_UPDATES_DEPTH = 10
 export const GBP_QNA_DEPTH = 20
 export const GBP_STALE_POSTS_DAYS = 90
@@ -27,6 +32,23 @@ export type GbpReviewSampleItem = {
   text: string | null
   publishedAt: string | null
   ownerAnswer: string | null
+  /**
+   * Campos abaixo entraram depois da primeira coleta. Ausente é `null` — nunca
+   * zero, nunca `false` — para que amostra antiga não pareça um perfil sem
+   * autor, sem foto e sem resposta datada.
+   */
+  id: string | null
+  /** Quando o proprietário respondeu. Sem isso não há tempo de resposta. */
+  answeredAt: string | null
+  authorName: string | null
+  /** Link direto: achado sem link não vira ação. */
+  url: string | null
+  /** Quantas avaliações o autor já escreveu — autor novo não pesa igual. */
+  authorReviewCount: number | null
+  authorIsLocalGuide: boolean | null
+  hasPhotos: boolean | null
+  /** Idioma original, quando a avaliação veio traduzida. */
+  originalLanguage: string | null
 }
 
 export type GbpReviewSortBy = "newest" | "relevant"
@@ -37,6 +59,18 @@ export type GbpReviewSummary = {
   unrepliedLowRating: number
   sortBy: GbpReviewSortBy
   items: GbpReviewSampleItem[]
+  /**
+   * Total e média do perfil **na mesma resposta da amostra**.
+   *
+   * Antes o total só existia na distribuição de `my_business_info`, outra
+   * chamada e outro instante — e era essa dessincronia que obrigava a
+   * matemática histórica a bloquear. Vindo daqui, os dois lados da subtração
+   * descrevem o mesmo momento.
+   */
+  total: number | null
+  profileAverage: number | null
+  /** Profundidade pedida na coleta: amostra menor não é perfil menor. */
+  depth: number | null
 }
 
 export type GbpRankSource = "dataforseo_maps" | "serpapi_maps"
@@ -148,16 +182,30 @@ export function readGbpPosts(value: unknown): GbpPost[] | null {
   return items
 }
 
+function asOptionalBool(value: unknown): boolean | null {
+  return typeof value === "boolean" ? value : null
+}
+
 function readReviewItem(value: unknown): GbpReviewSampleItem | null {
   if (!value || typeof value !== "object") return null
   const row = value as Record<string, unknown>
   const rating = asNumber(row.rating)
   if (row.rating != null && rating === null) return null
+  // Os campos da coleta ampliada são opcionais: amostra gravada antes deles
+  // continua legível, e ausência lê como `null` em vez de zero.
   return {
     rating,
     text: asString(row.text),
     publishedAt: asString(row.publishedAt),
     ownerAnswer: asString(row.ownerAnswer),
+    id: asString(row.id),
+    answeredAt: asString(row.answeredAt),
+    authorName: asString(row.authorName),
+    url: asString(row.url),
+    authorReviewCount: asNumber(row.authorReviewCount),
+    authorIsLocalGuide: asOptionalBool(row.authorIsLocalGuide),
+    hasPhotos: asOptionalBool(row.hasPhotos),
+    originalLanguage: asString(row.originalLanguage),
   }
 }
 
@@ -184,6 +232,9 @@ export function readGbpReviews(value: unknown): GbpReviewSummary | null {
     unrepliedLowRating,
     sortBy: row.sortBy,
     items,
+    total: asNumber(row.total),
+    profileAverage: asNumber(row.profileAverage),
+    depth: asNumber(row.depth),
   }
 }
 
@@ -283,7 +334,37 @@ export function mapDataForSeoPosts(items: unknown): GbpPost[] {
   })
 }
 
-export function mapDataForSeoReviews(items: unknown): GbpReviewSummary {
+/**
+ * A resposta do proprietário vem com HTML — o payload real trazia
+ * `"Obrigado pelo feedback, Leandro! <br><br>"`. Limpar na entrada, e não na
+ * tela, para que nenhum consumidor futuro precise lembrar disso.
+ */
+function stripHtml(value: unknown): string | null {
+  const text = asString(value)
+  if (!text) return null
+  // `<br>` vira espaço em vez de quebra: a resposta é curta e um separador
+  // simples evita depender de escape em toda a cadeia até a tela.
+  const plain = text
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+  return plain.length > 0 ? plain : null
+}
+
+/**
+ * Recebe o **resultado inteiro**, não só `items`.
+ *
+ * `reviews_count` e `rating` moram no nível do resultado e são o total e a
+ * média do perfil medidos na mesma chamada da amostra. Ler os dois daqui é o
+ * que permite à matemática histórica comparar dois números do mesmo instante,
+ * em vez de casar a amostra com uma distribuição coletada noutra hora.
+ */
+export function mapDataForSeoReviews(result: unknown): GbpReviewSummary {
+  const resultRow =
+    result && typeof result === "object" && !Array.isArray(result)
+      ? (result as Record<string, unknown>)
+      : null
+  const items = resultRow?.items
   const parsed: GbpReviewSampleItem[] = []
   if (Array.isArray(items)) {
     for (const item of items) {
@@ -293,11 +374,20 @@ export function mapDataForSeoReviews(items: unknown): GbpReviewSummary {
         row.rating && typeof row.rating === "object"
           ? (row.rating as Record<string, unknown>)
           : null
+      const images = row.images
       parsed.push({
         rating: asNumber(ratingRow?.value),
         text: asString(row.review_text),
         publishedAt: dataForSeoTimeToIso(row.timestamp),
-        ownerAnswer: asString(row.owner_answer),
+        ownerAnswer: stripHtml(row.owner_answer),
+        id: asString(row.review_id),
+        answeredAt: dataForSeoTimeToIso(row.owner_timestamp),
+        authorName: asString(row.profile_name),
+        url: asString(row.review_url),
+        authorReviewCount: asNumber(row.reviews_count),
+        authorIsLocalGuide: asOptionalBool(row.local_guide),
+        hasPhotos: Array.isArray(images) ? images.length > 0 : null,
+        originalLanguage: asString(row.original_language),
       })
     }
   }
@@ -305,12 +395,20 @@ export function mapDataForSeoReviews(items: unknown): GbpReviewSummary {
   const unrepliedLowRating = parsed.filter(
     (item) => !item.ownerAnswer && item.rating !== null && item.rating <= 3,
   ).length
+  const profileRating =
+    resultRow?.rating && typeof resultRow.rating === "object"
+      ? (resultRow.rating as Record<string, unknown>)
+      : null
+
   return {
     sampled: parsed.length,
     replied,
     unrepliedLowRating,
     sortBy: "newest",
     items: parsed,
+    total: asNumber(resultRow?.reviews_count),
+    profileAverage: asNumber(profileRating?.value),
+    depth: GBP_REVIEW_DEPTH,
   }
 }
 
