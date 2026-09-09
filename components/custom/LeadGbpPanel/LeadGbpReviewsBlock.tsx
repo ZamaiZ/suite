@@ -16,6 +16,18 @@ import {
 } from "@/lib/leads/gbp-presenters"
 import type { GbpRatingDistribution } from "@/lib/leads/gbp-enrichment"
 import { gbpReputation } from "@/lib/leads/gbp-reputation"
+import {
+  GBP_REPLY_TIME_BANDS,
+  GBP_REPLY_TIME_LABELS,
+  type GbpReplyTimeBand,
+} from "@/lib/leads/gbp-analyst-review"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 const FEATURED_PREVIEW = 2
 const STARS = ["5", "4", "3", "2", "1"] as const
@@ -58,16 +70,38 @@ function RatingBars({ distribution }: { distribution: GbpRatingDistribution }) {
   )
 }
 
+const REPLY_TIME_UNSET = "unset"
+
+const REPLY_TIME_ITEMS = [
+  { value: REPLY_TIME_UNSET, label: "Não informado" },
+  ...GBP_REPLY_TIME_BANDS.map((band) => ({
+    value: band,
+    label: GBP_REPLY_TIME_LABELS[band],
+  })),
+]
+
 export function LeadGbpReviewsBlock({
   reviews,
   rating,
   ratingCount,
   distribution,
+  replyTimeBand,
+  canEdit,
+  savingReplyTime,
+  onReplyTimeChange,
 }: {
   reviews: GbpReviewSummary | null
   rating: number | null
   ratingCount: number | null
   distribution: GbpRatingDistribution | null
+  /**
+   * Observado pelo analista, não medido: a resposta do proprietário não traz
+   * data no corpo, só a data de quem avaliou.
+   */
+  replyTimeBand: GbpReplyTimeBand | null
+  canEdit: boolean
+  savingReplyTime: boolean
+  onReplyTimeChange: (band: GbpReplyTimeBand | null) => void
 }) {
   const [expanded, setExpanded] = useState(false)
   const items = reviews?.items ?? []
@@ -123,6 +157,41 @@ export function LeadGbpReviewsBlock({
           </p>
         </div>
       ) : null}
+
+      {/*
+        Fica junto das métricas calculadas, e separado por rótulo: o tempo de
+        resposta é observado, não medido, e misturar as duas naturezas sem dizer
+        qual é qual seria o mesmo erro das janelas sem período declarado.
+      */}
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <span className="text-xs/relaxed text-muted-foreground">
+          Tempo de resposta{" "}
+          <span className="text-muted-foreground/70">· informado</span>
+        </span>
+        <Select
+          items={REPLY_TIME_ITEMS}
+          value={replyTimeBand ?? REPLY_TIME_UNSET}
+          onValueChange={(value) =>
+            onReplyTimeChange(
+              String(value) === REPLY_TIME_UNSET
+                ? null
+                : (String(value) as GbpReplyTimeBand),
+            )
+          }
+          disabled={!canEdit || savingReplyTime}
+        >
+          <SelectTrigger size="sm" aria-label="Tempo médio de resposta">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent align="end">
+            {REPLY_TIME_ITEMS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
 
       {items.length === 0 ? (
         <p className="mt-4 text-xs/relaxed text-muted-foreground">

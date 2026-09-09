@@ -29,6 +29,10 @@ export {
   type UpdateLeadGbpState,
 } from "./update-gbp-profile"
 export {
+  updateLeadGbpAnalystReview,
+  type UpdateLeadGbpAnalystReviewState,
+} from "./update-gbp-analyst-review"
+export {
   updateLeadGbpRankKeywords,
   type UpdateLeadGbpRankKeywordsState,
 } from "./update-gbp-rank-keywords"

@@ -1,5 +1,12 @@
 import { GBP_GAP_LABELS, type GbpGapId } from "@/lib/leads/gbp"
 import type { GbpRankCheck } from "@/lib/leads/gbp-audit"
+import {
+  emptyGbpAnalystReview,
+  GBP_REPLY_TIME_LABELS,
+  gbpDirectoriesInState,
+  gbpDirectoryLabel,
+  type GbpAnalystReview,
+} from "@/lib/leads/gbp-analyst-review"
 
 export type GbpOpportunityImpact = "high" | "medium"
 
@@ -43,6 +50,9 @@ const HIGH_IMPACT = new Set<GbpGapId>([
   "not_in_map_top3",
   "low_rating",
   "unreplied_negative_reviews",
+  // Ausente é oportunidade; divergente é dano ativo — um cadastro com NAP
+  // errado espalha o erro em vez de apenas não existir.
+  "directory_nap_mismatch",
 ])
 
 const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
@@ -65,6 +75,41 @@ const OPPORTUNITY_TITLES: Partial<Record<GbpGapId, string>> = {
   name_mismatch: "Alinhar o nome com o cadastro",
   unanswered_questions: "Responder as perguntas do perfil",
   unreplied_negative_reviews: "Responder as avaliações negativas",
+  slow_review_replies: "Reduzir o tempo de resposta às avaliações",
+  missing_directory_listings: "Cadastrar o negócio nos diretórios locais",
+  directory_nap_mismatch: "Corrigir o NAP divergente nos diretórios",
+}
+
+/**
+ * As três respostas do analista chegam com `source: "analyst"` e com o detalhe
+ * dizendo de onde saíram. Nenhuma é medida — quem preencheu foi uma pessoa, e o
+ * diagnóstico precisa deixar isso visível.
+ */
+const ANALYST_GAPS = new Set<GbpGapId>([
+  "slow_review_replies",
+  "missing_directory_listings",
+  "directory_nap_mismatch",
+])
+
+function analystDetail(
+  id: GbpGapId,
+  review: GbpAnalystReview,
+): string | undefined {
+  if (id === "slow_review_replies") {
+    const band = review.replyTime.band
+    return band ? GBP_REPLY_TIME_LABELS[band] : undefined
+  }
+  if (id === "missing_directory_listings") {
+    const names = gbpDirectoriesInState(review, "absent").map(gbpDirectoryLabel)
+    return names.length > 0 ? `Ausente em: ${names.join(", ")}` : undefined
+  }
+  if (id === "directory_nap_mismatch") {
+    const names = gbpDirectoriesInState(review, "nap_mismatch").map(
+      gbpDirectoryLabel,
+    )
+    return names.length > 0 ? `Divergente em: ${names.join(", ")}` : undefined
+  }
+  return undefined
 }
 
 function worstRankKeyword(
@@ -88,6 +133,7 @@ export function gbpOpportunitiesFromGaps(
   gaps: GbpGapId[],
   rankChecks: GbpRankCheck[] = [],
   keywords: string[] = [],
+  analystReview: GbpAnalystReview = emptyGbpAnalystReview(),
 ): GbpOpportunityItem[] {
   const items = gaps.map((id) => {
     if (id === "not_in_map_top3") {
@@ -100,10 +146,15 @@ export function gbpOpportunitiesFromGaps(
         impact: "high" as const,
       }
     }
+    const detail = ANALYST_GAPS.has(id)
+      ? analystDetail(id, analystReview)
+      : undefined
     return {
       id,
       title: OPPORTUNITY_TITLES[id] ?? GBP_GAP_LABELS[id],
       impact: HIGH_IMPACT.has(id) ? ("high" as const) : ("medium" as const),
+      ...(ANALYST_GAPS.has(id) ? { source: "analyst" as const } : {}),
+      ...(detail ? { detail } : {}),
     }
   })
   items.sort((left, right) => {
@@ -118,12 +169,18 @@ export function mergeGbpOpportunities(input: {
   rankChecks?: GbpRankCheck[]
   keywords?: string[]
   reputationNote: string | null
+  /**
+   * Obrigatório: sem ele o detalhe dos gaps do analista sairia vazio em
+   * silêncio, e os dois montadores divergiriam sem ninguém notar.
+   */
+  analystReview: GbpAnalystReview
 }): GbpOpportunityItem[] {
   const items = [
     ...gbpOpportunitiesFromGaps(
       input.gaps,
       input.rankChecks ?? [],
       input.keywords ?? [],
+      input.analystReview,
     ),
     ...gbpReputationOpportunity(input.reputationNote),
   ]

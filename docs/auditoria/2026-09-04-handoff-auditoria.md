@@ -64,6 +64,22 @@ Esta seção é a mais importante do documento. São classes de erro, não ocorr
 
 **Migração DataForSEO** — feita. `lib/serpapi/` e `lib/gbp-vendor/` removidos, cinco actions sem ramo de provider, página de Ferramentas com saldo, uso e calculadora alimentados por `user_data`.
 
+## O que a onda 5 entregou
+
+Julgamento do analista, em `lead_gbp_profiles.analyst_review` (jsonb), fora do
+snapshot para que recoletar não apague:
+
+- **Tempo de resposta** em faixa fechada. A etapa 0 respondeu que a resposta do
+  proprietário **não traz data no corpo**, então a métrica não é calculável —
+  é observada, e a tela diz isso.
+- **Diretórios e citações** — checklist fixo de 8 diretórios BR com três estados
+  por item. Tira o pilar de citations de zero. Não há API que responda "este
+  negócio está cadastrado aqui", e backlinks não cobre porque só vê citação com
+  link.
+- Três gaps novos, todos com `source: "analyst"` e detalhe dizendo de onde
+  saíram. **Campo em branco não gera gap** — ausência de resposta não é ausência
+  de problema.
+
 ## O que a onda 4 entregou
 
 - **Backlinks** — `lib/leads/backlinks-audit.ts`, `backlinks-map.ts`,
@@ -87,7 +103,7 @@ chamada paga nova:
 
 ## Pendências, em ordem de dependência
 
-1. **Validar os mapeadores contra payload real.** Nenhum jamais executou até a assinatura entrar. `dataForSeoTimeToIso`, `mapDataForSeoReviews`, `mapRankedKeywordsLiveResult`, `google-info`, `google-qna`, `google-updates`. **Bloqueia tudo que vier depois.** Três perguntas a responder na mesma sessão: reviews trazem timestamp da resposta do proprietário (destrava tempo médio de resposta sem OAuth)? Items do Maps trazem `url`/`domain` (destrava domínio do concorrente de graça)? E `my_business_info` traz mesmo uma chave `services` (a onda 3 neutralizou o gap falso, mas não sabe a resposta)?
+1. **Validar os mapeadores contra payload real.** Nenhum jamais executou até a assinatura entrar — e agora são quatro, com o de backlinks junto. **Bloqueia tudo que vier depois.** Duas perguntas seguem: items do Maps trazem `url`/`domain` (destrava domínio do concorrente de graça)? E `my_business_info` traz mesmo uma chave `services` (a onda 3 neutralizou o gap falso, mas não sabe a resposta)? A terceira — timestamp da resposta do proprietário — **foi respondida: não existe**, e o item virou campo humano na onda 5.
 2. **Evolução no tempo** — nota, volume, reviews removidas. Nasce escura até cada lead ser coletado uma segunda vez.
 3. **Concorrentes orgânicos** — `/dataforseo_labs/google/competitors_domain/live`, endpoint novo, tabela nova. O item do plano antigo que mandava mexer em `findOrganicRankForDomain` está errado: essa função saiu com o SerpAPI.
 

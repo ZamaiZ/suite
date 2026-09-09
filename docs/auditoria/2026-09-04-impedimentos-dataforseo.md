@@ -22,7 +22,9 @@ O SerpAPI foi removido e o DataForSEO passou a ser o provider único de todas as
 
 **Os mapeadores do DataForSEO nunca executaram contra resposta real** até agora. Foram escritos contra documentação: `dataForSeoTimeToIso` assume um formato de timestamp, `mapDataForSeoReviews` assume `rating.value` aninhado e `owner_answer` como string, `mapRankedKeywordsLiveResult` assume a presença de `rank_group` e de `metrics.organic`. A primeira coleta real é também a primeira validação — e é o passo que ainda não foi feito.
 
-**Duas perguntas seguem em aberto**, ambas respondidas pela primeira coleta: a resposta de reviews traz timestamp da resposta do proprietário? Se sim, "tempo médio de resposta" vira uma linha na ingestão em vez de depender de OAuth do Business Profile. E os items do Maps trazem `url` ou `domain` do negócio? Se sim, o domínio dos concorrentes sai sem chamada extra.
+**Uma pergunta foi respondida.** A resposta do proprietário **não traz data no corpo** — só existe a data de quem avaliou. Tempo médio de resposta deixou de ser calculável e virou **campo do analista**, numa faixa fechada gravada em `lead_gbp_profiles.analyst_review`. Não depende mais de OAuth nem de provider: depende de alguém olhar.
+
+**Uma pergunta continua em aberto**, e a primeira coleta real responde: os items do Maps trazem `url` ou `domain` do negócio? Se sim, o domínio dos concorrentes sai sem chamada extra.
 
 ## O que nunca foi impedimento do provider
 
@@ -30,4 +32,6 @@ Continuam ausentes por escopo, e não mudam com a assinatura:
 
 - **Search Console e GA4** — exigem OAuth do cliente. Sem eles não há páginas indexadas reais, cobertura, query, evento ou conversão.
 - **Métricas proprietárias do GBP** — exigem OAuth do titular mais aprovação prévia do Google. Estruturalmente pós-venda.
-- **LGPD, citations, links quebrados, formulários, schema validado e deep-research** — escopo não implementado.
+- **Links quebrados, formulários, schema validado e deep-research** — escopo não implementado.
+
+LGPD saiu na onda 3. **Citations saiu na onda 5**, mas por outro caminho: não há API que responda "este negócio está cadastrado no Apontador?", então virou checklist fixo preenchido pelo analista. Cobertura declarada, não medida — e a interface diz isso.

@@ -24,6 +24,12 @@ import {
 } from "@/lib/leads/gbp-audit"
 import { latestGbpGridScan, type LeadGbpGridScan } from "@/lib/leads/gbp-grid"
 import {
+  gbpDirectoriesInState,
+  gbpReplyTimeIsSlow,
+  readGbpAnalystReview,
+  type GbpAnalystReview,
+} from "@/lib/leads/gbp-analyst-review"
+import {
   pickLatestGbpSnapshotRow,
   type LeadGbpSnapshot,
 } from "@/lib/leads/gbp-snapshot"
@@ -64,6 +70,9 @@ export const GBP_GAP_IDS = [
   "not_in_map_top3",
   "unanswered_questions",
   "unreplied_negative_reviews",
+  "slow_review_replies",
+  "missing_directory_listings",
+  "directory_nap_mismatch",
 ] as const
 
 export type GbpGapId = (typeof GBP_GAP_IDS)[number]
@@ -89,6 +98,9 @@ export const GBP_GAP_LABELS: Record<GbpGapId, string> = {
   not_in_map_top3: "Fora do top 3 no Maps",
   unanswered_questions: "Perguntas sem resposta no perfil",
   unreplied_negative_reviews: "Avaliação negativa sem resposta",
+  slow_review_replies: "Demora para responder avaliações",
+  missing_directory_listings: "Ausente em diretórios locais",
+  directory_nap_mismatch: "NAP divergente em diretórios",
 }
 
 export type GbpSnapshot = {
@@ -126,6 +138,8 @@ export type LeadGbpProfile = {
   notes: string | null
   /** Leitura humana da reputação: sentimento, temas e o que os números não contam. */
   reputation_note: string | null
+  /** Respostas estruturadas do analista: tempo de resposta e diretórios. */
+  analyst_review: GbpAnalystReview
   cid: string | null
   enrichment: GbpEnrichment | null
   enrichment_at: string | null
@@ -255,6 +269,12 @@ export function gbpGapsForProfile(
     qna?: GbpQna | null
     rankKeywords?: string[]
     rankChecks?: GbpRankCheck[]
+    /**
+     * Obrigatório de propósito: `gbpGapsForProfile` é montado em três lugares —
+     * o pilar, o contador da trilha e a lista da tela — e campo opcional
+     * deixaria a divergência entre eles possível e silenciosa.
+     */
+    analystReview: GbpAnalystReview
   },
 ): GbpGapId[] {
   const gaps: GbpGapId[] = []
@@ -359,6 +379,22 @@ export function gbpGapsForProfile(
       gaps.push("not_in_map_top3")
     }
   }
+
+  // Julgamento do analista. Sem resposta preenchida não há gap: campo em branco
+  // é ausência de medida, não ausência de problema.
+  const analystReview = audit?.analystReview
+  if (analystReview) {
+    if (gbpReplyTimeIsSlow(analystReview)) {
+      gaps.push("slow_review_replies")
+    }
+    if (gbpDirectoriesInState(analystReview, "absent").length > 0) {
+      gaps.push("missing_directory_listings")
+    }
+    if (gbpDirectoriesInState(analystReview, "nap_mismatch").length > 0) {
+      gaps.push("directory_nap_mismatch")
+    }
+  }
+
   return gaps
 }
 
@@ -469,6 +505,7 @@ export function readLeadGbpProfileRow(
     matched_website_key: asString(matched_website_key),
     notes: asString(notes),
     reputation_note: asString(row.reputation_note),
+    analyst_review: readGbpAnalystReview(row.analyst_review),
     cid: asCid(row.cid),
     enrichment,
     enrichment_at,

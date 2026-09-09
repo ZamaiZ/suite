@@ -168,10 +168,12 @@ function googleOpportunities(
       qna: profile.qna,
       rankKeywords: profile.rank_keywords,
       rankChecks: profile.rankChecks,
+      analystReview: profile.analyst_review,
     },
   )
   return mergeGbpOpportunities({
     gaps,
+    analystReview: profile.analyst_review,
     rankChecks: profile.rankChecks,
     keywords: profile.rank_keywords,
     reputationNote: profile.reputation_note,

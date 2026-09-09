@@ -29,7 +29,7 @@ Rodar uma coleta completa em **um** lead de teste e conferir, campo a campo, con
 
 Duas perguntas específicas a responder nesse momento, porque destravam decisões que estão paradas:
 
-1. **A resposta de reviews traz timestamp da resposta do proprietário?** Se sim, "tempo médio de resposta" vira uma linha na ingestão em vez de depender de OAuth do Business Profile. Se não, o item sai do escopo até haver acesso proprietário.
+1. ~~**A resposta de reviews traz timestamp da resposta do proprietário?**~~ **Respondida: não.** O corpo traz só a data de quem avaliou. O item não saiu do escopo como o plano previa — virou campo do analista na onda 5, em faixa fechada.
 2. **Os items do Maps trazem `url` ou `domain` do negócio?** Se sim, o domínio dos concorrentes sai de graça e não precisa de uma chamada extra ao Places por concorrente.
 
 Saída desta etapa: correções de mapeamento, se houver, e as duas respostas registradas.
@@ -65,7 +65,7 @@ Os valores precisam continuar **legíveis** mesmo depois de deixarem de ser **pr
 - **Média histórica por subtração.** A distribuição por estrela dá a soma exata `S = 1n₁ + … + 5n₅`; as 50 mais recentes dão `S₅₀`. A média do resto é `(S − S₅₀) / (N − 50)`. Isso permite dizer "nas 50 mais recentes a média é 4,1; nas 380 anteriores era 4,6" sem precisar de histórico nenhum — o achado mais comercial do conjunto.
 - **Velocidade e frequência** — reviews nos últimos 30/60/90 dias e a taxa da janela coberta.
 - **Taxa de resposta** — `replied / sampled`.
-- **Tempo de resposta** — se e somente se a etapa 0 confirmar o timestamp.
+- **Tempo de resposta** — a etapa 0 respondeu que o timestamp não existe, então **não é calculado**: virou faixa preenchida pelo analista, exibida ao lado das métricas e marcada como informada.
 
 **Três guardas obrigatórias**, todas identificadas antes de escrever:
 

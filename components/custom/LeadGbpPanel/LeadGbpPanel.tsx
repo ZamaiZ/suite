@@ -177,6 +177,7 @@ export function LeadGbpPanel({
           qna: selected.qna,
           rankKeywords: selected.rank_keywords,
           rankChecks: selected.rankChecks,
+          analystReview: selected.analyst_review,
         },
       ).length
     : 0

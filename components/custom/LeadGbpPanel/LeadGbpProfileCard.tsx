@@ -15,10 +15,13 @@ import {
   pollLeadGbpJobs,
   refreshLeadGbpProfile,
   removeLeadGbpProfile,
+  updateLeadGbpAnalystReview,
   updateLeadGbpProfile,
   updateLeadGbpRankKeywords,
 } from "@/app/actions/leads"
 import { LeadGbpIdentity } from "./LeadGbpIdentity"
+import type { GbpReplyTimeBand } from "@/lib/leads/gbp-analyst-review"
+import { LeadGbpDirectoriesCard } from "./LeadGbpDirectoriesCard"
 import { LeadGbpInformationCard } from "./LeadGbpInformationCard"
 import { LeadGbpNotesCard, type GbpNotesStatus } from "./LeadGbpNotesCard"
 import { LeadGbpOpportunitiesCard } from "./LeadGbpOpportunitiesCard"
@@ -93,6 +96,7 @@ export function LeadGbpProfileCard({
   }
   const [notesStatus, setNotesStatus] = useState<GbpNotesStatus>("idle")
   const [error, setError] = useState<string | null>(null)
+  const [savingReplyTime, setSavingReplyTime] = useState(false)
   const [pollTimedOut, setPollTimedOut] = useState(false)
   const [busy, setBusy] = useState(false)
   const onUpdatedRef = useRef(onUpdated)
@@ -187,6 +191,7 @@ export function LeadGbpProfileCard({
       qna: profile.qna,
       rankKeywords: profile.rank_keywords,
       rankChecks: profile.rankChecks,
+      analystReview: profile.analyst_review,
     },
   )
   const opportunities = mergeGbpOpportunities({
@@ -194,6 +199,7 @@ export function LeadGbpProfileCard({
     rankChecks: profile.rankChecks,
     keywords: profile.rank_keywords,
     reputationNote: profile.reputation_note,
+    analystReview: profile.analyst_review,
   })
   const collectingPosts = profile.jobs.some(
     (job) => job.kind === "updates" && job.status === "queued",
@@ -243,6 +249,27 @@ export function LeadGbpProfileCard({
     notesTimerRef.current = window.setTimeout(() => {
       void persistNotes()
     }, NOTES_DEBOUNCE_MS)
+  }
+
+  function handleReplyTimeChange(band: GbpReplyTimeBand | null) {
+    if (savingReplyTime) return
+    setSavingReplyTime(true)
+    onPendingChange(true)
+    setError(null)
+    const formData = new FormData()
+    formData.set("profile_id", profile.id)
+    // Só a faixa vai no corpo; o servidor preserva os diretórios e carimba a
+    // data apenas nesta resposta.
+    formData.set("analyst_review", JSON.stringify({ band }))
+    void updateLeadGbpAnalystReview(formData).then((result) => {
+      setSavingReplyTime(false)
+      onPendingChange(false)
+      if (result.status === "error") {
+        setError(result.message)
+        return
+      }
+      onUpdatedRef.current(result.profile)
+    })
   }
 
   function handleDraftChange(next: string) {
@@ -455,6 +482,10 @@ export function LeadGbpProfileCard({
             rating={snapshot.rating}
             ratingCount={snapshot.userRatingCount}
             distribution={enrichment?.ratingDistribution ?? null}
+            replyTimeBand={profile.analyst_review.replyTime.band}
+            canEdit={canEdit}
+            savingReplyTime={savingReplyTime}
+            onReplyTimeChange={handleReplyTimeChange}
           />
         </m.div>
         <m.div variants={item}>
@@ -484,6 +515,16 @@ export function LeadGbpProfileCard({
         </m.div>
         <m.div variants={item}>
           <LeadGbpOpportunitiesCard items={opportunities} />
+        </m.div>
+        <m.div variants={item} className="md:col-span-2 xl:col-span-1">
+          <LeadGbpDirectoriesCard
+            profileId={profile.id}
+            companyName={companyName}
+            review={profile.analyst_review}
+            canEdit={canEdit}
+            onProfileChange={onUpdated}
+            onPendingChange={onPendingChange}
+          />
         </m.div>
         <m.div variants={item} className="md:col-span-2 xl:col-span-1">
           <LeadGbpNotesCard

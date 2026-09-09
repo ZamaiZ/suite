@@ -4,6 +4,7 @@ import {
   GBP_RANK_KEYWORDS_MAX,
 } from "@/lib/leads/gbp-audit"
 import { GBP_NOTES_MAX } from "@/lib/leads/gbp"
+import { GBP_REPLY_TIME_BANDS } from "@/lib/leads/gbp-analyst-review"
 import { PLACES_SUGGEST_MIN_CHARS } from "@/lib/places"
 
 function formText(formData: FormData, key: string): string {
@@ -60,6 +61,21 @@ export const updateLeadGbpSchema = z.object({
   notes: analystNote,
   reputation_note: analystNote,
   set_primary: z.boolean(),
+})
+
+export const updateGbpAnalystReviewSchema = z.object({
+  profile_id: z.uuid("Perfil inválido."),
+  /** Ausente significa "não mexi nisso"; `null` significa "limpei". */
+  band: z.enum(GBP_REPLY_TIME_BANDS).nullish(),
+  /**
+   * Chave livre de propósito: no zod 4 um `record` com chave de enum exige
+   * todas as chaves, e o envio é parcial — um diretório por vez. A action
+   * percorre `GBP_DIRECTORY_IDS` e ignora o que não reconhece.
+   */
+  directories: z.record(
+    z.string(),
+    z.enum(["present", "absent", "nap_mismatch"]).nullable(),
+  ),
 })
 
 export const updateGbpRankKeywordsSchema = z.object({
@@ -135,6 +151,33 @@ export function readUpdateLeadGbpFields(formData: FormData) {
     notes: formText(formData, "notes"),
     reputation_note: formText(formData, "reputation_note"),
     set_primary: formText(formData, "set_primary") === "true",
+  }
+}
+
+/**
+ * O corpo vem como JSON num campo só, como as keywords de ranking. `updatedAt`
+ * e `updatedBy` não entram: quem carimba provenância é o servidor.
+ */
+export function readGbpAnalystReviewFields(formData: FormData) {
+  const raw = formText(formData, "analyst_review")
+  let payload: unknown = { band: null, directories: {} }
+  if (raw.length > 0) {
+    try {
+      payload = JSON.parse(raw) as unknown
+    } catch {
+      payload = null
+    }
+  }
+  const row =
+    payload && typeof payload === "object" && !Array.isArray(payload)
+      ? (payload as Record<string, unknown>)
+      : {}
+  return {
+    profile_id: formText(formData, "profile_id"),
+    // Chave ausente e chave nula são coisas diferentes: a primeira preserva a
+    // resposta guardada, a segunda apaga.
+    band: "band" in row ? (row.band ?? null) : undefined,
+    directories: row.directories ?? {},
   }
 }
 
