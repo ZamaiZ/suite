@@ -66,6 +66,42 @@ não os US$ 0,012 orçados.
 por tarefa e devolve o valor em `tasks[i].data.tag`, como a malha já usa; e
 `task_get` é gratuito depois do post.
 
+## Citações por backlink: medido, encerrado, e a chamada foi reaproveitada
+
+Depois de corrigidos os dois defeitos — o filtro `["domain_from", "in", …]`, que
+é inválido, e o vazio ambíguo que virava `[]` — a chamada foi rodada à mão em
+2026-09-09 contra `buscaorganica.com.br`, por US$ 0,038364:
+
+- envelope `20000`, task `20000`, `total_count: 406`, `items_count: 399`, teto
+  de 1000. **Sem truncamento.**
+- 399 domínios de referência distintos, casados contra os 20 diretórios do
+  catálogo: **zero**.
+- E nenhuma rede social no índice: não há `facebook.com`, `instagram.com` nem
+  `linkedin.com` apontando para o domínio.
+
+O `[]` estava certo. Diretório publica ficha e quase nunca emite link
+rastreável — o campo "site" da ficha sai como redirecionador, é montado por
+JavaScript, ou não é publicado. **Backlink responde quem linka; citação é quem
+publica página sobre o negócio.** Sem os dois canais — SERP reprovado na Task 0,
+backlink medido aqui — não sobra método automático, e o checklist do analista
+volta a ser o único que fecha o estado. A tela diz isso.
+
+**A chamada não foi descartada, foi reapontada.** Os mesmos 399 domínios, pelo
+mesmo preço, respondem uma pergunta que tem resposta: existe rede de links
+artificiais apontando para este site. No perfil medido:
+
+- 52 dos 399 domínios com `backlink_spam_score` ≥ 30. A distribuição tem um vão
+  limpo em 20–29 (347 abaixo de 20, 5 no meio, 52 acima), e o corte mora nele.
+- a mesma âncora *"High Quality Dofollow Backlinks DA 50 PA 40 Premium PBN
+  Network"* em **12 domínios sem relação entre si**, mais 7 com
+  *"JOIN OUR TELEGRAM …/darksidelinks"* e 4 com outro canal de Telegram.
+- 150, 102 e 52 domínios concentrados em três IPs.
+
+E o `backlinks_spam_score` **do domínio**, que o resumo já trazia, marcou **2 de
+100**. A regra `toxic_backlinks` estava em silêncio sobre tudo isso. O gap novo
+`link_scheme_detected` exige contagem **e** proporção, e não dispara na mesma
+amostra depois de removidos os suspeitos — foi conferido.
+
 ## O que nunca foi impedimento do provider
 
 Continuam ausentes por escopo, e não mudam com a assinatura:

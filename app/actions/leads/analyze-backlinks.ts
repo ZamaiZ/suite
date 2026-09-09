@@ -2,8 +2,8 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import {
-  fetchBacklinkCitationsLive,
   fetchBacklinkCompetitorsLive,
+  fetchBacklinkSchemeLive,
   fetchBacklinkSummaryLive,
 } from "@/lib/dataforseo/backlinks"
 import {
@@ -88,10 +88,10 @@ export async function analyzeLeadBacklinks(
   // As duas chamadas saem juntas para que os números do alvo e os dos
   // concorrentes descrevam o mesmo instante. Comparar medidas de momentos
   // diferentes não compara nada.
-  const [fetched, benchmark, citations] = await Promise.all([
+  const [fetched, benchmark, scheme] = await Promise.all([
     fetchBacklinkSummaryLive({ domain: websiteDomain, collectedAt }),
     fetchBacklinkCompetitorsLive({ domain: websiteDomain }),
-    fetchBacklinkCitationsLive({ domain: websiteDomain }),
+    fetchBacklinkSchemeLive({ domain: websiteDomain }),
   ])
   if (fetched.status === "error") {
     return { status: "error", message: fetched.message }
@@ -102,7 +102,7 @@ export async function analyzeLeadBacklinks(
   const snapshot = {
     ...fetched.snapshot,
     competitors: benchmark.status === "ok" ? benchmark.competitors : null,
-    citations: citations.status === "ok" ? citations.citations : null,
+    scheme: scheme.status === "ok" ? scheme.scheme : null,
   }
 
   const payload = {

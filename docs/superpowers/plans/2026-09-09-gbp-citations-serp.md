@@ -1,5 +1,17 @@
 # GBP Citations by SERP Implementation Plan
 
+> **Encerrado em 2026-09-09.** Só a **Task 1** foi executada, e o resultado dela
+> matou as demais: com o filtro inválido removido e o catálogo casado do nosso
+> lado, a chamada devolveu 399 domínios de referência e zero diretórios. A Task
+> 0 já havia reprovado o SERP `site:` antes disso; sem nenhum dos dois canais,
+> não há o que construir, e as **Tasks 2 a 12 não serão feitas**.
+>
+> Duas coisas sobreviveram, com outro destino: a chamada de backlinks passou a
+> ler rede de links artificiais, e a operação `backlink_citations` da
+> calculadora virou `backlink_scheme`. O catálogo perdeu o campo `linkDomains`
+> e os três ajudantes que o liam — nada verificava mais nada por ali.
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Descobrir, por diretório, se existe página publicada sobre o negócio, com o link para o analista confirmar.

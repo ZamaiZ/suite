@@ -30,6 +30,37 @@ export const BACKLINKS_HIGH_SPAM_SCORE = 40
  */
 export const BACKLINKS_SITEWIDE_LINKS_PER_DOMAIN = 100
 
+/**
+ * Corte de suspeita para o link individual, na escala de 0 a 100 do provider.
+ *
+ * Sai da distribuição medida, não de arbítrio: no primeiro perfil real os 399
+ * domínios amostrados se dividiram em 347 abaixo de 20 e 52 de 30 para cima,
+ * com apenas 5 na faixa do meio. O vão está em 20–29, e o corte mora nele.
+ */
+export const BACKLINK_LINK_SPAM_SCORE = 30
+
+/** Âncora repetida em ao menos tantos domínios distintos vira agrupamento. */
+export const BACKLINK_ANCHOR_CLUSTER_MIN = 3
+
+/** Quantos domínios suspeitos a amostra guarda para o analista abrir. */
+export const BACKLINK_SCHEME_SAMPLES = 8
+
+/**
+ * Um IP só concentrando esta fração da amostra vira achado, e nunca com menos
+ * que o mínimo absoluto. Hospedagem compartilhada põe centenas de sites no
+ * mesmo endereço — a fração sozinha acusaria todo perfil pequeno, e o número
+ * absoluto sozinho acusaria todo perfil grande.
+ */
+export const BACKLINK_IP_CLUSTER_SHARE = 0.1
+export const BACKLINK_IP_CLUSTER_MIN = 5
+
+/**
+ * A partir de tantos domínios suspeitos, **e** desta fração da amostra, o
+ * perfil deixa de ser "alguns links ruins" e passa a ser rede.
+ */
+export const BACKLINK_SCHEME_MIN_DOMAINS = 5
+export const BACKLINK_SCHEME_MIN_SHARE = 0.03
+
 export type BacklinkSource = "dataforseo_backlinks"
 
 export type BacklinkDistributionItem = {
@@ -52,18 +83,65 @@ export type BacklinkCompetitor = {
 }
 
 /**
- * Citação encontrada num diretório: existe link daquele domínio para o site.
+ * Um domínio de referência que o próprio provider pontuou como suspeito.
  *
- * `url` é a página do cadastro — é ela que o analista abre para conferir o NAP,
- * que a máquina não sabe julgar.
+ * `url` é a página que linka — é ela que o analista abre para julgar, porque a
+ * pontuação diz "parece", e não "é".
  */
-export type BacklinkCitation = {
-  /** Id do diretório em `GBP_DIRECTORIES`. */
-  directoryId: string
+export type BacklinkSchemeDomain = {
   domain: string
   url: string | null
-  dofollow: boolean | null
-  firstSeen: string | null
+  spamScore: number | null
+  anchor: string | null
+}
+
+/**
+ * Uma âncora idêntica repetida entre domínios de referência diferentes.
+ *
+ * Sites que não combinaram entre si não escrevem a mesma frase. Repetição entre
+ * domínios independentes é assinatura de link comprado ou de rede — foi assim
+ * que apareceu, num perfil real, a mesma âncora anunciando venda de backlink em
+ * doze domínios sem relação nenhuma entre eles.
+ */
+export type BacklinkAnchorCluster = {
+  anchor: string
+  /** Quantos domínios distintos usam essa âncora. */
+  domains: number
+}
+
+/** Concentração de domínios de referência num mesmo endereço IP. */
+export type BacklinkIpCluster = {
+  ip: string
+  domains: number
+}
+
+/**
+ * Leitura da amostra de domínios de referência, um link por domínio.
+ *
+ * Substituiu a checagem de citações em diretórios. Aquela devolvia vazio para
+ * todo negócio local, e não por defeito: diretório publica ficha e quase nunca
+ * emite link rastreável, então "quais diretórios linkam" não tinha resposta
+ * possível pela via de backlinks. Foram 399 domínios medidos e zero casamentos.
+ *
+ * A mesma chamada, pelo mesmo preço, responde outra pergunta — "existe rede de
+ * links artificiais apontando para este site" — e essa tem resposta.
+ */
+export type BacklinkScheme = {
+  /** Domínios de referência que a amostra cobriu. */
+  sampled: number
+  /** Quantos o provider diz existir ao todo; `null` quando não veio. */
+  total: number | null
+  /**
+   * A amostra bateu no teto. Enquanto for `false`, não achar é afirmação;
+   * quando for `true`, é só silêncio sobre o que ficou de fora.
+   */
+  truncated: boolean
+  /** Domínios com pontuação de spam do provider no corte ou acima. */
+  spammyDomains: number
+  /** Amostra para o analista abrir. Não é a lista inteira. */
+  spammySamples: BacklinkSchemeDomain[]
+  anchorClusters: BacklinkAnchorCluster[]
+  ipClusters: BacklinkIpCluster[]
 }
 
 export type BacklinkSnapshot = {
@@ -102,10 +180,11 @@ export type BacklinkSnapshot = {
   /** `null` = benchmark não coletado; `[]` = coletado e sem concorrente. */
   competitors: BacklinkCompetitor[] | null
   /**
-   * `null` = checagem de citações não feita; `[]` = feita e nenhum diretório
-   * linka. A segunda afirmação é precisa; a primeira não afirma nada.
+   * `null` = leitura da rede de links não feita. Snapshot anterior à troca
+   * guarda `citations` no jsonb e nenhum leitor o procura — o passado fica
+   * legível, e o escritor só produz o presente.
    */
-  citations: BacklinkCitation[] | null
+  scheme: BacklinkScheme | null
 }
 
 export type LeadBacklinkAudit = {
@@ -126,6 +205,7 @@ export type BacklinkGapId =
   | "toxic_backlinks"
   | "sitewide_link_pattern"
   | "behind_on_referring_domains"
+  | "link_scheme_detected"
 
 export const BACKLINK_GAP_LABELS: Record<BacklinkGapId, string> = {
   no_backlinks: "Nenhum backlink encontrado",
@@ -137,6 +217,7 @@ export const BACKLINK_GAP_LABELS: Record<BacklinkGapId, string> = {
   sitewide_link_pattern: "Links concentrados em poucos domínios",
   behind_on_referring_domains:
     "Menos domínios de referência que os concorrentes",
+  link_scheme_detected: "Rede de links artificiais apontando para o site",
 }
 
 function asString(value: unknown): string | null {
@@ -170,26 +251,75 @@ function readDistribution(value: unknown): BacklinkDistributionItem[] {
   return items
 }
 
-export function readBacklinkCitations(
-  value: unknown,
-): BacklinkCitation[] | null {
-  if (!Array.isArray(value)) return null
-  const items: BacklinkCitation[] = []
+function asRecord(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null
+  return value as Record<string, unknown>
+}
+
+function readSchemeDomains(value: unknown): BacklinkSchemeDomain[] {
+  if (!Array.isArray(value)) return []
+  const items: BacklinkSchemeDomain[] = []
   for (const item of value) {
-    if (!item || typeof item !== "object") continue
-    const row = item as Record<string, unknown>
-    const directoryId = asString(row.directoryId)
-    const domain = asString(row.domain)
-    if (!directoryId || !domain) continue
+    const row = asRecord(item)
+    const domain = row ? asString(row.domain) : null
+    if (!row || !domain) continue
     items.push({
-      directoryId,
       domain,
       url: asString(row.url),
-      dofollow: typeof row.dofollow === "boolean" ? row.dofollow : null,
-      firstSeen: asString(row.firstSeen),
+      spamScore: asScore(row.spamScore),
+      anchor: asString(row.anchor),
     })
   }
   return items
+}
+
+function readAnchorClusters(value: unknown): BacklinkAnchorCluster[] {
+  if (!Array.isArray(value)) return []
+  const items: BacklinkAnchorCluster[] = []
+  for (const item of value) {
+    const row = asRecord(item)
+    const anchor = row ? asString(row.anchor) : null
+    const domains = row ? asCount(row.domains) : null
+    if (!anchor || domains === null) continue
+    items.push({ anchor, domains })
+  }
+  return items
+}
+
+function readIpClusters(value: unknown): BacklinkIpCluster[] {
+  if (!Array.isArray(value)) return []
+  const items: BacklinkIpCluster[] = []
+  for (const item of value) {
+    const row = asRecord(item)
+    const ip = row ? asString(row.ip) : null
+    const domains = row ? asCount(row.domains) : null
+    if (!ip || domains === null) continue
+    items.push({ ip, domains })
+  }
+  return items
+}
+
+/**
+ * Só devolve leitura quando o tamanho da amostra e a contagem de suspeitos
+ * estão os dois presentes. Faltando um, o objeto não descreve coleta nenhuma, e
+ * completá-lo com zero transformaria linha malformada em "olhamos e está
+ * limpo".
+ */
+export function readBacklinkScheme(value: unknown): BacklinkScheme | null {
+  const row = asRecord(value)
+  if (!row) return null
+  const sampled = asCount(row.sampled)
+  const spammyDomains = asCount(row.spammyDomains)
+  if (sampled === null || spammyDomains === null) return null
+  return {
+    sampled,
+    total: asCount(row.total),
+    truncated: row.truncated === true,
+    spammyDomains,
+    spammySamples: readSchemeDomains(row.spammySamples),
+    anchorClusters: readAnchorClusters(row.anchorClusters),
+    ipClusters: readIpClusters(row.ipClusters),
+  }
 }
 
 export function readBacklinkCompetitors(
@@ -268,7 +398,7 @@ export function readBacklinkSnapshot(value: unknown): BacklinkSnapshot | null {
     linkPlatforms: readOptionalDistribution(row.linkPlatforms),
     linkTypes: readOptionalDistribution(row.linkTypes),
     competitors: readBacklinkCompetitors(row.competitors),
-    citations: readBacklinkCitations(row.citations),
+    scheme: readBacklinkScheme(row.scheme),
   }
 }
 
@@ -411,6 +541,20 @@ export function backlinkGapsForSnapshot(
     linksPerDomain >= BACKLINKS_SITEWIDE_LINKS_PER_DOMAIN
   ) {
     gaps.push("sitewide_link_pattern")
+  }
+
+  // Exige contagem **e** proporção. A pontuação de domínio do resumo não
+  // enxerga isto: no perfil que motivou a regra ela marcou 2 de 100 enquanto 52
+  // dos 399 domínios amostrados vinham pontuados de 30 para cima, um deles
+  // anunciando venda de backlink na própria âncora.
+  const scheme = snapshot.scheme
+  if (
+    scheme !== null &&
+    scheme.sampled > 0 &&
+    scheme.spammyDomains >= BACKLINK_SCHEME_MIN_DOMAINS &&
+    scheme.spammyDomains / scheme.sampled >= BACKLINK_SCHEME_MIN_SHARE
+  ) {
+    gaps.push("link_scheme_detected")
   }
 
   return gaps

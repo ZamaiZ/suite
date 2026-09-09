@@ -33,6 +33,9 @@ const HIGH_IMPACT = new Set<BacklinkGapId>([
   // Ficar atrás do mercado é o achado mais acionável do conjunto, e o único
   // com um número de destino.
   "behind_on_referring_domains",
+  // Rede apontando para o site é risco, não falta de oportunidade: o cliente
+  // pode estar carregando um passivo que ele nem sabe que comprou.
+  "link_scheme_detected",
 ])
 
 const OPPORTUNITY_TITLES: Record<BacklinkGapId, string> = {
@@ -44,6 +47,7 @@ const OPPORTUNITY_TITLES: Record<BacklinkGapId, string> = {
   toxic_backlinks: "Limpar o perfil de links suspeitos",
   sitewide_link_pattern: "Conquistar links de domínios novos",
   behind_on_referring_domains: "Alcançar o volume de domínios do mercado",
+  link_scheme_detected: "Auditar a rede de links que aponta para o site",
 }
 
 function impactFor(id: BacklinkGapId): BacklinkOpportunityImpact {
@@ -89,6 +93,16 @@ function detailFor(
         ` mediana dos concorrentes: ${count(Math.round(median))}`
       )
     }
+  }
+  if (id === "link_scheme_detected" && snapshot.scheme) {
+    const { spammyDomains, sampled, anchorClusters } = snapshot.scheme
+    const anchors = anchorClusters.length
+    // A proporção é o que sustenta a afirmação, e a âncora repetida é o que a
+    // torna difícil de explicar como coincidência.
+    return (
+      `${count(spammyDomains)} de ${count(sampled)} domínios amostrados` +
+      (anchors > 0 ? `; ${count(anchors)} âncoras repetidas` : "")
+    )
   }
   if (id === "sitewide_link_pattern") {
     const perDomain = backlinkMetrics(snapshot).linksPerDomain

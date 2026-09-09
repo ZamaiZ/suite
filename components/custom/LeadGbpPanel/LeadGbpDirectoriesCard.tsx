@@ -23,7 +23,6 @@ import {
   type GbpDirectoryId,
   type GbpDirectoryState,
 } from "@/lib/leads/gbp-analyst-review"
-import type { BacklinkCitation } from "@/lib/leads/backlinks-audit"
 
 const UNSET = "unset"
 
@@ -48,7 +47,6 @@ function stateTone(state: GbpDirectoryState | null): string {
 export function LeadGbpDirectoriesCard({
   profileId,
   companyName,
-  citations,
   review,
   canEdit,
   onProfileChange,
@@ -56,8 +54,6 @@ export function LeadGbpDirectoriesCard({
 }: {
   profileId: string
   companyName: string
-  /** `null` = checagem não feita; `[]` = feita e nenhum diretório linka. */
-  citations: BacklinkCitation[] | null
   review: GbpAnalystReview
   canEdit: boolean
   onProfileChange: (profile: LeadGbpProfile) => void
@@ -72,11 +68,6 @@ export function LeadGbpDirectoriesCard({
         .length,
     [review],
   )
-  const found = useMemo(() => {
-    const map = new Map<string, BacklinkCitation>()
-    for (const item of citations ?? []) map.set(item.directoryId, item)
-    return map
-  }, [citations])
 
   function handleChange(id: GbpDirectoryId, raw: string) {
     if (busy) return
@@ -107,23 +98,19 @@ export function LeadGbpDirectoriesCard({
     <LeadGbpCard title="Diretórios e citações">
       <div className="flex flex-col gap-2">
         <p className="text-xs/relaxed text-muted-foreground">
-          {answered} de {GBP_DIRECTORIES.length} respondidos
-          {citations
-            ? ` · ${found.size} com link na última análise de backlinks`
-            : " · a checagem automática entra na próxima análise de backlinks"}
-          . Link encontrado prova o cadastro; a ausência de link não prova a
-          ausência dele, e o NAP só o analista julga.
+          {answered} de {GBP_DIRECTORIES.length} respondidos. Não há checagem
+          automática, e não por falta de tentativa: diretório publica ficha e
+          quase nunca emite link rastreável — 399 domínios de referência medidos
+          num perfil real, zero diretórios — e a busca por operador não é
+          honrada de forma confiável. O link abre a busca pelo nome, e o NAP só
+          o analista julga.
         </p>
         <ul className="flex flex-col gap-1.5">
           {GBP_DIRECTORIES.map((item) => {
             const answer = review.directories[item.id]
-            const citation = found.get(item.id)
-            // Com a página do cadastro em mãos, o link vai direto para ela; sem
-            // ela, sobra a busca `site:` que o analista teria que fazer.
-            const href =
-              citation?.url ??
-              gbpDirectorySearchUrl(item.domain, companyName)
-            const manualOnly = item.linkDomains.length === 0
+            // Todo diretório é manual agora: o link é sempre a busca que o
+            // analista teria que digitar.
+            const href = gbpDirectorySearchUrl(item.domain, companyName)
             return (
               <li
                 key={item.id}
@@ -140,12 +127,6 @@ export function LeadGbpDirectoriesCard({
                 >
                   {item.label}
                   <RiExternalLinkLine size={12} aria-hidden />
-                  {citation ? (
-                    <span className="text-success">· link</span>
-                  ) : null}
-                  {manualOnly ? (
-                    <span className="text-muted-foreground/70">· manual</span>
-                  ) : null}
                 </a>
                 <Select
                   items={STATE_ITEMS}

@@ -1,10 +1,16 @@
-import type {
-  BacklinkCitation,
-  BacklinkCompetitor,
-  BacklinkDistributionItem,
-  BacklinkSnapshot,
+import {
+  BACKLINK_ANCHOR_CLUSTER_MIN,
+  BACKLINK_IP_CLUSTER_MIN,
+  BACKLINK_IP_CLUSTER_SHARE,
+  BACKLINK_LINK_SPAM_SCORE,
+  BACKLINK_SCHEME_SAMPLES,
+  type BacklinkAnchorCluster,
+  type BacklinkCompetitor,
+  type BacklinkDistributionItem,
+  type BacklinkScheme,
+  type BacklinkSchemeDomain,
+  type BacklinkSnapshot,
 } from "./backlinks-audit.ts"
-import { gbpDirectoryForDomain } from "./gbp-analyst-review.ts"
 
 /**
  * Leitura do resultado de `/backlinks/summary/live`.
@@ -136,43 +142,97 @@ export function mapBacklinkSummaryResult(input: {
     // Preenchidos pelo chamador depois das outras chamadas; `null` enquanto
     // não vierem.
     competitors: null,
-    citations: null,
+    scheme: null,
   }
 }
 
-export type BacklinkCitationsResult = {
+export type BacklinkSchemeResult = {
+  total_count?: unknown
+  items_count?: unknown
   items?: unknown
 }
 
 /**
- * Lê os backlinks vindos dos diretórios do catálogo.
+ * Lê a amostra de domínios de referência e devolve os três sinais de rede.
  *
- * Um diretório pode linkar de várias páginas; só a primeira interessa, porque a
- * pergunta é "existe cadastro", não "quantos links". Dofollow ganha da
- * alternativa quando houver as duas, por ser o link de cadastro mais provável.
+ * Nenhum deles julga: contam repetição, concentração e a pontuação que o
+ * próprio provider já atribuiu. Não há lista de palavras nem classificação de
+ * assunto — regra dessas envelhece e acusa site inocente, e o analista é quem
+ * abre a página e decide.
  */
-export function mapBacklinkCitations(
-  result: BacklinkCitationsResult | null,
-): BacklinkCitation[] {
+export function mapBacklinkScheme(
+  result: BacklinkSchemeResult | null,
+  limit: number,
+): BacklinkScheme {
   const items = Array.isArray(result?.items) ? result.items : []
-  const byDirectory = new Map<string, BacklinkCitation>()
+  // `one_per_domain` já devolve uma linha por domínio. O mapa é a garantia de
+  // que uma resposta fora desse modo não conte o mesmo domínio duas vezes e
+  // infle todos os três sinais de uma vez.
+  const byDomain = new Map<string, Record<string, unknown>>()
   for (const item of items) {
     if (!item || typeof item !== "object") continue
     const row = item as Record<string, unknown>
     const domain = asString(row.domain_from)
-    if (!domain) continue
-    const directoryId = gbpDirectoryForDomain(domain)
-    if (!directoryId) continue
-    const dofollow = typeof row.dofollow === "boolean" ? row.dofollow : null
-    const current = byDirectory.get(directoryId)
-    if (current && !(dofollow === true && current.dofollow !== true)) continue
-    byDirectory.set(directoryId, {
-      directoryId,
-      domain,
-      url: asString(row.url_from),
-      dofollow,
-      firstSeen: asString(row.first_seen),
-    })
+    if (!domain || byDomain.has(domain)) continue
+    byDomain.set(domain, row)
   }
-  return [...byDirectory.values()]
+
+  const spammy: BacklinkSchemeDomain[] = []
+  const anchors = new Map<string, { anchor: string; domains: Set<string> }>()
+  const ips = new Map<string, Set<string>>()
+
+  for (const [domain, row] of byDomain) {
+    const spamScore = asScore(row.backlink_spam_score)
+    const anchor = asString(row.anchor)
+    if (spamScore !== null && spamScore >= BACKLINK_LINK_SPAM_SCORE) {
+      spammy.push({
+        domain,
+        url: asString(row.url_from),
+        spamScore,
+        anchor,
+      })
+    }
+    if (anchor) {
+      // Agrupa sem diferenciar caixa: a mesma frase colada em vinte sites
+      // costuma variar só na maiúscula.
+      const key = anchor.toLowerCase()
+      const current = anchors.get(key)
+      if (current) current.domains.add(domain)
+      else anchors.set(key, { anchor, domains: new Set([domain]) })
+    }
+    const ip = asString(row.domain_from_ip)
+    if (ip) {
+      const current = ips.get(ip)
+      if (current) current.add(domain)
+      else ips.set(ip, new Set([domain]))
+    }
+  }
+
+  const sampled = byDomain.size
+  const ipFloor = Math.max(
+    BACKLINK_IP_CLUSTER_MIN,
+    Math.ceil(sampled * BACKLINK_IP_CLUSTER_SHARE),
+  )
+
+  return {
+    sampled,
+    total: asCount(result?.total_count),
+    // A amostra bateu no teto: daqui em diante o silêncio é sobre o que ficou
+    // de fora, e não afirmação de que não existe.
+    truncated: sampled >= limit,
+    spammyDomains: spammy.length,
+    spammySamples: spammy
+      .sort((left, right) => (right.spamScore ?? 0) - (left.spamScore ?? 0))
+      .slice(0, BACKLINK_SCHEME_SAMPLES),
+    anchorClusters: [...anchors.values()]
+      .filter((entry) => entry.domains.size >= BACKLINK_ANCHOR_CLUSTER_MIN)
+      .map((entry) => ({ anchor: entry.anchor, domains: entry.domains.size }))
+      .sort((left, right) => right.domains - left.domains)
+      .slice(0, BACKLINK_SCHEME_SAMPLES),
+    ipClusters: [...ips.entries()]
+      .map(([ip, domains]) => ({ ip, domains: domains.size }))
+      .filter((entry) => entry.domains >= ipFloor)
+      .sort((left, right) => right.domains - left.domains)
+      .slice(0, BACKLINK_SCHEME_SAMPLES),
+  }
 }

@@ -1,5 +1,18 @@
 # Citações em Diretórios por SERP — Design
 
+> **Encerrada em 2026-09-09, sem implementar.** A Task 0 reprovou o operador
+> `site:`, que é honrado de forma inconsistente, e a medição por backlink fechou
+> o outro canal: 399 domínios de referência, sem truncamento, **zero**
+> diretórios e nenhuma rede social no índice. Não existe método automático de
+> citação, e o checklist do analista voltou a ser o único que fecha o estado.
+>
+> A chamada paga que existia foi **reapontada**, não descartada: os mesmos
+> domínios, pelo mesmo preço, viraram leitura de rede de links artificiais. Ver
+> `docs/auditoria/2026-09-04-impedimentos-dataforseo.md`.
+>
+> O documento fica como registro do que foi tentado, e por quê.
+
+
 ## Objetivo
 
 Responder, por diretório, se existe página publicada sobre o negócio — com o

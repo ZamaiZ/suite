@@ -10,7 +10,10 @@ import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { formatRelativeShort } from "@/lib/date-time"
-import { backlinkMetrics } from "@/lib/leads/backlinks-audit"
+import {
+  backlinkMetrics,
+  BACKLINK_LINK_SPAM_SCORE,
+} from "@/lib/leads/backlinks-audit"
 import {
   backlinkProfileShape,
   formatBacklinkDistribution,
@@ -202,10 +205,100 @@ export function LeadWebsiteBacklinksCard({
                 </ul>
               </div>
             ) : null}
-            {snapshot.linkLocations === null ? (
+            {snapshot.scheme ? (
+              <div className="flex flex-col gap-1">
+                {/*
+                  Três sinais que a pontuação de domínio do resumo não enxerga:
+                  ela marcou 2 de 100 no perfil onde 52 dos 399 domínios
+                  amostrados vinham pontuados de 30 para cima.
+                */}
+                <p className="text-xs/relaxed text-foreground">
+                  Rede de links · {count(snapshot.scheme.spammyDomains)} de{" "}
+                  {count(snapshot.scheme.sampled)} domínios amostrados com
+                  pontuação de spam {BACKLINK_LINK_SPAM_SCORE} ou mais
+                </p>
+                {snapshot.scheme.anchorClusters.length > 0 ? (
+                  <ul className="flex flex-col gap-0.5">
+                    {snapshot.scheme.anchorClusters.map((cluster) => (
+                      <li
+                        key={cluster.anchor}
+                        className="flex items-baseline justify-between gap-2 text-xs/relaxed text-muted-foreground"
+                      >
+                        <span className="truncate">“{cluster.anchor}”</span>
+                        <span className="shrink-0 tabular-nums">
+                          {count(cluster.domains)} domínios
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {snapshot.scheme.ipClusters.length > 0 ? (
+                  <p className="text-xs/relaxed text-muted-foreground">
+                    Domínios no mesmo IP:{" "}
+                    {snapshot.scheme.ipClusters
+                      .map((item) => `${item.ip} (${count(item.domains)})`)
+                      .join(" · ")}
+                  </p>
+                ) : null}
+                {snapshot.scheme.spammySamples.length > 0 ? (
+                  <ul className="flex flex-col gap-0.5">
+                    {snapshot.scheme.spammySamples.map((item) => (
+                      <li
+                        key={item.domain}
+                        className="flex items-baseline justify-between gap-2 text-xs/relaxed"
+                      >
+                        {item.url ? (
+                          <a
+                            href={item.url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="truncate text-muted-foreground hover:underline"
+                          >
+                            {item.domain}
+                          </a>
+                        ) : (
+                          <span className="truncate text-muted-foreground">
+                            {item.domain}
+                          </span>
+                        )}
+                        <span className="shrink-0 tabular-nums text-muted-foreground">
+                          spam {count(item.spamScore)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+                {/*
+                  Sem achado e sem truncamento, "nada aqui" é afirmação. Com
+                  truncamento, é só silêncio sobre o que ficou de fora — e a
+                  tela não pode dizer as duas coisas com a mesma frase.
+                */}
+                {snapshot.scheme.spammyDomains === 0 &&
+                snapshot.scheme.anchorClusters.length === 0 &&
+                snapshot.scheme.ipClusters.length === 0 ? (
+                  <p className="text-xs/relaxed text-muted-foreground">
+                    {snapshot.scheme.truncated
+                      ? "A amostra bateu no teto e não cobre o perfil inteiro; sobre o resto, nada foi verificado."
+                      : "Nenhum sinal de rede artificial na amostra."}
+                  </p>
+                ) : snapshot.scheme.truncated ? (
+                  <p className="text-xs/relaxed text-muted-foreground">
+                    A amostra bateu no teto: os sinais acima valem para os{" "}
+                    {count(snapshot.scheme.sampled)} domínios lidos, e o que
+                    ficou de fora não foi verificado.
+                  </p>
+                ) : null}
+                <p className="text-xs/relaxed text-muted-foreground">
+                  A pontuação é do provider e diz “parece”, não “é”. Abrir a
+                  página é o que decide.
+                </p>
+              </div>
+            ) : null}
+            {snapshot.linkLocations === null || snapshot.scheme === null ? (
               <p className="text-xs/relaxed text-muted-foreground">
-                Origem e rede dos links entram na próxima análise — esta coleta
-                é anterior a esses campos.
+                {snapshot.linkLocations === null
+                  ? "Origem e rede dos links entram na próxima análise — esta coleta é anterior a esses campos."
+                  : "A leitura de rede de links entra na próxima análise — esta coleta é anterior a ela."}
               </p>
             ) : null}
           </>

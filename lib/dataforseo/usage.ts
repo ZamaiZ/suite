@@ -17,8 +17,8 @@ import {
   gbpGridExecutionMode,
 } from "../leads/gbp-grid.ts"
 import {
-  BACKLINK_CITATIONS_LIMIT,
   BACKLINK_COMPETITORS_LIMIT,
+  BACKLINK_SCHEME_LIMIT,
   RANKED_KEYWORDS_LIMIT,
 } from "./limits.ts"
 
@@ -292,7 +292,7 @@ export type DataForSeoOperationId =
   | "organic_visibility"
   | "backlink_summary"
   | "backlink_competitors"
-  | "backlink_citations"
+  | "backlink_scheme"
 
 export type DataForSeoOperation = {
   id: DataForSeoOperationId
@@ -437,13 +437,13 @@ export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
     caveat: RESULT_CAVEAT,
   },
   {
-    id: "backlink_citations",
-    label: "Citações em diretórios",
+    id: "backlink_scheme",
+    label: "Rede de links artificiais",
     api: "backlinks",
     fnSuffix: "backlinks/live",
     requests: 1,
-    results: BACKLINK_CITATIONS_LIMIT,
-    detail: `Uma chamada, teto de ${BACKLINK_CITATIONS_LIMIT} domínios de origem`,
+    results: BACKLINK_SCHEME_LIMIT,
+    detail: `Uma chamada, teto de ${BACKLINK_SCHEME_LIMIT} domínios de origem`,
     caveat: RESULT_CAVEAT,
   },
 ]

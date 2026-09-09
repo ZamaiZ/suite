@@ -5,20 +5,20 @@ import {
   postDataForSeo,
 } from "@/lib/dataforseo/client"
 import {
-  BACKLINK_CITATIONS_LIMIT,
   BACKLINK_COMPETITORS_LIMIT,
+  BACKLINK_SCHEME_LIMIT,
 } from "@/lib/dataforseo/limits"
 import type {
-  BacklinkCitation,
   BacklinkCompetitor,
+  BacklinkScheme,
   BacklinkSnapshot,
 } from "@/lib/leads/backlinks-audit"
 import {
-  mapBacklinkCitations,
   mapBacklinkCompetitors,
+  mapBacklinkScheme,
   mapBacklinkSummaryResult,
-  type BacklinkCitationsResult,
   type BacklinkCompetitorsResult,
+  type BacklinkSchemeResult,
   type BacklinkSummaryResult,
 } from "@/lib/leads/backlinks-map"
 
@@ -89,48 +89,41 @@ export async function fetchBacklinkCompetitorsLive(input: {
 }
 
 /**
- * Quais diretórios do catálogo linkam para o site.
+ * Sinais de rede de links artificiais apontando para o site.
  *
- * **Sem filtro de domínio, de propósito.** A versão anterior mandava
- * `["domain_from", "in", [...]]`, e `in` não existe para esse campo — ele
- * aceita `=`, `<>`, `like`, `not_like`, `ilike`, `not_ilike`, `match` e
- * `not_match`, só. A tarefa voltava com erro, o erro virava resultado ausente,
- * e o ausente virava "nenhum diretório linka". Encadear os vinte e dois
- * domínios com `or` também não serve: o teto é de oito filtros.
+ * Substituiu a checagem de citações em diretórios — e não por defeito dela. Com
+ * o filtro inválido removido e o catálogo casado do nosso lado, a chamada
+ * devolveu 399 domínios de referência e **zero** diretórios, sem truncamento.
+ * Diretório publica ficha e quase nunca emite link rastreável: a pergunta não
+ * tem resposta por esta via, e quem fecha o estado de cadastro segue sendo o
+ * analista, no checklist.
  *
- * Então a chamada traz os domínios de referência como eles vêm, e o casamento
- * com o catálogo acontece aqui, em `mapBacklinkCitations` — por sufixo, que é
- * o que tolera `pt.foursquare.com` no lugar de `foursquare.com`.
- *
- * O preço tem parcela por linha devolvida, e o teto está dimensionado para
- * caber o perfil inteiro de um negócio local. Se ainda assim truncar, o efeito
- * é o corroborador **calar** sobre um diretório, nunca afirmar que ele não
- * linka: a tela só usa a citação para exibir o selo de link encontrado.
- *
- * Devolve também a URL da página do cadastro, que é o que o analista abre para
- * conferir o NAP — a parte que nenhuma API julga.
+ * A mesma chamada, pelo mesmo preço, responde uma pergunta que tem resposta —
+ * repetição de âncora entre domínios independentes, concentração de IP e a
+ * pontuação de spam que o provider já atribui a cada link.
  */
-export async function fetchBacklinkCitationsLive(input: {
+export async function fetchBacklinkSchemeLive(input: {
   domain: string
-}): Promise<
-  { status: "ok"; citations: BacklinkCitation[] } | { status: "error" }
-> {
-  const posted = await postDataForSeo<BacklinkCitationsResult>(
+}): Promise<{ status: "ok"; scheme: BacklinkScheme } | { status: "error" }> {
+  const posted = await postDataForSeo<BacklinkSchemeResult>(
     "/backlinks/backlinks/live",
     {
       target: input.domain,
-      // Uma linha por domínio de origem. Com `as_is`, um diretório que linka de
-      // centenas de páginas encheria o teto sozinho e expulsaria os outros.
+      // Uma linha por domínio de origem. Sem isso, um único domínio que linka
+      // de centenas de páginas encheria o teto sozinho, e os três sinais
+      // descreveriam ele em vez do perfil.
       mode: "one_per_domain",
-      limit: BACKLINK_CITATIONS_LIMIT,
+      limit: BACKLINK_SCHEME_LIMIT,
       backlinks_status_type: "live",
     },
   )
   if (posted.status === "error") return { status: "error" }
-  // Resposta sem resultado não é resposta com resultado vazio. Devolver `[]`
-  // aqui fazia a action gravar "checado, e nenhum diretório linka" quando o
-  // que houve foi a chamada não trazer nada — ausente virando zero, no próprio
-  // código que invoca a regra.
+  // Resposta sem resultado não é resposta com resultado vazio. Devolver uma
+  // leitura zerada aqui faria a action gravar "olhamos e está limpo" quando o
+  // que houve foi a chamada não trazer nada.
   if (posted.data === null) return { status: "error" }
-  return { status: "ok", citations: mapBacklinkCitations(posted.data) }
+  return {
+    status: "ok",
+    scheme: mapBacklinkScheme(posted.data, BACKLINK_SCHEME_LIMIT),
+  }
 }
