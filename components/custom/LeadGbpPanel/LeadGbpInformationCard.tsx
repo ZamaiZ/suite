@@ -7,7 +7,6 @@ import {
   RiBuilding4Line,
   RiCheckboxCircleLine,
   RiExternalLinkLine,
-  RiFileTextLine,
   RiGlobalLine,
   RiPhoneLine,
   RiStackLine,

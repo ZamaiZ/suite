@@ -3,21 +3,13 @@
 import { useState } from "react"
 import { RiStarFill } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
+import { LeadGbpReputationRead } from "./LeadGbpReputationRead"
 import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
 import type { GbpReviewSummary } from "@/lib/leads/gbp-audit"
 import {
   formatGbpCount,
   formatGbpRating,
-  gbpReplyRateLabel,
-  gbpReputationBlockLabel,
-  gbpReputationSpanLabel,
-  gbpReputationWindowLabel,
-  gbpAuthorsLabel,
-  gbpBurstLabel,
-  gbpFrequencyLabel,
-  gbpReplyByBandLabel,
-  gbpReviewsDeltaLabel,
 } from "@/lib/leads/gbp-presenters"
 import type { GbpRatingDistribution } from "@/lib/leads/gbp-enrichment"
 import type { GbpReputation } from "@/lib/leads/gbp-reputation"
@@ -120,13 +112,7 @@ export function LeadGbpReviewsBlock({
   const hiddenCount = Math.max(0, items.length - FEATURED_PREVIEW)
   const ratingLabel = formatGbpRating(rating)
   const countLabel = formatGbpCount(ratingCount)
-  const spanLabel = gbpReputationSpanLabel(reputation?.sample.spanDays ?? null)
-  const replyLabel = gbpReplyRateLabel(reputation?.sample.replyRate ?? null)
   const sample = reputation?.sample ?? null
-  const burstLabel = sample ? gbpBurstLabel(sample) : null
-  const frequencyLabel = sample ? gbpFrequencyLabel(sample) : null
-  const bandLabel = sample ? gbpReplyByBandLabel(sample) : null
-  const authorsLabel = sample ? gbpAuthorsLabel(sample) : null
   const measuredReplyDays = sample?.replyMedianDays ?? null
 
   return (
@@ -145,52 +131,11 @@ export function LeadGbpReviewsBlock({
       </div>
 
       {reputation ? (
-        <div className="mt-4 flex flex-col gap-1 rounded-lg border border-border/70 bg-background px-3 py-2">
-          <p className="text-xs/relaxed text-foreground">
-            {reputation.history.status === "ok"
-              ? `Nas ${formatGbpCount(reputation.history.recentCount)} mais recentes a média é ${formatGbpRating(reputation.history.recentAverage)}; nas ${formatGbpCount(reputation.history.priorCount)} anteriores era ${formatGbpRating(reputation.history.priorAverage)}.`
-              : gbpReputationBlockLabel(reputation.history.reason)}
-          </p>
-          <p className="text-xs/relaxed text-muted-foreground">
-            {reputation.sample.windows
-              .map(gbpReputationWindowLabel)
-              .join(" · ")}
-          </p>
-          <p className="text-xs/relaxed text-muted-foreground">
-            {[
-              `Amostra de ${formatGbpCount(reputation.sample.size)}`,
-              spanLabel ? `cobrindo ${spanLabel}` : null,
-              replyLabel
-                ? `${formatGbpCount(reputation.sample.repliedCount)} respondidas (${replyLabel})`
-                : null,
-            ]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-          {/* Rajada em destaque: é achado, não estatística de rodapé. */}
-          {burstLabel ? (
-            <p className="text-xs/relaxed text-foreground">
-              Concentração: {burstLabel}
-            </p>
-          ) : null}
-          {frequencyLabel ? (
-            <p className="text-xs/relaxed text-muted-foreground">
-              Ritmo: {frequencyLabel}
-            </p>
-          ) : null}
-          {bandLabel ? (
-            <p className="text-xs/relaxed text-muted-foreground">
-              Resposta por nota: {bandLabel}
-            </p>
-          ) : null}
-          {authorsLabel ? (
-            <p className="text-xs/relaxed text-muted-foreground">
-              Autores: {authorsLabel}
-            </p>
-          ) : null}
-          <p className="text-xs/relaxed text-muted-foreground">
-            {gbpReviewsDeltaLabel(reviewsDelta)}
-          </p>
+        <div className="mt-4">
+          <LeadGbpReputationRead
+            reputation={reputation}
+            reviewsDelta={reviewsDelta}
+          />
         </div>
       ) : null}
 
