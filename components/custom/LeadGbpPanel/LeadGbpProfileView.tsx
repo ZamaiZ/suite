@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type ReactNode } from "react"
+import { useCallback, useRef, useState, type ReactNode } from "react"
 import { useReducedMotion } from "motion/react"
 import { LeadGbpOpportunitiesRail } from "./LeadGbpOpportunitiesRail"
 import { LeadGbpProfileHeader } from "./LeadGbpProfileHeader"
@@ -11,6 +11,7 @@ import {
   LeadGbpTabReputation,
 } from "./LeadGbpTabPanels"
 import {
+  useCaptureShortcut,
   useCollapsibleRail,
   useWideViewport,
 } from "./use-collapsible-rail"
@@ -21,6 +22,7 @@ import { type GbpProfileTabId } from "@/lib/leads/gbp-profile-tabs"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import type { LeadLocation } from "@/lib/leads/resolve-location"
 
+const ANALYST_KEY = "gbp:analyst-block"
 const RAIL_W = "21.25rem"
 const RAIL_W_CLOSED = "3rem"
 
@@ -53,6 +55,52 @@ export function LeadGbpProfileView({
   // colunas — recolher fora dele deixaria a faixa flutuando sobre o conteúdo.
   const collapsed = wide && !railOpen
 
+  const [analystOpen, setAnalystOpen] = useState(() => {
+    if (typeof window === "undefined") return true
+    return window.localStorage.getItem(ANALYST_KEY) !== "closed"
+  })
+  const [analystFocusSignal, setAnalystFocusSignal] = useState(0)
+
+  const setAnalyst = useCallback((next: boolean) => {
+    setAnalystOpen(next)
+    window.localStorage.setItem(ANALYST_KEY, next ? "open" : "closed")
+  }, [])
+
+  /**
+   * Abre a coluna, abre o bloco e leva o cursor para o campo. Chamado pelo
+   * lápis do rail recolhido e pelo `Ctrl/⌘ + Shift + E`.
+   */
+  const requestAnalyst = useCallback(() => {
+    if (collapsed) toggle()
+    setAnalyst(true)
+    setAnalystFocusSignal((current) => current + 1)
+  }, [collapsed, toggle, setAnalyst])
+
+  /**
+   * Ida e volta: de fora, entra no campo; de dentro, recolhe o bloco e devolve
+   * o foco ao painel. Sem a volta, o atalho seria uma armadilha de foco — daí
+   * `allowInFields`, que é o que permite disparar com o cursor no textarea.
+   */
+  const toggleAnalyst = useCallback(() => {
+    const inside = document
+      .getElementById("gbp-analyst-block")
+      ?.contains(document.activeElement)
+    if (inside) {
+      setAnalyst(false)
+      panelsRef.current?.focus()
+      return
+    }
+    requestAnalyst()
+  }, [requestAnalyst, setAnalyst])
+
+  useCaptureShortcut({
+    enabled: true,
+    code: "KeyE",
+    onMatch: toggleAnalyst,
+    allowInFields: true,
+  })
+
+  const panelsRef = useRef<HTMLDivElement>(null)
   const [tab, setTab] = useState<GbpProfileTabId>("perfil")
   // Reset ligado à troca de perfil: no render, não em efeito.
   const [syncedProfileId, setSyncedProfileId] = useState(controller.profile.id)
@@ -114,7 +162,11 @@ export function LeadGbpProfileView({
           notices={notices}
           onAddProfile={onAddProfile}
         />
-        <div className="min-h-0 overflow-y-auto bg-accent/45 px-5 pt-4 pb-5">
+        <div
+          ref={panelsRef}
+          tabIndex={-1}
+          className="min-h-0 overflow-y-auto bg-accent/45 px-5 pt-4 pb-5 outline-none"
+        >
           {(Object.keys(panels) as GbpProfileTabId[]).map((id) => (
             <TabsContent
               key={id}
@@ -136,6 +188,10 @@ export function LeadGbpProfileView({
         activeTab={tab}
         railOpen={!collapsed}
         onToggleRail={toggle}
+        analystOpen={analystOpen}
+        onAnalystOpenChange={setAnalyst}
+        analystFocusSignal={analystFocusSignal}
+        onRequestAnalyst={requestAnalyst}
       />
     </Tabs>
   )

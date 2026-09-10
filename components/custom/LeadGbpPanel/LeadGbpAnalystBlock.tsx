@@ -5,6 +5,7 @@ import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri"
 import { LeadGbpNotesCard } from "./LeadGbpNotesCard"
 import type { GbpProfileController } from "./use-gbp-profile-controller"
 import { Button } from "@/components/ui/button"
+import { Kbd } from "@/components/ui/kbd"
 import { cn } from "cn"
 
 type Field = "notes" | "reputation"
@@ -63,6 +64,7 @@ export function LeadGbpAnalystBlock({
         {dirtyHint ? (
           <span className="text-[10px] text-muted-foreground">{dirtyHint}</span>
         ) : null}
+        <Kbd className="text-[10px]">Ctrl E</Kbd>
         <Button
           type="button"
           variant="ghost"

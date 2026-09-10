@@ -18,7 +18,6 @@ import {
 } from "@/lib/leads/gbp-profile-tabs"
 
 const RAIL_ID = "gbp-opportunities-rail"
-const ANALYST_KEY = "gbp:analyst-block"
 
 type Filter = "todas" | GbpOpportunityTheme
 
@@ -27,23 +26,21 @@ export function LeadGbpOpportunitiesRail({
   activeTab,
   railOpen,
   onToggleRail,
+  analystOpen,
+  onAnalystOpenChange,
+  analystFocusSignal,
+  onRequestAnalyst,
 }: {
   controller: GbpProfileController
   activeTab: GbpProfileTabId
   railOpen: boolean
   onToggleRail: () => void
+  analystOpen: boolean
+  onAnalystOpenChange: (next: boolean) => void
+  analystFocusSignal: number
+  onRequestAnalyst: () => void
 }) {
   const [filter, setFilter] = useState<Filter>("todas")
-  const [focusSignal, setFocusSignal] = useState(0)
-  const [analystOpen, setAnalystOpen] = useState(() => {
-    if (typeof window === "undefined") return true
-    return window.localStorage.getItem(ANALYST_KEY) !== "closed"
-  })
-
-  function setAnalyst(next: boolean) {
-    setAnalystOpen(next)
-    window.localStorage.setItem(ANALYST_KEY, next ? "open" : "closed")
-  }
   const grouped = gbpOpportunitiesByTheme(controller.opportunities)
   const total = controller.opportunities.length
   const shown =
@@ -78,12 +75,8 @@ export function LeadGbpOpportunitiesRail({
             type="button"
             variant="ghost"
             size="icon-sm"
-            aria-label="Abrir o bloco do analista"
-            onClick={() => {
-              onToggleRail()
-              setAnalyst(true)
-              setFocusSignal((current) => current + 1)
-            }}
+            aria-label="Abrir o bloco do analista (Ctrl E)"
+            onClick={onRequestAnalyst}
           >
             <RiEditLine size={14} aria-hidden />
           </Button>
@@ -107,7 +100,7 @@ export function LeadGbpOpportunitiesRail({
             <h3 className="font-heading flex-1 text-sm font-semibold text-foreground">
               Oportunidades
             </h3>
-            <Kbd className="text-[10px]">Ctrl ⇧ B</Kbd>
+            <Kbd className="text-[10px]">Ctrl B</Kbd>
             <Button
               type="button"
               variant="outline"
@@ -198,8 +191,8 @@ export function LeadGbpOpportunitiesRail({
         <LeadGbpAnalystBlock
           controller={controller}
           open={analystOpen}
-          onOpenChange={setAnalyst}
-          focusSignal={focusSignal}
+          onOpenChange={onAnalystOpenChange}
+          focusSignal={analystFocusSignal}
         />
       </aside>
     </>
