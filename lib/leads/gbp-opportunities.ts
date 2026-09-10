@@ -32,6 +32,99 @@ export type GbpOpportunityItem = {
 
 export const GBP_REPUTATION_OPPORTUNITY_ID = "reputation_note"
 
+export type GbpOpportunityTheme =
+  | "perfil"
+  | "reputacao"
+  | "ranking"
+  | "diretorios"
+
+/**
+ * Trilha, abas e coluna leem a mesma lista; o que impede as três de divergirem
+ * é este mapa ser exaustivo. `Record` sobre a união inteira faz o `tsc` recusar
+ * a compilação quando um gap novo entra em `GBP_GAP_IDS` sem tema — mais barato
+ * e mais confiável que um teste, num runner que não importa TS.
+ */
+export const GBP_OPPORTUNITY_THEME: Record<
+  GbpGapId | typeof GBP_REPUTATION_OPPORTUNITY_ID,
+  GbpOpportunityTheme
+> = {
+  // Perfil — informação, conteúdo e mídia do próprio perfil.
+  name_mismatch: "perfil",
+  missing_website: "perfil",
+  website_unmatched: "perfil",
+  missing_hours: "perfil",
+  // Fotos não têm card em aba nenhuma, só o big number do cabeçalho; Perfil é
+  // o destino menos errado.
+  no_photos: "perfil",
+  few_photos: "perfil",
+  closed: "perfil",
+  unclaimed: "perfil",
+  no_secondary_categories: "perfil",
+  missing_description: "perfil",
+  thin_description: "perfil",
+  no_services: "perfil",
+  no_posts: "perfil",
+  stale_posts: "perfil",
+  // O card de Q&A mora na aba Perfil.
+  unanswered_questions: "perfil",
+  category_off_segment: "perfil",
+  description_missing_services: "perfil",
+  description_missing_region: "perfil",
+  description_missing_category: "perfil",
+
+  // Reputação
+  low_rating: "reputacao",
+  few_reviews: "reputacao",
+  weak_review_replies: "reputacao",
+  unreplied_negative_reviews: "reputacao",
+  slow_review_replies: "reputacao",
+  review_burst: "reputacao",
+  latest_review_unanswered: "reputacao",
+  negative_replies_ignored: "reputacao",
+  dormant_reviews: "reputacao",
+  reviews_removed: "reputacao",
+  [GBP_REPUTATION_OPPORTUNITY_ID]: "reputacao",
+
+  // Ranking — hoje existe um id só; SoLV, ARP e ausência na malha não são
+  // gerados por `gbpGapsForProfile` e não são criados aqui.
+  not_in_map_top3: "ranking",
+
+  // Diretórios
+  missing_directory_listings: "diretorios",
+  directory_nap_mismatch: "diretorios",
+}
+
+const EMPTY_BY_THEME = (): Record<
+  GbpOpportunityTheme,
+  GbpOpportunityItem[]
+> => ({
+  perfil: [],
+  reputacao: [],
+  ranking: [],
+  diretorios: [],
+})
+
+export function gbpOpportunityTheme(id: string): GbpOpportunityTheme {
+  // Id fora do mapa só existe se alguém montar um item à mão; cair em "perfil"
+  // mantém o item visível em vez de sumir do agrupamento.
+  return (
+    GBP_OPPORTUNITY_THEME[id as keyof typeof GBP_OPPORTUNITY_THEME] ?? "perfil"
+  )
+}
+
+/**
+ * Reduce sobre a lista recebida: a soma dos grupos é a lista, por construção.
+ * Nenhum item pode sumir entre o contador da aba e o grupo da coluna.
+ */
+export function gbpOpportunitiesByTheme(
+  items: GbpOpportunityItem[],
+): Record<GbpOpportunityTheme, GbpOpportunityItem[]> {
+  return items.reduce((acc, item) => {
+    acc[gbpOpportunityTheme(item.id)].push(item)
+    return acc
+  }, EMPTY_BY_THEME())
+}
+
 /**
  * A leitura humana da reputação vira oportunidade quando preenchida — mesmo
  * padrão do critério `other` da revisão de site, que é só texto e chega ao
