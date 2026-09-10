@@ -422,7 +422,9 @@ export function mergeGbpOpportunities(input: {
   return items
 }
 
+// "Alto impacto" não cabe no chip de uma coluna de 340px; o rótulo curto é o
+// que a prancha 1a usa.
 export const GBP_IMPACT_LABEL: Record<GbpOpportunityImpact, string> = {
-  high: "Alto impacto",
-  medium: "Médio impacto",
+  high: "Alto",
+  medium: "Médio",
 }

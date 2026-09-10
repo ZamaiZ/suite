@@ -1,7 +1,14 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { RiGridLine } from "react-icons/ri"
+import {
+  RiAlertLine,
+  RiCheckboxCircleLine,
+  RiSearchLine,
+} from "react-icons/ri"
+import { LeadGbpCard } from "./LeadGbpCard"
+import { LeadGbpGridCompetitors } from "./LeadGbpGridCompetitors"
+import { GbpMeter, GbpStat } from "./LeadGbpMetrics"
 import { LeadGbpGridMap } from "./LeadGbpGridMap"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
@@ -58,13 +65,19 @@ export function LeadGbpGridSection({
   keywords,
   initialScan,
   canEdit,
+  mapMounted,
 }: {
   profileId: string
   keywords: string[]
   initialScan: LeadGbpGridScan | null
   canEdit: boolean
+  /**
+   * O mapa monta na primeira visita à aba Ranking e fica. O painel vive sob
+   * `keepMounted`; sem esta guarda o Google Maps JS carregaria em todo perfil
+   * aberto, inclusive nos que ninguém vai olhar.
+   */
+  mapMounted: boolean
 }) {
-  const [open, setOpen] = useState(false)
   const [scan, setScan] = useState<LeadGbpGridScan | null>(initialScan)
   const [keyword, setKeyword] = useState(keywords[0] ?? "")
   const [source, setSource] = useState(`${profileId}:${initialScan?.id ?? ""}`)
@@ -205,19 +218,8 @@ export function LeadGbpGridSection({
   )
 
   return (
-    <div className="mt-3 border-t border-border/70 pt-3">
-      <button
-        type="button"
-        onClick={() => setOpen((current) => !current)}
-        className="flex items-center gap-2 text-xs/relaxed text-muted-foreground hover:text-foreground"
-      >
-        <RiGridLine aria-hidden size={14} />
-        Malha geográfica
-        <span className="text-muted-foreground">{open ? "−" : "+"}</span>
-      </button>
-
-      {open ? (
-        <div className="mt-3 flex flex-col gap-3">
+    <LeadGbpCard title="Malha geográfica" className="h-full">
+      <div className="flex flex-col gap-3">
           {canEdit ? (
             <div className="flex flex-wrap items-end gap-3">
               <label className="flex min-w-44 flex-col gap-1">
@@ -352,13 +354,41 @@ export function LeadGbpGridSection({
 
           {scan ? (
             <>
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="text-xs/relaxed text-muted-foreground">
-                  “{scan.keyword}” · {scan.size}×{scan.size} ·{" "}
-                  {scan.radius_km.toLocaleString("pt-BR")} km ·{" "}
+              <div className="flex flex-wrap items-center gap-1.5">
+                <span className="inline-flex h-[22px] items-center gap-1 rounded-md bg-primary/10 px-2 text-[11px] font-medium text-primary">
+                  <RiSearchLine size={12} aria-hidden />
+                  {scan.keyword}
+                </span>
+                <span className="inline-flex h-[22px] items-center rounded-md bg-accent px-2 text-[11px] tabular-nums text-muted-foreground">
+                  {scan.size}×{scan.size}
+                </span>
+                <span className="inline-flex h-[22px] items-center rounded-md bg-accent px-2 text-[11px] tabular-nums text-muted-foreground">
+                  {scan.radius_km.toLocaleString("pt-BR")} km
+                </span>
+                <span className="inline-flex h-[22px] items-center rounded-md bg-accent px-2 text-[11px] text-muted-foreground">
                   {scan.mode === "live" ? "live" : "fila"}
                 </span>
-                <span className="text-xs/relaxed text-muted-foreground">
+
+                <span className="flex-1" />
+
+                {active ? (
+                  <Spinner aria-hidden className="size-3.5 text-muted-foreground" />
+                ) : null}
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 text-[11px] tabular-nums",
+                    failed > 0
+                      ? "text-destructive"
+                      : scan.processed >= scan.total
+                        ? "text-success"
+                        : "text-muted-foreground",
+                  )}
+                >
+                  {failed > 0 ? (
+                    <RiAlertLine size={13} aria-hidden />
+                  ) : scan.processed >= scan.total ? (
+                    <RiCheckboxCircleLine size={13} aria-hidden />
+                  ) : null}
                   {scan.processed.toLocaleString("pt-BR")} de{" "}
                   {scan.total.toLocaleString("pt-BR")} pontos
                   {failed > 0
@@ -366,62 +396,76 @@ export function LeadGbpGridSection({
                     : ""}
                 </span>
                 {/* Custo real devolvido pela API, não estimativa. */}
-                <span className="text-xs/relaxed tabular-nums text-muted-foreground">
+                <span className="text-[11px] tabular-nums text-muted-foreground">
                   {formatUsd(scan.cost_usd)}
                 </span>
-                {active ? (
-                  <Spinner
-                    aria-hidden
-                    className="size-3.5 text-muted-foreground"
-                  />
-                ) : null}
               </div>
 
               {metrics ? (
-                <div className="flex flex-wrap gap-4">
-                  <Metric label="ARP" value={metricLabel(metrics.arp)} />
-                  <Metric label="ATRP" value={metricLabel(metrics.atrp)} />
-                  <Metric label="SoLV" value={metricLabel(metrics.solv, "%")} />
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+                  {/*
+                    Escala declarada em cada tile. "13" e "20,51" são ilegíveis
+                    sem dizer que 1 é o topo — isso não é acabamento, é o que
+                    faz o número significar alguma coisa.
+                  */}
+                  <GbpStat
+                    label="ARP"
+                    value={metricLabel(metrics.arp)}
+                    hint="posição média onde aparece · 1 é o topo"
+                  />
+                  <GbpStat
+                    label="ATRP"
+                    value={metricLabel(metrics.atrp)}
+                    hint="posição média contando as ausências"
+                  />
+                  <GbpStat
+                    label="SoLV"
+                    value={metricLabel(metrics.solv, "%")}
+                    tone={
+                      metrics.solv === null
+                        ? "neutral"
+                        : metrics.solv <= 0
+                          ? "danger"
+                          : metrics.solv < 20
+                            ? "warning"
+                            : "success"
+                    }
+                    hint={
+                      metrics.solv === null
+                        ? "share of local voice"
+                        : metrics.solv <= 0
+                          ? "nenhuma célula no top 3"
+                          : `células no top 3 · ${metrics.found.toLocaleString("pt-BR")} de ${metrics.total.toLocaleString("pt-BR")} com o perfil`
+                    }
+                  >
+                    <GbpMeter
+                      share={(metrics.solv ?? 0) / 100}
+                      tone={
+                        metrics.solv === null
+                          ? "neutral"
+                          : metrics.solv <= 0
+                            ? "danger"
+                            : metrics.solv < 20
+                              ? "warning"
+                              : "success"
+                      }
+                      trackClassName="mt-2"
+                    />
+                  </GbpStat>
                 </div>
               ) : null}
 
-              <LeadGbpGridMap
-                centerLat={scan.center_lat}
-                centerLng={scan.center_lng}
-                points={scan.points}
-                className="h-72"
-              />
+              {mapMounted ? (
+                <LeadGbpGridMap
+                  centerLat={scan.center_lat}
+                  centerLng={scan.center_lng}
+                  points={scan.points}
+                  className="h-[300px] rounded-lg"
+                />
+              ) : null}
 
-              {position && position.competitors.length > 0 ? (
-                <div className="flex flex-col gap-1.5 rounded-lg border border-border/70 bg-background px-3 py-2">
-                  <p className="text-xs/relaxed text-foreground">
-                    Quem aparece na região, em{" "}
-                    {position.measured.toLocaleString("pt-BR")} células medidas
-                    {position.ownAbsent > 0
-                      ? ` · o perfil não aparece em ${position.ownAbsent.toLocaleString("pt-BR")}`
-                      : ""}
-                  </p>
-                  <ul className="flex flex-col gap-0.5">
-                    {position.competitors.slice(0, 8).map((competitor) => (
-                      <li
-                        key={competitor.key}
-                        className="flex items-baseline justify-between gap-2 text-xs/relaxed text-muted-foreground"
-                      >
-                        <span className="truncate">{competitor.title}</span>
-                        <span className="shrink-0 tabular-nums">
-                          {competitor.cells.toLocaleString("pt-BR")} células ·
-                          pos. média{" "}
-                          {competitor.averagePosition.toLocaleString("pt-BR", {
-                            maximumFractionDigits: 1,
-                          })}
-                          {competitor.cellsAhead > 0
-                            ? ` · à frente em ${competitor.cellsAhead.toLocaleString("pt-BR")}`
-                            : ""}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {position && position.measured > 0 ? (
+                <LeadGbpGridCompetitors position={position} />
               ) : null}
 
               {canResume ? (
@@ -457,19 +501,7 @@ export function LeadGbpGridSection({
               Nenhuma malha rodada para este perfil.
             </p>
           )}
-        </div>
-      ) : null}
-    </div>
-  )
-}
-
-function Metric({ label, value }: { label: string; value: string }) {
-  return (
-    <div className={cn("flex flex-col")}>
-      <span className="text-xs/relaxed text-muted-foreground">{label}</span>
-      <span className="text-xs/relaxed tabular-nums text-foreground">
-        {value}
-      </span>
-    </div>
+      </div>
+    </LeadGbpCard>
   )
 }

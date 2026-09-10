@@ -56,7 +56,7 @@ import {
 import { visibilityGapsForSnapshot } from "@/lib/leads/visibility-audit"
 import { LeadGbpAuditRail } from "./LeadGbpAuditRail"
 import { LeadGbpPlacePicker } from "./LeadGbpPlacePicker"
-import { LeadGbpProfileCard } from "./LeadGbpProfileCard"
+import { LeadGbpProfileView } from "./LeadGbpProfileView"
 import type { LeadGbpPanelProps } from "./LeadGbpPanel.types"
 
 const EASE = [0.23, 1, 0.32, 1] as const
@@ -145,25 +145,26 @@ export function LeadGbpPanel({
             onSelectStep={() => undefined}
           />
         </aside>
-        <div className="flex min-h-0 flex-col gap-3 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
-          <Pulse className="h-16" delay={0} />
-          <Pulse className="h-24" delay={40} />
-          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-            <Pulse className="h-16" delay={80} />
-            <Pulse className="h-16" delay={120} />
-            <Pulse className="h-16" delay={160} />
-            <Pulse className="h-16" delay={200} />
+        <div className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)]">
+          <div className="border-b border-border/70 px-5 pt-4">
+            <Pulse className="h-9 w-64" delay={0} />
+            <div className="mt-3.5 grid grid-cols-2 gap-3 xl:grid-cols-[minmax(0,1.15fr)_repeat(4,minmax(0,1fr))]">
+              <Pulse className="h-16" delay={40} />
+              <Pulse className="h-16" delay={80} />
+              <Pulse className="h-16" delay={120} />
+              <Pulse className="h-16" delay={160} />
+              <Pulse className="h-16" delay={200} />
+            </div>
+            <div className="mt-3.5 flex gap-6 pb-2.5">
+              <Pulse className="h-5 w-16" delay={240} />
+              <Pulse className="h-5 w-20" delay={260} />
+              <Pulse className="h-5 w-16" delay={280} />
+              <Pulse className="h-5 w-20" delay={300} />
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-            <Pulse className="h-48" delay={240} />
-            <Pulse className="h-48" delay={280} />
-            <Pulse className="h-48" delay={320} />
-          </div>
-          <Pulse className="h-32" delay={360} />
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-            <Pulse className="h-48" delay={400} />
-            <Pulse className="h-48" delay={440} />
-            <Pulse className="h-48 md:col-span-2 xl:col-span-1" delay={480} />
+          <div className="grid min-h-0 gap-3.5 bg-accent/45 px-5 pt-4 pb-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+            <Pulse className="h-72" delay={340} />
+            <Pulse className="h-72" delay={380} />
           </div>
         </div>
       </div>
@@ -417,6 +418,61 @@ export function LeadGbpPanel({
     })
   }
 
+  const fullBleed =
+    selectedStep === "google-profile" && profiles.length > 0 && selected !== null
+
+  // Avisos, picker e erro de vínculo moram na faixa do cabeçalho fixo: soltos
+  // acima dos cards, eles rolavam para fora da tela junto com o conteúdo.
+  const notices =
+    uncoveredCount > 0 || showPicker || linkError ? (
+      <div className="mt-3 flex flex-col gap-2">
+        {uncoveredCount > 0 ? (
+          <div className="flex flex-wrap items-center gap-3 rounded-lg border border-warning/25 bg-warning/10 px-3 py-2">
+            <RiAlertLine size={16} aria-hidden className="shrink-0 text-warning" />
+            <p className="min-w-0 flex-1 text-xs/relaxed text-warning">
+              {uncoveredCount === 1
+                ? "1 site sem perfil vinculado"
+                : `${uncoveredCount.toLocaleString("pt-BR")} sites sem perfil vinculado`}
+            </p>
+            {canEdit ? (
+              <Button
+                type="button"
+                variant="ghost"
+                className="h-8 px-2 text-warning"
+                onClick={() => setPickerOpen(true)}
+              >
+                Revisar
+              </Button>
+            ) : null}
+          </div>
+        ) : null}
+        {showPicker ? (
+          <LeadGbpPlacePicker
+            id="lead-gbp-place"
+            disabled={linking}
+            locationHint={gbpLocationHint}
+            onPick={handlePick}
+          />
+        ) : null}
+        {linkError ? (
+          <p role="alert" className="text-xs/relaxed text-destructive">
+            {linkError}
+            {existingLeadId ? (
+              <>
+                {" "}
+                <Link
+                  href={`/leads?lead=${existingLeadId}`}
+                  className="font-medium text-primary underline-offset-2 hover:underline"
+                >
+                  Abrir cadastro existente
+                </Link>
+              </>
+            ) : null}
+          </p>
+        ) : null}
+      </div>
+    ) : null
+
   return (
     <div className="grid h-full min-h-0 grid-cols-1 grid-rows-[auto_minmax(0,1fr)] lg:grid-cols-[17rem_minmax(0,1fr)] lg:grid-rows-1">
       <aside className="min-h-0 overflow-y-auto border-b border-border/70 bg-popover/70 lg:border-r lg:border-b-0">
@@ -468,7 +524,17 @@ export function LeadGbpPanel({
           onSelectStep={setSelectedStep}
         />
       </aside>
-      <div className="min-h-0 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
+      <div
+        className={cn(
+          "min-h-0",
+          // A etapa do Perfil no Google monta o próprio shell de tela cheia:
+          // cabeçalho fixo, abas e coluna. Padding e scroll aqui brigariam com
+          // ele. As outras quatro etapas seguem como estavam.
+          fullBleed
+            ? "min-w-0"
+            : "overflow-y-auto px-3 py-3 sm:px-4 sm:py-4",
+        )}
+      >
         {selectedStep === "website" ? (
           <LeadWebsitePanel
             detail={detail}
@@ -519,64 +585,25 @@ export function LeadGbpPanel({
             onPendingChange={onPendingChange}
           />
         ) : selectedStep === "google-profile" ? (
-          <div className="flex flex-col gap-3">
-            {uncoveredCount > 0 ? (
-              <m.div
-                initial={fade.initial}
-                animate={fade.animate}
-                transition={fade.transition}
-                className="flex flex-wrap items-center gap-3 rounded-lg border border-warning/25 bg-warning/10 px-3 py-2"
-              >
-                <RiAlertLine
-                  size={16}
-                  aria-hidden
-                  className="shrink-0 text-warning"
-                />
-                <p className="min-w-0 flex-1 text-xs/relaxed text-warning">
-                  {uncoveredCount === 1
-                    ? "1 site sem perfil vinculado"
-                    : `${uncoveredCount.toLocaleString("pt-BR")} sites sem perfil vinculado`}
-                </p>
-                {canEdit ? (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="h-8 px-2 text-warning"
-                    onClick={() => setPickerOpen(true)}
-                  >
-                    Revisar
-                  </Button>
-                ) : null}
-              </m.div>
-            ) : null}
-
-            {showPicker ? (
-              <LeadGbpPlacePicker
-                id="lead-gbp-place"
-                disabled={linking}
-                locationHint={gbpLocationHint}
-                onPick={handlePick}
-              />
-            ) : null}
-
-            {linkError ? (
-              <p role="alert" className="text-xs/relaxed text-destructive">
-                {linkError}
-                {existingLeadId ? (
-                  <>
-                    {" "}
-                    <Link
-                      href={`/leads?lead=${existingLeadId}`}
-                      className="font-medium text-primary underline-offset-2 hover:underline"
-                    >
-                      Abrir cadastro existente
-                    </Link>
-                  </>
-                ) : null}
-              </p>
-            ) : null}
-
-            {profiles.length === 0 ? (
+          fullBleed && selected ? (
+            <LeadGbpProfileView
+              profile={selected}
+              profiles={profiles}
+              companyName={detail.lead.company_name}
+              location={leadLocation}
+              canEdit={canEdit}
+              actionPending={linking}
+              readingMode={readingMode}
+              notices={notices}
+              onAddProfile={() => setPickerOpen(true)}
+              onSelectProfile={setSelectedId}
+              onUpdated={replaceProfile}
+              onRemoved={removeProfile}
+              onPendingChange={onPendingChange}
+            />
+          ) : (
+            <div className="flex flex-col gap-3 px-3 py-3 sm:px-4 sm:py-4">
+              {notices}
               <m.div
                 initial={fade.initial}
                 animate={fade.animate}
@@ -595,33 +622,8 @@ export function LeadGbpPanel({
                   </EmptyHeader>
                 </Empty>
               </m.div>
-            ) : selected ? (
-              <LeadGbpProfileCard
-                profile={selected}
-                profiles={profiles}
-                companyName={detail.lead.company_name}
-                location={leadLocation}
-                canEdit={canEdit}
-                actionPending={linking}
-                onSelectProfile={setSelectedId}
-                onUpdated={replaceProfile}
-                onRemoved={removeProfile}
-                onPendingChange={onPendingChange}
-              />
-            ) : null}
-
-            {canEdit && profiles.length > 0 && !pickerOpen ? (
-              <div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  onClick={() => setPickerOpen(true)}
-                >
-                  Adicionar perfil
-                </Button>
-              </div>
-            ) : null}
-          </div>
+            </div>
+          )
         ) : (
           <UpcomingStepPlaceholder />
         )}

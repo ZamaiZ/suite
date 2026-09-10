@@ -1,14 +1,24 @@
 "use client"
 
 import {
+  RiAddLine,
   RiCheckLine,
+  RiDeleteBinLine,
   RiExternalLinkLine,
   RiMapPin2Line,
+  RiMore2Line,
   RiRefreshLine,
+  RiStarLine,
 } from "react-icons/ri"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { formatRelativeShort } from "@/lib/date-time"
 
 export function LeadGbpStepHeader({
@@ -16,16 +26,31 @@ export function LeadGbpStepHeader({
   mapsHref,
   collecting,
   canEdit,
+  readingMode,
+  isPrimary,
   onEnrich,
+  onPrimary,
+  onRefresh,
+  onRemove,
+  onAddProfile,
 }: {
   updatedAt: string | null
   mapsHref: string | null
   collecting: boolean
   canEdit: boolean
+  /** Modo reunião: esconde edição. Nunca habilita nada. */
+  readingMode: boolean
+  isPrimary: boolean
   onEnrich: () => void
+  onPrimary: () => void
+  onRefresh: () => void
+  onRemove: () => void
+  onAddProfile: () => void
 }) {
+  const showActions = canEdit && !readingMode
+
   return (
-    <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex min-w-0 items-start gap-2.5">
         <LeadIconWell icon={RiMapPin2Line} />
         <div className="min-w-0">
@@ -44,7 +69,7 @@ export function LeadGbpStepHeader({
             Atualizado {formatRelativeShort(updatedAt)}
           </span>
         ) : null}
-        {canEdit ? (
+        {showActions ? (
           <Button
             type="button"
             variant="secondary"
@@ -63,7 +88,7 @@ export function LeadGbpStepHeader({
             Atualizar coleta
           </Button>
         ) : null}
-        {mapsHref ? (
+        {mapsHref && !readingMode ? (
           <Button
             type="button"
             variant="outline"
@@ -75,6 +100,34 @@ export function LeadGbpStepHeader({
             Ver no Google
             <RiExternalLinkLine data-icon="inline-end" aria-hidden />
           </Button>
+        ) : null}
+        {showActions ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon" />}
+              aria-label="Ações do perfil"
+            >
+              <RiMore2Line size={16} aria-hidden />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-44">
+              <DropdownMenuItem disabled={isPrimary} onClick={onPrimary}>
+                <RiStarLine size={16} aria-hidden />
+                Definir como principal
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onRefresh}>
+                <RiRefreshLine size={16} aria-hidden />
+                Atualizar dados do Places
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onAddProfile}>
+                <RiAddLine size={16} aria-hidden />
+                Adicionar perfil
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={onRemove} variant="destructive">
+                <RiDeleteBinLine size={16} aria-hidden />
+                Remover
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : null}
       </div>
     </div>
