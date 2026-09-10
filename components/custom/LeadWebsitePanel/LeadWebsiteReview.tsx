@@ -6,6 +6,7 @@ import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiCheckLine } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
+import { StepMeter } from "@/components/custom/LeadStepShell"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -25,6 +26,13 @@ import {
 const EASE = [0.23, 1, 0.32, 1] as const
 
 export type WebsiteReviewStatus = "idle" | "saving" | "saved" | "error"
+
+/**
+ * O critério `other` não aparece aqui: ele virou "Achado visual" no bloco do
+ * analista, ao lado das notas da etapa. Editá-lo em dois lugares seria dois
+ * campos para um valor só.
+ */
+const CRITERIA = WEBSITE_REVIEW_CATALOG.filter((item) => item.hasVerdict)
 
 function FieldReveal({
   show,
@@ -154,15 +162,24 @@ function VerdictGroup({
   )
 }
 
+/** Evidência de máquina: chip, não parágrafo cinza indistinguível do rótulo. */
+function Evidence({ children }: { children: string }) {
+  return (
+    <span className="mt-1 inline-flex h-[22px] items-center rounded-md bg-accent px-2 text-[11px] text-accent-foreground">
+      {children}
+    </span>
+  )
+}
+
 function CriterionRow({
-  auditId,
+  syncKey,
   criterion,
   evidence,
   review,
   canEdit,
   onChange,
 }: {
-  auditId: string
+  syncKey: string
   criterion: WebsiteReviewCriterion
   evidence: string
   review: WebsiteReview
@@ -170,7 +187,7 @@ function CriterionRow({
   onChange: (next: WebsiteReview) => void
 }) {
   const answer = review[criterion.id]
-  const showNote = !criterion.hasVerdict || answer.verdict !== null
+  const showNote = answer.verdict !== null
 
   function patch(partial: {
     verdict?: WebsiteReviewVerdict | null
@@ -178,10 +195,7 @@ function CriterionRow({
   }) {
     onChange({
       ...review,
-      [criterion.id]: {
-        ...answer,
-        ...partial,
-      },
+      [criterion.id]: { ...answer, ...partial },
     })
   }
 
@@ -191,9 +205,7 @@ function CriterionRow({
         <p className="text-xs/relaxed font-medium text-foreground">
           {criterion.label}
         </p>
-        {evidence ? (
-          <p className="text-xs/relaxed text-muted-foreground">{evidence}</p>
-        ) : null}
+        {evidence ? <Evidence>{evidence}</Evidence> : null}
         <p className="mt-1 text-xs/relaxed text-muted-foreground">
           {answer.verdict
             ? WEBSITE_REVIEW_VERDICT_LABEL[answer.verdict]
@@ -211,50 +223,36 @@ function CriterionRow({
   return (
     <li className="border-t border-border/70 py-3 first:border-t-0 first:pt-0">
       <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
+        <div className="flex min-w-0 flex-col">
           <p className="text-xs/relaxed font-medium text-foreground">
             {criterion.label}
           </p>
-          {evidence ? (
-            <p className="text-xs/relaxed text-muted-foreground">{evidence}</p>
-          ) : null}
+          {evidence ? <Evidence>{evidence}</Evidence> : null}
         </div>
-        {criterion.hasVerdict ? (
-          <VerdictGroup
-            id={`${auditId}-${criterion.id}`}
-            label={criterion.label}
-            value={answer.verdict}
-            allowsNa={criterion.allowsNa}
-            disabled={!canEdit}
-            onChange={(verdict) => patch({ verdict })}
-          />
-        ) : null}
+        <VerdictGroup
+          id={`${syncKey}-${criterion.id}`}
+          label={criterion.label}
+          value={answer.verdict}
+          allowsNa={criterion.allowsNa}
+          disabled={!canEdit}
+          onChange={(verdict) => patch({ verdict })}
+        />
       </div>
-      {criterion.hasVerdict ? (
-        <FieldReveal show={showNote} id={`${criterion.id}-note`}>
-          <NoteField
-            id={`${auditId}-${criterion.id}-note`}
-            value={answer.note}
-            placeholder={criterion.placeholder}
-            disabled={!canEdit}
-            onChange={(note) => patch({ note })}
-          />
-        </FieldReveal>
-      ) : (
+      <FieldReveal show={showNote} id={`${criterion.id}-note`}>
         <NoteField
-          id={`${auditId}-${criterion.id}-note`}
+          id={`${syncKey}-${criterion.id}-note`}
           value={answer.note}
           placeholder={criterion.placeholder}
           disabled={!canEdit}
           onChange={(note) => patch({ note })}
         />
-      )}
+      </FieldReveal>
     </li>
   )
 }
 
 export function LeadWebsiteReview({
-  auditId,
+  syncKey,
   review,
   evidence,
   canEdit,
@@ -263,7 +261,8 @@ export function LeadWebsiteReview({
   onDraftChange,
   onRetry,
 }: {
-  auditId: string
+  /** Canal em edição: é o que re-sincroniza o rascunho local. */
+  syncKey: string
   review: WebsiteReview
   evidence: Record<WebsiteReviewCriterionId, string>
   canEdit: boolean
@@ -276,9 +275,9 @@ export function LeadWebsiteReview({
   const progress = websiteReviewProgress(value)
 
   // Ajuste de estado quando a prop muda: no render, não em efeito.
-  const [syncedAuditId, setSyncedAuditId] = useState(auditId)
-  if (syncedAuditId !== auditId) {
-    setSyncedAuditId(auditId)
+  const [syncedFrom, setSyncedFrom] = useState(syncKey)
+  if (syncedFrom !== syncKey) {
+    setSyncedFrom(syncKey)
     setValue(websiteReviewDraft(review))
   }
 
@@ -290,20 +289,28 @@ export function LeadWebsiteReview({
 
   return (
     <LeadGbpCard title="Validação visual">
-      <div className="flex items-baseline justify-between gap-3">
-        <p className="text-xs/relaxed text-muted-foreground">
-          Julgue pelas capturas. A coleta não fecha estes pontos.
-        </p>
-        <p className="shrink-0 text-xs/relaxed tabular-nums text-muted-foreground">
-          {progress.done.toLocaleString("pt-BR")} de{" "}
-          {progress.total.toLocaleString("pt-BR")}
-        </p>
+      <div className="-mt-1 mb-2.5">
+        <div className="flex items-baseline justify-between gap-3">
+          <p className="text-xs/relaxed text-muted-foreground">
+            Julgue pelas capturas ao lado. A coleta não fecha estes pontos.
+          </p>
+          <p className="shrink-0 text-[11px] tabular-nums text-muted-foreground">
+            {progress.done.toLocaleString("pt-BR")} de{" "}
+            {progress.total.toLocaleString("pt-BR")}
+          </p>
+        </div>
+        <StepMeter
+          share={progress.done / progress.total}
+          tone="primary"
+          className="mt-1"
+          trackClassName="h-1"
+        />
       </div>
-      <ul className="mt-3">
-        {WEBSITE_REVIEW_CATALOG.map((criterion) => (
+      <ul>
+        {CRITERIA.map((criterion) => (
           <CriterionRow
             key={criterion.id}
-            auditId={auditId}
+            syncKey={syncKey}
             criterion={criterion}
             evidence={evidence[criterion.id]}
             review={value}

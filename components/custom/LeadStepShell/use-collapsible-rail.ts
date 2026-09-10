@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react"
 
-const STORAGE_KEY = "gbp:opportunities-rail"
 const WIDE = "(min-width: 80rem)"
 
 /**
@@ -12,29 +11,40 @@ const WIDE = "(min-width: 80rem)"
  * (`MobileNavigation.tsx:191`), que escutam `window` em bubble. Enquanto o
  * dialog está aberto, quem manda é a coluna — ver `useCaptureShortcut`.
  */
-export function useCollapsibleRail({ enabled }: { enabled: boolean }) {
+export function useCollapsibleRail({
+  enabled,
+  storageKey,
+}: {
+  enabled: boolean
+  /** Chave de `localStorage` da etapa. Cada etapa tem a sua: recolher a coluna
+   *  no GBP não deve recolher no Website — a densidade das duas é diferente. */
+  storageKey: string
+}) {
   // Inicializador preguiçoso: `localStorage` e `matchMedia` nunca no render.
   // A preferência gravada vence sempre que existe; sem ela, aberta em `xl`.
   const [railOpen, setRailOpen] = useState(() => {
     if (typeof window === "undefined") return true
-    const stored = window.localStorage.getItem(STORAGE_KEY)
+    const stored = window.localStorage.getItem(storageKey)
     if (stored === "open") return true
     if (stored === "closed") return false
     return window.matchMedia(WIDE).matches
   })
 
-  const set = useCallback((next: boolean) => {
-    setRailOpen(next)
-    window.localStorage.setItem(STORAGE_KEY, next ? "open" : "closed")
-  }, [])
+  const set = useCallback(
+    (next: boolean) => {
+      setRailOpen(next)
+      window.localStorage.setItem(storageKey, next ? "open" : "closed")
+    },
+    [storageKey],
+  )
 
   const toggle = useCallback(() => {
     setRailOpen((current) => {
       const next = !current
-      window.localStorage.setItem(STORAGE_KEY, next ? "open" : "closed")
+      window.localStorage.setItem(storageKey, next ? "open" : "closed")
       return next
     })
-  }, [])
+  }, [storageKey])
 
   useCaptureShortcut({ enabled, code: "KeyB", onMatch: toggle })
 

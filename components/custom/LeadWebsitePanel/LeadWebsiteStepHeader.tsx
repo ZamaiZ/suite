@@ -16,14 +16,19 @@ export function LeadWebsiteStepHeader({
   siteHref,
   collecting,
   canEdit,
+  readingMode,
   onAnalyze,
 }: {
   updatedAt: string | null
   siteHref: string | null
   collecting: boolean
   canEdit: boolean
+  /** Modo reunião: esconde edição. Nunca habilita nada. */
+  readingMode: boolean
   onAnalyze: () => void
 }) {
+  const showActions = canEdit && !readingMode
+
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
       <div className="flex min-w-0 items-start gap-2.5">
@@ -44,7 +49,7 @@ export function LeadWebsiteStepHeader({
             Atualizado {formatRelativeShort(updatedAt)}
           </span>
         ) : null}
-        {canEdit ? (
+        {showActions ? (
           <Button
             type="button"
             variant="secondary"
@@ -63,7 +68,7 @@ export function LeadWebsiteStepHeader({
             {updatedAt ? "Atualizar coleta" : "Analisar site"}
           </Button>
         ) : null}
-        {siteHref ? (
+        {siteHref && !readingMode ? (
           <Button
             type="button"
             variant="outline"

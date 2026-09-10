@@ -14,7 +14,10 @@ import {
   websiteReviewHasOpportunity,
   websiteReviewOpportunityId,
   type WebsiteReview,
+  type WebsiteReviewCriterionId,
 } from "./website-review.ts"
+import { type BacklinkGapId } from "./backlinks-audit.ts"
+import { type WebsiteStepTabId } from "./website-step-tabs.ts"
 
 export type WebsiteOpportunityImpact = "high" | "medium"
 export type WebsiteOpportunitySource = "machine" | "analyst"
@@ -208,4 +211,125 @@ export function mergeWebsiteOpportunities(
     return 0
   })
   return items
+}
+
+/**
+ * Contadores das abas, grupos da coluna e total do rail saem da mesma lista. A
+ * garantia de que não divergem é de tipo, não de teste: `Record` sobre as três
+ * uniões inteiras faz o `tsc` recusar a compilação quando um id novo entra sem
+ * tema — mais barato e mais confiável que um teste, num runner que não resolve
+ * o alias `@/`.
+ *
+ * A regra do corte não é "quem produz o gap". `websitePagespeedGaps` também
+ * levanta `mixed_content` e `noindex`, e os dois ficam em Auditoria: não são
+ * métricas do PageSpeed, são fatos binários com item de check próprio, e
+ * `noindex` ainda tem segunda fonte no crawl. Temar por origem faria a mesma
+ * checagem mudar de aba conforme qual coleta chegasse primeiro.
+ */
+export const WEBSITE_OPPORTUNITY_THEME: Record<
+  WebsiteGapId | BacklinkGapId | `review:${WebsiteReviewCriterionId}`,
+  WebsiteStepTabId
+> = {
+  // PageSpeed — as quatro métricas que a aba mede em profundidade.
+  slow_performance: "pagespeed",
+  poor_cwv: "pagespeed",
+  not_responsive: "pagespeed",
+  a11y_issues: "pagespeed",
+
+  // Auditoria — estrutura técnica.
+  no_https: "auditoria",
+  mixed_content: "auditoria",
+  noindex: "auditoria",
+  noindex_internal_pages: "auditoria",
+  robots_blocks_search: "auditoria",
+  missing_sitemap: "auditoria",
+  sitemap_bloat: "auditoria",
+  weak_security_headers: "auditoria",
+  canonical_missing: "auditoria",
+  canonical_points_elsewhere: "auditoria",
+  canonical_external: "auditoria",
+  canonical_insecure: "auditoria",
+  canonical_vs_noindex: "auditoria",
+  canonical_non_indexable: "auditoria",
+  host_canonicalization: "auditoria",
+  slash_canonicalization: "auditoria",
+  https_canonicalization: "auditoria",
+  redirect_chain: "auditoria",
+  temporary_redirect: "auditoria",
+  redirect_loop: "auditoria",
+  few_pages: "auditoria",
+  unfriendly_urls: "auditoria",
+
+  // Auditoria — SEO on-page.
+  generic_title: "auditoria",
+  missing_meta_description: "auditoria",
+  missing_h1: "auditoria",
+  duplicate_h1: "auditoria",
+  heading_hierarchy: "auditoria",
+  thin_content: "auditoria",
+  images_missing_alt: "auditoria",
+  no_internal_links: "auditoria",
+  no_schema: "auditoria",
+  no_local_schema: "auditoria",
+  no_service_pages: "auditoria",
+  no_blog: "auditoria",
+
+  // Auditoria — conversão e UX.
+  weak_cta: "auditoria",
+  contact_only_in_footer: "auditoria",
+  nap_mismatch: "auditoria",
+  no_privacy_policy: "auditoria",
+  no_terms: "auditoria",
+
+  // Autoridade externa — o catálogo inteiro de backlinks.
+  no_backlinks: "autoridade",
+  few_referring_domains: "autoridade",
+  low_authority_rank: "autoridade",
+  broken_backlinks: "autoridade",
+  mostly_nofollow: "autoridade",
+  toxic_backlinks: "autoridade",
+  sitewide_link_pattern: "autoridade",
+  behind_on_referring_domains: "autoridade",
+  link_scheme_detected: "autoridade",
+
+  // Validação visual — o julgamento do analista.
+  "review:design": "validacao",
+  "review:cta_visible": "validacao",
+  "review:narrow_layout": "validacao",
+  "review:sample_pages": "validacao",
+  "review:nap_group": "validacao",
+  "review:content_quality": "validacao",
+  "review:other": "validacao",
+}
+
+const EMPTY_BY_THEME = (): Record<
+  WebsiteStepTabId,
+  WebsiteOpportunityItem[]
+> => ({
+  auditoria: [],
+  pagespeed: [],
+  validacao: [],
+  autoridade: [],
+})
+
+export function websiteOpportunityTheme(id: string): WebsiteStepTabId {
+  // Id fora do mapa só existe se alguém montar um item à mão; cair em
+  // "auditoria" mantém o item visível em vez de sumir do agrupamento.
+  return (
+    WEBSITE_OPPORTUNITY_THEME[id as keyof typeof WEBSITE_OPPORTUNITY_THEME] ??
+    "auditoria"
+  )
+}
+
+/**
+ * Reduce sobre a lista recebida: a soma dos grupos é a lista, por construção.
+ * Nenhum item pode sumir entre o contador da aba e o grupo da coluna.
+ */
+export function websiteOpportunitiesByTheme(
+  items: ReadonlyArray<WebsiteOpportunityItem>,
+): Record<WebsiteStepTabId, WebsiteOpportunityItem[]> {
+  return items.reduce((acc, item) => {
+    acc[websiteOpportunityTheme(item.id)].push(item)
+    return acc
+  }, EMPTY_BY_THEME())
 }

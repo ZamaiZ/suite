@@ -10,10 +10,10 @@ import {
   type LeadWebsiteAudit,
 } from "@/lib/leads/website-audit"
 import {
-  emptyWebsiteReview,
+  emptyWebsiteReviewEntry,
   readLeadWebsiteReviewRow,
   websiteReviewsByChannel,
-  type WebsiteReview,
+  type WebsiteReviewEntry,
 } from "@/lib/leads/website-review"
 import {
   PSI_STALE_RUNNING_MS,
@@ -38,21 +38,22 @@ export const WEBSITE_REVIEW_SELECT =
 export async function loadWebsiteReviewForChannel(
   supabase: SupabaseClient,
   channelId: string,
-): Promise<WebsiteReview> {
+): Promise<WebsiteReviewEntry> {
   const { data, error } = await supabase
     .from("lead_website_reviews")
     .select(WEBSITE_REVIEW_SELECT)
     .eq("channel_id", channelId)
     .maybeSingle()
-  if (error || !data) return emptyWebsiteReview()
+  if (error || !data) return emptyWebsiteReviewEntry()
   const parsed = readLeadWebsiteReviewRow(data as Record<string, unknown>)
-  return parsed?.review ?? emptyWebsiteReview()
+  if (!parsed) return emptyWebsiteReviewEntry()
+  return { review: parsed.review, notes: parsed.notes }
 }
 
 export async function loadWebsiteReviewsForLead(
   supabase: SupabaseClient,
   leadId: string,
-): Promise<Map<string, WebsiteReview>> {
+): Promise<Map<string, WebsiteReviewEntry>> {
   const { data, error } = await supabase
     .from("lead_website_reviews")
     .select(WEBSITE_REVIEW_SELECT)
@@ -72,9 +73,9 @@ export type WebsiteChannelRow = {
 
 export function rowToWebsiteAudit(
   row: Record<string, unknown>,
-  review?: WebsiteReview,
+  entry?: WebsiteReviewEntry,
 ): LeadWebsiteAudit | null {
-  return readLeadWebsiteAuditRow(row, review)
+  return readLeadWebsiteAuditRow(row, entry)
 }
 
 export async function loadWebsiteChannelRow(
@@ -139,10 +140,10 @@ export async function loadWebsiteAuditRow(
 
   const row = data as Record<string, unknown>
   const channelId = typeof row.channel_id === "string" ? row.channel_id : null
-  const review = channelId
+  const entry = channelId
     ? await loadWebsiteReviewForChannel(supabase, channelId)
-    : emptyWebsiteReview()
-  const audit = readLeadWebsiteAuditRow(row, review)
+    : emptyWebsiteReviewEntry()
+  const audit = readLeadWebsiteAuditRow(row, entry)
   if (!audit) return { status: "error" }
 
   const lead = await loadGbpLeadContext(supabase, audit.lead_id)

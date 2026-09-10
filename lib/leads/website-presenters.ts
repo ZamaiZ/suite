@@ -28,11 +28,24 @@ import {
 
 export type WebsiteCheckStatus = "ok" | "warn" | "pending" | "error"
 
+export type WebsiteCheckCount = {
+  value: number
+  total: number
+  /** Complemento depois do número, ex. "de 12 páginas sem H1". */
+  noun: string
+}
+
 export type WebsiteCheckItem = {
   id: string
   label: string
   detail: string
   status: WebsiteCheckStatus
+  /**
+   * Quando o detalhe é uma contagem, ela vem também destrinchada para a linha
+   * poder destacar o número. `detail` continua obrigatório: quem não tem
+   * contagem renderiza como sempre.
+   */
+  count?: WebsiteCheckCount
 }
 
 export type WebsiteCheckSectionId = "technical" | "onpage" | "conversion"
@@ -50,7 +63,7 @@ function formatScore(value: number): string {
   return value.toLocaleString("pt-BR")
 }
 
-function formatMs(value: number): string {
+export function formatMs(value: number): string {
   if (value >= 1000) {
     const seconds = value / 1000
     return `${seconds.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}s`
@@ -174,17 +187,35 @@ function sampleCount(total: number, bad: number, warnLabel: string): string {
   return `${bad.toLocaleString("pt-BR")} de ${total.toLocaleString("pt-BR")} ${warnLabel}`
 }
 
+/**
+ * Mesma frase de `sampleCount` no `detail`, mais o número destrinchado para a
+ * linha poder destacá-lo. A frase continua existindo porque é ela que a coluna
+ * de oportunidades e o diagnóstico leem.
+ */
+function sampleCountItem(
+  total: number,
+  bad: number,
+  warnLabel: string,
+): Pick<WebsiteCheckItem, "detail" | "status" | "count"> {
+  return {
+    status: "warn",
+    detail: sampleCount(total, bad, warnLabel),
+    count: {
+      value: bad,
+      total,
+      noun: `de ${total.toLocaleString("pt-BR")} ${warnLabel}`,
+    },
+  }
+}
+
 function headingDetail(
   crawl: WebsiteCrawl,
   home: WebsitePageSnapshot | null,
   gaps: ReadonlySet<WebsiteGapId>,
-): Pick<WebsiteCheckItem, "detail" | "status"> {
+): Pick<WebsiteCheckItem, "detail" | "status" | "count"> {
   if (gaps.has("missing_h1")) {
     const missing = crawl.pages.filter((page) => page.h1.length === 0).length
-    return {
-      status: "warn",
-      detail: sampleCount(crawl.pages.length, missing, "páginas sem H1"),
-    }
+    return sampleCountItem(crawl.pages.length, missing, "páginas sem H1")
   }
   if (gaps.has("duplicate_h1")) {
     return { status: "warn", detail: WEBSITE_GAP_LABELS.duplicate_h1 }
@@ -466,14 +497,7 @@ export function websiteCheckSections(
           id: "title",
           label: "Title tags",
           ...(gaps.has("generic_title")
-            ? {
-                status: "warn" as const,
-                detail: sampleCount(
-                  total,
-                  genericTitles,
-                  "páginas com title genérico",
-                ),
-              }
+            ? sampleCountItem(total, genericTitles, "páginas com title genérico")
             : {
                 status: "ok" as const,
                 detail: home?.title ?? "Title presente",
@@ -483,10 +507,7 @@ export function websiteCheckSections(
           id: "meta",
           label: "Meta descriptions",
           ...(gaps.has("missing_meta_description")
-            ? {
-                status: "warn" as const,
-                detail: sampleCount(total, missingMeta, "páginas sem meta"),
-              }
+            ? sampleCountItem(total, missingMeta, "páginas sem meta")
             : {
                 status: "ok" as const,
                 detail: home?.metaDescription ?? "Meta description presente",
@@ -501,14 +522,7 @@ export function websiteCheckSections(
           id: "content",
           label: "Conteúdo",
           ...(gaps.has("thin_content")
-            ? {
-                status: "warn" as const,
-                detail: sampleCount(
-                  total,
-                  thinPages,
-                  "páginas com pouco conteúdo",
-                ),
-              }
+            ? sampleCountItem(total, thinPages, "páginas com pouco conteúdo")
             : {
                 status: "ok" as const,
                 detail: `${(home?.wordCount ?? 0).toLocaleString("pt-BR")} palavras na inicial`,
@@ -518,14 +532,7 @@ export function websiteCheckSections(
           id: "images",
           label: "Imagens",
           ...(gaps.has("images_missing_alt")
-            ? {
-                status: "warn" as const,
-                detail: sampleCount(
-                  total,
-                  missingAlt,
-                  "páginas com imagens sem alt",
-                ),
-              }
+            ? sampleCountItem(total, missingAlt, "páginas com imagens sem alt")
             : warnOrOk(gaps, "images_missing_alt", "Imagens com alt text")),
         },
         {
@@ -571,4 +578,60 @@ export function websiteCheckSections(
       ],
     },
   ]
+}
+
+export type WebsiteCheckTally = {
+  ok: number
+  warn: number
+  pending: number
+  error: number
+  total: number
+}
+
+/**
+ * `total` conta todos os itens, inclusive os `pending`. Um check aguardando
+ * PageSpeed não é um check aprovado, e somá-lo no numerador faria a fração
+ * subir sozinha antes de a coleta voltar.
+ */
+export function websiteCheckTally(
+  sections: readonly WebsiteCheckSection[],
+): WebsiteCheckTally {
+  const tally: WebsiteCheckTally = {
+    ok: 0,
+    warn: 0,
+    pending: 0,
+    error: 0,
+    total: 0,
+  }
+  for (const section of sections) {
+    for (const item of section.items) {
+      tally[item.status] += 1
+      tally.total += 1
+    }
+  }
+  return tally
+}
+
+const OPEN_ORDER: Record<WebsiteCheckStatus, number> = {
+  error: 0,
+  warn: 1,
+  pending: 2,
+  ok: 3,
+}
+
+/**
+ * O que precisa de trabalho fica visível sem rolar; o que passou continua
+ * auditável atrás do disclosure.
+ */
+export function websiteCheckGroups(section: WebsiteCheckSection): {
+  open: WebsiteCheckItem[]
+  approved: WebsiteCheckItem[]
+} {
+  const open = section.items
+    .filter((item) => item.status !== "ok")
+    .sort((left, right) => OPEN_ORDER[left.status] - OPEN_ORDER[right.status])
+  return {
+    open,
+    approved: section.items.filter((item) => item.status === "ok"),
+  }
 }

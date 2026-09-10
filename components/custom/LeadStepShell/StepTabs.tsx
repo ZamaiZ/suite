@@ -4,32 +4,43 @@ import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "cn"
-import {
-  GBP_PROFILE_TABS,
-  type GbpProfileTabId,
-} from "@/lib/leads/gbp-profile-tabs"
+
+export type StepTabDef<Id extends string> = {
+  id: Id
+  label: string
+}
 
 /**
  * Mesma composição das abas do dialog (`LeadDetailHeader`): o sublinhado do
  * registry sai (`after:hidden`) e quem anima é o `m.span` com `layoutId`.
+ *
+ * Sem ícone: a aba já é rótulo curto com contador, e duas barras de etapa que
+ * diferem custam mais do que o ícone entrega.
  */
-export function LeadGbpStepTabs({
-  tab,
+export function StepTabs<Id extends string>({
+  tabs,
   counts,
+  value,
+  layoutId,
+  ariaLabel = "Seções da etapa",
 }: {
-  tab: GbpProfileTabId
-  counts: Record<GbpProfileTabId, number>
+  tabs: ReadonlyArray<StepTabDef<Id>>
+  counts: Record<Id, number>
+  value: Id
+  /** Único por etapa — dois `layoutId` iguais fariam os sublinhados brigarem. */
+  layoutId: string
+  ariaLabel?: string
 }) {
   const reduced = !!useReducedMotion()
 
   return (
     <TabsList
       variant="line"
-      aria-label="Seções da etapa"
+      aria-label={ariaLabel}
       className="mt-3.5 h-auto items-stretch gap-6 p-0"
     >
-      {GBP_PROFILE_TABS.map((item) => {
-        const active = tab === item.id
+      {tabs.map((item) => {
+        const active = value === item.id
         const count = counts[item.id]
         return (
           <TabsTrigger
@@ -57,7 +68,7 @@ export function LeadGbpStepTabs({
             ) : null}
             {active ? (
               <m.span
-                layoutId={reduced ? undefined : "gbp-step-tab-underline"}
+                layoutId={reduced ? undefined : layoutId}
                 className="absolute inset-x-0 -bottom-px h-0.5 rounded-full bg-primary"
                 transition={{
                   duration: reduced ? 0.12 : 0.18,

@@ -10,12 +10,12 @@ import {
   LeadGbpTabRanking,
   LeadGbpTabReputation,
 } from "./LeadGbpTabPanels"
+import { useGbpProfileController } from "./use-gbp-profile-controller"
 import {
   useCaptureShortcut,
   useCollapsibleRail,
   useWideViewport,
-} from "./use-collapsible-rail"
-import { useGbpProfileController } from "./use-gbp-profile-controller"
+} from "@/components/custom/LeadStepShell"
 import { Tabs, TabsContent } from "@/components/ui/tabs"
 import { gbpOpportunitiesByTheme } from "@/lib/leads/gbp-opportunities"
 import { type GbpProfileTabId } from "@/lib/leads/gbp-profile-tabs"
@@ -49,7 +49,10 @@ export function LeadGbpProfileView({
   const controller = useGbpProfileController(controllerInput)
   const reduced = !!useReducedMotion()
   const wide = useWideViewport()
-  const { railOpen, toggle } = useCollapsibleRail({ enabled: wide })
+  const { railOpen, toggle } = useCollapsibleRail({
+    enabled: wide,
+    storageKey: "gbp:opportunities-rail",
+  })
   // Abaixo de `xl` a coluna não é coluna: vira a última seção do scroll. O rail
   // de 48px é posicionado em absoluto e só faz sentido no layout de duas
   // colunas — recolher fora dele deixaria a faixa flutuando sobre o conteúdo.

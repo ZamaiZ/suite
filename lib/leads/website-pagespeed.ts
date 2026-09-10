@@ -6,6 +6,15 @@ export const PSI_PERFORMANCE_NEEDS = 90
 export const PSI_LCP_NEEDS_MS = 2500
 export const PSI_INP_NEEDS_MS = 200
 export const PSI_CLS_NEEDS = 0.1
+
+/**
+ * Teto da faixa "a melhorar": acima disso o Core Web Vital e ruim. As tres
+ * faixas do Google — bom, a melhorar, ruim — sao o que a regua da aba PageSpeed
+ * desenha; sem o segundo limiar ela so saberia dizer "passou" ou "nao passou".
+ */
+export const PSI_LCP_POOR_MS = 4000
+export const PSI_INP_POOR_MS = 500
+export const PSI_CLS_POOR = 0.25
 export const PSI_A11Y_POOR = 50
 export const PSI_STALE_RUNNING_MS = 90_000
 export const PSI_FETCH_TIMEOUT_MS = 55_000

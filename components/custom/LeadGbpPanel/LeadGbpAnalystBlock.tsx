@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react"
 import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri"
-import { LeadGbpNotesCard } from "./LeadGbpNotesCard"
+import { StepNotesField } from "@/components/custom/LeadStepShell"
 import type { GbpProfileController } from "./use-gbp-profile-controller"
 import { Button } from "@/components/ui/button"
 import { Kbd } from "@/components/ui/kbd"
+import { GBP_NOTES_MAX } from "@/lib/leads/gbp"
 import { cn } from "cn"
 
 type Field = "notes" | "reputation"
@@ -14,7 +15,7 @@ const BLOCK_ID = "gbp-analyst-block"
 
 /**
  * Os dois campos ficam **montados** o tempo todo; o inativo recebe `hidden`.
- * `LeadGbpNotesCard` guarda o valor em `useState(initialValue)` e só
+ * `StepNotesField` guarda o valor em `useState(initialValue)` e só
  * re-sincroniza quando o perfil muda — desmontar o inativo devolveria o
  * textarea ao valor do servidor, e o texto digitado dentro dos 800ms de
  * debounce, ou depois de um erro de salvamento, voltaria atrás na tela.
@@ -112,11 +113,13 @@ export function LeadGbpAnalystBlock({
         ) : null}
 
         <div className="mt-2">
-          <LeadGbpNotesCard
-            variant="rail"
+          <StepNotesField
             hidden={canEdit && field !== "notes"}
             id={`gbp-notes-${profile.id}`}
-            profileId={profile.id}
+            syncKey={profile.id}
+            maxLength={GBP_NOTES_MAX}
+            title="Notas da etapa"
+            placeholder="Posts, Q&A, respostas, ranking — o que a API não vê"
             initialValue={profile.notes ?? ""}
             canEdit={canEdit}
             status={notesStatus}
@@ -126,11 +129,11 @@ export function LeadGbpAnalystBlock({
               void controller.persistNotes()
             }}
           />
-          <LeadGbpNotesCard
-            variant="rail"
+          <StepNotesField
             hidden={canEdit && field !== "reputation"}
             id={`gbp-reputation-${profile.id}`}
-            profileId={profile.id}
+            syncKey={profile.id}
+            maxLength={GBP_NOTES_MAX}
             initialValue={profile.reputation_note ?? ""}
             canEdit={canEdit}
             status={notesStatus}

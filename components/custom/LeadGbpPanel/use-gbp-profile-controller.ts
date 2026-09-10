@@ -26,7 +26,7 @@ import {
   type GbpReputation,
 } from "@/lib/leads/gbp-reputation"
 import type { LeadLocation } from "@/lib/leads/resolve-location"
-import type { GbpNotesStatus } from "./LeadGbpNotesCard"
+import type { StepNotesStatus } from "@/components/custom/LeadStepShell"
 
 const POLL_MS = 5000
 const POLL_MAX_MS = 120_000
@@ -64,7 +64,7 @@ export type GbpProfileController = {
   failedJobs: LeadGbpProfile["jobs"]
   busy: boolean
   error: string | null
-  notesStatus: GbpNotesStatus
+  notesStatus: StepNotesStatus
   savingReplyTime: boolean
   onSelectProfile: (profileId: string) => void
   handleRefresh: () => void
@@ -105,7 +105,7 @@ export function useGbpProfileController({
   onRemoved: (profileId: string) => void
   onPendingChange: (pending: boolean) => void
 }): GbpProfileController {
-  const [notesStatus, setNotesStatus] = useState<GbpNotesStatus>("idle")
+  const [notesStatus, setNotesStatus] = useState<StepNotesStatus>("idle")
   const [error, setError] = useState<string | null>(null)
   const [savingReplyTime, setSavingReplyTime] = useState(false)
   const [pollTimedOut, setPollTimedOut] = useState(false)

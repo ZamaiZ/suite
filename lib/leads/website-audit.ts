@@ -32,7 +32,11 @@ import {
   readHeadings,
   type WebsiteHeading,
 } from "./website-headings.ts"
-import { emptyWebsiteReview, type WebsiteReview } from "./website-review.ts"
+import {
+  emptyWebsiteReviewEntry,
+  type WebsiteReview,
+  type WebsiteReviewEntry,
+} from "./website-review.ts"
 
 export const WEBSITE_NOTES_MAX = 2000
 export const WEBSITE_THIN_CONTENT_WORDS = 300
@@ -348,6 +352,8 @@ export type LeadWebsiteAudit = {
    * apresentacao, nao uma coluna do snapshot.
    */
   review: WebsiteReview
+  /** Notas livres do analista, por canal. Mesma origem e mesma gravacao. */
+  notes: string | null
   pagespeed: WebsitePagespeedSnapshot | null
   pagespeed_at: string | null
   jobs: WebsitePsiJob[]
@@ -750,7 +756,7 @@ function readVariants(value: unknown): WebsiteVariantSnapshot | null {
 
 export function readLeadWebsiteAuditRow(
   row: Record<string, unknown>,
-  review: WebsiteReview = emptyWebsiteReview(),
+  entry: WebsiteReviewEntry = emptyWebsiteReviewEntry(),
 ): LeadWebsiteAudit | null {
   const id = asString(row.id)
   const lead_id = asString(row.lead_id)
@@ -781,7 +787,8 @@ export function readLeadWebsiteAuditRow(
     fetched_at,
     fetched_by,
     crawl,
-    review,
+    review: entry.review,
+    notes: entry.notes,
     pagespeed,
     pagespeed_at,
     jobs: readWebsitePsiJobs(row.lead_website_jobs),
@@ -790,7 +797,7 @@ export function readLeadWebsiteAuditRow(
 
 export function readLeadWebsiteAudits(
   embed: unknown,
-  reviewsByChannel?: ReadonlyMap<string, WebsiteReview>,
+  reviewsByChannel?: ReadonlyMap<string, WebsiteReviewEntry>,
 ): LeadWebsiteAudit[] {
   if (!Array.isArray(embed)) return []
   // A tabela e append-only, entao o mesmo canal traz varios snapshots.
@@ -800,8 +807,8 @@ export function readLeadWebsiteAudits(
     if (!row || typeof row !== "object") continue
     const record = row as Record<string, unknown>
     const channelId = asString(record.channel_id)
-    const review = channelId ? reviewsByChannel?.get(channelId) : undefined
-    const audit = readLeadWebsiteAuditRow(record, review)
+    const entry = channelId ? reviewsByChannel?.get(channelId) : undefined
+    const audit = readLeadWebsiteAuditRow(record, entry)
     if (!audit) continue
     const current = latest.get(audit.channel_id)
     if (current && current.fetched_at >= audit.fetched_at) continue

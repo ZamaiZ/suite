@@ -8,7 +8,7 @@ import {
 } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridCompetitors } from "./LeadGbpGridCompetitors"
-import { GbpMeter, GbpStat } from "./LeadGbpMetrics"
+import { StepMeter, StepStat } from "@/components/custom/LeadStepShell"
 import { LeadGbpGridMap } from "./LeadGbpGridMap"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
@@ -408,17 +408,17 @@ export function LeadGbpGridSection({
                     sem dizer que 1 é o topo — isso não é acabamento, é o que
                     faz o número significar alguma coisa.
                   */}
-                  <GbpStat
+                  <StepStat
                     label="ARP"
                     value={metricLabel(metrics.arp)}
                     hint="posição média onde aparece · 1 é o topo"
                   />
-                  <GbpStat
+                  <StepStat
                     label="ATRP"
                     value={metricLabel(metrics.atrp)}
                     hint="posição média contando as ausências"
                   />
-                  <GbpStat
+                  <StepStat
                     label="SoLV"
                     value={metricLabel(metrics.solv, "%")}
                     tone={
@@ -438,7 +438,7 @@ export function LeadGbpGridSection({
                           : `células no top 3 · ${metrics.found.toLocaleString("pt-BR")} de ${metrics.total.toLocaleString("pt-BR")} com o perfil`
                     }
                   >
-                    <GbpMeter
+                    <StepMeter
                       share={(metrics.solv ?? 0) / 100}
                       tone={
                         metrics.solv === null
@@ -451,7 +451,7 @@ export function LeadGbpGridSection({
                       }
                       trackClassName="mt-2"
                     />
-                  </GbpStat>
+                  </StepStat>
                 </div>
               ) : null}
 

@@ -7,14 +7,15 @@ import * as m from "motion/react-m"
 import { cn } from "cn"
 
 /**
- * Primitivos de leitura numérica da etapa. Existem porque os presenters
- * entregavam frases (`parts.join(" · ")`) e frase pronta não tem hierarquia
- * para declarar — o componente só podia imprimi-la inteira, em cinza.
+ * Primitivos de leitura numérica de etapa, compartilhados por Perfil no Google
+ * e Website. Existem porque os presenters entregavam frases
+ * (`parts.join(" · ")`) e frase pronta não tem hierarquia para declarar — o
+ * componente só podia imprimi-la inteira, em cinza.
  */
 
-export type GbpTone = "neutral" | "primary" | "success" | "warning" | "danger"
+export type StepTone = "neutral" | "primary" | "success" | "warning" | "danger"
 
-const FILL: Record<GbpTone, string> = {
+const FILL: Record<StepTone, string> = {
   neutral: "bg-muted-foreground/40",
   primary: "bg-primary",
   success: "bg-success",
@@ -22,7 +23,7 @@ const FILL: Record<GbpTone, string> = {
   danger: "bg-destructive",
 }
 
-const TEXT: Record<GbpTone, string> = {
+const TEXT: Record<StepTone, string> = {
   neutral: "text-muted-foreground",
   primary: "text-primary",
   success: "text-success",
@@ -47,7 +48,7 @@ const TEXT: Record<GbpTone, string> = {
  * firme — a regra é usar o token cheio, nunca uma versão com alfa que passe
  * raspando.
  */
-const SURFACE: Record<GbpTone, string> = {
+const SURFACE: Record<StepTone, string> = {
   neutral: "border-border/70 bg-card",
   primary: "border-primary/25 bg-primary/[0.05]",
   success: "border-success/25 bg-success/[0.05]",
@@ -64,7 +65,7 @@ function pct(share: number): string {
  * que existe uma escala ali — sem ela, `0%` vira um rótulo solto e o leitor não
  * sabe contra o quê.
  */
-export function GbpMeter({
+export function StepMeter({
   share,
   tone = "primary",
   className,
@@ -72,7 +73,7 @@ export function GbpMeter({
 }: {
   /** 0 a 1. */
   share: number
-  tone?: GbpTone
+  tone?: StepTone
   className?: string
   trackClassName?: string
 }) {
@@ -104,7 +105,7 @@ export function GbpMeter({
 }
 
 /** Medidor com rótulo à esquerda e valor à direita, alinhado por baseline. */
-export function GbpMeterRow({
+export function StepMeterRow({
   label,
   value,
   share,
@@ -113,7 +114,7 @@ export function GbpMeterRow({
   label: string
   value: string
   share: number
-  tone?: GbpTone
+  tone?: StepTone
 }) {
   return (
     <div className="min-w-0">
@@ -125,7 +126,7 @@ export function GbpMeterRow({
           {value}
         </span>
       </div>
-      <GbpMeter share={share} tone={tone} className="mt-1" trackClassName="h-1" />
+      <StepMeter share={share} tone={tone} className="mt-1" trackClassName="h-1" />
     </div>
   )
 }
@@ -134,7 +135,7 @@ export function GbpMeterRow({
  * Tile de achado: o número é o elemento, o tom carrega o estado e o ícone
  * garante que o estado não dependa só de cor.
  */
-export function GbpStat({
+export function StepStat({
   icon: Icon,
   label,
   value,
@@ -149,7 +150,7 @@ export function GbpStat({
   /** Fica ao lado do número, na linha de base. */
   unit?: string
   hint?: string
-  tone?: GbpTone
+  tone?: StepTone
   children?: ReactNode
 }) {
   const emphasis = tone === "neutral" ? "text-foreground" : TEXT[tone]
@@ -205,7 +206,7 @@ export function GbpStat({
 }
 
 /** Rótulo de seção dentro de um card. */
-export function GbpSectionLabel({
+export function StepSectionLabel({
   children,
   aside,
 }: {
@@ -227,7 +228,7 @@ export function GbpSectionLabel({
 }
 
 /** Célula de contagem — para janelas cumulativas, onde barra mentiria. */
-export function GbpCountCell({
+export function StepCountCell({
   value,
   label,
   dim,

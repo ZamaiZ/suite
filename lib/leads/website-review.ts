@@ -1,5 +1,8 @@
 export const WEBSITE_REVIEW_NOTE_MAX = 400
 
+/** Teto da coluna `lead_website_reviews.notes` — o check do banco é 1..2000. */
+export const WEBSITE_NOTES_MAX = 2000
+
 export const WEBSITE_REVIEW_CRITERION_IDS = [
   "design",
   "cta_visible",
@@ -182,22 +185,19 @@ function readNote(value: unknown): string {
   return trimmed.slice(0, WEBSITE_REVIEW_NOTE_MAX)
 }
 
-function isReviewEmpty(review: WebsiteReview): boolean {
-  return WEBSITE_REVIEW_CRITERION_IDS.every((id) => {
-    const answer = review[id]
-    return answer.verdict === null && answer.note.length === 0
-  })
-}
-
 function objectRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null
   return value as Record<string, unknown>
 }
 
-export function readWebsiteReview(
-  value: unknown,
-  fallbackNotes: string | null = null,
-): WebsiteReview {
+/**
+ * O fallback de `notes` para o criterio `other` saiu quando o bloco do analista
+ * ganhou campo proprio de notas: o mesmo texto apareceria em dois lugares e o
+ * analista editaria dois campos que sao um so. Linhas antigas com revisao vazia
+ * e `notes` preenchida passam a mostrar o texto so em "Notas da etapa", que e
+ * onde ele foi escrito.
+ */
+export function readWebsiteReview(value: unknown): WebsiteReview {
   const review = emptyWebsiteReview()
   const row = objectRecord(value)
   if (row) {
@@ -213,12 +213,6 @@ export function readWebsiteReview(
         updatedAt: asString(item.updatedAt),
         updatedBy: asString(item.updatedBy),
       }
-    }
-  }
-  if (isReviewEmpty(review) && fallbackNotes) {
-    review.other = {
-      ...emptyAnswer(),
-      note: readNote(fallbackNotes),
     }
   }
   return review
@@ -244,24 +238,38 @@ export function readLeadWebsiteReviewRow(
   if (!channel_id) return null
   return {
     channel_id,
-    review: readWebsiteReview(row.review, asString(row.notes)),
+    review: readWebsiteReview(row.review),
     notes: asString(row.notes),
     updated_at: asString(row.updated_at),
     updated_by: asString(row.updated_by),
   }
 }
 
+/**
+ * O par que a auditoria recebe hidratado. Os dois campos moram na mesma linha
+ * de `lead_website_reviews` e sao gravados pela mesma action — separa-los aqui
+ * so criaria duas fontes para a mesma leitura.
+ */
+export type WebsiteReviewEntry = {
+  review: WebsiteReview
+  notes: string | null
+}
+
+export function emptyWebsiteReviewEntry(): WebsiteReviewEntry {
+  return { review: emptyWebsiteReview(), notes: null }
+}
+
 /** Indexa as revisoes por canal para hidratar varias auditorias de uma vez. */
 export function websiteReviewsByChannel(
   rows: unknown,
-): Map<string, WebsiteReview> {
-  const map = new Map<string, WebsiteReview>()
+): Map<string, WebsiteReviewEntry> {
+  const map = new Map<string, WebsiteReviewEntry>()
   if (!Array.isArray(rows)) return map
   for (const item of rows) {
     if (!item || typeof item !== "object" || Array.isArray(item)) continue
     const parsed = readLeadWebsiteReviewRow(item as Record<string, unknown>)
     if (!parsed) continue
-    map.set(parsed.channel_id, parsed.review)
+    map.set(parsed.channel_id, { review: parsed.review, notes: parsed.notes })
   }
   return map
 }

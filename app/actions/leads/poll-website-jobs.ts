@@ -44,11 +44,11 @@ async function reloadAudit(
   const row = data as Record<string, unknown>
   // Sem hidratar, cada poll do PageSpeed devolveria a revisao vazia e a
   // interface perderia o que o analista ja tinha respondido.
-  const review =
+  const entry =
     typeof row.channel_id === "string"
       ? await loadWebsiteReviewForChannel(supabase, row.channel_id)
       : undefined
-  return readLeadWebsiteAuditRow(row, review)
+  return readLeadWebsiteAuditRow(row, entry)
 }
 
 export async function pollLeadWebsiteJobs(

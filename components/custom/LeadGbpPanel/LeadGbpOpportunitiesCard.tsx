@@ -1,48 +1,7 @@
 import { RiLightbulbLine } from "react-icons/ri"
 import { LeadGbpCard } from "./LeadGbpCard"
 import { cn } from "cn"
-import {
-  GBP_IMPACT_LABEL,
-  type GbpOpportunityItem,
-} from "@/lib/leads/gbp-opportunities"
-
-/**
- * Linha da coluna de oportunidades da etapa Perfil no Google. As outras quatro
- * etapas continuam usando `LeadGbpOpportunitiesCard` abaixo — elas ainda são um
- * scroll de cards, e só esta etapa ganhou coluna própria.
- */
-export function LeadGbpOpportunityItem({ item }: { item: GbpOpportunityItem }) {
-  return (
-    <li className="flex items-start gap-2 rounded-lg bg-card px-2.5 py-2 ring-1 ring-foreground/[0.08]">
-      <span
-        aria-hidden
-        className={cn(
-          "mt-1.5 inline-block size-1.5 shrink-0 rounded-full",
-          item.impact === "high" ? "bg-warning" : "bg-border",
-        )}
-      />
-      <div className="min-w-0 flex-1">
-        <p className="text-xs/[1.5] text-foreground">{item.title}</p>
-        {item.detail ? (
-          <p className="line-clamp-2 text-[11px] text-muted-foreground">
-            {item.source === "analyst" ? "Analista · " : null}
-            {item.detail}
-          </p>
-        ) : null}
-      </div>
-      <span
-        className={cn(
-          "shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-medium",
-          item.impact === "high"
-            ? "bg-warning/10 text-warning"
-            : "bg-accent text-muted-foreground",
-        )}
-      >
-        {GBP_IMPACT_LABEL[item.impact]}
-      </span>
-    </li>
-  )
-}
+import { GBP_IMPACT_LABEL } from "@/lib/leads/gbp-opportunities"
 
 export function LeadGbpOpportunitiesCard({
   items,

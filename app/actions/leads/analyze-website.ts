@@ -101,10 +101,10 @@ export async function analyzeLeadWebsite(
   }
 
   // A revisao do analista sobrevive a nova coleta: ela vive por canal.
-  const review = await loadWebsiteReviewForChannel(supabase, loaded.channel.id)
+  const entry = await loadWebsiteReviewForChannel(supabase, loaded.channel.id)
   const audit = readLeadWebsiteAuditRow(
     withJobs as Record<string, unknown>,
-    review,
+    entry,
   )
   if (!audit) {
     return { status: "error", message: ANALYZE_FAILED }

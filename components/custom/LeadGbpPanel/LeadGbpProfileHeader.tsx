@@ -6,10 +6,11 @@ import { RiArrowUpSLine } from "react-icons/ri"
 import { LeadGbpIdentityCell } from "./LeadGbpIdentityCell"
 import { LeadGbpMetricCells } from "./LeadGbpMetricCells"
 import { LeadGbpStepHeader } from "./LeadGbpStepHeader"
-import { LeadGbpStepTabs } from "./LeadGbpStepTabs"
 import type { GbpProfileController } from "./use-gbp-profile-controller"
+import { StepTabs } from "@/components/custom/LeadStepShell"
 import { Button } from "@/components/ui/button"
 import { cn } from "cn"
+import { GBP_PROFILE_TABS } from "@/lib/leads/gbp-profile-tabs"
 import type { GbpProfileTabId } from "@/lib/leads/gbp-profile-tabs"
 
 const NUMBERS_KEY = "gbp:header-numbers"
@@ -99,7 +100,12 @@ export function LeadGbpProfileHeader({
         lê como "dobrar o que está acima" e não custa uma linha nova de altura.
       */}
       <div className="flex items-end justify-between gap-3">
-        <LeadGbpStepTabs tab={tab} counts={counts} />
+        <StepTabs
+          tabs={GBP_PROFILE_TABS}
+          counts={counts}
+          value={tab}
+          layoutId="gbp-step-tab-underline"
+        />
         <Button
           type="button"
           variant="ghost"

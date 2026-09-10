@@ -1,7 +1,7 @@
 "use client"
 
 import { RiMapPinLine } from "react-icons/ri"
-import { GbpMeter, GbpSectionLabel, GbpStat } from "./LeadGbpMetrics"
+import { StepMeter, StepSectionLabel, StepStat } from "@/components/custom/LeadStepShell"
 import { cn } from "cn"
 import type { GbpGridPositionSnapshot } from "@/lib/leads/gbp-grid-competitors"
 
@@ -43,7 +43,7 @@ export function LeadGbpGridCompetitors({
 
   return (
     <div className="flex flex-col gap-3.5">
-      <GbpStat
+      <StepStat
         icon={RiMapPinLine}
         label="Presença na malha"
         value={num(position.ownAbsent)}
@@ -55,18 +55,18 @@ export function LeadGbpGridCompetitors({
             : `Aparece em ${num(visible)} · nenhuma no top 3`
         }
       >
-        <GbpMeter
+        <StepMeter
           share={absentShare}
           tone={absentShare >= 0.5 ? "danger" : "warning"}
           trackClassName="mt-2"
         />
-      </GbpStat>
+      </StepStat>
 
       {rows.length > 0 ? (
         <section>
-          <GbpSectionLabel aside="barra relativa ao líder">
+          <StepSectionLabel aside="barra relativa ao líder">
             Quem ocupa a região
-          </GbpSectionLabel>
+          </StepSectionLabel>
           <ol className="flex flex-col gap-2">
             {rows.map((competitor, index) => (
               <li
@@ -80,7 +80,7 @@ export function LeadGbpGridCompetitors({
                   <p className="truncate text-xs/[1.5] text-foreground">
                     {competitor.title}
                   </p>
-                  <GbpMeter
+                  <StepMeter
                     share={top > 0 ? competitor.cells / top : 0}
                     tone="primary"
                     className="mt-1"

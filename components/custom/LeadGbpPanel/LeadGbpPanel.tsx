@@ -418,8 +418,18 @@ export function LeadGbpPanel({
     })
   }
 
+  // As duas etapas montam o próprio shell de tela cheia: cabeçalho fixo, abas e
+  // coluna. Padding e scroll do contêiner brigariam com ele.
+  const websiteFullBleed =
+    selectedStep === "website" &&
+    detail.lead.channels.some(
+      (channel) => channel.type === "website" && channel.id,
+    )
   const fullBleed =
-    selectedStep === "google-profile" && profiles.length > 0 && selected !== null
+    (selectedStep === "google-profile" &&
+      profiles.length > 0 &&
+      selected !== null) ||
+    websiteFullBleed
 
   // Avisos, picker e erro de vínculo moram na faixa do cabeçalho fixo: soltos
   // acima dos cards, eles rolavam para fora da tela junto com o conteúdo.
@@ -539,6 +549,7 @@ export function LeadGbpPanel({
           <LeadWebsitePanel
             detail={detail}
             canEdit={canEdit}
+            readingMode={readingMode}
             onAuditChange={(audit) => {
               onWebsiteAuditsChange(detail.lead.id, [
                 ...detail.websiteAudits.filter(

@@ -1,0 +1,165 @@
+"use client"
+
+import { useEffect, useRef, useState } from "react"
+import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri"
+import { StepNotesField } from "@/components/custom/LeadStepShell"
+import { Button } from "@/components/ui/button"
+import { Kbd } from "@/components/ui/kbd"
+import { cn } from "cn"
+import {
+  WEBSITE_NOTES_MAX,
+  WEBSITE_REVIEW_NOTE_MAX,
+} from "@/lib/leads/website-review"
+import type { WebsiteController } from "./use-website-controller"
+
+type Field = "notes" | "finding"
+
+const BLOCK_ID = "website-analyst-block"
+
+/**
+ * Os dois campos ficam **montados** o tempo todo; o inativo recebe `hidden`.
+ * `StepNotesField` guarda o valor em `useState(initialValue)` e só re-sincroniza
+ * quando o canal muda — desmontar o inativo devolveria o textarea ao valor do
+ * servidor, e o texto digitado dentro dos 800ms de debounce, ou depois de um
+ * erro de salvamento, voltaria atrás na tela.
+ */
+export function LeadWebsiteAnalystBlock({
+  controller,
+  open,
+  onOpenChange,
+  focusSignal,
+}: {
+  controller: WebsiteController
+  open: boolean
+  onOpenChange: (next: boolean) => void
+  /**
+   * Contador que o rail incrementa quando o lápis pede foco aqui. O efeito só
+   * chama `focus()` — abrir o bloco é responsabilidade de quem pediu.
+   */
+  focusSignal: number
+}) {
+  const [field, setField] = useState<Field>("notes")
+  const bodyRef = useRef<HTMLDivElement>(null)
+  const { canEdit, saveStatus, saveError, review, notes, selected } = controller
+  const errorMessage = saveStatus === "error" ? saveError : null
+  const syncKey = selected?.id ?? "none"
+  const finding = review.other.note
+
+  useEffect(() => {
+    if (focusSignal === 0) return
+    // Um frame depois do `hidden` sair, senão o `focus()` cai num elemento que
+    // ainda não é focável.
+    const raf = requestAnimationFrame(() => {
+      bodyRef.current?.querySelector("textarea")?.focus()
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [focusSignal])
+
+  const dirtyHint = !open && (notes || finding) ? "preenchido" : null
+
+  return (
+    <div className="border-t border-border/70 bg-popover px-4 pt-3 pb-4">
+      <div className="flex items-center gap-2">
+        <p className="flex-1 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+          Bloco do analista
+        </p>
+        {dirtyHint ? (
+          <span className="text-[10px] text-muted-foreground">{dirtyHint}</span>
+        ) : null}
+        <Kbd className="text-[10px]">Ctrl E</Kbd>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          aria-label={
+            open ? "Recolher bloco do analista" : "Abrir bloco do analista"
+          }
+          aria-expanded={open}
+          aria-controls={BLOCK_ID}
+          onClick={() => onOpenChange(!open)}
+        >
+          {open ? (
+            <RiArrowDownSLine size={14} aria-hidden />
+          ) : (
+            <RiArrowUpSLine size={14} aria-hidden />
+          )}
+        </Button>
+      </div>
+
+      <div id={BLOCK_ID} ref={bodyRef} hidden={!open}>
+        {canEdit ? (
+          <div className="mt-2 flex rounded-lg bg-border/60 p-[3px]">
+            {(
+              [
+                ["notes", "Notas da etapa"],
+                ["finding", "Achado visual"],
+              ] as const
+            ).map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setField(id)}
+                aria-pressed={field === id}
+                className={cn(
+                  "h-6.5 flex-1 cursor-pointer rounded-md text-[11px] font-semibold transition-colors",
+                  field === id
+                    ? "bg-card text-foreground shadow-xs"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="mt-2">
+          <StepNotesField
+            hidden={canEdit && field !== "notes"}
+            id={`website-notes-${syncKey}`}
+            syncKey={syncKey}
+            initialValue={notes}
+            canEdit={canEdit}
+            status={saveStatus}
+            errorMessage={errorMessage}
+            maxLength={WEBSITE_NOTES_MAX}
+            title="Notas da etapa"
+            placeholder="Contexto do site, histórico com a agência, o que a coleta não vê"
+            onDraftChange={controller.handleNotesDraftChange}
+            onRetry={controller.retrySave}
+          />
+          {/*
+            O "Achado visual" é o critério `other` da revisão: ele já persistia,
+            mas morava na última linha do card de validação, onde ninguém o
+            encontrava.
+          */}
+          <StepNotesField
+            hidden={canEdit && field !== "finding"}
+            id={`website-finding-${syncKey}`}
+            syncKey={syncKey}
+            initialValue={finding}
+            canEdit={canEdit}
+            status={saveStatus}
+            errorMessage={errorMessage}
+            maxLength={WEBSITE_REVIEW_NOTE_MAX}
+            title="Achado visual"
+            placeholder="Algo que a coleta não viu"
+            onDraftChange={(note) =>
+              controller.handleReviewDraftChange({
+                ...review,
+                other: { ...review.other, note },
+              })
+            }
+            onRetry={controller.retrySave}
+          />
+        </div>
+
+        {canEdit ? (
+          <p className="mt-2 text-[11px] text-muted-foreground">
+            Salva automaticamente enquanto você digita.
+          </p>
+        ) : null}
+      </div>
+    </div>
+  )
+}

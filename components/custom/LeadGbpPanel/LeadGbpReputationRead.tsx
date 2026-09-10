@@ -8,12 +8,12 @@ import {
   RiStackLine,
 } from "react-icons/ri"
 import {
-  GbpCountCell,
-  GbpMeter,
-  GbpMeterRow,
-  GbpSectionLabel,
-  GbpStat,
-} from "./LeadGbpMetrics"
+  StepCountCell,
+  StepMeter,
+  StepMeterRow,
+  StepSectionLabel,
+  StepStat,
+} from "@/components/custom/LeadStepShell"
 import {
   GBP_REPUTATION_DORMANT_DAYS,
   type GbpReputation,
@@ -79,7 +79,7 @@ export function LeadGbpReputationRead({
     // Resposta por nota primeiro: a taxa geral esconde exatamente o caso em
     // que se responde todo elogio e nenhuma crítica, e é o que o closer usa.
     low?.replyRate != null && high?.replyRate != null ? (
-      <GbpStat
+      <StepStat
         key="bands"
         icon={RiChatDeleteLine}
         label="Críticas sem resposta"
@@ -88,24 +88,24 @@ export function LeadGbpReputationRead({
         tone={low.replyRate < 0.5 ? "danger" : "neutral"}
       >
         <div className="mt-2 flex flex-col gap-1.5">
-          <GbpMeterRow
+          <StepMeterRow
             label={`Notas altas · ${num(high.count)}`}
             value={pctLabel(high.replyRate) ?? "—"}
             share={share(high.replyRate)}
             tone="success"
           />
-          <GbpMeterRow
+          <StepMeterRow
             label={`Notas baixas · ${num(low.count)}`}
             value={pctLabel(low.replyRate) ?? "—"}
             share={share(low.replyRate)}
             tone="danger"
           />
         </div>
-      </GbpStat>
+      </StepStat>
     ) : null,
 
     burst ? (
-      <GbpStat
+      <StepStat
         key="burst"
         icon={RiStackLine}
         label="Concentração"
@@ -114,12 +114,12 @@ export function LeadGbpReputationRead({
         tone="warning"
         hint={`${num(burst.count)} de ${num(sample.size)} avaliações da amostra`}
       >
-        <GbpMeter share={burst.share} tone="warning" trackClassName="mt-2" />
-      </GbpStat>
+        <StepMeter share={burst.share} tone="warning" trackClassName="mt-2" />
+      </StepStat>
     ) : null,
 
     sample.daysSinceLast !== null ? (
-      <GbpStat
+      <StepStat
         key="pace"
         icon={RiPauseCircleLine}
         label="Ritmo"
@@ -155,12 +155,12 @@ export function LeadGbpReputationRead({
       */}
       {measuredAuthors.length > 0 ? (
         <section>
-          <GbpSectionLabel aside={`amostra de ${num(sample.size)}`}>
+          <StepSectionLabel aside={`amostra de ${num(sample.size)}`}>
             Perfil dos autores
-          </GbpSectionLabel>
+          </StepSectionLabel>
           <div className="grid grid-cols-2 gap-x-5 gap-y-2.5 xl:grid-cols-4">
             {measuredAuthors.map(([label, value]) => (
-              <GbpMeterRow
+              <StepMeterRow
                 key={label}
                 label={label}
                 value={pctLabel(value) ?? "—"}
@@ -174,12 +174,12 @@ export function LeadGbpReputationRead({
 
       {sample.windows.length > 0 ? (
         <section>
-          <GbpSectionLabel aside="acumulado">
+          <StepSectionLabel aside="acumulado">
             Avaliações por janela
-          </GbpSectionLabel>
+          </StepSectionLabel>
           <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-5">
             {sample.windows.map((window) => (
-              <GbpCountCell
+              <StepCountCell
                 key={window.days}
                 // Janela truncada é piso, não total: a amostra tem teto, e um
                 // número absoluto afirmaria algo que ninguém mediu.

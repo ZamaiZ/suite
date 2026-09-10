@@ -46,11 +46,16 @@ export async function updateLeadWebsiteAudit(
   // ela nao se duplica a cada coleta.
   const now = new Date().toISOString()
   const review = stampWebsiteReview(parsed.data.review, user.id, now)
+  // Campo ausente nao entra no upsert: no conflito o Postgres so atualiza as
+  // colunas enviadas, entao omiti-lo preserva a nota que ja estava la.
+  const notesPatch =
+    parsed.data.notes === undefined ? {} : { notes: parsed.data.notes }
   const { error } = await supabase.from("lead_website_reviews").upsert(
     {
       lead_id: loaded.audit.lead_id,
       channel_id: loaded.audit.channel_id,
       review,
+      ...notesPatch,
       updated_at: now,
       updated_by: user.id,
     },
@@ -61,5 +66,13 @@ export async function updateLeadWebsiteAudit(
     return { status: "error", message: SAVE_FAILED }
   }
 
-  return { status: "success", audit: { ...loaded.audit, review } }
+  return {
+    status: "success",
+    audit: {
+      ...loaded.audit,
+      review,
+      notes:
+        parsed.data.notes === undefined ? loaded.audit.notes : parsed.data.notes,
+    },
+  }
 }
