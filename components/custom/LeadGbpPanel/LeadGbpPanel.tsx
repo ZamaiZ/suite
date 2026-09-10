@@ -27,6 +27,8 @@ import {
   gbpWebsiteCoverage,
   websiteKeysFromChannels,
 } from "@/lib/leads/gbp"
+import { mergeGbpOpportunities } from "@/lib/leads/gbp-opportunities"
+import { gbpReputation } from "@/lib/leads/gbp-reputation"
 import { type GbpAuditRailStepId } from "@/lib/leads/gbp-audit-rail"
 import { diagnosisFactsFingerprint } from "@/lib/leads/diagnosis-document"
 import {
@@ -65,6 +67,8 @@ export function LeadGbpPanel({
   detail,
   loading,
   readOnly,
+  // Consumida a partir do cabeçalho fixo da etapa; até lá, só atravessa.
+  readingMode,
   onProfilesChange,
   onWebsiteAuditsChange,
   onDigitalPresenceChange,
@@ -181,7 +185,7 @@ export function LeadGbpPanel({
     detail.lead,
     selected?.payload ?? null,
   )
-  const alertCount = selected
+  const selectedGaps = selected
     ? gbpGapsForProfile(
         selected.payload,
         detail.lead.company_name,
@@ -203,7 +207,28 @@ export function LeadGbpPanel({
           reviewsDelta: selected.reviews_delta,
           location: leadLocation,
         },
-      ).length
+      )
+    : []
+  // O badge da trilha conta oportunidades, não gaps: `mergeGbpOpportunities`
+  // acrescenta a leitura da reputação do analista, e é ela que a coluna mostra.
+  // Contar gaps aqui fazia trilha e coluna divergirem em 1 assim que o campo
+  // fosse preenchido.
+  const alertCount = selected
+    ? mergeGbpOpportunities({
+        gaps: selectedGaps,
+        reputation: gbpReputation({
+          reviews: selected.reviews,
+          distribution: selected.enrichment?.ratingDistribution ?? null,
+          today: todayCivilDate(),
+        }),
+        reviewsDelta: selected.reviews_delta,
+        rankChecks: selected.rankChecks,
+        keywords: selected.rank_keywords,
+        reputationNote: selected.reputation_note,
+        analystReview: selected.analyst_review,
+        enrichment: selected.enrichment,
+        location: leadLocation,
+      }).length
     : 0
   const primaryWebsiteChannel =
     detail.lead.channels
