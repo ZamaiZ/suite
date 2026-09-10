@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { RiGridLine } from "react-icons/ri"
+import { LeadGbpCard } from "./LeadGbpCard"
 import { LeadGbpGridMap } from "./LeadGbpGridMap"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
@@ -58,13 +58,19 @@ export function LeadGbpGridSection({
   keywords,
   initialScan,
   canEdit,
+  mapMounted,
 }: {
   profileId: string
   keywords: string[]
   initialScan: LeadGbpGridScan | null
   canEdit: boolean
+  /**
+   * O mapa monta na primeira visita à aba Ranking e fica. O painel vive sob
+   * `keepMounted`; sem esta guarda o Google Maps JS carregaria em todo perfil
+   * aberto, inclusive nos que ninguém vai olhar.
+   */
+  mapMounted: boolean
 }) {
-  const [open, setOpen] = useState(false)
   const [scan, setScan] = useState<LeadGbpGridScan | null>(initialScan)
   const [keyword, setKeyword] = useState(keywords[0] ?? "")
   const [source, setSource] = useState(`${profileId}:${initialScan?.id ?? ""}`)
@@ -205,19 +211,8 @@ export function LeadGbpGridSection({
   )
 
   return (
-    <div className="mt-3 border-t border-border/70 pt-3">
-      <button
-        type="button"
-        onClick={() => setOpen((current) => !current)}
-        className="flex items-center gap-2 text-xs/relaxed text-muted-foreground hover:text-foreground"
-      >
-        <RiGridLine aria-hidden size={14} />
-        Malha geográfica
-        <span className="text-muted-foreground">{open ? "−" : "+"}</span>
-      </button>
-
-      {open ? (
-        <div className="mt-3 flex flex-col gap-3">
+    <LeadGbpCard title="Malha geográfica" className="h-full">
+      <div className="flex flex-col gap-3">
           {canEdit ? (
             <div className="flex flex-wrap items-end gap-3">
               <label className="flex min-w-44 flex-col gap-1">
@@ -385,12 +380,14 @@ export function LeadGbpGridSection({
                 </div>
               ) : null}
 
-              <LeadGbpGridMap
-                centerLat={scan.center_lat}
-                centerLng={scan.center_lng}
-                points={scan.points}
-                className="h-72"
-              />
+              {mapMounted ? (
+                <LeadGbpGridMap
+                  centerLat={scan.center_lat}
+                  centerLng={scan.center_lng}
+                  points={scan.points}
+                  className="h-[300px] rounded-lg"
+                />
+              ) : null}
 
               {position && position.competitors.length > 0 ? (
                 <div className="flex flex-col gap-1.5 rounded-lg border border-border/70 bg-background px-3 py-2">
@@ -457,9 +454,8 @@ export function LeadGbpGridSection({
               Nenhuma malha rodada para este perfil.
             </p>
           )}
-        </div>
-      ) : null}
-    </div>
+      </div>
+    </LeadGbpCard>
   )
 }
 

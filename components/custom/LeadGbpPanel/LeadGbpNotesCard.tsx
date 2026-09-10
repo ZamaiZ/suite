@@ -22,6 +22,8 @@ export function LeadGbpNotesCard({
   className,
   placeholder = "Posts, Q&A, respostas, ranking — o que a API não vê",
   title = "Notas da etapa",
+  variant = "card",
+  hidden = false,
 }: {
   id: string
   profileId: string
@@ -34,6 +36,13 @@ export function LeadGbpNotesCard({
   className?: string
   placeholder?: string
   title?: string
+  /** `rail` remove o card externo — o bloco do analista já tem moldura. */
+  variant?: "card" | "rail"
+  /**
+   * Esconde sem desmontar. O valor vive num `useState` local: desmontar
+   * devolveria o textarea ao valor do servidor e comeria o rascunho.
+   */
+  hidden?: boolean
 }) {
   const [value, setValue] = useState(initialValue)
 
@@ -49,24 +58,37 @@ export function LeadGbpNotesCard({
     onDraftChange(next)
   }
 
+  const rail = variant === "rail"
+
   if (!canEdit) {
+    const body = initialValue ? (
+      <p className="whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
+        {initialValue}
+      </p>
+    ) : (
+      <p className="text-xs/relaxed text-muted-foreground">
+        Nada registrado nesta etapa.
+      </p>
+    )
+    if (rail) {
+      return (
+        <div hidden={hidden} className={className}>
+          <p className="mb-1 text-[11px] font-medium text-muted-foreground">
+            {title}
+          </p>
+          {body}
+        </div>
+      )
+    }
     return (
       <LeadGbpCard title={title} className={className}>
-        {initialValue ? (
-          <p className="whitespace-pre-wrap text-xs/relaxed text-muted-foreground">
-            {initialValue}
-          </p>
-        ) : (
-          <p className="text-xs/relaxed text-muted-foreground">
-            Nada registrado nesta etapa.
-          </p>
-        )}
+        {body}
       </LeadGbpCard>
     )
   }
 
-  return (
-    <LeadGbpCard title={title} className={className}>
+  const field = (
+    <>
       <label htmlFor={id} className="sr-only">
         {title}
       </label>
@@ -74,11 +96,69 @@ export function LeadGbpNotesCard({
         id={id}
         value={value}
         maxLength={GBP_NOTES_MAX}
-        rows={6}
+        rows={rail ? 4 : 6}
         onChange={(event) => handleChange(event.target.value)}
-        className="min-h-0 resize-y"
+        className={
+          rail
+            ? "h-24 min-h-0 resize-none rounded-lg bg-background text-xs/[1.6]"
+            : "min-h-0 resize-y"
+        }
         placeholder={placeholder}
       />
+    </>
+  )
+
+  if (rail) {
+    return (
+      <div hidden={hidden} className={className}>
+        {field}
+        <div className="mt-1.5 flex flex-wrap items-center justify-between gap-2">
+          <p className="text-[11px] tabular-nums text-muted-foreground">
+            {value.length}/{GBP_NOTES_MAX}
+          </p>
+          <div className="flex items-center gap-2">
+            {status === "saving" ? (
+              <span
+                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground"
+                aria-live="polite"
+              >
+                <Spinner aria-hidden className="size-3" />
+                Salvando…
+              </span>
+            ) : null}
+            {status === "saved" ? (
+              <span
+                className="inline-flex items-center gap-1 text-[11px] text-success"
+                aria-live="polite"
+              >
+                <RiCheckLine size={12} aria-hidden />
+                Salvo agora
+              </span>
+            ) : null}
+            {status === "error" ? (
+              <>
+                <span role="alert" className="text-[11px] text-destructive">
+                  {errorMessage ?? "Não foi possível salvar."}
+                </span>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  className="h-6 px-1.5 text-[11px]"
+                  onClick={onRetry}
+                >
+                  Salvar notas
+                </Button>
+              </>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <LeadGbpCard title={title} className={className}>
+      {field}
       <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
         <p className="text-xs/relaxed tabular-nums text-muted-foreground">
           {value.length}/{GBP_NOTES_MAX}
