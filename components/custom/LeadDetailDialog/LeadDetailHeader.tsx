@@ -34,6 +34,9 @@ const TABS: { id: LeadDetailTab; label: string }[] = [
 export function LeadDetailHeader({
   tab,
   showOpportunityTab,
+  readingMode,
+  showReadingMode,
+  onReadingModeChange,
   companyName,
   domain,
   status,
@@ -54,6 +57,9 @@ export function LeadDetailHeader({
 }: {
   tab: LeadDetailTab
   showOpportunityTab: boolean
+  readingMode: boolean
+  showReadingMode: boolean
+  onReadingModeChange: (next: boolean) => void
   companyName: string
   domain?: string
   status: LeadStatus | null
@@ -161,6 +167,26 @@ export function LeadDetailHeader({
           <RiHistoryLine size={14} aria-hidden />
           {activityLabel}
         </span>
+        {showReadingMode ? (
+          <>
+            <Button
+              type="button"
+              variant="outline"
+              className="h-7 gap-1.5 px-2 text-muted-foreground"
+              aria-pressed={readingMode}
+              onClick={() => onReadingModeChange(!readingMode)}
+            >
+              {readingMode ? (
+                <span
+                  aria-hidden
+                  className="inline-block size-1.5 shrink-0 rounded-full bg-primary"
+                />
+              ) : null}
+              Modo reunião
+            </Button>
+            <span aria-hidden className="h-5 w-px shrink-0 bg-border" />
+          </>
+        ) : null}
         {leadId ? (
           <LeadClaimActions
             variant="menu"

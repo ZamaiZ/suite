@@ -67,6 +67,8 @@ export function LeadGbpPanel({
   detail,
   loading,
   readOnly,
+  // Consumida a partir do cabeçalho fixo da etapa; até lá, só atravessa.
+  readingMode,
   onProfilesChange,
   onWebsiteAuditsChange,
   onDigitalPresenceChange,

@@ -13,6 +13,11 @@ export type LeadGbpPanelProps = {
   detail: LeadDetail | null
   loading: boolean
   readOnly: boolean
+  /**
+   * Modo reunião: esconde os controles de edição da etapa. Nunca habilita nada
+   * — `canEdit` continua sendo `detail.canEditGbp && !readOnly`.
+   */
+  readingMode: boolean
   onProfilesChange: (leadId: string, profiles: LeadGbpProfile[]) => void
   onWebsiteAuditsChange: (leadId: string, audits: LeadWebsiteAudit[]) => void
   onDigitalPresenceChange: (

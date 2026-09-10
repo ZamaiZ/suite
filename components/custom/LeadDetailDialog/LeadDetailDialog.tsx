@@ -63,6 +63,11 @@ export function LeadDetailDialog({
   const [claimPending, setClaimPending] = useState(false)
   const [activityPending, setActivityPending] = useState(false)
   const [gbpPending, setGbpPending] = useState(false)
+  // Inicializador preguiçoso: `localStorage` nunca é lido no corpo do render.
+  const [readingModePref, setReadingModePref] = useState(() => {
+    if (typeof window === "undefined") return false
+    return window.localStorage.getItem("gbp:reading-mode") === "on"
+  })
   const [portalReveal, setPortalReveal] = useState<{
     code: string
     url: string
@@ -395,6 +400,16 @@ export function LeadDetailDialog({
   }
 
   const showOpportunityTab = status === "interested" || status === "converted"
+  const canEditGbp = (detail?.canEditGbp ?? false) && !readOnly
+  // Quem não pode editar entra em modo reunião e não vê o botão: não há o que
+  // esconder de quem já não edita. O modo nunca habilita nada — só esconde.
+  const readingMode = canEditGbp ? readingModePref : true
+
+  function handleReadingModeChange(next: boolean) {
+    setReadingModePref(next)
+    window.localStorage.setItem("gbp:reading-mode", next ? "on" : "off")
+  }
+
   const showBody =
     loadState === "loading" ||
     loadState === "ready" ||
@@ -412,7 +427,10 @@ export function LeadDetailDialog({
           showCloseButton={false}
           className={cn(
             "h-[min(50rem,calc(100dvh-2rem))] max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-4xl grid-rows-[minmax(0,1fr)] gap-0 overflow-hidden bg-background p-0",
-            tab === "opportunity" && "max-w-6xl",
+            // Os quatro: `tailwind-merge` resolve por chave, e sem o `max-h-` o
+            // `max-h-[calc(100dvh-2rem)]` da linha acima continuaria clampando.
+            tab === "opportunity" &&
+              "h-[calc(100dvh-1rem)] max-h-[calc(100dvh-1rem)] w-[calc(100%-1rem)] max-w-none",
           )}
         >
           <DialogTitle className="sr-only">{companyName}</DialogTitle>
@@ -427,6 +445,9 @@ export function LeadDetailDialog({
             <LeadDetailHeader
               tab={tab}
               showOpportunityTab={showOpportunityTab}
+              readingMode={readingMode}
+              showReadingMode={tab === "opportunity" && canEditGbp}
+              onReadingModeChange={handleReadingModeChange}
               companyName={companyName}
               domain={domain}
               status={status}
@@ -498,6 +519,7 @@ export function LeadDetailDialog({
                         detail={detail}
                         loading={loadState === "loading"}
                         readOnly={readOnly}
+                        readingMode={readingMode}
                         onProfilesChange={applyGbpProfiles}
                         onWebsiteAuditsChange={applyWebsiteAudits}
                         onDigitalPresenceChange={applyDigitalPresence}
