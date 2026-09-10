@@ -145,25 +145,26 @@ export function LeadGbpPanel({
             onSelectStep={() => undefined}
           />
         </aside>
-        <div className="flex min-h-0 flex-col gap-3 overflow-y-auto px-3 py-3 sm:px-4 sm:py-4">
-          <Pulse className="h-16" delay={0} />
-          <Pulse className="h-24" delay={40} />
-          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-            <Pulse className="h-16" delay={80} />
-            <Pulse className="h-16" delay={120} />
-            <Pulse className="h-16" delay={160} />
-            <Pulse className="h-16" delay={200} />
+        <div className="grid min-h-0 grid-rows-[auto_minmax(0,1fr)]">
+          <div className="border-b border-border/70 px-5 pt-4">
+            <Pulse className="h-9 w-64" delay={0} />
+            <div className="mt-3.5 grid grid-cols-2 gap-3 xl:grid-cols-[minmax(0,1.15fr)_repeat(4,minmax(0,1fr))]">
+              <Pulse className="h-16" delay={40} />
+              <Pulse className="h-16" delay={80} />
+              <Pulse className="h-16" delay={120} />
+              <Pulse className="h-16" delay={160} />
+              <Pulse className="h-16" delay={200} />
+            </div>
+            <div className="mt-3.5 flex gap-6 pb-2.5">
+              <Pulse className="h-5 w-16" delay={240} />
+              <Pulse className="h-5 w-20" delay={260} />
+              <Pulse className="h-5 w-16" delay={280} />
+              <Pulse className="h-5 w-20" delay={300} />
+            </div>
           </div>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-            <Pulse className="h-48" delay={240} />
-            <Pulse className="h-48" delay={280} />
-            <Pulse className="h-48" delay={320} />
-          </div>
-          <Pulse className="h-32" delay={360} />
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-            <Pulse className="h-48" delay={400} />
-            <Pulse className="h-48" delay={440} />
-            <Pulse className="h-48 md:col-span-2 xl:col-span-1" delay={480} />
+          <div className="grid min-h-0 gap-3.5 bg-accent/45 px-5 pt-4 pb-5 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
+            <Pulse className="h-72" delay={340} />
+            <Pulse className="h-72" delay={380} />
           </div>
         </div>
       </div>

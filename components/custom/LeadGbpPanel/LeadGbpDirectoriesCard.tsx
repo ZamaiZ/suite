@@ -97,7 +97,7 @@ export function LeadGbpDirectoriesCard({
   return (
     <LeadGbpCard title="Diretórios e citações">
       <div className="flex flex-col gap-2">
-        <p className="text-xs/relaxed text-muted-foreground">
+        <p className="max-w-[640px] text-xs/relaxed text-muted-foreground">
           {answered} de {GBP_DIRECTORIES.length} respondidos. Não há checagem
           automática, e não por falta de tentativa: diretório publica ficha e
           quase nunca emite link rastreável — 399 domínios de referência medidos
@@ -105,7 +105,7 @@ export function LeadGbpDirectoriesCard({
           honrada de forma confiável. O link abre a busca pelo nome, e o NAP só
           o analista julga.
         </p>
-        <ul className="flex flex-col gap-1.5">
+        <ul className="grid grid-cols-1 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
           {GBP_DIRECTORIES.map((item) => {
             const answer = review.directories[item.id]
             // Todo diretório é manual agora: o link é sempre a busca que o
@@ -114,7 +114,7 @@ export function LeadGbpDirectoriesCard({
             return (
               <li
                 key={item.id}
-                className="flex items-center justify-between gap-2"
+                className="flex items-center justify-between gap-2 border-t border-border/70 py-1.5"
               >
                 <a
                   href={href}

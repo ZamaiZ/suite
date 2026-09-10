@@ -7,6 +7,7 @@ import { LeadGbpInformationCard } from "./LeadGbpInformationCard"
 import { LeadGbpPostsBlock } from "./LeadGbpPostsBlock"
 import { LeadGbpQnaBlock } from "./LeadGbpQnaBlock"
 import { LeadGbpRankBlock } from "./LeadGbpRankBlock"
+import { LeadGbpServicesCard } from "./LeadGbpServicesCard"
 import { LeadGbpReviewsBlock } from "./LeadGbpReviewsBlock"
 import type { GbpProfileController } from "./use-gbp-profile-controller"
 
@@ -21,6 +22,7 @@ export function LeadGbpTabProfile({ controller }: PanelProps) {
     <div className="grid grid-cols-1 items-stretch gap-3.5 xl:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)]">
       <LeadGbpInformationCard profile={profile} gaps={controller.gaps} />
       <div className="grid content-start gap-3.5">
+        <LeadGbpServicesCard profile={profile} />
         <LeadGbpPostsBlock posts={profile.posts} />
         <LeadGbpQnaBlock qna={profile.qna} />
       </div>

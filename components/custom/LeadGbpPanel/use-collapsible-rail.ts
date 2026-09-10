@@ -6,9 +6,11 @@ const STORAGE_KEY = "gbp:opportunities-rail"
 const WIDE = "(min-width: 80rem)"
 
 /**
- * O `Ctrl + B` já tem dois donos neste app — `Sidebar.tsx` e
- * `MobileNavigation.tsx`, ambos escutando `window` em bubble. Capturar aqui é o
- * que impede os dois de reagirem ao mesmo toque enquanto o dialog está aberto.
+ * `Ctrl/⌘ + Shift + B`. O `Ctrl + B` puro já tem dois donos neste app —
+ * `Sidebar.tsx` e `MobileNavigation.tsx` — e nenhum dos dois testa `shiftKey`,
+ * então eles disparariam também no atalho com Shift. Os dois escutam `window`
+ * em bubble; capturar aqui e parar a propagação é o que impede o sidebar e o
+ * painel mobile de reagirem ao mesmo toque enquanto o dialog está aberto.
  */
 export function useCollapsibleRail({ enabled }: { enabled: boolean }) {
   // Inicializador preguiçoso: `localStorage` e `matchMedia` nunca no render.
@@ -39,9 +41,10 @@ export function useCollapsibleRail({ enabled }: { enabled: boolean }) {
     function onKeyDown(e: KeyboardEvent) {
       if (e.repeat) return
       // `e.code`, não `e.key`: é exatamente o que os dois handlers do app
-      // testam. Casar por `e.key` deixaria layouts de teclado onde eles
-      // discordam sobre o mesmo toque.
-      if (e.code !== "KeyB" || !(e.ctrlKey || e.metaKey)) return
+      // testam, e com Shift o `e.key` vira "B" em alguns layouts e não em
+      // outros. Casar pelo código físico deixa os três de acordo.
+      if (e.code !== "KeyB") return
+      if (!e.shiftKey || !(e.ctrlKey || e.metaKey)) return
       const target = e.target as Element | null
       const tag = target?.tagName.toLowerCase() ?? ""
       if (["input", "textarea", "select"].includes(tag)) return

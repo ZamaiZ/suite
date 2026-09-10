@@ -419,8 +419,12 @@ export function compileDiagnosisFacts(
         .filter((channel) => channel.type !== "website")
         .map((channel) => ({
           label: DIGITAL_CHANNEL_LABELS[channel.type],
-          lastPostedOn:
-            input.presenceReview.networks[channel.id]?.lastPostedOn ?? null,
+          // Canal sem id é estado real (o cadastro aceita canal ainda não
+          // gravado), e a revisão de presença é indexada por id — sem id não há
+          // entrada para achar.
+          lastPostedOn: channel.id
+            ? (input.presenceReview.networks[channel.id]?.lastPostedOn ?? null)
+            : null,
         })),
       today: input.presenceToday,
       measurementIds: input.websiteAudit?.crawl.signals.measurementIds ?? null,

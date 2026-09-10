@@ -36,7 +36,7 @@ function FieldRow({
   children: ReactNode
 }) {
   return (
-    <div className="flex min-w-0 items-start gap-2.5 py-2">
+    <div className="flex min-w-0 items-start gap-2.5 border-t border-border/70 py-2">
       <LeadIconWell
         icon={icon}
         className={warning ? "text-warning" : undefined}
@@ -107,7 +107,7 @@ export function LeadGbpInformationCard({
 
   return (
     <LeadGbpCard title="Informações do perfil">
-      <div className="divide-y divide-border/70">
+      <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2">
         <FieldRow icon={RiBuilding4Line} label="Categoria principal">
           {category ?? "—"}
         </FieldRow>
@@ -186,17 +186,31 @@ export function LeadGbpInformationCard({
             "—"
           )}
         </FieldRow>
-        <FieldRow
-          icon={RiFileTextLine}
-          label="Descrição"
-          warning={missingDescription || thinDescription}
-        >
+        <FieldRow icon={RiCheckboxCircleLine} label="Status">
+          {statusLabel ? (
+            <span
+              className={cn(
+                snapshot.businessStatus === "OPERATIONAL" && "text-success",
+              )}
+            >
+              {statusLabel}
+            </span>
+          ) : (
+            "—"
+          )}
+        </FieldRow>
+      </div>
+
+      {description || missingDescription ? (
+        <div className="mt-2.5 border-t border-border/70 pt-2.5">
+          <p className="text-xs/relaxed text-muted-foreground">Descrição</p>
           {description ? (
-            <div>
+            <>
               <p
                 className={cn(
-                  "whitespace-pre-wrap",
+                  "mt-0.5 whitespace-pre-wrap text-xs/[1.7]",
                   descriptionClamped && !descriptionOpen && "line-clamp-4",
+                  thinDescription ? "text-warning" : "text-foreground",
                 )}
               >
                 {description}
@@ -216,39 +230,15 @@ export function LeadGbpInformationCard({
                   {descriptionOpen ? "Ver menos" : "Ver mais"}
                 </button>
               ) : null}
-            </div>
+            </>
           ) : (
-            <span className="inline-flex items-center gap-1">
+            <p className="mt-0.5 inline-flex items-center gap-1 text-xs/relaxed text-warning">
               Não encontrada
               <RiAlertLine size={14} aria-hidden />
-            </span>
+            </p>
           )}
-        </FieldRow>
-        <FieldRow icon={RiCheckboxCircleLine} label="Status">
-          {statusLabel ? (
-            <span
-              className={cn(
-                snapshot.businessStatus === "OPERATIONAL" && "text-success",
-              )}
-            >
-              {statusLabel}
-            </span>
-          ) : (
-            "—"
-          )}
-        </FieldRow>
-        {enrichment && enrichment.services && enrichment.services.length > 0 ? (
-          <FieldRow icon={RiStackLine} label="Serviços">
-            <ul className="flex flex-col gap-0.5">
-              {enrichment.services.map((service, index) => (
-                <li key={`${service.category ?? ""}:${service.title}:${index}`}>
-                  {service.title}
-                </li>
-              ))}
-            </ul>
-          </FieldRow>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </LeadGbpCard>
   )
 }

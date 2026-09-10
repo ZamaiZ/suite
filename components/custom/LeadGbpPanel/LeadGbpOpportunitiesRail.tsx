@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri"
+import { RiArrowLeftSLine, RiArrowRightSLine, RiEditLine } from "react-icons/ri"
 import { LeadGbpAnalystBlock } from "./LeadGbpAnalystBlock"
 import { LeadGbpOpportunityItem } from "./LeadGbpOpportunitiesCard"
 import type { GbpProfileController } from "./use-gbp-profile-controller"
@@ -18,6 +18,7 @@ import {
 } from "@/lib/leads/gbp-profile-tabs"
 
 const RAIL_ID = "gbp-opportunities-rail"
+const ANALYST_KEY = "gbp:analyst-block"
 
 type Filter = "todas" | GbpOpportunityTheme
 
@@ -33,6 +34,16 @@ export function LeadGbpOpportunitiesRail({
   onToggleRail: () => void
 }) {
   const [filter, setFilter] = useState<Filter>("todas")
+  const [focusSignal, setFocusSignal] = useState(0)
+  const [analystOpen, setAnalystOpen] = useState(() => {
+    if (typeof window === "undefined") return true
+    return window.localStorage.getItem(ANALYST_KEY) !== "closed"
+  })
+
+  function setAnalyst(next: boolean) {
+    setAnalystOpen(next)
+    window.localStorage.setItem(ANALYST_KEY, next ? "open" : "closed")
+  }
   const grouped = gbpOpportunitiesByTheme(controller.opportunities)
   const total = controller.opportunities.length
   const shown =
@@ -60,9 +71,22 @@ export function LeadGbpOpportunitiesRail({
               {total}
             </span>
           ) : null}
-          <span className="text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase [writing-mode:vertical-rl]">
+          <span className="flex-1 text-[11px] font-semibold tracking-[0.12em] text-muted-foreground uppercase [writing-mode:vertical-rl]">
             Oportunidades
           </span>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Abrir o bloco do analista"
+            onClick={() => {
+              onToggleRail()
+              setAnalyst(true)
+              setFocusSignal((current) => current + 1)
+            }}
+          >
+            <RiEditLine size={14} aria-hidden />
+          </Button>
         </div>
       ) : null}
 
@@ -83,7 +107,7 @@ export function LeadGbpOpportunitiesRail({
             <h3 className="font-heading flex-1 text-sm font-semibold text-foreground">
               Oportunidades
             </h3>
-            <Kbd className="text-[10px]">Ctrl B</Kbd>
+            <Kbd className="text-[10px]">Ctrl ⇧ B</Kbd>
             <Button
               type="button"
               variant="outline"
@@ -171,7 +195,12 @@ export function LeadGbpOpportunitiesRail({
           )}
         </div>
 
-        <LeadGbpAnalystBlock controller={controller} />
+        <LeadGbpAnalystBlock
+          controller={controller}
+          open={analystOpen}
+          onOpenChange={setAnalyst}
+          focusSignal={focusSignal}
+        />
       </aside>
     </>
   )
