@@ -2,6 +2,12 @@
 
 import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
+import {
+  STEP_TONE_CHIP,
+  STEP_TONE_FILL,
+  STEP_TONE_RING,
+  type StepTone,
+} from "@/components/custom/LeadStepShell"
 import { cn } from "cn"
 
 export type VitalBand = "good" | "needs" | "poor"
@@ -12,16 +18,11 @@ const BAND_LABEL: Record<VitalBand, string> = {
   poor: "Ruim",
 }
 
-const BAND_CHIP: Record<VitalBand, string> = {
-  good: "bg-success/10 text-success",
-  needs: "bg-warning/10 text-warning",
-  poor: "bg-destructive/10 text-destructive",
-}
-
-const BAND_DOT: Record<VitalBand, string> = {
-  good: "bg-success",
-  needs: "bg-warning",
-  poor: "bg-destructive",
+/** Banda do Google traduzida para o vocabulário de tom do shell. */
+const BAND_TONE: Record<VitalBand, StepTone> = {
+  good: "success",
+  needs: "warning",
+  poor: "danger",
 }
 
 /** Zonas da régua. Alfa baixo: elas são fundo, o marcador é o dado. */
@@ -66,11 +67,9 @@ function Marker({
       style={{ left: `${Math.max(0, Math.min(1, share)) * 100}%` }}
       className={cn(
         "absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-card",
-        filled ? BAND_DOT[band] : cn("bg-card ring-2 ring-inset", {
-          "ring-success": band === "good",
-          "ring-warning": band === "needs",
-          "ring-destructive": band === "poor",
-        }),
+        filled
+          ? STEP_TONE_FILL[BAND_TONE[band]]
+          : cn("bg-card ring-2 ring-inset", STEP_TONE_RING[BAND_TONE[band]]),
       )}
     />
   )
@@ -96,12 +95,11 @@ function Reading({
           band === null
             ? "bg-border"
             : filled
-              ? BAND_DOT[band]
-              : cn("bg-transparent ring-2 ring-inset", {
-                  "ring-success": band === "good",
-                  "ring-warning": band === "needs",
-                  "ring-destructive": band === "poor",
-                }),
+              ? STEP_TONE_FILL[BAND_TONE[band]]
+              : cn(
+                  "bg-transparent ring-2 ring-inset",
+                  STEP_TONE_RING[BAND_TONE[band]],
+                ),
         )}
       />
       <span className="text-[10px] font-medium tracking-[0.06em] text-muted-foreground uppercase">
@@ -169,8 +167,8 @@ export function LeadWebsiteVitalGauge({
           className={cn(
             "inline-flex h-[18px] shrink-0 items-center rounded-md px-1.5 text-[10px] font-semibold",
             verdict === null
-              ? "bg-accent text-muted-foreground"
-              : BAND_CHIP[verdict],
+              ? STEP_TONE_CHIP.neutral
+              : STEP_TONE_CHIP[BAND_TONE[verdict]],
           )}
         >
           {verdict === null ? "Sem coleta" : BAND_LABEL[verdict]}

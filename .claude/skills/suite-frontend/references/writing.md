@@ -43,6 +43,22 @@ Estado vazio é a primeira tela de quem está começando. Ela pede uma ação.
 
 Vazio por falta de dado e vazio por filtro são telas diferentes — a segunda oferece limpar o filtro.
 
+E existe um terceiro, em tela de auditoria: **campo que não existia na versão da coleta**. "Origem dos links entra na próxima análise — esta coleta é anterior a esse campo" não é a mesma frase que "nenhum link encontrado". Um diz que o provedor não trouxe; o outro afirma sobre o mundo.
+
+## Ausência é `—`, nunca zero
+
+Um domínio sem coleta não é um domínio sem autoridade. Um perfil sem medição não tem nota 0. Quando o valor não foi medido, a tela escreve `—` e o complemento diz por quê (`sem coleta`, `sem dado de campo`, `não medido`) — nunca um número que o leitor vai somar, comparar e levar para a reunião.
+
+A regra vale nos três lugares onde a confusão custa caro: big number, célula de métrica e barra. Barra sem denominador conhecido **não é renderizada**; ver `layout.md`.
+
+| Não | Sim |
+|---|---|
+| `0` domínios de referência (sem coleta) | `—` · `sem coleta` |
+| `0%` de dofollow (provider não devolveu) | `—` · `sem dado` |
+| `Nenhum sinal de rede artificial` (amostra truncada) | `A amostra bateu no teto e não cobre o perfil inteiro; sobre o resto, nada foi verificado.` |
+
+A última linha é a mais difícil e a mais importante: **silêncio sobre o que ficou de fora não é afirmação de que não há nada lá.**
+
 ## Sentence case
 
 Só a primeira letra e nomes próprios. Vale para botão, rótulo, título de diálogo, item de menu e aba.

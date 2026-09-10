@@ -4,8 +4,11 @@ import { useState } from "react"
 import { RiEyeLine, RiSmartphoneLine } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import {
+  STEP_TONE_CHIP,
+  STEP_TONE_TEXT,
   StepMeter,
   StepSectionLabel,
+  stepScoreTone,
   type StepTone,
 } from "@/components/custom/LeadStepShell"
 import { Spinner } from "@/components/ui/spinner"
@@ -13,6 +16,8 @@ import { cn } from "cn"
 import { formatMs } from "@/lib/leads/website-presenters"
 import {
   PSI_CLS_NEEDS,
+  PSI_PERFORMANCE_NEEDS,
+  PSI_PERFORMANCE_POOR,
   PSI_CLS_POOR,
   PSI_INP_NEEDS_MS,
   PSI_INP_POOR_MS,
@@ -23,28 +28,6 @@ import {
 } from "@/lib/leads/website-pagespeed"
 import { LeadWebsiteVitalGauge } from "./LeadWebsiteVitalGauge"
 
-const CHIP_TONE: Record<StepTone, string> = {
-  neutral: "bg-accent text-muted-foreground",
-  primary: "bg-primary/10 text-primary",
-  success: "bg-success/10 text-success",
-  warning: "bg-warning/10 text-warning",
-  danger: "bg-destructive/10 text-destructive",
-}
-
-function scoreTone(score: number): StepTone {
-  if (score < 50) return "danger"
-  if (score < 90) return "warning"
-  return "success"
-}
-
-const SCORE_TEXT: Record<StepTone, string> = {
-  neutral: "text-muted-foreground",
-  primary: "text-primary",
-  success: "text-success",
-  warning: "text-warning",
-  danger: "text-destructive",
-}
-
 function formatCls(value: number): string {
   return value.toLocaleString("pt-BR", { maximumFractionDigits: 2 })
 }
@@ -54,7 +37,7 @@ function Chip({ tone, children }: { tone: StepTone; children: string }) {
     <span
       className={cn(
         "inline-flex h-[22px] items-center rounded-md px-2 text-[11px] font-medium",
-        CHIP_TONE[tone],
+        STEP_TONE_CHIP[tone],
       )}
     >
       {children}
@@ -74,7 +57,13 @@ export function LeadWebsitePagespeedCard({
   const [shotFailed, setShotFailed] = useState(false)
   const waiting = job?.status === "queued" || job?.status === "running"
   const failed = job?.status === "failed"
-  const tone = strategy ? scoreTone(strategy.performance) : "neutral"
+  const tone: StepTone = strategy
+    ? stepScoreTone(
+        strategy.performance,
+        PSI_PERFORMANCE_POOR,
+        PSI_PERFORMANCE_NEEDS,
+      )
+    : "neutral"
 
   return (
     <LeadGbpCard title={label}>
@@ -83,7 +72,7 @@ export function LeadWebsitePagespeedCard({
           <span
             className={cn(
               "text-[28px] leading-[1.15] font-semibold tracking-[-0.02em] tabular-nums",
-              strategy ? SCORE_TEXT[tone] : "text-muted-foreground",
+              strategy ? STEP_TONE_TEXT[tone] : "text-muted-foreground",
             )}
           >
             {strategy ? strategy.performance.toLocaleString("pt-BR") : "—"}

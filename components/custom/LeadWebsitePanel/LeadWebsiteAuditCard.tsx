@@ -9,7 +9,7 @@ import {
   RiTimeLine,
 } from "react-icons/ri"
 import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
-import { StepMeter, type StepTone } from "@/components/custom/LeadStepShell"
+import { StepMeter, stepShareTone } from "@/components/custom/LeadStepShell"
 import { cn } from "cn"
 import {
   websiteCheckGroups,
@@ -30,12 +30,6 @@ const STATUS_TONE: Record<WebsiteCheckStatus, string> = {
   warn: "text-warning",
   pending: "text-muted-foreground",
   error: "text-destructive",
-}
-
-function bandTone(share: number): StepTone {
-  if (share >= 0.8) return "success"
-  if (share >= 0.5) return "warning"
-  return "danger"
 }
 
 function CheckRow({ item }: { item: WebsiteCheckItem }) {
@@ -105,7 +99,7 @@ export function LeadWebsiteAuditCard({
         </div>
         <StepMeter
           share={share}
-          tone={bandTone(share)}
+          tone={stepShareTone(share)}
           className="mt-1"
           trackClassName="h-1"
         />

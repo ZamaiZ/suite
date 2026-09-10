@@ -38,7 +38,7 @@ Gráficos — `chart-1` a `chart-5`, idênticos nos dois temas:
 
 `oklch(0.871 0.15 154.449)` · `oklch(0.723 0.219 149.579)` · `oklch(0.627 0.194 149.214)` · `oklch(0.527 0.154 150.069)` · `oklch(0.448 0.119 151.328)`
 
-Sidebar — `sidebar`, `sidebar-foreground`, `sidebar-primary`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `sidebar-border`, `sidebar-ring`. Consumidos por `components/custom/Sidebar` e `NavTree`. Não há primitive `sidebar` no registry.
+Sidebar — `sidebar`, `sidebar-foreground`, `sidebar-primary`, `sidebar-primary-foreground`, `sidebar-accent`, `sidebar-accent-foreground`, `sidebar-border`, `sidebar-ring`. Consumidos por `components/custom/Sidebar` e `NavTree`. O registry **tem** um primitive `sidebar` e ele **não é instalado de propósito** — ver `components.md`.
 
 ### Cinco coisas que mudam o que você escreve
 

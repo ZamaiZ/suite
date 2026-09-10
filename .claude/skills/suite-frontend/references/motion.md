@@ -18,7 +18,8 @@ Sair dessas quatro exige um comentário na linha dizendo por quê.
 ## Orçamento de performance
 
 - **Em qualquer coisa que se repita, anime só `transform` e `opacity`.** `width`, `height`, `top` e `left` disparam layout a cada quadro.
-- **A exceção documentada é `GbpMeter`** (`components/custom/LeadGbpPanel/LeadGbpMetrics.tsx`), que anima `width` de propósito: `scaleX` deforma a ponta arredondada. É um elemento por linha, não uma lista.
+- **A exceção documentada é `StepMeter`** (`components/custom/LeadStepShell/StepMetrics.tsx`), que anima `width` de propósito: `scaleX` deforma a ponta arredondada. É um elemento por linha, não uma lista.
+- **Antes de abrir uma segunda exceção, veja de quem é o raio.** Numa barra empilhada o raio mora no contêiner (`rounded-full overflow-hidden`), não nas fatias — então `scaleX` no contêiner não deforma ponta nenhuma, anima um elemento só e dispensa a exceção. `LeadWebsiteStackedBar` é assim de propósito.
 - **Stagger tem teto.** Cascata só nos itens visíveis, delay decrescente, e o último item entra em no máximo ~400ms. `index * delay` numa lista de 200 leads é espera, não efeito.
 - **Nada de `layout` do motion em lista longa** — ele mede todos os filhos a cada mudança.
 - **`will-change` só durante a animação**, nunca fixo no CSS.
@@ -54,6 +55,8 @@ const reduced = !!useReducedMotion()
 ```
 
 O padding de cima mora no filho. No pai, sobra um respiro depois de fechado.
+
+**`layoutId` é namespace global.** Duas instâncias montadas ao mesmo tempo com o mesmo `layoutId` disputam o mesmo elemento compartilhado, e o sublinhado salta de uma para a outra. Por isso `StepTabs` recebe o id por prop (`"gbp-step-tab-underline"`, `"website-step-tab-underline"`) em vez de ter um literal dentro. Componente reutilizável que anima com `layoutId` **sempre** recebe o id de fora.
 
 **Hover e foco em CSS** (`transition-colors duration-150`), não em JS. Estado de ponteiro não merece re-render.
 

@@ -13,6 +13,17 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    // `components/ui` é código gerado pelo CLI do shadcn e volta ao original a
+    // cada `add`. Corrigir um padrão do registry aqui é trabalho que o próximo
+    // `add` desfaz — e a regra de estilo de efeito é opinião do React Compiler,
+    // não contrato deste produto. O que policiamos nesses arquivos é o que a
+    // gente edita de propósito: o import de ícone (ver `checks.md`).
+    files: ["components/ui/**/*.tsx"],
+    rules: {
+      "react-hooks/set-state-in-effect": "off",
+    },
+  },
 ])
 
 export default eslintConfig

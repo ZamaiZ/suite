@@ -15,7 +15,7 @@ import { cn } from "cn"
 
 export type StepTone = "neutral" | "primary" | "success" | "warning" | "danger"
 
-const FILL: Record<StepTone, string> = {
+export const STEP_TONE_FILL: Record<StepTone, string> = {
   neutral: "bg-muted-foreground/40",
   primary: "bg-primary",
   success: "bg-success",
@@ -23,7 +23,7 @@ const FILL: Record<StepTone, string> = {
   danger: "bg-destructive",
 }
 
-const TEXT: Record<StepTone, string> = {
+export const STEP_TONE_TEXT: Record<StepTone, string> = {
   neutral: "text-muted-foreground",
   primary: "text-primary",
   success: "text-success",
@@ -96,7 +96,7 @@ export function StepMeter({
           "block h-full rounded-full",
           // Fração diminuta ainda tem que ser vista; zero não inventa pixel.
           share > 0 && "min-w-1",
-          FILL[tone],
+          STEP_TONE_FILL[tone],
           className,
         )}
       />
@@ -153,7 +153,7 @@ export function StepStat({
   tone?: StepTone
   children?: ReactNode
 }) {
-  const emphasis = tone === "neutral" ? "text-foreground" : TEXT[tone]
+  const emphasis = tone === "neutral" ? "text-foreground" : STEP_TONE_TEXT[tone]
   return (
     <div
       className={cn(
@@ -164,7 +164,7 @@ export function StepStat({
       <div
         className={cn(
           "flex items-center gap-1.5 text-[11px]",
-          tone === "neutral" ? "text-muted-foreground" : TEXT[tone],
+          tone === "neutral" ? "text-muted-foreground" : STEP_TONE_TEXT[tone],
         )}
       >
         {Icon ? <Icon size={13} aria-hidden className="shrink-0" /> : null}
@@ -183,7 +183,7 @@ export function StepStat({
           <span
             className={cn(
               "min-w-0 truncate text-[11px]",
-              tone === "neutral" ? "text-muted-foreground" : TEXT[tone],
+              tone === "neutral" ? "text-muted-foreground" : STEP_TONE_TEXT[tone],
             )}
           >
             {unit}
@@ -195,7 +195,7 @@ export function StepStat({
         <p
           className={cn(
             "mt-1.5 text-[10px]/[1.45]",
-            tone === "neutral" ? "text-muted-foreground" : TEXT[tone],
+            tone === "neutral" ? "text-muted-foreground" : STEP_TONE_TEXT[tone],
           )}
         >
           {hint}
@@ -250,4 +250,53 @@ export function StepCountCell({
       <p className="text-[10px] text-muted-foreground">{label}</p>
     </div>
   )
+}
+
+/**
+ * Chip de estado: superfície tingida com o texto do mesmo tom. Os alfas seguem
+ * a mesma tabela conferida por cálculo do `SURFACE` acima — `destructive` é o
+ * único que reprova com lavagem, e por isso aqui ele usa `/10` com o token
+ * cheio no texto, que é o padrão do `Button` destrutivo do registry.
+ */
+export const STEP_TONE_CHIP: Record<StepTone, string> = {
+  neutral: "bg-accent text-muted-foreground",
+  primary: "bg-primary/10 text-primary",
+  success: "bg-success/10 text-success",
+  warning: "bg-warning/10 text-warning",
+  danger: "bg-destructive/10 text-destructive",
+}
+
+/** Anel do mesmo tom — para marcador vazado, que é fundo do card por dentro. */
+export const STEP_TONE_RING: Record<StepTone, string> = {
+  neutral: "ring-border",
+  primary: "ring-primary",
+  success: "ring-success",
+  warning: "ring-warning",
+  danger: "ring-destructive",
+}
+
+/**
+ * Faixa de tom de uma fração. Mora aqui, e não em cada tela, porque a mesma
+ * pergunta — "quanto disso é bom?" — não pode ter três respostas diferentes em
+ * três cards da mesma etapa.
+ */
+export function stepShareTone(share: number): StepTone {
+  if (share >= 0.8) return "success"
+  if (share >= 0.5) return "warning"
+  return "danger"
+}
+
+/**
+ * Faixa de tom de uma pontuação de 0 a 100. Os limiares são parâmetro: a forma
+ * é do sistema, os números são do domínio que mede — o Lighthouse usa 50 e 90,
+ * outro provider pode usar outros.
+ */
+export function stepScoreTone(
+  score: number,
+  poor = 50,
+  needs = 90,
+): StepTone {
+  if (score < poor) return "danger"
+  if (score < needs) return "warning"
+  return "success"
 }

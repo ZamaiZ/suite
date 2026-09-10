@@ -24,7 +24,10 @@ echo -n "motion.* em vez m.: "; grep -rnE "<motion\." --include=*.tsx components
 echo -n "base-ui direto:     "; grep -rn "@base-ui/react" --include=*.tsx components/custom app | wc -l
 echo -n "altura mágica:      "; grep -rnoE "<(Button|Input|Textarea|SelectTrigger|Toggle)[^>]*className=\"[^\"]*\bh-[0-9]" --include=*.tsx components/custom app | wc -l
 echo -n "anima sem reduced:  "; for f in $(grep -rlE "<m\." --include=*.tsx components/custom app); do grep -q "useReducedMotion" "$f" || echo "$f"; done | wc -l
+echo -n "remixicon:          "; grep -rn "@remixicon/react" --include=*.tsx components lib app | wc -l
 ```
+
+O último é a exceção deliberada à regra de não policiar `components/ui`: é a única coisa que a gente edita de propósito nos arquivos do registry, e o CLI a desfaz a cada `add` (ver `components.md`).
 
 O que cada ocorrência significa:
 
@@ -38,6 +41,22 @@ O que cada ocorrência significa:
 | base-ui direto | há equivalente em `components/ui`; use o equivalente |
 | altura mágica | `h-N` num controle que já tem `size` desalinha a linha inteira |
 | anima sem reduced | falta `useReducedMotion` em componente que anima |
+| remixicon | componente recém-instalado ainda com o import do CLI; quebra o `tsc` |
+
+## Portões de compilação
+
+```bash
+pnpm exec tsc --noEmit   # zero linhas
+pnpm lint                # zero errors
+```
+
+`tsc` limpo é o portão que trava o mapa exaustivo de temas de oportunidade (`Record` sobre a união inteira de ids) — um gap novo sem tema não compila.
+
+Os warnings do `lint` são débito antigo espalhado pelo repo; o que não pode subir é a contagem de **errors**, que é zero.
+
+`eslint.config.mjs` desliga `react-hooks/set-state-in-effect` **só em `components/ui/**`**: aquele código é gerado pelo CLI e volta ao original a cada `add`, então corrigir um padrão do registry ali é trabalho que o próximo `add` desfaz. É a mesma razão pela qual os greps de reprovação já ignoram a pasta. Fora dela a regra continua valendo — e `state.md` explica por que ela está certa.
+
+**`<img>` em captura `data:` URI é deliberado.** `next/image` não otimiza base64, e as capturas do PageSpeed chegam como data URI dentro do snapshot. O `@next/next/no-img-element` avisa e o aviso fica. Não troque por `<Image />` — quebra a captura.
 
 ## Baseline conhecido
 

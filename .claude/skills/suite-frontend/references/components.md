@@ -1,6 +1,18 @@
 # Componentes
 
-48 módulos em `components/ui`, 238 componentes. Variantes e tamanhos abaixo são transcritos do `cva` real de cada arquivo. Quando o módulo for composto, abra o `.tsx` — ele está do lado e nunca desatualiza.
+53 módulos em `components/ui`, 291 componentes. Variantes e tamanhos abaixo são transcritos do `cva` real de cada arquivo. Quando o módulo for composto, abra o `.tsx` — ele está do lado e nunca desatualiza.
+
+## Depois de todo `shadcn add`: troque o ícone
+
+`components.json` declara `"iconLibrary": "remixicon"`, e o CLI só aceita `lucide`, `radix`, `remixicon`, `phosphor` ou `tabler` — **`react-icons` não é valor válido**. Então todo componente novo que use ícone chega importando de `@remixicon/react`, pacote que não está no `package.json`: o `tsc` quebra na hora.
+
+Os nomes são idênticos nos dois pacotes (`RiCheckLine` é `RiCheckLine`), então a correção é reescrita mecânica, sem risco:
+
+```bash
+sed -i 's#from "@remixicon/react"#from "react-icons/ri"#' components/ui/*.tsx
+```
+
+`checks.md` tem o grep que impede isso de passar despercebido. Foi por aí que entraram `context-menu`, `sheet`, `navigation-menu` e `carousel`.
 
 ## Mapa de decisão
 
@@ -9,7 +21,14 @@
 | ação que muda estado ou navega | `Button` | `Toggle` |
 | filtro binário que persiste | `Toggle` | `Button` com variante manual |
 | opções mutuamente exclusivas numa barra | `ToggleGroup` | vários `Toggle` |
-| menu de reticências | `DropdownMenu` | — |
+| menu de reticências | `DropdownMenu` | `ContextMenu` |
+| clique direito sobre um item | `ContextMenu` | `DropdownMenu` |
+| painel que desliza da borda | `Sheet` | `Dialog` |
+| lista rolável **dentro** de um cartão | `ScrollArea` | `overflow-y-auto` à mão |
+| corpo de tela que rola | `min-h-0 overflow-y-auto` | `ScrollArea` |
+| navegação do app | `Sidebar` + `NavTree` | `NavigationMenu` |
+| sequência de mídia para percorrer | `Carousel` | `ToggleGroup` |
+| alternar entre duas vistas do mesmo dado | `ToggleGroup` | `Carousel` |
 | escolha em lista curta e fixa | `Select` | `Combobox` |
 | escolha pesquisável, assíncrona ou múltipla | `Combobox` | `Select` |
 | escolha única sempre visível | `RadioGroup` | `Select` |
@@ -29,13 +48,11 @@
 
 ## O que não está instalado
 
-Não existem em `components/ui`: `context-menu`, `sheet`, `sidebar`, `hover-card`, `navigation-menu`, `resizable`, `scroll-area`, `carousel`.
+Não existem em `components/ui`: `hover-card` e `resizable`. Existem no registry e podem ser instalados pelo CLI quando a tarefa pedir.
 
-Quando a tarefa pedir um deles: componha com o que existe, ou instale pelo CLI do shadcn. **Nunca escreva um primitive à mão** — ele nasce fora do contrato de tokens e do vocabulário de foco, e vira o próximo realinhamento.
+`sidebar` é caso à parte: **existe no registry e não é para ser instalado.** A navegação deste app é `components/custom/Sidebar` + `NavTree`, que consomem os tokens `--color-sidebar-*` de `globals.css` e são donos do `Ctrl/⌘ B`. Instalar o primitive do registry criaria uma segunda navegação com outro contrato de estado e outro atalho.
 
-Como não há `context-menu`, menu de reticências e clique direito caem os dois em `DropdownMenu`.
-
-Os tokens `--color-sidebar-*` existem em `globals.css`, mas quem os consome é `components/custom/Sidebar` e `NavTree` — implementação de produto, não primitive de registry.
+Quando a tarefa pedir um primitive que falta: componha com o que existe, ou instale pelo CLI. **Nunca escreva um primitive à mão** — ele nasce fora do contrato de tokens e do vocabulário de foco, e vira o próximo realinhamento. Instalado, ele passa pelo passo do ícone acima e ganha uma entrada aqui **no mesmo commit**.
 
 ## Módulos
 
@@ -176,11 +193,17 @@ Troca de vista dentro do mesmo contexto, sem mudar de rota.
 Exporta: `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`, `tabsListVariants`
 `variant` (list): `default` (fundo `muted`) · `line` (sublinhado, sem fundo)
 ⚠ Aba não é navegação de página. Se o conteúdo merece URL própria, é rota.
+⚠ **`keepMounted` no `TabsContent` quando o painel guarda trabalho em andamento** — scan rodando, rascunho dentro do debounce, disclosure aberto, mapa já carregado. Sem ele, trocar de aba desmonta e o trabalho volta ao valor do servidor. `TabsContent` repassa a prop para o `Tabs.Panel` do Base UI; não há componente novo para isso.
 
 #### Breadcrumb
 Caminho de volta numa hierarquia.
 Exporta: `Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator`, `BreadcrumbEllipsis`
 ⚠ A página atual é `BreadcrumbPage`, não `BreadcrumbLink` — ela não é clicável.
+
+#### NavigationMenu
+Barra horizontal de navegação com painel que abre sob o item.
+Exporta: `NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`, `NavigationMenuLink`, `NavigationMenuIndicator`, `NavigationMenuPositioner`, `navigationMenuTriggerStyle`
+⚠ **Não é a navegação deste app.** A navegação é `components/custom/Sidebar` + `NavTree`, vertical, com os tokens `--color-sidebar-*` e o `Ctrl/⌘ B`. Este primitive serve a uma barra horizontal — que hoje não existe em nenhuma tela. Antes de usar, confirme que a tela pede uma segunda navegação; quase sempre pede é um item novo no `NavTree`.
 
 #### Pagination
 Navegação entre páginas de resultado.
@@ -236,6 +259,20 @@ Exporta: `DropdownMenu`, `DropdownMenuPortal`, `DropdownMenuTrigger`, `DropdownM
 Composição: raiz → `DropdownMenuTrigger` + `DropdownMenuContent` → `DropdownMenuGroup` → `DropdownMenuLabel` + `DropdownMenuItem`. Submenu é `DropdownMenuSub` → `SubTrigger` + `SubContent`.
 ⚠ Escolha exclusiva dentro do menu é `DropdownMenuRadioGroup` — é assim que o `ThemeToggle` expõe sistema/claro/escuro.
 
+#### ContextMenu
+Ações de um item, abertas por clique direito. Mesmo vocabulário do `DropdownMenu`, gatilho diferente.
+Exporta: `ContextMenu`, `ContextMenuTrigger`, `ContextMenuPortal`, `ContextMenuContent`, `ContextMenuGroup`, `ContextMenuLabel`, `ContextMenuItem`, `ContextMenuCheckboxItem`, `ContextMenuRadioGroup`, `ContextMenuRadioItem`, `ContextMenuSub`, `ContextMenuSubTrigger`, `ContextMenuSubContent`, `ContextMenuSeparator`, `ContextMenuShortcut`
+Composição: `ContextMenuTrigger` embrulha a área clicável → `ContextMenuContent` → `ContextMenuItem`.
+⚠ **Clique direito é atalho, nunca o único caminho.** Toda ação que existe aqui precisa existir também num alvo visível — reticências, botão ou linha de menu. Menu que só abre com o botão direito não existe para teclado nem para toque.
+⚠ Não duplique o `DropdownMenu` de reticências dentro do `ContextMenu` só porque dá: dois menus com os mesmos itens são dois lugares para esquecer de atualizar.
+
+#### Sheet
+Painel que desliza de uma borda da tela. É um `Dialog` posicionado, não um tipo novo de camada — vem do mesmo primitive do Base UI.
+Exporta: `Sheet`, `SheetTrigger`, `SheetClose`, `SheetContent`, `SheetHeader`, `SheetFooter`, `SheetTitle`, `SheetDescription`
+`side` (content): `right` (padrão) · `top` · `bottom` · `left`
+⚠ `SheetTitle` sempre existe, mesmo invisível (`sr-only`) — é o nome acessível da camada, como no `Dialog`.
+⚠ Vale quando o conteúdo é **navegação ou uma lista lateral longa** e o contexto atrás continua relevante. Um objetivo fechado, com ação primária no rodapé, continua sendo `Dialog` centralizado.
+
 ### Conteúdo e dados
 
 #### Card
@@ -276,6 +313,18 @@ Exporta: `Separator`
 #### AspectRatio
 Proporção fixa para mídia.
 Exporta: `AspectRatio`
+
+#### ScrollArea
+Área rolável com barra estilizada, dentro de um contêiner de altura conhecida.
+Exporta: `ScrollArea`, `ScrollBar`
+⚠ **Não é o scroll do corpo da tela.** O arquétipo de painel de trabalho rola em `min-h-0 overflow-y-auto` nativo, de propósito: scroll nativo preserva momentum, âncora de teclado e a barra do sistema, e não custa medição a cada quadro. `ScrollArea` é para lista longa **dentro de um cartão**, onde a barra do sistema atravessaria a composição. Trocar um pelo outro no shell quebra o `min-h-0` e a tela para de rolar.
+
+#### Carousel
+Sequência de mídia percorrida um item por vez. Único módulo do registry com dependência de runtime própria: `embla-carousel-react`.
+Exporta: `Carousel`, `CarouselContent`, `CarouselItem`, `CarouselPrevious`, `CarouselNext`, `useCarousel`, `type CarouselApi`
+Props (raiz): `orientation` `horizontal` (padrão) · `vertical` — mais `opts`, `plugins` e `setApi` do Embla.
+⚠ **Carrossel esconde conteúdo.** Serve quando os itens são uma sequência que se percorre — fotos de um perfil, páginas de um material. Não serve quando os itens precisam ser **comparados**: aí eles ficam lado a lado, ou viram `ToggleGroup`. É por isso que o visor de capturas da Validação visual alterna mobile/desktop por `ToggleGroup` e não por carrossel — o analista compara, não navega.
+⚠ Nenhuma tela consome hoje. Instalado e catalogado; se continuar sem consumidor, ele e o `embla-carousel-react` saem.
 
 #### Empty
 Estado vazio com ícone, título, descrição e ação.
@@ -326,3 +375,24 @@ Encapsulam regra de negócio e têm API pública estável.
 | `Stepper` | progresso de fluxo longo |
 | `NavTree` | hierarquia de navegação com colapso |
 | `AuthPageShell` | moldura das telas de sessão |
+| `LeadIconWell` | poço de ícone das linhas de lead (`size-7`, `bg-accent`, `text-primary`) |
+| `LeadGbpCard` | cartão de bloco das etapas de auditoria — `Card size="sm"` com título `h3` |
+
+### `components/custom/LeadStepShell` — o shell das etapas de auditoria
+
+Compartilhado por **Perfil no Google** e **Website**, e é o que Presença digital, Visibilidade e Diagnóstico devem consumir quando forem repaginadas. Nada aqui é do domínio de uma etapa: o que é da etapa mora na pasta dela e entra por prop.
+
+| Módulo | O que é |
+|---|---|
+| `StepStat` | tile de achado — número como elemento, tom carregando o estado, `children` para o medidor |
+| `StepMeter` · `StepMeterRow` | barra de fração e a linha rótulo/valor/barra |
+| `StepCountCell` · `StepSectionLabel` | célula de contagem e sobrancelha de seção com `aside` |
+| `StepTabs` | barra de abas da etapa, genérica no id, com contador por aba |
+| `StepOpportunitiesRail` · `StepOpportunityItem` | coluna colapsável de oportunidades e a linha dela |
+| `StepNotesField` | campo livre com autosave, contador e estados de salvamento |
+| `useCollapsibleRail` · `useWideViewport` · `useCaptureShortcut` | colapso, preferência por etapa e `Ctrl/⌘ + tecla` em fase de captura |
+| `STEP_TONE_FILL` · `_TEXT` · `_CHIP` · `_RING` | os quatro mapas de `StepTone` para classe |
+| `stepShareTone` · `stepScoreTone` | faixa de tom de uma fração (0,8 / 0,5) e de uma pontuação (limiares por parâmetro) |
+
+⚠ **Faixa de tom é decisão de sistema, não de tela.** "Quanto disso é bom?" não pode ter três respostas diferentes em três cards da mesma etapa — use `stepShareTone`/`stepScoreTone` em vez de recalcular o `if` local.
+⚠ Cada etapa passa a **própria chave de `localStorage`** para `useCollapsibleRail` e o próprio `layoutId` para `StepTabs`. Recolher a coluna numa etapa não recolhe na outra.

@@ -8,9 +8,19 @@ import {
   RiSpeedUpLine,
 } from "react-icons/ri"
 import type { IconType } from "react-icons"
-import { StepMeter, StepStat, type StepTone } from "@/components/custom/LeadStepShell"
+import {
+  StepMeter,
+  StepStat,
+  stepScoreTone,
+  stepShareTone,
+  type StepTone,
+} from "@/components/custom/LeadStepShell"
 import { competitorReferringDomainsMedian } from "@/lib/leads/backlinks-audit"
-import { websiteMinPerformance } from "@/lib/leads/website-pagespeed"
+import {
+  PSI_PERFORMANCE_NEEDS,
+  PSI_PERFORMANCE_POOR,
+  websiteMinPerformance,
+} from "@/lib/leads/website-pagespeed"
 import { websiteReviewProgress } from "@/lib/leads/website-review"
 import {
   WEBSITE_STEP_TABS,
@@ -27,12 +37,6 @@ import type { WebsiteController } from "./use-website-controller"
 const TAB_LABEL: Record<WebsiteStepTabId, string> = Object.fromEntries(
   WEBSITE_STEP_TABS.map((item) => [item.id, item.label]),
 ) as Record<WebsiteStepTabId, string>
-
-function bandTone(share: number): StepTone {
-  if (share >= 0.8) return "success"
-  if (share >= 0.5) return "warning"
-  return "danger"
-}
 
 function Cell({
   tab,
@@ -110,7 +114,7 @@ export function LeadWebsiteMetricCells({
             ? `de ${tally.total.toLocaleString("pt-BR")} checks`
             : "sem coleta"
         }
-        tone={audit ? bandTone(approvedShare) : "neutral"}
+        tone={audit ? stepShareTone(approvedShare) : "neutral"}
         share={audit ? approvedShare : null}
       />
       <Cell
@@ -125,11 +129,11 @@ export function LeadWebsiteMetricCells({
         tone={
           performance === null
             ? "neutral"
-            : performance < 50
-              ? "danger"
-              : performance < 90
-                ? "warning"
-                : "success"
+            : stepScoreTone(
+                performance,
+                PSI_PERFORMANCE_POOR,
+                PSI_PERFORMANCE_NEEDS,
+              )
         }
         share={performance === null ? null : performance / 100}
       />
