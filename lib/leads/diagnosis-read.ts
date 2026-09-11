@@ -215,12 +215,48 @@ function readFacts(value: unknown): DiagnosisFacts | null {
       })
     : undefined
 
+  // Mesmo molde de `strengths`: ausente é ausente, e a seção some do PDF em vez
+  // de aparecer vazia.
+  const evidenceRow = objectRecord(row.geoEvidence)
+  const geoEvidence = evidenceRow
+    ? {
+        prompts: Array.isArray(evidenceRow.prompts)
+          ? evidenceRow.prompts.flatMap((item) => {
+              const entry = objectRecord(item)
+              const question = asString(entry?.question)
+              return question
+                ? [{ question, leadCited: entry?.leadCited === true }]
+                : []
+            })
+          : [],
+        aiOverview: Array.isArray(evidenceRow.aiOverview)
+          ? evidenceRow.aiOverview.flatMap((item) => {
+              const entry = objectRecord(item)
+              const keyword = asString(entry?.keyword)
+              if (!keyword) return []
+              const position = entry?.position
+              return [
+                {
+                  keyword,
+                  position:
+                    typeof position === "number" && Number.isFinite(position)
+                      ? position
+                      : null,
+                  citedText: asString(entry?.citedText),
+                },
+              ]
+            })
+          : [],
+      }
+    : undefined
+
   return {
     scorecard,
     findings,
     roadmap,
     pillars,
     ...(strengths ? { strengths } : {}),
+    ...(geoEvidence ? { geoEvidence } : {}),
   }
 }
 

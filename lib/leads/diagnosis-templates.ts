@@ -10,6 +10,14 @@ import {
 export type SeedDiagnosisProseInput = {
   meta: DiagnosisMeta
   facts: DiagnosisFacts
+  /**
+   * Prosa pronta do pilar de Presença em IA, composta do snapshot.
+   *
+   * Vem de fora porque `DiagnosisFacts` guarda oportunidades e indicadores, não
+   * o snapshot — e o parágrafo daquele pilar precisa distinguir três coletas de
+   * naturezas diferentes. Vazia, cai na linha genérica como os outros pilares.
+   */
+  geoNarrative?: string
 }
 
 function pillarLine(pillar: DiagnosisPillar, facts: DiagnosisFacts): string {
@@ -74,8 +82,12 @@ export function seedDiagnosisProse(
       ? `Foco sugerido para o ciclo comercial: ${topRoadmap.join("; ")}.`
       : `Presença digital de ${meta.companyName} está estável nesta coleta — o próximo passo é aprofundar conteúdo e autoridade local.`
 
+  const geoProse = input.geoNarrative?.trim() ?? ""
   const pillarNarratives = Object.fromEntries(
-    DIAGNOSIS_PILLARS.map((pillar) => [pillar, pillarLine(pillar, facts)]),
+    DIAGNOSIS_PILLARS.map((pillar) => [
+      pillar,
+      pillar === "geo" && geoProse ? geoProse : pillarLine(pillar, facts),
+    ]),
   ) as Record<DiagnosisPillar, string>
 
   return {

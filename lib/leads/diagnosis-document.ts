@@ -49,7 +49,7 @@ export type DiagnosisPillarScore = {
    *
    * `emptyPillarScore()` devolvia `score: 100`, e um pilar vazio afirmava
    * perfeição. Enquanto os quatro pilares originais eram sempre medidos — o
-   * Diagnóstico só destrava com as quatro etapas prontas — o defeito ficava
+   * Diagnóstico só destrava com as cinco etapas prontas — o defeito ficava
    * latente. Com um quinto pilar e documentos já salvos que não têm a chave
    * `geo`, ele passa a aparecer no relatório do cliente: `readFacts` resolve
    * pilar ausente com `emptyPillarScore()`, e o lead ganharia nota cheia numa
@@ -90,6 +90,28 @@ export type DiagnosisPillarFacts = {
   keyMetrics: DiagnosisKeyMetric[]
 }
 
+/**
+ * A evidência de Presença em IA que vai no documento do cliente.
+ *
+ * **É a parte que o lead reconhece.** Uma pergunta que alguém de fato fez a uma
+ * IA, e a frase que a IA copiou do site dele, valem mais num documento
+ * comercial que qualquer nota de pilar — é o que o relatório de referência faz
+ * nas seções de citação, e o que os indicadores agregados não conseguem dizer.
+ *
+ * Opcional, e **ausente quando não foi coletada**. Seção vazia num documento
+ * comercial lê como fraqueza do lead, não como lacuna da nossa auditoria.
+ */
+export type DiagnosisGeoEvidence = {
+  /** Perguntas de IA em que o negócio aparece. */
+  prompts: Array<{ question: string; leadCited: boolean }>
+  /** Citações na visão geral de IA do Google, com o trecho citado. */
+  aiOverview: Array<{
+    keyword: string
+    position: number | null
+    citedText: string | null
+  }>
+}
+
 export type DiagnosisFacts = {
   scorecard: Record<DiagnosisPillar, DiagnosisPillarScore>
   findings: DiagnosisFinding[]
@@ -100,6 +122,11 @@ export type DiagnosisFacts = {
    * exigi-lo faria todo documento antigo deixar de abrir.
    */
   strengths?: DiagnosisStrength[]
+  /**
+   * Opcional na leitura, pelo mesmo motivo de `strengths`: documento salvo
+   * antes da onda 4 da Presença em IA não tem o campo.
+   */
+  geoEvidence?: DiagnosisGeoEvidence
 }
 
 export type DiagnosisProse = {
@@ -144,6 +171,17 @@ export type LeadDiagnosisExport = {
 }
 
 export const DIAGNOSIS_ROADMAP_CAP = 10
+
+/**
+ * Quanta evidência de Presença em IA cabe no documento do cliente.
+ *
+ * Seis perguntas e quatro citações: o relatório de referência mostra dez de
+ * cada, mas ele é um documento de página cheia e o nosso é um pilar entre seis.
+ * O que importa é que o lead reconheça a pergunta e a própria frase — a lista
+ * completa mora na tela do analista.
+ */
+export const DIAGNOSIS_GEO_PROMPTS_CAP = 6
+export const DIAGNOSIS_GEO_CITATIONS_CAP = 4
 export const DIAGNOSIS_PROSE_MAX = 2000
 export const DIAGNOSIS_HOOK_MAX = 400
 

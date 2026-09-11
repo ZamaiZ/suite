@@ -48,7 +48,17 @@ import {
 import { type LeadVisibilityAudit } from "./visibility-audit.ts"
 import { mergeVisibilityOpportunities } from "./visibility-opportunities.ts"
 import { mergeGeoOpportunities } from "./geo-opportunities.ts"
+import { geoNarrative } from "./geo-narrative.ts"
+import {
+  GEO_PROMPT_CONCENTRATION_MIN,
+  promptConcentration,
+} from "./geo-mentions.ts"
 import type { LeadGeoAudit } from "./geo-audit.ts"
+import {
+  DIAGNOSIS_GEO_CITATIONS_CAP,
+  DIAGNOSIS_GEO_PROMPTS_CAP,
+  type DiagnosisGeoEvidence,
+} from "./diagnosis-document.ts"
 import { emptyGeoReview, type GeoReview } from "./geo-review.ts"
 import { type VisibilityReview } from "./visibility-review.ts"
 import type { BacklinkSnapshot } from "./backlinks-audit.ts"
@@ -166,6 +176,33 @@ function buildLimitations(input: DiagnosisCompileInput): string[] {
       "Contagens de fotos e campos enriquecidos dependem do provedor configurado (Places / DataForSEO / SerpAPI).",
     )
   }
+  // As ressalvas da Presença em IA, e cada uma só existe se a coleta
+  // correspondente rodou. Este é o lugar canônico delas no documento: a prosa
+  // do pilar já diz "número direcional", mas a concentração da amostra e o
+  // universo da comparação não cabiam lá sem virar aula.
+  const geo = input.geoAudit?.snapshot
+  if (geo?.citations) {
+    lines.push(
+      "As perguntas de IA vêm do que o site já posiciona no Google, não de uma lista escolhida — algumas podem estar fora do mercado principal do negócio.",
+    )
+    const concentracao = promptConcentration(geo.citations)
+    if (concentracao && concentracao.share >= GEO_PROMPT_CONCENTRATION_MIN) {
+      lines.push(
+        `Nesta coleta, ${Math.round(concentracao.share * 100)}% das fontes vêm de uma pergunta só (“${concentracao.question}”).`,
+      )
+    }
+  }
+  if (geo?.aiMentions) {
+    lines.push(
+      "A comparação com outros sites é sobre as respostas de IA medidas, não sobre o mercado inteiro.",
+    )
+  }
+  if (geo?.promptVisibility) {
+    lines.push(
+      "Respostas de IA variam entre execuções: a taxa de menção é indicação direcional, não medida estável.",
+    )
+  }
+
   lines.push(
     "Achados de revisão visual refletem o julgamento do analista no momento da coleta.",
   )
@@ -297,11 +334,20 @@ function geoMetrics(audit: LeadGeoAudit): DiagnosisKeyMetric[] {
         ? "—"
         : `${snap.accessibility.aiCrawlers.length - bloqueados}/${snap.accessibility.aiCrawlers.length}`,
     ),
-    metric(
-      "ai_overview",
-      "Citações em IA do Google",
-      snap.aiOverview === null ? "—" : String(snap.aiOverview.count),
-    ),
+    // Some quando a outra medição vê presença: um chip "Citações em IA do
+    // Google: 0" ao lado de "Respostas de IA que citam: 7" é contradição na
+    // mesma linha, e o lead não tem como saber que são dois índices
+    // diferentes. Zero só é exibido quando é o único número que existe.
+    ...(snap.aiOverview !== null &&
+    !(snap.aiOverview.count === 0 && (snap.citations?.mentions ?? 0) > 0)
+      ? [
+          metric(
+            "ai_overview",
+            "Citações em IA do Google",
+            String(snap.aiOverview.count),
+          ),
+        ]
+      : []),
     metric(
       "llms_txt",
       "llms.txt",
@@ -311,31 +357,76 @@ function geoMetrics(audit: LeadGeoAudit): DiagnosisKeyMetric[] {
           : "Ausente"
         : "—",
     ),
-    // Os três abaixo são das coletas pagas. `null` vira `—` — "não coletado",
-    // que num documento comercial é diferente de zero: ausência de medição
-    // nossa não é fraqueza do lead.
-    metric(
-      "ai_demand",
-      "Buscas em IA no mercado",
-      snap.aiDemand === null || snap.aiDemand.totalAiSearchVolume === null
-        ? "—"
-        : snap.aiDemand.totalAiSearchVolume.toLocaleString("pt-BR"),
-    ),
-    metric(
-      "ai_mentions",
-      "Respostas de IA que citam",
-      snap.citations === null ? "—" : String(snap.citations.mentions),
-    ),
-    metric(
-      "ai_prompt_rate",
-      "Perguntas em que a marca aparece",
-      // Denominador são as execuções `ok`: contar a que o provedor recusou
-      // derrubaria a taxa por um motivo que não é do lead.
-      snap.promptVisibility === null
-        ? "—"
-        : `${Math.round(snap.promptVisibility.metrics.mentionRate * 100)}%`,
-    ),
+    // Os três abaixo vêm das coletas pagas, e **somem quando não foram
+    // coletados** em vez de virar `—`.
+    //
+    // A regra da casa é "ausência é `—`, nunca zero", e ela vale na tela do
+    // analista: lá o traço diz "vá coletar". Aqui é outro leitor. Num documento
+    // que o lead lê, um indicador "Perguntas em que a marca aparece: —" não é
+    // lido como lacuna da nossa auditoria — é lido como ausência dele nas IAs.
+    // A spec pede isto com todas as letras para a seção de sondagem.
+    ...(snap.aiDemand !== null && snap.aiDemand.totalAiSearchVolume !== null
+      ? [
+          metric(
+            "ai_demand",
+            "Buscas em IA no mercado",
+            snap.aiDemand.totalAiSearchVolume.toLocaleString("pt-BR"),
+          ),
+        ]
+      : []),
+    ...(snap.citations !== null
+      ? [
+          metric(
+            "ai_mentions",
+            "Respostas de IA que citam",
+            String(snap.citations.mentions),
+          ),
+        ]
+      : []),
+    ...(snap.promptVisibility !== null
+      ? [
+          metric(
+            "ai_prompt_rate",
+            "Perguntas em que a marca aparece",
+            // Denominador são as execuções `ok`: contar a que o provedor
+            // recusou derrubaria a taxa por um motivo que não é do lead.
+            `${Math.round(snap.promptVisibility.metrics.mentionRate * 100)}%`,
+          ),
+        ]
+      : []),
   ]
+}
+
+/**
+ * A evidência de Presença em IA, só com o que foi coletado.
+ *
+ * `undefined` quando não há nada — e aí a seção some do PDF, em vez de aparecer
+ * vazia dizendo que o lead não tem presença em IA quando o que houve foi a
+ * coleta não ter rodado.
+ */
+function geoEvidenceFrom(
+  audit: LeadGeoAudit | null,
+): DiagnosisGeoEvidence | undefined {
+  const snap = audit?.snapshot
+  if (!snap) return undefined
+
+  const prompts = (snap.citations?.prompts ?? [])
+    .slice(0, DIAGNOSIS_GEO_PROMPTS_CAP)
+    .map((prompt) => ({
+      question: prompt.question,
+      leadCited: prompt.leadCited,
+    }))
+
+  const aiOverview = (snap.aiOverview?.keywords ?? [])
+    .slice(0, DIAGNOSIS_GEO_CITATIONS_CAP)
+    .map((row) => ({
+      keyword: row.keyword,
+      position: row.position,
+      citedText: row.citedText,
+    }))
+
+  if (prompts.length === 0 && aiOverview.length === 0) return undefined
+  return { prompts, aiOverview }
 }
 
 function mergeRoadmap(
@@ -439,6 +530,7 @@ export function compileDiagnosisFacts(
       }).map(toRef)
     : []
 
+  const geoEvidence = geoEvidenceFrom(input.geoAudit)
   const geoItems: DiagnosisOpportunityRef[] = input.geoAudit
     ? mergeGeoOpportunities({
         snapshot: input.geoAudit.snapshot,
@@ -517,6 +609,8 @@ export function compileDiagnosisFacts(
 
   return {
     strengths,
+    // Ausente quando não coletada. O leitor tolerante e o PDF já tratam.
+    ...(geoEvidence ? { geoEvidence } : {}),
     scorecard: {
       google: scorePillarOpportunities(googleItems),
       website: scorePillarOpportunities(websiteItems),
@@ -587,7 +681,15 @@ export function compileDiagnosisDocument(
     generatedAt: input.generatedAt,
     sources: buildSources(input),
   }
-  const seeded = seedDiagnosisProse({ meta, facts })
+  // A prosa do pilar `geo` é composta do snapshot, que a linha genérica de
+  // `pillarLine` não alcança: três coletas de naturezas diferentes, e cada uma
+  // ausente precisa sumir da frase em vez de virar "não medido" no documento
+  // do cliente.
+  const seeded = seedDiagnosisProse({
+    meta,
+    facts,
+    geoNarrative: geoNarrative(input.geoAudit?.snapshot ?? null),
+  })
   const prose: DiagnosisProse = input.previousProse
     ? {
         executiveSummary:

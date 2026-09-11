@@ -27,7 +27,10 @@ import {
   GEO_TITLE_MIN,
   type GeoSnapshot,
 } from "@/lib/leads/geo-audit"
-import { promptConcentration } from "@/lib/leads/geo-mentions"
+import {
+  GEO_PROMPT_CONCENTRATION_MIN,
+  promptConcentration,
+} from "@/lib/leads/geo-mentions"
 import { LeadGeoReview } from "./LeadGeoReview"
 import type { GeoController } from "./use-geo-controller"
 
@@ -603,7 +606,7 @@ function GeoMentionsCard({ snapshot }: { snapshot: GeoSnapshot }) {
       {/* A amostra vem do que o domínio ranqueia, não de perguntas escolhidas.
           Uma pergunta genérica pode arrastar a lista inteira, e o analista
           precisa ver isso antes de levar o número para a reunião. */}
-      {concentracao && concentracao.share >= 0.3 ? (
+      {concentracao && concentracao.share >= GEO_PROMPT_CONCENTRATION_MIN ? (
         <p className="mt-2 text-xs/relaxed text-muted-foreground">
           {pct(concentracao.share)} das fontes vêm de uma pergunta só — “
           {concentracao.question}”. Ela pode estar puxando nomes de fora deste

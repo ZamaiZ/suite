@@ -38,8 +38,27 @@ import type { SearchMentionsResult } from "@/lib/leads/geo-mentions"
  */
 const PROVIDER_UNAVAILABLE = 50301
 
-/** `40501 Invalid Field`. Corpo errado, e também não cobra. */
+/**
+ * `40501 Invalid Field` — e ele significa **duas coisas diferentes**.
+ *
+ * Medido em três sondagens do mesmo lead, com o mesmo corpo e os mesmos
+ * prompts: **2 → 1 → 0** recusas. Campo inválido não é intermitente. O que
+ * varia é o provedor de LLM recusando o prompt, e o DataForSEO mapeia essa
+ * recusa para o mesmo código de "campo inválido".
+ *
+ * A discriminação está na mensagem, e ela também foi medida: os `40501`
+ * genuínos da onda 0 vieram com `"Invalid Field: 'max_output_tokens'."`,
+ * reproduzíveis em 100% das tentativas. Os intermitentes vieram **sem mensagem
+ * nenhuma**.
+ *
+ * Isso muda o que a tela diz ao analista. "Campo recusado" pede correção de
+ * código; "o provedor não respondeu" pede outra tentativa. Chamar os dois pelo
+ * mesmo nome mandaria alguém caçar um bug que não existe.
+ */
 const INVALID_FIELD = 40501
+
+/** A assinatura de um erro de campo de verdade: ele nomeia o campo. */
+const NAMES_A_FIELD = /invalid field/i
 
 export type FetchAiDemandResult =
   | { status: "ok"; result: AiKeywordVolumeResult | null; cost?: number }
@@ -198,10 +217,16 @@ export async function fetchLlmResponseLive(input: {
       }
     }
     if (posted.code === INVALID_FIELD) {
-      return {
-        status: "rejected",
-        message: posted.vendorMessage ?? "Campo recusado pela plataforma.",
-      }
+      // Sem o nome do campo, não é erro de corpo: é recusa transitória do
+      // provedor com o código errado. Tratar como execução que não aconteceu.
+      const nomeia = NAMES_A_FIELD.test(posted.vendorMessage ?? "")
+      return nomeia
+        ? { status: "rejected", message: posted.vendorMessage ?? "" }
+        : {
+            status: "provider_unavailable",
+            message:
+              posted.vendorMessage ?? "O provedor de IA recusou este prompt.",
+          }
     }
     return { status: "error", message: posted.message }
   }

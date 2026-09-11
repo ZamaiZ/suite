@@ -26,6 +26,7 @@ import {
   DIAGNOSIS_PILLAR_LABELS,
   DIAGNOSIS_PILLARS,
   DIAGNOSIS_PROSE_MAX,
+  type DiagnosisFacts,
   type DiagnosisPillar,
 } from "@/lib/leads/diagnosis-document"
 import { LeadDiagnosisScorecard } from "./LeadDiagnosisScorecard"
@@ -35,6 +36,64 @@ import type { LeadDiagnosisPanelProps } from "./LeadDiagnosisPanel.types"
 const EASE = [0.23, 1, 0.32, 1] as const
 
 const TEXTAREA = "min-h-0 resize-y"
+
+/**
+ * O que o PDF do cliente vai mostrar de Presença em IA, visível antes de gerar.
+ *
+ * Sem isto, o analista só descobriria o conteúdo da seção abrindo o documento
+ * já exportado — e esta é a parte que ele mais precisa conferir antes de
+ * mandar, porque são frases que o lead vai reconhecer como dele.
+ *
+ * Some junto com a seção do PDF quando não houve coleta: os dois leem o mesmo
+ * `geoEvidence` ausente.
+ */
+function GeoEvidencePreview({ facts }: { facts: DiagnosisFacts }) {
+  const evidence = facts.geoEvidence
+  if (!evidence) return null
+  const { prompts, aiOverview } = evidence
+  if (prompts.length === 0 && aiOverview.length === 0) return null
+
+  return (
+    <div className="mt-3 border-t border-border/70 pt-3">
+      <p className="text-xs/relaxed text-muted-foreground">
+        Vai no PDF do cliente:
+      </p>
+      <ul className="mt-2 flex flex-col gap-1.5">
+        {prompts.map((item) => (
+          <li
+            key={`p-${item.question}`}
+            className="text-xs/relaxed text-foreground"
+          >
+            “{item.question}”
+            {item.leadCited ? (
+              <span className="text-muted-foreground">
+                {" "}
+                · o site entre as fontes
+              </span>
+            ) : null}
+          </li>
+        ))}
+        {aiOverview.map((item) => (
+          <li
+            key={`c-${item.keyword}`}
+            className="text-xs/relaxed text-foreground"
+          >
+            {item.keyword}
+            {item.position !== null ? (
+              <span className="text-muted-foreground">
+                {" "}
+                · {item.position}ª fonte
+              </span>
+            ) : null}
+            {item.citedText ? (
+              <span className="text-muted-foreground">: “{item.citedText}”</span>
+            ) : null}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
 
 export function LeadDiagnosisPanel({
   detail,
@@ -428,6 +487,9 @@ export function LeadDiagnosisPanel({
                       </li>
                     ))}
                 </ul>
+              ) : null}
+              {pillar === "geo" ? (
+                <GeoEvidencePreview facts={draft.document.facts} />
               ) : null}
             </StepCard>
           ))}

@@ -187,11 +187,17 @@ export async function probeLeadGeoPrompts(
 
       // A mensagem genérica da casa fala de "perfil" e não diz nada dentro
       // desta etapa. Quando o provedor não manda a dele, a nossa ao menos
-      // nomeia a plataforma e o prompt — que é o que o analista precisa para
-      // saber se o buraco é de uma plataforma ou de uma pergunta.
+      // nomeia a plataforma — que é o que o analista precisa para saber se o
+      // buraco é de uma plataforma ou de uma pergunta.
+      //
+      // E ela diz **tente de novo** quando a recusa é do provedor: medido em
+      // três sondagens do mesmo lead, as recusas caíram de 2 para 1 para 0 sem
+      // nenhuma mudança no corpo.
       const generica = response.message.startsWith("Não foi possível")
       const motivo = generica
-        ? `${PLATFORM_LABELS[platform]} recusou este prompt.`
+        ? response.status === "provider_unavailable"
+          ? `${PLATFORM_LABELS[platform]} não respondeu desta vez. Sondar de novo costuma resolver.`
+          : `${PLATFORM_LABELS[platform]} recusou este prompt.`
         : response.message
 
       runs.push(

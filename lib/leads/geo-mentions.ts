@@ -290,6 +290,15 @@ export function mentionsFromCitations(input: {
  * isso — a diferença entre a nossa amostra e a do relatório de referência, que
  * usa dez prompts escolhidos, é exatamente esta.
  */
+/**
+ * A partir daqui uma pergunta domina a amostra e a tela diz o nome dela.
+ *
+ * Um número só, lido pelo painel, pelo PDF e pelas limitações do documento —
+ * três cópias divergiriam e a tela passaria a avisar sobre uma coisa enquanto o
+ * documento declara outra.
+ */
+export const GEO_PROMPT_CONCENTRATION_MIN = 0.3
+
 export function promptConcentration(citations: GeoCitations): {
   question: string
   share: number

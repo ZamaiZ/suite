@@ -804,10 +804,22 @@ export function geoGapsForSnapshot(input: {
   // Só acusa quem ranqueia: um domínio invisível no orgânico já tem o gap
   // `not_ranking` da visibilidade, e acusá-lo aqui seria a segunda cobrança
   // pela mesma causa.
+  //
+  // **E cala quando a outra medição vê presença.** Os dois índices discordam:
+  // medido em 2026-09-11, o `ranked_keywords` deu zero citações em visão geral
+  // de IA para o mesmo lead em que o `llm_mentions` achou sete respostas
+  // citando o site. Sem esta guarda, o PDF do cliente saía dizendo, na mesma
+  // página, "o site aparece em 7 respostas de IA" no parágrafo e "Conquistar
+  // citação na visão geral de IA" na oportunidade, no roadmap e no resumo
+  // executivo — três contradições que o lead não tem como desfazer.
+  //
+  // Mesma regra já aplicada à prosa em `geo-narrative.ts`: não afirmamos
+  // ausência quando outra leitura da mesma coisa vê presença.
   if (
     aiOverview !== null &&
     aiOverview.hasOrganicFootprint &&
-    aiOverview.count === 0
+    aiOverview.count === 0 &&
+    (citations?.mentions ?? 0) === 0
   ) {
     gaps.push("no_ai_overview_presence")
   }

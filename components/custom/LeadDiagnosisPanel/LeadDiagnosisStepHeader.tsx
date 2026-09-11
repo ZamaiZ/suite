@@ -43,7 +43,7 @@ export function LeadDiagnosisStepHeader({
             Diagnóstico
           </h2>
           <p className="text-xs/relaxed text-muted-foreground">
-            Compila as quatro etapas em um relatório editável e PDF para a
+            Compila as cinco etapas em um relatório editável e PDF para a
             reunião.
           </p>
           {stale ? (

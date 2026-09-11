@@ -310,11 +310,57 @@ As três rodadas custaram no total ≈ **US$ 1,72**, e cada uma achou algo que a
 anterior não podia achar. **Nenhum dos seis defeitos era visível no payload** —
 todos precisaram do dado atravessando a aplicação inteira com um lead real.
 
-**O que falta, e por quê.**
+## Onda 4 — feita em 2026-09-11
 
-- **A onda 4:** a prosa do pilar `geo` no PDF, e omitir a seção de sondagem
-  quando não houve sondagem. O pilar já entra (o PDF itera `DIAGNOSIS_PILLARS`)
-  e os três indicadores pagos já estão em `geoMetrics`.
+**A prosa do pilar é composta do snapshot, determinística, sem LLM.** A etapa
+inteira existe sob a regra de que a LLM é objeto de medição, nunca instrumento
+de análise — e um parágrafo gerado por modelo sobre o negócio do lead quebraria
+a regra no lugar mais visível, que é o documento que ele lê.
+
+**Coleta ausente não vira frase.** Nem "não sondado", nem `—`. Num documento
+comercial, "Perguntas em que a marca aparece: —" não é lido como lacuna da nossa
+auditoria; é lido como ausência dele nas IAs. Vale para os três indicadores
+pagos em `geoMetrics` e para a seção de evidência inteira.
+
+**A seção "O que as IAs já dizem do negócio" é nova**, e é a parte que o lead
+reconhece: a pergunta que alguém de fato fez, e a frase que a visão geral de IA
+copiou do site dele. Some inteira quando não há o que mostrar.
+
+**Uma contradição entre datasets foi calada.** O `ranked_keywords` deu zero
+citações em visão geral de IA para o mesmo lead em que o `llm_mentions` achou
+sete respostas. Cada um está certo no próprio recorte, mas emendar as duas
+frases produziria "você não é citado" seguido de "você é citado em sete". A
+regra ficou: **medição positiva ganha da negativa vinda de um índice mais
+grosso** — não afirmamos ausência quando outra leitura da mesma coisa vê
+presença.
+
+Amostra da prosa com o snapshot real:
+
+> Os 12 robôs de IA avaliados conseguem ler o site. O site aparece entre as
+> fontes em 7 respostas de IA deste mercado. Nessas 7 respostas, o site responde
+> por 11% das fontes citadas. Perguntando a ChatGPT, Claude, Gemini e Perplexity
+> o que este mercado pergunta, a marca apareceu em 29% das 31 respostas — número
+> direcional, porque a mesma pergunta varia entre execuções.
+
+E, com só a coleta base, o parágrafo termina na primeira frase.
+
+**O que falta.**
+
+- **A sondagem contra um lead com concorrentes na malha do Google**, para ver
+  `dominance` preenchido em vez de `null`. Este lead não tem checagens de
+  posição no Maps, então não há marca para casar — e a tela diz isso em vez de
+  inventar um percentual.
+
+**As três sondagens convergiram:** 33,3% · 29,0% · 28,1%, com denominadores de
+30, 31 e 32 execuções válidas. A taxa mal se mexeu enquanto o número de
+execuções subia, que é o argumento de que tratar recusa como "não aconteceu" —
+e não como "não mencionou" — estava certo.
+- ~~O `40501` intermitente~~ → **resolvido na quarta sondagem.** As recusas
+  caíram de 2 para 1 para 0 com o mesmo corpo, e a discriminação estava na
+  mensagem: erro de campo genuíno nomeia o campo e é reproduzível; o
+  intermitente vem sem mensagem. Agora o sem-nome vira
+  `provider_unavailable`, e a tela diz "sondar de novo costuma resolver" em vez
+  de mandar caçar um bug que não existe. Seção 16 da evidência.
 - **A narrativa do pilar `geo` no PDF.** O pilar já entra — `diagnosis-pdf.tsx`
   itera `DIAGNOSIS_PILLARS` e os três indicadores pagos entraram em
   `geoMetrics`. O que falta é a prosa da seção, que é a onda 4.

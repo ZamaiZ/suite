@@ -247,6 +247,58 @@ function PillarSection({
   )
 }
 
+/**
+ * A evidência de Presença em IA: a pergunta que alguém fez e a frase que a IA
+ * copiou do site.
+ *
+ * **A seção inteira some quando não há o que mostrar.** É a regra da spec, e a
+ * razão é de leitura, não de estética: num documento que o lead lê, uma seção
+ * "Perguntas em que a IA cita você" vazia não é lida como lacuna da nossa
+ * auditoria — é lida como ausência dele nas IAs.
+ */
+function GeoEvidenceSection({ document }: { document: DiagnosisDocument }) {
+  const evidence = document.facts.geoEvidence
+  if (!evidence) return null
+  const { prompts, aiOverview } = evidence
+  if (prompts.length === 0 && aiOverview.length === 0) return null
+
+  return (
+    <View style={styles.pillarBlock} wrap={false}>
+      <Text style={styles.sectionTitle}>O que as IAs já dizem do negócio</Text>
+
+      {prompts.length > 0 ? (
+        <>
+          <Text style={styles.body}>
+            Perguntas reais em que a inteligência artificial do Google cita este
+            negócio:
+          </Text>
+          {prompts.map((item) => (
+            <Text key={item.question} style={styles.listItem}>
+              • “{item.question}”
+              {item.leadCited ? " — o site aparece entre as fontes" : ""}
+            </Text>
+          ))}
+        </>
+      ) : null}
+
+      {aiOverview.length > 0 ? (
+        <>
+          <Text style={{ ...styles.body, marginTop: 10 }}>
+            Trechos que a visão geral de IA do Google citou do site:
+          </Text>
+          {aiOverview.map((item) => (
+            <Text key={item.keyword} style={styles.listItem}>
+              • {item.keyword}
+              {item.position !== null ? ` (${item.position}ª fonte)` : ""}
+              {item.citedText ? `: “${item.citedText}”` : ""}
+            </Text>
+          ))}
+        </>
+      ) : null}
+    </View>
+  )
+}
+
 function DiagnosisPdfDocument({ document }: { document: DiagnosisDocument }) {
   const generated = formatDateTimeShort(document.meta.generatedAt)
   const place = document.meta.city ? ` · ${document.meta.city}` : ""
@@ -351,6 +403,8 @@ function DiagnosisPdfDocument({ document }: { document: DiagnosisDocument }) {
         {DIAGNOSIS_PILLARS.map((pillar) => (
           <PillarSection key={pillar} document={document} pillar={pillar} />
         ))}
+
+        <GeoEvidenceSection document={document} />
 
         <Text style={styles.sectionTitle}>Limitações da coleta</Text>
         {document.limitations.map((line) => (

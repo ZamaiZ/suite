@@ -747,6 +747,57 @@ recusa dar a uma LLM — ou restringir o `target` de `search_mentions` por
 `keyword_entity` do segmento, que muda o significado de `mentions` e é outra
 medição. **Registrado, não feito.**
 
+## 16. A quarta sondagem fecha a questão do `40501`
+
+Rodada em 2026-09-11. **32 execuções, zero recusadas.**
+
+| rodada | recusas `40501` | prompts afetados |
+|---|---|---|
+| 1ª | **2** | `problem-1`, `problem-2` |
+| 2ª | **1** | `problem-2` |
+| 3ª | **0** | — |
+
+**Mesmo corpo, mesmos prompts, mesma plataforma.** Campo inválido não é
+intermitente: ou o campo existe no contrato ou não existe. O que varia é o
+provedor de LLM recusando o prompt, e o DataForSEO mapeia essa recusa para o
+mesmo código de "campo inválido".
+
+### A discriminação estava na mensagem
+
+Os `40501` **genuínos** da onda 0 — `max_output_tokens` no `chat_gpt`,
+`web_search_city` no `perplexity` — vieram com `"Invalid Field: 'x'."` e foram
+reproduzíveis em 100% das tentativas. Os intermitentes vieram **sem mensagem
+nenhuma**, caindo no texto genérico da casa.
+
+Então a regra passou a ser: `40501` que **nomeia o campo** é bug nosso de corpo;
+`40501` **sem nome de campo** é `provider_unavailable` — execução que não
+aconteceu.
+
+**Isso muda o que o analista lê.** "Campo recusado pela plataforma" manda
+alguém caçar um bug de código que não existe. "O ChatGPT não respondeu desta
+vez. Sondar de novo costuma resolver" é o que a medição sustenta.
+
+### A taxa desta rodada
+
+**28,1%** — 9 de 32, com denominador cheio pela primeira vez.
+
+| plataforma | menções |
+|---|---|
+| `claude` | 3 de 8 |
+| `chat_gpt` | 2 de 8 |
+| `gemini` | 2 de 8 |
+| `perplexity` | 2 de 8 |
+
+As três sondagens deram **33,3% · 29,0% · 28,1%**, com denominadores de 30, 31 e
+32. A convergência é o argumento de que o `status` estava certo: a taxa mal se
+mexeu enquanto o número de execuções válidas subia.
+
+E `domainCited` variou como a tela avisa que varia: `brand-1` teve o site entre
+as fontes em **3 de 4** plataformas nesta rodada contra **2 de 4** na anterior.
+
+`dominance` continua `null`, corretamente — este lead não tem checagens de
+posição no Maps, então não houve marca de concorrente para casar.
+
 ## Os dois erros da primeira rodada
 
 Ficam registrados porque os dois produziriam veredito errado com cara de
