@@ -278,10 +278,43 @@ commit `20e1069` com o nome do parâmetro apagado (`headings.filter(( ) => …)`
 o que quebrava o type-check e zerava `questionHeadings` — que alimenta o gap
 `no_faq_content`.
 
+**A coleta real rodou em 2026-09-11**, contra `buscaorganica.com.br`, **US$ 0,83**
+nas três — dentro das projeções. Ela achou **quatro defeitos que nenhuma medição
+de payload acharia**, porque os quatro só aparecem com o dado deste lead
+atravessando a aplicação inteira. Seção 13 de
+`docs/auditoria/2026-09-10-onda0-presenca-em-ia.md`:
+
+1. **A demanda em IA vinha de sites de clientes.** 94,8% do volume era uma
+   keyword do subdomínio de homologação. Filtrado por `url.isCanonicalHost`.
+2. **Os concorrentes de backlink não são concorrentes** — e davam ao lead 67% de
+   participação contra alvos que somavam uma menção. As duas chamadas de
+   `llm_mentions` trocaram de ordem: os concorrentes agora saem das fontes que a
+   IA citou ao lado do lead.
+3. **Dominância de 100%** sobre um universo de uma marca, a própria. Agora `null`
+   quando não há concorrente na lista de casamento.
+4. **O erro do provedor chegava com a copy de outra etapa**, porque o `40501`
+   veio no envelope e aquele ramo descartava `status_message`.
+
+**O que funcionou como desenhado:** `status` manteve o denominador em 30 e não
+32 — duas execuções recusadas ficaram de fora da taxa; `money_spent` acumulou
+certo entre as três coletas; e as sete perguntas vieram com a frase real e as
+fontes, que é **mais** do que o relatório de referência entrega.
+
+**Três rodadas reais depois, a conta fecha.** Em 2026-09-11 a coleta final saiu
+por **US$ 0,1203** — exatamente `0,0133 + 0,107` — com participação do lead em
+**10,6%**, o mesmo `7/66` calculado à mão e a ordem de grandeza dos 9% que o
+relatório de referência dá para a PuroClean. Seções 13 a 15 de
+`docs/auditoria/2026-09-10-onda0-presenca-em-ia.md`.
+
+As três rodadas custaram no total ≈ **US$ 1,72**, e cada uma achou algo que a
+anterior não podia achar. **Nenhum dos seis defeitos era visível no payload** —
+todos precisaram do dado atravessando a aplicação inteira com um lead real.
+
 **O que falta, e por quê.**
 
-- **A coleta real na tela, com login.** O app pede sessão. Uma sondagem completa
-  custa ≈ US$ 0,65 e só faz sentido contra um lead de verdade.
+- **A onda 4:** a prosa do pilar `geo` no PDF, e omitir a seção de sondagem
+  quando não houve sondagem. O pilar já entra (o PDF itera `DIAGNOSIS_PILLARS`)
+  e os três indicadores pagos já estão em `geoMetrics`.
 - **A narrativa do pilar `geo` no PDF.** O pilar já entra — `diagnosis-pdf.tsx`
   itera `DIAGNOSIS_PILLARS` e os três indicadores pagos entraram em
   `geoMetrics`. O que falta é a prosa da seção, que é a onda 4.

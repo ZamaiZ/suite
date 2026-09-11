@@ -125,10 +125,22 @@ export async function analyzeLeadGeo(
   // A demanda em IA é a única chamada paga da coleta base. As keywords vêm do
   // snapshot de visibilidade que já está gravado — pagar `ranked_keywords` de
   // novo só para alimentar esta chamada custaria mais que ela.
+  //
+  // **Só as keywords do host canônico.** Medido em 2026-09-11 neste lead: sem o
+  // filtro, uma única keyword de um site de CLIENTE hospedado no subdomínio de
+  // homologação (`sanitarios`, 12.559) respondia por **94,8%** da demanda —
+  // 13.254 no total contra 695 do domínio real. O número ia para a tela do lead
+  // como se fosse o mercado dele.
+  //
+  // `isCanonicalHost` existe por causa desse mesmo subdomínio: a onda 0 da
+  // visibilidade achou 77 das 110 keywords em `aprov.`. `null` é host não
+  // medido em coleta antiga, e aí a keyword entra — calar sobre ela seria
+  // trocar um erro por outro.
   const keywords = visibilityAudit
     ? [
         ...new Set(
           visibilityAudit.snapshot.keywords
+            .filter((row) => row.url?.isCanonicalHost !== false)
             .map((row) => row.keyword)
             .filter((keyword) => keyword.length > 0),
         ),

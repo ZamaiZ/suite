@@ -27,6 +27,7 @@ import {
   GEO_TITLE_MIN,
   type GeoSnapshot,
 } from "@/lib/leads/geo-audit"
+import { promptConcentration } from "@/lib/leads/geo-mentions"
 import { LeadGeoReview } from "./LeadGeoReview"
 import type { GeoController } from "./use-geo-controller"
 
@@ -546,31 +547,32 @@ export function LeadGeoTabCitations({
 }
 
 /**
- * Comparação com concorrentes nas respostas de IA.
+ * Quem mais a IA cita nas mesmas respostas.
  *
- * **`mentions` não é taxa de citação, e a tela não pode chamá-lo assim.**
- * Medido em 2026-09-11: a SERVPRO tem 11× as menções da PuroClean e 1,2× a
- * taxa de citação do relatório de referência. Uma conta o dataset inteiro, a
- * outra a fração de prompts em que a marca aparece.
+ * **O universo vai na tela, junto do percentual.** "10,6% das citações nas 7
+ * respostas em que este negócio aparece" é uma frase verdadeira; "10,6% de
+ * participação de mercado" não é, e a diferença entre as duas é a única coisa
+ * que separa este número de propaganda.
  */
 function GeoMentionsCard({ snapshot }: { snapshot: GeoSnapshot }) {
   const mentions = snapshot.aiMentions
+  const citations = snapshot.citations
   if (mentions === null) {
     return (
-      <StepCard title="Concorrência nas respostas de IA">
+      <StepCard title="Quem a IA cita junto">
         <p className="text-xs/relaxed text-muted-foreground">
-          Não coletado. Entra junto com as menções em IA.
+          {citations === null
+            ? "Não coletado. Entra junto com as menções em IA."
+            : "Sem menções para comparar: a IA não cita este negócio em nenhuma resposta deste mercado."}
         </p>
       </StepCard>
     )
   }
 
-  const soDominio = mentions.targets.filter(
-    (target) => target.measuredBy === "domain",
-  ).length
+  const concentracao = citations ? promptConcentration(citations) : null
 
   return (
-    <StepCard title="Concorrência nas respostas de IA">
+    <StepCard title="Quem a IA cita junto">
       <ul className="flex flex-col">
         {mentions.targets.map((target) => (
           <li
@@ -580,32 +582,32 @@ function GeoMentionsCard({ snapshot }: { snapshot: GeoSnapshot }) {
             <span
               className={cn(
                 "min-w-0 flex-1 truncate text-xs/relaxed",
-                target.isLead
-                  ? "font-medium text-primary"
-                  : "text-foreground",
+                target.isLead ? "font-medium text-primary" : "text-foreground",
               )}
             >
               {target.label}
               {target.isLead ? " · este lead" : ""}
             </span>
             <span className="shrink-0 text-xs/relaxed text-muted-foreground tabular-nums">
-              {target.mentions.toLocaleString("pt-BR")} menções
+              {target.mentions} de {mentions.promptCount}
             </span>
           </li>
         ))}
       </ul>
-      {/* Denominador conhecido: a soma dos alvos medidos. E o rótulo diz
-          "entre os medidos", porque não é participação de mercado. */}
       {mentions.share !== null ? (
         <p className="mt-3 text-xs/relaxed text-muted-foreground">
-          {Math.round(mentions.share * 100)}% das menções entre os alvos
-          medidos.
+          {pct(mentions.share)} de todas as citações nas {mentions.promptCount}{" "}
+          respostas medidas. Não é participação de mercado.
         </p>
       ) : null}
-      {soDominio > 0 ? (
+      {/* A amostra vem do que o domínio ranqueia, não de perguntas escolhidas.
+          Uma pergunta genérica pode arrastar a lista inteira, e o analista
+          precisa ver isso antes de levar o número para a reunião. */}
+      {concentracao && concentracao.share >= 0.3 ? (
         <p className="mt-2 text-xs/relaxed text-muted-foreground">
-          {soDominio} concorrente(s) medido(s) só pelo domínio, sem o nome da
-          marca — tendem a contar menos que quem foi medido pelos dois.
+          {pct(concentracao.share)} das fontes vêm de uma pergunta só — “
+          {concentracao.question}”. Ela pode estar puxando nomes de fora deste
+          mercado.
         </p>
       ) : null}
     </StepCard>
@@ -799,8 +801,9 @@ export function LeadGeoTabProbe({ controller }: { controller: GeoController }) {
             do Google. Quem está fora dela não foi detectado — e silêncio sobre
             o que ficou de fora não é afirmação de que não há nada lá. */}
         <p className="mt-3 text-xs/relaxed text-muted-foreground">
-          Só marcas já cadastradas na auditoria são detectadas. Quem está fora
-          da lista não foi medido.
+          {probe.metrics.dominance === null
+            ? "Nenhum concorrente estava na lista de marcas conhecidas, então a participação da marca não foi medida — só o que aparece acima foi detectado."
+            : `${pct(probe.metrics.dominance)} das menções detectadas são da marca do lead. Quem está fora da lista de marcas conhecidas não foi medido.`}
         </p>
       </StepCard>
     </div>

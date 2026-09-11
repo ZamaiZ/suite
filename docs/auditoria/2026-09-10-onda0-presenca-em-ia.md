@@ -474,6 +474,279 @@ A onda 2b passa a ser **condicional**: `multi_target_metrics` sempre;
 os US$ 0,107 de uma chamada que não pode trazer nada — e lead com zero menções
 vai ser a maioria.
 
+## 13. A primeira coleta real na aplicação — 2026-09-11
+
+As três coletas rodaram na tela, contra `buscaorganica.com.br`. Saldo da conta:
+**47,78 → 46,95, US$ 0,83**.
+
+| coleta | cobrado | projetado |
+|---|---|---|
+| Análise (demanda em IA) | **0,02** | 0,021 |
+| Menções | **0,21** | 0,103–0,21 |
+| Sondagem, 32 execuções | **0,60** | 0,65 |
+
+As projeções da onda 0 seguraram. **E a coleta real achou quatro defeitos que
+nenhuma medição de payload acharia**, porque os quatro só aparecem quando o dado
+atravessa a aplicação inteira com dados deste lead.
+
+### O que funcionou como desenhado
+
+- **`status` salvou a taxa de menção.** Das 32 execuções, **duas foram
+  `rejected`** — `chat_gpt` nos prompts `problem-1` e `problem-2`. O denominador
+  ficou 30, não 32, e a taxa saiu **33,3%** (10 de 30). Contadas como
+  "não mencionou", teriam dado 31,2% — uma queda inventada por um erro de corpo
+  nosso.
+- **`money_spent` somou certo**, acumulando entre as três coletas:
+  0,021 → 0,234 → 0,8106 no mesmo snapshot.
+- **As sete perguntas vieram com a frase real e as fontes.** `leadCited: true`
+  nas sete, e `domainCitedAsSource: true`. Isso é **mais** do que o relatório de
+  referência entrega: ele lista keywords, e aqui se lê a pergunta que a pessoa
+  fez.
+- **O casamento de marca achou "Busca Orgânica" em posição 1** nas dez menções.
+
+### Defeito 1 — a demanda em IA vinha de sites de clientes
+
+`totalAiSearchVolume: 13.257`. Desse total, **`sanitarios` sozinha respondia por
+12.559 — 94,8%**. Junto vinham `banheiro químico`, `pallets`, `usinagem`,
+`microestaca`: nada disso é o mercado de uma agência de marketing.
+
+A causa é a mesma que a onda 0 da visibilidade documentou: **77 das 110 keywords
+estão em `aprov.buscaorganica.com.br`**, o subdomínio de homologação que hospeda
+os sites dos clientes da agência. O número ia para a tela do lead como se fosse
+a demanda do mercado dele.
+
+**Corrigido** filtrando por `url.isCanonicalHost` — o campo que aquela onda criou
+exatamente por causa desse subdomínio. Sem o lixo, a demanda real do domínio é
+**695**, não 13.257.
+
+### Defeito 2 — os "concorrentes" de backlink não são concorrentes
+
+A comparação veio assim:
+
+| alvo | menções |
+|---|---|
+| **Busca Orgânica** (lead) | 2 |
+| `airticles.ai` | 1 |
+| `url.science` | 0 |
+| `cri.it` | 0 |
+| `ocenergiasolar.com.br` | 0 |
+| `ronaldowebnegocios.com` | 0 |
+
+Nenhum deles é concorrente de uma agência de SEO brasileira. "Concorrente" em
+`/backlinks/competitors/live` significa **quem compartilha domínios de
+referência**, que é outra pergunta.
+
+**E o resultado não foi um número ruim — foi um número lisonjeiro:** `share:
+0,667`. Dois terços de participação contra alvos que somavam uma menção. Num
+documento comercial, isso é pior que dado ausente.
+
+Os concorrentes de verdade estavam **na mesma resposta**, porque a IA os citou ao
+lado do lead: `conversion.com.br`, `organicadigital.com`, `outmarketing.com.br`.
+
+**Corrigido invertendo a ordem das duas chamadas.** `search_mentions` primeiro —
+ela aceita alvo único —, os concorrentes saem das fontes que a IA citou, e só
+então `multi_target_metrics`. Mesmo custo, e a lista passa a ser o mercado
+medido em vez de um artefato do índice de links.
+
+### Defeito 3 — dominância de 100% sobre um universo de uma marca
+
+`dominance: 1`. A lista de marcas para casamento vem das checagens de posição no
+Maps, e neste lead ela **veio vazia** — então só o nome do próprio lead entrou no
+denominador, e a conta deu 100%.
+
+É literalmente a *"dominância sobre um universo que ninguém mediu"* que a spec
+proíbe, e é o número mais lisonjeiro que a tela poderia mostrar.
+
+**Corrigido:** `dominance` é `null` quando não havia marca de concorrente na
+lista, e a tela passa a dizer que a participação **não foi medida** em vez de
+exibir um percentual.
+
+### Defeito 4 — o erro do provedor chegava com a copy de outra etapa
+
+As duas execuções `rejected` gravaram
+`"Não foi possível analisar o perfil. Tente novamente."` — a mensagem genérica da
+casa, que fala de **perfil** dentro da etapa de Presença em IA e não diz qual
+campo foi recusado.
+
+A causa: o `40501` veio no nível do **envelope**, não no da tarefa, e esse ramo
+de `readTaskGetEnvelope` descartava `status_message`. **Corrigido** — a mensagem
+do provedor sobe nos dois ramos.
+
+### Uma divergência que fica registrada, não resolvida
+
+Os dois endpoints discordam sobre o mesmo lead, na mesma plataforma e location:
+
+- `search_mentions` devolveu **7 perguntas**
+- `multi_target_metrics` devolveu **`total.mentions: 2`** para o alvo do lead
+
+A tela mostrava *"2 respostas de IA citam este negócio"* com sete perguntas
+listadas logo abaixo. Enquanto a diferença não for medida, `citations.mentions`
+passa a vir de `search_mentions` — o número que casa com a lista que está do lado.
+
+### Contra o relatório de referência
+
+| | PuroClean (referência) | Busca Orgânica (medido) |
+|---|---|---|
+| Taxa de menção | 78% (31/40) | **33%** (10/30) |
+| ChatGPT | 10/10 | 3/6 |
+| Claude | 7/10 | 3/8 |
+| Gemini | 9/10 | 2/8 |
+| Perplexity | 5/10 | 2/8 |
+
+E uma diferença de método que vale registrar: o relatório de referência **não
+mostra execução que falhou**. Nós mostramos duas, fora do denominador, com o
+motivo.
+
+## 14. A segunda coleta real — três consertos confirmados, e um quarto que virou defeito novo
+
+Rodada em 2026-09-11 logo depois das correções da seção 13. **US$ 0,77** nas
+três.
+
+### Os três que funcionaram
+
+**A demanda ficou do tamanho certo.** De 110 keywords para **33**, de 13.257
+para **96**. Saíram `sanitarios`, `banheiro químico`, `pallets`, `usinagem` —
+todas de sites de clientes no subdomínio de homologação. Sobrou o mercado da
+agência: `criar site empresa` 11, `primeira pagina do google` 10, `seo técnico`
+7, `consultoria de seo` 2. O custo caiu junto, para **US$ 0,0133** — que é
+`0,01 + 33 × 0,0001` exato.
+
+E a série mensal virou informação de venda: **166 → 96** entre setembro/25 e
+agosto/26. A busca em IA nesse nicho está caindo.
+
+**O número parou de contradizer a lista.** `mentions: 7` com sete perguntas
+listadas ao lado, e `domainCitedAsSource: true`. YouTube marcado como autoridade.
+
+**`dominance: null`.** Os 100% sumiram. E a taxa foi de 33% para 29% porque
+desta vez **uma** execução falhou em vez de duas — o denominador foi 31, não 30.
+O `status` está fazendo o trabalho dele.
+
+### E o quarto conserto criou um defeito pior
+
+Trocar os concorrentes de backlink pelos domínios que a IA cita ao lado do lead
+produziu **isto**:
+
+| alvo | menções |
+|---|---|
+| `www.mobills.com.br` | **17.919** |
+| `www.hostgator.com.br` | 4.507 |
+| `www.hostinger.com` | 3.060 |
+| `www.locaweb.com.br` | 2.425 |
+| `www.organicadigital.com` | 729 |
+| **Busca Orgânica** (lead) | **2** |
+
+`share: 0,007%`.
+
+**Troquei um número lisonjeiro por um esmagador, e os dois estão errados pela
+mesma causa.** Mobills é finanças pessoais; HostGator, Hostinger e Locaweb são
+hospedagem. Nenhum compete com uma agência de SEO.
+
+Duas causas somadas:
+
+1. **Um prompt poluidor.** *"como ganhar dinheiro na internet rápido"* — 1.600 de
+   volume — trouxe 22 das 66 citações, todas de portais genéricos. Ele está na
+   amostra porque o blog do lead ranqueia para isso.
+2. **`multi_target_metrics` mede outro universo.** Ele devolve o total de cada
+   domínio **no dataset inteiro**, não nas respostas do lead. Mobills tem 17.919
+   menções em toda a IA brasileira; comparar as 2 do lead contra isso é comparar
+   uma agência de nicho com um portal de massa.
+
+### A conta certa já estava na resposta, de graça
+
+Somando as citações **das sete respostas medidas**:
+
+```
+total de citações               66
+citações do lead                 7
+participação                  10,6%
+
+referência: PuroClean            9%
+```
+
+**10,6% contra os 9% que o relatório de referência dá para a PuroClean** — mesma
+ordem de grandeza, medida no mesmo universo: as respostas em que a marca
+aparece. Foi esse número que confirmou a direção.
+
+### O que mudou no produto
+
+**`multi_target_metrics` saiu.** Não por ser ruim, mas por responder outra
+pergunta. A comparação passa a ser derivada de `citations.sources`, sem chamada
+nova, com três garantias que o endpoint não dava:
+
+- **Universo declarado.** `promptCount` vai gravado, e a tela escreve "10,6% das
+  citações nas 7 respostas medidas", nunca "10,6% de participação de mercado".
+- **Critério uniforme.** Todos os alvos, lead incluído, contados pelo domínio. A
+  versão anterior media o lead por nome **e** domínio e os rivais só por domínio
+  — o lead saía favorecido pela própria medição.
+- **Denominador honesto.** A lista esconde fontes de autoridade e portais
+  genéricos, mas eles **contam no denominador**. Exibir cinco e dividir por cinco
+  inflaria a participação do lead por construção.
+
+E a tela ganhou um aviso que a amostra exige: **quando uma pergunta responde por
+30% ou mais das fontes, ela é nomeada.** É a diferença entre a nossa amostra e a
+do relatório de referência — ele usa dez prompts escolhidos a dedo, a nossa vem
+do que o domínio ranqueia. Com o aviso, o analista vê que *"como ganhar dinheiro
+na internet"* está puxando a lista antes de levar o número para a reunião.
+
+**Custo da onda 2b: US$ 0,21 → US$ 0,107.** Uma chamada, não duas.
+
+### O que continua torto
+
+- **A mensagem do `rejected` ainda chega genérica.** O `40501` vem sem
+  `status_message` em nenhum dos dois níveis do envelope. A mensagem agora ao
+  menos nomeia a plataforma — *"O ChatGPT recusou este prompt"* — mas não diz o
+  motivo.
+- **E `40501` talvez não seja "campo inválido".** Ele bateu em `problem-1` e
+  `problem-2` na primeira rodada e só em `problem-2` na segunda, com o **mesmo
+  corpo**. Campo inválido não é intermitente. Parece recusa de conteúdo do lado
+  do provedor, mapeada para o mesmo código — o que colocaria o caso mais perto de
+  `provider_unavailable` do que de "bug nosso". Não medido.
+- **A lista de marcas para casamento na sondagem continua vazia** neste lead, e
+  por isso `dominance` é `null`. Ela vem das checagens de posição no Maps, que
+  este lead não tem.
+
+## 15. A terceira coleta — a conta fecha
+
+Rodada em 2026-09-11, **US$ 0,1203**: `0,0133` da análise mais `0,107` das
+menções. Exatamente a projeção, sem a segunda chamada.
+
+| | previsto à mão | medido no snapshot |
+|---|---|---|
+| participação do lead | 7/66 = **0,106061** | **0,106061** |
+| custo | 0,0133 + 0,107 = **0,1203** | **0,1203** |
+
+| alvo | citações em 7 respostas |
+|---|---|
+| **Busca Orgânica** (lead) | **7** |
+| `organicadigital.com` | 3 |
+| `hostgator.com.br` | 2 |
+| `locaweb.com.br` | 2 |
+| `hostinger.com` | 1 |
+| `mobills.com.br` | 1 |
+
+O lead é o mais citado das sete respostas em que aparece — o que é verdade, e
+foi o que os dois números anteriores (67% e 0,007%) não conseguiram dizer. E o
+aviso de concentração dispara: **34,7%** das fontes vêm de uma pergunta só,
+*"trabalhar com divulgação online"*, que traz 50 das 144.
+
+### O que fica torto, e por que não é mentira
+
+Hospedagem e finanças pessoais continuam na lista — `hostgator`, `locaweb`,
+`hostinger`, `mobills`. Elas entram porque a amostra vem **do que o domínio
+ranqueia**, não de perguntas escolhidas: das sete, quatro são conteúdo de blog
+genérico e três são o mercado do lead.
+
+**Isso não é erro de leitura, e a tela não mente sobre isso.** O cartão se chama
+"Quem a IA cita junto", que é literalmente o que a lista é, e o aviso de
+concentração nomeia a pergunta que está puxando os nomes de fora. É a diferença
+declarada entre a nossa amostra e a do relatório de referência, que usa dez
+prompts escolhidos a dedo.
+
+Fechar essa diferença exigiria ou julgamento sobre relevância — que esta etapa
+recusa dar a uma LLM — ou restringir o `target` de `search_mentions` por
+`keyword_entity` do segmento, que muda o significado de `mentions` e é outra
+medição. **Registrado, não feito.**
+
 ## Os dois erros da primeira rodada
 
 Ficam registrados porque os dois produziriam veredito errado com cara de

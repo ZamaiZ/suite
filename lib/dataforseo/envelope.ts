@@ -168,7 +168,15 @@ export function readTaskGetEnvelope<T>(
     return { status: "pending" }
   }
   if (envelopeCode !== DATAFORSEO_OK) {
-    return { status: "error", code: envelopeCode, message: errorMessage }
+    // A mensagem do provedor sobe junto. Sem ela, um `40501 Invalid Field`
+    // que chega no nível do envelope — e não no da tarefa — vira a mensagem
+    // genérica da casa, que fala de "perfil" dentro da etapa de Presença em
+    // IA e não diz qual campo foi recusado. Medido em 2026-09-11.
+    return {
+      status: "error",
+      code: envelopeCode,
+      message: taskStatusMessage(body) ?? errorMessage,
+    }
   }
 
   const row = body.tasks?.[0]

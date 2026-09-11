@@ -2,11 +2,7 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { createClient } from "@/lib/supabase/server"
-import {
-  fetchLlmMultiTargetLive,
-  fetchLlmSearchMentionsLive,
-  type GeoMentionTargetInput,
-} from "@/lib/dataforseo/ai-optimization"
+import { fetchLlmSearchMentionsLive } from "@/lib/dataforseo/ai-optimization"
 import {
   GEO_AUTHORITY_DOMAINS,
   GEO_MENTIONS_COMPETITORS_LIMIT,
@@ -14,16 +10,13 @@ import {
 } from "@/lib/dataforseo/limits"
 import {
   readLeadGeoAuditRow,
-  type GeoMentionMeasuredBy,
   type GeoSnapshot,
   type LeadGeoAudit,
 } from "@/lib/leads/geo-audit"
 import {
-  mapAiMentions,
-  mapGeoCitationPrompts,
   mapGeoCitations,
+  mentionsFromCitations,
 } from "@/lib/leads/geo-mentions"
-import { readLeadBacklinkAuditRow } from "@/lib/leads/backlinks-audit"
 import { analyzeGeoSchema, readAnalyzeGeoFields } from "@/lib/validations/lead-geo"
 import { denyGeoEdit, GEO_SELECT, loadGeoAuditByLead } from "./geo-access"
 
@@ -34,22 +27,19 @@ export type CollectGeoMentionsState =
 const FAILED = "Não foi possível coletar as menções em IA. Tente novamente."
 const NO_BASE =
   "Rode a análise de Presença em IA antes: as menções entram no snapshot dela."
-const NO_COMPETITORS =
-  "Rode a análise de Backlinks antes: a comparação precisa de pelo menos um concorrente."
-
-const LEAD_KEY = "lead"
-
 /**
  * Menções em IA — a chamada paga da etapa.
  *
- * **Uma chamada sempre, uma condicional.** `multi_target_metrics` entrega duas
- * coisas de uma vez: quantas respostas de IA citam cada alvo, e quais domínios
- * a IA cita nas respostas em que o lead aparece. US$ 0,10 + US$ 0,001 por
- * linha.
+ * **Uma chamada só**, de US$ 0,10 + US$ 0,001 por linha.
  *
- * A segunda — `search_mentions`, o detalhe por pergunta — **só roda quando o
- * lead tem menção**. A chamada custa os mesmos US$ 0,10 mesmo devolvendo zero
- * linha, e lead sem menção vai ser a maioria.
+ * `search_mentions` traz as perguntas em que a IA cita o lead, com as fontes de
+ * cada resposta. Disso sai tudo: quantas respostas citam o negócio, quais
+ * domínios a IA lê no mercado dele, e a comparação com quem aparece ao lado.
+ *
+ * A segunda chamada — `multi_target_metrics` — foi tentada e **reprovada**: ela
+ * mede o total de cada domínio no dataset inteiro, que é outro universo, e o
+ * percentual que saía dali era lisonjeiro ou esmagador conforme os portais
+ * grandes que entrassem na amostra.
  *
  * **Append-only.** Grava um snapshot novo com o resto recopiado da coleta base
  * mais recente, em vez de dar `update`. A tabela é append-only desde o dia 1 e
@@ -81,89 +71,43 @@ export async function collectLeadGeoMentions(
   const base = loaded.audit
   if (!base) return { status: "error", message: NO_BASE }
 
-  const { data: backlinkRow } = await supabase
-    .from("lead_backlink_audits")
-    .select("id, lead_id, domain, snapshot, fetched_at, fetched_by")
-    .eq("lead_id", parsed.data.lead_id)
-    .order("fetched_at", { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  const backlinks = backlinkRow
-    ? readLeadBacklinkAuditRow(backlinkRow as Record<string, unknown>)
-    : null
-
   const leadDomain = base.domain
   const leadName = loaded.lead.company_name.trim() || null
 
-  const measuredBy: Record<string, GeoMentionMeasuredBy> = {
-    [LEAD_KEY]: leadName ? "brand_and_domain" : "domain",
+  // 1. As perguntas primeiro. É a chamada que traz, de uma vez, quantas
+  //    respostas citam o lead E quais domínios a IA cita ao lado dele.
+  const detail = await fetchLlmSearchMentionsLive({ domain: leadDomain })
+  if (detail.status === "error") {
+    return { status: "error", message: detail.message }
   }
-  const labels: Record<string, string> = {
-    [LEAD_KEY]: leadName ?? leadDomain,
-  }
-  const targets: GeoMentionTargetInput[] = [
-    { key: LEAD_KEY, brand: leadName, domain: leadDomain },
-  ]
+  const costUsd = detail.cost ?? 0
 
-  for (const competitor of (backlinks?.snapshot.competitors ?? []).slice(
-    0,
-    GEO_MENTIONS_COMPETITORS_LIMIT,
-  )) {
-    const domain = competitor.domain.trim().toLowerCase()
-    if (!domain || domain === leadDomain) continue
-    const key = `c_${targets.length}`
-    targets.push({ key, brand: null, domain })
-    // Concorrente de backlink vem com domínio e sem nome. Derivar o nome do
-    // domínio erra em casos comuns, então ele é medido só pelo domínio — e a
-    // tela precisa marcar isso, senão a comparação favorece o lead por
-    // construção.
-    measuredBy[key] = "domain"
-    labels[key] = domain
-  }
-
-  // A API recusa `multi_target_metrics` com um alvo só.
-  if (targets.length < 2) {
-    return { status: "error", message: NO_COMPETITORS }
-  }
-
-  const multi = await fetchLlmMultiTargetLive({ targets })
-  if (multi.status === "error") {
-    return { status: "error", message: multi.message }
-  }
-
-  let costUsd = multi.cost ?? 0
-
-  const aiMentions = mapAiMentions({
-    result: multi.result,
-    leadKey: LEAD_KEY,
-    labels,
-    measuredBy,
-  })
   const citations = mapGeoCitations({
-    result: multi.result,
-    leadKey: LEAD_KEY,
+    result: detail.result,
     leadDomain,
     authorityDomains: GEO_AUTHORITY_DOMAINS,
     limit: LLM_MENTIONS_LIMIT,
   })
 
-  // A condicional. Lead sem menção não paga US$ 0,10 por uma chamada que não
-  // pode trazer nada — e `prompts` continua `null`, que é "não pedido", nunca
-  // "pedido e vazio".
-  if (citations && citations.mentions > 0) {
-    const detail = await fetchLlmSearchMentionsLive({ domain: leadDomain })
-    if (detail.status === "ok") {
-      costUsd += detail.cost ?? 0
-      citations.prompts = mapGeoCitationPrompts({
-        result: detail.result,
+  // 2. A comparação sai das MESMAS fontes, sem segunda chamada.
+  //
+  //    `multi_target_metrics` foi tentado e reprovado em 2026-09-11: ele mede
+  //    o total de cada domínio no dataset INTEIRO, não nas respostas do lead.
+  //    Trouxe `mobills.com.br` com 17.919 menções contra as 2 do lead, e o
+  //    "share" virou 0,007%. Antes disso, com concorrentes de backlink, tinha
+  //    dado 67%. Os dois números errados pela mesma causa — universo errado.
+  //
+  //    Derivada das fontes das perguntas medidas, a conta dá 10,6% para este
+  //    lead, que é a ordem de grandeza dos 9% do relatório de referência. E
+  //    economiza US$ 0,10 por lead.
+  const aiMentions = citations
+    ? mentionsFromCitations({
+        citations,
         leadDomain,
+        leadLabel: leadName ?? leadDomain,
+        limit: GEO_MENTIONS_COMPETITORS_LIMIT + 1,
       })
-    }
-    // Falhar aqui **não** derruba a coleta: o agregado é a entrega principal e
-    // o detalhe degrada para "não pedido". Mesmo desenho do benchmark de
-    // backlinks.
-  }
+    : null
 
   const collectedAt = new Date().toISOString()
   const snapshot: GeoSnapshot = {

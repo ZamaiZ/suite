@@ -12,10 +12,7 @@ import {
   type GeoPromptPlatform,
 } from "@/lib/dataforseo/limits"
 import type { AiKeywordVolumeResult } from "@/lib/leads/geo-demand"
-import type {
-  MultiTargetResult,
-  SearchMentionsResult,
-} from "@/lib/leads/geo-mentions"
+import type { SearchMentionsResult } from "@/lib/leads/geo-mentions"
 
 /**
  * Seção `ai_optimization` do DataForSEO. O único módulo `server-only` da etapa
@@ -86,90 +83,19 @@ export async function fetchAiDemandLive(input: {
   }
 }
 
-export type GeoMentionTargetInput = {
-  key: string
-  /**
-   * O nome da marca, casado no texto da resposta.
-   *
-   * `null` quando não se sabe — `/backlinks/competitors/live` devolve domínio
-   * sem nome, e derivar o nome do domínio falha em casos comuns
-   * (`agenciamestre.com` não vira "Agência Mestre"). O alvo então é medido só
-   * pelo domínio, e o snapshot grava esse critério para a tela poder dizê-lo.
-   */
-  brand: string | null
-  /** O domínio, casado entre as fontes citadas. */
-  domain: string
-}
-
-export type FetchMultiTargetResult =
-  | { status: "ok"; result: MultiTargetResult | null; cost?: number }
-  | { status: "error"; message: string }
-
 /**
- * Cada alvo leva **duas** entradas, e as duas medem presenças diferentes.
+ * `multi_target_metrics` foi medido e **não entrou no produto**.
  *
- * A marca por nome em `answer` responde "a IA fala deste negócio"; o domínio em
- * `sources` responde "a IA usa o site dele como fonte". Um negócio pode ter a
- * primeira sem a segunda — e é exatamente esse o gap `no_authority_citations`.
+ * Ele responde "quantas menções este domínio tem no dataset inteiro", e a
+ * pergunta do relatório é "quem mais a IA cita nas respostas em que este
+ * negócio aparece". Medido em 2026-09-11, a diferença não é sutil: o endpoint
+ * trouxe `mobills.com.br` com 17.919 menções contra as 2 do lead, e o
+ * percentual virou 0,007%.
  *
- * `include_subdomains: true` porque o índice guarda o host com `www.`. A forma
- * nua foi o que deu falso zero no filtro de backlinks da onda 0.
+ * A conta certa sai das fontes de `search_mentions`, sem chamada nova, em
+ * `lib/leads/geo-mentions.ts`. Evidência e números na seção 14 de
+ * `docs/auditoria/2026-09-10-onda0-presenca-em-ia.md`.
  */
-function mentionTarget(target: GeoMentionTargetInput) {
-  const entries: Record<string, unknown>[] = [
-    {
-      domain: target.domain,
-      search_scope: ["sources"],
-      search_filter: "include",
-      include_subdomains: true,
-    },
-  ]
-  if (target.brand) {
-    entries.unshift({
-      keyword: target.brand,
-      search_scope: ["answer"],
-      search_filter: "include",
-      match_type: "word_match",
-    })
-  }
-  return { key: target.key, target: entries }
-}
-
-/**
- * Menções em IA do lead e dos concorrentes, na mesma chamada.
- *
- * **É a chamada principal da etapa**, e entrega duas coisas: o total por alvo
- * (a tabela de dominância) e `sources_domain` por alvo (os domínios que a IA
- * cita nas respostas em que aquele alvo aparece). US$ 0,10 + 0,001 por linha.
- *
- * Aceita de 2 a 10 alvos. Com um só, a API recusa.
- */
-export async function fetchLlmMultiTargetLive(input: {
-  targets: GeoMentionTargetInput[]
-}): Promise<FetchMultiTargetResult> {
-  if (input.targets.length < 2) {
-    return { status: "error", message: DATAFORSEO_COLLECT_ERROR }
-  }
-  const posted = await postDataForSeo<MultiTargetResult>(
-    "/ai_optimization/llm_mentions/multi_target_metrics/live",
-    {
-      // Sempre explícito: omitir devolve as duas plataformas, e `chat_gpt` é
-      // EUA/inglês por decisão do provider.
-      platform: GEO_QUERY.platform,
-      location_name: GEO_QUERY.locationName,
-      language_code: GEO_QUERY.languageCode,
-      targets: input.targets.map(mentionTarget),
-    },
-  )
-  if (posted.status === "error" || posted.data === null) {
-    return { status: "error", message: DATAFORSEO_COLLECT_ERROR }
-  }
-  return {
-    status: "ok",
-    result: posted.data,
-    ...(posted.cost !== undefined ? { cost: posted.cost } : {}),
-  }
-}
 
 export type FetchSearchMentionsResult =
   | { status: "ok"; result: SearchMentionsResult | null; cost?: number }
@@ -179,9 +105,10 @@ export type FetchSearchMentionsResult =
  * O detalhe por pergunta: a frase que alguém perguntou e as fontes que a IA
  * citou ao responder.
  *
- * **Condicional.** Só vale a pena quando o lead tem menção — a chamada custa
- * US$ 0,10 mesmo devolvendo zero linha, e lead sem menção vai ser a maioria.
- * Quem decide é a action, com o número que `multi_target` já trouxe.
+ * **É a única chamada da coleta de menções**, e dela sai tudo: quantas
+ * respostas citam o lead, quais domínios a IA lê no mercado dele, e a
+ * comparação com quem aparece ao lado. US$ 0,10 + US$ 0,001 por linha, mesmo
+ * quando devolve zero.
  */
 export async function fetchLlmSearchMentionsLive(input: {
   domain: string

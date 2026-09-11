@@ -210,6 +210,17 @@ function mean(values: readonly number[]): number | null {
 export function buildGeoPromptVisibility(input: {
   promptSetVersion: number
   runs: GeoPromptRun[]
+  /**
+   * Havia marca de concorrente na lista de casamento?
+   *
+   * **Sem isto a dominância mente para cima.** Medido em 2026-09-11: a lista de
+   * concorrentes veio vazia, só o nome do lead entrou no casamento, e a conta
+   * deu `dominance: 1` — 100% de participação sobre um universo de uma marca,
+   * que é a própria. É exatamente a "dominância sobre um universo que ninguém
+   * mediu" que a spec proíbe, e o número mais lisonjeiro que a tela poderia
+   * mostrar.
+   */
+  hasCompetitorBrands: boolean
 }): GeoPromptVisibility {
   const ok = input.runs.filter((run) => run.status === "ok")
   const mencionadas = ok.filter((run) => run.mentioned)
@@ -254,10 +265,13 @@ export function buildGeoPromptVisibility(input: {
           .map((run) => run.position)
           .filter((value): value is number => value !== null),
       ),
-      // Denominador zero devolve `null`: ninguém foi detectado, e "0% de
-      // dominância" leria como derrota onde não houve medida.
+      // `null` em dois casos, e os dois significam "não medido": ninguém
+      // detectado (denominador zero), ou nenhuma marca de concorrente na lista
+      // de casamento — aí o denominador é só o lead e a conta daria 100%.
       dominance:
-        somaDeMencoes > 0 ? mencionadas.length / somaDeMencoes : null,
+        input.hasCompetitorBrands && somaDeMencoes > 0
+          ? mencionadas.length / somaDeMencoes
+          : null,
       byProvider,
       competitors: [...todasAsMarcas.entries()]
         .map(([name, item]) => ({

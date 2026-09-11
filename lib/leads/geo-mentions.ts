@@ -1,17 +1,28 @@
 /**
- * Concorrência e citações em IA — leitura de `llm_mentions`, `platform: google`.
+ * Citações e concorrência em IA — `llm_mentions`, `platform: google`. Puro.
  *
- * Puro. Duas leituras vivem aqui porque saem da **mesma chamada**:
- * `multi_target_metrics/live` devolve, por alvo, tanto o total de menções
- * quanto os domínios que a IA citou nas respostas em que aquele alvo aparece.
+ * **A ordem das duas chamadas importa, e ela mudou depois da primeira coleta
+ * real.** O desenho original chamava `multi_target_metrics` primeiro, com os
+ * concorrentes vindos de `/backlinks/competitors/live`. Rodado contra
+ * `buscaorganica.com.br` em 2026-09-11, aquilo produziu como "concorrentes"
+ * `url.science`, `cri.it`, `airticles.ai`, `ocenergiasolar.com.br` e
+ * `ronaldowebnegocios.com` — nenhum deles concorrente de agência de SEO. O
+ * "concorrente" de backlink é quem compartilha domínios de referência, que é
+ * outra pergunta.
  *
- * **A via mudou em 2026-09-11.** A anterior — casar um catálogo de domínios por
- * backlink — foi reprovada com controle positivo: três formas de filtro, zero
- * nas três, contra um domínio com dez links provados em Reddit e YouTube. O
- * índice de backlinks funciona e simplesmente não tem essas fontes.
+ * O resultado disso não foi um número ruim: foi um número **lisonjeiro**. O
+ * lead ficou com 67% de participação contra alvos que somavam uma menção. Na
+ * mesma resposta, os concorrentes de verdade estavam à vista —
+ * `conversion.com.br`, `organicadigital.com`, `outmarketing.com.br` — porque a
+ * IA os citou ao lado do lead.
  *
- * Forma validada contra payload real, não contra documentação:
- * `24-multi_target-controle.json` e `25-multi_target-brasil.json`.
+ * Então: `search_mentions` **primeiro**, e os concorrentes saem das fontes que
+ * a IA de fato citou. Mesmo custo, e a lista passa a ser o mercado medido em
+ * vez de um artefato do índice de links.
+ *
+ * A via anterior a essa — casar um catálogo por backlink — já tinha sido
+ * reprovada com controle positivo na onda 0: três formas de filtro, zero nas
+ * três, contra um domínio com dez links provados em Reddit e YouTube.
  */
 
 import type {
@@ -19,7 +30,6 @@ import type {
   GeoCitationPrompt,
   GeoCitationSource,
   GeoCitations,
-  GeoMentionMeasuredBy,
   GeoMentionTarget,
 } from "./geo-audit.ts"
 
@@ -54,124 +64,38 @@ export function matchesDomain(host: string, root: string): boolean {
   return clean === target || clean.endsWith(`.${target}`)
 }
 
-type SourceRow = { key?: unknown; mentions?: unknown; ai_search_volume?: unknown }
-
-function readSources(
-  value: unknown,
+/**
+ * Agrega, sobre as perguntas medidas, quantas vezes cada domínio foi citado.
+ *
+ * Conta **uma vez por pergunta**, não por linha de fonte: a mesma página pode
+ * aparecer duas vezes na mesma resposta com âncoras diferentes, e contar as
+ * duas inflaria o domínio pela forma da citação em vez da frequência dela.
+ */
+function aggregateSources(
+  prompts: readonly GeoCitationPrompt[],
   authorityDomains: readonly string[],
 ): GeoCitationSource[] {
-  if (!Array.isArray(value)) return []
-  return value.flatMap((entry) => {
-    const row = entry as SourceRow
-    const domain = asTrimmed(row?.key)
-    if (!domain) return []
-    return [
-      {
-        domain,
-        mentions: asFinite(row?.mentions) ?? 0,
-        aiSearchVolume: asFinite(row?.ai_search_volume),
-        isAuthority: authorityDomains.some((root) => matchesDomain(domain, root)),
-      },
-    ]
-  })
-}
-
-export type MultiTargetResult = {
-  items?: unknown
-}
-
-/**
- * A comparação com concorrentes.
- *
- * **`mentions` não é taxa de citação.** Medido em 2026-09-11 contra o controle:
- * SERVPRO tem 2.670 menções e PuroClean 234 — 11× —, enquanto o relatório de
- * referência dá 88% e 73% de taxa de citação, que é 1,2×. Uma conta o dataset
- * inteiro, a outra a fração de prompts em que a marca aparece. Rotular uma com
- * o nome da outra compara coisas diferentes com a mesma palavra.
- */
-export function mapAiMentions(input: {
-  result: MultiTargetResult | null
-  leadKey: string
-  labels: Record<string, string>
-  measuredBy: Record<string, GeoMentionMeasuredBy>
-}): GeoAiMentions | null {
-  if (!input.result) return null
-  const raw = Array.isArray(input.result.items) ? input.result.items : []
-
-  const targets: GeoMentionTarget[] = raw.flatMap((entry) => {
-    const row = asRecord(entry)
-    const key = asTrimmed(row?.key)
-    if (!key) return []
-    const total = asRecord(row?.total)
-    return [
-      {
-        key,
-        label: input.labels[key] ?? key,
-        isLead: key === input.leadKey,
-        // Quem foi medido só pelo domínio tende a contar menos que quem foi
-        // medido por nome **e** domínio. Sem este campo a tela compararia os
-        // dois em pé de igualdade, e o lead — o único com nome garantido —
-        // sairia favorecido pela própria medição.
-        measuredBy: input.measuredBy[key] ?? "domain",
-        mentions: asFinite(total?.mentions) ?? 0,
-        aiSearchVolume: asFinite(total?.ai_search_volume),
-      },
-    ]
-  })
-
-  const soma = targets.reduce((acc, target) => acc + target.mentions, 0)
-  const lead = targets.find((target) => target.isLead)
-
-  return {
-    source: "llm_mentions_google",
-    targets: targets.sort((left, right) => right.mentions - left.mentions),
-    // Denominador zero devolve `null`, não `0`: ninguém foi citado, e "0% de
-    // participação" leria como derrota quando o que houve foi mercado sem
-    // medida nenhuma.
-    share: lead && soma > 0 ? lead.mentions / soma : null,
+  const porDominio = new Map<string, { mentions: number; volume: number }>()
+  for (const prompt of prompts) {
+    const vistos = new Set<string>()
+    for (const source of prompt.sources) {
+      const domain = source.domain.toLowerCase()
+      if (vistos.has(domain)) continue
+      vistos.add(domain)
+      const atual = porDominio.get(domain) ?? { mentions: 0, volume: 0 }
+      atual.mentions += 1
+      atual.volume += prompt.aiSearchVolume ?? 0
+      porDominio.set(domain, atual)
+    }
   }
-}
-
-/**
- * As citações do lead, do bloco do próprio alvo dentro da mesma resposta.
- *
- * `sources_domain` aqui é **o que a IA cita nas respostas em que o lead
- * aparece** — não "quem linka para o lead". As duas leituras levam a ações
- * opostas, e a tela precisa usar as palavras certas: a lista é o que a IA lê
- * quando fala do mercado dele.
- */
-export function mapGeoCitations(input: {
-  result: MultiTargetResult | null
-  leadKey: string
-  leadDomain: string
-  authorityDomains: readonly string[]
-  limit: number
-}): GeoCitations | null {
-  if (!input.result) return null
-  const raw = Array.isArray(input.result.items) ? input.result.items : []
-  const row = raw
-    .map((entry) => asRecord(entry))
-    .find((entry) => asTrimmed(entry?.key) === input.leadKey)
-  if (!row) return null
-
-  const total = asRecord(row.total)
-  const sources = readSources(row.sources_domain, input.authorityDomains)
-
-  return {
-    source: "llm_mentions_google",
-    mentions: asFinite(total?.mentions) ?? 0,
-    aiSearchVolume: asFinite(total?.ai_search_volume),
-    sources: sources
-      .sort((left, right) => right.mentions - left.mentions)
-      .slice(0, input.limit),
-    domainCitedAsSource: sources.some((source) =>
-      matchesDomain(source.domain, input.leadDomain),
-    ),
-    // `null` até a segunda chamada rodar. Ela é condicional e só dispara com
-    // `mentions > 0`.
-    prompts: null,
-    truncated: sources.length > input.limit,
-  }
+  return [...porDominio.entries()]
+    .map(([domain, item]) => ({
+      domain,
+      mentions: item.mentions,
+      aiSearchVolume: item.volume > 0 ? item.volume : null,
+      isAuthority: authorityDomains.some((root) => matchesDomain(domain, root)),
+    }))
+    .sort((left, right) => right.mentions - left.mentions)
 }
 
 export type SearchMentionsResult = {
@@ -226,4 +150,156 @@ export function mapGeoCitationPrompts(input: {
       },
     ]
   })
+}
+
+/**
+ * As citações do lead, montadas a partir das perguntas medidas.
+ *
+ * `mentions` vem de `total_count` da mesma chamada que produziu a lista, e não
+ * do `multi_target`. Os dois números **divergem**: na coleta de 2026-09-11,
+ * `search_mentions` devolveu sete perguntas e o `total` do `multi_target` disse
+ * duas menções. A tela mostrava "2 respostas de IA citam este negócio" com sete
+ * perguntas logo abaixo — contradição visível ao analista. Enquanto a diferença
+ * entre os dois não for medida, o número exibido é o que casa com a lista.
+ */
+export function mapGeoCitations(input: {
+  result: SearchMentionsResult | null
+  leadDomain: string
+  authorityDomains: readonly string[]
+  limit: number
+}): GeoCitations | null {
+  const prompts = mapGeoCitationPrompts({
+    result: input.result,
+    leadDomain: input.leadDomain,
+  })
+  if (prompts === null) return null
+
+  const sources = aggregateSources(prompts, input.authorityDomains)
+  const total = asFinite(input.result?.total_count)
+
+  return {
+    source: "llm_mentions_google",
+    // `total_count` é o número de respostas que casam o alvo; a lista pode vir
+    // truncada pelo teto e ainda assim o total é o total.
+    mentions: total ?? prompts.length,
+    aiSearchVolume:
+      prompts.reduce((acc, prompt) => acc + (prompt.aiSearchVolume ?? 0), 0) ||
+      null,
+    sources: sources.slice(0, input.limit),
+    domainCitedAsSource: prompts.some((prompt) => prompt.leadCited),
+    prompts,
+    truncated: total !== null && total > prompts.length,
+  }
+}
+
+/**
+ * Domínios que aparecem em resposta de IA sem serem concorrentes de ninguém.
+ *
+ * Suporte de plataforma, portal de notícia, banco, classificado de vaga. Sem
+ * este corte, a tabela de concorrência do lead viria com `support.google.com` e
+ * `serasa.com.br` — medido na coleta de 2026-09-11, onde prompts genéricos
+ * ("como ganhar dinheiro na internet") dominaram a amostra.
+ */
+const GENERIC_SOURCE_DOMAINS = [
+  "google.com",
+  "youtube.com",
+  "reddit.com",
+  "wikipedia.org",
+  "sebrae.com.br",
+  "serasa.com.br",
+  "indeed.com",
+  "workana.com",
+  "catho.com.br",
+  "uol.com.br",
+  "globo.com",
+  "exame.com",
+  "shopify.com",
+  "mailchimp.com",
+  "squarespace.com",
+] as const
+
+/**
+ * A concorrência, derivada das fontes das perguntas medidas. **Sem chamada.**
+ *
+ * O universo é o mesmo da lista de perguntas que a tela mostra ao lado: as
+ * respostas de IA em que o lead aparece. Isso é o que torna o percentual
+ * legível — denominador conhecido, universo declarado.
+ *
+ * `measuredBy` fica `"domain"` em **todos** os alvos, inclusive o lead, e isso
+ * é o ponto: todo mundo é contado pelo mesmo critério. A versão anterior media
+ * o lead por nome e domínio e os concorrentes só por domínio, e o lead saía
+ * favorecido pela própria medição.
+ */
+export function mentionsFromCitations(input: {
+  citations: GeoCitations
+  leadDomain: string
+  leadLabel: string
+  limit: number
+}): GeoAiMentions | null {
+  if (input.citations.prompts === null) return null
+
+  const total = input.citations.sources.reduce(
+    (acc, source) => acc + source.mentions,
+    0,
+  )
+  const doLead = input.citations.sources.find((source) =>
+    matchesDomain(source.domain, input.leadDomain),
+  )
+
+  const targets: GeoMentionTarget[] = input.citations.sources
+    .filter(
+      (source) =>
+        matchesDomain(source.domain, input.leadDomain) ||
+        (!source.isAuthority &&
+          !GENERIC_SOURCE_DOMAINS.some((root) =>
+            matchesDomain(source.domain, root),
+          )),
+    )
+    .slice(0, input.limit)
+    .map((source) => {
+      const isLead = matchesDomain(source.domain, input.leadDomain)
+      return {
+        key: source.domain,
+        label: isLead ? input.leadLabel : source.domain,
+        isLead,
+        measuredBy: "domain" as const,
+        mentions: source.mentions,
+        aiSearchVolume: source.aiSearchVolume,
+      }
+    })
+
+  return {
+    source: "prompt_sources",
+    promptCount: input.citations.prompts.length,
+    targets,
+    // Denominador é **toda** citação das respostas medidas, inclusive as
+    // fontes de autoridade e os portais genéricos que a lista acima esconde.
+    // Contar só os alvos exibidos inflaria a participação do lead por
+    // construção.
+    share: doLead && total > 0 ? doLead.mentions / total : null,
+  }
+}
+
+/**
+ * Quanto uma única pergunta contribui para a lista de fontes.
+ *
+ * Existe porque a amostra é derivada do que o **domínio** ranqueia, não de
+ * prompts curados. Medido em 2026-09-11: uma pergunta genérica
+ * ("como ganhar dinheiro na internet rápido") trouxe 22 das 66 citações e
+ * arrastou para a lista hospedagem e finanças pessoais. A tela precisa dizer
+ * isso — a diferença entre a nossa amostra e a do relatório de referência, que
+ * usa dez prompts escolhidos, é exatamente esta.
+ */
+export function promptConcentration(citations: GeoCitations): {
+  question: string
+  share: number
+} | null {
+  const prompts = citations.prompts
+  if (!prompts || prompts.length === 0) return null
+  const total = prompts.reduce((acc, prompt) => acc + prompt.sources.length, 0)
+  if (total === 0) return null
+  const maior = prompts.reduce((maiorAte, prompt) =>
+    prompt.sources.length > maiorAte.sources.length ? prompt : maiorAte,
+  )
+  return { question: maior.question, share: maior.sources.length / total }
 }

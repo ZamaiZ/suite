@@ -117,11 +117,11 @@ export const AI_KEYWORD_VOLUME_LIMIT = 1000
 export const LLM_MENTIONS_LIMIT = 50
 
 /**
- * Concorrentes que entram na comparação de menções em IA.
+ * Concorrentes que a tela mostra na comparação de menções em IA.
  *
- * `multi_target_metrics` aceita de 2 a 10 alvos. Nove concorrentes mais o lead
- * é o teto da API; cinco cobre a leitura sem encher a tela, no mesmo número que
- * `BACKLINK_COMPETITORS_LIMIT` já usa.
+ * **Não é teto de API** — a comparação é derivada das fontes que a coleta já
+ * trouxe, sem chamada nova. É teto de leitura: cinco linhas mais o lead cabem
+ * na tela, no mesmo número que `BACKLINK_COMPETITORS_LIMIT` já usa.
  */
 export const GEO_MENTIONS_COMPETITORS_LIMIT = 5
 

@@ -164,11 +164,10 @@ export function useGeoController({
   const hasWebsiteAudit = detail.websiteAudits.some(
     (item) => item.channel_id === primaryWebsite?.id,
   )
-  // `multi_target_metrics` recusa um alvo só, e o lead sozinho é um alvo só.
-  // Sem concorrente não há comparação a fazer nem chamada a pagar.
-  const hasBacklinkAudit = Boolean(
-    detail.backlinkAudit?.snapshot.competitors?.length,
-  )
+  // A coleta de menções deixou de depender de backlinks: os concorrentes saem
+  // das fontes que a própria IA cita ao lado do lead. A lista de backlinks
+  // devolvia `url.science` e `cri.it` como concorrentes de agência de SEO.
+  const hasBacklinkAudit = true
 
   const gaps = snapshot ? geoGapsForSnapshot({ snapshot }) : []
   const opportunities = snapshot
@@ -284,7 +283,7 @@ export function useGeoController({
    * Diagnóstico.
    */
   function handleCollectMentions() {
-    if (!canEdit || mentionsBusy || !audit || !hasBacklinkAudit) return
+    if (!canEdit || mentionsBusy || !audit) return
     setMentionsBusy(true)
     onPendingChange(true)
     setMentionsError(null)

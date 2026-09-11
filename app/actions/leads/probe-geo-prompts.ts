@@ -42,6 +42,13 @@ const NO_BASE =
 /** O país da sondagem. `GEO_QUERY` usa o nome; aqui a API quer o ISO. */
 const COUNTRY_ISO = "BR"
 
+const PLATFORM_LABELS: Record<string, string> = {
+  chat_gpt: "O ChatGPT",
+  claude: "O Claude",
+  gemini: "O Gemini",
+  perplexity: "A Perplexity",
+}
+
 /**
  * A sondagem em LLM — a coleta mais cara da etapa, ≈ US$ 0,65.
  *
@@ -178,6 +185,15 @@ export async function probeLeadGeoPrompts(
         continue
       }
 
+      // A mensagem genérica da casa fala de "perfil" e não diz nada dentro
+      // desta etapa. Quando o provedor não manda a dele, a nossa ao menos
+      // nomeia a plataforma e o prompt — que é o que o analista precisa para
+      // saber se o buraco é de uma plataforma ou de uma pergunta.
+      const generica = response.message.startsWith("Não foi possível")
+      const motivo = generica
+        ? `${PLATFORM_LABELS[platform]} recusou este prompt.`
+        : response.message
+
       runs.push(
         buildGeoPromptRun({
           promptId: prompt.id,
@@ -186,7 +202,7 @@ export async function probeLeadGeoPrompts(
             response.status === "provider_unavailable"
               ? "provider_unavailable"
               : "rejected",
-          statusMessage: response.message,
+          statusMessage: motivo,
           modelName,
           at,
           result: null,
@@ -202,6 +218,7 @@ export async function probeLeadGeoPrompts(
   const promptVisibility = buildGeoPromptVisibility({
     promptSetVersion: promptSet.version,
     runs,
+    hasCompetitorBrands: competitorBrands.length > 0,
   })
 
   const snapshot: GeoSnapshot = {

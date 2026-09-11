@@ -56,7 +56,6 @@ export function LeadGeoHeader({
     hasWebsiteAudit,
     mentionsBusy,
     mentionsError,
-    hasBacklinkAudit,
     probeBusy,
     probeError,
   } = controller
@@ -170,14 +169,7 @@ export function LeadGeoHeader({
               Sondando as IAs — pode levar alguns minutos.
             </p>
           ) : null}
-          {/* Diz o que falta, não só que o botão está desabilitado: a
-              comparação recusa um alvo só, e o concorrente vem dos backlinks. */}
-          {snapshot && !hasBacklinkAudit ? (
-            <p className="text-xs/relaxed text-muted-foreground">
-              As menções em IA comparam o lead com concorrentes — rode a análise
-              de Backlinks para ter com quem comparar.
-            </p>
-          ) : null}
+
           {!domain ? (
             <p className="text-xs/relaxed text-muted-foreground">
               Cadastre um site no lead para analisar a presença em IA.

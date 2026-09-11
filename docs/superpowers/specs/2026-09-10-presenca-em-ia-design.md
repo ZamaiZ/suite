@@ -126,11 +126,12 @@ essas fontes.
 ## Fora de escopo
 
 - **Dominância de marca pelo dataset `brand_entities`.** EUA e inglês apenas —
-  confirmado. **↻ onda 0:** a tabela em si deixou de ser impossível: com
-  `platform: google` e `multi_target_metrics`, dominância sai por **casamento de
-  nome na resposta** contra as três listas que já pagamos, que é o mesmo desenho
-  já aprovado para a sondagem. O que continua fora é a via da marca
-  pré-extraída, não a métrica.
+  confirmado, e as duas chaves vêm como array vazio em `platform: google`.
+- **`multi_target_metrics` como via de dominância.** **↻ coleta real:** tentado
+  em duas rodadas pagas e reprovado nas duas. Ele mede o total do domínio no
+  dataset inteiro, que é outro universo — deu 67% com concorrentes de backlink e
+  0,007% com concorrentes das fontes, sobre o mesmo lead. A métrica fica, por
+  outra via: derivada das fontes das perguntas medidas, de graça.
 - **Citação por backlink.** **↻ onda 0:** reprovada com controle positivo. Era a
   via planejada da onda 2 e não mede o que prometia.
 - **LLM julgando o conteúdo do lead.** Decisão explícita, não omissão.
@@ -603,7 +604,7 @@ não de estimativa.
 |---|---|---|
 | Base, onda 1 | zero | **US$ 0,00** |
 | Demanda em IA, onda 2 | `ai_keyword_data` × 1 | **US$ 0,021** |
-| Citações + concorrência, onda 2 | `llm_mentions` × 1, + 1 condicional | **US$ 0,103**, ou 0,21 com detalhe |
+| Citações + concorrência, onda 2 | `llm_mentions` × **1** | **US$ 0,107** |
 | Sondagem, onda 3 | 8 prompts × 4 provedores | **≈ US$ 0,65** |
 
 **A ordem que a spec original supunha estava invertida.** A onda 2 era "duas
@@ -615,15 +616,21 @@ chamadas baratas" e a sondagem era a cara. Medido:
 - `llm_mentions` custa **US$ 0,10 por requisição** + US$ 0,001 por linha. Oito
   vezes o Labs, antes de contar linha. **É o item caro, e é o único.**
 
-**A segunda chamada de `llm_mentions` é condicional — ↻ Task 4.**
-`multi_target_metrics` sozinha entrega dominância **e** fontes de autoridade,
-porque `aggregated_metrics.sources_domain` já traz quais domínios a IA citou
-(YouTube e Reddit no topo dos dois mercados medidos). Só o detalhe por pergunta
-— a frase perguntada e o que a IA respondeu — exige `search_mentions`.
+**A onda 2b virou UMA chamada — ↻ coleta real de 2026-09-11.**
+`search_mentions` traz as perguntas com as fontes de cada resposta, e disso sai
+tudo: quantas respostas citam o lead, o que a IA lê no mercado dele, e a
+comparação com quem aparece ao lado.
 
-Então: `multi_target_metrics` **sempre**; `search_mentions` **só quando o lead
-tem menção**. Lead com zero menções não paga US$ 0,107 por uma chamada que não
-pode trazer nada, e lead com zero menções vai ser a maioria.
+**`multi_target_metrics` foi tentado e reprovado**, depois de duas rodadas pagas.
+Ele mede o total de cada domínio **no dataset inteiro**, não nas respostas do
+lead: trouxe `mobills.com.br` com 17.919 menções contra as 2 do lead, e o
+percentual virou 0,007%. Antes disso, com concorrentes de backlink, tinha dado
+67%. Os dois números errados pela mesma causa — universo errado.
+
+A conta derivada das fontes das perguntas medidas dá **10,6%** para aquele lead,
+que é a ordem de grandeza dos **9%** do relatório de referência para a PuroClean,
+medida do mesmo jeito. Seção 14 de
+`docs/auditoria/2026-09-10-onda0-presenca-em-ia.md`.
 - A sondagem tem taxa de US$ 0,0006 e **repasse do modelo 34× maior que a
   taxa**. US$ 0,0808 por prompt nas quatro plataformas.
 

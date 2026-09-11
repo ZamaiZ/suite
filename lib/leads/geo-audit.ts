@@ -163,24 +163,40 @@ export type GeoMentionTarget = {
 }
 
 /**
- * Concorrência em IA — a tabela de dominância, por `multi_target_metrics`.
+ * Concorrência em IA — quem mais a IA cita **nas mesmas respostas**.
  *
- * Viável para o Brasil por **casamento de nome na resposta**, não pelo dataset
- * `brand_entities`: medido em 2026-09-11, `brand_entities_title` e
- * `search_results_domain` vêm como array **vazio** em `platform: google`, nos
- * dois mercados testados.
+ * **Derivada, não comprada.** A versão anterior chamava `multi_target_metrics`
+ * e comparava o total de cada domínio no dataset inteiro contra o do lead.
+ * Medido em 2026-09-11, aquilo trouxe `mobills.com.br` com 17.919 menções,
+ * `hostgator` com 4.507 e `hostinger` com 3.060 contra as 2 do lead — e o
+ * "share" caiu para **0,007%**. Finanças pessoais e hospedagem não competem
+ * com uma agência de SEO; elas entraram porque um único prompt poluidor
+ * ("como ganhar dinheiro na internet rápido") trouxe 22 fontes genéricas, e
+ * porque o endpoint mede **outro universo**: o dataset inteiro, não as
+ * respostas do lead.
+ *
+ * A conta certa já estava nas fontes das perguntas medidas, de graça. Ela dá
+ * **10,6%** para este lead — a mesma ordem de grandeza dos 9% que o relatório
+ * de referência dá para a PuroClean, medida do mesmo jeito.
+ *
+ * Economia: US$ 0,10 por lead, e um número que deixa de ser lisonjeiro ou
+ * esmagador conforme os portais grandes que entrarem na amostra.
  */
 export type GeoAiMentions = {
-  source: "llm_mentions_google"
+  source: "prompt_sources"
+  /**
+   * Quantas respostas de IA entraram na conta. **É o universo declarado**, e a
+   * tela precisa mostrá-lo junto do percentual: "10,6% das citações nas 7
+   * respostas em que este negócio aparece" é uma frase verdadeira; "10,6% de
+   * participação de mercado" não é.
+   */
+  promptCount: number
   targets: GeoMentionTarget[]
   /**
-   * Menções do lead ÷ menções de todos os alvos medidos.
+   * Citações do lead ÷ todas as citações nas respostas medidas.
    *
-   * **Sobre os alvos medidos, não sobre o mercado.** E não é taxa de citação:
-   * medido em 2026-09-11, a SERVPRO tem 11× as menções da PuroClean e 1,2× a
-   * taxa de citação do relatório de referência. Uma conta o dataset inteiro, a
-   * outra a fração de prompts — rotular uma com o nome da outra compara coisas
-   * diferentes com a mesma palavra.
+   * Denominador conhecido e universo declarado. **Não é taxa de citação nem
+   * participação de mercado.**
    */
   share: number | null
 }
@@ -466,7 +482,8 @@ function readGeoAiMentions(value: unknown): GeoAiMentions | null {
   const row = asRecord(value)
   if (!row) return null
   return {
-    source: "llm_mentions_google",
+    source: "prompt_sources",
+    promptCount: asFinite(row.promptCount) ?? 0,
     targets: Array.isArray(row.targets)
       ? row.targets.flatMap((entry) => {
           const item = asRecord(entry)
