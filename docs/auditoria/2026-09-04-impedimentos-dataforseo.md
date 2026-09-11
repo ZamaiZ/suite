@@ -27,7 +27,17 @@ reforça a suposição do mapeador de avaliações. O que a coleta reprovou não
 mapeamento e sim a leitura: as regras de gap não reconheciam perfil concentrado,
 e a onda 6 corrigiu isso.
 
-**Os demais mapeadores do DataForSEO nunca executaram contra resposta real** até agora. Foram escritos contra documentação: `dataForSeoTimeToIso` assume um formato de timestamp, `mapDataForSeoReviews` assume `rating.value` aninhado e `owner_answer` como string, `mapRankedKeywordsLiveResult` assume a presença de `rank_group` e de `metrics.organic`. A primeira coleta real é também a primeira validação — e é o passo que ainda não foi feito.
+**Os demais mapeadores do DataForSEO nunca executaram contra resposta real.** Foram escritos contra documentação: `dataForSeoTimeToIso` assume um formato de timestamp, `mapDataForSeoReviews` assume `rating.value` aninhado e `owner_answer` como string. A primeira coleta real é também a primeira validação.
+
+**`mapRankedKeywordsLiveResult` saiu dessa lista em 2026-09-10** — ver
+`2026-09-10-onda0-visibilidade.md`. A forma suposta passou (`rank_group` e
+`metrics.organic` estavam lá); o que reprovou foi o conteúdo, em três campos, e
+a correção está em `../superpowers/specs/2026-09-10-visibilidade-confiabilidade-design.md`.
+O mapeamento agora é travado por fixture de payload real em
+`lib/leads/visibility-labs-map.test.mjs`, que é o que impede a próxima suposição
+de forma de sobreviver seis meses sem execução.
+
+Continuam sem execução real: os mapeadores de **avaliações**, **Maps**, **Q&A** e **updates**.
 
 **A pergunta do timestamp foi respondida duas vezes, e a segunda corrigiu a primeira.** A interface do Google mostra "2 meses atrás" para os dois lados, e a onda 5 concluiu daí que a data da resposta não existia. Existe: `owner_timestamp` está no endpoint **padrão** que já chamamos, em `yyyy-mm-dd hh:mm:ss +00:00`. A onda 7 passou a lê-lo e o tempo de resposta virou **medido**; a faixa do analista ficou como reserva para perfil ainda não recoletado. A lição é a mesma da etapa 0: o JSON tem mais que a tela, e concluir a partir da interface é concluir errado.
 

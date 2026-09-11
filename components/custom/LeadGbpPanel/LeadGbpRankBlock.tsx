@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { RiCloseLine, RiExternalLinkLine } from "react-icons/ri"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import {
   Table,
   TableBody,
@@ -107,7 +107,7 @@ export function LeadGbpRankBlock({
   }
 
   return (
-    <LeadGbpCard title="Ranking no Maps">
+    <StepCard title="Ranking no Maps">
       {draft.length === 0 && !canEdit ? (
         <p className="text-xs/relaxed text-muted-foreground">
           Nenhum termo salvo
@@ -258,6 +258,6 @@ export function LeadGbpRankBlock({
           </Button>
         </div>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

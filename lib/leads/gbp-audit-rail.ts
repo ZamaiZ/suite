@@ -4,7 +4,12 @@ export type GbpAuditStepState =
   "current" | "processing" | "complete" | "error" | "upcoming"
 
 export type GbpAuditRailStepId =
-  "google-profile" | "website" | "digital-presence" | "visibility" | "diagnosis"
+  | "google-profile"
+  | "website"
+  | "digital-presence"
+  | "visibility"
+  | "geo"
+  | "diagnosis"
 
 export type GbpAuditRailStep = {
   id: GbpAuditRailStepId
@@ -40,6 +45,11 @@ export type GbpAuditRailVisibility = {
   alertCount: number
 } | null
 
+export type GbpAuditRailGeo = {
+  fetchedAt: string | null
+  alertCount: number
+} | null
+
 export type GbpAuditRailDiagnosis = {
   unlocked: boolean
   hasExport: boolean
@@ -64,6 +74,7 @@ export type BuildGbpAuditRailInput = {
   website: GbpAuditRailWebsite
   digitalPresence: GbpAuditRailDigitalPresence
   visibility: GbpAuditRailVisibility
+  geo: GbpAuditRailGeo
   diagnosis: GbpAuditRailDiagnosis
   selectedStep: GbpAuditRailStepId
   googleAlertCount: number
@@ -75,6 +86,7 @@ const STEPS: ReadonlyArray<{ id: GbpAuditRailStepId; label: string }> = [
   { id: "website", label: "Website" },
   { id: "digital-presence", label: "Presença digital" },
   { id: "visibility", label: "Visibilidade" },
+  { id: "geo", label: "Presença em IA" },
   { id: "diagnosis", label: "Diagnóstico" },
 ]
 
@@ -83,6 +95,7 @@ const BASE_SELECTABLE = new Set<GbpAuditRailStepId>([
   "website",
   "digital-presence",
   "visibility",
+  "geo",
   "diagnosis",
 ])
 
@@ -158,6 +171,18 @@ function visibilityRailStatus(
   return "pending"
 }
 
+function geoState(
+  geo: GbpAuditRailGeo,
+  selected: boolean,
+): GbpAuditStepState {
+  if (geo?.fetchedAt) return "complete"
+  return selected ? "current" : "upcoming"
+}
+
+function geoRailStatus(geo: GbpAuditRailGeo): GbpAuditRailStatus {
+  return geo?.fetchedAt ? "analyzed" : "pending"
+}
+
 function diagnosisUnlocked(input: BuildGbpAuditRailInput): boolean {
   if (input.diagnosis?.unlocked === true) return true
   const google = googleStatus(input.profile)
@@ -166,7 +191,11 @@ function diagnosisUnlocked(input: BuildGbpAuditRailInput): boolean {
     google === "analyzed" &&
     website === "analyzed" &&
     Boolean(input.digitalPresence?.complete) &&
-    Boolean(input.visibility?.fetchedAt)
+    Boolean(input.visibility?.fetchedAt) &&
+    // Presenca em IA destrava como as outras quatro. A sondagem em LLM **nao**
+    // entra aqui: ela e o analogo de PageSpeed e backlinks, que enriquecem a
+    // etapa e nao a definem.
+    Boolean(input.geo?.fetchedAt)
   )
 }
 
@@ -203,12 +232,14 @@ export function buildGbpAuditRailModel(
   const website = websiteStatus(input.website)
   const presenceComplete = Boolean(input.digitalPresence?.complete)
   const visibilityComplete = Boolean(input.visibility?.fetchedAt)
+  const geoComplete = Boolean(input.geo?.fetchedAt)
   const diagnosisComplete = Boolean(input.diagnosis?.hasExport)
   const completeCount =
     (google === "analyzed" ? 1 : 0) +
     (website === "analyzed" ? 1 : 0) +
     (presenceComplete ? 1 : 0) +
     (visibilityComplete ? 1 : 0) +
+    (geoComplete ? 1 : 0) +
     (diagnosisComplete ? 1 : 0)
 
   const status: GbpAuditRailStatus =
@@ -218,9 +249,11 @@ export function buildGbpAuditRailModel(
         ? digitalPresenceRailStatus(input.digitalPresence)
         : selected === "visibility"
           ? visibilityRailStatus(input.visibility)
-          : selected === "diagnosis"
-            ? diagnosisRailStatus(input, unlocked)
-            : google
+          : selected === "geo"
+            ? geoRailStatus(input.geo)
+            : selected === "diagnosis"
+              ? diagnosisRailStatus(input, unlocked)
+              : google
 
   const steps: GbpAuditRailStep[] = STEPS.map((step) => {
     const isSelected = step.id === selected
@@ -267,6 +300,17 @@ export function buildGbpAuditRailModel(
         showAlerts: input.visibility !== null,
       }
     }
+    if (step.id === "geo") {
+      const alertCount = Math.max(0, input.geo?.alertCount ?? 0)
+      return {
+        ...step,
+        state: geoState(input.geo, isSelected),
+        selectable: stepSelectable,
+        selected: isSelected,
+        alertCount,
+        showAlerts: input.geo !== null,
+      }
+    }
     return {
       ...step,
       state: diagnosisState(input, isSelected, unlocked),
@@ -290,6 +334,9 @@ export function buildGbpAuditRailModel(
   } else if (selected === "visibility") {
     collectedAt = input.visibility?.fetchedAt ?? null
     analyzedAt = input.visibility?.fetchedAt ?? null
+  } else if (selected === "geo") {
+    collectedAt = input.geo?.fetchedAt ?? null
+    analyzedAt = input.geo?.fetchedAt ?? null
   } else if (selected === "diagnosis") {
     collectedAt = input.diagnosis?.updatedAt ?? null
     analyzedAt = input.diagnosis?.hasExport ? input.diagnosis.updatedAt : null

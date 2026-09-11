@@ -8,6 +8,7 @@ import {
   type LeadDetail,
   type LeadDigitalPresenceAudit,
   type LeadVisibilityAudit,
+  type LeadGeoAudit,
   type LeadBacklinkAudit,
   type LeadDiagnosisDraft,
   type LeadDiagnosisExport,
@@ -16,9 +17,11 @@ import {
   type LogClosingEventState,
   type LogLeadActivityState,
 } from "@/app/actions/leads"
+import type { LeadVisibilityReview } from "@/lib/leads/visibility-review"
 import type { ConvertLeadState } from "@/app/actions/clients"
 import { ClientPortalCodeReveal } from "@/components/custom/ClientPortalCodeReveal"
 import { LeadGbpPanel } from "@/components/custom/LeadGbpPanel"
+import type { LeadGeoReview } from "@/lib/leads/geo-review"
 import {
   Dialog,
   DialogContent,
@@ -233,6 +236,33 @@ export function LeadDetailDialog({
     setDetail((current) =>
       current && current.lead.id === leadId
         ? { ...current, visibilityAudit: audit }
+        : current,
+    )
+  }
+
+  function applyVisibilityReview(
+    leadId: string,
+    review: LeadVisibilityReview,
+  ) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, visibilityReview: review }
+        : current,
+    )
+  }
+
+  function applyGeo(leadId: string, audit: LeadGeoAudit | null) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, geoAudit: audit }
+        : current,
+    )
+  }
+
+  function applyGeoReview(leadId: string, review: LeadGeoReview) {
+    setDetail((current) =>
+      current && current.lead.id === leadId
+        ? { ...current, geoReview: review }
         : current,
     )
   }
@@ -524,6 +554,9 @@ export function LeadDetailDialog({
                         onWebsiteAuditsChange={applyWebsiteAudits}
                         onDigitalPresenceChange={applyDigitalPresence}
                         onVisibilityChange={applyVisibility}
+                        onVisibilityReviewChange={applyVisibilityReview}
+                        onGeoChange={applyGeo}
+                        onGeoReviewChange={applyGeoReview}
                         onBacklinksChange={applyBacklinks}
                         onDiagnosisDraftChange={applyDiagnosisDraft}
                         onDiagnosisExportsChange={applyDiagnosisExports}

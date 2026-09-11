@@ -1,9 +1,12 @@
+import type { LeadVisibilityReview } from "@/lib/leads/visibility-review"
+import type { LeadGeoReview } from "@/lib/leads/geo-review"
 import type {
   LeadDetail,
   LeadGbpProfile,
   LeadWebsiteAudit,
   LeadDigitalPresenceAudit,
   LeadVisibilityAudit,
+  LeadGeoAudit,
   LeadBacklinkAudit,
   LeadDiagnosisDraft,
   LeadDiagnosisExport,
@@ -28,6 +31,12 @@ export type LeadGbpPanelProps = {
     leadId: string,
     audit: LeadVisibilityAudit | null,
   ) => void
+  onVisibilityReviewChange: (
+    leadId: string,
+    review: LeadVisibilityReview,
+  ) => void
+  onGeoChange: (leadId: string, audit: LeadGeoAudit | null) => void
+  onGeoReviewChange: (leadId: string, review: LeadGeoReview) => void
   onBacklinksChange: (leadId: string, audit: LeadBacklinkAudit | null) => void
   onDiagnosisDraftChange: (
     leadId: string,

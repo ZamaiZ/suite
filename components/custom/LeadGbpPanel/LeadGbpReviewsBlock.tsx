@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { RiStarFill } from "react-icons/ri"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import { LeadGbpReputationRead } from "./LeadGbpReputationRead"
 import { cn } from "cn"
 import { formatDateTimeShort } from "@/lib/date-time"
@@ -116,7 +116,7 @@ export function LeadGbpReviewsBlock({
   const measuredReplyDays = sample?.replyMedianDays ?? null
 
   return (
-    <LeadGbpCard title="Reputação">
+    <StepCard title="Reputação">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
         <div className="shrink-0">
           <p className="text-base font-semibold text-foreground">
@@ -241,6 +241,6 @@ export function LeadGbpReviewsBlock({
             : `Ver todas as ${items.length.toLocaleString("pt-BR")} avaliações em destaque`}
         </button>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

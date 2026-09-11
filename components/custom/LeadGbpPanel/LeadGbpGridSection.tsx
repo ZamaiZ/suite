@@ -6,9 +6,12 @@ import {
   RiCheckboxCircleLine,
   RiSearchLine,
 } from "react-icons/ri"
-import { LeadGbpCard } from "./LeadGbpCard"
+import {
+  StepCard,
+  StepMeter,
+  StepStat,
+} from "@/components/custom/LeadStepShell"
 import { LeadGbpGridCompetitors } from "./LeadGbpGridCompetitors"
-import { StepMeter, StepStat } from "@/components/custom/LeadStepShell"
 import { LeadGbpGridMap } from "./LeadGbpGridMap"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
@@ -218,7 +221,7 @@ export function LeadGbpGridSection({
   )
 
   return (
-    <LeadGbpCard title="Malha geográfica" className="h-full">
+    <StepCard title="Malha geográfica" className="h-full">
       <div className="flex flex-col gap-3">
           {canEdit ? (
             <div className="flex flex-wrap items-end gap-3">
@@ -502,6 +505,6 @@ export function LeadGbpGridSection({
             </p>
           )}
       </div>
-    </LeadGbpCard>
+    </StepCard>
   )
 }

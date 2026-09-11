@@ -12,6 +12,7 @@ export {
   stepShareTone,
   type StepTone,
 } from "./StepMetrics"
+export { StepCard } from "./StepCard"
 export { StepTabs, type StepTabDef } from "./StepTabs"
 export {
   STEP_IMPACT_LABEL,

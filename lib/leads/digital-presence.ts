@@ -98,19 +98,52 @@ export function isSocialPostingStale(
   return lastPostedOn < cutoff
 }
 
-export function socialPostingAgeLabel(
+export type DigitalPresenceTone = "neutral" | "success" | "warning" | "danger"
+
+export type SocialPostingAge = {
+  label: string
+  tone: DigitalPresenceTone
+  days: number
+}
+
+/** Metade do corte: onde a cadência começa a preocupar sem ainda ter parado. */
+const SOCIAL_SLOWING_DAYS = Math.round(GBP_STALE_POSTS_DAYS / 2)
+
+/**
+ * As duas formas do mesmo dado. `label` para quem consome texto; `tone` para a
+ * linha poder declarar o estado sem depender de o leitor interpretar a frase —
+ * "Parado há mais de 90 dias" e "Publicou hoje" saíam na mesma cor, no mesmo
+ * peso e na mesma posição.
+ */
+export function socialPostingAge(
   lastPostedOn: string,
   today: string,
-): string {
+): SocialPostingAge {
   const days = civilDateDiffDays(lastPostedOn, today)
-  if (days < 0) return formatCivilDate(lastPostedOn)
-  if (isSocialPostingStale(lastPostedOn, today)) {
-    return `Parado há mais de ${GBP_STALE_POSTS_DAYS} dias`
+  if (days < 0) {
+    // Data no futuro é erro de digitação, não cadência: não afirma estado.
+    return { label: formatCivilDate(lastPostedOn), tone: "neutral", days }
   }
-  if (days === 0) return "Publicou hoje"
-  if (days === 1) return "Há 1 dia"
-  return `Há ${days.toLocaleString("pt-BR")} dias`
+  if (isSocialPostingStale(lastPostedOn, today)) {
+    return {
+      label: `Parado há mais de ${GBP_STALE_POSTS_DAYS} dias`,
+      tone: "danger",
+      days,
+    }
+  }
+  const label =
+    days === 0
+      ? "Publicou hoje"
+      : days === 1
+        ? "Há 1 dia"
+        : `Há ${days.toLocaleString("pt-BR")} dias`
+  return {
+    label,
+    tone: days >= SOCIAL_SLOWING_DAYS ? "warning" : "success",
+    days,
+  }
 }
+
 
 function channelKeysByType(
   channels: ReadonlyArray<LeadDigitalChannel>,

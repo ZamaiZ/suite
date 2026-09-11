@@ -5,8 +5,10 @@ import { useState } from "react"
 import { AnimatePresence, useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import { RiCheckLine } from "react-icons/ri"
-import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
-import { StepMeter } from "@/components/custom/LeadStepShell"
+import {
+  StepCard,
+  StepMeter,
+} from "@/components/custom/LeadStepShell"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -288,7 +290,7 @@ export function LeadWebsiteReview({
   }
 
   return (
-    <LeadGbpCard title="Validação visual">
+    <StepCard title="Validação visual">
       <div className="-mt-1 mb-2.5">
         <div className="flex items-baseline justify-between gap-3">
           <p className="text-xs/relaxed text-muted-foreground">
@@ -351,6 +353,6 @@ export function LeadWebsiteReview({
           ) : null}
         </div>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

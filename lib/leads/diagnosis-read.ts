@@ -138,11 +138,14 @@ function readFacts(value: unknown): DiagnosisFacts | null {
   const scorecard = Object.fromEntries(
     DIAGNOSIS_PILLARS.map((pillar) => {
       const cell = objectRecord(scorecardRaw[pillar])
+      // Pilar ausente é **não medido**, nunca nota cheia. É por aqui que todo
+      // documento salvo antes do pilar `geo` passa, e a versão anterior desta
+      // linha dava 100 ao lead numa dimensão que ninguém coletou.
       if (!cell) return [pillar, emptyPillarScore()]
       const score =
         typeof cell.score === "number" && Number.isFinite(cell.score)
           ? Math.max(0, Math.min(100, Math.trunc(cell.score)))
-          : 100
+          : 0
       const highCount =
         typeof cell.highCount === "number" && Number.isFinite(cell.highCount)
           ? Math.max(0, Math.trunc(cell.highCount))
@@ -152,7 +155,20 @@ function readFacts(value: unknown): DiagnosisFacts | null {
         Number.isFinite(cell.mediumCount)
           ? Math.max(0, Math.trunc(cell.mediumCount))
           : 0
-      return [pillar, { score, highCount, mediumCount }]
+      return [
+        pillar,
+        {
+          score,
+          highCount,
+          mediumCount,
+          // Ausência de `measured` lê como **`true`**, não `false`: os quatro
+          // pilares originais sempre foram medidos — o Diagnóstico só destrava
+          // com as etapas prontas — e marcá-los como não medidos reescreveria
+          // o passado. O default correto aqui é o contrário do que a intuição
+          // sugere, e é por isso que ele está escrito e não implícito.
+          measured: cell.measured === undefined ? true : cell.measured === true,
+        },
+      ]
     }),
   ) as DiagnosisFacts["scorecard"]
 

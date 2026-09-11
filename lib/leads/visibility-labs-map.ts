@@ -1,14 +1,26 @@
+import { dataForSeoTimeToIso } from "../dataforseo/time.ts"
 import {
-  bucketsFromPositions,
+  readAdsCompetition,
+  readItemType,
+  visibilityUrlFromAbsolute,
+  type VisibilityDifficulty,
+  type VisibilityIndexAge,
+  type VisibilityIntent,
+  type VisibilityIntentLabel,
   type VisibilityKeywordRow,
+  type VisibilityHost,
   type VisibilityMetrics,
   type VisibilitySnapshot,
+  type VisibilityTypeMetrics,
+  type VisibilityUrl,
 } from "./visibility-audit.ts"
 
 export type RankedKeywordsLiveResult = {
   total_count?: number
   metrics?: {
     organic?: Record<string, unknown>
+    local_pack?: Record<string, unknown>
+    ai_overview_reference?: Record<string, unknown>
   }
   items?: Array<Record<string, unknown>>
 }
@@ -28,17 +40,65 @@ function asString(value: unknown): string | null {
     : null
 }
 
+function daysBetween(iso: string | null, reference: string): number | null {
+  if (!iso) return null
+  const ms = Date.parse(reference) - Date.parse(iso)
+  return Number.isFinite(ms) ? Math.max(0, Math.round(ms / 86_400_000)) : null
+}
+
+function median(values: number[]): number | null {
+  if (values.length === 0) return null
+  const sorted = values.slice().sort((left, right) => left - right)
+  return sorted[Math.floor(sorted.length / 2)]
+}
+
+/**
+ * A idade do índice, resumida. É o número que separa "coletado agora" de
+ * "medido há dois meses" — e a ausência dele era a maior causa isolada de
+ * divergência contra outras ferramentas, que reindexam em ciclos próprios.
+ */
+function mapIndexAge(
+  keywords: ReadonlyArray<VisibilityKeywordRow>,
+  collectedAt: string,
+): VisibilityIndexAge | null {
+  const serp = keywords
+    .map((row) => daysBetween(row.position.updatedAt, collectedAt))
+    .filter((value): value is number => value !== null)
+  if (serp.length === 0) return null
+  const volume = keywords
+    .map((row) => daysBetween(row.volume.updatedAt, collectedAt))
+    .filter((value): value is number => value !== null)
+  // A idade da intenção sai da fonte que a tela exibe. O `search_intent_info`
+  // embutido no `ranked_keywords` tem data própria, mas não é o que mostramos.
+  const intent = keywords
+    .map((row) => daysBetween(row.intent?.updatedAt ?? null, collectedAt))
+    .filter((value): value is number => value !== null)
+  return {
+    serpMedianDays: median(serp) ?? 0,
+    serpMaxDays: Math.max(...serp),
+    volumeMedianDays: median(volume),
+    intentMedianDays: median(intent),
+  }
+}
+
+/**
+ * Sem `metrics.organic` os campos ficam `null`, e **não** caem para a amostra.
+ *
+ * O fallback antigo — contar as linhas devolvidas — fazia `keywordCount` e
+ * `positionBuckets` significarem footprint num caso e amostra no outro, sem
+ * nada no snapshot que distinguisse os dois. Quem lê depois não tem como
+ * saber, e a guarda de cobertura das regras de gap dependia exatamente dessa
+ * distinção. Cobertura agora mora em `coverage`, que é o lugar dela.
+ */
 function mapOrganicMetrics(
   organic: Record<string, unknown> | undefined,
-  keywordCount: number,
-  positions: number[],
 ): VisibilityMetrics {
   if (!organic) {
     return {
-      keywordCount,
+      keywordCount: null,
       estimatedTraffic: null,
       estimatedTrafficCost: null,
-      positionBuckets: bucketsFromPositions(positions),
+      positionBuckets: null,
     }
   }
   const pos1 = asInt(organic.pos_1) ?? 0
@@ -54,7 +114,7 @@ function mapOrganicMetrics(
   const pos81_90 = asInt(organic.pos_81_90) ?? 0
   const pos91_100 = asInt(organic.pos_91_100) ?? 0
   return {
-    keywordCount: asInt(organic.count) ?? keywordCount,
+    keywordCount: asInt(organic.count),
     estimatedTraffic: asFinite(organic.etv),
     estimatedTrafficCost: asFinite(organic.estimated_paid_traffic_cost),
     positionBuckets: {
@@ -67,8 +127,117 @@ function mapOrganicMetrics(
   }
 }
 
+/**
+ * `serp_item.url` é a URL absoluta; `relative_url` é só o caminho, e era o que
+ * gravávamos. `serp_item.subdomain` **não é usado**: veio `null` nas 110 linhas
+ * da medição de 2026-09-10, enquanto o host real estava em `domain` e o domínio
+ * registrável em `main_domain`.
+ */
+function mapUrl(
+  serpItem: Record<string, unknown> | null,
+  canonicalDomain: string,
+): VisibilityUrl | null {
+  const full = asString(serpItem?.url)
+  if (!full) return null
+  const parsed = visibilityUrlFromAbsolute(full, canonicalDomain)
+  if (!parsed) return null
+  return { ...parsed, mainDomain: asString(serpItem?.main_domain) }
+}
+
+/**
+ * `keyword_difficulty` a `0` é ausência, não facilidade.
+ *
+ * A escala é 0–100, e a documentação promete `null` quando não há dado. Na
+ * base brasileira a promessa não se cumpre: a medição de 2026-09-10 trouxe 98
+ * zeros e nenhum `null`, e `bulk_keyword_difficulty` — o endpoint dedicado —
+ * devolveu exatamente os mesmos 98. Zero com cara de resposta é pior que
+ * ausência declarada, então aqui ele vira ausência.
+ */
+function mapDifficulty(
+  keywordProperties: Record<string, unknown> | null,
+  keywordInfo: Record<string, unknown> | null,
+  avgBacklinks: Record<string, unknown> | null,
+): VisibilityDifficulty {
+  const raw = asFinite(keywordProperties?.keyword_difficulty)
+  return {
+    // `Math.round`, não `Math.trunc`: 39,6 é 40, não 39.
+    index: raw === null || raw === 0 ? null : Math.round(raw),
+    adsCompetition: readAdsCompetition(keywordInfo?.competition_level),
+    adsCompetitionScore: asFinite(keywordInfo?.competition),
+    topTenReferringDomains: asFinite(avgBacklinks?.referring_domains),
+  }
+}
+
+function mapTypeMetrics(
+  section: Record<string, unknown> | undefined,
+): VisibilityTypeMetrics | null {
+  if (!section) return null
+  return {
+    count: asInt(section.count),
+    estimatedTraffic: asFinite(section.etv),
+  }
+}
+
+/**
+ * Agrega o footprint por host. É a leitura que revelou que 77 das 110 keywords
+ * de `buscaorganica.com.br` ranqueavam em `aprov.buscaorganica.com.br` — dado
+ * que já vinha na resposta e que ninguém via, porque gravávamos só o caminho.
+ */
+function hostsFromRows(
+  rows: ReadonlyArray<VisibilityKeywordRow>,
+): VisibilityHost[] {
+  const byHost = new Map<string, VisibilityHost>()
+  for (const row of rows) {
+    const host = row.url?.host
+    if (!host) continue
+    const found = byHost.get(host) ?? {
+      host,
+      keywords: 0,
+      traffic: 0,
+      isCanonical: row.url?.isCanonicalHost === true,
+    }
+    found.keywords += 1
+    found.traffic += row.traffic ?? 0
+    byHost.set(host, found)
+  }
+  return [...byHost.values()].sort(
+    (left, right) => right.traffic - left.traffic,
+  )
+}
+
+const INTENT_LABELS = new Set<string>([
+  "informational",
+  "navigational",
+  "commercial",
+  "transactional",
+])
+
+export type VisibilityIntentSource = {
+  label: string
+  probability: number
+  secondary: Array<{ label: string; probability: number }>
+  updatedAt: string | null
+}
+
+function mapIntent(
+  entry: VisibilityIntentSource | undefined,
+): VisibilityIntent | null {
+  // Só a fonte dedicada alimenta esta coluna. O `main_intent` do
+  // `ranked_keywords` continua vindo na resposta, mas discorda dela em 23% dos
+  // casos — misturar as duas produziria uma coluna sem procedência.
+  if (!entry || !INTENT_LABELS.has(entry.label)) return null
+  return {
+    label: entry.label as VisibilityIntentLabel,
+    probability: entry.probability,
+    secondary: entry.secondary,
+    updatedAt: entry.updatedAt,
+  }
+}
+
 function mapKeywordItem(
   item: Record<string, unknown>,
+  canonicalDomain: string,
+  intents: ReadonlyMap<string, VisibilityIntentSource> | null,
 ): VisibilityKeywordRow | null {
   const keywordData =
     item.keyword_data && typeof item.keyword_data === "object"
@@ -86,10 +255,12 @@ function mapKeywordItem(
     typeof keywordData.keyword_properties === "object"
       ? (keywordData.keyword_properties as Record<string, unknown>)
       : null
-  const searchIntent =
-    keywordData?.search_intent_info &&
-    typeof keywordData.search_intent_info === "object"
-      ? (keywordData.search_intent_info as Record<string, unknown>)
+  // `keyword_data.search_intent_info` continua vindo na resposta e não é lido:
+  // a coluna de intenção passou a ter fonte única, a dedicada.
+  const avgBacklinks =
+    keywordData?.avg_backlinks_info &&
+    typeof keywordData.avg_backlinks_info === "object"
+      ? (keywordData.avg_backlinks_info as Record<string, unknown>)
       : null
 
   const ranked =
@@ -102,17 +273,40 @@ function mapKeywordItem(
       : null
 
   const position = asInt(serpItem?.rank_group) ?? asInt(serpItem?.rank_absolute)
-  const url =
-    asString(serpItem?.relative_url) ?? asString(serpItem?.url) ?? null
+  const rankChanges =
+    serpItem?.rank_changes && typeof serpItem.rank_changes === "object"
+      ? (serpItem.rank_changes as Record<string, unknown>)
+      : null
+  const serpInfo =
+    keywordData?.serp_info && typeof keywordData.serp_info === "object"
+      ? (keywordData.serp_info as Record<string, unknown>)
+      : null
+  const previous = asInt(rankChanges?.previous_rank_absolute)
 
   return {
     keyword,
-    position: position !== null && position >= 1 ? position : null,
-    url,
-    volume: asInt(keywordInfo?.search_volume),
+    position: {
+      value: position !== null && position >= 1 ? position : null,
+      previous: previous !== null && previous >= 1 ? previous : null,
+      // `serp_info.last_updated_time` é quando a DataForSEO viu esta SERP —
+      // não quando nós pedimos. A distância entre as duas é o que faltava.
+      updatedAt: dataForSeoTimeToIso(serpInfo?.last_updated_time),
+    },
+    url: mapUrl(serpItem, canonicalDomain),
+    volume: {
+      value: asInt(keywordInfo?.search_volume),
+      updatedAt: dataForSeoTimeToIso(keywordInfo?.last_updated_time),
+    },
     traffic: asFinite(serpItem?.etv),
-    difficulty: asInt(keywordProperties?.keyword_difficulty),
-    intent: asString(searchIntent?.main_intent),
+    difficulty: mapDifficulty(keywordProperties, keywordInfo, avgBacklinks),
+    intent: mapIntent(intents?.get(keyword)),
+    serpFeatures: Array.isArray(serpInfo?.serp_item_types)
+      ? serpInfo.serp_item_types.filter(
+          (entry): entry is string => typeof entry === "string",
+        )
+      : [],
+    itemType: readItemType(serpItem?.type),
+    languageMismatch: keywordProperties?.is_another_language === true,
   }
 }
 
@@ -120,27 +314,42 @@ export function mapRankedKeywordsLiveResult(input: {
   domain: string
   result: RankedKeywordsLiveResult | null
   collectedAt: string
+  /** Ecoados de `VISIBILITY_QUERY`, nunca repetidos como literal aqui. */
+  locationLabel: string
+  languageCode: string
+  /** Custo real somado das chamadas da coleta. */
+  costUsd?: number | null
+  /** Intenção da fonte dedicada. `null` quando aquela chamada falhou. */
+  intents?: ReadonlyMap<string, VisibilityIntentSource> | null
 }): VisibilitySnapshot {
   const items = Array.isArray(input.result?.items) ? input.result.items : []
   const keywords = items.flatMap((item) => {
-    const row = mapKeywordItem(item)
+    const row = mapKeywordItem(item, input.domain, input.intents ?? null)
     return row ? [row] : []
   })
-  const positions = keywords
-    .map((row) => row.position)
-    .filter((value): value is number => value !== null)
+  const total = asInt(input.result?.total_count)
   return {
+    version: 2,
+    indexAge: mapIndexAge(keywords, input.collectedAt),
     source: "dataforseo_labs",
     domain: input.domain,
-    locationLabel: "Brazil",
-    languageCode: "pt",
+    locationLabel: input.locationLabel,
+    languageCode: input.languageCode,
     collectedAt: input.collectedAt,
     searchCount: 1,
-    metrics: mapOrganicMetrics(
-      input.result?.metrics?.organic,
-      asInt(input.result?.total_count) ?? keywords.length,
-      positions,
-    ),
+    coverage: {
+      returned: keywords.length,
+      total,
+      truncated: total !== null && total > keywords.length,
+    },
+    hosts: hostsFromRows(keywords),
+    costUsd: input.costUsd ?? null,
+    // `items` que o mapeador não conseguiu ler. Antes o `flatMap` os descartava
+    // em silêncio, e ninguém sabia que a coleta tinha vindo incompleta.
+    droppedRows: items.length - keywords.length,
+    metrics: mapOrganicMetrics(input.result?.metrics?.organic),
+    localPack: mapTypeMetrics(input.result?.metrics?.local_pack),
+    aiOverview: mapTypeMetrics(input.result?.metrics?.ai_overview_reference),
     keywords,
   }
 }

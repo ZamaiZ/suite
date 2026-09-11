@@ -9,6 +9,7 @@ import { linkLeadGbpProfile, type LeadGbpProfile } from "@/app/actions/leads"
 import { LeadDigitalPresencePanel } from "@/components/custom/LeadDigitalPresencePanel"
 import { LeadDiagnosisPanel } from "@/components/custom/LeadDiagnosisPanel"
 import { LeadVisibilityPanel } from "@/components/custom/LeadVisibilityPanel"
+import { LeadGeoPanel } from "@/components/custom/LeadGeoPanel"
 import { LeadWebsitePanel } from "@/components/custom/LeadWebsitePanel"
 import {
   Empty,
@@ -54,6 +55,7 @@ import {
   resolveLeadLocation,
 } from "@/lib/leads/resolve-location"
 import { visibilityGapsForSnapshot } from "@/lib/leads/visibility-audit"
+import { mergeGeoOpportunities } from "@/lib/leads/geo-opportunities"
 import { LeadGbpAuditRail } from "./LeadGbpAuditRail"
 import { LeadGbpPlacePicker } from "./LeadGbpPlacePicker"
 import { LeadGbpProfileView } from "./LeadGbpProfileView"
@@ -73,6 +75,9 @@ export function LeadGbpPanel({
   onWebsiteAuditsChange,
   onDigitalPresenceChange,
   onVisibilityChange,
+  onGeoChange,
+  onGeoReviewChange,
+  onVisibilityReviewChange,
   onBacklinksChange,
   onDiagnosisDraftChange,
   onDiagnosisExportsChange,
@@ -328,11 +333,21 @@ export function LeadGbpPanel({
         city: visibilityCity,
       }).length
     : 0
+  const geoAlertCount = detail.geoAudit
+    ? mergeGeoOpportunities({
+        snapshot: detail.geoAudit.snapshot,
+        review: detail.geoReview.review,
+      }).length
+    : 0
+  // Presença em IA destrava como as outras quatro. Consequência aceita: lead
+  // auditado antes desta entrega re-tranca o Diagnóstico até rodar a etapa —
+  // e a coleta base não faz chamada paga nenhuma.
   const diagnosisUnlocked =
     Boolean(selected?.enrichment_at) &&
     websiteAudit != null &&
     presenceComplete &&
-    detail.visibilityAudit != null
+    detail.visibilityAudit != null &&
+    detail.geoAudit != null
   const liveFingerprint = diagnosisFactsFingerprint({
     gbpFetchedAt: primaryGbp?.fetched_at ?? null,
     gbpEnrichmentAt: primaryGbp?.enrichment_at ?? null,
@@ -341,6 +356,7 @@ export function LeadGbpPanel({
     presenceUpdatedAt: detail.digitalPresenceAudit?.updated_at ?? null,
     visibilityFetchedAt: detail.visibilityAudit?.fetched_at ?? null,
     backlinksFetchedAt: detail.backlinkAudit?.fetched_at ?? null,
+    geoFetchedAt: detail.geoAudit?.fetched_at ?? null,
   })
   const diagnosisStale = Boolean(
     detail.diagnosisDraft &&
@@ -418,7 +434,7 @@ export function LeadGbpPanel({
     })
   }
 
-  // As duas etapas montam o próprio shell de tela cheia: cabeçalho fixo, abas e
+  // As três etapas montam o próprio shell de tela cheia: cabeçalho fixo, abas e
   // coluna. Padding e scroll do contêiner brigariam com ele.
   const websiteFullBleed =
     selectedStep === "website" &&
@@ -429,7 +445,13 @@ export function LeadGbpPanel({
     (selectedStep === "google-profile" &&
       profiles.length > 0 &&
       selected !== null) ||
-    websiteFullBleed
+    websiteFullBleed ||
+    // Sem condição: a presença digital não depende de canal nem de coleta para
+    // montar o shell — cada aba tem o próprio vazio.
+    selectedStep === "digital-presence" ||
+    // Mesma razão na visibilidade: sem site cadastrado a etapa ainda monta o
+    // cabeçalho, e é ele que carrega o aviso e o botão que resolvem a falta.
+    selectedStep === "visibility"
 
   // Avisos, picker e erro de vínculo moram na faixa do cabeçalho fixo: soltos
   // acima dos cards, eles rolavam para fora da tela junto com o conteúdo.
@@ -517,6 +539,14 @@ export function LeadGbpPanel({
                 }
               : null
           }
+          geo={
+            detail.geoAudit
+              ? {
+                  fetchedAt: detail.geoAudit.fetched_at,
+                  alertCount: geoAlertCount,
+                }
+              : null
+          }
           diagnosis={{
             unlocked: diagnosisUnlocked,
             hasExport: hasDiagnosisExport,
@@ -567,6 +597,7 @@ export function LeadGbpPanel({
           <LeadDigitalPresencePanel
             detail={detail}
             canEdit={canEdit}
+            readingMode={readingMode}
             onAuditChange={(audit) => {
               onDigitalPresenceChange(detail.lead.id, audit)
             }}
@@ -576,8 +607,25 @@ export function LeadGbpPanel({
           <LeadVisibilityPanel
             detail={detail}
             canEdit={canEdit}
+            readingMode={readingMode}
             onAuditChange={(audit) => {
               onVisibilityChange(detail.lead.id, audit)
+            }}
+            onReviewChange={(review) => {
+              onVisibilityReviewChange(detail.lead.id, review)
+            }}
+            onPendingChange={onPendingChange}
+          />
+        ) : selectedStep === "geo" ? (
+          <LeadGeoPanel
+            detail={detail}
+            canEdit={canEdit}
+            readingMode={readingMode}
+            onAuditChange={(audit) => {
+              onGeoChange(detail.lead.id, audit)
+            }}
+            onReviewChange={(review) => {
+              onGeoReviewChange(detail.lead.id, review)
             }}
             onPendingChange={onPendingChange}
           />

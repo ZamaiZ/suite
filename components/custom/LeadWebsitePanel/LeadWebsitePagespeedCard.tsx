@@ -2,13 +2,13 @@
 
 import { useState } from "react"
 import { RiEyeLine, RiSmartphoneLine } from "react-icons/ri"
-import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import {
   STEP_TONE_CHIP,
   STEP_TONE_TEXT,
+  StepCard,
   StepMeter,
-  StepSectionLabel,
   stepScoreTone,
+  StepSectionLabel,
   type StepTone,
 } from "@/components/custom/LeadStepShell"
 import { Spinner } from "@/components/ui/spinner"
@@ -66,7 +66,7 @@ export function LeadWebsitePagespeedCard({
     : "neutral"
 
   return (
-    <LeadGbpCard title={label}>
+    <StepCard title={label}>
       <div className="flex items-end justify-between gap-3">
         <p className="flex items-baseline gap-1.5">
           <span
@@ -199,6 +199,6 @@ export function LeadWebsitePagespeedCard({
           </div>
         )}
       </div>
-    </LeadGbpCard>
+    </StepCard>
   )
 }

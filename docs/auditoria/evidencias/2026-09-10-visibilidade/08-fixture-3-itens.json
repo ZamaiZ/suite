@@ -1,0 +1,700 @@
+{
+  "total_count": 110,
+  "items_count": 3,
+  "metrics": {
+    "organic": {
+      "pos_1": 3,
+      "pos_2_3": 1,
+      "pos_4_10": 3,
+      "pos_11_20": 8,
+      "pos_21_30": 19,
+      "pos_31_40": 18,
+      "pos_41_50": 24,
+      "pos_51_60": 11,
+      "pos_61_70": 10,
+      "pos_71_80": 4,
+      "pos_81_90": 8,
+      "pos_91_100": 1,
+      "etv": 467.67999482154846,
+      "count": 110,
+      "estimated_paid_traffic_cost": 731.039975871332,
+      "is_new": 103,
+      "is_up": 4,
+      "is_down": 0,
+      "is_lost": 0,
+      "clickstream_etv": null,
+      "clickstream_gender_distribution": null,
+      "clickstream_age_distribution": null
+    },
+    "paid": null,
+    "featured_snippet": null,
+    "local_pack": {
+      "pos_1": 0,
+      "pos_2_3": 0,
+      "pos_4_10": 0,
+      "pos_11_20": 0,
+      "pos_21_30": 0,
+      "pos_31_40": 0,
+      "pos_41_50": 0,
+      "pos_51_60": 0,
+      "pos_61_70": 0,
+      "pos_71_80": 0,
+      "pos_81_90": 0,
+      "pos_91_100": 0,
+      "etv": 0,
+      "count": 0,
+      "estimated_paid_traffic_cost": 0,
+      "is_new": 0,
+      "is_up": 0,
+      "is_down": 0,
+      "is_lost": 0,
+      "clickstream_etv": null,
+      "clickstream_gender_distribution": null,
+      "clickstream_age_distribution": null
+    },
+    "ai_overview_reference": {
+      "pos_1": 0,
+      "pos_2_3": 0,
+      "pos_4_10": 0,
+      "pos_11_20": 0,
+      "pos_21_30": 0,
+      "pos_31_40": 0,
+      "pos_41_50": 0,
+      "pos_51_60": 0,
+      "pos_61_70": 0,
+      "pos_71_80": 0,
+      "pos_81_90": 0,
+      "pos_91_100": 0,
+      "etv": 0,
+      "count": 0,
+      "estimated_paid_traffic_cost": 0,
+      "is_new": 0,
+      "is_up": 0,
+      "is_down": 0,
+      "is_lost": 0,
+      "clickstream_etv": null,
+      "clickstream_gender_distribution": null,
+      "clickstream_age_distribution": null
+    }
+  },
+  "items": [
+    {
+      "se_type": "google",
+      "keyword_data": {
+        "se_type": "google",
+        "keyword": "busca organica",
+        "location_code": 2076,
+        "language_code": "pt",
+        "keyword_info": {
+          "se_type": "google",
+          "last_updated_time": "2026-08-27 15:20:48 +00:00",
+          "competition": 0.15000000596046448,
+          "competition_level": "LOW",
+          "cpc": 1.4199999570846558,
+          "search_volume": 390,
+          "low_top_of_page_bid": 0.5899999737739563,
+          "high_top_of_page_bid": 3.880000114440918,
+          "categories": [
+            10007,
+            11498,
+            13418
+          ],
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 320
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 390
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 390
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 390
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 480
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 320
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 480
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 260
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 390
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 390
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 480
+            },
+            {
+              "year": 2025,
+              "month": 8,
+              "search_volume": 480
+            }
+          ],
+          "search_volume_trend": {
+            "monthly": -18,
+            "quarterly": -18,
+            "yearly": -33
+          }
+        },
+        "keyword_info_normalized_with_bing": null,
+        "keyword_info_normalized_with_clickstream": null,
+        "clickstream_keyword_info": null,
+        "keyword_properties": {
+          "se_type": "google",
+          "core_keyword": null,
+          "synonym_clustering_algorithm": "text_processing",
+          "keyword_difficulty": 40,
+          "detected_language": "en",
+          "is_another_language": true
+        },
+        "serp_info": {
+          "se_type": "google",
+          "check_url": "https://www.google.com/search?q=busca%20organica&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "serp_item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "related_searches",
+            "images"
+          ],
+          "se_results_count": 109,
+          "last_updated_time": "2026-06-16 03:06:16 +00:00",
+          "previous_updated_time": "2026-03-30 17:38:32 +00:00"
+        },
+        "avg_backlinks_info": {
+          "se_type": "google",
+          "backlinks": 77561.703125,
+          "dofollow": 72140.3984375,
+          "referring_pages": 77555.796875,
+          "referring_domains": 42.70000076293945,
+          "referring_main_domains": 40.70000076293945,
+          "rank": 206.1999969482422,
+          "main_domain_rank": 500.1000061035156,
+          "last_updated_time": "2026-06-16 03:06:17 +00:00"
+        },
+        "search_intent_info": {
+          "se_type": "google",
+          "main_intent": "informational",
+          "foreign_intent": null,
+          "last_updated_time": "2026-04-25 20:00:26 +00:00"
+        }
+      },
+      "ranked_serp_element": {
+        "se_type": "google",
+        "serp_item": {
+          "se_type": "google",
+          "type": "organic",
+          "rank_group": 1,
+          "rank_absolute": 2,
+          "position": "left",
+          "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+          "domain": "www.buscaorganica.com.br",
+          "title": "Busca Orgânica: Crescimento para sua empresa através do ...",
+          "url": "https://www.buscaorganica.com.br/",
+          "breadcrumb": "https://www.buscaorganica.com.br",
+          "website_name": "Busca Orgânica",
+          "is_image": false,
+          "is_video": false,
+          "is_featured_snippet": false,
+          "is_malicious": false,
+          "description": "A Busca Orgânica é o local no Google aonde as empresas se posicionam sem pagar por click com o objetivo de atrair usuários compradores e público qualificado ...",
+          "pre_snippet": null,
+          "extended_snippet": null,
+          "amp_version": false,
+          "rating": null,
+          "highlighted": [
+            "Busca Orgânica"
+          ],
+          "links": [
+            {
+              "type": "link_element",
+              "title": "Orgânica",
+              "description": null,
+              "url": "https://www.buscaorganica.com.br/busca-organica"
+            },
+            {
+              "type": "link_element",
+              "title": "Contato",
+              "description": null,
+              "url": "https://www.buscaorganica.com.br/contato"
+            }
+          ],
+          "about_this_result": null,
+          "main_domain": "buscaorganica.com.br",
+          "relative_url": "/",
+          "etv": 118.55999755859375,
+          "estimated_paid_traffic_cost": 168.35519409179688,
+          "clickstream_etv": null,
+          "rank_changes": {
+            "previous_rank_absolute": 2,
+            "is_new": false,
+            "is_up": false,
+            "is_down": false
+          },
+          "backlinks_info": {
+            "referring_domains": 407,
+            "referring_main_domains": 399,
+            "referring_pages": 839929,
+            "dofollow": 780962,
+            "backlinks": 841370,
+            "time_update": "2026-08-31 01:57:13 +00:00"
+          },
+          "rank_info": {
+            "page_rank": 710,
+            "main_domain_rank": 528
+          }
+        },
+        "check_url": "https://www.google.com/search?q=busca%20organica&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+        "serp_item_types": [
+          "ai_overview",
+          "organic",
+          "people_also_ask",
+          "related_searches",
+          "images"
+        ],
+        "se_results_count": 109,
+        "keyword_difficulty": 40,
+        "is_lost": false,
+        "last_updated_time": "2026-06-16 03:06:16 +00:00",
+        "previous_updated_time": "2026-03-30 17:38:32 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword_data": {
+        "se_type": "google",
+        "keyword": "banheiro quimico preço",
+        "location_code": 2076,
+        "language_code": "pt",
+        "keyword_info": {
+          "se_type": "google",
+          "last_updated_time": "2026-08-26 17:35:56 +00:00",
+          "competition": 1,
+          "competition_level": "HIGH",
+          "cpc": 0.4099999964237213,
+          "search_volume": 1900,
+          "low_top_of_page_bid": 0.07999999821186066,
+          "high_top_of_page_bid": 0.6899999976158142,
+          "categories": [
+            10004,
+            10282,
+            12602,
+            13228,
+            13326,
+            13462
+          ],
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 2900
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 1900
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 2900
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 1900
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 1900
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 1900
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 1600
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 1300
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 1600
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 1900
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 1900
+            },
+            {
+              "year": 2025,
+              "month": 8,
+              "search_volume": 1900
+            }
+          ],
+          "search_volume_trend": {
+            "monthly": 53,
+            "quarterly": 0,
+            "yearly": 21
+          }
+        },
+        "keyword_info_normalized_with_bing": null,
+        "keyword_info_normalized_with_clickstream": null,
+        "clickstream_keyword_info": null,
+        "keyword_properties": {
+          "se_type": "google",
+          "core_keyword": null,
+          "synonym_clustering_algorithm": "text_processing",
+          "keyword_difficulty": 0,
+          "detected_language": "pt",
+          "is_another_language": false
+        },
+        "serp_info": {
+          "se_type": "google",
+          "check_url": "https://www.google.com/search?q=banheiro%20quimico%20pre%C3%A7o&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "serp_item_types": [
+            "ai_overview",
+            "organic",
+            "popular_products",
+            "people_also_ask",
+            "people_also_search",
+            "images",
+            "related_searches"
+          ],
+          "se_results_count": 172,
+          "last_updated_time": "2026-05-25 08:15:36 +00:00",
+          "previous_updated_time": "2026-03-03 10:04:36 +00:00"
+        },
+        "avg_backlinks_info": {
+          "se_type": "google",
+          "backlinks": 0.20000000298023224,
+          "dofollow": 0.20000000298023224,
+          "referring_pages": 0.20000000298023224,
+          "referring_domains": 0.10000000149011612,
+          "referring_main_domains": 0.10000000149011612,
+          "rank": 10.199999809265137,
+          "main_domain_rank": 350.20001220703125,
+          "last_updated_time": "2026-05-25 08:15:37 +00:00"
+        },
+        "search_intent_info": {
+          "se_type": "google",
+          "main_intent": "transactional",
+          "foreign_intent": [
+            "commercial"
+          ],
+          "last_updated_time": "2026-04-25 14:50:57 +00:00"
+        }
+      },
+      "ranked_serp_element": {
+        "se_type": "google",
+        "serp_item": {
+          "se_type": "google",
+          "type": "organic",
+          "rank_group": 25,
+          "rank_absolute": 35,
+          "position": "left",
+          "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]/div[1]",
+          "domain": "aprov.buscaorganica.com.br",
+          "title": "Produtos",
+          "url": "https://aprov.buscaorganica.com.br/polyban.com.br/produtos",
+          "breadcrumb": "https://aprov.buscaorganica.com.br › polyban.com.br",
+          "website_name": "Busca Orgânica",
+          "is_image": false,
+          "is_video": false,
+          "is_featured_snippet": false,
+          "is_malicious": false,
+          "description": null,
+          "pre_snippet": null,
+          "extended_snippet": null,
+          "amp_version": false,
+          "rating": null,
+          "highlighted": null,
+          "links": null,
+          "about_this_result": null,
+          "main_domain": "buscaorganica.com.br",
+          "relative_url": "/polyban.com.br/produtos",
+          "etv": 3.990000009536743,
+          "estimated_paid_traffic_cost": 1.6359000205993652,
+          "clickstream_etv": null,
+          "rank_changes": {
+            "previous_rank_absolute": null,
+            "is_new": true,
+            "is_up": false,
+            "is_down": false
+          },
+          "backlinks_info": null,
+          "rank_info": {
+            "page_rank": 0,
+            "main_domain_rank": 525
+          }
+        },
+        "check_url": "https://www.google.com/search?q=banheiro%20quimico%20pre%C3%A7o&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+        "serp_item_types": [
+          "ai_overview",
+          "organic",
+          "popular_products",
+          "people_also_ask",
+          "people_also_search",
+          "images",
+          "related_searches"
+        ],
+        "se_results_count": 172,
+        "keyword_difficulty": 0,
+        "is_lost": false,
+        "last_updated_time": "2026-05-25 08:15:36 +00:00",
+        "previous_updated_time": "2026-03-03 10:04:36 +00:00"
+      }
+    },
+    {
+      "se_type": "google",
+      "keyword_data": {
+        "se_type": "google",
+        "keyword": "consultoria de seo",
+        "location_code": 2076,
+        "language_code": "pt",
+        "keyword_info": {
+          "se_type": "google",
+          "last_updated_time": "2026-08-25 21:11:25 +00:00",
+          "competition": 0.3700000047683716,
+          "competition_level": "MEDIUM",
+          "cpc": 6.239999771118164,
+          "search_volume": 880,
+          "low_top_of_page_bid": 1.4300000667572021,
+          "high_top_of_page_bid": 5.059999942779541,
+          "categories": [
+            10004,
+            10276,
+            11088,
+            12376,
+            13152
+          ],
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 320
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 260
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 320
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 320
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 720
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 720
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 390
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 590
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 1300
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 2900
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 1300
+            },
+            {
+              "year": 2025,
+              "month": 8,
+              "search_volume": 590
+            }
+          ],
+          "search_volume_trend": {
+            "monthly": 23,
+            "quarterly": 0,
+            "yearly": -68
+          }
+        },
+        "keyword_info_normalized_with_bing": null,
+        "keyword_info_normalized_with_clickstream": null,
+        "clickstream_keyword_info": null,
+        "keyword_properties": {
+          "se_type": "google",
+          "core_keyword": null,
+          "synonym_clustering_algorithm": "text_processing",
+          "keyword_difficulty": 8,
+          "detected_language": "es",
+          "is_another_language": true
+        },
+        "serp_info": {
+          "se_type": "google",
+          "check_url": "https://www.google.com/search?q=consultoria%20de%20seo&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "serp_item_types": [
+            "ai_overview",
+            "organic",
+            "people_also_ask",
+            "video",
+            "related_searches",
+            "knowledge_graph",
+            "google_reviews",
+            "images"
+          ],
+          "se_results_count": 132,
+          "last_updated_time": "2026-05-30 05:56:36 +00:00",
+          "previous_updated_time": "2026-03-04 09:26:41 +00:00"
+        },
+        "avg_backlinks_info": {
+          "se_type": "google",
+          "backlinks": 10.699999809265137,
+          "dofollow": 7.5,
+          "referring_pages": 10.399999618530273,
+          "referring_domains": 8.100000381469727,
+          "referring_main_domains": 7.599999904632568,
+          "rank": 103.0999984741211,
+          "main_domain_rank": 358.70001220703125,
+          "last_updated_time": "2026-05-30 05:57:37 +00:00"
+        },
+        "search_intent_info": {
+          "se_type": "google",
+          "main_intent": "commercial",
+          "foreign_intent": null,
+          "last_updated_time": "2026-04-30 05:25:35 +00:00"
+        }
+      },
+      "ranked_serp_element": {
+        "se_type": "google",
+        "serp_item": {
+          "se_type": "google",
+          "type": "organic",
+          "rank_group": 8,
+          "rank_absolute": 10,
+          "position": "left",
+          "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[18]/div[1]/div[1]",
+          "domain": "www.buscaorganica.com.br",
+          "title": "Consultoria de SEO",
+          "url": "https://www.buscaorganica.com.br/consultoria-de-seo",
+          "breadcrumb": "https://www.buscaorganica.com.br › consultoria-de-seo",
+          "website_name": "Busca Orgânica",
+          "is_image": false,
+          "is_video": false,
+          "is_featured_snippet": false,
+          "is_malicious": false,
+          "description": "A consultoria de SEO certa poderá aconselhá-lo sobre as melhores maneiras de otimizar seu site para os mecanismos de pesquisa, criar conteúdo que terá uma boa ...",
+          "pre_snippet": null,
+          "extended_snippet": null,
+          "amp_version": false,
+          "rating": null,
+          "highlighted": [
+            "consultoria de SEO"
+          ],
+          "links": null,
+          "about_this_result": null,
+          "main_domain": "buscaorganica.com.br",
+          "relative_url": "/consultoria-de-seo",
+          "etv": 17.336000442504883,
+          "estimated_paid_traffic_cost": 108.17664337158203,
+          "clickstream_etv": null,
+          "rank_changes": {
+            "previous_rank_absolute": 10,
+            "is_new": false,
+            "is_up": false,
+            "is_down": false
+          },
+          "backlinks_info": {
+            "referring_domains": 8,
+            "referring_main_domains": 8,
+            "referring_pages": 9,
+            "dofollow": 9,
+            "backlinks": 9,
+            "time_update": "2026-08-31 01:53:29 +00:00"
+          },
+          "rank_info": {
+            "page_rank": 224,
+            "main_domain_rank": 526
+          }
+        },
+        "check_url": "https://www.google.com/search?q=consultoria%20de%20seo&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+        "serp_item_types": [
+          "ai_overview",
+          "organic",
+          "people_also_ask",
+          "video",
+          "related_searches",
+          "knowledge_graph",
+          "google_reviews",
+          "images"
+        ],
+        "se_results_count": 132,
+        "keyword_difficulty": 8,
+        "is_lost": false,
+        "last_updated_time": "2026-05-30 05:56:36 +00:00",
+        "previous_updated_time": "2026-03-04 09:26:41 +00:00"
+      }
+    }
+  ]
+}

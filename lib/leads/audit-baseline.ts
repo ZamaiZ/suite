@@ -16,6 +16,7 @@ type SupabaseClient = Awaited<ReturnType<typeof createClient>>
 export type AuditBaseline = {
   websiteAuditId: string | null
   visibilityAuditId: string | null
+  geoAuditId: string | null
   backlinkAuditId: string | null
   gbpSnapshotId: string | null
 }
@@ -24,6 +25,7 @@ export function emptyAuditBaseline(): AuditBaseline {
   return {
     websiteAuditId: null,
     visibilityAuditId: null,
+    geoAuditId: null,
     backlinkAuditId: null,
     gbpSnapshotId: null,
   }
@@ -36,7 +38,7 @@ export async function resolveAuditBaseline(
 ): Promise<AuditBaseline> {
   if (!baselineAt) return emptyAuditBaseline()
 
-  const [website, visibility, backlinks, profiles] = await Promise.all([
+  const [website, visibility, geo, backlinks, profiles] = await Promise.all([
     supabase
       .from("lead_website_audits")
       .select("id")
@@ -47,6 +49,14 @@ export async function resolveAuditBaseline(
       .maybeSingle(),
     supabase
       .from("lead_visibility_audits")
+      .select("id")
+      .eq("lead_id", leadId)
+      .lte("fetched_at", baselineAt)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    supabase
+      .from("lead_geo_audits")
       .select("id")
       .eq("lead_id", leadId)
       .lte("fetched_at", baselineAt)
@@ -89,6 +99,7 @@ export async function resolveAuditBaseline(
       typeof website.data?.id === "string" ? website.data.id : null,
     visibilityAuditId:
       typeof visibility.data?.id === "string" ? visibility.data.id : null,
+    geoAuditId: typeof geo.data?.id === "string" ? geo.data.id : null,
     backlinkAuditId:
       typeof backlinks.data?.id === "string" ? backlinks.data.id : null,
     gbpSnapshotId,

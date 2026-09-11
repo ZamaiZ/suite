@@ -1,0 +1,212 @@
+{
+  "se_type": "google",
+  "keyword_data": {
+    "se_type": "google",
+    "keyword": "busca organica",
+    "location_code": 2076,
+    "language_code": "pt",
+    "keyword_info": {
+      "se_type": "google",
+      "last_updated_time": "2026-08-27 15:20:48 +00:00",
+      "competition": 0.15000000596046448,
+      "competition_level": "LOW",
+      "cpc": 1.4199999570846558,
+      "search_volume": 390,
+      "low_top_of_page_bid": 0.5899999737739563,
+      "high_top_of_page_bid": 3.880000114440918,
+      "categories": [
+        10007,
+        11498,
+        13418
+      ],
+      "monthly_searches": [
+        {
+          "year": 2026,
+          "month": 7,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 6,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 5,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 4,
+          "search_volume": 390
+        },
+        {
+          "year": 2026,
+          "month": 3,
+          "search_volume": 480
+        },
+        {
+          "year": 2026,
+          "month": 2,
+          "search_volume": 320
+        },
+        {
+          "year": 2026,
+          "month": 1,
+          "search_volume": 480
+        },
+        {
+          "year": 2025,
+          "month": 12,
+          "search_volume": 260
+        },
+        {
+          "year": 2025,
+          "month": 11,
+          "search_volume": 390
+        },
+        {
+          "year": 2025,
+          "month": 10,
+          "search_volume": 390
+        },
+        {
+          "year": 2025,
+          "month": 9,
+          "search_volume": 480
+        },
+        {
+          "year": 2025,
+          "month": 8,
+          "search_volume": 480
+        }
+      ],
+      "search_volume_trend": {
+        "monthly": -18,
+        "quarterly": -18,
+        "yearly": -33
+      }
+    },
+    "keyword_info_normalized_with_bing": null,
+    "keyword_info_normalized_with_clickstream": null,
+    "clickstream_keyword_info": null,
+    "keyword_properties": {
+      "se_type": "google",
+      "core_keyword": null,
+      "synonym_clustering_algorithm": "text_processing",
+      "keyword_difficulty": 40,
+      "detected_language": "en",
+      "is_another_language": true
+    },
+    "serp_info": {
+      "se_type": "google",
+      "check_url": "https://www.google.com/search?q=busca%20organica&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+      "serp_item_types": [
+        "ai_overview",
+        "organic",
+        "people_also_ask",
+        "related_searches",
+        "images"
+      ],
+      "se_results_count": 109,
+      "last_updated_time": "2026-06-16 03:06:16 +00:00",
+      "previous_updated_time": "2026-03-30 17:38:32 +00:00"
+    },
+    "avg_backlinks_info": {
+      "se_type": "google",
+      "backlinks": 77561.703125,
+      "dofollow": 72140.3984375,
+      "referring_pages": 77555.796875,
+      "referring_domains": 42.70000076293945,
+      "referring_main_domains": 40.70000076293945,
+      "rank": 206.1999969482422,
+      "main_domain_rank": 500.1000061035156,
+      "last_updated_time": "2026-06-16 03:06:17 +00:00"
+    },
+    "search_intent_info": {
+      "se_type": "google",
+      "main_intent": "informational",
+      "foreign_intent": null,
+      "last_updated_time": "2026-04-25 20:00:26 +00:00"
+    }
+  },
+  "ranked_serp_element": {
+    "se_type": "google",
+    "serp_item": {
+      "se_type": "google",
+      "type": "organic",
+      "rank_group": 1,
+      "rank_absolute": 2,
+      "position": "left",
+      "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]",
+      "domain": "www.buscaorganica.com.br",
+      "title": "Busca Orgânica: Crescimento para sua empresa através do ...",
+      "url": "https://www.buscaorganica.com.br/",
+      "breadcrumb": "https://www.buscaorganica.com.br",
+      "website_name": "Busca Orgânica",
+      "is_image": false,
+      "is_video": false,
+      "is_featured_snippet": false,
+      "is_malicious": false,
+      "description": "A Busca Orgânica é o local no Google aonde as empresas se posicionam sem pagar por click com o objetivo de atrair usuários compradores e público qualificado ...",
+      "pre_snippet": null,
+      "extended_snippet": null,
+      "amp_version": false,
+      "rating": null,
+      "highlighted": [
+        "Busca Orgânica"
+      ],
+      "links": [
+        {
+          "type": "link_element",
+          "title": "Orgânica",
+          "description": null,
+          "url": "https://www.buscaorganica.com.br/busca-organica"
+        },
+        {
+          "type": "link_element",
+          "title": "Contato",
+          "description": null,
+          "url": "https://www.buscaorganica.com.br/contato"
+        }
+      ],
+      "about_this_result": null,
+      "main_domain": "buscaorganica.com.br",
+      "relative_url": "/",
+      "etv": 118.55999755859375,
+      "estimated_paid_traffic_cost": 168.35519409179688,
+      "clickstream_etv": null,
+      "rank_changes": {
+        "previous_rank_absolute": 2,
+        "is_new": false,
+        "is_up": false,
+        "is_down": false
+      },
+      "backlinks_info": {
+        "referring_domains": 407,
+        "referring_main_domains": 399,
+        "referring_pages": 839929,
+        "dofollow": 780962,
+        "backlinks": 841370,
+        "time_update": "2026-08-31 01:57:13 +00:00"
+      },
+      "rank_info": {
+        "page_rank": 710,
+        "main_domain_rank": 528
+      }
+    },
+    "check_url": "https://www.google.com/search?q=busca%20organica&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+    "serp_item_types": [
+      "ai_overview",
+      "organic",
+      "people_also_ask",
+      "related_searches",
+      "images"
+    ],
+    "se_results_count": 109,
+    "keyword_difficulty": 40,
+    "is_lost": false,
+    "last_updated_time": "2026-06-16 03:06:16 +00:00",
+    "previous_updated_time": "2026-03-30 17:38:32 +00:00"
+  }
+}

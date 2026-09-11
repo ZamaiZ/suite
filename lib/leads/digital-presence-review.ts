@@ -2,6 +2,8 @@ import { isCivilDate } from "../civil-date.ts"
 
 export const DIGITAL_PRESENCE_REVIEW_NOTE_MAX = 400
 export const DIGITAL_PRESENCE_FOLLOWERS_MAX = 1_000_000_000
+/** Mesmo teto de GBP (`GBP_NOTES_MAX`) e Website (`WEBSITE_NOTES_MAX`). */
+export const DIGITAL_PRESENCE_NOTES_MAX = 2000
 
 export type DigitalPresenceIdentityVerdict = "ok" | "issue"
 
@@ -23,6 +25,13 @@ export type DigitalPresenceNetworkAnswer = {
 export type DigitalPresenceReview = {
   identity: DigitalPresenceIdentityAnswer
   networks: Record<string, DigitalPresenceNetworkAnswer>
+  /**
+   * Campo livre do analista sobre a etapa inteira. Fora de
+   * `isDigitalPresenceComplete` de propósito: contexto não é resposta, e a
+   * completude é o portão do compilador do diagnóstico. Um campo em branco não
+   * pode travar a compilação do documento.
+   */
+  notes: string
 }
 
 export const DIGITAL_PRESENCE_IDENTITY_VERDICT_LABEL: Record<
@@ -63,6 +72,7 @@ export function emptyDigitalPresenceReview(): DigitalPresenceReview {
   return {
     identity: emptyIdentity(),
     networks: {},
+    notes: "",
   }
 }
 
@@ -77,11 +87,15 @@ function objectRecord(value: unknown): Record<string, unknown> | null {
   return value as Record<string, unknown>
 }
 
-function readNote(value: unknown): string {
+function readText(value: unknown, max: number): string {
   if (typeof value !== "string") return ""
   const trimmed = value.trim()
-  if (trimmed.length <= DIGITAL_PRESENCE_REVIEW_NOTE_MAX) return trimmed
-  return trimmed.slice(0, DIGITAL_PRESENCE_REVIEW_NOTE_MAX)
+  if (trimmed.length <= max) return trimmed
+  return trimmed.slice(0, max)
+}
+
+function readNote(value: unknown): string {
+  return readText(value, DIGITAL_PRESENCE_REVIEW_NOTE_MAX)
 }
 
 function readIdentityVerdict(
@@ -179,6 +193,8 @@ export function readDigitalPresenceReview(
     }
   }
 
+  review.notes = readText(row.notes, DIGITAL_PRESENCE_NOTES_MAX)
+
   return review
 }
 
@@ -203,6 +219,7 @@ export function digitalPresenceReviewDraft(
       updatedBy: null,
     },
     networks,
+    notes: review.notes,
   }
 }
 
@@ -230,6 +247,7 @@ export function serializeDigitalPresenceReviewDraft(
       note: review.identity.note,
     },
     networks,
+    notes: review.notes,
   })
 }
 
@@ -256,6 +274,7 @@ export function stampDigitalPresenceReview(
       updatedBy: userId,
     },
     networks,
+    notes: review.notes,
   }
 }
 
@@ -269,7 +288,9 @@ export function pruneDigitalPresenceNetworks(
     if (!allowed.has(channelId)) continue
     networks[channelId] = answer
   }
-  return { identity: review.identity, networks }
+  // `notes` viaja: podar rede não pode apagar o texto do analista, e esta
+  // função roda em todo salvamento, dentro da server action.
+  return { identity: review.identity, networks, notes: review.notes }
 }
 
 export function digitalPresenceIdentityOpportunityId(): string {

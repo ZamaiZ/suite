@@ -20,6 +20,8 @@ export function parseRobotsSitemaps(text: string): string[] {
 export function extractSitemapLocs(xml: string): {
   kind: "urlset" | "index" | "unknown"
   locs: string[]
+  /** `lastmod` mais recente do arquivo; `null` quando nenhuma URL declara. */
+  lastmod: string | null
 } {
   const isIndex = /<sitemapindex[\s>]/i.test(xml)
   const isUrlset = /<urlset[\s>]/i.test(xml)
@@ -33,9 +35,27 @@ export function extractSitemapLocs(xml: string): {
     seen.add(loc)
     locs.push(loc)
   }
+
+  // A data mais recente do arquivo inteiro. Serve de sinal de frescor do site
+  // quando a home nao declara data nenhuma no JSON-LD — que e o caso comum em
+  // site institucional sem blog.
+  let lastmod: string | null = null
+  let lastmodAt = Number.NEGATIVE_INFINITY
+  const lastmodPattern = /<lastmod>\s*([^<]+)\s*<\/lastmod>/gi
+  let lastmodMatch: RegExpExecArray | null
+  while ((lastmodMatch = lastmodPattern.exec(xml))) {
+    const value = lastmodMatch[1]?.trim()
+    if (!value) continue
+    const parsed = Date.parse(value)
+    if (!Number.isFinite(parsed) || parsed <= lastmodAt) continue
+    lastmodAt = parsed
+    lastmod = value
+  }
+
   return {
     kind: isIndex ? "index" : isUrlset ? "urlset" : "unknown",
     locs,
+    lastmod,
   }
 }
 
@@ -67,6 +87,7 @@ export function sitemapSnapshotFromSample(
   found: boolean,
   urlCount: number,
   sample: WebsiteSitemapSampleStatus[],
+  lastmod: string | null = null,
 ): WebsiteSitemapSnapshot {
   const sampleNotFound = sample.filter(
     (item) => item.status !== null && item.status >= 400,
@@ -77,5 +98,6 @@ export function sitemapSnapshotFromSample(
     sampleChecked: sample.length,
     sampleNotFound,
     sampleStatuses: sample,
+    lastmod,
   }
 }

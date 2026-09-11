@@ -8,8 +8,11 @@ import {
   RiErrorWarningLine,
   RiTimeLine,
 } from "react-icons/ri"
-import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
-import { StepMeter, stepShareTone } from "@/components/custom/LeadStepShell"
+import {
+  StepCard,
+  StepMeter,
+  stepShareTone,
+} from "@/components/custom/LeadStepShell"
 import { cn } from "cn"
 import {
   websiteCheckGroups,
@@ -88,7 +91,7 @@ export function LeadWebsiteAuditCard({
   const listId = `website-audit-${section.id}-approved`
 
   return (
-    <LeadGbpCard title={section.title}>
+    <StepCard title={section.title}>
       <div className="-mt-1 mb-2.5">
         <div className="flex items-baseline justify-between gap-2">
           <span className="text-[11px] text-muted-foreground">aprovados</span>
@@ -152,6 +155,6 @@ export function LeadWebsiteAuditCard({
           </div>
         </>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

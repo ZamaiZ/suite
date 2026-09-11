@@ -3,6 +3,7 @@ export const DIAGNOSIS_PILLARS = [
   "website",
   "presence",
   "visibility",
+  "geo",
 ] as const
 
 export type DiagnosisPillar = (typeof DIAGNOSIS_PILLARS)[number]
@@ -12,6 +13,7 @@ export const DIAGNOSIS_PILLAR_LABELS: Record<DiagnosisPillar, string> = {
   website: "Website",
   presence: "Presença digital",
   visibility: "Visibilidade",
+  geo: "Presença em IA",
 }
 
 export type DiagnosisImpact = "high" | "medium"
@@ -42,6 +44,18 @@ export type DiagnosisPillarScore = {
   score: number
   highCount: number
   mediumCount: number
+  /**
+   * Pilar sem coleta não pontua 100.
+   *
+   * `emptyPillarScore()` devolvia `score: 100`, e um pilar vazio afirmava
+   * perfeição. Enquanto os quatro pilares originais eram sempre medidos — o
+   * Diagnóstico só destrava com as quatro etapas prontas — o defeito ficava
+   * latente. Com um quinto pilar e documentos já salvos que não têm a chave
+   * `geo`, ele passa a aparecer no relatório do cliente: `readFacts` resolve
+   * pilar ausente com `emptyPillarScore()`, e o lead ganharia nota cheia numa
+   * dimensão que ninguém mediu.
+   */
+  measured: boolean
 }
 
 export type DiagnosisFinding = {
@@ -134,7 +148,7 @@ export const DIAGNOSIS_PROSE_MAX = 2000
 export const DIAGNOSIS_HOOK_MAX = 400
 
 export function emptyPillarScore(): DiagnosisPillarScore {
-  return { score: 100, highCount: 0, mediumCount: 0 }
+  return { score: 0, highCount: 0, mediumCount: 0, measured: false }
 }
 
 export function emptyPillarFacts(): DiagnosisPillarFacts {
@@ -150,6 +164,7 @@ export function emptyDiagnosisProse(): DiagnosisProse {
       website: "",
       presence: "",
       visibility: "",
+      geo: "",
     },
   }
 }
@@ -168,6 +183,8 @@ export function scorePillarOpportunities(
     score: Math.max(0, Math.min(100, raw)),
     highCount,
     mediumCount,
+    // Quem chega aqui tem coleta: a lista de oportunidades saiu de um snapshot.
+    measured: true,
   }
 }
 
@@ -197,6 +214,12 @@ export function diagnosisFactsFingerprint(input: {
   /** Backlinks tem cadência própria: sem ele aqui, recoletar não marca o
    * rascunho como desatualizado e a tela segue exibindo autoridade antiga. */
   backlinksFetchedAt: string | null
+  /**
+   * Rascunho compilado antes desta entrega vira "desatualizado" ao entrar este
+   * campo, e isso **nao se mitiga**: aquele documento genuinamente nao tem o
+   * pilar de Presenca em IA. O stale esta certo.
+   */
+  geoFetchedAt: string | null
 }): string {
   return [
     `v${DIAGNOSIS_RULES_VERSION}`,
@@ -207,5 +230,6 @@ export function diagnosisFactsFingerprint(input: {
     input.presenceUpdatedAt ?? "",
     input.visibilityFetchedAt ?? "",
     input.backlinksFetchedAt ?? "",
+    input.geoFetchedAt ?? "",
   ].join("|")
 }

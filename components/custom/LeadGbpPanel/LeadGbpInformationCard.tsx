@@ -12,7 +12,7 @@ import {
   RiStackLine,
   RiTimeLine,
 } from "react-icons/ri"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import { LeadIconWell } from "@/components/custom/LeadDetailDialog/LeadIconWell"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
 import { cn } from "cn"
@@ -105,7 +105,7 @@ export function LeadGbpInformationCard({
   const statusLabel = gbpBusinessStatusLabel(snapshot.businessStatus)
 
   return (
-    <LeadGbpCard title="Informações do perfil">
+    <StepCard title="Informações do perfil">
       <div className="grid grid-cols-1 gap-x-5 md:grid-cols-2">
         <FieldRow icon={RiBuilding4Line} label="Categoria principal">
           {category ?? "—"}
@@ -238,6 +238,6 @@ export function LeadGbpInformationCard({
           )}
         </div>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

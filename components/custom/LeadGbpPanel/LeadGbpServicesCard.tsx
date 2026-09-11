@@ -1,4 +1,4 @@
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
 
 /**
@@ -13,7 +13,7 @@ export function LeadGbpServicesCard({
   const services = profile.enrichment?.services ?? []
 
   return (
-    <LeadGbpCard title="Serviços" className="h-full">
+    <StepCard title="Serviços" className="h-full">
       {services.length === 0 ? (
         <p className="text-xs/relaxed text-muted-foreground">
           Nenhum serviço declarado no perfil.
@@ -37,6 +37,6 @@ export function LeadGbpServicesCard({
           </ul>
         </>
       )}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

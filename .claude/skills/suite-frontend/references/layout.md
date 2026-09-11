@@ -26,7 +26,7 @@ toolbar fixa                    busca, filtros, limpar
 Coluna é escopo, cartão é registro. A toolbar não rola com o conteúdo — filtro fora de vista é filtro esquecido. Busca é `InputGroup`; escopo, segmento e tag sem busca são `Select`; cidade e qualquer filtro pesquisável são `Combobox`; limpar é `Button variant="ghost"`.
 
 ### Painel de trabalho
-Referência: `components/custom/LeadGbpPanel` (etapa Perfil no Google) e `components/custom/LeadWebsitePanel` (etapa Website). Os dois montam a mesma coisa a partir de `components/custom/LeadStepShell`.
+Referência: `components/custom/LeadGbpPanel` (etapa Perfil no Google), `components/custom/LeadWebsitePanel` (etapa Website), `components/custom/LeadDigitalPresencePanel` (etapa Presença digital) e `components/custom/LeadVisibilityPanel` (etapa Visibilidade). As quatro montam a mesma coisa a partir de `components/custom/LeadStepShell`.
 
 ```
 grid-cols-[minmax(0,1fr)_var(--rail-w)]

@@ -14,8 +14,8 @@ import {
   analyzeLeadBacklinks,
   type LeadBacklinkAudit,
 } from "@/app/actions/leads"
-import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
 import {
+  StepCard,
   StepCountCell,
   StepMeter,
   StepSectionLabel,
@@ -133,7 +133,7 @@ export function LeadWebsiteAuthorityProfile({
   }
 
   return (
-    <LeadGbpCard title="Perfil do domínio">
+    <StepCard title="Perfil do domínio">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="inline-flex items-center gap-1.5 text-xs/relaxed text-muted-foreground">
           <RiLinksLine size={14} aria-hidden />
@@ -196,7 +196,7 @@ export function LeadWebsiteAuthorityProfile({
           {error}
         </p>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }
 
@@ -213,7 +213,7 @@ export function LeadWebsiteAuthorityComposition({
       : Math.round(backlinks * metrics.dofollowShare)
 
   return (
-    <LeadGbpCard title="Composição">
+    <StepCard title="Composição">
       <div className="flex flex-col gap-4">
         {dofollow !== null && backlinks !== null ? (
           <div>
@@ -275,7 +275,7 @@ export function LeadWebsiteAuthorityComposition({
           </div>
         ) : null}
       </div>
-    </LeadGbpCard>
+    </StepCard>
   )
 }
 
@@ -314,7 +314,7 @@ export function LeadWebsiteAuthorityRisk({
     scheme && scheme.sampled > 0 ? scheme.spammyDomains / scheme.sampled : 0
 
   return (
-    <LeadGbpCard
+    <StepCard
       title="Risco"
       className={cn(hasRisk && "border-warning/25 bg-warning/[0.05]")}
     >
@@ -498,7 +498,7 @@ export function LeadWebsiteAuthorityRisk({
         A pontuação é do provider e diz “parece”, não “é”. Abrir a página é o que
         decide.
       </p>
-    </LeadGbpCard>
+    </StepCard>
   )
 }
 
@@ -529,7 +529,7 @@ export function LeadWebsiteAuthorityMarket({
     : null
 
   return (
-    <LeadGbpCard title="Mercado">
+    <StepCard title="Mercado">
       <p className="text-xs/relaxed text-muted-foreground">
         Quem divide os mesmos domínios de referência.
       </p>
@@ -604,6 +604,6 @@ export function LeadWebsiteAuthorityMarket({
           Mediana do conjunto: {median.toLocaleString("pt-BR")} domínios.
         </p>
       ) : null}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

@@ -9,6 +9,7 @@ import {
   RiGlobalLine,
   RiGroupLine,
   RiMapPin2Line,
+  RiSparkling2Line,
 } from "react-icons/ri"
 import { LeadGbpAuditStep } from "./LeadGbpAuditStep"
 import { cn } from "cn"
@@ -20,6 +21,7 @@ import {
   type GbpAuditRailWebsite,
   type GbpAuditRailDigitalPresence,
   type GbpAuditRailVisibility,
+  type GbpAuditRailGeo,
   type GbpAuditRailDiagnosis,
 } from "@/lib/leads/gbp-audit-rail"
 import type { LeadGbpProfile } from "@/lib/leads/gbp"
@@ -48,6 +50,7 @@ const STEP_ICONS: Record<string, IconType> = {
   website: RiGlobalLine,
   "digital-presence": RiGroupLine,
   visibility: RiBarChartBoxLine,
+  geo: RiSparkling2Line,
   diagnosis: RiFileList3Line,
 }
 
@@ -56,6 +59,7 @@ export function LeadGbpAuditRail({
   website,
   digitalPresence,
   visibility,
+  geo,
   diagnosis,
   selectedStep,
   googleAlertCount = 0,
@@ -67,6 +71,7 @@ export function LeadGbpAuditRail({
   website: GbpAuditRailWebsite
   digitalPresence?: GbpAuditRailDigitalPresence
   visibility?: GbpAuditRailVisibility
+  geo?: GbpAuditRailGeo
   diagnosis?: GbpAuditRailDiagnosis
   selectedStep: GbpAuditRailStepId
   googleAlertCount?: number
@@ -85,6 +90,7 @@ export function LeadGbpAuditRail({
     website,
     digitalPresence: digitalPresence ?? null,
     visibility: visibility ?? null,
+    geo: geo ?? null,
     diagnosis: diagnosis ?? null,
     selectedStep,
     googleAlertCount,

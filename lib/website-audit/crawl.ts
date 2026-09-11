@@ -170,7 +170,7 @@ async function fetchPage(
 async function collectSitemapUrls(
   start: URL,
   robotsSitemaps: string[],
-): Promise<{ found: boolean; urls: string[] }> {
+): Promise<{ found: boolean; urls: string[]; lastmod: string | null }> {
   const seeds =
     robotsSitemaps.length > 0
       ? robotsSitemaps
@@ -180,6 +180,11 @@ async function collectSitemapUrls(
   const seenFile = new Set<string>()
   let files = 0
   let found = false
+  // O mais recente entre todos os arquivos visitados, inclusive o indice: um
+  // sitemap index declara `lastmod` por sitemap filho, e essa e a data util
+  // quando os filhos nao declaram nada.
+  let lastmod: string | null = null
+  let lastmodAt = Number.NEGATIVE_INFINITY
 
   while (queue.length > 0 && files < WEBSITE_MAX_SITEMAP_FILES) {
     const file = queue.shift()
@@ -191,6 +196,13 @@ async function collectSitemapUrls(
     const parsed = extractSitemapLocs(fetched.body)
     if (parsed.locs.length === 0) continue
     found = true
+    if (parsed.lastmod) {
+      const at = Date.parse(parsed.lastmod)
+      if (Number.isFinite(at) && at > lastmodAt) {
+        lastmodAt = at
+        lastmod = parsed.lastmod
+      }
+    }
     if (parsed.kind === "index") {
       for (const loc of parsed.locs) {
         if (queue.length + files >= WEBSITE_MAX_SITEMAP_FILES) break
@@ -201,7 +213,7 @@ async function collectSitemapUrls(
     urls.push(...parsed.locs)
   }
 
-  return { found, urls }
+  return { found, urls, lastmod }
 }
 
 /**
@@ -307,6 +319,7 @@ export async function crawlWebsite(
         collected.found,
         collected.urls.length,
         sampleRows,
+        collected.lastmod,
       ),
       signals,
       llmsTxt: {

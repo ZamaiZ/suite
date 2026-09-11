@@ -12,6 +12,7 @@ import {
   digitalPresenceGapsForAudit,
   type DigitalPresenceGapId,
 } from "./digital-presence.ts"
+import type { DigitalPresenceStepTabId } from "./digital-presence-step-tabs.ts"
 import type { WebsiteCrawlSignals } from "./website-audit.ts"
 
 export type DigitalPresenceOpportunityImpact = "high" | "medium"
@@ -132,4 +133,51 @@ export function mergeDigitalPresenceOpportunities(input: {
     return 0
   })
   return items
+}
+
+/**
+ * A oportunidade mora na aba onde o analista a vê. Alinhamento e cadência têm
+ * chip no card da rede, então são de `redes`; `social_on_site_unregistered` é
+ * de `site` porque essa rede **não tem card** — ela só existe na lista do site.
+ */
+const THEME_BY_PREFIX: ReadonlyArray<
+  readonly [string, DigitalPresenceStepTabId]
+> = [
+  ["stale_social_posts:", "redes"],
+  ["social_not_linked_on_site:", "redes"],
+  ["social_handle_mismatch:", "redes"],
+  ["social_on_site_unregistered:", "site"],
+]
+
+export function digitalPresenceOpportunityTheme(
+  id: string,
+): DigitalPresenceStepTabId {
+  for (const [prefix, theme] of THEME_BY_PREFIX) {
+    if (id.startsWith(prefix)) return theme
+  }
+  // Os ids de gap são literais de template, então `tsc` não consegue exigir
+  // exaustividade como faz no `Record` do Website. Cair em "site" mantém o item
+  // visível na coluna em vez de sumir do agrupamento.
+  return "site"
+}
+
+const EMPTY_BY_THEME = (): Record<
+  DigitalPresenceStepTabId,
+  DigitalPresenceOpportunityItem[]
+> => ({
+  redes: [],
+  site: [],
+})
+
+/**
+ * Reduce sobre a lista recebida: a soma dos grupos é a lista, por construção.
+ * Nenhum item pode sumir entre o contador da aba e o grupo da coluna.
+ */
+export function digitalPresenceOpportunitiesByTheme(
+  items: ReadonlyArray<DigitalPresenceOpportunityItem>,
+): Record<DigitalPresenceStepTabId, DigitalPresenceOpportunityItem[]> {
+  return items.reduce((acc, item) => {
+    acc[digitalPresenceOpportunityTheme(item.id)].push(item)
+    return acc
+  }, EMPTY_BY_THEME())
 }

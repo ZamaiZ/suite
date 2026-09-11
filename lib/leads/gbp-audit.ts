@@ -1,4 +1,13 @@
 /**
+ * Reexportado, não redefinido: o parser saiu daqui para `lib/dataforseo/time.ts`
+ * quando a visibilidade passou a precisar dele. Os chamadores deste módulo
+ * continuam valendo.
+ */
+import { dataForSeoTimeToIso } from "../dataforseo/time.ts"
+
+export { dataForSeoTimeToIso }
+
+/**
  * Amostra de avaliações. Subiu de 50 para 200 porque frequência, rajada e média
  * por janela ficavam limitadas ao recorte que coubesse — num perfil ativo, 50
  * cobrem poucas semanas. Custa US$ 0,00075 por 10.
@@ -131,18 +140,6 @@ function asImageUrl(value: unknown): string | null {
   if (direct) return direct
   if (!Array.isArray(value)) return null
   return asString(value[0])
-}
-
-export function dataForSeoTimeToIso(value: unknown): string | null {
-  if (typeof value !== "string") return null
-  const trimmed = value.trim()
-  if (!trimmed) return null
-  const normalized = trimmed.includes("T")
-    ? trimmed
-    : trimmed.replace(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) /, "$1T$2")
-  const ms = Date.parse(normalized)
-  if (!Number.isFinite(ms)) return null
-  return new Date(ms).toISOString()
 }
 
 export function isGbpOwnerAnswer(input: {

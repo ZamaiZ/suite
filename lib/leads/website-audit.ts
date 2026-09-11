@@ -156,6 +156,22 @@ export type WebsiteSitemapSampleStatus = {
   status: number | null
 }
 
+/**
+ * Datas declaradas no JSON-LD da pagina.
+ *
+ * `null` no lugar do objeto inteiro significa **crawl anterior a este campo** —
+ * nao "pagina sem data". Confundir os dois faria todo snapshot ja gravado
+ * ganhar um gap de frescor que nunca foi medido, que e o mesmo argumento de
+ * `redirects` logo abaixo.
+ *
+ * O parser lia os `@type` do JSON-LD e descartava os valores; estas duas sao a
+ * materia-prima do sinal de frescor que a etapa de Presenca em IA precisa.
+ */
+export type WebsiteSchemaDates = {
+  published: string | null
+  modified: string | null
+}
+
 export type WebsitePageSnapshot = {
   url: string
   status: number
@@ -186,6 +202,8 @@ export type WebsitePageSnapshot = {
    * antigo passar no teste sem ter sido medido.
    */
   redirects: WebsiteRedirectHop[] | null
+  /** `null` = crawl anterior a extracao de datas. Ver `WebsiteSchemaDates`. */
+  schemaDates: WebsiteSchemaDates | null
 }
 
 export type WebsiteCrawlSocialUrls = Record<SocialChannelType, string | null>
@@ -265,6 +283,12 @@ export type WebsiteSitemapSnapshot = {
   sampleChecked: number
   sampleNotFound: number
   sampleStatuses: WebsiteSitemapSampleStatus[]
+  /**
+   * `lastmod` mais recente do arquivo. `null` = crawl anterior a este campo,
+   * ou sitemap que nao declara data em nenhuma URL — os dois calam, porque
+   * nenhum dos dois autoriza afirmar que o site esta parado.
+   */
+  lastmod: string | null
 }
 
 export type WebsiteCrawl = {
@@ -555,6 +579,21 @@ function readPage(value: unknown): WebsitePageSnapshot | null {
     headers: readSecurityHeaders(row.headers),
     indexable,
     redirects: readRedirects(row.redirects),
+    schemaDates: readSchemaDates(row.schemaDates),
+  }
+}
+
+/**
+ * Ausente devolve `null`, nao um objeto com os dois campos nulos: a diferenca
+ * entre "nao coletamos" e "coletamos e a pagina nao declara" e o unico jeito de
+ * a regra de frescor calar em vez de acusar snapshot antigo.
+ */
+function readSchemaDates(value: unknown): WebsiteSchemaDates | null {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return null
+  const row = value as Record<string, unknown>
+  return {
+    published: asString(row.published),
+    modified: asString(row.modified),
   }
 }
 
@@ -710,6 +749,7 @@ function readSitemap(value: unknown): WebsiteSitemapSnapshot | null {
     sampleChecked,
     sampleNotFound,
     sampleStatuses,
+    lastmod: asString(row.lastmod),
   }
 }
 

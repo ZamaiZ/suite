@@ -1,0 +1,1392 @@
+[
+  {
+    "keyword": "busca organica",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": 1.4199999570846558,
+    "kd_ranked": 40,
+    "kd_bulk": 40,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.684,
+    "secondary": []
+  },
+  {
+    "keyword": "busca orgânica",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": 1.4199999570846558,
+    "kd_ranked": 44,
+    "kd_bulk": 44,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.5206,
+    "secondary": [
+      "navigational:0.3521"
+    ]
+  },
+  {
+    "keyword": "primeira pagina do google",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 3.069999933242798,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.9092,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro químicos",
+    "volume": 18100,
+    "competition_level": "HIGH",
+    "cpc": 0.550000011920929,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.3758,
+    "secondary": [
+      "commercial:0.2533",
+      "informational:0.2324"
+    ]
+  },
+  {
+    "keyword": "consultoria de seo",
+    "volume": 880,
+    "competition_level": "MEDIUM",
+    "cpc": 6.239999771118164,
+    "kd_ranked": 8,
+    "kd_bulk": 2,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.966,
+    "secondary": []
+  },
+  {
+    "keyword": "pallets de paulla",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.4300000071525574,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.603,
+    "secondary": []
+  },
+  {
+    "keyword": "sanitarios",
+    "volume": 5400,
+    "competition_level": "HIGH",
+    "cpc": 0.17000000178813934,
+    "kd_ranked": 10,
+    "kd_bulk": 10,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.8556,
+    "secondary": []
+  },
+  {
+    "keyword": "google primeira pagina",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 3.069999933242798,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.9586,
+    "secondary": []
+  },
+  {
+    "keyword": "sav furacão",
+    "volume": 2900,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.93,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro quimico preço",
+    "volume": 1900,
+    "competition_level": "HIGH",
+    "cpc": 0.4099999964237213,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.7866,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro quimico comprar",
+    "volume": 880,
+    "competition_level": "HIGH",
+    "cpc": 0.36000001430511475,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9998,
+    "secondary": []
+  },
+  {
+    "keyword": "benficar distribuidora de auto peças eletricas",
+    "volume": 1600,
+    "competition_level": "LOW",
+    "cpc": 0.1899999976158142,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.7476,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiros químicos comprar",
+    "volume": 880,
+    "competition_level": "HIGH",
+    "cpc": 0.36000001430511475,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9996,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro quimico valor",
+    "volume": 1300,
+    "competition_level": "HIGH",
+    "cpc": 0.4099999964237213,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.4684,
+    "secondary": [
+      "commercial:0.3684"
+    ]
+  },
+  {
+    "keyword": "produtos para banheiro quimico",
+    "volume": 480,
+    "competition_level": "HIGH",
+    "cpc": 0.14000000059604645,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5473,
+    "secondary": [
+      "transactional:0.3616"
+    ]
+  },
+  {
+    "keyword": "sondarello",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.6200000047683716,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.5656,
+    "secondary": []
+  },
+  {
+    "keyword": "martinrea honsel brasil",
+    "volume": 880,
+    "competition_level": "LOW",
+    "cpc": 0.23000000417232513,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.5197,
+    "secondary": [
+      "transactional:0.2825"
+    ]
+  },
+  {
+    "keyword": "o'que e sondagem",
+    "volume": 880,
+    "competition_level": "LOW",
+    "cpc": 0.9700000286102295,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9998,
+    "secondary": []
+  },
+  {
+    "keyword": "o'que é sondagem",
+    "volume": 880,
+    "competition_level": "LOW",
+    "cpc": 0.9700000286102295,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 1,
+    "secondary": []
+  },
+  {
+    "keyword": "omr componentes automotivos",
+    "volume": 880,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5975,
+    "secondary": [
+      "informational:0.3602"
+    ]
+  },
+  {
+    "keyword": "orgânica digital",
+    "volume": 320,
+    "competition_level": "LOW",
+    "cpc": 0.6899999976158142,
+    "kd_ranked": 3,
+    "kd_bulk": 3,
+    "intent_ranked": "informational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.6694,
+    "secondary": []
+  },
+  {
+    "keyword": "bom negócio atividades de internet ltda",
+    "volume": 720,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.9404,
+    "secondary": []
+  },
+  {
+    "keyword": "grupo setta",
+    "volume": 720,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.905,
+    "secondary": []
+  },
+  {
+    "keyword": "eletrofase",
+    "volume": 590,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.923,
+    "secondary": []
+  },
+  {
+    "keyword": "jocami",
+    "volume": 590,
+    "competition_level": "LOW",
+    "cpc": 0.3700000047683716,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.8204,
+    "secondary": []
+  },
+  {
+    "keyword": "tecnobanho",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": 0.7400000095367432,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.6392,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro quimico quanto custa",
+    "volume": 480,
+    "competition_level": "HIGH",
+    "cpc": 0.3100000023841858,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.6351,
+    "secondary": []
+  },
+  {
+    "keyword": "catacliente",
+    "volume": 480,
+    "competition_level": "MEDIUM",
+    "cpc": 3.8899998664855957,
+    "kd_ranked": 5,
+    "kd_bulk": 5,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.4943,
+    "secondary": [
+      "informational:0.4155"
+    ]
+  },
+  {
+    "keyword": "inserts metálicos",
+    "volume": 480,
+    "competition_level": "LOW",
+    "cpc": 0.9300000071525574,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6947,
+    "secondary": []
+  },
+  {
+    "keyword": "martinrea honsel",
+    "volume": 480,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.91,
+    "secondary": []
+  },
+  {
+    "keyword": "martinrea-honsel",
+    "volume": 480,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.8318,
+    "secondary": []
+  },
+  {
+    "keyword": "mercado eletrônico novo hamburgo",
+    "volume": 480,
+    "competition_level": "LOW",
+    "cpc": 1.2899999618530273,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.9153,
+    "secondary": []
+  },
+  {
+    "keyword": "pallets descartáveis",
+    "volume": 480,
+    "competition_level": "MEDIUM",
+    "cpc": 1.5399999618530273,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6776,
+    "secondary": []
+  },
+  {
+    "keyword": "sitec assistência técnica multimarcas",
+    "volume": 480,
+    "competition_level": "LOW",
+    "cpc": 0.2800000011920929,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.7728,
+    "secondary": []
+  },
+  {
+    "keyword": "busca clientes",
+    "volume": 260,
+    "competition_level": "LOW",
+    "cpc": 4.449999809265137,
+    "kd_ranked": 30,
+    "kd_bulk": 30,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5341,
+    "secondary": [
+      "transactional:0.3725"
+    ]
+  },
+  {
+    "keyword": "banheiro quimico usado preço",
+    "volume": 390,
+    "competition_level": "MEDIUM",
+    "cpc": 0.27000001072883606,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5322,
+    "secondary": [
+      "transactional:0.4068"
+    ]
+  },
+  {
+    "keyword": "banheiro químico usado preço",
+    "volume": 390,
+    "competition_level": "MEDIUM",
+    "cpc": 0.27000001072883606,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5856,
+    "secondary": [
+      "transactional:0.3954"
+    ]
+  },
+  {
+    "keyword": "cryovac jaguariuna",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": 2.109999895095825,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.6194,
+    "secondary": []
+  },
+  {
+    "keyword": "inserto metalico",
+    "volume": 390,
+    "competition_level": "HIGH",
+    "cpc": 0.09000000357627869,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.4758,
+    "secondary": [
+      "informational:0.3201"
+    ]
+  },
+  {
+    "keyword": "inserto metálico",
+    "volume": 390,
+    "competition_level": "HIGH",
+    "cpc": 0.09000000357627869,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.4632,
+    "secondary": [
+      "informational:0.2808"
+    ]
+  },
+  {
+    "keyword": "marketing organico",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": 1.100000023841858,
+    "kd_ranked": 9,
+    "kd_bulk": 9,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.903,
+    "secondary": []
+  },
+  {
+    "keyword": "o'que e divulgar",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9995,
+    "secondary": []
+  },
+  {
+    "keyword": "o'que é divulgar",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 1,
+    "secondary": []
+  },
+  {
+    "keyword": "organick",
+    "volume": 390,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9813,
+    "secondary": []
+  },
+  {
+    "keyword": "empresa de sondagem",
+    "volume": 320,
+    "competition_level": "MEDIUM",
+    "cpc": 2.6100001335144043,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.6124,
+    "secondary": []
+  },
+  {
+    "keyword": "microestaca",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 2,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9477,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro químico com chuveiro",
+    "volume": 320,
+    "competition_level": "HIGH",
+    "cpc": 0.4000000059604645,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.4384,
+    "secondary": [
+      "navigational:0.3673"
+    ]
+  },
+  {
+    "keyword": "compra de paletes perto de mim",
+    "volume": 320,
+    "competition_level": "MEDIUM",
+    "cpc": 0.5899999737739563,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9987,
+    "secondary": []
+  },
+  {
+    "keyword": "crescimento organico",
+    "volume": 320,
+    "competition_level": "LOW",
+    "cpc": 0.8799999952316284,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9771,
+    "secondary": []
+  },
+  {
+    "keyword": "crescimento orgânico",
+    "volume": 320,
+    "competition_level": "LOW",
+    "cpc": 0.8799999952316284,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.959,
+    "secondary": []
+  },
+  {
+    "keyword": "fabrica de pallets",
+    "volume": 320,
+    "competition_level": "MEDIUM",
+    "cpc": 1.309999942779541,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.3975,
+    "secondary": [
+      "transactional:0.2522",
+      "informational:0.2096"
+    ]
+  },
+  {
+    "keyword": "fossa banheiro",
+    "volume": 320,
+    "competition_level": "HIGH",
+    "cpc": 0.1599999964237213,
+    "kd_ranked": 1,
+    "kd_bulk": 1,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.8299,
+    "secondary": []
+  },
+  {
+    "keyword": "fábrica de pallets",
+    "volume": 320,
+    "competition_level": "MEDIUM",
+    "cpc": 1.309999942779541,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.3838,
+    "secondary": [
+      "informational:0.2606",
+      "transactional:0.2118"
+    ]
+  },
+  {
+    "keyword": "banheiro quimico por dentro",
+    "volume": 260,
+    "competition_level": "LOW",
+    "cpc": 0.029999999329447746,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.6735,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro quimico usado",
+    "volume": 260,
+    "competition_level": "MEDIUM",
+    "cpc": 0.1899999976158142,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.7556,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro químico por dentro",
+    "volume": 260,
+    "competition_level": "LOW",
+    "cpc": 0.029999999329447746,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.5239,
+    "secondary": [
+      "transactional:0.3045"
+    ]
+  },
+  {
+    "keyword": "banheiro químico usado",
+    "volume": 260,
+    "competition_level": "MEDIUM",
+    "cpc": 0.1899999976158142,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.7386,
+    "secondary": []
+  },
+  {
+    "keyword": "caixa glt",
+    "volume": 260,
+    "competition_level": "MEDIUM",
+    "cpc": 1.1699999570846558,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.5025,
+    "secondary": []
+  },
+  {
+    "keyword": "caixas glt",
+    "volume": 260,
+    "competition_level": "MEDIUM",
+    "cpc": 1.1699999570846558,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.3667,
+    "secondary": [
+      "commercial:0.2623",
+      "navigational:0.2492"
+    ]
+  },
+  {
+    "keyword": "como fazer meu site aparecer no google",
+    "volume": 260,
+    "competition_level": "MEDIUM",
+    "cpc": 3.259999990463257,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9959,
+    "secondary": []
+  },
+  {
+    "keyword": "marketing industrial",
+    "volume": 260,
+    "competition_level": "MEDIUM",
+    "cpc": 4.760000228881836,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.9535,
+    "secondary": []
+  },
+  {
+    "keyword": "o que é chapatex",
+    "volume": 260,
+    "competition_level": "LOW",
+    "cpc": 0.05999999865889549,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 1,
+    "secondary": []
+  },
+  {
+    "keyword": "o'que é chapatex",
+    "volume": 260,
+    "competition_level": "LOW",
+    "cpc": 0.05999999865889549,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 1,
+    "secondary": []
+  },
+  {
+    "keyword": "sonda rotativa",
+    "volume": 260,
+    "competition_level": "LOW",
+    "cpc": 3.130000114440918,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6934,
+    "secondary": []
+  },
+  {
+    "keyword": "engenheiro geotécnico",
+    "volume": 210,
+    "competition_level": "LOW",
+    "cpc": 1.6600000858306885,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.7439,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro químico direto da fabrica",
+    "volume": 210,
+    "competition_level": "HIGH",
+    "cpc": 0.6499999761581421,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9787,
+    "secondary": []
+  },
+  {
+    "keyword": "banheiro químico direto da fábrica",
+    "volume": 210,
+    "competition_level": "HIGH",
+    "cpc": 0.6499999761581421,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9753,
+    "secondary": []
+  },
+  {
+    "keyword": "locação de banheiros quimicos",
+    "volume": 210,
+    "competition_level": "MEDIUM",
+    "cpc": 1.8700000047683716,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6107,
+    "secondary": []
+  },
+  {
+    "keyword": "locação de banheiros químicos",
+    "volume": 210,
+    "competition_level": "MEDIUM",
+    "cpc": 1.8700000047683716,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.5715,
+    "secondary": [
+      "commercial:0.3007"
+    ]
+  },
+  {
+    "keyword": "loja da usinagem",
+    "volume": 210,
+    "competition_level": "HIGH",
+    "cpc": 0.2199999988079071,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.4881,
+    "secondary": [
+      "transactional:0.2444"
+    ]
+  },
+  {
+    "keyword": "seo técnico",
+    "volume": 210,
+    "competition_level": "LOW",
+    "cpc": 1.4199999570846558,
+    "kd_ranked": 19,
+    "kd_bulk": 19,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9577,
+    "secondary": []
+  },
+  {
+    "keyword": "tokyo pallets",
+    "volume": 210,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.3937,
+    "secondary": [
+      "commercial:0.2564",
+      "informational:0.1993"
+    ]
+  },
+  {
+    "keyword": "usinagem empresas",
+    "volume": 210,
+    "competition_level": "MEDIUM",
+    "cpc": 2.7100000381469727,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.935,
+    "secondary": []
+  },
+  {
+    "keyword": "usinagem pesada",
+    "volume": 210,
+    "competition_level": "LOW",
+    "cpc": 1.6800000667572021,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.4532,
+    "secondary": [
+      "informational:0.3295"
+    ]
+  },
+  {
+    "keyword": "aluguel de banheiros quimicos",
+    "volume": 170,
+    "competition_level": "MEDIUM",
+    "cpc": 1.2400000095367432,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6765,
+    "secondary": []
+  },
+  {
+    "keyword": "buscasys",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.5738,
+    "secondary": [
+      "informational:0.3301"
+    ]
+  },
+  {
+    "keyword": "ciclo verde embalagens",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.5901,
+    "secondary": [
+      "commercial:0.3317"
+    ]
+  },
+  {
+    "keyword": "criar site empresa",
+    "volume": 170,
+    "competition_level": "HIGH",
+    "cpc": 6.179999828338623,
+    "kd_ranked": 72,
+    "kd_bulk": 72,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.8416,
+    "secondary": []
+  },
+  {
+    "keyword": "limpadora paraibana",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 1.1399999856948853,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6568,
+    "secondary": []
+  },
+  {
+    "keyword": "marcatti prevenção de incêndios",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5095,
+    "secondary": [
+      "transactional:0.3273"
+    ]
+  },
+  {
+    "keyword": "pallets chiaradia",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 1.1699999570846558,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.5916,
+    "secondary": []
+  },
+  {
+    "keyword": "pallets da amazonia",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.4765,
+    "secondary": [
+      "informational:0.2629"
+    ]
+  },
+  {
+    "keyword": "pallets perto de mim",
+    "volume": 170,
+    "competition_level": "HIGH",
+    "cpc": 1,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.8556,
+    "secondary": []
+  },
+  {
+    "keyword": "poliban",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9723,
+    "secondary": []
+  },
+  {
+    "keyword": "seo rio de janeiro",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 8.260000228881836,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.6896,
+    "secondary": []
+  },
+  {
+    "keyword": "sorenge",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": 1.4500000476837158,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9624,
+    "secondary": []
+  },
+  {
+    "keyword": "usinagem paulista",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.4745,
+    "secondary": [
+      "navigational:0.2833"
+    ]
+  },
+  {
+    "keyword": "usinagem raniowski",
+    "volume": 170,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.3882,
+    "secondary": [
+      "informational:0.3468"
+    ]
+  },
+  {
+    "keyword": "sondagem do terreno",
+    "volume": 140,
+    "competition_level": "MEDIUM",
+    "cpc": 3.9100000858306885,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9647,
+    "secondary": []
+  },
+  {
+    "keyword": "abraão pallets",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.6386,
+    "secondary": []
+  },
+  {
+    "keyword": "citrolima e pacheco",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9223,
+    "secondary": []
+  },
+  {
+    "keyword": "engenheiro civil geotecnico",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 1.4700000286102295,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.7,
+    "secondary": []
+  },
+  {
+    "keyword": "fornecedor de paletes",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.7400000095367432,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.8374,
+    "secondary": []
+  },
+  {
+    "keyword": "fornecedores de paletes",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.7400000095367432,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "commercial",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.9825,
+    "secondary": []
+  },
+  {
+    "keyword": "lastro pallet",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.4300000071525574,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.8367,
+    "secondary": []
+  },
+  {
+    "keyword": "maquinas de sondagem",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.6800000071525574,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.4385,
+    "secondary": [
+      "transactional:0.3229",
+      "commercial:0.2364"
+    ]
+  },
+  {
+    "keyword": "mini limpa fossa",
+    "volume": 140,
+    "competition_level": "MEDIUM",
+    "cpc": 0.05000000074505806,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9925,
+    "secondary": []
+  },
+  {
+    "keyword": "o que é sondagem de solo",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 1,
+    "secondary": []
+  },
+  {
+    "keyword": "paletes fechados",
+    "volume": 140,
+    "competition_level": "HIGH",
+    "cpc": 0.15000000596046448,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.7978,
+    "secondary": []
+  },
+  {
+    "keyword": "pallet box",
+    "volume": 140,
+    "competition_level": "HIGH",
+    "cpc": 1.0099999904632568,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.7439,
+    "secondary": []
+  },
+  {
+    "keyword": "qual o valor de um banheiro químico",
+    "volume": 140,
+    "competition_level": "HIGH",
+    "cpc": 0.4300000071525574,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.535,
+    "secondary": [
+      "commercial:0.4615"
+    ]
+  },
+  {
+    "keyword": "relatorio de sondagem",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 1.9900000095367432,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9182,
+    "secondary": []
+  },
+  {
+    "keyword": "sondagem o'que e",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.9872,
+    "secondary": []
+  },
+  {
+    "keyword": "sondagem terreno",
+    "volume": 140,
+    "competition_level": "MEDIUM",
+    "cpc": 3.9100000858306885,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.985,
+    "secondary": []
+  },
+  {
+    "keyword": "steel usinagem",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": 0.4099999964237213,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "informational",
+    "intent_dedicated": "informational",
+    "intent_prob": 0.4117,
+    "secondary": [
+      "commercial:0.2616"
+    ]
+  },
+  {
+    "keyword": "target comunica",
+    "volume": 140,
+    "competition_level": "LOW",
+    "cpc": null,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "navigational",
+    "intent_prob": 0.7091,
+    "secondary": []
+  },
+  {
+    "keyword": "venda de banheiro químico",
+    "volume": 140,
+    "competition_level": "HIGH",
+    "cpc": 0.4399999976158142,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.9863,
+    "secondary": []
+  },
+  {
+    "keyword": "marketing curitiba",
+    "volume": 110,
+    "competition_level": "HIGH",
+    "cpc": 8.710000038146973,
+    "kd_ranked": 30,
+    "kd_bulk": 30,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "commercial",
+    "intent_prob": 0.5063,
+    "secondary": [
+      "navigational:0.3224"
+    ]
+  },
+  {
+    "keyword": "pallets one way",
+    "volume": 110,
+    "competition_level": "MEDIUM",
+    "cpc": 1.1299999952316284,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "transactional",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.5051,
+    "secondary": [
+      "informational:0.2863"
+    ]
+  },
+  {
+    "keyword": "via dutra pallets",
+    "volume": 110,
+    "competition_level": "LOW",
+    "cpc": 0.8700000047683716,
+    "kd_ranked": 0,
+    "kd_bulk": 0,
+    "intent_ranked": "navigational",
+    "intent_dedicated": "transactional",
+    "intent_prob": 0.523,
+    "secondary": []
+  }
+]

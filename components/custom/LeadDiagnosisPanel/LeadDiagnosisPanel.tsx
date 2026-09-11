@@ -15,7 +15,7 @@ import {
   getLeadDiagnosisPdfUrl,
   updateLeadDiagnosisDraft,
 } from "@/app/actions/leads"
-import { LeadGbpCard } from "@/components/custom/LeadGbpPanel/LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import { LeadGbpOpportunitiesCard } from "@/components/custom/LeadGbpPanel/LeadGbpOpportunitiesCard"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -69,6 +69,7 @@ export function LeadDiagnosisPanel({
       website: "",
       presence: "",
       visibility: "",
+      geo: "",
     },
   )
   const [compiling, setCompiling] = useState(false)
@@ -90,6 +91,7 @@ export function LeadDiagnosisPanel({
         website: "",
         presence: "",
         visibility: "",
+        geo: "",
       },
     )
   }
@@ -225,19 +227,19 @@ export function LeadDiagnosisPanel({
       ) : null}
 
       {!unlocked ? (
-        <LeadGbpCard title="Etapa bloqueada">
+        <StepCard title="Etapa bloqueada">
           <p className="text-xs/relaxed text-muted-foreground">
             Conclua Perfil no Google, Website, Presença digital e Visibilidade
             para liberar o diagnóstico.
           </p>
-        </LeadGbpCard>
+        </StepCard>
       ) : !draft ? (
-        <LeadGbpCard title="Pronto para compilar">
+        <StepCard title="Pronto para compilar">
           <p className="text-xs/relaxed text-muted-foreground">
             Monte o diagnóstico para gerar scorecard, achados cross-pillar,
             roadmap e textos editáveis antes do PDF da reunião.
           </p>
-        </LeadGbpCard>
+        </StepCard>
       ) : (
         <>
           <m.div
@@ -249,7 +251,7 @@ export function LeadDiagnosisPanel({
           </m.div>
 
           {draft.document.prose.commercialHook || canEdit ? (
-            <LeadGbpCard title="Gancho comercial">
+            <StepCard title="Gancho comercial">
               {canEdit ? (
                 <>
                   <Textarea
@@ -270,10 +272,10 @@ export function LeadDiagnosisPanel({
                   {draft.document.prose.commercialHook}
                 </p>
               )}
-            </LeadGbpCard>
+            </StepCard>
           ) : null}
 
-          <LeadGbpCard title="Resumo executivo">
+          <StepCard title="Resumo executivo">
             {canEdit ? (
               <>
                 <Textarea
@@ -294,12 +296,12 @@ export function LeadDiagnosisPanel({
                 {draft.document.prose.executiveSummary}
               </p>
             )}
-          </LeadGbpCard>
+          </StepCard>
 
           {/* Antes dos achados, na mesma ordem do PDF e do documento de
               referência: o que funciona vem primeiro. */}
           {(draft.document.facts.strengths?.length ?? 0) > 0 ? (
-            <LeadGbpCard title="Pontos fortes">
+            <StepCard title="Pontos fortes">
               <ul className="flex flex-col gap-3">
                 {(draft.document.facts.strengths ?? []).map((item) => (
                   <li key={item.id} className="flex items-start gap-2.5">
@@ -323,11 +325,11 @@ export function LeadDiagnosisPanel({
                   </li>
                 ))}
               </ul>
-            </LeadGbpCard>
+            </StepCard>
           ) : null}
 
           {draft.document.facts.findings.length > 0 ? (
-            <LeadGbpCard title="Achados prioritários">
+            <StepCard title="Achados prioritários">
               <ul className="flex flex-col gap-3">
                 {draft.document.facts.findings.map((item) => (
                   <li key={item.id} className="flex items-start gap-2.5">
@@ -353,7 +355,7 @@ export function LeadDiagnosisPanel({
                   </li>
                 ))}
               </ul>
-            </LeadGbpCard>
+            </StepCard>
           ) : null}
 
           <LeadGbpOpportunitiesCard
@@ -367,7 +369,7 @@ export function LeadDiagnosisPanel({
           />
 
           {DIAGNOSIS_PILLARS.map((pillar: DiagnosisPillar) => (
-            <LeadGbpCard key={pillar} title={DIAGNOSIS_PILLAR_LABELS[pillar]}>
+            <StepCard key={pillar} title={DIAGNOSIS_PILLAR_LABELS[pillar]}>
               <div className="mb-3 flex flex-wrap gap-2">
                 {draft.document.facts.pillars[pillar].keyMetrics.map(
                   (metric) => (
@@ -427,11 +429,11 @@ export function LeadDiagnosisPanel({
                     ))}
                 </ul>
               ) : null}
-            </LeadGbpCard>
+            </StepCard>
           ))}
 
           {exports.length > 0 ? (
-            <LeadGbpCard title="PDFs exportados">
+            <StepCard title="PDFs exportados">
               <ul className="flex flex-col gap-2">
                 {exports.map((item) => (
                   <li
@@ -463,10 +465,10 @@ export function LeadDiagnosisPanel({
                   </li>
                 ))}
               </ul>
-            </LeadGbpCard>
+            </StepCard>
           ) : null}
 
-          <LeadGbpCard title="Limitações da coleta">
+          <StepCard title="Limitações da coleta">
             <ul className="flex flex-col gap-1.5">
               {draft.document.limitations.map((line) => (
                 <li
@@ -477,7 +479,7 @@ export function LeadDiagnosisPanel({
                 </li>
               ))}
             </ul>
-          </LeadGbpCard>
+          </StepCard>
         </>
       )}
 

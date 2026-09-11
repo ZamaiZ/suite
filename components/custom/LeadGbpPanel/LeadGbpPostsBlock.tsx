@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { RiExternalLinkLine, RiImageLine } from "react-icons/ri"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import { formatRelativeShort } from "@/lib/date-time"
 import type { GbpPost } from "@/lib/leads/gbp-audit"
 
@@ -32,7 +32,7 @@ export function LeadGbpPostsBlock({ posts }: { posts: GbpPost[] | null }) {
   const post = posts?.[0] ?? null
 
   return (
-    <LeadGbpCard title="Postagens">
+    <StepCard title="Postagens">
       {!post ? (
         <p className="text-xs/relaxed text-muted-foreground">
           Nenhuma postagem coletada.
@@ -74,6 +74,6 @@ export function LeadGbpPostsBlock({ posts }: { posts: GbpPost[] | null }) {
           </div>
         </article>
       )}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

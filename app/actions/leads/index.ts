@@ -9,6 +9,8 @@ export {
   type LeadWebsiteAudit,
   type LeadDigitalPresenceAudit,
   type LeadVisibilityAudit,
+  type LeadGeoAudit,
+  type LeadGeoReview,
   type LeadBacklinkAudit,
   type LeadDiagnosisDraft,
   type LeadDiagnosisExport,
@@ -72,6 +74,15 @@ export {
   analyzeLeadVisibility,
   type AnalyzeLeadVisibilityState,
 } from "./analyze-visibility"
+export {
+  upsertLeadVisibilityReview,
+  type UpsertVisibilityReviewState,
+} from "./upsert-visibility-review"
+export { analyzeLeadGeo, type AnalyzeLeadGeoState } from "./analyze-geo"
+export {
+  upsertLeadGeoReview,
+  type UpsertGeoReviewState,
+} from "./upsert-geo-review"
 export {
   analyzeLeadBacklinks,
   type AnalyzeLeadBacklinksState,

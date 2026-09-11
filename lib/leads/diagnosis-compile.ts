@@ -3,6 +3,7 @@ import {
   DIAGNOSIS_PILLAR_LABELS,
   DIAGNOSIS_ROADMAP_CAP,
   emptyDiagnosisProse,
+  emptyPillarScore,
   scorePillarOpportunities,
   type DiagnosisDocument,
   type DiagnosisFacts,
@@ -46,6 +47,10 @@ import {
 } from "./gbp-presenters.ts"
 import { type LeadVisibilityAudit } from "./visibility-audit.ts"
 import { mergeVisibilityOpportunities } from "./visibility-opportunities.ts"
+import { mergeGeoOpportunities } from "./geo-opportunities.ts"
+import type { LeadGeoAudit } from "./geo-audit.ts"
+import { emptyGeoReview, type GeoReview } from "./geo-review.ts"
+import { type VisibilityReview } from "./visibility-review.ts"
 import type { BacklinkSnapshot } from "./backlinks-audit.ts"
 import { backlinkOpportunitiesFromSnapshot } from "./backlinks-opportunities.ts"
 import { formatVisibilityMetric } from "./visibility-presenters.ts"
@@ -73,6 +78,14 @@ export type DiagnosisCompileInput = {
   presenceReview: DigitalPresenceReview
   presenceToday: string
   visibilityAudit: LeadVisibilityAudit | null
+  /** `null` = etapa nao coletada. O pilar entra como **nao medido**. */
+  geoAudit: LeadGeoAudit | null
+  geoReview: GeoReview
+  /**
+   * Julgamento do analista da etapa de Visibilidade. Opcional porque nasce
+   * ausente em todo lead já auditado antes da tabela existir.
+   */
+  visibilityReview?: VisibilityReview
   /** Autoridade externa. Opcional: nasce ausente em todo lead já auditado. */
   backlinkSnapshot?: BacklinkSnapshot | null
   generatedAt: string
@@ -248,7 +261,9 @@ function visibilityMetrics(audit: LeadVisibilityAudit): DiagnosisKeyMetric[] {
     metric(
       "keywords",
       "Keywords",
-      formatVisibilityMetric(snap.metrics.keywordCount ?? snap.keywords.length),
+      // Sem footprint medido o documento cala. O `?? keywords.length` de
+      // antes fazia a amostra virar footprint no PDF que o cliente recebe.
+      formatVisibilityMetric(snap.metrics.keywordCount),
     ),
     metric(
       "traffic",
@@ -259,6 +274,42 @@ function visibilityMetrics(audit: LeadVisibilityAudit): DiagnosisKeyMetric[] {
       "top3",
       "Top 3",
       formatVisibilityMetric(snap.metrics.positionBuckets?.top3 ?? null),
+    ),
+  ]
+}
+
+/**
+ * As tres metricas que respondem "como esta a presenca em IA" num numero.
+ *
+ * Nenhuma delas inventa: crawler bloqueado e contagem, citacao em AI Overview
+ * so existe quando a visibilidade foi coletada, e o llms.txt so e afirmado
+ * quando o crawl e da coleta ampliada — no crawl antigo o arquivo nunca foi
+ * buscado, e dizer "ausente" seria afirmar o que ninguem mediu.
+ */
+function geoMetrics(audit: LeadGeoAudit): DiagnosisKeyMetric[] {
+  const snap = audit.snapshot
+  const bloqueados = snap.accessibility.blockedAiCrawlers
+  return [
+    metric(
+      "ai_crawlers",
+      "Robôs de IA liberados",
+      snap.accessibility.aiCrawlers.length === 0
+        ? "—"
+        : `${snap.accessibility.aiCrawlers.length - bloqueados}/${snap.accessibility.aiCrawlers.length}`,
+    ),
+    metric(
+      "ai_overview",
+      "Citações em IA do Google",
+      snap.aiOverview === null ? "—" : String(snap.aiOverview.count),
+    ),
+    metric(
+      "llms_txt",
+      "llms.txt",
+      snap.sources.websiteCrawlExtended
+        ? snap.accessibility.llmsTxt.found
+          ? "Publicado"
+          : "Ausente"
+        : "—",
     ),
   ]
 }
@@ -364,11 +415,19 @@ export function compileDiagnosisFacts(
       }).map(toRef)
     : []
 
+  const geoItems: DiagnosisOpportunityRef[] = input.geoAudit
+    ? mergeGeoOpportunities({
+        snapshot: input.geoAudit.snapshot,
+        review: input.geoReview ?? emptyGeoReview(),
+      }).map(toRef)
+    : []
+
   const idSet = new Set<string>([
     ...googleItems.map((item) => item.id),
     ...websiteItems.map((item) => item.id),
     ...presenceItems.map((item) => item.id),
     ...visibilityItems.map((item) => item.id),
+    ...geoItems.map((item) => item.id),
   ])
 
   const socialCount = input.channels.filter((channel) =>
@@ -439,6 +498,11 @@ export function compileDiagnosisFacts(
       website: scorePillarOpportunities(websiteItems),
       presence: scorePillarOpportunities(presenceItems),
       visibility: scorePillarOpportunities(visibilityItems),
+      // Sem coleta o pilar e **nao medido**, nunca nota cheia: e a diferenca
+      // entre "medimos e esta limpo" e "ninguem olhou".
+      geo: input.geoAudit
+        ? scorePillarOpportunities(geoItems)
+        : emptyPillarScore(),
     },
     findings: diagnosisFindingsFromThemes({ opportunityIds: idSet }),
     roadmap: mergeRoadmap([
@@ -446,6 +510,7 @@ export function compileDiagnosisFacts(
       roadmapFrom("website", websiteItems),
       roadmapFrom("presence", presenceItems),
       roadmapFrom("visibility", visibilityItems),
+      roadmapFrom("geo", geoItems),
     ]),
     pillars: {
       google: {
@@ -467,6 +532,10 @@ export function compileDiagnosisFacts(
         keyMetrics: input.visibilityAudit
           ? visibilityMetrics(input.visibilityAudit)
           : [],
+      },
+      geo: {
+        opportunities: geoItems,
+        keyMetrics: input.geoAudit ? geoMetrics(input.geoAudit) : [],
       },
     },
   }
@@ -515,6 +584,11 @@ export function compileDiagnosisDocument(
           visibility:
             input.previousProse.pillarNarratives.visibility.trim() ||
             seeded.pillarNarratives.visibility,
+          // Rascunho salvo antes do pilar nao tem a chave. `?? ""` deixa a
+          // semente entrar, em vez de quebrar o `.trim()` num `undefined`.
+          geo:
+            (input.previousProse.pillarNarratives.geo ?? "").trim() ||
+            seeded.pillarNarratives.geo,
         },
       }
     : seeded

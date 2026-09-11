@@ -25,6 +25,7 @@ const pillarNarrativeSchema = z.object({
   website: z.string().max(DIAGNOSIS_PROSE_MAX),
   presence: z.string().max(DIAGNOSIS_PROSE_MAX),
   visibility: z.string().max(DIAGNOSIS_PROSE_MAX),
+  geo: z.string().max(DIAGNOSIS_PROSE_MAX),
 })
 
 export const updateDiagnosisDraftSchema = z.object({

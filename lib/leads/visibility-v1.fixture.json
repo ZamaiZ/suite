@@ -1,0 +1,49 @@
+{
+  "domain": "buscaorganica.com.br",
+  "source": "dataforseo_labs",
+  "metrics": {
+    "keywordCount": 110,
+    "positionBuckets": {
+      "top3": 4,
+      "pos4to10": 3,
+      "pos11to20": 8,
+      "pos21to50": 61,
+      "pos51to100": 34
+    },
+    "estimatedTraffic": 467.67999482154846,
+    "estimatedTrafficCost": 731.039975871332
+  },
+  "keywords": [
+    {
+      "url": "/",
+      "intent": "informational",
+      "volume": 390,
+      "keyword": "busca organica",
+      "traffic": 118.55999755859375,
+      "position": 1,
+      "difficulty": 40
+    },
+    {
+      "url": "/polyban.com.br/produtos",
+      "intent": "transactional",
+      "volume": 1900,
+      "keyword": "banheiro quimico preço",
+      "traffic": 3.990000009536743,
+      "position": 25,
+      "difficulty": 0
+    },
+    {
+      "url": "/consultoria-de-seo",
+      "intent": "commercial",
+      "volume": 880,
+      "keyword": "consultoria de seo",
+      "traffic": 17.336000442504883,
+      "position": 8,
+      "difficulty": 8
+    }
+  ],
+  "collectedAt": "2026-09-10T22:24:09.546Z",
+  "searchCount": 1,
+  "languageCode": "pt",
+  "locationLabel": "Brazil"
+}

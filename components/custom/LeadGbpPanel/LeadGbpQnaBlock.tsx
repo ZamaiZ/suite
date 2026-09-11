@@ -2,21 +2,21 @@
 
 import { formatDateTimeShort } from "@/lib/date-time"
 import type { GbpQna } from "@/lib/leads/gbp-audit"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 
 export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
   if (!qna || qna.questionCount === 0) {
     return (
-      <LeadGbpCard title="Perguntas">
+      <StepCard title="Perguntas">
         <p className="text-xs/relaxed text-muted-foreground">
           Nenhuma pergunta coletada.
         </p>
-      </LeadGbpCard>
+      </StepCard>
     )
   }
 
   return (
-    <LeadGbpCard title="Perguntas">
+    <StepCard title="Perguntas">
       <p className="text-xs/relaxed text-foreground">
         {qna.questionCount.toLocaleString("pt-BR")} perguntas
         {qna.unansweredCount > 0
@@ -55,6 +55,6 @@ export function LeadGbpQnaBlock({ qna }: { qna: GbpQna | null }) {
           </li>
         ))}
       </ul>
-    </LeadGbpCard>
+    </StepCard>
   )
 }

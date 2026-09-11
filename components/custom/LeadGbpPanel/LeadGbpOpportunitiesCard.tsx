@@ -1,5 +1,5 @@
 import { RiLightbulbLine } from "react-icons/ri"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import { cn } from "cn"
 import { GBP_IMPACT_LABEL } from "@/lib/leads/gbp-opportunities"
 
@@ -17,7 +17,7 @@ export function LeadGbpOpportunitiesCard({
   title?: string
 }) {
   return (
-    <LeadGbpCard title={title}>
+    <StepCard title={title}>
       {items.length === 0 ? (
         <p className="text-xs/relaxed text-muted-foreground">
           Nenhum problema identificado nesta coleta.
@@ -64,6 +64,6 @@ export function LeadGbpOpportunitiesCard({
           ))}
         </ul>
       )}
-    </LeadGbpCard>
+    </StepCard>
   )
 }

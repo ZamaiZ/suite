@@ -13,6 +13,7 @@ import {
 } from "@/lib/leads/digital-presence"
 import { readLeadGbpProfiles } from "@/lib/leads/gbp"
 import { readLeadVisibilityAuditRow } from "@/lib/leads/visibility-audit"
+import { readLeadVisibilityReviewRow } from "@/lib/leads/visibility-review"
 import { readLeadBacklinkAuditRow } from "@/lib/leads/backlinks-audit"
 import { readLeadWebsiteAudits } from "@/lib/leads/website-audit"
 import {
@@ -28,6 +29,9 @@ import {
 } from "./diagnosis-access"
 import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
+import { GEO_REVIEW_SELECT, GEO_SELECT } from "./geo-access"
+import { readLeadGeoAuditRow } from "@/lib/leads/geo-audit"
+import { readLeadGeoReviewRow } from "@/lib/leads/geo-review"
 import { BACKLINKS_SELECT } from "./backlinks-access"
 import { loadWebsiteReviewsForLead, WEBSITE_SELECT } from "./website-access"
 import { readLeadDiagnosisDraftRow } from "@/lib/leads/diagnosis-read"
@@ -71,6 +75,7 @@ export async function compileLeadDiagnosis(
     { data: websiteRows, error: websiteError },
     { data: presenceRow, error: presenceError },
     { data: visibilityRow, error: visibilityError },
+    { data: geoRow, error: geoError },
     { data: backlinkRow, error: backlinkError },
   ] = await Promise.all([
     supabase
@@ -100,6 +105,14 @@ export async function compileLeadDiagnosis(
       .order("fetched_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
+    // Append-only desde o dia 1: mesma guarda de `order`/`limit`.
+    supabase
+      .from("lead_geo_audits")
+      .select(GEO_SELECT)
+      .eq("lead_id", leadId)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
     supabase
       .from("lead_backlink_audits")
       .select(BACKLINKS_SELECT)
@@ -115,6 +128,7 @@ export async function compileLeadDiagnosis(
     websiteError ||
     presenceError ||
     visibilityError ||
+    geoError ||
     backlinkError
   ) {
     return { status: "error", message: FAILED }
@@ -151,6 +165,30 @@ export async function compileLeadDiagnosis(
   const visibilityAudit = visibilityRow
     ? readLeadVisibilityAuditRow(visibilityRow as Record<string, unknown>)
     : null
+  // Mesmo motivo do website: o julgamento do analista entra como oportunidade,
+  // então precisa estar em mãos antes de compilar. Linha ausente lê como review
+  // vazio — lead nunca julgado não gera gap nenhum.
+  const { data: visibilityReviewRow } = await supabase
+    .from("lead_visibility_reviews")
+    .select("review, notes, updated_at, updated_by")
+    .eq("lead_id", leadId)
+    .maybeSingle()
+  const visibilityReview = readLeadVisibilityReviewRow(
+    (visibilityReviewRow as Record<string, unknown> | null) ?? null,
+  )
+  const geoAudit = geoRow
+    ? readLeadGeoAuditRow(geoRow as Record<string, unknown>)
+    : null
+  // Mesmo desenho da visibilidade: o julgamento do analista vira oportunidade,
+  // então entra antes de compilar. Linha ausente lê como review vazio.
+  const { data: geoReviewRow } = await supabase
+    .from("lead_geo_reviews")
+    .select(GEO_REVIEW_SELECT)
+    .eq("lead_id", leadId)
+    .maybeSingle()
+  const geoReview = readLeadGeoReviewRow(
+    (geoReviewRow as Record<string, unknown> | null) ?? null,
+  )
   // Backlinks é opcional no gate: ele não bloqueia o diagnóstico, entra como
   // mais uma fonte de oportunidade do pilar de Website quando existir.
   const backlinkAudit = backlinkRow
@@ -166,7 +204,10 @@ export async function compileLeadDiagnosis(
     !gbpProfile?.enrichment_at ||
     !websiteAudit ||
     !isDigitalPresenceComplete(presenceReview, channels) ||
-    !visibilityAudit
+    !visibilityAudit ||
+    // Presença em IA destrava como as outras quatro. A sondagem em LLM não
+    // entra no gate: ela enriquece a etapa, não a define.
+    !geoAudit
   ) {
     return { status: "error", message: INCOMPLETE }
   }
@@ -188,6 +229,9 @@ export async function compileLeadDiagnosis(
     presenceReview,
     presenceToday: todayCivilDate(),
     visibilityAudit,
+    visibilityReview: visibilityReview.review,
+    geoAudit,
+    geoReview: geoReview.review,
     backlinkSnapshot: backlinkAudit?.snapshot ?? null,
     generatedAt,
     previousProse: loaded.draft?.document.prose ?? null,
@@ -204,6 +248,7 @@ export async function compileLeadDiagnosis(
     presenceUpdatedAt: presenceAudit?.updated_at ?? null,
     visibilityFetchedAt: visibilityAudit.fetched_at,
     backlinksFetchedAt: backlinkAudit?.fetched_at ?? null,
+    geoFetchedAt: geoAudit.fetched_at,
   })
 
   const { data: upserted, error: upsertError } = await supabase

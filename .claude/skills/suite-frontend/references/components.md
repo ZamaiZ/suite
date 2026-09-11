@@ -184,7 +184,7 @@ Composição: raiz → `ComboboxChips` (se múltiplo) → `ComboboxChip` + `Comb
 #### Calendar
 Seleção de data em grade mensal.
 Exporta: `Calendar`, `CalendarDayButton`
-⚠ Data e hora civil já estão resolvidas em `DateTimePicker` e `TimePicker`. Não recrie a regra de fuso.
+⚠ Data e hora civil já estão resolvidas em `DatePicker`, `DateTimePicker` e `TimePicker`. Não recrie a regra de fuso. Só data é `DatePicker`; data **mais** hora é `DateTimePicker`.
 
 ### Navegação e comandos
 
@@ -245,7 +245,7 @@ Composição: igual ao `Dialog`, com `AlertDialogAction` e `AlertDialogCancel` n
 #### Popover
 Conteúdo ancorado a um gatilho, com foco.
 Exporta: `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverHeader`, `PopoverTitle`, `PopoverDescription`
-⚠ `DateTimePicker` e `TimePicker` ainda importam `Popover` de `@base-ui/react`. Código novo usa este.
+⚠ `DateTimePicker` e `TimePicker` ainda importam `Popover` de `@base-ui/react`. Código novo usa este — o `DatePicker` é o exemplo de que dá para compor o picker inteiro sobre o primitive local.
 
 #### Tooltip
 Texto curto que explica um controle. Sem foco, sem ação dentro.
@@ -368,6 +368,7 @@ Encapsulam regra de negócio e têm API pública estável.
 
 | Wrapper | Regra que carrega |
 |---|---|
+| `DatePicker` | data civil, sem hora — commita ao escolher o dia, rodapé "Hoje", `min`/`max` por string |
 | `DateTimePicker` | data e hora civil, sem fuso |
 | `TimePicker` | hora civil |
 | `BriefingChoiceCard` | `RadioGroup` com layout de cartão |
@@ -380,10 +381,11 @@ Encapsulam regra de negócio e têm API pública estável.
 
 ### `components/custom/LeadStepShell` — o shell das etapas de auditoria
 
-Compartilhado por **Perfil no Google** e **Website**, e é o que Presença digital, Visibilidade e Diagnóstico devem consumir quando forem repaginadas. Nada aqui é do domínio de uma etapa: o que é da etapa mora na pasta dela e entra por prop.
+Compartilhado por **Perfil no Google**, **Website**, **Presença digital** e **Visibilidade**, e é o que o Diagnóstico deve consumir quando for repaginado. Nada aqui é do domínio de uma etapa: o que é da etapa mora na pasta dela e entra por prop.
 
 | Módulo | O que é |
 |---|---|
+| `StepCard` | cartão de bloco da etapa — `Card size="sm"` com título `h3`. Era `LeadGbpCard`, na pasta do GBP, consumido por 18 arquivos |
 | `StepStat` | tile de achado — número como elemento, tom carregando o estado, `children` para o medidor |
 | `StepMeter` · `StepMeterRow` | barra de fração e a linha rótulo/valor/barra |
 | `StepCountCell` · `StepSectionLabel` | célula de contagem e sobrancelha de seção com `aside` |

@@ -60,6 +60,7 @@ export async function updateLeadDiagnosisDraft(
         website: parsed.data.pillarNarratives.website.trim(),
         presence: parsed.data.pillarNarratives.presence.trim(),
         visibility: parsed.data.pillarNarratives.visibility.trim(),
+        geo: parsed.data.pillarNarratives.geo.trim(),
       },
     },
   }

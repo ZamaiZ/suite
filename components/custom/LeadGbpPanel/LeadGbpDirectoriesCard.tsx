@@ -7,7 +7,7 @@ import {
   updateLeadGbpAnalystReview,
   type LeadGbpProfile,
 } from "@/app/actions/leads"
-import { LeadGbpCard } from "./LeadGbpCard"
+import { StepCard } from "@/components/custom/LeadStepShell"
 import {
   Select,
   SelectContent,
@@ -95,7 +95,7 @@ export function LeadGbpDirectoriesCard({
   }
 
   return (
-    <LeadGbpCard title="Diretórios e citações">
+    <StepCard title="Diretórios e citações">
       <div className="flex flex-col gap-2">
         <p className="max-w-[640px] text-xs/relaxed text-muted-foreground">
           {answered} de {GBP_DIRECTORIES.length} respondidos. Não há checagem
@@ -161,6 +161,6 @@ export function LeadGbpDirectoriesCard({
           </p>
         ) : null}
       </div>
-    </LeadGbpCard>
+    </StepCard>
   )
 }

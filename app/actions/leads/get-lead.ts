@@ -55,9 +55,19 @@ import {
 } from "./diagnosis-access"
 import { DIGITAL_PRESENCE_SELECT } from "./digital-presence-access"
 import { VISIBILITY_SELECT } from "./visibility-access"
+import { GEO_REVIEW_SELECT, GEO_SELECT } from "./geo-access"
 import { BACKLINKS_SELECT } from "./backlinks-access"
 import { WEBSITE_REVIEW_SELECT, WEBSITE_SELECT } from "./website-access"
 import { websiteReviewsByChannel } from "@/lib/leads/website-review"
+import {
+  readLeadVisibilityReviewRow,
+  type LeadVisibilityReview,
+} from "@/lib/leads/visibility-review"
+import { readLeadGeoAuditRow, type LeadGeoAudit } from "@/lib/leads/geo-audit"
+import {
+  readLeadGeoReviewRow,
+  type LeadGeoReview,
+} from "@/lib/leads/geo-review"
 
 export type {
   LeadDetailActivity,
@@ -71,6 +81,7 @@ export type {
   LeadDiagnosisDraft,
   LeadDiagnosisExport,
 }
+export type { LeadGeoAudit, LeadGeoReview }
 
 export type LeadDetail = {
   lead: LeadRecord
@@ -80,6 +91,9 @@ export type LeadDetail = {
   websiteAudits: LeadWebsiteAudit[]
   digitalPresenceAudit: LeadDigitalPresenceAudit | null
   visibilityAudit: LeadVisibilityAudit | null
+  visibilityReview: LeadVisibilityReview
+  geoAudit: LeadGeoAudit | null
+  geoReview: LeadGeoReview
   backlinkAudit: LeadBacklinkAudit | null
   diagnosisDraft: LeadDiagnosisDraft | null
   diagnosisExports: LeadDiagnosisExport[]
@@ -123,6 +137,9 @@ export async function getLeadDetail(
     { data: websiteReviewRows },
     { data: digitalPresenceRow, error: digitalPresenceError },
     { data: visibilityRow, error: visibilityError },
+    { data: visibilityReviewRow },
+    { data: geoRow, error: geoError },
+    { data: geoReviewRow },
     { data: backlinkRow, error: backlinkError },
     { data: diagnosisDraftRow, error: diagnosisDraftError },
     { data: diagnosisExportRows, error: diagnosisExportError },
@@ -166,6 +183,26 @@ export async function getLeadDetail(
       .eq("lead_id", id)
       .order("fetched_at", { ascending: false })
       .limit(1)
+      .maybeSingle(),
+    // Uma linha por lead. Sem `error` no destructuring: lead nunca julgado
+    // simplesmente não tem linha, e isso não é falha de carregamento.
+    supabase
+      .from("lead_visibility_reviews")
+      .select("review, notes, updated_at, updated_by")
+      .eq("lead_id", id)
+      .maybeSingle(),
+    supabase
+      .from("lead_geo_audits")
+      .select(GEO_SELECT)
+      .eq("lead_id", id)
+      .order("fetched_at", { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    // Uma linha por lead, e lead nunca julgado simplesmente nao tem linha.
+    supabase
+      .from("lead_geo_reviews")
+      .select(GEO_REVIEW_SELECT)
+      .eq("lead_id", id)
       .maybeSingle(),
     supabase
       .from("lead_backlink_audits")
@@ -230,6 +267,13 @@ export async function getLeadDetail(
     return {
       status: "error",
       message: "Não foi possível carregar a visibilidade. Tente novamente.",
+    }
+  }
+
+  if (geoError) {
+    return {
+      status: "error",
+      message: "Não foi possível carregar a presença em IA. Tente novamente.",
     }
   }
 
@@ -352,6 +396,15 @@ export async function getLeadDetail(
             visibilityRow as Record<string, unknown>,
           ) ?? null)
         : null,
+      visibilityReview: readLeadVisibilityReviewRow(
+        (visibilityReviewRow as Record<string, unknown> | null) ?? null,
+      ),
+      geoAudit: geoRow
+        ? readLeadGeoAuditRow(geoRow as Record<string, unknown>)
+        : null,
+      geoReview: readLeadGeoReviewRow(
+        (geoReviewRow as Record<string, unknown> | null) ?? null,
+      ),
       backlinkAudit: backlinkRow
         ? (readLeadBacklinkAuditRow(backlinkRow as Record<string, unknown>) ??
           null)

@@ -1,6 +1,7 @@
 import { z } from "zod"
 import {
   DIGITAL_PRESENCE_FOLLOWERS_MAX,
+  DIGITAL_PRESENCE_NOTES_MAX,
   DIGITAL_PRESENCE_REVIEW_NOTE_MAX,
   readDigitalPresenceReview,
 } from "@/lib/leads/digital-presence-review"
@@ -26,6 +27,10 @@ const reviewJsonSchema = z
   .refine(
     (review) => review.identity.note.length <= DIGITAL_PRESENCE_REVIEW_NOTE_MAX,
     `Nota deve ter no máximo ${DIGITAL_PRESENCE_REVIEW_NOTE_MAX} caracteres.`,
+  )
+  .refine(
+    (review) => review.notes.length <= DIGITAL_PRESENCE_NOTES_MAX,
+    `Notas devem ter no máximo ${DIGITAL_PRESENCE_NOTES_MAX} caracteres.`,
   )
   .refine((review) => {
     return Object.values(review.networks).every((answer) => {

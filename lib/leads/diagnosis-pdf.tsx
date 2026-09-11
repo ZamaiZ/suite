@@ -185,6 +185,10 @@ function Scorecard({ document }: { document: DiagnosisDocument }) {
     <View style={styles.scoreRow}>
       {DIAGNOSIS_PILLARS.map((pillar) => {
         const cell = document.facts.scorecard[pillar]
+        // Pilar nao medido some do documento do cliente. Imprimir zero afirma
+        // que a dimensao esta ruim; imprimir cem afirma que esta perfeita. As
+        // duas mentem sobre o mesmo: ninguem coletou.
+        if (!cell.measured) return null
         return (
           <View key={pillar} style={styles.scoreCard}>
             <Text style={styles.scoreValue}>{cell.score}</Text>

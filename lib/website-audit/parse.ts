@@ -12,6 +12,7 @@ import {
   WEBSITE_TEXT_EXCERPT_MAX,
   type WebsiteCrawlSignals,
   type WebsitePageSnapshot,
+  type WebsiteSchemaDates,
 } from "../leads/website-audit.ts"
 import type { WebsiteRedirectHop } from "../leads/website-redirects.ts"
 import { normalizeCanonical } from "../leads/website-canonical.ts"
@@ -92,6 +93,40 @@ function schemaTypesFromJson(value: unknown, acc: Set<string>): void {
     for (const item of type) {
       if (typeof item === "string" && item.trim()) acc.add(item.trim())
     }
+  }
+}
+
+/**
+ * Percorre o mesmo grafo que `schemaTypesFromJson`, colhendo valor em vez de
+ * tipo. A primeira ocorrencia vence: um `@graph` com Organization e BlogPosting
+ * traz duas datas, e a da pagina aparece antes da do site.
+ */
+function schemaDatesFromJson(
+  value: unknown,
+  acc: { published: string | null; modified: string | null },
+): void {
+  if (!value) return
+  if (Array.isArray(value)) {
+    for (const item of value) schemaDatesFromJson(item, acc)
+    return
+  }
+  if (typeof value !== "object") return
+  const row = value as Record<string, unknown>
+  if ("@graph" in row) schemaDatesFromJson(row["@graph"], acc)
+  const published = row.datePublished
+  const modified = row.dateModified
+  if (
+    acc.published === null &&
+    typeof published === "string" &&
+    published.trim()
+  ) {
+    acc.published = published.trim()
+  }
+  if (acc.modified === null && typeof modified === "string" && modified.trim()) {
+    acc.modified = modified.trim()
+  }
+  for (const item of Object.values(row)) {
+    if (item && typeof item === "object") schemaDatesFromJson(item, acc)
   }
 }
 
@@ -261,6 +296,9 @@ export function emptyPageSnapshot(
     headers: {},
     indexable: true,
     redirects,
+    // Sem HTML nao houve o que medir. `null` diz isso; `{published:null,...}`
+    // diria "olhamos e a pagina nao declara", que e outra afirmacao.
+    schemaDates: null,
   }
 }
 
@@ -280,11 +318,14 @@ export function parseHtmlPage(
   )
 
   const types = new Set<string>()
+  const schemaDates: WebsiteSchemaDates = { published: null, modified: null }
   $('script[type="application/ld+json"]').each((_, node) => {
     const raw = $(node).text()
     if (!raw.trim()) return
     try {
-      schemaTypesFromJson(JSON.parse(raw) as unknown, types)
+      const parsed = JSON.parse(raw) as unknown
+      schemaTypesFromJson(parsed, types)
+      schemaDatesFromJson(parsed, schemaDates)
     } catch {
       return
     }
@@ -406,6 +447,7 @@ export function parseHtmlPage(
     // O header X-Robots-Tag pesa tanto quanto a meta robots para indexacao.
     indexable: pageIsIndexable($) && !headerBlocksIndexing(headers),
     redirects,
+    schemaDates,
   }
 }
 

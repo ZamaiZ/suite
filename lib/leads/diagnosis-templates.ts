@@ -16,6 +16,11 @@ function pillarLine(pillar: DiagnosisPillar, facts: DiagnosisFacts): string {
   const score = facts.scorecard[pillar]
   const label = DIAGNOSIS_PILLAR_LABELS[pillar]
   const top = facts.pillars[pillar].opportunities[0]
+  // Sem coleta não há o que narrar, e "está em boa forma" seria elogio a uma
+  // dimensão que ninguém mediu.
+  if (!score.measured) {
+    return `${label} ainda não foi coletada nesta auditoria.`
+  }
   if (score.highCount + score.mediumCount === 0) {
     return `${label} está em boa forma nesta coleta (nota ${score.score}).`
   }
