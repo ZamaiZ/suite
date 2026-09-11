@@ -45,7 +45,7 @@ export function geoContentFromCrawl(crawl: WebsiteCrawl): GeoContent {
 
   const headings = crawl.pages.flatMap((page) => page.headings)
   const levels = new Set(headings.map((heading) => heading.level))
-  const questionHeadings = headings.filter((  ) =>
+  const questionHeadings = headings.filter((heading) =>
     isQuestion(heading.text),
   ).length
 

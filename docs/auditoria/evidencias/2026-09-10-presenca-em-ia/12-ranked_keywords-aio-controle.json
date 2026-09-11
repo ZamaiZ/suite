@@ -1,0 +1,645 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "14.6482 sec.",
+  "cost": 0.018,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110301-2319-0381-0000-56070ae97ce1",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "14.5703 sec.",
+      "cost": 0.018,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "dataforseo_labs",
+        "google",
+        "ranked_keywords",
+        "live"
+      ],
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "ranked_keywords",
+        "se_type": "google",
+        "target": "puroclean.com",
+        "location_name": "United States",
+        "language_code": "en",
+        "item_types": [
+          "ai_overview_reference"
+        ],
+        "limit": 50,
+        "order_by": [
+          "ranked_serp_element.serp_item.etv,desc"
+        ]
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target": "puroclean.com",
+          "location_code": 2840,
+          "language_code": "en",
+          "total_count": 4677,
+          "items_count": 50,
+          "metrics": {
+            "organic": null,
+            "paid": null,
+            "featured_snippet": null,
+            "local_pack": null,
+            "ai_overview_reference": {
+              "pos_1": 65,
+              "pos_2_3": 337,
+              "pos_4_10": 2004,
+              "pos_11_20": 1849,
+              "pos_21_30": 380,
+              "pos_31_40": 36,
+              "pos_41_50": 5,
+              "pos_51_60": 1,
+              "pos_61_70": 0,
+              "pos_71_80": 0,
+              "pos_81_90": 0,
+              "pos_91_100": 0,
+              "etv": 47827.81365648098,
+              "count": 4677,
+              "estimated_paid_traffic_cost": 505303.7916341303,
+              "is_new": 0,
+              "is_up": 0,
+              "is_down": 0,
+              "is_lost": 0,
+              "clickstream_etv": null,
+              "clickstream_gender_distribution": null,
+              "clickstream_age_distribution": null
+            }
+          },
+          "metrics_absolute": null,
+          "items": [
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "remediate mold",
+                "location_code": 2840,
+                "language_code": "en",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-14 16:21:46 +00:00",
+                  "competition": 0.36000001430511475,
+                  "competition_level": "MEDIUM",
+                  "cpc": 36.58000183105469,
+                  "search_volume": 165000,
+                  "low_top_of_page_bid": 8.220000267028809,
+                  "high_top_of_page_bid": 49.5099983215332,
+                  "categories": [
+                    10004,
+                    10282,
+                    11151
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 90500
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 90500
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 60500
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 60500
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 74000
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 60500
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 74000
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 246000
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 165000
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 135000
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 673000
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 201000
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 0,
+                    "quarterly": 50,
+                    "yearly": 0
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": "mold remediation",
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 44,
+                  "detected_language": "en",
+                  "is_another_language": false
+                },
+                "serp_info": {
+                  "se_type": "google",
+                  "check_url": "https://www.google.com/search?q=remediate%20mold&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                  "serp_item_types": [
+                    "ai_overview",
+                    "organic",
+                    "people_also_ask",
+                    "people_also_search",
+                    "video",
+                    "local_pack",
+                    "related_searches",
+                    "images"
+                  ],
+                  "se_results_count": 192,
+                  "last_updated_time": "2026-06-17 02:07:52 +00:00",
+                  "previous_updated_time": "2025-11-09 02:36:25 +00:00"
+                },
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 448.1000061035156,
+                  "dofollow": 355,
+                  "referring_pages": 385.5,
+                  "referring_domains": 175.89999389648438,
+                  "referring_main_domains": 92,
+                  "rank": 230.60000610351562,
+                  "main_domain_rank": 466.79998779296875,
+                  "last_updated_time": "2026-06-17 02:07:54 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-29 19:09:00 +00:00"
+                }
+              },
+              "ranked_serp_element": {
+                "se_type": "google",
+                "serp_item": {
+                  "se_type": "google",
+                  "type": "ai_overview_reference",
+                  "rank_group": 5,
+                  "rank_absolute": 1,
+                  "source": "www.puroclean.com",
+                  "domain": "www.puroclean.com",
+                  "title": "Expert Mold Remediation: What to Do After Discovering Mold in Your Home in Sarasota",
+                  "url": "https://www.puroclean.com/bradenton-fl-puroclean-bradenton/blog/expert-mold-remediation-what-to-do-after-discovering-mold-in-your-home-in-sarasota/",
+                  "text": "Ensure Compliance with Safety Standards All mold remediation must follow EPA and OSHA guidelines, especially in high-humidity area...",
+                  "main_domain": "puroclean.com",
+                  "relative_url": "/bradenton-fl-puroclean-bradenton/blog/expert-mold-remediation-what-to-do-after-discovering-mold-in-your-home-in-sarasota/",
+                  "etv": 7738.5,
+                  "estimated_paid_traffic_cost": 283074.34375,
+                  "clickstream_etv": null,
+                  "rank_changes": {
+                    "previous_rank_absolute": null,
+                    "is_new": false,
+                    "is_up": false,
+                    "is_down": false
+                  },
+                  "backlinks_info": null,
+                  "rank_info": {
+                    "page_rank": 0,
+                    "main_domain_rank": 399
+                  }
+                },
+                "check_url": "https://www.google.com/search?q=remediate%20mold&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                "serp_item_types": [
+                  "ai_overview",
+                  "organic",
+                  "people_also_ask",
+                  "people_also_search",
+                  "video",
+                  "local_pack",
+                  "related_searches",
+                  "images"
+                ],
+                "se_results_count": 192,
+                "keyword_difficulty": 44,
+                "is_lost": false,
+                "last_updated_time": "2026-06-17 02:07:52 +00:00",
+                "previous_updated_time": "2025-11-09 02:36:25 +00:00"
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "helped i wrecked my house",
+                "location_code": 2840,
+                "language_code": "en",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-21 11:22:29 +00:00",
+                  "competition": 0.009999999776482582,
+                  "competition_level": "LOW",
+                  "cpc": 0.029999999329447746,
+                  "search_volume": 9900,
+                  "low_top_of_page_bid": 0.019999999552965164,
+                  "high_top_of_page_bid": 6,
+                  "categories": [
+                    10013,
+                    10109,
+                    10589
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 2900
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 3600
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 3600
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 3600
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 4400
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 4400
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 5400
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 6600
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 18100
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 33100
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 27100
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 8100
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": -19,
+                    "quarterly": -19,
+                    "yearly": -56
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": "help i wrecked my house",
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 16,
+                  "detected_language": "en",
+                  "is_another_language": false
+                },
+                "serp_info": {
+                  "se_type": "google",
+                  "check_url": "https://www.google.com/search?q=helped%20i%20wrecked%20my%20house&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                  "serp_item_types": [
+                    "ai_overview",
+                    "organic",
+                    "people_also_ask",
+                    "video",
+                    "short_videos",
+                    "related_searches",
+                    "knowledge_graph",
+                    "images"
+                  ],
+                  "se_results_count": 191,
+                  "last_updated_time": "2026-06-18 13:56:20 +00:00",
+                  "previous_updated_time": "2026-01-27 10:54:22 +00:00"
+                },
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 123.5,
+                  "dofollow": 74.19999694824219,
+                  "referring_pages": 87.0999984741211,
+                  "referring_domains": 21.700000762939453,
+                  "referring_main_domains": 21,
+                  "rank": 100.4000015258789,
+                  "main_domain_rank": 746.5,
+                  "last_updated_time": "2026-06-18 13:56:21 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-27 21:58:00 +00:00"
+                }
+              },
+              "ranked_serp_element": {
+                "se_type": "google",
+                "serp_item": {
+                  "se_type": "google",
+                  "type": "ai_overview_reference",
+                  "rank_group": 2,
+                  "rank_absolute": 1,
+                  "source": "www.puroclean.com",
+                  "domain": "www.puroclean.com",
+                  "title": "What Is the Fastest Way to Clean a Hoarder’s House in 21st Century?",
+                  "url": "https://www.puroclean.com/galloway-oh-puroclean-home-savers/blog/what-is-the-fastest-way-to-clean-a-hoarders-house-in-21st-century/",
+                  "text": "What Is the Fastest Way to Clean a Hoarder's House? 1. Start with Safety First 2. Create a Clear Plan Before lifting the first box...",
+                  "main_domain": "puroclean.com",
+                  "relative_url": "/galloway-oh-puroclean-home-savers/blog/what-is-the-fastest-way-to-clean-a-hoarders-house-in-21st-century/",
+                  "etv": 1603.800048828125,
+                  "estimated_paid_traffic_cost": 48.11399841308594,
+                  "clickstream_etv": null,
+                  "rank_changes": {
+                    "previous_rank_absolute": null,
+                    "is_new": false,
+                    "is_up": false,
+                    "is_down": false
+                  },
+                  "backlinks_info": null,
+                  "rank_info": {
+                    "page_rank": 0,
+                    "main_domain_rank": 399
+                  }
+                },
+                "check_url": "https://www.google.com/search?q=helped%20i%20wrecked%20my%20house&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                "serp_item_types": [
+                  "ai_overview",
+                  "organic",
+                  "people_also_ask",
+                  "video",
+                  "short_videos",
+                  "related_searches",
+                  "knowledge_graph",
+                  "images"
+                ],
+                "se_results_count": 191,
+                "keyword_difficulty": 16,
+                "is_lost": false,
+                "last_updated_time": "2026-06-18 13:56:20 +00:00",
+                "previous_updated_time": "2026-01-27 10:54:22 +00:00"
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "fire in the house",
+                "location_code": 2840,
+                "language_code": "en",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-19 14:11:10 +00:00",
+                  "competition": 0,
+                  "competition_level": "LOW",
+                  "cpc": 27.3700008392334,
+                  "search_volume": 12100,
+                  "low_top_of_page_bid": 5.170000076293945,
+                  "high_top_of_page_bid": 20,
+                  "categories": [
+                    10009,
+                    10018,
+                    10158,
+                    10418,
+                    10815,
+                    13708
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 9900
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 9900
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 12100
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 12100
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 18100
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 12100
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 14800
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 14800
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 12100
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 14800
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 12100
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 12100
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 0,
+                    "quarterly": -18,
+                    "yearly": -18
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": "the house on fire",
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 9,
+                  "detected_language": "en",
+                  "is_another_language": false
+                },
+                "serp_info": {
+                  "se_type": "google",
+                  "check_url": "https://www.google.com/search?q=fire%20in%20the%20house&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                  "serp_item_types": [
+                    "images",
+                    "ai_overview",
+                    "organic",
+                    "people_also_ask",
+                    "video",
+                    "discussions_and_forums",
+                    "related_searches",
+                    "knowledge_graph"
+                  ],
+                  "se_results_count": 107,
+                  "last_updated_time": "2026-06-18 13:02:59 +00:00",
+                  "previous_updated_time": "2026-02-07 11:51:44 +00:00"
+                },
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 739.2999877929688,
+                  "dofollow": 636.7000122070312,
+                  "referring_pages": 701.0999755859375,
+                  "referring_domains": 218.1999969482422,
+                  "referring_main_domains": 158.89999389648438,
+                  "rank": 90.19999694824219,
+                  "main_domain_rank": 551.5,
+                  "last_updated_time": "2026-06-18 13:03:02 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-27 17:15:32 +00:00"
+                }
+              },
+              "ranked_serp_element": {
+                "se_type": "google",
+                "serp_item": {
+                  "se_type": "google",
+                  "type": "ai_overview_reference",
+                  "rank_group": 3,
+                  "rank_absolute": 2,
+                  "source": "www.puroclean.com",
+                  "domain": "www.puroclean.com",
+                  "title": "What to Do After a House Fire Alexandria VA: Homeowners Guide",
+                  "url": "https://www.puroclean.com/alexandria-va-puroclean-alexandria/blog/what-to-do-after-a-house-fire-alexandria-va/",
+                  "text": "Immediate Actions After the Fire 1. Get Everyone Out and Stay Out 2. Call 911, Even If the Fire Looks Small 3. Do Not Go Back Insi...",
+                  "main_domain": "puroclean.com",
+                  "relative_url": "/alexandria-va-puroclean-alexandria/blog/what-to-do-after-a-house-fire-alexandria-va/",
+                  "etv": 1177.3299560546875,
+                  "estimated_paid_traffic_cost": 32223.521484375,
+                  "clickstream_etv": null,
+                  "rank_changes": {
+                    "previous_rank_absolute": null,
+                    "is_new": false,
+                    "is_up": false,
+                    "is_down": false
+                  },
+                  "backlinks_info": null,
+                  "rank_info": {
+                    "page_rank": 0,
+                    "main_domain_rank": 399
+                  }
+                },
+                "check_url": "https://www.google.com/search?q=fire%20in%20the%20house&hl=en&gl=US&ie=UTF-8&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc",
+                "serp_item_types": [
+                  "images",
+                  "ai_overview",
+                  "organic",
+                  "people_also_ask",
+                  "video",
+                  "discussions_and_forums",
+                  "related_searches",
+                  "knowledge_graph"
+                ],
+                "se_results_count": 107,
+                "keyword_difficulty": 9,
+                "is_lost": false,
+                "last_updated_time": "2026-06-18 13:02:59 +00:00",
+                "previous_updated_time": "2026-02-07 11:51:44 +00:00"
+              }
+            }
+          ],
+          "_items_original_length": 50
+        }
+      ]
+    }
+  ],
+  "_cortado": {
+    "em": "2026-09-11T03:16:02.391Z",
+    "nota": "listas truncadas para os primeiros 3 itens; `_<lista>_original_length` guarda o tamanho real. Regenere o cru com probe.mjs / probe-pago.mjs / probe-pago-2.mjs.",
+    "cortes": [
+      {
+        "caminho": "tasks.0.result.0.items",
+        "de": 50,
+        "para": 3
+      }
+    ]
+  }
+}

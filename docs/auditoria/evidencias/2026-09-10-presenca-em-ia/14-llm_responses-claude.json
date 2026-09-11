@@ -1,0 +1,128 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "5.6280 sec.",
+  "cost": 0.024352,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110302-2319-0612-0000-ec70726aba22",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "5.6175 sec.",
+      "cost": 0.024352,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "claude",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "claude",
+        "user_prompt": "A agência de SEO Busca Orgânica é confiável? O que se sabe sobre ela?",
+        "model_name": "claude-haiku-4-5",
+        "web_search": true,
+        "web_search_country_iso_code": "BR",
+        "web_search_city": "São Paulo",
+        "max_output_tokens": 800
+      },
+      "result": [
+        {
+          "model_name": "claude-haiku-4-5-20251001",
+          "input_tokens": 10797,
+          "output_tokens": 591,
+          "reasoning_tokens": 0,
+          "web_search": true,
+          "money_spent": 0.023752,
+          "datetime": "2026-09-11 03:02:13 +00:00",
+          "items": [
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Vou buscar informações sobre a agência de SEO \"Busca Orgânica\" para você.",
+                  "annotations": null
+                }
+              ]
+            },
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Com base na busca realizada, encontrei informações sobre a agência **Busca Orgânica**:\n\n## O que se sabe sobre a Busca Orgânica\n\nA Busca Orgânica é uma agência de SEO que oferece serviços de otimização para mecanismos de busca. De acordo com as informações encontradas, ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "a agência oferece serviços de otimização de conteúdo para melhorar a classificação no Google e realiza auditorias de SEO para seus clientes",
+                  "annotations": [
+                    {
+                      "title": "Agência de SEO - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/agencia-de-seo",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ".\n\n## Sobre confiabilidade\n\n",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "A agência pode ser contatada pelo telefone (11) 97831-8642 ou WhatsApp",
+                  "annotations": [
+                    {
+                      "title": "Agência de SEO - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/agencia-de-seo",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ". No entanto, é importante notar que ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "ao escolher uma empresa de SEO, é essencial ter cuidado, pois não se trata apenas do preço, mas da qualidade do serviço, e a agência deve fornecer soluções de longo prazo, não apenas soluções fáceis que duram alguns meses",
+                  "annotations": [
+                    {
+                      "title": "Agência de SEO - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/agencia-de-seo",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ".\n\n## Recomendação\n\nOs resultados da busca não contêm avaliações, reviews ou depoimentos de clientes específicos sobre a Busca Orgânica. Para uma análise mais completa sobre a confiabilidade da agência, recomendo:\n\n1. Procurar por avaliações em plataformas como Google Meu Negócio, Trustpilot ou similar\n2. Solicitar referências de clientes anteriores\n3. Comparar propostas com outras agências do mercado\n4. Verificar se possuem certificações ou reconhecimentos profissionais",
+                  "annotations": null
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": [
+            "Busca Orgânica agência SEO confiável",
+            "Busca Orgânica agência reviews avaliações"
+          ]
+        }
+      ]
+    }
+  ]
+}

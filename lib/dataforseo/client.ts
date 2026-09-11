@@ -33,7 +33,23 @@ export const DATAFORSEO_COLLECT_ERROR =
 /** `cost` vem em toda resposta e é o custo real em USD daquela chamada. */
 export type DataForSeoResult<T> =
   | { status: "ok"; data: T; cost?: number }
-  | { status: "error"; message: string }
+  | {
+      status: "error"
+      message: string
+      /**
+       * `status_code` da tarefa, quando houve tarefa.
+       *
+       * Existe porque nem todo erro significa a mesma coisa para quem grava o
+       * resultado. `50301` é o provedor de LLM fora do ar — execução que **não
+       * aconteceu** — e `40501` é campo recusado, que é bug nosso de corpo. Os
+       * dois devolvem HTTP 200 com `cost: 0`, então sem este código a sondagem
+       * gravaria ausência inventada, de graça, sem nada no custo para
+       * denunciar.
+       */
+      code?: number | null
+      /** A mensagem do provedor, quando ela diz mais que a nossa. */
+      vendorMessage?: string | null
+    }
 
 export type DataForSeoTaskGetResult<T> =
   | { status: "ok"; data: T | null; cost?: number }
@@ -119,7 +135,14 @@ export async function postDataForSeo<T>(
     if (read.status === "empty") {
       return { status: "ok", data: null, cost: read.cost }
     }
-    return { status: "error", message: DATAFORSEO_VENDOR_ERROR }
+    // `code` e `vendorMessage` sobem para quem precisa distinguir "o provedor
+    // não respondeu" de "respondeu e não tem". Quem não precisa ignora.
+    return {
+      status: "error",
+      message: DATAFORSEO_VENDOR_ERROR,
+      code: read.status === "error" ? read.code : null,
+      vendorMessage: read.status === "error" ? read.message : null,
+    }
   } catch {
     return { status: "error", message: DATAFORSEO_VENDOR_ERROR }
   }

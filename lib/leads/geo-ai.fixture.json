@@ -1,0 +1,298 @@
+{
+  "_origem": "Recortado dos payloads reais da onda 0 da Presenca em IA, em docs/auditoria/evidencias/2026-09-10-presenca-em-ia/. Regenere com os probes de la.",
+  "aiKeywordData": {
+    "items": [
+      {
+        "keyword": "busca organica",
+        "ai_search_volume": 6,
+        "ai_monthly_searches": [
+          {
+            "year": 2026,
+            "month": 8,
+            "ai_search_volume": 6
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "ai_search_volume": 5
+          },
+          {
+            "year": 2026,
+            "month": 6,
+            "ai_search_volume": 5
+          }
+        ]
+      },
+      {
+        "keyword": "pallets de paulla",
+        "ai_search_volume": 0,
+        "ai_monthly_searches": [
+          {
+            "year": 2026,
+            "month": 8,
+            "ai_search_volume": 0
+          },
+          {
+            "year": 2026,
+            "month": 7,
+            "ai_search_volume": 0
+          }
+        ]
+      }
+    ]
+  },
+  "multiTarget": {
+    "items": [
+      {
+        "key": "lead",
+        "total": {
+          "mentions": 2,
+          "ai_search_volume": 650
+        },
+        "sources_domain": [
+          {
+            "key": "www.conversion.com.br",
+            "mentions": 1,
+            "ai_search_volume": 480
+          },
+          {
+            "key": "www.organicadigital.com",
+            "mentions": 2,
+            "ai_search_volume": 650
+          },
+          {
+            "key": "www.idinheiro.com.br",
+            "mentions": 1,
+            "ai_search_volume": 170
+          },
+          {
+            "key": "www.youtube.com",
+            "mentions": 0,
+            "ai_search_volume": 0
+          },
+          {
+            "key": "www.agenciamestre.com",
+            "mentions": 0,
+            "ai_search_volume": 0
+          }
+        ]
+      },
+      {
+        "key": "conversion",
+        "total": {
+          "mentions": 50,
+          "ai_search_volume": 37420
+        },
+        "sources_domain": [
+          {
+            "key": "www.conversion.com.br",
+            "mentions": 42,
+            "ai_search_volume": 35770
+          },
+          {
+            "key": "www.organicadigital.com",
+            "mentions": 7,
+            "ai_search_volume": 4580
+          },
+          {
+            "key": "www.idinheiro.com.br",
+            "mentions": 1,
+            "ai_search_volume": 320
+          },
+          {
+            "key": "www.youtube.com",
+            "mentions": 24,
+            "ai_search_volume": 14450
+          },
+          {
+            "key": "www.agenciamestre.com",
+            "mentions": 5,
+            "ai_search_volume": 3120
+          }
+        ]
+      },
+      {
+        "key": "mestre",
+        "total": {
+          "mentions": 15,
+          "ai_search_volume": 6750
+        },
+        "sources_domain": [
+          {
+            "key": "www.conversion.com.br",
+            "mentions": 5,
+            "ai_search_volume": 3120
+          },
+          {
+            "key": "www.organicadigital.com",
+            "mentions": 2,
+            "ai_search_volume": 1770
+          },
+          {
+            "key": "www.idinheiro.com.br",
+            "mentions": 1,
+            "ai_search_volume": 140
+          },
+          {
+            "key": "www.youtube.com",
+            "mentions": 6,
+            "ai_search_volume": 2450
+          },
+          {
+            "key": "www.agenciamestre.com",
+            "mentions": 15,
+            "ai_search_volume": 6750
+          }
+        ]
+      }
+    ]
+  },
+  "searchMentions": {
+    "total_count": 7,
+    "items": [
+      {
+        "question": "como ganhar dinheiro na internet rápido",
+        "ai_search_volume": 1600,
+        "last_response_at": "2025-08-31 11:38:54 +00:00",
+        "sources": [
+          {
+            "domain": "www.youtube.com",
+            "url": "https://www.youtube.com/watch?v=fV7dg4hlZ18&t=402",
+            "title": "10 SITES PARA GANHAR DINHEIRO ONLINE E FICAR RICO RÁPIDO",
+            "rank": 1
+          },
+          {
+            "domain": "sebrae.com.br",
+            "url": "https://sebrae.com.br/sites/PortalSebrae/artigos/10-ideias-de-como-ganhar-dinheiro-na-internet-sem-sair-de-casa,4a5cc4ec9b805810VgnVCM100000d701210aRCRD#:~:text=Ganhe%20dinheiro%20como%20afiliado%20digital&text=Primeiramente%2C%20trataremos%20do%20afiliado%20digital,na%20internet%20e%20se%20formalizar.",
+            "title": "10 ideias de como ganhar dinheiro na internet sem sair de casa - Sebrae",
+            "rank": 2
+          },
+          {
+            "domain": "www.hostinger.com",
+            "url": "https://www.hostinger.com/br/tutoriais/como-ganhar-dinheiro-na-internet",
+            "title": "Como ganhar dinheiro na Internet: as 20 melhores ideias para 2025",
+            "rank": 3
+          },
+          {
+            "domain": "www.mobills.com.br",
+            "url": "https://www.mobills.com.br/blog/ganhar-dinheiro/sites-para-ganhar-dinheiro-na-internet/#:~:text=Sites%20de%20Cashback%20e%20Investimentos,para%20ganhar%20dinheiro%20na%20internet!",
+            "title": "32 Sites para ganhar Dinheiro na Internet Hoje! - Mobills",
+            "rank": 4
+          }
+        ]
+      },
+      {
+        "question": "buscas organicas",
+        "ai_search_volume": 480,
+        "last_response_at": "2025-09-01 14:52:36 +00:00",
+        "sources": [
+          {
+            "domain": "www.conversion.com.br",
+            "url": "https://www.conversion.com.br/blog/busca-organica/#:~:text=O%20que%20%C3%A9%20a%20busca,engajamento%20com%20o%20p%C3%BAblico-alvo.",
+            "title": "Busca orgânica: o que é, como funciona e importância - Conversion",
+            "rank": 1
+          },
+          {
+            "domain": "www.organicadigital.com",
+            "url": "https://www.organicadigital.com/blog/por-que-ranquear-bem-seu-site-na-busca-organica/#:~:text=Divulgue%20os%20conte%C3%BAdos,de%20aparecer%20entre%20os%20primeiros!",
+            "title": "Busca orgânica: como alcançar as primeiras posições",
+            "rank": 2
+          },
+          {
+            "domain": "www.buscaorganica.com.br",
+            "url": "https://www.buscaorganica.com.br/#:~:text=O%20que%20%C3%A9%20Busca%20Org%C3%A2nica,p%C3%BAblico%20qualificado%20para%20seu%20site.",
+            "title": "Busca Orgânica: Crescimento para sua empresa através do Google",
+            "rank": 3
+          },
+          {
+            "domain": "outmarketing.com.br",
+            "url": "https://outmarketing.com.br/busca-organica/#:~:text=org%C3%A2nica%20em%202024!-,O%20que%20%C3%A9%20busca%20org%C3%A2nica?,fatores%20que%20destacaremos%20neste%20texto.",
+            "title": "Busca orgânica: domine o Google em 6 passos - OUTMarketing",
+            "rank": 4
+          }
+        ]
+      }
+    ]
+  },
+  "llmResponseClaude": {
+    "items": [
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Vou buscar informações sobre a agência de SEO \"Busca Orgânica\" para você.",
+            "annotations": null
+          }
+        ]
+      },
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Com base na busca realizada, encontrei informações sobre a agência **Busca Orgânica**:\n\n## O que se sabe sobre a Busca Orgânica\n\nA Busca Orgânica é uma agência de SEO que oferece serviços de otimização para mecanismos de busca. De acordo com as informações encontradas, ",
+            "annotations": null
+          },
+          {
+            "type": "text",
+            "text": "a agência oferece serviços de otimização de conteúdo para melhorar a classificação no Google e realiza auditorias de SEO para seus clientes",
+            "annotations": [
+              {
+                "title": "Agência de SEO - Busca Orgânica",
+                "url": "https://www.buscaorganica.com.br/agencia-de-seo",
+                "start_index": null,
+                "end_index": null,
+                "text": null
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ".\n\n## Sobre confiabilidade\n\n",
+            "annotations": null
+          },
+          {
+            "type": "text",
+            "text": "A agência pode ser contatada pelo telefone (11) 97831-8642 ou WhatsApp",
+            "annotations": [
+              {
+                "title": "Agência de SEO - Busca Orgânica",
+                "url": "https://www.buscaorganica.com.br/agencia-de-seo",
+                "start_index": null,
+                "end_index": null,
+                "text": null
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ". No entanto, é importante notar que ",
+            "annotations": null
+          },
+          {
+            "type": "text",
+            "text": "ao escolher uma empresa de SEO, é essencial ter cuidado, pois não se trata apenas do preço, mas da qualidade do serviço, e a agência deve fornecer soluções de longo prazo, não apenas soluções fáceis que duram alguns meses",
+            "annotations": [
+              {
+                "title": "Agência de SEO - Busca Orgânica",
+                "url": "https://www.buscaorganica.com.br/agencia-de-seo",
+                "start_index": null,
+                "end_index": null,
+                "text": null
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ".\n\n## Recomendação\n\nOs resultados da busca não contêm avaliações, reviews ou depoimentos de clientes específicos sobre a Busca Orgânica. Para uma análise mais completa sobre a confiabilidade da agência, recomendo:\n\n1. Procurar por avaliações em plataformas como Google Meu Negócio, Trustpilot ou similar\n2. Solicitar referências de clientes anteriores\n3. Comparar propostas com outras agências do mercado\n4. Verificar se possuem certificações ou reconhecimentos profissionais",
+            "annotations": null
+          }
+        ]
+      }
+    ],
+    "money_spent": 0.023752,
+    "model_name": "claude-haiku-4-5-20251001"
+  },
+  "_nota_zero": "A linha de volume zero vem de 11-ai_keyword_data-cruzado.json (keyword e volume reais); a serie mensal dela foi recortada porque 10-ai_keyword_data.json guarda so tres itens depois do corte."
+}

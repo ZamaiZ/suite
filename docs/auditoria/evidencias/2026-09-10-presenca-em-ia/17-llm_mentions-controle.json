@@ -1,0 +1,661 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "18.9704 sec.",
+  "cost": 0.11,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110302-2319-0650-0000-8af385046a8a",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "18.9557 sec.",
+      "cost": 0.11,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "llm_mentions",
+        "search_mentions",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "search_mentions",
+        "target": [
+          {
+            "domain": "puroclean.com"
+          }
+        ],
+        "platform": "google",
+        "location_name": "United States",
+        "language_code": "en",
+        "limit": 10
+      },
+      "result": [
+        {
+          "total_count": 3150,
+          "offset": 0,
+          "search_after_token": "eyJDdXJyZW50T2Zmc2V0IjoxMCwiUmF3UmVxdWVzdCI6eyJ0YXJnZXQiOlt7InR5cGUiOiJkb21haW4iLCJkb21haW4iOiJwdXJvY2xlYW4uY29tIiwic2VhcmNoX3Njb3BlIjpbImFueSJdLCJzZWFyY2hfdHlwZSI6ImluY2x1ZGUiLCJpbmNsdWRlX3N1YmRvbWFpbnMiOmZhbHNlfV0sInBsYXRmb3JtIjoiZ29vZ2xlIiwibGFuZ3VhZ2UiOiJlbiIsImxvY2F0aW9uIjoyODQwLCJsaW1pdCI6MTAsIm9mZnNldCI6MCwib3JkZXJfYnkiOm51bGwsInNlYXJjaF9hZnRlcl90b2tlbiI6bnVsbCwiYWlkIjoyMzE5NDF9LCJTZWFyY2hBZnRlckRhdGEiOnsiVmVyc2lvbiI6MSwiU2VhcmNoQWZ0ZXJWYWx1ZXMiOnsiYWlfc2VhcmNoX3ZvbHVtZSI6MTQ4MDAsImRhdGUiOiIyMDI1LTExLTA5VDA4OjQwOjM2WiIsImhhc2giOi04MzIzMzY3NTg4MDMyMjE0MTk3fSwiVG9rZW5SZWFsT2Zmc2V0IjowfX0=",
+          "items_count": 10,
+          "items": [
+            {
+              "platform": "google",
+              "model_name": "google_ai_overview",
+              "location_code": 2840,
+              "language_code": "en",
+              "question": "remove mold",
+              "answer": "![Safely Removing Mold and Mildew from Your Jobsite | West ...](https://api.dataforseo.com/cdn/i/04180526-1087-0066-0000-9bca415804c1:4)\nRemove mold by `fixing the moisture source, then cleaning hard surfaces with detergent/water, vinegar, or a 1:10 bleach-water solution` . Wear protective gear (mask, gloves, goggles). Porous materials like carpet or ceiling tiles often require disposal. Dry all areas completely to prevent regrowth.[[1]](https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c)[[2]](https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps)[[3]](https://www.puroclean.com/auburn-me/blog/what-kills-mold-permanently-on-wood-how-to-remove-it/)[[4]](https://www.sherwin-williams.com/en-us/project-center/maintenance-repair/how-to-remove-mildew#:~:text=Mildew%20is%20a%20fungus%20that%20can%20form,*%20Wear%20protective%20eyewear%2C%20clothing%2C%20and%20gloves)[[5]](https://www.youtube.com/watch?v=rVGRSuGIpaE&t=35)\n\n**Effective Mold Removal Solutions** \n\n- **Vinegar:** Spray undiluted white vinegar on the surface, leave for 1 hour, then wipe clean.\n- **Hydrogen Peroxide:** Mix 1 part 3% hydrogen peroxide with 3 parts water, apply, and scrub.\n- **Bleach Solution:** Mix 1 cup bleach to 1 gallon of water (1:10 ratio) for hard, non-porous surfaces.\n- **Commercial Removers:** Products like [Concrobium Mold Control](https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c) are effective for killing and preventing regrowth.[[1]](https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/#:~:text=Get%20a%20spray%20called%20Mold%20Control%20at,kill%20mold%20in%20hard%20to%20reach%20places.)[[2]](https://www.puroclean.com/auburn-me/blog/what-kills-mold-permanently-on-wood-how-to-remove-it/)[[3]](https://www.lowes.com/n/how-to/mold-removal-hard-surfaces)[[4]](https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps)[[5]](https://www.youtube.com/watch?v=PxCGK1TkTLo&t=221)\n\n**Steps for Cleaning Mold** \n\n1. **Safety First:** Wear N95 masks, goggles, and rubber gloves.\n2. **Ventilate:** Open doors and windows, or use fans.\n3. **Clean Surface:** Scrub mold off hard surfaces with cleaning solutions and allow to sit for 10–30 minutes.\n4. **Dry Thoroughly:** Ensure the area is 100% dry; use fans or dehumidifiers if necessary.\n5. **Remove Porous Items:** Items such as drywall, ceiling tiles, or carpets that are heavily infested should be replaced.\n6. **Prevent Future Growth:** Fix leaks, use exhaust fans, and maintain low humidity (under 50%).[[1]](https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c)[[2]](https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps)[[3]](https://www.sherwin-williams.com/en-us/project-center/maintenance-repair/how-to-remove-mildew#:~:text=Mildew%20is%20a%20fungus%20that%20can%20form,*%20Wear%20protective%20eyewear%2C%20clothing%2C%20and%20gloves)[[4]](https://www.cdc.gov/mold-health/about/clean-up.html)[[5]](https://www.youtube.com/watch?v=kbRKXNZxSAQ&t=25)[[6]](https://www.youtube.com/watch?v=PxCGK1TkTLo&t=221)[[7]](https://www.youtube.com/watch?v=rVGRSuGIpaE&t=35)[[8]](https://www.youtube.com/shorts/k5wjR59Y6Ss)\n\n**When to Call a Professional** \n\n- If the affected area is large (over 10 square feet).\n- If the mold is in the HVAC system.\n- If the mold resulted from flooding or sewage contamination.\n- If you have health issues like asthma or allergies.[[1]](https://www.cdc.gov/mold-health/about/clean-up.html)[[2]](https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps)[[3]](https://www.sherwin-williams.com/en-us/project-center/maintenance-repair/how-to-remove-mildew#:~:text=Mildew%20is%20a%20fungus%20that%20can%20form,*%20Wear%20protective%20eyewear%2C%20clothing%2C%20and%20gloves)[[4]](https://www.thehealthy.com/home/mold-and-mildew-remover/#:~:text=The%20mold%20or%20mildew%20covers%20an%20area%20larger%20than%2010%20square%20feet.)[[5]](https://www.directenergy.com/en/learn/home-maintenance/mold-prevention-cleanup#:~:text=If%20your%20home%20already%20has%20mold%20growing%2C,cleanup%20should%20be%20left%20to%20the%20professionals.)\n\n*Disclaimer: Never mix bleach with ammonia or other cleansers, as it can produce dangerous toxic fumes.* [[1]](https://www.lowes.com/n/how-to/mold-removal-hard-surfaces)",
+              "sources": [
+                {
+                  "snippet": "Get a spray called Mold Control at Home Depot and then run a fan on that thing for days until it's for sure dry. If you have a Hep...",
+                  "source_name": "Reddit",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 1,
+                  "title": "How do I kill mold permanently and stop it from coming back? - Reddit",
+                  "domain": "www.reddit.com",
+                  "url": "https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/#:~:text=Get%20a%20spray%20called%20Mold%20Control%20at,kill%20mold%20in%20hard%20to%20reach%20places.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Liberally spray a 1-to-10 solution of bleach and water on the affected surface. Let sit for 10 to 20 minutes. Scrub any tough stai...",
+                  "source_name": "The Home Depot",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 2,
+                  "title": "How to Get Rid of Mold",
+                  "domain": "www.homedepot.com",
+                  "url": "https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Bleach or dish detergent can be used to clean mold in your home. What you need to do to clean up mold will depend on how much wate...",
+                  "source_name": "Centers for Disease Control and Prevention | CDC (.gov)",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 3,
+                  "title": "Mold Clean Up Guidelines and Recommendations - CDC",
+                  "domain": "www.cdc.gov",
+                  "url": "https://www.cdc.gov/mold-health/about/clean-up.html",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "What are the basic mold cleanup steps? * The key to mold control is moisture control. * Scrub mold off hard surfaces with detergen...",
+                  "source_name": "U.S. Environmental Protection Agency (.gov)",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 4,
+                  "title": "What are the basic mold cleanup steps? | US EPA",
+                  "domain": "www.epa.gov",
+                  "url": "https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Regular cleaning bleach, mixed with water in a one-to-one ratio, is used to remove mold. In the experiment, after one application ...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 5,
+                  "title": "How to remove and kill mold - Bleach vs vinegar",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=kbRKXNZxSAQ&t=25",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "For large mold infestations, it might be necessary to hire a professional. If mold is found on porous surfaces such as drywall or ...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 6,
+                  "title": "Mold Removal: Clean Up or Tear Out?",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=rVGRSuGIpaE&t=35",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "The initial step in dealing with mold is to scrub and wipe the affected area using soapy water and disposable paper towels to coll...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 7,
+                  "title": "Mold Returning? You're Treating It Wrong! HACKS INSIDE!",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=PxCGK1TkTLo&t=221",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "To address mold and mildew buildup on window frames, tracks, or sills, the initial step involves opening the window or door and br...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 8,
+                  "title": "Cleaning MOLD & MILDEW from your WINDOW Sills",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/shorts/k5wjR59Y6Ss",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "What Kills Mold? A common question asked is “How do I remove mold?” There are several options for mold removal that you can either...",
+                  "source_name": "Lowe's",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 9,
+                  "title": "How To Remove Mold on Hard Surfaces - Lowe's",
+                  "domain": "www.lowes.com",
+                  "url": "https://www.lowes.com/n/how-to/mold-removal-hard-surfaces",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Mildew is a fungus that can form on walls, windowsills, and ceilings. It's a symptom of excessive moisture or little to no direct ...",
+                  "source_name": "Sherwin-Williams",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 10,
+                  "title": "How to Remove Mildew from Walls | Sherwin-Williams",
+                  "domain": "www.sherwin-williams.com",
+                  "url": "https://www.sherwin-williams.com/en-us/project-center/maintenance-repair/how-to-remove-mildew#:~:text=Mildew%20is%20a%20fungus%20that%20can%20form,*%20Wear%20protective%20eyewear%2C%20clothing%2C%20and%20gloves",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Apply a Cleaning Solution Vinegar: Mix equal parts white vinegar and water. Spray the solution onto the moldy surface and let it s...",
+                  "source_name": "www.puroclean.com",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 11,
+                  "title": "What Kills Mold Permanently on Wood (How to Remove it) - PuroClean.com",
+                  "domain": "www.puroclean.com",
+                  "url": "https://www.puroclean.com/auburn-me/blog/what-kills-mold-permanently-on-wood-how-to-remove-it/",
+                  "publication_date": null
+                }
+              ],
+              "search_results": null,
+              "ai_search_volume": 165000,
+              "monthly_searches": [
+                {
+                  "year": 2026,
+                  "month": 3,
+                  "search_volume": 49500
+                },
+                {
+                  "year": 2026,
+                  "month": 2,
+                  "search_volume": 49500
+                },
+                {
+                  "year": 2026,
+                  "month": 1,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 12,
+                  "search_volume": 246000
+                },
+                {
+                  "year": 2025,
+                  "month": 11,
+                  "search_volume": 165000
+                },
+                {
+                  "year": 2025,
+                  "month": 10,
+                  "search_volume": 110000
+                },
+                {
+                  "year": 2025,
+                  "month": 9,
+                  "search_volume": 673000
+                },
+                {
+                  "year": 2025,
+                  "month": 8,
+                  "search_volume": 201000
+                },
+                {
+                  "year": 2025,
+                  "month": 7,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 6,
+                  "search_volume": 90500
+                },
+                {
+                  "year": 2025,
+                  "month": 5,
+                  "search_volume": 110000
+                },
+                {
+                  "year": 2025,
+                  "month": 4,
+                  "search_volume": 110000
+                }
+              ],
+              "first_response_at": "2026-04-18 03:34:21 +00:00",
+              "last_response_at": "2026-04-18 03:34:21 +00:00",
+              "brand_entities": null,
+              "fan_out_queries": null,
+              "is_web_search_based": true
+            },
+            {
+              "platform": "google",
+              "model_name": "google_ai_overview",
+              "location_code": 2840,
+              "language_code": "en",
+              "question": "mold how to remove",
+              "answer": "![How to Remove Mold Stains in the Shower &amp; Bathroom Walls ...](https://api.dataforseo.com/llm_m/cdn/i/4417667972615189125:932635cecd3a496f9978a3917f5f1eb5)\nTo get rid of mold, `first fix the underlying water source or moisture issue, then clean surfaces using white vinegar, hydrogen peroxide, or a specialized product like Concrobium` . For non-porous materials, use a 1:10 bleach/water solution. Wear protective gear and ensure proper ventilation, as mold can trigger allergies and health issues.[[1]](https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c)[[2]](https://www.youtube.com/watch?v=dkBxl-AcPBw&t=24)[[3]](https://www.puroclean.com/auburn-me/blog/what-kills-mold-permanently-on-wood-how-to-remove-it/)[[4]](https://www.youtube.com/watch?v=W1t2JZ-CtPw&t=274)[[5]](https://www.cdph.ca.gov/Programs/CCDPHP/DEODC/EHIB/CPE/CDPH%20Document%20Library/Mold/MMIMH_English.pdf#:~:text=%E2%80%93%20Set%20up%20a%20fan%20to%20pull,on%20cement-block%20walls%20and%20other%20uneven%20surfaces.)\n\n**Key Methods for Mold Removal** \n\n- **[White Vinegar](https://www.google.com/search?q=White+Vinegar&csui=3&hl=en&gl=US&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc&ved=2ahUKEwi_mKeI85iTAxXRD7kGHRYwF6cQgK4QegYIAQgAEAs):** Spray undiluted or mixed with water on mold, let it sit for an hour, then scrub. It kills over 80% of mold species.\n- **[Hydrogen Peroxide (3%)](https://www.google.com/search?q=Hydrogen+Peroxide+%283%25%29&csui=3&hl=en&gl=US&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc&ved=2ahUKEwi_mKeI85iTAxXRD7kGHRYwF6cQgK4QegYIAQgAEA0):** Mix one part water to one part hydrogen peroxide and apply to moldy areas.\n- **[Baking Soda and Vinegar](https://www.google.com/search?q=Baking+Soda+and+Vinegar&csui=3&hl=en&gl=US&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc&ved=2ahUKEwi_mKeI85iTAxXRD7kGHRYwF6cQgK4QegYIAQgBEAE):** Combine to create a potent, natural cleaner for black mold.\n- **[Commercial Mold Removers](https://www.google.com/search?q=Commercial+Mold+Removers&csui=3&hl=en&gl=US&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc&ved=2ahUKEwi_mKeI85iTAxXRD7kGHRYwF6cQgK4QegYIAQgCEAE):** Products like Concrobium are effective for both killing and preventing future growth.\n- **[Bleach Solution](https://www.google.com/search?q=Bleach+Solution&csui=3&hl=en&gl=US&uule=w+CAIQIFISCQs2MuSEtepUEUK33kOSuTsc&ved=2ahUKEwi_mKeI85iTAxXRD7kGHRYwF6cQgK4QegYIAQgDEAE):** Mix 1 cup of bleach with 1 gallon of water, but use only on non-porous, hard surfaces like tile or metal.[[1]](https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/)[[2]](https://www.youtube.com/watch?v=dkBxl-AcPBw&t=24)[[3]](https://www.puroclean.com/auburn-me/blog/what-kills-mold-permanently-on-wood-how-to-remove-it/)[[4]](https://www.quora.com/How-can-I-get-rid-of-mold-spores-in-the-air-I-started-reacting-with-sinus-ear-pressure-when-a-roommate-moved-dusty-belongings-in-4-months-ago-Originally-I-thought-it-was-dust-mites-but-last-week-an-air-test-showed#:~:text=Vinegar%20has%20been%20found%20to%20kill%2082%25,used%20to%20kill%20mold%2C%20such%20as%20bleach.)[[5]](https://www.youtube.com/watch?v=W1t2JZ-CtPw&t=274)[[6]](https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c)[[7]](https://www.lowes.com/n/how-to/mold-removal-hard-surfaces)\n\n**Safety and Prevention Tips** \n\n- **Protection:** Wear gloves, a mask, and goggles when cleaning.\n- **Dry Thoroughly:** Ensure all affected areas are dried completely after cleaning to prevent regrowth.\n- **Porous Items:** Throw away items like carpets, ceiling tiles, or drywall if they are deeply infested, as mold can grow inside the material.\n- **Ventilation:** Use fans or open windows during the cleaning process.[[1]](https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/)[[2]](https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps)[[3]](https://www.cdc.gov/mold-health/about/clean-up.html)[[4]](https://www.youtube.com/watch?v=maRsAPZRzJg&t=47)[[5]](https://www.cdph.ca.gov/Programs/CCDPHP/DEODC/EHIB/CPE/CDPH%20Document%20Library/Mold/MMIMH_English.pdf#:~:text=%E2%80%93%20Set%20up%20a%20fan%20to%20pull,on%20cement-block%20walls%20and%20other%20uneven%20surfaces.)\n\n**When to Call a Professional**   \nIf the mold covers a large area (typically more than 10 square feet), is in your HVAC system, or is caused by contaminated water, it is advised to call a professional cleaner.[[1]](https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps)[[2]](https://prepsmartpainting.com/blog/how-to-remove-mold-from-walls/#:~:text=Why:%20If%20mold%20covers%20an%20area%20larger,it's%20often%20too%20extensive%20for%20DIY%20methods.)[[3]](https://www.filtrete.com/3M/en_US/filtrete/home-tips/full-story/~/mold-101-find-it-clean-it-prevent-it/?storyid=a0e9755b-ac52-49d2-9155-8d8aec19709c#:~:text=If%20the%20area%20is%2010%20sq.%20ft.,expert%20with%20proven%20experience%20cleaning%20up%20mold.)[[4]](https://www.epa.gov/sites/default/files/2016-10/documents/moldguide12.pdf#:~:text=If%20the%20water%20and/or%20mold%20damage%20was,consult%20a%20health%20professional%20before%20starting%20cleanup.)[[5]](https://www.grainger.com/know-how/operations/preparedness/kh-prevent-mold-after-flood#:~:text=Never%20mix%20bleach%20or%20ammonia%20with%20any,water%2C%20turning%20it%20on%20could%20spread%20mold.)",
+              "sources": [
+                {
+                  "snippet": "See my profile for pictures in another post. Peroxide diluted with water worked really good for me. If it is coming back then the ...",
+                  "source_name": "Reddit",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 1,
+                  "title": "How do I kill mold permanently and stop it from coming back? - Reddit",
+                  "domain": "www.reddit.com",
+                  "url": "https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Here are some tips for removing mold: * **Don't mix ammonia with bleach** This creates toxic fumes. * **Remove mold from outside**",
+                  "source_name": "The Home Depot",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 2,
+                  "title": "How to Get Rid of Mold - The Home Depot",
+                  "domain": "www.homedepot.com",
+                  "url": "https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "The primary way to eliminate mold is by removing the moisture source. Mold requires moisture, humidity, and nutrients like drywall...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 3,
+                  "title": "Black Mold - How To Kill Toxic Mold In Under 5 Mins!",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=dkBxl-AcPBw&t=24",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "What are the basic mold cleanup steps? * The key to mold control is moisture control. * Scrub mold off hard surfaces with detergen...",
+                  "source_name": "U.S. Environmental Protection Agency (.gov)",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 4,
+                  "title": "What are the basic mold cleanup steps? | US EPA",
+                  "domain": "www.epa.gov",
+                  "url": "https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Concrobium is presented as an effective product for treating mold because it damages mold spores, preventing them from growing and...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 5,
+                  "title": "DIY Mold Remediation - What to Do If You Find MOLD and When You ...",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=W1t2JZ-CtPw&t=274",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "– Set up a fan to pull the air out through a window or door to the outside. – Scrub the entire moldy area with a non-ammonia soap ...",
+                  "source_name": "CDPH Home (.gov)",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 6,
+                  "title": "Mold or Moisture in My Home: What Do I Do? - CDPH",
+                  "domain": "www.cdph.ca.gov",
+                  "url": "https://www.cdph.ca.gov/Programs/CCDPHP/DEODC/EHIB/CPE/CDPH%20Document%20Library/Mold/MMIMH_English.pdf#:~:text=%E2%80%93%20Set%20up%20a%20fan%20to%20pull,on%20cement-block%20walls%20and%20other%20uneven%20surfaces.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Apply a Cleaning Solution Vinegar: Mix equal parts white vinegar and water. Spray the solution onto the moldy surface and let it s...",
+                  "source_name": "www.puroclean.com",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 7,
+                  "title": "What Kills Mold Permanently on Wood (How to Remove it) - PuroClean.com",
+                  "domain": "www.puroclean.com",
+                  "url": "https://www.puroclean.com/auburn-me/blog/what-kills-mold-permanently-on-wood-how-to-remove-it/",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Treating mold involves using an aggressive antimicrobial agent. When treating mold, especially under a kitchen sink, building a cr...",
+                  "source_name": "YouTube",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 8,
+                  "title": "Black Mold - How we get rid of mold in under 3 min!",
+                  "domain": "www.youtube.com",
+                  "url": "https://www.youtube.com/watch?v=maRsAPZRzJg&t=47",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Vinegar has been found to kill 82% of mold species! Plus, it is great at preventing mold in the first place. Vinegar contains no t...",
+                  "source_name": "Quora",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 9,
+                  "title": "How to get rid of mold spores in the air - Quora",
+                  "domain": "www.quora.com",
+                  "url": "https://www.quora.com/How-can-I-get-rid-of-mold-spores-in-the-air-I-started-reacting-with-sinus-ear-pressure-when-a-roommate-moved-dusty-belongings-in-4-months-ago-Originally-I-thought-it-was-dust-mites-but-last-week-an-air-test-showed#:~:text=Vinegar%20has%20been%20found%20to%20kill%2082%25,used%20to%20kill%20mold%2C%20such%20as%20bleach.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Reminder‎ You should never mix bleach with ammonia or any other cleanser. Bleach or dish detergent can be used to clean mold in yo...",
+                  "source_name": "Centers for Disease Control and Prevention | CDC (.gov)",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 10,
+                  "title": "Mold Clean Up Guidelines and Recommendations - CDC",
+                  "domain": "www.cdc.gov",
+                  "url": "https://www.cdc.gov/mold-health/about/clean-up.html",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "What Kills Mold? A common question asked is “How do I remove mold?” There are several options for mold removal that you can either...",
+                  "source_name": "Lowe's",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 11,
+                  "title": "How To Remove Mold on Hard Surfaces - Lowe's",
+                  "domain": "www.lowes.com",
+                  "url": "https://www.lowes.com/n/how-to/mold-removal-hard-surfaces",
+                  "publication_date": null
+                }
+              ],
+              "search_results": null,
+              "ai_search_volume": 165000,
+              "monthly_searches": [
+                {
+                  "year": 2026,
+                  "month": 2,
+                  "search_volume": 49500
+                },
+                {
+                  "year": 2026,
+                  "month": 1,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 12,
+                  "search_volume": 246000
+                },
+                {
+                  "year": 2025,
+                  "month": 11,
+                  "search_volume": 165000
+                },
+                {
+                  "year": 2025,
+                  "month": 10,
+                  "search_volume": 110000
+                },
+                {
+                  "year": 2025,
+                  "month": 9,
+                  "search_volume": 673000
+                },
+                {
+                  "year": 2025,
+                  "month": 8,
+                  "search_volume": 201000
+                },
+                {
+                  "year": 2025,
+                  "month": 7,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 6,
+                  "search_volume": 90500
+                },
+                {
+                  "year": 2025,
+                  "month": 5,
+                  "search_volume": 110000
+                },
+                {
+                  "year": 2025,
+                  "month": 4,
+                  "search_volume": 110000
+                },
+                {
+                  "year": 2025,
+                  "month": 3,
+                  "search_volume": 90500
+                }
+              ],
+              "first_response_at": "2026-03-11 22:51:21 +00:00",
+              "last_response_at": "2026-03-11 22:51:21 +00:00",
+              "brand_entities": null,
+              "fan_out_queries": null,
+              "is_web_search_based": true
+            },
+            {
+              "platform": "google",
+              "model_name": "google_ai_overview",
+              "location_code": 2840,
+              "language_code": "en",
+              "question": "ducts cleaned",
+              "answer": "![Top 5 Reasons to Have your HVAC Ducts Cleaned - Berico](https://api.dataforseo.com/llm_m/cdn/i/8379459685626684960:2ed7942a8879482ea4dc5b3053e28465)\nProfessional air duct cleaning usually costs `between $400 and $1,000` , depending on home size and contamination levels. Services typically take 2–4 hours to complete, removing dust, mold, and debris to improve air quality and HVAC efficiency. Experts recommend cleaning every 3–5 years or if you observe visible mold, pests, or excessive dust.[[1]](https://jdindoorcomfort.com/air-duct-cleaning/#:~:text=Be%20wary%20of%20a%20cheap,components%2C%20not%20just%20the%20ductwork.)[[2]](https://comforttemp.com/duct-cleaning-cost-guide/#:~:text=The%20duct%20cleaning%20services%20cost,depends%20on%20your%20specific%20situation.)[[3]](https://www.servpro.com/services/cleaning-services/specialized-cleaning/airduct-cleaning#:~:text=Residential%20ductwork%20cleaning%20varies%20and,around%20two%20to%20four%20hours.)[[4]](https://www.puroclean.com/services/duct-cleaning/#:~:text=Experts%20recommend%20scheduling%20air%20duct%20cleaning%20every,to%20the%20ducts%20or%20the%20HVAC%20system.)[[5]](https://www.coit.com/residential/air-duct-cleaning)[[6]](https://www.hoffmannbros.com/indoor-air-quality/duct-cleaning/how-often#:~:text=Air%20ducts%20are%20passageways%20that,every%203%20to%205%20years.)[[7]](https://ongaroandsons.com/4-myths-about-air-duct-cleaning-you-need-to-know/#:~:text=If%20you%20see%20substantial%20mold,duct%20cleaning%20companies%20is%20appropriate.)[[8]](https://deductltd.co.uk/duct-cleaning-services-london/#:~:text=Duct%20cleaning%20is%20important%20for%20improving%20air,the%20ductwork%20*%20Unexpectedly%20increased%20energy%20bills)\n\n**Key Considerations for Duct Cleaning** \n\n- **When to Clean:** [The EPA](https://www.epa.gov/indoor-air-quality-iaq/should-you-have-air-ducts-your-home-cleaned) does not recommend regular cleaning, only on an \"as-needed\" basis. Reasons for cleaning include substantial, visible mold growth, infestation of rodents or insects, or if ducts are clogged with, or releasing, large amounts of dust and dirt.\n- **Costs:** While average costs are $450–$500, extensive services can reach $1,000. [Dryer vent cleaning](https://homeguide.com/costs/stanley-steemer-duct-cleaning-cost) usually costs an additional $150–$250.\n- **Benefits:** A clean HVAC system can operate up to 60% more efficiently, potentially reducing energy bills. It also removes allergens like pet dander and pollen.\n- **Finding a Provider:** The National Air Duct Cleaners Association (NADCA) recommends hiring certified contractors to ensure proper, safe, and effective service.[[1]](https://www.epa.gov/indoor-air-quality-iaq/should-you-have-air-ducts-your-home-cleaned#:~:text=EPA%20does%20not%20recommend%20that%20air%20ducts,continuing%20uncertainty%20about%20the%20benefits%20of%20duct)[[2]](https://ongaroandsons.com/4-myths-about-air-duct-cleaning-you-need-to-know/#:~:text=If%20you%20see%20substantial%20mold,duct%20cleaning%20companies%20is%20appropriate.)[[3]](https://deductltd.co.uk/duct-cleaning-services-london/#:~:text=Duct%20cleaning%20is%20important%20for%20improving%20air,the%20ductwork%20*%20Unexpectedly%20increased%20energy%20bills)[[4]](https://comforttemp.com/duct-cleaning-cost-guide/#:~:text=The%20duct%20cleaning%20services%20cost,depends%20on%20your%20specific%20situation.)[[5]](https://homeguide.com/costs/stanley-steemer-duct-cleaning-cost#:~:text=Average%20cost-,Stanley%20Steemer%20air%20duct%20cleaning%20price,fires%20and%20improve%20drying%20times.)[[6]](https://www.coit.com/residential/air-duct-cleaning)[[7]](https://www.stanleysteemer.com/services/air-duct-cleaning#:~:text=Eliminating%20dirt%2C%20dust%20and%20microbial%20growth%20from,a%20cleaner%20home%20and%20increasing%20HVAC%20efficiency.)[[8]](https://www.hoffmannbros.com/indoor-air-quality/duct-cleaning/how-often#:~:text=Air%20ducts%20are%20passageways%20that,every%203%20to%205%20years.)[[9]](https://www.puroclean.com/services/duct-cleaning/#:~:text=Experts%20recommend%20scheduling%20air%20duct%20cleaning%20every,to%20the%20ducts%20or%20the%20HVAC%20system.)\n\n**Warning Signs You Need Cleaning** \n\n- Visible mold growth on, or inside, the air ducts.\n- Rodent or insect infestations.\n- Excessive dust, dirt, or debris blowing out of vents.\n- Musty or unpleasant odor coming from the ventilation.\n- Significantly reduced airflow from vents.[[1]](https://deductltd.co.uk/duct-cleaning-services-london/#:~:text=Duct%20cleaning%20is%20important%20for%20improving%20air,the%20ductwork%20*%20Unexpectedly%20increased%20energy%20bills)[[2]](https://ongaroandsons.com/4-myths-about-air-duct-cleaning-you-need-to-know/#:~:text=If%20you%20see%20substantial%20mold,duct%20cleaning%20companies%20is%20appropriate.)\n\n**Common Providers**   \nMajor companies providing these services include [Servpro](https://www.servpro.com/services/cleaning-services/specialized-cleaning/airduct-cleaning), [Stanley Steemer](https://www.stanleysteemer.com/services/air-duct-cleaning) , and [COIT](https://www.coit.com/residential/air-duct-cleaning).[[1]](https://www.servpro.com/services/cleaning-services/specialized-cleaning/airduct-cleaning#:~:text=Residential%20ductwork%20cleaning%20varies%20and,around%20two%20to%20four%20hours.)[[2]](https://www.coit.com/residential/air-duct-cleaning)[[3]](https://homeguide.com/costs/stanley-steemer-duct-cleaning-cost#:~:text=Average%20cost-,Stanley%20Steemer%20air%20duct%20cleaning%20price,fires%20and%20improve%20drying%20times.)",
+              "sources": [
+                {
+                  "snippet": "If you see substantial mold growth, rodent or insect infestation inside your HVAC system and/or dust coming through your vents, du...",
+                  "source_name": "Ongaro & Sons",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 1,
+                  "title": "4 Myths About Air Duct Cleaning You Need To Know - Ongaro & Sons",
+                  "domain": "ongaroandsons.com",
+                  "url": "https://ongaroandsons.com/4-myths-about-air-duct-cleaning-you-need-to-know/#:~:text=If%20you%20see%20substantial%20mold,duct%20cleaning%20companies%20is%20appropriate.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Air Duct Cleaning * Why should I have my air ducts cleaned? Over time, dust, pet dander, pollen, and mold can accumulate in your a...",
+                  "source_name": "COIT Cleaning and Restoration",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 2,
+                  "title": "Expert Residential Air Duct Cleaning by COIT",
+                  "domain": "www.coit.com",
+                  "url": "https://www.coit.com/residential/air-duct-cleaning",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Duct cleaning is important for improving air quality, extending the life of your HVAC system, and reducing energy costs. There are...",
+                  "source_name": "Deduct Ltd",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 3,
+                  "title": "Duct Cleaning Services in London",
+                  "domain": "deductltd.co.uk",
+                  "url": "https://deductltd.co.uk/duct-cleaning-services-london/#:~:text=Duct%20cleaning%20is%20important%20for%20improving%20air,the%20ductwork%20*%20Unexpectedly%20increased%20energy%20bills",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Residential ductwork cleaning varies and can cost between $450 to $1,000. How long does it take for ductwork to be cleaned? Air du...",
+                  "source_name": "Servpro",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 4,
+                  "title": "HVAC, Air Vent and Air Duct Cleaning Services - Servpro",
+                  "domain": "www.servpro.com",
+                  "url": "https://www.servpro.com/services/cleaning-services/specialized-cleaning/airduct-cleaning#:~:text=Residential%20ductwork%20cleaning%20varies%20and,around%20two%20to%20four%20hours.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Air ducts are passageways that transport cooled and heated air throughout your house. Just like any other HVAC system, air ducts r...",
+                  "source_name": "Hoffmann Brothers",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 5,
+                  "title": "How Often Should You Clean Your Air Ducts? Cleaning Guide",
+                  "domain": "www.hoffmannbros.com",
+                  "url": "https://www.hoffmannbros.com/indoor-air-quality/duct-cleaning/how-often#:~:text=Air%20ducts%20are%20passageways%20that,every%203%20to%205%20years.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Experts recommend scheduling air duct cleaning every three to five years. However, certain factors may necessitate more frequent c...",
+                  "source_name": "PuroClean",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 6,
+                  "title": "Air Duct Cleaning - Professional Cleaning from PuroClean",
+                  "domain": "www.puroclean.com",
+                  "url": "https://www.puroclean.com/services/duct-cleaning/#:~:text=Experts%20recommend%20scheduling%20air%20duct%20cleaning%20every,to%20the%20ducts%20or%20the%20HVAC%20system.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Stanley Steemer air duct cleaning price Stanley Steemer duct cleaning costs $500 to $1,000 on average. This service can eliminate ...",
+                  "source_name": "HomeGuide",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 7,
+                  "title": "How Much Does Stanley Steemer Air Duct Cleaning Cost? (2026)",
+                  "domain": "homeguide.com",
+                  "url": "https://homeguide.com/costs/stanley-steemer-duct-cleaning-cost#:~:text=Average%20cost-,Stanley%20Steemer%20air%20duct%20cleaning%20price,fires%20and%20improve%20drying%20times.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "The duct cleaning services cost for most homes ranges between $300 and $1,000, with a typical price of $450 to $500 for an average...",
+                  "source_name": "Comfort Temp",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 8,
+                  "title": "Duct Cleaning Services Cost: Fair Guide 2025 - Comfort Temp",
+                  "domain": "comforttemp.com",
+                  "url": "https://comforttemp.com/duct-cleaning-cost-guide/#:~:text=The%20duct%20cleaning%20services%20cost,depends%20on%20your%20specific%20situation.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "EPA does not recommend that air ducts be cleaned except on an as-needed basis because of the continuing uncertainty about the bene...",
+                  "source_name": "U.S. Environmental Protection Agency (.gov)",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 9,
+                  "title": "Should You Have the Air Ducts in Your Home Cleaned? - EPA",
+                  "domain": "www.epa.gov",
+                  "url": "https://www.epa.gov/indoor-air-quality-iaq/should-you-have-air-ducts-your-home-cleaned#:~:text=EPA%20does%20not%20recommend%20that%20air%20ducts,continuing%20uncertainty%20about%20the%20benefits%20of%20duct",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Eliminating dirt, dust and microbial growth from your ductwork can improve indoor air quality while maintaining a cleaner home and...",
+                  "source_name": "Stanley Steemer",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 10,
+                  "title": "Air Duct Cleaning | Stanley Steemer",
+                  "domain": "www.stanleysteemer.com",
+                  "url": "https://www.stanleysteemer.com/services/air-duct-cleaning#:~:text=Eliminating%20dirt%2C%20dust%20and%20microbial%20growth%20from,a%20cleaner%20home%20and%20increasing%20HVAC%20efficiency.",
+                  "publication_date": null
+                },
+                {
+                  "snippet": "Be wary of a cheap duct cleaning. Duct cleaning, if not done properly could cause more damage than they provide benefit to you. Ma...",
+                  "source_name": "JD Indoor Comfort",
+                  "thumbnail": null,
+                  "markdown": null,
+                  "rank": 11,
+                  "title": "What is Air Duct Cleaning? | When to Have Your Ductwork Cleaned",
+                  "domain": "jdindoorcomfort.com",
+                  "url": "https://jdindoorcomfort.com/air-duct-cleaning/#:~:text=Be%20wary%20of%20a%20cheap,components%2C%20not%20just%20the%20ductwork.",
+                  "publication_date": null
+                }
+              ],
+              "search_results": null,
+              "ai_search_volume": 74000,
+              "monthly_searches": [
+                {
+                  "year": 2025,
+                  "month": 12,
+                  "search_volume": 49500
+                },
+                {
+                  "year": 2025,
+                  "month": 11,
+                  "search_volume": 49500
+                },
+                {
+                  "year": 2025,
+                  "month": 10,
+                  "search_volume": 74000
+                },
+                {
+                  "year": 2025,
+                  "month": 9,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 8,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 7,
+                  "search_volume": 60500
+                },
+                {
+                  "year": 2025,
+                  "month": 6,
+                  "search_volume": 74000
+                },
+                {
+                  "year": 2025,
+                  "month": 5,
+                  "search_volume": 74000
+                },
+                {
+                  "year": 2025,
+                  "month": 4,
+                  "search_volume": 110000
+                },
+                {
+                  "year": 2025,
+                  "month": 3,
+                  "search_volume": 90500
+                },
+                {
+                  "year": 2025,
+                  "month": 2,
+                  "search_volume": 74000
+                },
+                {
+                  "year": 2025,
+                  "month": 1,
+                  "search_volume": 74000
+                }
+              ],
+              "first_response_at": "2026-01-27 03:59:13 +00:00",
+              "last_response_at": "2026-01-27 03:59:13 +00:00",
+              "brand_entities": null,
+              "fan_out_queries": null,
+              "is_web_search_based": true
+            }
+          ],
+          "_items_original_length": 10
+        }
+      ]
+    }
+  ],
+  "_cortado": {
+    "em": "2026-09-11T03:16:02.397Z",
+    "nota": "listas truncadas para os primeiros 3 itens; `_<lista>_original_length` guarda o tamanho real. Regenere o cru com probe.mjs / probe-pago.mjs / probe-pago-2.mjs.",
+    "cortes": [
+      {
+        "caminho": "tasks.0.result.0.items",
+        "de": 10,
+        "para": 3
+      }
+    ]
+  }
+}

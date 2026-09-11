@@ -62,6 +62,18 @@ export type DataForSeoUserData = {
   rates: DataForSeoRates
   prices: DataForSeoPriceEntry[]
   backlinksSubscriptionExpiry: string | null
+  /**
+   * Assinatura é coisa diferente de preço.
+   *
+   * A tabela de `price` diz **quanto custa**; esta data diz **se pode chamar**.
+   * Sem ela, assinatura vencida vira "não foi possível coletar" sem motivo na
+   * tela — e a seção `ai_optimization` aparece na tabela de preço mesmo assim,
+   * então o preço presente não prova acesso.
+   *
+   * Medida em 2026-09-10 junto com a onda 0 da Presença em IA, onde a conta
+   * devolveu `2050-01-01` nas duas.
+   */
+  llmMentionsSubscriptionExpiry: string | null
 }
 
 function asRecord(value: unknown): Record<string, unknown> | null {
@@ -219,6 +231,9 @@ export function readDataForSeoUserData(
     prices: readPrices(row.price),
     backlinksSubscriptionExpiry: asString(
       row.backlinks_subscription_expiry_date,
+    ),
+    llmMentionsSubscriptionExpiry: asString(
+      row.llm_mentions_subscription_expiry_date,
     ),
   }
 }

@@ -1,0 +1,59 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.3736 sec.",
+  "cost": 0.024036,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110306-2319-0269-0000-4abdfd5df88a",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.2963 sec.",
+      "cost": 0.024036,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "backlinks",
+        "backlinks",
+        "live"
+      ],
+      "data": {
+        "api": "backlinks",
+        "function": "backlinks",
+        "target": "puroclean.com",
+        "mode": "one_per_domain",
+        "limit": 100,
+        "backlinks_status_type": "live",
+        "filters": [
+          [
+            "domain_from",
+            "in",
+            [
+              "reddit.com",
+              "www.reddit.com",
+              "youtube.com",
+              "www.youtube.com",
+              "wikipedia.org",
+              "en.wikipedia.org",
+              "pt.wikipedia.org"
+            ]
+          ]
+        ]
+      },
+      "result": [
+        {
+          "target": "puroclean.com",
+          "mode": "one_per_domain",
+          "custom_mode": null,
+          "total_count": 0,
+          "items_count": 0,
+          "items": null,
+          "search_after_token": null
+        }
+      ]
+    }
+  ]
+}

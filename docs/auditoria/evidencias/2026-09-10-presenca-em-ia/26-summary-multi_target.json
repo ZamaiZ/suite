@@ -1,0 +1,227 @@
+{
+  "at": "2026-09-11T03:38:00.238Z",
+  "teto_usd": 0.6,
+  "traces": {
+    "t4_controle_us": {
+      "offline": true,
+      "de": "24-multi_target-controle.json"
+    },
+    "t4_brasil": {
+      "offline": true,
+      "de": "25-multi_target-brasil.json"
+    }
+  },
+  "gasto": 0,
+  "veredito": {
+    "controle": {
+      "chaves_result": [
+        "total_count",
+        "offset",
+        "items_count",
+        "aggregated_metrics",
+        "items"
+      ],
+      "chaves_aggregated": [
+        "location",
+        "language",
+        "platform",
+        "sources_domain",
+        "search_results_domain",
+        "brand_entities_title",
+        "brand_entities_category",
+        "total"
+      ],
+      "total_geral": {
+        "mentions": 2892,
+        "ai_search_volume": 2873090
+      },
+      "brand_entities_presente": false,
+      "brand_entities_amostra": [],
+      "search_results_domain_presente": false,
+      "sources_domain_amostra": [
+        {
+          "key": "www.servpro.com",
+          "mentions": 2690,
+          "ai_search_volume": 2812310
+        },
+        {
+          "key": "www.youtube.com",
+          "mentions": 835,
+          "ai_search_volume": 797300
+        },
+        {
+          "key": "www.reddit.com",
+          "mentions": 506,
+          "ai_search_volume": 279180
+        },
+        {
+          "key": "m.yelp.com",
+          "mentions": 469,
+          "ai_search_volume": 105030
+        },
+        {
+          "key": "www.angi.com",
+          "mentions": 431,
+          "ai_search_volume": 1058860
+        }
+      ],
+      "por_alvo": [
+        {
+          "key": "puroclean",
+          "chaves": [
+            "key",
+            "location",
+            "language",
+            "platform",
+            "sources_domain",
+            "search_results_domain",
+            "brand_entities_title",
+            "brand_entities_category",
+            "total"
+          ],
+          "mentions": 234,
+          "ai_search_volume": 86260
+        },
+        {
+          "key": "servpro",
+          "chaves": [
+            "key",
+            "location",
+            "language",
+            "platform",
+            "sources_domain",
+            "search_results_domain",
+            "brand_entities_title",
+            "brand_entities_category",
+            "total"
+          ],
+          "mentions": 2670,
+          "ai_search_volume": 2805900
+        },
+        {
+          "key": "paul_davis",
+          "chaves": [
+            "key",
+            "location",
+            "language",
+            "platform",
+            "sources_domain",
+            "search_results_domain",
+            "brand_entities_title",
+            "brand_entities_category",
+            "total"
+          ],
+          "mentions": 239,
+          "ai_search_volume": 547200
+        }
+      ]
+    },
+    "brasil": {
+      "chaves_result": [
+        "total_count",
+        "offset",
+        "items_count",
+        "aggregated_metrics",
+        "items"
+      ],
+      "chaves_aggregated": [
+        "location",
+        "language",
+        "platform",
+        "sources_domain",
+        "search_results_domain",
+        "brand_entities_title",
+        "brand_entities_category",
+        "total"
+      ],
+      "total_geral": {
+        "mentions": 62,
+        "ai_search_volume": 41700
+      },
+      "brand_entities_presente": false,
+      "brand_entities_amostra": [],
+      "search_results_domain_presente": false,
+      "sources_domain_amostra": [
+        {
+          "key": "www.conversion.com.br",
+          "mentions": 43,
+          "ai_search_volume": 36250
+        },
+        {
+          "key": "www.organicadigital.com",
+          "mentions": 9,
+          "ai_search_volume": 5230
+        },
+        {
+          "key": "www.idinheiro.com.br",
+          "mentions": 3,
+          "ai_search_volume": 630
+        },
+        {
+          "key": "www.youtube.com",
+          "mentions": 28,
+          "ai_search_volume": 15850
+        },
+        {
+          "key": "www.agenciamestre.com",
+          "mentions": 15,
+          "ai_search_volume": 6750
+        }
+      ],
+      "por_alvo": [
+        {
+          "key": "lead",
+          "chaves": [
+            "key",
+            "location",
+            "language",
+            "platform",
+            "sources_domain",
+            "search_results_domain",
+            "brand_entities_title",
+            "brand_entities_category",
+            "total"
+          ],
+          "mentions": 2,
+          "ai_search_volume": 650
+        },
+        {
+          "key": "conversion",
+          "chaves": [
+            "key",
+            "location",
+            "language",
+            "platform",
+            "sources_domain",
+            "search_results_domain",
+            "brand_entities_title",
+            "brand_entities_category",
+            "total"
+          ],
+          "mentions": 50,
+          "ai_search_volume": 37420
+        },
+        {
+          "key": "mestre",
+          "chaves": [
+            "key",
+            "location",
+            "language",
+            "platform",
+            "sources_domain",
+            "search_results_domain",
+            "brand_entities_title",
+            "brand_entities_category",
+            "total"
+          ],
+          "mentions": 15,
+          "ai_search_volume": 6750
+        }
+      ]
+    },
+    "controle_ordem_esperada": true
+  },
+  "reprovado": [
+    "t4: `brand_entities` vem VAZIO em `platform: google`, como a documentacao do `top_mentioned_brands` diz. Confirma que dominancia por marca pre-extraida continua fora, e que o casamento por nome e a unica via."
+  ]
+}

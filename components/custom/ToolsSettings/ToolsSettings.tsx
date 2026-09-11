@@ -28,6 +28,7 @@ import {
   type DataForSeoOperationId,
   type DataForSeoRateEntry,
 } from "@/lib/dataforseo/usage"
+import { dataForSeoTimeToIso } from "@/lib/dataforseo/time"
 import type { ToolsSettingsProps } from "./ToolsSettings.types"
 
 // DATAFORSEO_OPERATIONS usa {id,label}; o Base UI espera {value,label}.
@@ -55,6 +56,34 @@ const API_LABELS: Record<string, string> = {
 
 function apiLabel(api: string): string {
   return API_LABELS[api] ?? api.replace(/_/g, " ")
+}
+
+/**
+ * Assinatura é coisa diferente de preço.
+ *
+ * A tabela de `price` diz quanto custa; estas datas dizem se pode chamar —
+ * `backlinks` e `llm_mentions` são cobrados por assinatura própria, fora do
+ * saldo. Sem isto na tela, assinatura vencida chega ao analista como "não foi
+ * possível coletar", sem motivo, e a seção continua aparecendo na tabela de
+ * preço como se estivesse disponível.
+ */
+function subscriptionState(raw: string | null): {
+  value: string
+  tone: "default" | "warning"
+} {
+  if (!raw) return { value: "—", tone: "default" }
+  const iso = dataForSeoTimeToIso(raw)
+  if (!iso) return { value: "—", tone: "default" }
+  const vencida = Date.parse(iso) < Date.now()
+  const dia = new Date(iso).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  })
+  return {
+    value: vencida ? `Vencida em ${dia}` : `Ativa até ${dia}`,
+    tone: vencida ? "warning" : "default",
+  }
 }
 
 function usageRatio(entry: DataForSeoRateEntry): number | null {
@@ -173,6 +202,16 @@ export function ToolsSettings({
                     value={formatUsd(usage.money.total)}
                   />
                   <Stat label="Conta" value={usage.login ?? "—"} />
+                </dl>
+                <dl className="mt-4 grid gap-4 sm:grid-cols-3">
+                  <Stat
+                    label="Assinatura · Backlinks"
+                    {...subscriptionState(usage.backlinksSubscriptionExpiry)}
+                  />
+                  <Stat
+                    label="Assinatura · Menções em IA"
+                    {...subscriptionState(usage.llmMentionsSubscriptionExpiry)}
+                  />
                 </dl>
                 {Object.keys(usage.money.statistics).length > 0 ? (
                   <div className="mt-4 flex flex-wrap gap-4">

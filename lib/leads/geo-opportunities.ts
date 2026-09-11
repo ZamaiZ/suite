@@ -35,7 +35,7 @@ const OPPORTUNITY_TITLES: Record<GeoGapId, string> = {
   no_identity_schema: "Declarar a empresa em schema de identidade",
   no_freshness_signals: "Marcar data de publicação e atualização",
   no_machine_readable_contact: "Expor contato em formato legível por máquina",
-  no_authority_citations: "Conquistar citação em fontes que a IA consulta",
+  no_authority_citations: "Virar fonte citada nas respostas do seu mercado",
   brand_unknown_to_llms: "Construir reconhecimento de marca nas IAs",
   absent_from_discovery_prompts: "Aparecer nas recomendações das IAs",
   outranked_by_competitors: "Passar os concorrentes nas respostas de IA",

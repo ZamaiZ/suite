@@ -1,0 +1,56 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.6914 sec.",
+  "cost": 0.024036,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110302-2319-0269-0000-0efe637ef2d0",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.6751 sec.",
+      "cost": 0.024036,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "backlinks",
+        "backlinks",
+        "live"
+      ],
+      "data": {
+        "api": "backlinks",
+        "function": "backlinks",
+        "target": "buscaorganica.com.br",
+        "mode": "one_per_domain",
+        "limit": 100,
+        "backlinks_status_type": "live",
+        "filters": [
+          [
+            "domain_from",
+            "in",
+            [
+              "wikipedia.org",
+              "pt.wikipedia.org",
+              "reddit.com",
+              "youtube.com"
+            ]
+          ]
+        ]
+      },
+      "result": [
+        {
+          "target": "buscaorganica.com.br",
+          "mode": "one_per_domain",
+          "custom_mode": null,
+          "total_count": 0,
+          "items_count": 0,
+          "items": null,
+          "search_after_token": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1020 @@
+{
+  "at": "2026-09-11T03:01:49.841Z",
+  "teto_usd": 1,
+  "lead": "buscaorganica.com.br",
+  "controle": "puroclean.com",
+  "traces": {
+    "p6_ai_keyword_data": {
+      "path": "/ai_optimization/ai_keyword_data/keywords_search_volume/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.021,
+      "gasto_acumulado": 0.021
+    },
+    "p5_ranked_keywords_controle": {
+      "path": "/dataforseo_labs/google/ranked_keywords/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.018,
+      "gasto_acumulado": 0.039
+    },
+    "p5_ranked_keywords_lead": {
+      "path": "/dataforseo_labs/google/ranked_keywords/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.012,
+      "gasto_acumulado": 0.051
+    },
+    "p9_llm_chat_gpt": {
+      "path": "/ai_optimization/chat_gpt/llm_responses/live",
+      "http": 200,
+      "error": null,
+      "status_code": 40501,
+      "status_message": "Invalid Field: 'max_output_tokens'.",
+      "cost": 0,
+      "gasto_acumulado": 0.051
+    },
+    "p9_llm_claude": {
+      "path": "/ai_optimization/claude/llm_responses/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.024352,
+      "gasto_acumulado": 0.075352
+    },
+    "p9_llm_gemini": {
+      "path": "/ai_optimization/gemini/llm_responses/live",
+      "http": 200,
+      "error": null,
+      "status_code": 40501,
+      "status_message": "Invalid Field: 'web_search_country_iso_code'.",
+      "cost": 0,
+      "gasto_acumulado": 0.075352
+    },
+    "p9_llm_perplexity": {
+      "path": "/ai_optimization/perplexity/llm_responses/live",
+      "http": 200,
+      "error": null,
+      "status_code": 40501,
+      "status_message": "Invalid Field: 'web_search_city'.",
+      "cost": 0,
+      "gasto_acumulado": 0.075352
+    },
+    "p8_backlinks_lead": {
+      "path": "/backlinks/backlinks/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.024036,
+      "gasto_acumulado": 0.099388
+    },
+    "p8_backlinks_controle": {
+      "path": "/backlinks/backlinks/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.024036,
+      "gasto_acumulado": 0.123424
+    },
+    "p7_available_filters": {
+      "path": "/ai_optimization/llm_mentions/available_filters",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0,
+      "gasto_acumulado": 0.123424
+    },
+    "p7_search_mentions_controle": {
+      "path": "/ai_optimization/llm_mentions/search_mentions/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.11,
+      "gasto_acumulado": 0.233424
+    },
+    "p7_search_mentions_lead": {
+      "path": "/ai_optimization/llm_mentions/search_mentions/live",
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.107,
+      "gasto_acumulado": 0.340424
+    }
+  },
+  "gasto": 0.340424,
+  "veredito": {
+    "p6": {
+      "keywords_enviadas": 110,
+      "itens_devolvidos": 110,
+      "anatomia": {
+        "null": 0,
+        "zero": 49,
+        "positivo": 61,
+        "ausente": 0
+      },
+      "chaves_do_item": [
+        "keyword",
+        "ai_search_volume",
+        "ai_monthly_searches"
+      ],
+      "tem_volume_positivo": true,
+      "exemplos_positivos": [
+        {
+          "keyword": "busca organica",
+          "ai_search_volume": 6,
+          "volume_google": 390,
+          "meses": 12
+        },
+        {
+          "keyword": "busca orgânica",
+          "ai_search_volume": 6,
+          "volume_google": 390,
+          "meses": 12
+        },
+        {
+          "keyword": "primeira pagina do google",
+          "ai_search_volume": 10,
+          "volume_google": 170,
+          "meses": 12
+        },
+        {
+          "keyword": "banheiro químicos",
+          "ai_search_volume": 234,
+          "volume_google": 18100,
+          "meses": 12
+        },
+        {
+          "keyword": "consultoria de seo",
+          "ai_search_volume": 2,
+          "volume_google": 880,
+          "meses": 12
+        },
+        {
+          "keyword": "sanitarios",
+          "ai_search_volume": 12559,
+          "volume_google": 5400,
+          "meses": 12
+        },
+        {
+          "keyword": "google primeira pagina",
+          "ai_search_volume": 10,
+          "volume_google": 170,
+          "meses": 12
+        },
+        {
+          "keyword": "sav furacão",
+          "ai_search_volume": 3,
+          "volume_google": 2900,
+          "meses": 12
+        },
+        {
+          "keyword": "banheiro quimico preço",
+          "ai_search_volume": 16,
+          "volume_google": 1900,
+          "meses": 12
+        },
+        {
+          "keyword": "banheiro quimico comprar",
+          "ai_search_volume": 3,
+          "volume_google": 880,
+          "meses": 12
+        },
+        {
+          "keyword": "banheiros químicos comprar",
+          "ai_search_volume": 3,
+          "volume_google": 880,
+          "meses": 12
+        },
+        {
+          "keyword": "banheiro quimico valor",
+          "ai_search_volume": 54,
+          "volume_google": 1300,
+          "meses": 12
+        }
+      ]
+    },
+    "p5_controle": {
+      "total_count": 4677,
+      "items_count": 50,
+      "metrics": {
+        "organic": null,
+        "paid": null,
+        "featured_snippet": null,
+        "local_pack": null,
+        "ai_overview_reference": {
+          "pos_1": 65,
+          "pos_2_3": 337,
+          "pos_4_10": 2004,
+          "pos_11_20": 1849,
+          "pos_21_30": 380,
+          "pos_31_40": 36,
+          "pos_41_50": 5,
+          "pos_51_60": 1,
+          "pos_61_70": 0,
+          "pos_71_80": 0,
+          "pos_81_90": 0,
+          "pos_91_100": 0,
+          "etv": 47827.81365648098,
+          "count": 4677,
+          "estimated_paid_traffic_cost": 505303.7916341303,
+          "is_new": 0,
+          "is_up": 0,
+          "is_down": 0,
+          "is_lost": 0,
+          "clickstream_etv": null,
+          "clickstream_gender_distribution": null,
+          "clickstream_age_distribution": null
+        }
+      },
+      "chaves_serp_item": [
+        "se_type",
+        "type",
+        "rank_group",
+        "rank_absolute",
+        "source",
+        "domain",
+        "title",
+        "url",
+        "text",
+        "main_domain",
+        "relative_url",
+        "etv",
+        "estimated_paid_traffic_cost",
+        "clickstream_etv",
+        "rank_changes",
+        "backlinks_info",
+        "rank_info"
+      ],
+      "amostra": [
+        {
+          "keyword": "remediate mold",
+          "volume": 165000,
+          "serp_item": {
+            "se_type": "google",
+            "type": "ai_overview_reference",
+            "rank_group": 5,
+            "rank_absolute": 1,
+            "source": "www.puroclean.com",
+            "domain": "www.puroclean.com",
+            "title": "Expert Mold Remediation: What to Do After Discovering Mold in Your Home in Sarasota",
+            "url": "https://www.puroclean.com/bradenton-fl-puroclean-bradenton/blog/expert-mold-remediation-what-to-do-after-discovering-mold-in-your-home-in-sarasota/",
+            "text": "Ensure Compliance with Safety Standards All mold remediation must follow EPA and OSHA guidelines, especially in high-humidity area...",
+            "main_domain": "puroclean.com",
+            "relative_url": "/bradenton-fl-puroclean-bradenton/blog/expert-mold-remediation-what-to-do-after-discovering-mold-in-your-home-in-sarasota/",
+            "etv": 7738.5,
+            "estimated_paid_traffic_cost": 283074.34375,
+            "clickstream_etv": null,
+            "rank_changes": {
+              "previous_rank_absolute": null,
+              "is_new": false,
+              "is_up": false,
+              "is_down": false
+            },
+            "backlinks_info": null,
+            "rank_info": {
+              "page_rank": 0,
+              "main_domain_rank": 399
+            }
+          }
+        },
+        {
+          "keyword": "helped i wrecked my house",
+          "volume": 9900,
+          "serp_item": {
+            "se_type": "google",
+            "type": "ai_overview_reference",
+            "rank_group": 2,
+            "rank_absolute": 1,
+            "source": "www.puroclean.com",
+            "domain": "www.puroclean.com",
+            "title": "What Is the Fastest Way to Clean a Hoarder’s House in 21st Century?",
+            "url": "https://www.puroclean.com/galloway-oh-puroclean-home-savers/blog/what-is-the-fastest-way-to-clean-a-hoarders-house-in-21st-century/",
+            "text": "What Is the Fastest Way to Clean a Hoarder's House? 1. Start with Safety First 2. Create a Clear Plan Before lifting the first box...",
+            "main_domain": "puroclean.com",
+            "relative_url": "/galloway-oh-puroclean-home-savers/blog/what-is-the-fastest-way-to-clean-a-hoarders-house-in-21st-century/",
+            "etv": 1603.800048828125,
+            "estimated_paid_traffic_cost": 48.11399841308594,
+            "clickstream_etv": null,
+            "rank_changes": {
+              "previous_rank_absolute": null,
+              "is_new": false,
+              "is_up": false,
+              "is_down": false
+            },
+            "backlinks_info": null,
+            "rank_info": {
+              "page_rank": 0,
+              "main_domain_rank": 399
+            }
+          }
+        },
+        {
+          "keyword": "fire in the house",
+          "volume": 12100,
+          "serp_item": {
+            "se_type": "google",
+            "type": "ai_overview_reference",
+            "rank_group": 3,
+            "rank_absolute": 2,
+            "source": "www.puroclean.com",
+            "domain": "www.puroclean.com",
+            "title": "What to Do After a House Fire Alexandria VA: Homeowners Guide",
+            "url": "https://www.puroclean.com/alexandria-va-puroclean-alexandria/blog/what-to-do-after-a-house-fire-alexandria-va/",
+            "text": "Immediate Actions After the Fire 1. Get Everyone Out and Stay Out 2. Call 911, Even If the Fire Looks Small 3. Do Not Go Back Insi...",
+            "main_domain": "puroclean.com",
+            "relative_url": "/alexandria-va-puroclean-alexandria/blog/what-to-do-after-a-house-fire-alexandria-va/",
+            "etv": 1177.3299560546875,
+            "estimated_paid_traffic_cost": 32223.521484375,
+            "clickstream_etv": null,
+            "rank_changes": {
+              "previous_rank_absolute": null,
+              "is_new": false,
+              "is_up": false,
+              "is_down": false
+            },
+            "backlinks_info": null,
+            "rank_info": {
+              "page_rank": 0,
+              "main_domain_rank": 399
+            }
+          }
+        },
+        {
+          "keyword": "spraying for mold",
+          "volume": 9900,
+          "serp_item": {
+            "se_type": "google",
+            "type": "ai_overview_reference",
+            "rank_group": 3,
+            "rank_absolute": 1,
+            "source": "www.puroclean.com",
+            "domain": "www.puroclean.com",
+            "title": "Mold Spray Solutions: When DIY Works and When to Call in Professionals Near You in 2026",
+            "url": "https://www.puroclean.com/greenfield-in-puroclean-disaster-restoration/blog/mold-spray-solutions-when-diy-works-and-when-to-call-in-professionals-near-you-in-2026/",
+            "text": "Mold spray solutions offer convenient treatment for minor, surface-level mold on non-porous materials when you've already addresse...",
+            "main_domain": "puroclean.com",
+            "relative_url": "/greenfield-in-puroclean-disaster-restoration/blog/mold-spray-solutions-when-diy-works-and-when-to-call-in-professionals-near-you-in-2026/",
+            "etv": 963.27001953125,
+            "estimated_paid_traffic_cost": 866.9429931640625,
+            "clickstream_etv": null,
+            "rank_changes": {
+              "previous_rank_absolute": null,
+              "is_new": false,
+              "is_up": false,
+              "is_down": false
+            },
+            "backlinks_info": null,
+            "rank_info": {
+              "page_rank": 0,
+              "main_domain_rank": 399
+            }
+          }
+        },
+        {
+          "keyword": "biohazard",
+          "volume": 33100,
+          "serp_item": {
+            "se_type": "google",
+            "type": "ai_overview_reference",
+            "rank_group": 7,
+            "rank_absolute": 1,
+            "source": "www.puroclean.com",
+            "domain": "www.puroclean.com",
+            "title": "7 Essential Biohazard Cleaning Safety Tips to Follow",
+            "url": "https://www.puroclean.com/northeast-sacramento-ca/blog/7-essential-biohazard-cleaning-safety-tips-to-follow/",
+            "text": "Recognize that biohazards can transmit serious diseases and require careful handling and protection. Use essential protective gear...",
+            "main_domain": "puroclean.com",
+            "relative_url": "/northeast-sacramento-ca/blog/7-essential-biohazard-cleaning-safety-tips-to-follow/",
+            "etv": 847.3599853515625,
+            "estimated_paid_traffic_cost": 2101.452880859375,
+            "clickstream_etv": null,
+            "rank_changes": {
+              "previous_rank_absolute": null,
+              "is_new": false,
+              "is_up": false,
+              "is_down": false
+            },
+            "backlinks_info": {
+              "referring_domains": 2,
+              "referring_main_domains": 2,
+              "referring_pages": 6,
+              "dofollow": 6,
+              "backlinks": 6,
+              "time_update": "2026-08-31 01:08:45 +00:00"
+            },
+            "rank_info": {
+              "page_rank": 88,
+              "main_domain_rank": 399
+            }
+          }
+        }
+      ]
+    },
+    "p5_lead": {
+      "total_count": null,
+      "items_count": 0,
+      "metrics": null,
+      "chaves_serp_item": [],
+      "amostra": []
+    },
+    "p9": {
+      "chat_gpt": {
+        "model_name": null,
+        "web_search": null,
+        "money_spent": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "chaves_result": [],
+        "chaves_item": [],
+        "annotations_count": 0,
+        "annotations_com_url": 0,
+        "chaves_annotation": [],
+        "dominio_citado": false,
+        "marca_no_texto": false,
+        "fan_out_queries": null,
+        "amostra_annotations": []
+      },
+      "claude": {
+        "model_name": "claude-haiku-4-5-20251001",
+        "web_search": true,
+        "money_spent": 0.023752,
+        "input_tokens": 10797,
+        "output_tokens": 591,
+        "chaves_result": [
+          "model_name",
+          "input_tokens",
+          "output_tokens",
+          "reasoning_tokens",
+          "web_search",
+          "money_spent",
+          "datetime",
+          "items",
+          "fan_out_queries"
+        ],
+        "chaves_item": [
+          "type",
+          "sections"
+        ],
+        "annotations_count": 0,
+        "annotations_com_url": 0,
+        "chaves_annotation": [],
+        "dominio_citado": false,
+        "marca_no_texto": true,
+        "fan_out_queries": 2,
+        "amostra_annotations": []
+      },
+      "gemini": {
+        "model_name": null,
+        "web_search": null,
+        "money_spent": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "chaves_result": [],
+        "chaves_item": [],
+        "annotations_count": 0,
+        "annotations_com_url": 0,
+        "chaves_annotation": [],
+        "dominio_citado": false,
+        "marca_no_texto": false,
+        "fan_out_queries": null,
+        "amostra_annotations": []
+      },
+      "perplexity": {
+        "model_name": null,
+        "web_search": null,
+        "money_spent": null,
+        "input_tokens": null,
+        "output_tokens": null,
+        "chaves_result": [],
+        "chaves_item": [],
+        "annotations_count": 0,
+        "annotations_com_url": 0,
+        "chaves_annotation": [],
+        "dominio_citado": false,
+        "marca_no_texto": false,
+        "fan_out_queries": null,
+        "amostra_annotations": []
+      }
+    },
+    "p9_custo_real_por_sondagem": {
+      "soma_money_spent": 0.023752,
+      "projecao_32_execucoes": 0.190016
+    },
+    "p8_backlinks_lead": {
+      "total_count": 0,
+      "items_count": 0,
+      "por_dominio": {},
+      "amostra": []
+    },
+    "p8_backlinks_controle": {
+      "total_count": 0,
+      "items_count": 0,
+      "por_dominio": {},
+      "amostra": []
+    },
+    "p7_filtros": [
+      {
+        "search": {
+          "platform": "str",
+          "location_code": "num",
+          "language_code": "str",
+          "ai_search_volume": "num",
+          "first_response_at": "time",
+          "last_response_at": "time",
+          "model_name": "str"
+        },
+        "search_mentions": {
+          "platform": "str",
+          "location_code": "num",
+          "language_code": "str",
+          "ai_search_volume": "num",
+          "first_response_at": "time",
+          "last_response_at": "time",
+          "model_name": "str",
+          "is_web_search_based": "bool"
+        },
+        "target_metrics": {
+          "platform": "str",
+          "location_code": "num",
+          "language_code": "str",
+          "ai_search_volume": "num",
+          "first_response_at": "time",
+          "last_response_at": "time",
+          "model_name": "str",
+          "is_web_search_based": "bool"
+        },
+        "multi_target_metrics": {
+          "key": "str",
+          "total.mentions": "num",
+          "total.ai_search_volume": "num"
+        },
+        "top_mentioned_domains": {
+          "domain": "str",
+          "total.mentions": "num",
+          "total.ai_search_volume": "num"
+        },
+        "top_mentioned_pages": {
+          "page": "str",
+          "total.mentions": "num",
+          "total.ai_search_volume": "num"
+        },
+        "top_mentioned_brands": {
+          "brand": "str",
+          "total.mentions": "num",
+          "total.ai_search_volume": "num"
+        },
+        "top_mentioned_brand_categories": {
+          "brand_category": "str",
+          "total.mentions": "num",
+          "total.ai_search_volume": "num"
+        },
+        "target_metrics_lite": {
+          "platform": "str",
+          "location": "num",
+          "language": "str",
+          "metrics.mentions": "num",
+          "metrics.ai_search_volume": "num"
+        },
+        "top_mentioned_domains_lite": {
+          "platform": "str",
+          "domain": "str",
+          "location": "num",
+          "language": "str",
+          "metrics.mentions": "num",
+          "metrics.ai_search_volume": "num"
+        },
+        "top_mentioned_pages_lite": {
+          "platform": "str",
+          "page": "str",
+          "location": "num",
+          "language": "str",
+          "metrics.mentions": "num",
+          "metrics.ai_search_volume": "num"
+        },
+        "top_mentioned_brands_lite": {
+          "platform": "str",
+          "brand": "str",
+          "location": "num",
+          "language": "str",
+          "metrics.mentions": "num",
+          "metrics.ai_search_volume": "num"
+        },
+        "top_mentioned_brand_categories_lite": {
+          "platform": "str",
+          "brand_category": "str",
+          "location": "num",
+          "language": "str",
+          "metrics.mentions": "num",
+          "metrics.ai_search_volume": "num"
+        }
+      }
+    ],
+    "p7_controle": {
+      "chaves_result": [
+        "total_count",
+        "offset",
+        "search_after_token",
+        "items_count",
+        "items"
+      ],
+      "items_count": 10,
+      "total_count": 3150,
+      "chaves_item": [
+        "platform",
+        "model_name",
+        "location_code",
+        "language_code",
+        "question",
+        "answer",
+        "sources",
+        "search_results",
+        "ai_search_volume",
+        "monthly_searches",
+        "first_response_at",
+        "last_response_at",
+        "brand_entities",
+        "fan_out_queries",
+        "is_web_search_based"
+      ],
+      "amostra": [
+        {
+          "keyword": null,
+          "platform": "google",
+          "model_name": "google_ai_overview",
+          "ai_search_volume": 165000,
+          "sources_count": 11,
+          "sources_amostra": [
+            {
+              "snippet": "Get a spray called Mold Control at Home Depot and then run a fan on that thing for days until it's for sure dry. If you have a Hep...",
+              "source_name": "Reddit",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 1,
+              "title": "How do I kill mold permanently and stop it from coming back? - Reddit",
+              "domain": "www.reddit.com",
+              "url": "https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/#:~:text=Get%20a%20spray%20called%20Mold%20Control%20at,kill%20mold%20in%20hard%20to%20reach%20places.",
+              "publication_date": null
+            },
+            {
+              "snippet": "Liberally spray a 1-to-10 solution of bleach and water on the affected surface. Let sit for 10 to 20 minutes. Scrub any tough stai...",
+              "source_name": "The Home Depot",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 2,
+              "title": "How to Get Rid of Mold",
+              "domain": "www.homedepot.com",
+              "url": "https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c",
+              "publication_date": null
+            },
+            {
+              "snippet": "Bleach or dish detergent can be used to clean mold in your home. What you need to do to clean up mold will depend on how much wate...",
+              "source_name": "Centers for Disease Control and Prevention | CDC (.gov)",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 3,
+              "title": "Mold Clean Up Guidelines and Recommendations - CDC",
+              "domain": "www.cdc.gov",
+              "url": "https://www.cdc.gov/mold-health/about/clean-up.html",
+              "publication_date": null
+            },
+            {
+              "snippet": "What are the basic mold cleanup steps? * The key to mold control is moisture control. * Scrub mold off hard surfaces with detergen...",
+              "source_name": "U.S. Environmental Protection Agency (.gov)",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 4,
+              "title": "What are the basic mold cleanup steps? | US EPA",
+              "domain": "www.epa.gov",
+              "url": "https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps",
+              "publication_date": null
+            }
+          ],
+          "answer_len": 4342
+        },
+        {
+          "keyword": null,
+          "platform": "google",
+          "model_name": "google_ai_overview",
+          "ai_search_volume": 165000,
+          "sources_count": 11,
+          "sources_amostra": [
+            {
+              "snippet": "See my profile for pictures in another post. Peroxide diluted with water worked really good for me. If it is coming back then the ...",
+              "source_name": "Reddit",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 1,
+              "title": "How do I kill mold permanently and stop it from coming back? - Reddit",
+              "domain": "www.reddit.com",
+              "url": "https://www.reddit.com/r/HomeImprovement/comments/1c8y75m/how_do_i_kill_mold_permanently_and_stop_it_from/",
+              "publication_date": null
+            },
+            {
+              "snippet": "Here are some tips for removing mold: * **Don't mix ammonia with bleach** This creates toxic fumes. * **Remove mold from outside**",
+              "source_name": "The Home Depot",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 2,
+              "title": "How to Get Rid of Mold - The Home Depot",
+              "domain": "www.homedepot.com",
+              "url": "https://www.homedepot.com/c/ah/how-to-get-rid-of-mold/9ba683603be9fa5395fab907c52351c",
+              "publication_date": null
+            },
+            {
+              "snippet": "The primary way to eliminate mold is by removing the moisture source. Mold requires moisture, humidity, and nutrients like drywall...",
+              "source_name": "YouTube",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 3,
+              "title": "Black Mold - How To Kill Toxic Mold In Under 5 Mins!",
+              "domain": "www.youtube.com",
+              "url": "https://www.youtube.com/watch?v=dkBxl-AcPBw&t=24",
+              "publication_date": null
+            },
+            {
+              "snippet": "What are the basic mold cleanup steps? * The key to mold control is moisture control. * Scrub mold off hard surfaces with detergen...",
+              "source_name": "U.S. Environmental Protection Agency (.gov)",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 4,
+              "title": "What are the basic mold cleanup steps? | US EPA",
+              "domain": "www.epa.gov",
+              "url": "https://www.epa.gov/mold/what-are-basic-mold-cleanup-steps",
+              "publication_date": null
+            }
+          ],
+          "answer_len": 5377
+        },
+        {
+          "keyword": null,
+          "platform": "google",
+          "model_name": "google_ai_overview",
+          "ai_search_volume": 74000,
+          "sources_count": 11,
+          "sources_amostra": [
+            {
+              "snippet": "If you see substantial mold growth, rodent or insect infestation inside your HVAC system and/or dust coming through your vents, du...",
+              "source_name": "Ongaro & Sons",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 1,
+              "title": "4 Myths About Air Duct Cleaning You Need To Know - Ongaro & Sons",
+              "domain": "ongaroandsons.com",
+              "url": "https://ongaroandsons.com/4-myths-about-air-duct-cleaning-you-need-to-know/#:~:text=If%20you%20see%20substantial%20mold,duct%20cleaning%20companies%20is%20appropriate.",
+              "publication_date": null
+            },
+            {
+              "snippet": "Air Duct Cleaning * Why should I have my air ducts cleaned? Over time, dust, pet dander, pollen, and mold can accumulate in your a...",
+              "source_name": "COIT Cleaning and Restoration",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 2,
+              "title": "Expert Residential Air Duct Cleaning by COIT",
+              "domain": "www.coit.com",
+              "url": "https://www.coit.com/residential/air-duct-cleaning",
+              "publication_date": null
+            },
+            {
+              "snippet": "Duct cleaning is important for improving air quality, extending the life of your HVAC system, and reducing energy costs. There are...",
+              "source_name": "Deduct Ltd",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 3,
+              "title": "Duct Cleaning Services in London",
+              "domain": "deductltd.co.uk",
+              "url": "https://deductltd.co.uk/duct-cleaning-services-london/#:~:text=Duct%20cleaning%20is%20important%20for%20improving%20air,the%20ductwork%20*%20Unexpectedly%20increased%20energy%20bills",
+              "publication_date": null
+            },
+            {
+              "snippet": "Residential ductwork cleaning varies and can cost between $450 to $1,000. How long does it take for ductwork to be cleaned? Air du...",
+              "source_name": "Servpro",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 4,
+              "title": "HVAC, Air Vent and Air Duct Cleaning Services - Servpro",
+              "domain": "www.servpro.com",
+              "url": "https://www.servpro.com/services/cleaning-services/specialized-cleaning/airduct-cleaning#:~:text=Residential%20ductwork%20cleaning%20varies%20and,around%20two%20to%20four%20hours.",
+              "publication_date": null
+            }
+          ],
+          "answer_len": 5525
+        }
+      ]
+    },
+    "p7_lead": {
+      "chaves_result": [
+        "total_count",
+        "offset",
+        "search_after_token",
+        "items_count",
+        "items"
+      ],
+      "items_count": 7,
+      "total_count": 7,
+      "chaves_item": [
+        "platform",
+        "model_name",
+        "location_code",
+        "language_code",
+        "question",
+        "answer",
+        "sources",
+        "search_results",
+        "ai_search_volume",
+        "monthly_searches",
+        "first_response_at",
+        "last_response_at",
+        "brand_entities",
+        "fan_out_queries",
+        "is_web_search_based"
+      ],
+      "amostra": [
+        {
+          "keyword": null,
+          "platform": "google",
+          "model_name": "google_ai_overview",
+          "ai_search_volume": 1600,
+          "sources_count": 22,
+          "sources_amostra": [
+            {
+              "snippet": "24 de out. de 2024 — aí você vai ver assim né mas pela minha pela. pela. pelo pela dimensão do negócio pega a sala toda é um tapetão.",
+              "source_name": "YouTube ·",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 1,
+              "title": "10 SITES PARA GANHAR DINHEIRO ONLINE E FICAR RICO RÁPIDO",
+              "domain": "www.youtube.com",
+              "url": "https://www.youtube.com/watch?v=fV7dg4hlZ18&t=402",
+              "publication_date": null
+            },
+            {
+              "snippet": "Ganhe dinheiro como afiliado digital ... Primeiramente, trataremos do afiliado digital, profissional que comercializa produtos em ...",
+              "source_name": "Sebrae",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 2,
+              "title": "10 ideias de como ganhar dinheiro na internet sem sair de casa - Sebrae",
+              "domain": "sebrae.com.br",
+              "url": "https://sebrae.com.br/sites/PortalSebrae/artigos/10-ideias-de-como-ganhar-dinheiro-na-internet-sem-sair-de-casa,4a5cc4ec9b805810VgnVCM100000d701210aRCRD#:~:text=Ganhe%20dinheiro%20como%20afiliado%20digital&text=Primeiramente%2C%20trataremos%20do%20afiliado%20digital,na%20internet%20e%20se%20formalizar.",
+              "publication_date": null
+            },
+            {
+              "snippet": "6 de jun. de 2025 —  Como ganhar dinheiro na Internet: as 20 melhores ideias para 2025 * Entre em um programa de afiliados. * Faça tr...",
+              "source_name": "Hostinger",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 3,
+              "title": "Como ganhar dinheiro na Internet: as 20 melhores ideias para 2025",
+              "domain": "www.hostinger.com",
+              "url": "https://www.hostinger.com/br/tutoriais/como-ganhar-dinheiro-na-internet",
+              "publication_date": null
+            },
+            {
+              "snippet": "19 de ago. de 2025 — Sites de Cashback e Investimentos. A forma mais rápida e simples de como ganhar dinheiro na internet é utilizand...",
+              "source_name": "Mobills",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 4,
+              "title": "32 Sites para ganhar Dinheiro na Internet Hoje! - Mobills",
+              "domain": "www.mobills.com.br",
+              "url": "https://www.mobills.com.br/blog/ganhar-dinheiro/sites-para-ganhar-dinheiro-na-internet/#:~:text=Sites%20de%20Cashback%20e%20Investimentos,para%20ganhar%20dinheiro%20na%20internet!",
+              "publication_date": null
+            }
+          ],
+          "answer_len": 8551
+        },
+        {
+          "keyword": null,
+          "platform": "google",
+          "model_name": "google_ai_overview",
+          "ai_search_volume": 480,
+          "sources_count": 12,
+          "sources_amostra": [
+            {
+              "snippet": "25 de mar. de 2024 — O que é a busca orgânica? A busca orgânica refere-se à classificação e visualização de um site nos mecanismos de...",
+              "source_name": "Conversion",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 1,
+              "title": "Busca orgânica: o que é, como funciona e importância - Conversion",
+              "domain": "www.conversion.com.br",
+              "url": "https://www.conversion.com.br/blog/busca-organica/#:~:text=O%20que%20%C3%A9%20a%20busca,engajamento%20com%20o%20p%C3%BAblico-alvo.",
+              "publication_date": null
+            },
+            {
+              "snippet": "28 de jan. de 2025 — Divulgue os conteúdos. A divulgação dos seus materiais é parte da estratégia de SEO aliada ao Marketing de Conte...",
+              "source_name": "Orgânica Digital",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 2,
+              "title": "Busca orgânica: como alcançar as primeiras posições",
+              "domain": "www.organicadigital.com",
+              "url": "https://www.organicadigital.com/blog/por-que-ranquear-bem-seu-site-na-busca-organica/#:~:text=Divulgue%20os%20conte%C3%BAdos,de%20aparecer%20entre%20os%20primeiros!",
+              "publication_date": null
+            },
+            {
+              "snippet": "O que é Busca Orgânica A Busca Orgânica é o local no Google aonde as empresas se posicionam sem pagar por click com o objetivo de ...",
+              "source_name": "Busca Orgânica",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 3,
+              "title": "Busca Orgânica: Crescimento para sua empresa através do Google",
+              "domain": "www.buscaorganica.com.br",
+              "url": "https://www.buscaorganica.com.br/#:~:text=O%20que%20%C3%A9%20Busca%20Org%C3%A2nica,p%C3%BAblico%20qualificado%20para%20seu%20site.",
+              "publication_date": null
+            },
+            {
+              "snippet": "24 de jan. de 2024 — O que é busca orgânica? O termo busca orgânica, ou resultado orgânico, destaca o tráfego que vem de resultados d...",
+              "source_name": "OUTMarketing",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 4,
+              "title": "Busca orgânica: domine o Google em 6 passos - OUTMarketing",
+              "domain": "outmarketing.com.br",
+              "url": "https://outmarketing.com.br/busca-organica/#:~:text=org%C3%A2nica%20em%202024!-,O%20que%20%C3%A9%20busca%20org%C3%A2nica?,fatores%20que%20destacaremos%20neste%20texto.",
+              "publication_date": null
+            }
+          ],
+          "answer_len": 6158
+        },
+        {
+          "keyword": null,
+          "platform": "google",
+          "model_name": "google_ai_overview",
+          "ai_search_volume": 210,
+          "sources_count": 50,
+          "sources_amostra": [
+            {
+              "snippet": "Divulgação de músicas (gerar videoclips com legendas e shorts) ... Busco um(a) profissional criativo(a) e ágil para me ajudar a di...",
+              "source_name": "Workana",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 1,
+              "title": "Divulgação – Vagas de Emprego Online - Workana",
+              "domain": "www.workana.com",
+              "url": "https://www.workana.com/pt/jobs?query=Divulga%C3%A7%C3%A3o#:~:text=Divulga%C3%A7%C3%A3o%20de%20m%C3%BAsicas%20(gerar%20videoclips%20com%20legendas%20e%20shorts)&text=Busco%20um(a)%20profissional%20criativo,YouTube%2C%20Instagram%2C%20TikTok).",
+              "publication_date": null
+            },
+            {
+              "snippet": "Atendente virtual - CURY CONSTRUTORA (ZONA OESTE -SP) ... Uso de ferramentas de divulgação e marketing digital para captação de le...",
+              "source_name": "Indeed",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 2,
+              "title": "Vagas de Divulgação Online - Indeed",
+              "domain": "br.indeed.com",
+              "url": "https://br.indeed.com/q-divulga%C3%A7%C3%A3o-online-vagas.html#:~:text=Atendente%20virtual%20-%20CURY%20CONSTRUTORA%20(ZONA%20OESTE%20-SP)&text=Uso%20de%20ferramentas%20de%20divulga%C3%A7%C3%A3o,um%20time%20que%20transforma%20sonhos%E2%80%A6",
+              "publication_date": null
+            },
+            {
+              "snippet": "21 de mar. de 2022 — Como funciona o trabalho de divulgação online? O trabalho de divulgação online consiste na elaboração de estraté...",
+              "source_name": "Prosperidade Conteúdos",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 3,
+              "title": "Divulgação online: como vender mais na internet com estratégia",
+              "domain": "www.prosperidadeconteudos.com",
+              "url": "https://www.prosperidadeconteudos.com/divulgacao-online-como-vender-na-internet/#:~:text=Como%20funciona%20o%20trabalho%20de,como%20ag%C3%AAncias%20ou%20profissionais%20freelancers.",
+              "publication_date": null
+            },
+            {
+              "snippet": "Trabalhe com influenciadores digitais Para aumentar as suas vendas, você pode contratar influenciadores digitais. Esses profission...",
+              "source_name": "Pingback",
+              "thumbnail": null,
+              "markdown": null,
+              "rank": 4,
+              "title": "Saiba quais são as empresas que pagam para divulgar seus produtos",
+              "domain": "pingback.com",
+              "url": "https://pingback.com/br/resources/empresas-que-pagam-para-divulgar-seus-produtos/#:~:text=Trabalhe%20com%20influenciadores%20digitais,cria%C3%A7%C3%A3o%20do%20seu%20pr%C3%B3prio%20infoproduto!",
+              "publication_date": null
+            }
+          ],
+          "answer_len": 17556
+        }
+      ]
+    }
+  },
+  "reprovado": [
+    "p5: controle cheio, lead vazio. O leitor funciona e o zero do lead e real - `no_ai_overview_presence` esta certo em disparar.",
+    "p9: chat_gpt nao devolveu `annotations`. `domainCited` e deterministico POR CAUSA desse campo; sem ele, a metrica da sondagem nessa plataforma nao existe.",
+    "p9: chat_gpt nao devolveu `money_spent`. O custo real da sondagem nao pode ser somado na linha, e a spec exige isso na tela.",
+    "p9: claude nao devolveu `annotations`. `domainCited` e deterministico POR CAUSA desse campo; sem ele, a metrica da sondagem nessa plataforma nao existe.",
+    "p9: gemini nao devolveu `annotations`. `domainCited` e deterministico POR CAUSA desse campo; sem ele, a metrica da sondagem nessa plataforma nao existe.",
+    "p9: gemini nao devolveu `money_spent`. O custo real da sondagem nao pode ser somado na linha, e a spec exige isso na tela.",
+    "p9: perplexity nao devolveu `annotations`. `domainCited` e deterministico POR CAUSA desse campo; sem ele, a metrica da sondagem nessa plataforma nao existe.",
+    "p9: perplexity nao devolveu `money_spent`. O custo real da sondagem nao pode ser somado na linha, e a spec exige isso na tela.",
+    "p8: o CONTROLE veio vazio. O relatorio de referencia mostra cinco links de Reddit e cinco de YouTube para `puroclean.com`; se o filtro `in` nao os encontra, a via de backlink nao mede citacao e a onda 2 precisa da via de `llm_mentions`."
+  ]
+}

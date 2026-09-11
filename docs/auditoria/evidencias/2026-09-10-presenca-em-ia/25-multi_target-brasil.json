@@ -1,0 +1,338 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.8680 sec.",
+  "cost": 0.103,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110336-2319-0652-0000-c1b51ff69c4c",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.8309 sec.",
+      "cost": 0.103,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "llm_mentions",
+        "multi_target_metrics",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "multi_target_metrics",
+        "platform": "google",
+        "location_name": "Brazil",
+        "language_code": "pt",
+        "targets": [
+          {
+            "key": "lead",
+            "target": [
+              {
+                "keyword": "Busca Orgânica",
+                "search_scope": [
+                  "answer"
+                ],
+                "search_filter": "include",
+                "match_type": "word_match"
+              },
+              {
+                "domain": "buscaorganica.com.br",
+                "search_scope": [
+                  "sources"
+                ],
+                "search_filter": "include",
+                "include_subdomains": true
+              }
+            ]
+          },
+          {
+            "key": "conversion",
+            "target": [
+              {
+                "keyword": "Conversion",
+                "search_scope": [
+                  "answer"
+                ],
+                "search_filter": "include",
+                "match_type": "word_match"
+              },
+              {
+                "domain": "conversion.com.br",
+                "search_scope": [
+                  "sources"
+                ],
+                "search_filter": "include",
+                "include_subdomains": true
+              }
+            ]
+          },
+          {
+            "key": "mestre",
+            "target": [
+              {
+                "keyword": "Agência Mestre",
+                "search_scope": [
+                  "answer"
+                ],
+                "search_filter": "include",
+                "match_type": "word_match"
+              },
+              {
+                "domain": "agenciamestre.com",
+                "search_scope": [
+                  "sources"
+                ],
+                "search_filter": "include",
+                "include_subdomains": true
+              }
+            ]
+          }
+        ]
+      },
+      "result": [
+        {
+          "total_count": 3,
+          "offset": 0,
+          "items_count": 3,
+          "aggregated_metrics": {
+            "location": [
+              {
+                "key": 2076,
+                "mentions": 62,
+                "ai_search_volume": 41700
+              }
+            ],
+            "language": [
+              {
+                "key": "pt",
+                "mentions": 62,
+                "ai_search_volume": 41700
+              }
+            ],
+            "platform": [
+              {
+                "key": "google",
+                "mentions": 62,
+                "ai_search_volume": 41700
+              }
+            ],
+            "sources_domain": [
+              {
+                "key": "www.conversion.com.br",
+                "mentions": 43,
+                "ai_search_volume": 36250
+              },
+              {
+                "key": "www.organicadigital.com",
+                "mentions": 9,
+                "ai_search_volume": 5230
+              },
+              {
+                "key": "www.idinheiro.com.br",
+                "mentions": 3,
+                "ai_search_volume": 630
+              },
+              {
+                "key": "www.youtube.com",
+                "mentions": 28,
+                "ai_search_volume": 15850
+              },
+              {
+                "key": "www.agenciamestre.com",
+                "mentions": 15,
+                "ai_search_volume": 6750
+              }
+            ],
+            "search_results_domain": [],
+            "brand_entities_title": [],
+            "brand_entities_category": [],
+            "total": {
+              "mentions": 62,
+              "ai_search_volume": 41700
+            }
+          },
+          "items": [
+            {
+              "key": "lead",
+              "location": [
+                {
+                  "key": 2076,
+                  "mentions": 2,
+                  "ai_search_volume": 650
+                }
+              ],
+              "language": [
+                {
+                  "key": "pt",
+                  "mentions": 2,
+                  "ai_search_volume": 650
+                }
+              ],
+              "platform": [
+                {
+                  "key": "google",
+                  "mentions": 2,
+                  "ai_search_volume": 650
+                }
+              ],
+              "sources_domain": [
+                {
+                  "key": "www.conversion.com.br",
+                  "mentions": 1,
+                  "ai_search_volume": 480
+                },
+                {
+                  "key": "www.organicadigital.com",
+                  "mentions": 2,
+                  "ai_search_volume": 650
+                },
+                {
+                  "key": "www.idinheiro.com.br",
+                  "mentions": 1,
+                  "ai_search_volume": 170
+                },
+                {
+                  "key": "www.youtube.com",
+                  "mentions": 0,
+                  "ai_search_volume": 0
+                },
+                {
+                  "key": "www.agenciamestre.com",
+                  "mentions": 0,
+                  "ai_search_volume": 0
+                }
+              ],
+              "search_results_domain": [],
+              "brand_entities_title": [],
+              "brand_entities_category": [],
+              "total": {
+                "mentions": 2,
+                "ai_search_volume": 650
+              }
+            },
+            {
+              "key": "conversion",
+              "location": [
+                {
+                  "key": 2076,
+                  "mentions": 50,
+                  "ai_search_volume": 37420
+                }
+              ],
+              "language": [
+                {
+                  "key": "pt",
+                  "mentions": 50,
+                  "ai_search_volume": 37420
+                }
+              ],
+              "platform": [
+                {
+                  "key": "google",
+                  "mentions": 50,
+                  "ai_search_volume": 37420
+                }
+              ],
+              "sources_domain": [
+                {
+                  "key": "www.conversion.com.br",
+                  "mentions": 42,
+                  "ai_search_volume": 35770
+                },
+                {
+                  "key": "www.organicadigital.com",
+                  "mentions": 7,
+                  "ai_search_volume": 4580
+                },
+                {
+                  "key": "www.idinheiro.com.br",
+                  "mentions": 1,
+                  "ai_search_volume": 320
+                },
+                {
+                  "key": "www.youtube.com",
+                  "mentions": 24,
+                  "ai_search_volume": 14450
+                },
+                {
+                  "key": "www.agenciamestre.com",
+                  "mentions": 5,
+                  "ai_search_volume": 3120
+                }
+              ],
+              "search_results_domain": [],
+              "brand_entities_title": [],
+              "brand_entities_category": [],
+              "total": {
+                "mentions": 50,
+                "ai_search_volume": 37420
+              }
+            },
+            {
+              "key": "mestre",
+              "location": [
+                {
+                  "key": 2076,
+                  "mentions": 15,
+                  "ai_search_volume": 6750
+                }
+              ],
+              "language": [
+                {
+                  "key": "pt",
+                  "mentions": 15,
+                  "ai_search_volume": 6750
+                }
+              ],
+              "platform": [
+                {
+                  "key": "google",
+                  "mentions": 15,
+                  "ai_search_volume": 6750
+                }
+              ],
+              "sources_domain": [
+                {
+                  "key": "www.conversion.com.br",
+                  "mentions": 5,
+                  "ai_search_volume": 3120
+                },
+                {
+                  "key": "www.organicadigital.com",
+                  "mentions": 2,
+                  "ai_search_volume": 1770
+                },
+                {
+                  "key": "www.idinheiro.com.br",
+                  "mentions": 1,
+                  "ai_search_volume": 140
+                },
+                {
+                  "key": "www.youtube.com",
+                  "mentions": 6,
+                  "ai_search_volume": 2450
+                },
+                {
+                  "key": "www.agenciamestre.com",
+                  "mentions": 15,
+                  "ai_search_volume": 6750
+                }
+              ],
+              "search_results_domain": [],
+              "brand_entities_title": [],
+              "brand_entities_category": [],
+              "total": {
+                "mentions": 15,
+                "ai_search_volume": 6750
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

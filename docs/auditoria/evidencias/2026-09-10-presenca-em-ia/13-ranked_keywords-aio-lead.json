@@ -1,0 +1,54 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.7337 sec.",
+  "cost": 0.012,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110302-2319-0381-0000-e08c272164fb",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.5604 sec.",
+      "cost": 0.012,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "dataforseo_labs",
+        "google",
+        "ranked_keywords",
+        "live"
+      ],
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "ranked_keywords",
+        "se_type": "google",
+        "target": "buscaorganica.com.br",
+        "location_name": "Brazil",
+        "language_code": "pt",
+        "item_types": [
+          "ai_overview_reference"
+        ],
+        "limit": 50,
+        "order_by": [
+          "ranked_serp_element.serp_item.etv,desc"
+        ]
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target": "buscaorganica.com.br",
+          "location_code": 2076,
+          "language_code": "pt",
+          "total_count": null,
+          "items_count": 0,
+          "metrics": null,
+          "metrics_absolute": null,
+          "items": null
+        }
+      ]
+    }
+  ]
+}

@@ -2,6 +2,9 @@
 
 import { requireCommercialMember } from "@/lib/auth/session"
 import { createClient } from "@/lib/supabase/server"
+import { fetchAiDemandLive } from "@/lib/dataforseo/ai-optimization"
+import { AI_KEYWORD_VOLUME_LIMIT, GEO_QUERY } from "@/lib/dataforseo/limits"
+import { mapAiDemand } from "@/lib/leads/geo-demand"
 import {
   geoAccessibilityFromCrawl,
   isExtendedCrawl,
@@ -28,12 +31,21 @@ const NO_CRAWL =
   "Rode a análise de Website antes: a presença em IA lê aquela coleta."
 
 /**
- * Zero chamada paga.
+ * Uma chamada paga, de US$ 0,021.
  *
  * A etapa reprojeta coletas que já existem sob o vocabulário de GEO. Por isso
  * `sources` guarda a data de cada origem — carimbar a hora do clique como se
  * fosse a hora da medida foi o defeito que a onda 0 da visibilidade encontrou,
  * onde o índice tinha mediana de 59 dias.
+ *
+ * **A única coleta nova aqui é a demanda em IA**, e ela entra na base porque é
+ * mais barata que o `ranked_keywords` que produziu as keywords dela
+ * (0,021 contra 0,0252). Citações e sondagem não entram: custam 0,10 e 0,65, e
+ * são botões pagos próprios.
+ *
+ * **Falhar na demanda não derruba a análise.** `aiDemand` degrada para `null`,
+ * que é "não coletado" — o mesmo desenho do benchmark de backlinks, onde o
+ * resumo é a entrega principal e o extra some sem levar o resto junto.
  */
 export async function analyzeLeadGeo(
   formData: FormData,
@@ -110,12 +122,37 @@ export async function analyzeLeadGeo(
     ? readLeadVisibilityAuditRow(visibilityRow.data as Record<string, unknown>)
     : null
 
+  // A demanda em IA é a única chamada paga da coleta base. As keywords vêm do
+  // snapshot de visibilidade que já está gravado — pagar `ranked_keywords` de
+  // novo só para alimentar esta chamada custaria mais que ela.
+  const keywords = visibilityAudit
+    ? [
+        ...new Set(
+          visibilityAudit.snapshot.keywords
+            .map((row) => row.keyword)
+            .filter((keyword) => keyword.length > 0),
+        ),
+      ].slice(0, AI_KEYWORD_VOLUME_LIMIT)
+    : []
+  const demand =
+    keywords.length > 0 ? await fetchAiDemandLive({ keywords }) : null
+  const aiDemand =
+    demand?.status === "ok"
+      ? mapAiDemand({
+          result: demand.result,
+          locationLabel: GEO_QUERY.locationName,
+          languageCode: GEO_QUERY.languageCode,
+        })
+      : null
+
   const collectedAt = new Date().toISOString()
   const snapshot: GeoSnapshot = {
     version: 1,
     domain: website.normalized_key,
     collectedAt,
-    costUsd: null,
+    // O custo real da chamada, não o da tabela. A tabela é piso: `usage.ts`
+    // registra isso desde que o SERP cobrou cinco vezes o declarado.
+    costUsd: demand?.status === "ok" ? (demand.cost ?? null) : null,
     sources: {
       websiteAuditAt: websiteFetchedAt,
       visibilityAuditAt: visibilityAudit?.fetched_at ?? null,
@@ -129,8 +166,10 @@ export async function analyzeLeadGeo(
     },
     accessibility: geoAccessibilityFromCrawl(crawl),
     content: geoContentFromCrawl(crawl),
-    // Onda 2. `null` = nao coletado; `[]` seria "coletado e vazio".
+    // Citações e concorrência são o botão pago da etapa, a US$ 0,10 a chamada.
+    // `null` = não coletado; `[]` seria "coletado e vazio".
     citations: null,
+    aiMentions: null,
     aiOverview: visibilityAudit
       ? {
           keywords: visibilityAudit.snapshot.keywords
@@ -141,6 +180,9 @@ export async function analyzeLeadGeo(
               position: row.position.value,
               volume: row.volume.value,
               etv: row.traffic,
+              // A frase que a IA citou. `null` em snapshot de visibilidade
+              // anterior a 2026-09-11, que não gravava o campo.
+              citedText: row.citedText,
             })),
           count: visibilityAudit.snapshot.keywords.filter(
             (row) => row.itemType === "ai_overview_reference",
@@ -154,7 +196,7 @@ export async function analyzeLeadGeo(
           ),
         }
       : null,
-    aiDemand: null,
+    aiDemand,
     promptVisibility: null,
   }
 

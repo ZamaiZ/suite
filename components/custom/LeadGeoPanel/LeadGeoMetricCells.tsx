@@ -4,6 +4,7 @@ import {
   RiCheckboxCircleLine,
   RiChatQuoteLine,
   RiRobot2Line,
+  RiSearchEyeLine,
   RiSparkling2Line,
 } from "react-icons/ri"
 import type { IconType } from "react-icons"
@@ -90,6 +91,7 @@ export function LeadGeoMetricCells({
 
   const aiOverview = snapshot?.aiOverview ?? null
   const citations = snapshot?.citations ?? null
+  const demand = snapshot?.aiDemand ?? null
 
   return (
     <>
@@ -160,13 +162,54 @@ export function LeadGeoMetricCells({
         tab="citacoes"
         onSelectTab={onSelectTab}
         icon={RiChatQuoteLine}
-        label="FONTES DE AUTORIDADE"
-        value={citations === null ? "—" : String(citations.sources.length)}
-        unit={citations === null ? "não coletado" : "domínios que a IA consulta"}
+        label="MENÇÕES EM IA"
+        value={citations === null ? "—" : String(citations.mentions)}
+        unit={
+          citations === null
+            ? "não coletado"
+            : citations.mentions === 0
+              ? "respostas de IA citam o negócio"
+              : citations.domainCitedAsSource
+                ? "respostas · o site é fonte"
+                : "respostas · o site não é fonte"
+        }
         tone={
           citations === null
             ? "neutral"
-            : citations.sources.length > 0
+            : citations.mentions === 0
+              ? "warning"
+              : citations.domainCitedAsSource
+                ? "success"
+                : "warning"
+        }
+        share={null}
+      />
+      {/*
+        Sem trilha, e nunca como percentual do volume orgânico: medido em
+        2026-09-11, uma keyword teve 12.559 buscas em IA contra 5.400 no Google
+        e outra teve 234 contra 18.100. Não há razão constante entre os dois.
+      */}
+      <Cell
+        tab="conteudo"
+        onSelectTab={onSelectTab}
+        icon={RiSearchEyeLine}
+        label="DEMANDA EM IA"
+        value={
+          demand === null || demand.totalAiSearchVolume === null
+            ? "—"
+            : demand.totalAiSearchVolume.toLocaleString("pt-BR")
+        }
+        unit={
+          demand === null
+            ? "não coletado"
+            : demand.totalAiSearchVolume === null
+              ? "sem keyword medida"
+              : "buscas/mês nas keywords do lead"
+        }
+        tone={
+          demand === null || demand.totalAiSearchVolume === null
+            ? "neutral"
+            : demand.totalAiSearchVolume > 0
               ? "success"
               : "warning"
         }

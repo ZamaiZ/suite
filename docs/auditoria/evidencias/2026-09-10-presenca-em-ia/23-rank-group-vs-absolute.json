@@ -1,0 +1,112 @@
+{
+  "cost": 0.024,
+  "total_count": 4677,
+  "dist_rank_group": {
+    "1": 12,
+    "2": 13,
+    "3": 18,
+    "4": 9,
+    "5": 23,
+    "6": 3,
+    "7": 8,
+    "8": 4,
+    "9": 2,
+    "10": 5,
+    "15": 1,
+    "16": 1,
+    "19": 1
+  },
+  "dist_rank_absolute": {
+    "1": 93,
+    "2": 3,
+    "3": 2,
+    "4": 1,
+    "6": 1
+  },
+  "amostra": [
+    {
+      "keyword": "remediate mold",
+      "volume": 165000,
+      "rank_group": 5,
+      "rank_absolute": 1,
+      "etv": 7738.5
+    },
+    {
+      "keyword": "helped i wrecked my house",
+      "volume": 9900,
+      "rank_group": 2,
+      "rank_absolute": 1,
+      "etv": 1603.800048828125
+    },
+    {
+      "keyword": "fire in the house",
+      "volume": 12100,
+      "rank_group": 3,
+      "rank_absolute": 2,
+      "etv": 1177.3299560546875
+    },
+    {
+      "keyword": "spraying for mold",
+      "volume": 9900,
+      "rank_group": 3,
+      "rank_absolute": 1,
+      "etv": 963.27001953125
+    },
+    {
+      "keyword": "biohazard",
+      "volume": 33100,
+      "rank_group": 7,
+      "rank_absolute": 1,
+      "etv": 847.3599853515625
+    },
+    {
+      "keyword": "green mold",
+      "volume": 3600,
+      "rank_group": 2,
+      "rank_absolute": 1,
+      "etv": 583.2000122070312
+    },
+    {
+      "keyword": "green mould",
+      "volume": 3600,
+      "rank_group": 2,
+      "rank_absolute": 1,
+      "etv": 583.2000122070312
+    },
+    {
+      "keyword": "ice damming",
+      "volume": 27100,
+      "rank_group": 8,
+      "rank_absolute": 1,
+      "etv": 533.8699951171875
+    },
+    {
+      "keyword": "removing mildew",
+      "volume": 8100,
+      "rank_group": 4,
+      "rank_absolute": 1,
+      "etv": 533.7899780273438
+    },
+    {
+      "keyword": "mold in toilet",
+      "volume": 5400,
+      "rank_group": 3,
+      "rank_absolute": 1,
+      "etv": 525.4199829101562
+    },
+    {
+      "keyword": "mold in walls",
+      "volume": 8100,
+      "rank_group": 5,
+      "rank_absolute": 1,
+      "etv": 379.8900146484375
+    },
+    {
+      "keyword": "mold inside the walls",
+      "volume": 8100,
+      "rank_group": 5,
+      "rank_absolute": 1,
+      "etv": 379.8900146484375
+    }
+  ]
+}

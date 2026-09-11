@@ -1,0 +1,282 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "7.6721 sec.",
+  "cost": 0.0373887,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110308-2319-0612-0000-e395f96d7482",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "7.6299 sec.",
+      "cost": 0.0373887,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "gemini",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "gemini",
+        "user_prompt": "A agência de SEO Busca Orgânica é confiável? O que se sabe sobre ela?",
+        "model_name": "gemini-2.5-flash",
+        "web_search": true,
+        "max_output_tokens": 800
+      },
+      "result": [
+        {
+          "model_name": "gemini-2.5-flash",
+          "input_tokens": 104,
+          "output_tokens": 703,
+          "reasoning_tokens": 0,
+          "web_search": true,
+          "money_spent": 0.0367887,
+          "datetime": "2026-09-11 03:08:13 +00:00",
+          "items": [
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Não foi possível encontrar informações específicas sobre a agência de SEO \"Busca Orgânica\" que permitam avaliar sua confiabilidade diretamente. No entanto, é importante entender o que torna uma agência de SEO confiável e como o trabalho de busca orgânica funciona.\n\n**O que se sabe sobre busca orgânica e SEO em geral:**\n\nA busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles. É considerada uma estratégia crucial para o sucesso online, pois influencia diretamente a visibilidade de um negócio. Os usuários tendem a confiar mais nos resultados orgânicos, associando-os à credibilidade e relevância da marca.\n\nSEO (Search Engine Optimization) é o conjunto de técnicas e práticas utilizadas para otimizar um site e seu conteúdo, visando melhorar seu posicionamento nos resultados da busca orgânica. Investir em SEO pode não trazer resultados imediatos como o tráfego pago, mas gera benefícios expressivos a médio e longo prazo, como a redução do custo de aquisição de clientes.\n\n**Fatores que contribuem para o sucesso em busca orgânica e SEO:**\n\n*   **Conteúdo de qualidade:** Criar conteúdo útil, relevante e de qualidade é fundamental. Os mecanismos de busca valorizam conteúdos que realmente ajudam o usuário a sanar suas dúvidas.\n*   **Palavras-chave:** Escolher as palavras-chave certas, com bom volume de busca e relacionadas ao seu negócio, é essencial.\n*   **Autoridade do site:** É determinada pela quantidade e qualidade de menções e links de outros sites que apontam para o seu, além da experiência e expertise dos autores. A construção de backlinks de qualidade é uma estratégia importante para aumentar a autoridade do site.\n*   **Experiência do usuário (UX):** Fatores como velocidade de carregamento da página, navegabilidade e adaptabilidade para dispositivos móveis são valorizados pelos motores de busca.\n*   **Otimização técnica:** Inclui aspectos como a estrutura do site e a adequação a fatores técnicos exigidos pelos algoritmos dos buscadores.\n*   **Atualizações de algoritmos:** É importante estar atento às constantes atualizações dos algoritmos dos mecanismos de busca.\n\n**Para avaliar a confiabilidade de uma agência de SEO, você pode considerar:**\n\n*   **Cases de sucesso:** Agências confiáveis geralmente apresentam estudos de caso com resultados reais e mensuráveis para seus clientes.\n*   **Transparência:** Uma agência confiável deve ser transparente sobre suas estratégias e metodologias.\n*   **Conhecimento e experiência:** Verifique a experiência da equipe e se eles demonstram profundo conhecimento das práticas de SEO e das atualizações dos algoritmos.\n*   **Depoimentos e avaliações:** Pesquise por avaliações e depoimentos de clientes anteriores.\n*   **Foco em resultados de longo prazo:** O SEO é um investimento de médio a longo prazo, e a agência deve deixar isso claro.\n\nSem informações diretas sobre a agência \"Busca Orgânica\", a recomendação é aplicar esses",
+                  "annotations": [
+                    {
+                      "title": "organicadigital.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+                      "start_index": 334,
+                      "end_index": 487,
+                      "text": "A busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 334,
+                      "end_index": 487,
+                      "text": "A busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles."
+                    },
+                    {
+                      "title": "prosperidadeconteudos.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGGe-uBGi_Ux5hZb25LfesCZN-3etOZF0dsgrsdSQCuy_UUKOjqFhCvo5EPp6EkIS1xQtzdhObasm95i7Q5DVA4YkfTr_FeosAnYHOXcQgfpshgpZQChm4fnPCZgs4imjQik1gw9KfbDJ1nTm0tmTbj2yJc7nGbQIc0PZRgqDHA0QLlUyRokGqs",
+                      "start_index": 334,
+                      "end_index": 487,
+                      "text": "A busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles."
+                    },
+                    {
+                      "title": "organicadigital.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+                      "start_index": 488,
+                      "end_index": 608,
+                      "text": "É considerada uma estratégia crucial para o sucesso online, pois influencia diretamente a visibilidade de um negócio."
+                    },
+                    {
+                      "title": "focuspublicidade.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHNxeAVwBkPLDi2HVGWcfF_Weu0VNW9hzVaicnMPPwZE2IMC0B6gKJbjTLpMycRXHEQbkEayLNSApxx8kCoHdWjbeLatkWSBPUGgZqRDMWk0Bd2CdwUDo-x7TA4qwKAwM7Opczo-ZyO7NWYg6bm",
+                      "start_index": 609,
+                      "end_index": 725,
+                      "text": "Os usuários tendem a confiar mais nos resultados orgânicos, associando-os à credibilidade e relevância da marca."
+                    },
+                    {
+                      "title": "conversion.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHDbKGWH5E18dnKdXLGXB6GauA-rz21d4EYt45UQgVcxeWfVCDiuWgp9R2ybO1uQLm1O-8LERYOI3ZMGso_izPQmVuvx0_C5lNRQEHuUJr8J8cLXO1JQntwN2hcsj78AjljOA4Me-MTxlVA2j3two2MVN3RbFKKaA==",
+                      "start_index": 609,
+                      "end_index": 725,
+                      "text": "Os usuários tendem a confiar mais nos resultados orgânicos, associando-os à credibilidade e relevância da marca."
+                    },
+                    {
+                      "title": "lamarcabrasil.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHetAkGVK40EQKnrYDMvviKZJUc1HpF9UPf3v1ppp--LArKbwAKzQ2EGjdc2HgTwVn30Bc-JP9Q2h9d3aE9gD43VouojbRAyb6FioMkXOkGdFB3JpPlwBVA7kZr-Y1unkNTC_HTGnCZblEbn2hOLrFFKL1uTuKYXcT7Fl358OQJWfYOazNHjeAclNDwrQY9eXGtrz0X",
+                      "start_index": 609,
+                      "end_index": 725,
+                      "text": "Os usuários tendem a confiar mais nos resultados orgânicos, associando-os à credibilidade e relevância da marca."
+                    },
+                    {
+                      "title": "organicadigital.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+                      "start_index": 727,
+                      "end_index": 919,
+                      "text": "SEO (Search Engine Optimization) é o conjunto de técnicas e práticas utilizadas para otimizar um site e seu conteúdo, visando melhorar seu posicionamento nos resultados da busca orgânica."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 727,
+                      "end_index": 919,
+                      "text": "SEO (Search Engine Optimization) é o conjunto de técnicas e práticas utilizadas para otimizar um site e seu conteúdo, visando melhorar seu posicionamento nos resultados da busca orgânica."
+                    },
+                    {
+                      "title": "lamarcabrasil.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHetAkGVK40EQKnrYDMvviKZJUc1HpF9UPf3v1ppp--LArKbwAKzQ2EGjdc2HgTwVn30Bc-JP9Q2h9d3aE9gD43VouojbRAyb6FioMkXOkGdFB3JpPlwBVA7kZr-Y1unkNTC_HTGnCZblEbn2hOLrFFKL1uTuKYXcT7Fl358OQJWfYOazNHjeAclNDwrQY9eXGtrz0X",
+                      "start_index": 727,
+                      "end_index": 919,
+                      "text": "SEO (Search Engine Optimization) é o conjunto de técnicas e práticas utilizadas para otimizar um site e seu conteúdo, visando melhorar seu posicionamento nos resultados da busca orgânica."
+                    },
+                    {
+                      "title": "buscaorganica.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHGmyozYEYM76j26V3sIPOxwpMkxhqaQ2ak4FF-el9yjgJCnG7zxoplR3b99pnbgTLoQW53WgDPCDI48cMOxuTHWDa0FsprpNvmHF9JBjWeN9QX2gAKiucu5nDThQ==",
+                      "start_index": 727,
+                      "end_index": 919,
+                      "text": "SEO (Search Engine Optimization) é o conjunto de técnicas e práticas utilizadas para otimizar um site e seu conteúdo, visando melhorar seu posicionamento nos resultados da busca orgânica."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 920,
+                      "end_index": 1106,
+                      "text": "Investir em SEO pode não trazer resultados imediatos como o tráfego pago, mas gera benefícios expressivos a médio e longo prazo, como a redução do custo de aquisição de clientes."
+                    },
+                    {
+                      "title": "buscaorganica.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHGmyozYEYM76j26V3sIPOxwpMkxhqaQ2ak4FF-el9yjgJCnG7zxoplR3b99pnbgTLoQW53WgDPCDI48cMOxuTHWDa0FsprpNvmHF9JBjWeN9QX2gAKiucu5nDThQ==",
+                      "start_index": 920,
+                      "end_index": 1106,
+                      "text": "Investir em SEO pode não trazer resultados imediatos como o tráfego pago, mas gera benefícios expressivos a médio e longo prazo, como a redução do custo de aquisição de clientes."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 1177,
+                      "end_index": 1272,
+                      "text": "*   **Conteúdo de qualidade:** Criar conteúdo útil, relevante e de qualidade é fundamental."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 1273,
+                      "end_index": 1371,
+                      "text": "Os mecanismos de busca valorizam conteúdos que realmente ajudam o usuário a sanar suas dúvidas."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 1372,
+                      "end_index": 1500,
+                      "text": "*   **Palavras-chave:** Escolher as palavras-chave certas, com bom volume de busca e relacionadas ao seu negócio, é essencial."
+                    },
+                    {
+                      "title": "lamarcabrasil.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHetAkGVK40EQKnrYDMvviKZJUc1HpF9UPf3v1ppp--LArKbwAKzQ2EGjdc2HgTwVn30Bc-JP9Q2h9d3aE9gD43VouojbRAyb6FioMkXOkGdFB3JpPlwBVA7kZr-Y1unkNTC_HTGnCZblEbn2hOLrFFKL1uTuKYXcT7Fl358OQJWfYOazNHjeAclNDwrQY9eXGtrz0X",
+                      "start_index": 1372,
+                      "end_index": 1500,
+                      "text": "*   **Palavras-chave:** Escolher as palavras-chave certas, com bom volume de busca e relacionadas ao seu negócio, é essencial."
+                    },
+                    {
+                      "title": "organicadigital.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+                      "start_index": 1501,
+                      "end_index": 1679,
+                      "text": "*   **Autoridade do site:** É determinada pela quantidade e qualidade de menções e links de outros sites que apontam para o seu, além da experiência e expertise dos autores."
+                    },
+                    {
+                      "title": "beeca.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHKqlPOzMga6Zqnp-PQpT3hp-EupjaAimeo5XPTR-9h2CX0367sqFKT1fnDEpIPxyxEh9cOQMmy35Cbf6sEnPCYgQS0b5BmvUyCTNCPH19mW7s6A-h9cXNYCsMOtatP5t1lsd-AzObV1dP3ZMwjPHqhRQ==",
+                      "start_index": 1680,
+                      "end_index": 1786,
+                      "text": "A construção de backlinks de qualidade é uma estratégia importante para aumentar a autoridade do site."
+                    },
+                    {
+                      "title": "znk.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHyJ5aeu_mhWBI0jH5fsinLwLRSbjKmsk814mU8aMzqKiIdccaygDIv4O6mLg01U7FrOBH5I8R7Qve2mDOPCcjBYVxdiVfyu2Jw6GFSc-Fknn1TxcSFuGsD9jz26Ut-57865bSyYB-f5Yb8xr3lRZD-hjK0INekWJBqvn_SZ2I6I4BM",
+                      "start_index": 1680,
+                      "end_index": 1786,
+                      "text": "A construção de backlinks de qualidade é uma estratégia importante para aumentar a autoridade do site."
+                    },
+                    {
+                      "title": "organicadigital.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+                      "start_index": 1787,
+                      "end_index": 1976,
+                      "text": "*   **Experiência do usuário (UX):** Fatores como velocidade de carregamento da página, navegabilidade e adaptabilidade para dispositivos móveis são valorizados pelos motores de busca."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 1787,
+                      "end_index": 1976,
+                      "text": "*   **Experiência do usuário (UX):** Fatores como velocidade de carregamento da página, navegabilidade e adaptabilidade para dispositivos móveis são valorizados pelos motores de busca."
+                    },
+                    {
+                      "title": "beeca.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHKqlPOzMga6Zqnp-PQpT3hp-EupjaAimeo5XPTR-9h2CX0367sqFKT1fnDEpIPxyxEh9cOQMmy35Cbf6sEnPCYgQS0b5BmvUyCTNCPH19mW7s6A-h9cXNYCsMOtatP5t1lsd-AzObV1dP3ZMwjPHqhRQ==",
+                      "start_index": 1787,
+                      "end_index": 1976,
+                      "text": "*   **Experiência do usuário (UX):** Fatores como velocidade de carregamento da página, navegabilidade e adaptabilidade para dispositivos móveis são valorizados pelos motores de busca."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 1977,
+                      "end_index": 2126,
+                      "text": "*   **Otimização técnica:** Inclui aspectos como a estrutura do site e a adequação a fatores técnicos exigidos pelos algoritmos dos buscadores."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 2127,
+                      "end_index": 2261,
+                      "text": "*   **Atualizações de algoritmos:** É importante estar atento às constantes atualizações dos algoritmos dos mecanismos de busca."
+                    },
+                    {
+                      "title": "conversion.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH_InEBb7oCa6WDL2mriFsawA5oGPiTWQisNbcSXvwfXrIUO5r3_sA8hiHK8hP9fNgZuUO804QUSTEIC68Z4F7Bd3EVrjZs6C4MBOzOBagJlHHuJhpxbCSwbwFAqTd5",
+                      "start_index": 2345,
+                      "end_index": 2486,
+                      "text": "*   **Cases de sucesso:** Agências confiáveis geralmente apresentam estudos de caso com resultados reais e mensuráveis para seus clientes."
+                    },
+                    {
+                      "title": "searchlab.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG0Sobe8-uWv-ON26G6LC-sRK1uU9C2qgYgQGyqdQ0V0npdehMfsnYppi344XhA2cCNnPjrJ0Lc4PvQRseZXFQFIMZwrm3CDOEPh-ggGaKmHcrRZjdA6pHcRyE=",
+                      "start_index": 2345,
+                      "end_index": 2486,
+                      "text": "*   **Cases de sucesso:** Agências confiáveis geralmente apresentam estudos de caso com resultados reais e mensuráveis para seus clientes."
+                    },
+                    {
+                      "title": "portugalseo.pt",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH5SPjz3XxS32P8pw41MwgxxS6ylAZAwoJDohQRaTwXTL9pJWCrkBO--P3zNfpDwvfN4me-OccWMs_-Gd1o2j4YdZ58zYIS9Q2yi8T2DYD-m4f74afqaVwj4t-l5AHLG9gloI4=",
+                      "start_index": 2345,
+                      "end_index": 2486,
+                      "text": "*   **Cases de sucesso:** Agências confiáveis geralmente apresentam estudos de caso com resultados reais e mensuráveis para seus clientes."
+                    },
+                    {
+                      "title": "agenciakaizen.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH3cnl8P61la1ctHisJ6Q1ZGtmpEKgfgUcz2nC1chsAteKMCvNHdpqewUUCA-8WrJkYiT3VUZr-BFPcHgIDNGxfNalvoEjZjv--YwYUj6jK7xOaKjQoMuOzF7-7A1qU9Fk5QjVY2kARwcZvP4qmP1Bp4JIaJuZQ6VPYf0Ej9Q==",
+                      "start_index": 2345,
+                      "end_index": 2486,
+                      "text": "*   **Cases de sucesso:** Agências confiáveis geralmente apresentam estudos de caso com resultados reais e mensuráveis para seus clientes."
+                    },
+                    {
+                      "title": "outmarketing.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+                      "start_index": 2870,
+                      "end_index": 2999,
+                      "text": "*   **Foco em resultados de longo prazo:** O SEO é um investimento de médio a longo prazo, e a agência deve deixar isso claro."
+                    },
+                    {
+                      "title": "agenciakaizen.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH3cnl8P61la1ctHisJ6Q1ZGtmpEKgfgUcz2nC1chsAteKMCvNHdpqewUUCA-8WrJkYiT3VUZr-BFPcHgIDNGxfNalvoEjZjv--YwYUj6jK7xOaKjQoMuOzF7-7A1qU9Fk5QjVY2kARwcZvP4qmP1Bp4JIaJuZQ6VPYf0Ej9Q==",
+                      "start_index": 2870,
+                      "end_index": 2999,
+                      "text": "*   **Foco em resultados de longo prazo:** O SEO é um investimento de médio a longo prazo, e a agência deve deixar isso claro."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": [
+            "Busca Orgânica SEO agência é confiável",
+            "Busca Orgânica SEO reputação",
+            "Busca Orgânica SEO reviews",
+            "Busca Orgânica SEO cases de sucesso"
+          ]
+        }
+      ]
+    }
+  ]
+}

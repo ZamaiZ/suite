@@ -272,6 +272,24 @@ function mapKeywordItem(
       ? (ranked.serp_item as Record<string, unknown>)
       : null
 
+  // `rank_group` é a posição, e `rank_absolute` NÃO é equivalente a ela.
+  //
+  // Medido em 2026-09-11 contra 100 linhas de `ai_overview_reference` de
+  // `puroclean.com` — ver `23-rank-group-vs-absolute.json`:
+  //
+  //   rank_group     1:12  2:13  3:18  4:9  5:23 … 10:5  15:1  16:1  19:1
+  //   rank_absolute  1:93  2:3   3:2   4:1  6:1
+  //
+  // `rank_absolute` vale **1 em 93 de 100** porque é a posição do bloco de AI
+  // Overview na SERP, e esse bloco é quase sempre o primeiro elemento da
+  // página. `rank_group` é a posição do site **entre as fontes que a IA
+  // citou** — que é o número que o relatório de referência mostra e o que o
+  // lead entende por "posição".
+  //
+  // O fallback abaixo é histórico e nunca disparou nesta amostra: as 100
+  // linhas trazem `rank_group`. Se um dia disparar num item de AI Overview,
+  // ele devolve `1` com cara de "primeira citação" — trocar quinta por
+  // primeira sem nada quebrar.
   const position = asInt(serpItem?.rank_group) ?? asInt(serpItem?.rank_absolute)
   const rankChanges =
     serpItem?.rank_changes && typeof serpItem.rank_changes === "object"
@@ -307,7 +325,17 @@ function mapKeywordItem(
       : [],
     itemType: readItemType(serpItem?.type),
     languageMismatch: keywordProperties?.is_another_language === true,
+    // O trecho que a SERP mostrou. Em `ai_overview_reference` é a frase que a
+    // visão geral de IA citou do site — o campo que o lead reconhece como
+    // sendo dele. Vinha pago em toda coleta e era descartado.
+    citedText: asTrimmed(serpItem?.text),
   }
+}
+
+function asTrimmed(value: unknown): string | null {
+  if (typeof value !== "string") return null
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : null
 }
 
 export function mapRankedKeywordsLiveResult(input: {

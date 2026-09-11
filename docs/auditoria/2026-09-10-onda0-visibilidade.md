@@ -186,6 +186,20 @@ não medida**. O mapeador nasce defensivo nesses dois tipos, e o primeiro lead
 que os tiver é a validação — o mesmo erro que esta onda veio corrigir, se for
 esquecido.
 
+> **Resolvido em 2026-09-11, metade.** A onda 0 da Presença em IA mediu
+> `ai_overview_reference` contra `puroclean.com` em US/en, que tem 4.677 linhas
+> desse tipo: dezessete campos, incluindo `text` — o trecho citado, que estava
+> pago e no lixo — e o par `rank_group` / `rank_absolute`, que **não são
+> equivalentes**. `rank_absolute` vale 1 em 93 de 100 porque é a posição do
+> bloco na SERP; `rank_group` é a posição entre as fontes citadas. O mapeador já
+> preferia `rank_group`, e agora sabe por quê.
+>
+> A mesma medição respondeu a pergunta que sobrou daqui: com o controle cheio e
+> `buscaorganica.com.br` vazio, **o zero do lead é real**, não defeito de
+> leitura. Ver `2026-09-10-onda0-presenca-em-ia.md`.
+>
+> **`local_pack` continua não observado.** A ressalva vale inteira para ele.
+
 ## 6. O que mais está pago e no lixo
 
 `keyword_data` tem **12 blocos**; o mapeador lia 3. `serp_item` tem **31

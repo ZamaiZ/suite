@@ -1,5 +1,17 @@
 # Presença em IA — Design
 
+> **Revisada em 2026-09-11, depois da onda 0.** A versão original foi escrita
+> contra a **documentação** do provider. A onda 0 rodou contra **payload real**
+> — 19 chamadas, US$ 0,51 — e mudou cinco decisões desta spec: a via de
+> citações, o corpo da requisição da sondagem, o custo, a leitura de
+> `annotations` e o que conta como execução. As seções afetadas trazem o marcador
+> **↻ onda 0**. Evidência e vereditos em
+> `docs/auditoria/2026-09-10-onda0-presenca-em-ia.md`.
+>
+> A lição atravessa a spec inteira: **onde a documentação e o payload
+> discordaram, o payload ganhou em todos os casos.** Nenhuma das cinco correções
+> era descobrível sem gastar.
+
 ## Objetivo
 
 Adicionar uma **sexta etapa** à auditoria de lead que meça o status do negócio
@@ -40,24 +52,36 @@ gravadas**, e nenhum leitor as procura.
 O que falta é uma etapa que **leia** o que já existe sob o vocabulário certo,
 mais duas chamadas baratas e uma sondagem opcional.
 
-## Restrições medidas na documentação do provider
+## Restrições medidas no payload do provider — ↻ onda 0
 
-Três fatos decidem o desenho, e o primeiro elimina metade da referência:
+A versão original desta seção tinha três fatos lidos na documentação. **Dois
+sobreviveram à medição e um estava errado pela metade.**
 
-1. **O dataset de menções em ChatGPT é EUA e inglês, e só.** A documentação de
-   `llm_mentions` diz, literalmente, *"chat_gpt data is available for the
-   'United States' and 'English' only"*. Pior: `brand_entities` e o endpoint
-   `top_mentioned_brands` inteiro **só existem para `platform: chat_gpt`**. A
-   tabela de "Competitor Dominance" do relatório de referência **não é
-   comprável para lead brasileiro**, por nenhum preço.
-2. **`ai_keyword_data/keywords_search_volume/live` suporta Brasil e português**,
-   até 1.000 keywords por chamada, devolvendo `ai_search_volume` e doze meses de
-   `ai_monthly_searches`. É demanda de busca em IA por keyword — número que o
-   relatório de referência não tem.
-3. **`llm_responses/live` é a via BR.** Aceita `web_search_country_iso_code` e
-   `web_search_city`, devolve `annotations` com título, URL e trecho de cada
-   fonte citada, e `money_spent` real por chamada. Perguntar e ler a resposta é
-   observação, não julgamento.
+1. ~~O dataset de menções em ChatGPT é EUA e inglês, e só~~ → **a trava é da
+   plataforma `chat_gpt`, não do produto `llm_mentions`.** Continua verdadeiro
+   que `brand_entities` e `top_mentioned_brands` só trazem dado de marca para
+   `platform: chat_gpt`, que é EUA/inglês. **Mas `platform: google` (AI Overview)
+   não carrega a trava**, e a medição confirmou Brasil (`location_code: 2076`)
+   com `pt` entre 94 locations — e, mais importante, **dado real para um lead
+   brasileiro**: `total_count: 7` para `buscaorganica.com.br`, contra 3.150 do
+   controle americano. Descartar `llm_mentions` inteiro teria custado à etapa a
+   única via que mede citação de verdade.
+2. **`ai_keyword_data/keywords_search_volume/live` suporta Brasil e português** —
+   confirmado no payload. 110 de 110 keywords devolvidas, **61 com
+   `ai_search_volume` positivo**, zero nulos, doze meses de
+   `ai_monthly_searches` em todas. E o volume de IA **não é fração do orgânico**:
+   `sanitarios` deu 12.559 em IA contra 5.400 no Google, e `banheiro químicos`
+   deu 234 contra 18.100. Não se deriva um do outro, e é isso que torna o número
+   útil.
+3. **`llm_responses/live` é a via BR** — com três ressalvas que só o payload
+   contou, todas na seção de Prompt set.
+
+**A quarta restrição, que não estava aqui e decide a onda 2:** a via de citação
+por backlink **não funciona**. Cinco chamadas com três formas de filtro contra um
+domínio que tem dez links provados em Reddit e YouTube deram `total_count: 0` nas
+três; sem filtro, o mesmo domínio devolve 4.927 domínios de referência, nenhum
+deles Reddit, YouTube ou Wikipedia. O índice funciona e simplesmente não tem
+essas fontes.
 
 ## Decisões aprovadas
 
@@ -101,8 +125,14 @@ Três fatos decidem o desenho, e o primeiro elimina metade da referência:
 
 ## Fora de escopo
 
-- **Dominância de marca no dataset de ChatGPT.** Medido na documentação e
-  reprovado para o Brasil: EUA e inglês apenas.
+- **Dominância de marca pelo dataset `brand_entities`.** EUA e inglês apenas —
+  confirmado. **↻ onda 0:** a tabela em si deixou de ser impossível: com
+  `platform: google` e `multi_target_metrics`, dominância sai por **casamento de
+  nome na resposta** contra as três listas que já pagamos, que é o mesmo desenho
+  já aprovado para a sondagem. O que continua fora é a via da marca
+  pré-extraída, não a métrica.
+- **Citação por backlink.** **↻ onda 0:** reprovada com controle positivo. Era a
+  via planejada da onda 2 e não mede o que prometia.
 - **LLM julgando o conteúdo do lead.** Decisão explícita, não omissão.
 - **Sentimento das menções.** Mesmo motivo do sentimento de review: é campo
   humano neste projeto.
@@ -174,7 +204,8 @@ lib/dataforseo/ai-optimization.ts   server-only — via postDataForSeo + envelop
 lib/leads/geo-audit.ts              tipos, versão, leitura tolerante ao passado
 lib/leads/geo-accessibility.ts      puro — as sete regras de acesso
 lib/leads/geo-content.ts            puro — os cinco checks determinísticos
-lib/leads/geo-citations.ts          puro — catálogo de fontes que LLM cita
+lib/leads/geo-citations.ts          puro — leitura de llm_mentions (↻ onda 0)
+lib/leads/geo-mentions.ts           puro — comparação com concorrentes (↻ onda 0)
 lib/leads/geo-prompts.ts            puro — derivação e fixação do prompt set
 lib/leads/geo-prompt-visibility.ts  puro — leitura das respostas
 lib/leads/geo-review.ts             puro — os três campos do analista
@@ -268,10 +299,51 @@ type GeoSnapshot = {
     metaDescriptionLength: number | null
   }
 
+  // ↻ onda 0 — a forma mudou com a via. Antes eram domínios de um catálogo
+  // casados por backlink; agora são as fontes que a IA de fato citou, lidas de
+  // `llm_mentions/search_mentions/live` com `platform: google`.
+  //
+  // Trocar a forma é seguro porque `citations` nunca foi gravada diferente de
+  // `null`: a onda 1 não coleta, e o leitor tolerante já trata nulo.
   citations: {
-    catalogVersion: number
-    sources: Array<{ domain: string; links: number; firstUrl: string | null }>
+    /** Fixa a procedência no próprio dado. Um segundo valor mais tarde não
+     *  pode ser comparado com este sem que a tela diga que o método mudou —
+     *  é a lição do `maps-task.ts`. */
+    source: "llm_mentions_google"
+    /** `total_count` da chamada: quantas respostas de IA citam o domínio. */
+    mentions: number
+    prompts: Array<{
+      question: string
+      aiSearchVolume: number | null
+      /** `last_response_at`. A idade da menção é dado, não detalhe. */
+      at: string | null
+      leadCited: boolean
+      sources: Array<{
+        domain: string
+        url: string
+        title: string
+        rank: number
+      }>
+    }>
+    /** Wikipedia, Reddit e YouTube agregados — a seção do relatório de
+     *  referência. Vem das `sources` acima, sem chamada extra. */
+    authorityDomains: Array<{ domain: string; count: number }>
     truncated: boolean
+  } | null
+
+  // ↻ onda 0 — campo novo. Concorrência em IA por `multi_target_metrics`,
+  // que é a tabela de Competitor Dominance viável para o Brasil.
+  aiMentions: {
+    source: "llm_mentions_google"
+    targets: Array<{
+      label: string
+      isLead: boolean
+      mentions: number
+      aiSearchVolume: number | null
+    }>
+    /** Menções do lead ÷ menções de todos os alvos medidos. **Sobre os alvos
+     *  medidos, não sobre o mercado** — e a tela diz isso. */
+    share: number | null
   } | null
 
   aiOverview: {
@@ -400,18 +472,83 @@ analista pode editar antes da primeira sondagem; depois dela, editar cria um
 `promptSetVersion` novo e a comparação entre versões **não é feita** — a tela
 diz que a série reiniciou.
 
-### Métricas
+### O corpo da requisição é por plataforma — ↻ onda 0
 
-Por execução (`prompt × provedor`): `mentioned`, `position`, `domainCited`,
-`brands[]`, `costUsd`, `modelName`, `at`.
+**Não existe um corpo só.** Três das quatro plataformas devolveram
+`40501 Invalid Field` na primeira tentativa com o mesmo corpo, cada uma apontando
+para um campo diferente:
 
-`domainCited` sai de `annotations` e é **determinístico**. `position` é a ordem
-da primeira ocorrência da marca entre as marcas detectadas na resposta — **não é
-posição em lista numerada**, e a tela diz isso.
+| plataforma | modelo medido | recusa |
+|---|---|---|
+| `chat_gpt` | `gpt-5-mini` | `max_output_tokens` |
+| `claude` | `claude-haiku-4-5` | — aceitou tudo |
+| `gemini` | `gemini-2.5-flash` | `web_search_country_iso_code` **e** `web_search_city` |
+| `perplexity` | `sonar` | `web_search_city` |
 
-Agregadas: taxa de menção, posição média, dominância (menções da marca ÷
-menções de todas as marcas detectadas), recorte por provedor, e a lista de
-concorrentes com taxa e posição média.
+O construtor único de requisição — que é o desenho óbvio para quatro plataformas
+com o mesmo shape — **falha em três delas**. E `40501` não cobra nada, então a
+falha some no custo e aparece meses depois como *"essa plataforma nunca traz
+dado"*. O fetcher monta o corpo base e **remove por plataforma**, com a lista em
+`lib/dataforseo/limits.ts` ao lado dos tetos, pelo mesmo motivo que os tetos moram
+lá: a calculadora precisa contar as mesmas execuções.
+
+**O `gemini` não aceita recorte geográfico nenhum.** A sondagem nele mede sem
+`BR` e sem cidade. Taxa de menção comparada entre plataformas onde uma não tem o
+mesmo recorte é comparação de coisas diferentes, e **a tela precisa marcar a
+coluna do Gemini**.
+
+**O modelo fica gravado por execução, e a escolha do modelo é a escolha do
+custo.** `llm_responses/live` cobra a mesma taxa nas quatro — não há linha por
+plataforma na tabela da conta. Toda a diferença é repasse:
+
+| plataforma | modelo | `money_spent` | `input_tokens` |
+|---|---|---|---|
+| `perplexity` | `sonar` | **0,0057** | 29 |
+| `chat_gpt` | `gpt-5-mini` | 0,0146 | 8.818 |
+| `claude` | `claude-haiku-4-5` | 0,0238 | 10.797 |
+| `gemini` | `gemini-2.5-flash` | 0,0368 | 104 |
+
+Seis vezes de diferença entre a mais barata e a mais cara, pelo mesmo prompt.
+
+### Métricas — ↻ onda 0
+
+Por execução (`prompt × provedor`): `status`, `mentioned`, `position`,
+`domainCited`, `brands[]`, `costUsd`, `modelName`, `at`.
+
+**`status` é campo novo, e não é detalhe de implementação.** A medição pegou
+`50301 3rd Party API Service Unavailable (rate_limit_exceeded)` em três
+tentativas seguidas nos modelos `gemini-3.x`, **com custo zero**. Uma execução
+que não aconteceu gravada como `mentioned: false` **inventa ausência** — é
+exatamente o que `fetchBacklinkSchemeLive` recusa ao não devolver leitura
+zerada. Três valores, e o denominador da taxa de menção só conta o primeiro:
+
+```ts
+status: "ok" | "provider_unavailable" | "rejected"
+```
+
+**`domainCited` sai de `annotations`, que mora em
+`items[].sections[].annotations[]`** — não em `items[].annotations[]`, que é
+onde a documentação a descreve. A primeira leitura desta medição usou o caminho
+documentado e devolveu `annotations_count: 0` numa resposta que tinha três, todas
+apontando para o domínio do lead. **Escrita a partir da documentação, a métrica
+determinística da sondagem nasce zerada e silenciosa.**
+
+**`position` é a ordem da primeira ocorrência da marca entre as marcas
+detectadas** — e agora sabe-se que não havia alternativa. `start_index` /
+`end_index` vêm preenchidos em `chat_gpt` e `gemini` e **`null` em `claude` e
+`perplexity`**. Posição por índice de caractere não é portável entre
+plataformas. A tela continua dizendo que não é posição em lista numerada.
+
+Agregadas: taxa de menção **sobre execuções `ok`**, posição média, dominância
+(menções da marca ÷ menções de todas as marcas detectadas), recorte por
+provedor, e a lista de concorrentes com taxa e posição média.
+
+**Uma execução não é uma medida.** O mesmo prompt no mesmo modelo, chamado duas
+vezes, devolveu 17 `annotations` citando o lead na primeira e 31 **sem citar** na
+segunda. O relatório de referência avisa disso em letra miúda; a medição
+confirmou. A tela apresenta a taxa como **indicação direcional, com a data**, e
+nunca como percentual estável. Fingir precisão aqui é o defeito do
+`` `${difficulty}%` `` outra vez.
 
 ### Gaps — doze
 
@@ -457,27 +594,85 @@ Os três últimos **não existem** enquanto `promptVisibility` for `null`.
   como ausência de medição nossa. Na interface, a etapa mostra "não sondado" com
   o botão ao lado.
 
-### Custo
+### Custo — ↻ onda 0, medido
 
-| Coleta | Chamadas |
-|---|---|
-| Base, onda 1 | **zero** — só leitura de snapshots que já existem |
-| Base, onda 2 | **duas** — `ai_keyword_data` + backlinks com filtro `in` |
-| Sondagem | prompts × provedores, `$0,0006 + preço do LLM` em live |
+Os números abaixo saíram da tabela da própria conta e das 19 chamadas da onda 0,
+não de estimativa.
 
-O filtro `in` sobre `domain_from` conta como **um** filtro, não um por valor — o
-teto da API é de oito filtros. Vinte domínios custam o mesmo que oito. É o
-achado da onda 8, reaproveitado.
+| Coleta | Chamadas | Custo por lead |
+|---|---|---|
+| Base, onda 1 | zero | **US$ 0,00** |
+| Demanda em IA, onda 2 | `ai_keyword_data` × 1 | **US$ 0,021** |
+| Citações + concorrência, onda 2 | `llm_mentions` × 1, + 1 condicional | **US$ 0,103**, ou 0,21 com detalhe |
+| Sondagem, onda 3 | 8 prompts × 4 provedores | **≈ US$ 0,65** |
 
-**Ressalva da onda 8, que continua valendo:** link encontrado prova a citação;
-link ausente **não** prova ausência de citação. Diretórios brasileiros foram
-medidos por essa via e deram 399 domínios com zero casamentos, porque publicam
-ficha sem link rastreável. Wikipedia, Reddit e YouTube são diferentes — emitem
-link real — mas isso é hipótese até a onda 0 medir.
+**A ordem que a spec original supunha estava invertida.** A onda 2 era "duas
+chamadas baratas" e a sondagem era a cara. Medido:
 
-## Onda 0 — as perguntas que só o payload responde
+- `ai_keyword_data` custa **US$ 0,021** pelas mesmas 110 keywords — **mais barato
+  que o `ranked_keywords` que a etapa de visibilidade já paga** (US$ 0,0252).
+  Não é chamada paga a mais; é a chamada mais barata da auditoria inteira.
+- `llm_mentions` custa **US$ 0,10 por requisição** + US$ 0,001 por linha. Oito
+  vezes o Labs, antes de contar linha. **É o item caro, e é o único.**
 
-Antes de qualquer código. A primeira pode reprovar metade do desenho.
+**A segunda chamada de `llm_mentions` é condicional — ↻ Task 4.**
+`multi_target_metrics` sozinha entrega dominância **e** fontes de autoridade,
+porque `aggregated_metrics.sources_domain` já traz quais domínios a IA citou
+(YouTube e Reddit no topo dos dois mercados medidos). Só o detalhe por pergunta
+— a frase perguntada e o que a IA respondeu — exige `search_mentions`.
+
+Então: `multi_target_metrics` **sempre**; `search_mentions` **só quando o lead
+tem menção**. Lead com zero menções não paga US$ 0,107 por uma chamada que não
+pode trazer nada, e lead com zero menções vai ser a maioria.
+- A sondagem tem taxa de US$ 0,0006 e **repasse do modelo 34× maior que a
+  taxa**. US$ 0,0808 por prompt nas quatro plataformas.
+
+**As variantes `_lite` de `llm_mentions` não são mais baratas** — cobram
+exatamente o mesmo, 0,10 + 0,001. "Lite" ali é funcionalidade reduzida, não
+preço. Escolher a lite para economizar perderia campo sem ganhar nada.
+
+**Consequência de desenho, não de orçamento:** a US$ 0,22 e US$ 0,65 por lead,
+**nem a onda 2 nem a onda 3 entram na coleta base.** Cada uma é um botão pago
+próprio, com custo real somado na linha — o padrão da malha geográfica. A coleta
+base continua a US$ 0,00 e continua sendo o que destrava o Diagnóstico.
+
+**A tabela da conta é piso, não orçamento.** `usage.ts` registra isso desde que o
+SERP cobrou US$ 0,01 onde a tabela dizia 0,002, e vale aqui em cheio: o repasse
+do LLM não aparece na tabela e só existe em `money_spent`.
+
+**A assinatura é coisa diferente do preço.** `user_data` devolve
+`llm_mentions_subscription_expiry_date` — campo próprio, separado do saldo, hoje
+em `2050-01-01`. A tabela diz quanto custa; a assinatura diz se pode chamar.
+`usage.ts` **não lê nenhum dos dois campos de expiração**, e assinatura vencida
+viraria "não foi possível coletar" sem motivo na tela.
+
+## Onda 0 — as perguntas que só o payload responde ✅
+
+**Rodou em 2026-09-10/11. 19 chamadas, US$ 0,51. As nove respondidas.** Relatório
+completo, com os dois erros de leitura que a medição pegou, em
+`docs/auditoria/2026-09-10-onda0-presenca-em-ia.md`; scripts e payloads
+recortados em `docs/auditoria/evidencias/2026-09-10-presenca-em-ia/`.
+
+| # | pergunta | veredito |
+|---|---|---|
+| 1 | `ai_optimization` na conta? | **sim**, 61 linhas de preço + assinatura ativa |
+| 2 | Brasil/`pt` em `llm_mentions`? | **sim**, 94 locations |
+| 3 | `ai_search_volume` em português? | **sim**, 61 de 110 positivas |
+| 4 | `annotations` em BR, e a que custo? | **sim**, nas quatro plataformas |
+| 5 | forma do `ai_overview_reference`? | **observada**, 17 campos |
+| 6 | modelos por plataforma? | **listados**, e o preço é o repasse |
+| 7 | `llm_mentions` tem negócio BR? | **sim**, `total_count: 7` no lead |
+| 8 | backlink casa o catálogo? | **não** — reprovado com controle |
+| 9 | o zero de AI Overview do lead é real? | **sim** — controle cheio, lead vazio |
+
+**O que a onda 0 salvou.** Sem ela, a onda 2 teria sido construída sobre a via de
+backlink — que não encontra nada mesmo quando a citação existe — e a onda 3
+teria lido `annotations` no caminho documentado, gravando zero em toda execução.
+Nenhum dos dois defeitos falharia ruidosamente: os dois apareceriam como "o lead
+não tem presença em IA".
+
+O texto original das cinco perguntas fica abaixo, como registro do que se
+perguntava antes de medir.
 
 1. **`GET /appendix/user_data` — a conta tem a seção `ai_optimization`
    liberada, e a que preço?** A evidência de 2026-09-10 registrou
@@ -500,13 +695,22 @@ não versionou os payloads crus de 840 KB e regerou tudo pelos scripts.
 
 ## Ondas
 
-| Onda | Entrega | Chamada paga nova |
-|---|---|---|
-| **0** | As cinco perguntas acima, com evidência versionada | probe |
-| **1** | A etapa inteira determinística: tabelas, trilha, painel, as dezenove regras, os três do analista, **o pilar, o `measured` e o destravamento** | **nenhuma** |
-| **2** | Demanda em IA e catálogo de citações | duas |
-| **3** | A sondagem em LLM: prompt set fixado, quatro famílias, botão separado com custo visível | prompts × provedores |
-| **4** | Narrativa do pilar e seção no PDF | nenhuma |
+↻ onda 0 — a 2 virou duas ondas, porque as duas metades têm preço de ordem
+diferente e botão diferente.
+
+| Onda | Entrega | Custo por lead | Estado |
+|---|---|---|---|
+| **0** | As nove perguntas, com evidência versionada | US$ 0,51 uma vez | ✅ **feita** |
+| **1** | A etapa inteira determinística: tabelas, trilha, painel, as dezenove regras, os três do analista, **o pilar, o `measured` e o destravamento** | **zero** | ✅ **feita** |
+| **2a** | Demanda em IA — `ai_keyword_data` | US$ 0,021 | a fazer |
+| **2b** | Citações e concorrência — `llm_mentions`, botão pago próprio | ≈ US$ 0,22 | a fazer |
+| **3** | A sondagem em LLM: prompt set fixado, corpo por plataforma, botão separado com custo visível | ≈ US$ 0,65 | a fazer |
+| **4** | Narrativa do pilar e seção no PDF | zero | a fazer |
+
+**A 2a entra junto da coleta base, a 2b não.** US$ 0,021 é ruído ao lado do que
+a auditoria já gasta por lead; US$ 0,22 não é. Separá-las é o que mantém o
+"rodar a etapa custa zero" verdadeiro — e ele precisa continuar verdadeiro,
+porque é a coleta base que destrava o Diagnóstico.
 
 **O pilar e o destravamento saem na onda 1, não no fim.** Se a etapa destrava o
 Diagnóstico mas não tem pilar, o documento fica devendo exatamente a seção que
@@ -536,6 +740,7 @@ lib/leads/geo-audit.ts
 lib/leads/geo-accessibility.ts
 lib/leads/geo-content.ts
 lib/leads/geo-citations.ts
+lib/leads/geo-mentions.ts            ↻ onda 0 — concorrência em IA
 lib/leads/geo-prompts.ts
 lib/leads/geo-prompt-visibility.ts
 lib/leads/geo-review.ts
@@ -544,6 +749,7 @@ lib/leads/geo-step-tabs.ts
 lib/validations/lead-geo.ts
 app/actions/leads/geo-access.ts
 app/actions/leads/analyze-geo.ts
+app/actions/leads/collect-geo-mentions.ts   ↻ onda 0 — o botão pago da 2b
 app/actions/leads/probe-geo-prompts.ts
 app/actions/leads/update-geo-review.ts
 components/custom/LeadGeoPanel/LeadGeoPanel.tsx
@@ -608,10 +814,30 @@ components/custom/LeadDetailDialog/LeadDetailDialog.types.ts   tipos do detalhe
   analista lê.
 - **Marca fora das três listas de casamento.** Não detectada, e declarado como
   tal.
-- **A forma do `serp_item` de `ai_overview_reference`.** A onda 0 da
-  visibilidade registrou que os dois tipos novos vieram **zerados**, então a
-  forma segue não observada. O primeiro lead que tiver citação em AI Overview é
-  a validação — o mesmo erro que aquela onda veio corrigir, se for esquecido.
-- **Citação sem link.** O limite da onda 8, intacto: a via de backlinks só vê
-  citação que emite link.
-- **Se `ai_search_volume` responde em português.** Onda 0, pergunta 3.
+- ~~A forma do `serp_item` de `ai_overview_reference`~~ → **observada**,
+  dezessete campos, contra `puroclean.com`. Sobra uma decisão que o payload
+  criou: `rank_group` e `rank_absolute` são números **diferentes** (5 e 1 na
+  primeira linha), e a coluna "posição" é um dos dois. Escolher o errado troca
+  "quinta citação da lista" por "primeira" **sem nada quebrar**.
+- ~~Citação sem link~~ → deixou de ser limite porque a via mudou. `llm_mentions`
+  lê a fonte que a IA citou, tenha ela link ou não.
+- ~~Se `ai_search_volume` responde em português~~ → **responde**. 61 de 110.
+
+**Aberto depois da onda 0:**
+
+- **Qual dos pares de endpoint de `llm_mentions` é o certo.**
+  `search_mentions/live` respondeu e é o que a onda 2b usa. A tabela da conta
+  lista `search/live`, `aggregated_metrics` e `cross_aggregated_metrics` pelo
+  **mesmo preço**, sem execução. Preço igual não prova comportamento igual, e
+  errar custa US$ 0,10 a tentativa.
+- **A forma do `target` em `multi_target_metrics`.** `keyword_entity` com
+  `search_scope: ["answer"]` e `match_type: "word_match"` é o que a documentação
+  descreve; não foi chamado. A onda 2b começa por aí, com controle positivo.
+- **Se `brand_entities` vem preenchido em `platform: google`.** A chave existe no
+  item; o conteúdo fora do `chat_gpt` não foi verificado.
+- **`llm_scraper`**, US$ 0,004 fixo **sem repasse de modelo**, só `chat_gpt` e
+  `gemini`. Raspa a interface real em vez de chamar a API — que é o que o usuário
+  final vê. Não medido, e a onda 3 sai sem ele.
+- **Se sete menções bastam.** O dataset cobre o Brasil, mas um lead menor que
+  `buscaorganica.com.br` pode vir com zero. A US$ 0,10 a chamada, a tela precisa
+  saber dizer "olhamos e não há" sem cobrar duas vezes pela mesma pergunta.

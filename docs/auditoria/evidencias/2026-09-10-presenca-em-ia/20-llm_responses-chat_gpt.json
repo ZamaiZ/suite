@@ -1,0 +1,141 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "19.5624 sec.",
+  "cost": 0.015167,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110305-2319-0612-0000-8faaa049844a",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "19.5388 sec.",
+      "cost": 0.015167,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "chat_gpt",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "chat_gpt",
+        "user_prompt": "A agência de SEO Busca Orgânica é confiável? O que se sabe sobre ela?",
+        "model_name": "gpt-5-mini",
+        "web_search": true,
+        "web_search_country_iso_code": "BR",
+        "web_search_city": "São Paulo"
+      },
+      "result": [
+        {
+          "model_name": "gpt-5-mini-2025-08-07",
+          "input_tokens": 8818,
+          "output_tokens": 1181,
+          "reasoning_tokens": 192,
+          "web_search": true,
+          "money_spent": 0.0145665,
+          "datetime": "2026-09-11 03:05:59 +00:00",
+          "items": [
+            {
+              "type": "reasoning",
+              "sections": null
+            },
+            {
+              "type": "reasoning",
+              "sections": [
+                {
+                  "type": "summary_text",
+                  "text": "**Assessing trustworthiness**\n\nI'm looking into a company's trustworthiness, considering their website, LinkedIn, and staff posts on Reddit. I need to evaluate evidence like their social presence, client case studies, and claims of guarantees, especially regarding their CNPJ registration. I'll recommend steps for the user to verify credibility, such as checking the CNPJ, asking for references, and reviewing contracts and measurable KPIs. Additionally, they should avoid guarantees, check reviews, and request SLAs and reporting. I’ll also provide citations for key claims in my final response."
+                }
+              ]
+            },
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Posso checar isso para você — aqui vai um resumo do que encontrei sobre a agência “Busca Orgânica” e como avaliar se ela é confiável.\n\nO que encontrei (fontes)\n- A agência tem site ativo (buscaorganica.com.br) com páginas de serviços, “quem somos” e posts sobre SEO; afirma atuar como agência de SEO desde 2021 e apresenta cases/depoimentos no site. ([buscaorganica.com.br](https://www.buscaorganica.com.br/?utm_source=openai))  \n- Perfil ativo no LinkedIn com vagas e descrições da equipe/serviços, o que indica presença institucional. ([linkedin.com](https://www.linkedin.com/company/busca-org%C3%A2nica?utm_source=openai))  \n- Há postagens em Reddit onde pessoas que se identificam como analistas ou sócios da Busca Orgânica interagem em comunidades de SEO/negócios e compartilham cases. Isso mostra atividade pública e divulgação de resultados. ([reddit.com](https://www.reddit.com/r/u_EstrategiaNegocios/comments/1tq66ij/o_google_business_profile_e_o_ativo_de_seo_local/?utm_source=openai))  \n- Uma página pública (Wikipedia) associa o domínio ao CNPJ “STD Soluções em Tecnologia e Desenvolvimento Ltda” e lista o site como pertencente a esse registro — vale confirmar diretamente no site da Receita para checar CNPJ/razão social. ([pt.wikipedia.org](https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai))\n\nPontos positivos observáveis\n- Presença online consistente: site, conteúdo (posts/cases) e perfil em LinkedIn. ([buscaorganica.com.br](https://www.buscaorganica.com.br/?utm_source=openai))  \n- Divulgação de resultados e exemplos de clientes (casos de sucesso) — útil para avaliar entregas reais. ([buscaorganica.com.br](https://www.buscaorganica.com.br/post/melhor-empresa-de-seo-como-escolher-a-certa?utm_source=openai))\n\nSinais de atenção (red flags) e coisas para verificar\n- Afirmação de “garantia de posicionamento em contrato” — no mercado de SEO, prometer posições exatas no Google costuma ser um sinal de cuidado: algoritmos mudam e ninguém pode garantir posições específicas com segurança. Peça esclarecimentos por escrito sobre o que exatamente significa essa “garantia” (métricas, prazos, penalidades). ([buscaorganica.com.br](https://www.buscaorganica.com.br/agencia-de-seo?utm_source=openai))  \n- Depoimentos e cases no site e em redes sociais podem ser legítimos, mas devem ser verificados (peça contatos de clientes, resultados verificáveis em ferramentas como Google Search Console/analytics). ([buscaorganica.com.br](https://www.buscaorganica.com.br/post/melhor-empresa-de-seo-como-escolher-a-certa?utm_source=openai))  \n- Confirme a identificação legal da empresa (CNPJ, endereço fiscal) na Receita Federal para garantir que o registro corresponde ao que divulgam. A Wikipedia sugere um CNPJ associado ao domínio — verifique diretamente. ([pt.wikipedia.org](https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai))\n\nRecomendações práticas antes de contratar\n1. Peça referências recentes (contato de 2–3 clientes) e confirme com eles resultados, transparência e cumprimento de prazos.  \n2. Solicite acesso temporário a relatórios reais (ex.: Google Search Console, Google Analytics) ou prints com data que provem o desempenho reivindicado.  \n3. Peça um contrato claro com escopo, entregáveis, prazos, indicadores (KPIs) e cláusulas sobre “garantias” — evite contratos que prometam posições exatas no Google.  \n4. Verifique CNPJ e endereço no site da Receita Federal e confirme telefone/endereço físico.  \n5. Compare propostas com outras agências (preço, escopo, metodologia) e avalie se a agência usa práticas recomendadas (auditoria técnica, conteúdo original, backlinks éticos).  \n6. Exija um plano de comunicação e relatórios periódicos (mensalmente) com métricas claras (visitas orgânicas, palavras-chave ranqueadas, leads gerados).\n\nPosso fazer alguma verificação específica para você?\n- Posso checar o CNPJ da empresa e confirmar correspondência com o domínio (preciso que confirme se quer que eu faça isso).  \n- Se você tiver propostas/contrato deles, posso revisar cláusulas e apontar riscos.\n\nQuer que eu verifique o CNPJ/razão social agora e confirme correspondência com o site?",
+                  "annotations": [
+                    {
+                      "title": "Crescimento para sua empresa através do Google - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/?utm_source=openai",
+                      "start_index": 350,
+                      "end_index": 427,
+                      "text": "([buscaorganica.com.br](https://www.buscaorganica.com.br/?utm_source=openai))"
+                    },
+                    {
+                      "title": "Busca Orgânica | LinkedIn",
+                      "url": "https://www.linkedin.com/company/busca-org%C3%A2nica?utm_source=openai",
+                      "start_index": 537,
+                      "end_index": 625,
+                      "text": "([linkedin.com](https://www.linkedin.com/company/busca-org%C3%A2nica?utm_source=openai))"
+                    },
+                    {
+                      "title": "O Google Business Profile e o ativo de SEO local mais subestimado em 2026 (e o mais barato)",
+                      "url": "https://www.reddit.com/r/u_EstrategiaNegocios/comments/1tq66ij/o_google_business_profile_e_o_ativo_de_seo_local/?utm_source=openai",
+                      "start_index": 849,
+                      "end_index": 995,
+                      "text": "([reddit.com](https://www.reddit.com/r/u_EstrategiaNegocios/comments/1tq66ij/o_google_business_profile_e_o_ativo_de_seo_local/?utm_source=openai))"
+                    },
+                    {
+                      "title": "Busca orgânica",
+                      "url": "https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai",
+                      "start_index": 1236,
+                      "end_index": 1325,
+                      "text": "([pt.wikipedia.org](https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai))"
+                    },
+                    {
+                      "title": "Crescimento para sua empresa através do Google - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/?utm_source=openai",
+                      "start_index": 1438,
+                      "end_index": 1515,
+                      "text": "([buscaorganica.com.br](https://www.buscaorganica.com.br/?utm_source=openai))"
+                    },
+                    {
+                      "title": "Melhor Empresa de SEO: Como Escolher a Certa? - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/post/melhor-empresa-de-seo-como-escolher-a-certa?utm_source=openai",
+                      "start_index": 1623,
+                      "end_index": 1748,
+                      "text": "([buscaorganica.com.br](https://www.buscaorganica.com.br/post/melhor-empresa-de-seo-como-escolher-a-certa?utm_source=openai))"
+                    },
+                    {
+                      "title": "Agência de SEO - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/agencia-de-seo?utm_source=openai",
+                      "start_index": 2141,
+                      "end_index": 2232,
+                      "text": "([buscaorganica.com.br](https://www.buscaorganica.com.br/agencia-de-seo?utm_source=openai))"
+                    },
+                    {
+                      "title": "Melhor Empresa de SEO: Como Escolher a Certa? - Busca Orgânica",
+                      "url": "https://www.buscaorganica.com.br/post/melhor-empresa-de-seo-como-escolher-a-certa?utm_source=openai",
+                      "start_index": 2437,
+                      "end_index": 2562,
+                      "text": "([buscaorganica.com.br](https://www.buscaorganica.com.br/post/melhor-empresa-de-seo-como-escolher-a-certa?utm_source=openai))"
+                    },
+                    {
+                      "title": "Busca orgânica",
+                      "url": "https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai",
+                      "start_index": 2783,
+                      "end_index": 2872,
+                      "text": "([pt.wikipedia.org](https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai))"
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": [
+            "Busca Orgânica agência SEO Busca Orgânica empresa",
+            "Busca Orgânica SEO avaliações depoimentos 'Busca Orgânica' 'agência' 'SEO' 'Brasil'",
+            "Busca Orgânica site 'Busca Organica' 'BuscaOrgânica' 'BuscaOrganica' 'busca organica' agência"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "6.6683 sec.",
+  "cost": 0.006257,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110306-2319-0612-0000-2c0be8123653",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "6.5410 sec.",
+      "cost": 0.006257,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "perplexity",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "perplexity",
+        "user_prompt": "A agência de SEO Busca Orgânica é confiável? O que se sabe sobre ela?",
+        "model_name": "sonar",
+        "web_search": true,
+        "web_search_country_iso_code": "BR",
+        "max_output_tokens": 800
+      },
+      "result": [
+        {
+          "model_name": "sonar",
+          "input_tokens": 29,
+          "output_tokens": 628,
+          "reasoning_tokens": 0,
+          "web_search": true,
+          "money_spent": 0.005657,
+          "datetime": "2026-09-11 03:06:06 +00:00",
+          "items": [
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Com base no que apareceu nos resultados, a **Busca Orgânica parece ser uma agência real e em فعالیت**, mas **não há prova suficiente, só por esses resultados, para afirmar que ela é “confiável” de forma definitiva**.[1][2] O que existe é um conjunto de sinais positivos de presença comercial e posicionamento de marca, junto com um ponto que merece cautela: a própria empresa promete **“garantia de posicionamento” em contrato**, algo que ajuda a entender a oferta, mas também exige ler bem as condições e limitações dessa garantia.[1]\n\nO que se sabe até aqui:\n\n- **Site próprio e proposta clara:** a empresa se apresenta como agência de SEO focada em crescimento orgânico, captação de clientes e posicionamento no Google.[1]\n- **Informações de contato e endereço:** há telefone, e-mail e endereço físico em Guarulhos (SP) no próprio site, o que é um sinal básico de legitimidade comercial.[1]\n- **Presença no LinkedIn:** a página da empresa informa fundação em **2021**, porte de **11–50 funcionários** e sede em **Guarulhos, SP**.[2]\n- **Volume de clientes declarado:** o site diz que **“mais de 700 empresas”** já confiaram nela, mas isso é uma afirmação da própria empresa e não foi verificada por fonte independente nos resultados fornecidos.[1]\n\nPontos de atenção:\n\n- A página institucional usa linguagem de marketing forte, como **“a melhor Agência de SEO do Brasil”**, o que é comum em sites comerciais, mas não substitui evidência independente de desempenho.[2]\n- A promessa de **garantia de posicionamento** merece análise do contrato: é importante ver *quais termos são garantidos*, por quanto tempo, para quais palavras-chave e quais condições podem anular a garantia.[1]\n\nO que eu recomendaria verificar antes de contratar:\n\n- Se existem **cases públicos com números, período e contexto**.\n- Se a empresa mostra **nome de clientes, depoimentos verificáveis e resultados mensuráveis**.\n- Se o contrato define com precisão a **garantia de ranking** e seus limites.\n- Se a agência consegue explicar **metas de negócio**, e não só posições no Google.\n- Se há sinais externos de reputação, como avaliações independentes, presença em rankings confiáveis e histórico consistente.\n\nSe você quiser, eu posso montar uma **checklist prática de due diligence** para avaliar a Busca Orgânica antes de fechar contrato.",
+                  "annotations": [
+                    {
+                      "title": "Busca Orgânica: Crescimento para sua empresa através do ...",
+                      "url": "https://www.buscaorganica.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Busca Orgânica",
+                      "url": "https://www.linkedin.com/company/busca-org%C3%A2nica",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Conversion - Maior Agência de SEO do Brasil | SEO, GEO e PR",
+                      "url": "https://www.conversion.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência SEO Brasil: Agência de SEO",
+                      "url": "https://agenciaseobrasil.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "As Melhores Agências de SEO do Brasil em 2026",
+                      "url": "https://www.oxigenweb.com.br/artigos/melhores-agencias-de-seo-do-brasil/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO | Crescimento Orgânico Comprovado",
+                      "url": "https://qualitysmi.com.br/agencia-de-seo",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO & Orgânico - Top Web | Domine as Buscas",
+                      "url": "https://topwebmkt.com/seo-organico/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO e Posicionamento Orgânico - Miranttus",
+                      "url": "https://miranttus.com.br/agencia-de-seo/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "RF Digital",
+                      "url": "https://www.rfcdigital.com.br/agencia-especializada-em-trafego-organico",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO - Especialista em SEO desde 2008 | Agência Mestre",
+                      "url": "https://www.agenciamestre.com/servicos/seo/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Busca orgânica para indústrias: como funciona?",
+                      "url": "https://incandescente.com.br/blog/busca-organica-para-industrias/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência Especializada em Tráfego Orgânico",
+                      "url": "https://www.digitallevolution.com.br/agencia-especializada-em-trafego-organico",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "SEO Services: Agência de SEO para Market Share Orgânico",
+                      "url": "https://seoservices.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "A Maior Agência Busca Orgânica do Brasil",
+                      "url": "https://www.digitallevolution.com.br/maior-agencia-busca-organica-do-brasil",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência Busca Orgânica de São Paulo",
+                      "url": "https://www.digitallevolution.com.br/agencia-busca-organica-de-sao-paulo",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "As 8 melhores agências de SEO no Brasil em 2026",
+                      "url": "https://meuredator.com.br/as-8-melhores-agencias-de-seo-no-brasil-em-2026/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Estudo: brasileiros confiam 77% mais em busca orgânica (SEO)",
+                      "url": "https://www.conversion.com.br/blog/estudo-busca-organica-seo",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "20 melhores agências de SEO em 2026 | O Rover de Negócios",
+                      "url": "https://www.thebusinessrover.com/pt-br/blog/best-seo-agencies",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Empresa nº 1 em SEO orgânico | Agência de serviços de ...",
+                      "url": "https://indeedseo.com/pt/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Melhor Agência de Busca Orgânica",
+                      "url": "https://qualitysmi.com.br/melhor-agencia-de-busca-organica",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": null
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.5120 sec.",
+  "cost": 0.103,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110336-2319-0652-0000-8b5e49097fef",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.4779 sec.",
+      "cost": 0.103,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "llm_mentions",
+        "multi_target_metrics",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "multi_target_metrics",
+        "platform": "google",
+        "location_name": "United States",
+        "language_code": "en",
+        "targets": [
+          {
+            "key": "puroclean",
+            "target": [
+              {
+                "keyword": "PuroClean",
+                "search_scope": [
+                  "answer"
+                ],
+                "search_filter": "include",
+                "match_type": "word_match"
+              },
+              {
+                "domain": "puroclean.com",
+                "search_scope": [
+                  "sources"
+                ],
+                "search_filter": "include",
+                "include_subdomains": true
+              }
+            ]
+          },
+          {
+            "key": "servpro",
+            "target": [
+              {
+                "keyword": "SERVPRO",
+                "search_scope": [
+                  "answer"
+                ],
+                "search_filter": "include",
+                "match_type": "word_match"
+              },
+              {
+                "domain": "servpro.com",
+                "search_scope": [
+                  "sources"
+                ],
+                "search_filter": "include",
+                "include_subdomains": true
+              }
+            ]
+          },
+          {
+            "key": "paul_davis",
+            "target": [
+              {
+                "keyword": "Paul Davis Restoration",
+                "search_scope": [
+                  "answer"
+                ],
+                "search_filter": "include",
+                "match_type": "word_match"
+              },
+              {
+                "domain": "pauldavis.com",
+                "search_scope": [
+                  "sources"
+                ],
+                "search_filter": "include",
+                "include_subdomains": true
+              }
+            ]
+          }
+        ]
+      },
+      "result": [
+        {
+          "total_count": 3,
+          "offset": 0,
+          "items_count": 3,
+          "aggregated_metrics": {
+            "location": [
+              {
+                "key": 2840,
+                "mentions": 2892,
+                "ai_search_volume": 2873090
+              }
+            ],
+            "language": [
+              {
+                "key": "en",
+                "mentions": 2892,
+                "ai_search_volume": 2873090
+              }
+            ],
+            "platform": [
+              {
+                "key": "google",
+                "mentions": 2892,
+                "ai_search_volume": 2873090
+              }
+            ],
+            "sources_domain": [
+              {
+                "key": "www.servpro.com",
+                "mentions": 2690,
+                "ai_search_volume": 2812310
+              },
+              {
+                "key": "www.youtube.com",
+                "mentions": 835,
+                "ai_search_volume": 797300
+              },
+              {
+                "key": "www.reddit.com",
+                "mentions": 506,
+                "ai_search_volume": 279180
+              },
+              {
+                "key": "m.yelp.com",
+                "mentions": 469,
+                "ai_search_volume": 105030
+              },
+              {
+                "key": "www.angi.com",
+                "mentions": 431,
+                "ai_search_volume": 1058860
+              }
+            ],
+            "search_results_domain": [],
+            "brand_entities_title": [],
+            "brand_entities_category": [],
+            "total": {
+              "mentions": 2892,
+              "ai_search_volume": 2873090
+            }
+          },
+          "items": [
+            {
+              "key": "puroclean",
+              "location": [
+                {
+                  "key": 2840,
+                  "mentions": 234,
+                  "ai_search_volume": 86260
+                }
+              ],
+              "language": [
+                {
+                  "key": "en",
+                  "mentions": 234,
+                  "ai_search_volume": 86260
+                }
+              ],
+              "platform": [
+                {
+                  "key": "google",
+                  "mentions": 234,
+                  "ai_search_volume": 86260
+                }
+              ],
+              "sources_domain": [
+                {
+                  "key": "www.servpro.com",
+                  "mentions": 123,
+                  "ai_search_volume": 35590
+                },
+                {
+                  "key": "www.youtube.com",
+                  "mentions": 64,
+                  "ai_search_volume": 31050
+                },
+                {
+                  "key": "www.reddit.com",
+                  "mentions": 45,
+                  "ai_search_volume": 23350
+                },
+                {
+                  "key": "m.yelp.com",
+                  "mentions": 32,
+                  "ai_search_volume": 3390
+                },
+                {
+                  "key": "www.angi.com",
+                  "mentions": 25,
+                  "ai_search_volume": 5770
+                }
+              ],
+              "search_results_domain": [],
+              "brand_entities_title": [],
+              "brand_entities_category": [],
+              "total": {
+                "mentions": 234,
+                "ai_search_volume": 86260
+              }
+            },
+            {
+              "key": "servpro",
+              "location": [
+                {
+                  "key": 2840,
+                  "mentions": 2670,
+                  "ai_search_volume": 2805900
+                }
+              ],
+              "language": [
+                {
+                  "key": "en",
+                  "mentions": 2670,
+                  "ai_search_volume": 2805900
+                }
+              ],
+              "platform": [
+                {
+                  "key": "google",
+                  "mentions": 2670,
+                  "ai_search_volume": 2805900
+                }
+              ],
+              "sources_domain": [
+                {
+                  "key": "www.servpro.com",
+                  "mentions": 2667,
+                  "ai_search_volume": 2805460
+                },
+                {
+                  "key": "www.youtube.com",
+                  "mentions": 772,
+                  "ai_search_volume": 773140
+                },
+                {
+                  "key": "www.reddit.com",
+                  "mentions": 452,
+                  "ai_search_volume": 257090
+                },
+                {
+                  "key": "m.yelp.com",
+                  "mentions": 423,
+                  "ai_search_volume": 98040
+                },
+                {
+                  "key": "www.angi.com",
+                  "mentions": 417,
+                  "ai_search_volume": 1057890
+                }
+              ],
+              "search_results_domain": [],
+              "brand_entities_title": [],
+              "brand_entities_category": [],
+              "total": {
+                "mentions": 2670,
+                "ai_search_volume": 2805900
+              }
+            },
+            {
+              "key": "paul_davis",
+              "location": [
+                {
+                  "key": 2840,
+                  "mentions": 239,
+                  "ai_search_volume": 547200
+                }
+              ],
+              "language": [
+                {
+                  "key": "en",
+                  "mentions": 239,
+                  "ai_search_volume": 547200
+                }
+              ],
+              "platform": [
+                {
+                  "key": "google",
+                  "mentions": 239,
+                  "ai_search_volume": 547200
+                }
+              ],
+              "sources_domain": [
+                {
+                  "key": "www.servpro.com",
+                  "mentions": 150,
+                  "ai_search_volume": 537490
+                },
+                {
+                  "key": "www.youtube.com",
+                  "mentions": 41,
+                  "ai_search_volume": 130650
+                },
+                {
+                  "key": "www.reddit.com",
+                  "mentions": 28,
+                  "ai_search_volume": 9040
+                },
+                {
+                  "key": "m.yelp.com",
+                  "mentions": 64,
+                  "ai_search_volume": 13680
+                },
+                {
+                  "key": "www.angi.com",
+                  "mentions": 23,
+                  "ai_search_volume": 416530
+                }
+              ],
+              "search_results_domain": [],
+              "brand_entities_title": [],
+              "brand_entities_category": [],
+              "total": {
+                "mentions": 239,
+                "ai_search_volume": 547200
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

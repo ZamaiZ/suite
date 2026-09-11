@@ -47,16 +47,31 @@ export function LeadGeoHeader({
     })
   }
 
-  const { error, busy, snapshot, domain, saveError, hasWebsiteAudit } =
-    controller
+  const {
+    error,
+    busy,
+    snapshot,
+    domain,
+    saveError,
+    hasWebsiteAudit,
+    mentionsBusy,
+    mentionsError,
+    hasBacklinkAudit,
+    probeBusy,
+    probeError,
+  } = controller
 
   const staleCrawl =
     snapshot !== null && !snapshot.sources.websiteCrawlExtended
 
   const hasNotices =
     Boolean(error) ||
+    Boolean(mentionsError) ||
+    Boolean(probeError) ||
     Boolean(saveError) ||
     busy ||
+    mentionsBusy ||
+    probeBusy ||
     !domain ||
     !hasWebsiteAudit ||
     staleCrawl
@@ -73,6 +88,14 @@ export function LeadGeoHeader({
         hasDomain={Boolean(domain)}
         hasWebsiteAudit={hasWebsiteAudit}
         onAnalyze={controller.handleAnalyze}
+        hasMentions={Boolean(snapshot?.aiMentions)}
+        mentionsBusy={controller.mentionsBusy}
+        hasBacklinkAudit={controller.hasBacklinkAudit}
+        onCollectMentions={controller.handleCollectMentions}
+        hasProbe={Boolean(snapshot?.promptVisibility)}
+        probeBusy={controller.probeBusy}
+        probeRuns={controller.probeRuns}
+        onProbe={controller.handleProbe}
       />
 
       {/*
@@ -114,6 +137,16 @@ export function LeadGeoHeader({
               {error}
             </p>
           ) : null}
+          {mentionsError ? (
+            <p role="alert" className="text-xs/relaxed text-destructive">
+              {mentionsError}
+            </p>
+          ) : null}
+          {probeError ? (
+            <p role="alert" className="text-xs/relaxed text-destructive">
+              {probeError}
+            </p>
+          ) : null}
           {saveError ? (
             <p role="alert" className="text-xs/relaxed text-destructive">
               {saveError}
@@ -123,6 +156,26 @@ export function LeadGeoHeader({
             <p className="inline-flex items-center gap-1.5 text-xs/relaxed text-muted-foreground">
               <Spinner aria-hidden className="size-3.5" />
               Analisando presença em IA…
+            </p>
+          ) : null}
+          {mentionsBusy ? (
+            <p className="inline-flex items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+              <Spinner aria-hidden className="size-3.5" />
+              Coletando menções em IA…
+            </p>
+          ) : null}
+          {probeBusy ? (
+            <p className="inline-flex items-center gap-1.5 text-xs/relaxed text-muted-foreground">
+              <Spinner aria-hidden className="size-3.5" />
+              Sondando as IAs — pode levar alguns minutos.
+            </p>
+          ) : null}
+          {/* Diz o que falta, não só que o botão está desabilitado: a
+              comparação recusa um alvo só, e o concorrente vem dos backlinks. */}
+          {snapshot && !hasBacklinkAudit ? (
+            <p className="text-xs/relaxed text-muted-foreground">
+              As menções em IA comparam o lead com concorrentes — rode a análise
+              de Backlinks para ter com quem comparar.
             </p>
           ) : null}
           {!domain ? (

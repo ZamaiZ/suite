@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import {
   analyzeLeadGeo,
+  collectLeadGeoMentions,
+  probeLeadGeoPrompts,
   upsertLeadGeoReview,
   type LeadGeoAudit,
 } from "@/app/actions/leads"
@@ -24,6 +26,8 @@ import {
   serializeGeoReviewDraft,
   type GeoReview,
 } from "@/lib/leads/geo-review"
+import { deriveGeoPromptSet } from "@/lib/leads/geo-prompts"
+import { GEO_PROMPT_PLATFORMS } from "@/lib/dataforseo/limits"
 import type { GeoStepTabId } from "@/lib/leads/geo-step-tabs"
 import type { LeadGeoPanelProps } from "./LeadGeoPanel.types"
 
@@ -49,6 +53,20 @@ export type GeoController = {
   handleAnalyze: () => void
   /** A etapa lê o crawl do Website: sem ele, não há o que analisar. */
   hasWebsiteAudit: boolean
+
+  // menções em IA — a coleta paga, com botão próprio
+  mentionsBusy: boolean
+  mentionsError: string | null
+  handleCollectMentions: () => void
+  /** A comparação precisa de concorrentes, e eles vêm da coleta de backlinks. */
+  hasBacklinkAudit: boolean
+
+  // sondagem em LLM — a coleta mais cara, com botão próprio
+  probeBusy: boolean
+  probeError: string | null
+  handleProbe: () => void
+  /** Quantas execuções a próxima sondagem vai disparar. */
+  probeRuns: number
 
   // derivados
   gaps: GeoGapId[]
@@ -85,6 +103,10 @@ export function useGeoController({
 }: LeadGeoPanelProps): GeoController {
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [mentionsBusy, setMentionsBusy] = useState(false)
+  const [mentionsError, setMentionsError] = useState<string | null>(null)
+  const [probeBusy, setProbeBusy] = useState(false)
+  const [probeError, setProbeError] = useState<string | null>(null)
   const [saveStatus, setSaveStatus] = useState<GeoSaveStatus>("idle")
   const [saveError, setSaveError] = useState<string | null>(null)
   const [liveReview, setLiveReview] = useState<GeoReview | null>(null)
@@ -115,6 +137,8 @@ export function useGeoController({
     setSaveStatus("idle")
     setSaveError(null)
     setError(null)
+    setMentionsError(null)
+    setProbeError(null)
   }
 
   // Chave, não o objeto: `detail` ganha identidade nova a cada resposta do pai,
@@ -139,6 +163,11 @@ export function useGeoController({
 
   const hasWebsiteAudit = detail.websiteAudits.some(
     (item) => item.channel_id === primaryWebsite?.id,
+  )
+  // `multi_target_metrics` recusa um alvo só, e o lead sozinho é um alvo só.
+  // Sem concorrente não há comparação a fazer nem chamada a pagar.
+  const hasBacklinkAudit = Boolean(
+    detail.backlinkAudit?.snapshot.competitors?.length,
   )
 
   const gaps = snapshot ? geoGapsForSnapshot({ snapshot }) : []
@@ -224,9 +253,10 @@ export function useGeoController({
   }
 
   /**
-   * Zero chamada paga: a coleta lê os snapshots de Website, Visibilidade e
-   * Backlinks que já existem. `busy` está aqui contra clique duplo e contra
-   * duas linhas append-only idênticas, não contra gasto.
+   * A coleta base lê snapshots que já existem e paga **uma** chamada barata: a
+   * demanda de busca em IA, a US$ 0,021 — menos que o `ranked_keywords` que
+   * produziu as keywords dela. `busy` protege contra clique duplo, contra duas
+   * linhas append-only idênticas e, agora, contra pagar duas vezes.
    */
   function handleAnalyze() {
     if (!canEdit || busy || !domain || !hasWebsiteAudit) return
@@ -246,6 +276,67 @@ export function useGeoController({
     })
   }
 
+  /**
+   * A coleta paga da etapa: US$ 0,10 por chamada.
+   *
+   * Botão próprio, no padrão da malha geográfica, justamente porque custa — a
+   * coleta base precisa continuar barata, porque é ela que destrava o
+   * Diagnóstico.
+   */
+  function handleCollectMentions() {
+    if (!canEdit || mentionsBusy || !audit || !hasBacklinkAudit) return
+    setMentionsBusy(true)
+    onPendingChange(true)
+    setMentionsError(null)
+    const formData = new FormData()
+    formData.set("lead_id", leadId)
+    void collectLeadGeoMentions(formData).then((result) => {
+      setMentionsBusy(false)
+      onPendingChange(false)
+      if (result.status === "error") {
+        setMentionsError(result.message)
+        return
+      }
+      onAuditChange(result.audit)
+    })
+  }
+
+  /**
+   * A sondagem: ≈ US$ 0,65, a coleta mais cara da etapa.
+   *
+   * Botão próprio e contagem de execuções visível antes do clique — quem paga
+   * precisa ver o tamanho da conta, não descobrir depois.
+   */
+  function handleProbe() {
+    if (!canEdit || probeBusy || !audit) return
+    setProbeBusy(true)
+    onPendingChange(true)
+    setProbeError(null)
+    const formData = new FormData()
+    formData.set("lead_id", leadId)
+    void probeLeadGeoPrompts(formData).then((result) => {
+      setProbeBusy(false)
+      onPendingChange(false)
+      if (result.status === "error") {
+        setProbeError(result.message)
+        return
+      }
+      onAuditChange(result.audit)
+      onReviewChange(result.review)
+    })
+  }
+
+  // O conjunto fixado manda; sem ele, o derivado diz o tamanho da conta.
+  const promptSet =
+    stored.promptSet ??
+    deriveGeoPromptSet({
+      company: detail.lead.company_name,
+      segment: detail.segment?.name ?? null,
+      city: detail.lead.city,
+      fixedAt: "",
+    })
+  const probeRuns = promptSet.items.length * GEO_PROMPT_PLATFORMS.length
+
   return {
     leadId,
     companyName: detail.lead.company_name,
@@ -259,6 +350,16 @@ export function useGeoController({
     error,
     handleAnalyze,
     hasWebsiteAudit,
+
+    mentionsBusy,
+    mentionsError,
+    handleCollectMentions,
+    hasBacklinkAudit,
+
+    probeBusy,
+    probeError,
+    handleProbe,
+    probeRuns,
 
     gaps,
     opportunities,

@@ -1,0 +1,312 @@
+{
+  "at": "2026-09-11T03:08:04.886Z",
+  "teto_usd": 0.2,
+  "rodou": [
+    "gemini"
+  ],
+  "traces": {
+    "p9b_llm_chat_gpt": {
+      "path": "/ai_optimization/chat_gpt/llm_responses/live",
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.015167,
+      "gasto_acumulado": 0.015167
+    },
+    "p9b_llm_gemini": {
+      "path": "/ai_optimization/gemini/llm_responses/live",
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.0373887,
+      "gasto_acumulado": 0.037389
+    },
+    "p9b_llm_perplexity": {
+      "path": "/ai_optimization/perplexity/llm_responses/live",
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.006257,
+      "gasto_acumulado": 0.021424
+    },
+    "p8b_in_com_www": {
+      "path": "/backlinks/backlinks/live",
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.024036,
+      "gasto_acumulado": 0.04546
+    },
+    "p8b_like_reddit": {
+      "path": "/backlinks/backlinks/live",
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.024036,
+      "gasto_acumulado": 0.069496
+    },
+    "p8b_sem_filtro": {
+      "path": "/backlinks/backlinks/live",
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.02472,
+      "gasto_acumulado": 0.094216
+    }
+  },
+  "gasto": 0.037389,
+  "gasto_acumulado_todas_rodadas": 0.131605,
+  "veredito": {
+    "p9b": {
+      "chat_gpt": {
+        "model_name": "gpt-5-mini-2025-08-07",
+        "campos_omitidos": [
+          "max_output_tokens"
+        ],
+        "web_search": true,
+        "money_spent": 0.0145665,
+        "input_tokens": 8818,
+        "output_tokens": 1181,
+        "chaves_result": [
+          "model_name",
+          "input_tokens",
+          "output_tokens",
+          "reasoning_tokens",
+          "web_search",
+          "money_spent",
+          "datetime",
+          "items",
+          "fan_out_queries"
+        ],
+        "chaves_section": [],
+        "annotations_count": 9,
+        "annotations_com_url": 9,
+        "annotations_com_indice": 9,
+        "chaves_annotation": [
+          "title",
+          "url",
+          "start_index",
+          "end_index",
+          "text"
+        ],
+        "dominio_citado": true,
+        "marca_no_texto": true,
+        "amostra_annotations": [
+          {
+            "title": "Crescimento para sua empresa através do Google - Busca Orgânica",
+            "url": "https://www.buscaorganica.com.br/?utm_source=openai",
+            "start_index": 350,
+            "end_index": 427,
+            "text": "([buscaorganica.com.br](https://www.buscaorganica.com.br/?utm_source=openai))"
+          },
+          {
+            "title": "Busca Orgânica | LinkedIn",
+            "url": "https://www.linkedin.com/company/busca-org%C3%A2nica?utm_source=openai",
+            "start_index": 537,
+            "end_index": 625,
+            "text": "([linkedin.com](https://www.linkedin.com/company/busca-org%C3%A2nica?utm_source=openai))"
+          },
+          {
+            "title": "O Google Business Profile e o ativo de SEO local mais subestimado em 2026 (e o mais barato)",
+            "url": "https://www.reddit.com/r/u_EstrategiaNegocios/comments/1tq66ij/o_google_business_profile_e_o_ativo_de_seo_local/?utm_source=openai",
+            "start_index": 849,
+            "end_index": 995,
+            "text": "([reddit.com](https://www.reddit.com/r/u_EstrategiaNegocios/comments/1tq66ij/o_google_business_profile_e_o_ativo_de_seo_local/?utm_source=openai))"
+          },
+          {
+            "title": "Busca orgânica",
+            "url": "https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai",
+            "start_index": 1236,
+            "end_index": 1325,
+            "text": "([pt.wikipedia.org](https://pt.wikipedia.org/wiki/Busca_org%C3%A2nica?utm_source=openai))"
+          }
+        ]
+      },
+      "gemini": {
+        "model_name": "gemini-2.5-flash",
+        "campos_omitidos": [
+          "web_search_country_iso_code",
+          "web_search_city"
+        ],
+        "web_search": true,
+        "money_spent": 0.0367887,
+        "input_tokens": 104,
+        "output_tokens": 703,
+        "chaves_result": [
+          "model_name",
+          "input_tokens",
+          "output_tokens",
+          "reasoning_tokens",
+          "web_search",
+          "money_spent",
+          "datetime",
+          "items",
+          "fan_out_queries"
+        ],
+        "chaves_section": [
+          "type",
+          "text",
+          "annotations"
+        ],
+        "annotations_count": 31,
+        "annotations_com_url": 31,
+        "annotations_com_indice": 31,
+        "chaves_annotation": [
+          "title",
+          "url",
+          "start_index",
+          "end_index",
+          "text"
+        ],
+        "dominio_citado": false,
+        "marca_no_texto": true,
+        "amostra_annotations": [
+          {
+            "title": "organicadigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+            "start_index": 334,
+            "end_index": 487,
+            "text": "A busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles."
+          },
+          {
+            "title": "outmarketing.com.br",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMBgitOvkuWceV-JO8JCCMG-Nwf-tORWkB__SrTab7DiwpWymD5DZCw2MX6_iq9_jyjREbE7eTqSb40htNUQUNy53VgspLAmPjAzy1znEBM5PE-NC5BA-zLyeaHHJV0eUwO0Yg6O4=",
+            "start_index": 334,
+            "end_index": 487,
+            "text": "A busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles."
+          },
+          {
+            "title": "prosperidadeconteudos.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGGe-uBGi_Ux5hZb25LfesCZN-3etOZF0dsgrsdSQCuy_UUKOjqFhCvo5EPp6EkIS1xQtzdhObasm95i7Q5DVA4YkfTr_FeosAnYHOXcQgfpshgpZQChm4fnPCZgs4imjQik1gw9KfbDJ1nTm0tmTbj2yJc7nGbQIc0PZRgqDHA0QLlUyRokGqs",
+            "start_index": 334,
+            "end_index": 487,
+            "text": "A busca orgânica refere-se aos resultados de pesquisa que aparecem naturalmente nos mecanismos de busca, como o Google, sem que haja pagamento por eles."
+          },
+          {
+            "title": "organicadigital.com",
+            "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJj44qqvQyvA4nTjQG90mjaGSwuIm0-pBsLT1qSHCwkYBr42QR2JInWmM7tNtT_2MpQHQ6-IZlM-C5FSeyI2vYV5xeCFAKHGQOjxcp4rs-gc-9Wf_8VbYVhajhLLVOY0xDcaYA_GSgGp_pboixG_2fMs3JImJqEFS_ti3sfQhF42gQYULRQaW-nxdoD3E34BU=",
+            "start_index": 488,
+            "end_index": 608,
+            "text": "É considerada uma estratégia crucial para o sucesso online, pois influencia diretamente a visibilidade de um negócio."
+          }
+        ]
+      },
+      "perplexity": {
+        "model_name": "sonar",
+        "campos_omitidos": [
+          "web_search_city"
+        ],
+        "web_search": true,
+        "money_spent": 0.005657,
+        "input_tokens": 29,
+        "output_tokens": 628,
+        "chaves_result": [
+          "model_name",
+          "input_tokens",
+          "output_tokens",
+          "reasoning_tokens",
+          "web_search",
+          "money_spent",
+          "datetime",
+          "items",
+          "fan_out_queries"
+        ],
+        "chaves_section": [
+          "type",
+          "text",
+          "annotations"
+        ],
+        "annotations_count": 20,
+        "annotations_com_url": 20,
+        "annotations_com_indice": 0,
+        "chaves_annotation": [
+          "title",
+          "url",
+          "start_index",
+          "end_index",
+          "text"
+        ],
+        "dominio_citado": true,
+        "marca_no_texto": true,
+        "amostra_annotations": [
+          {
+            "title": "Busca Orgânica: Crescimento para sua empresa através do ...",
+            "url": "https://www.buscaorganica.com.br/",
+            "start_index": null,
+            "end_index": null,
+            "text": null
+          },
+          {
+            "title": "Busca Orgânica",
+            "url": "https://www.linkedin.com/company/busca-org%C3%A2nica",
+            "start_index": null,
+            "end_index": null,
+            "text": null
+          },
+          {
+            "title": "Conversion - Maior Agência de SEO do Brasil | SEO, GEO e PR",
+            "url": "https://www.conversion.com.br/",
+            "start_index": null,
+            "end_index": null,
+            "text": null
+          },
+          {
+            "title": "Agência SEO Brasil: Agência de SEO",
+            "url": "https://agenciaseobrasil.com.br/",
+            "start_index": null,
+            "end_index": null,
+            "text": null
+          }
+        ]
+      }
+    },
+    "p9b_claude_relido": {
+      "money_spent": 0.023752,
+      "input_tokens": 10797,
+      "annotations_count": 3,
+      "annotations_com_url": 3,
+      "annotations_com_indice": 0,
+      "dominio_citado": true,
+      "nota": "relido do payload de 14-llm_responses-claude.json. Zero chamada nova."
+    },
+    "p8b": {
+      "in_com_www": {
+        "total_count": 0,
+        "items_count": 0,
+        "dominios": []
+      },
+      "like_reddit": {
+        "total_count": 0,
+        "items_count": 0,
+        "dominios": []
+      },
+      "sem_filtro": {
+        "total_count": 4927,
+        "items_count": 20,
+        "dominios": [
+          "goodmorningwilton.com",
+          "brightpinkagency.com",
+          "gayhookups.net",
+          "property-damage-restoration.10web.cloud",
+          "business.tnlcoc.org",
+          "bodysculpturesteroids.com",
+          "www.gopuro.com",
+          "s3.amazonaws.com",
+          "thangvi.com",
+          "comp.entryeeze.com",
+          "cyprushomestager.com",
+          "purocleanvt.com",
+          "delam37.wixsite.com",
+          "thehandymanlink.net",
+          "www.workwisesupport.com",
+          "www.lschamber.com",
+          "waterdamageout.com",
+          "www.purocleandayton.com",
+          "locallanders.blob.core.windows.net",
+          "www.stamfordchamber.com"
+        ]
+      }
+    }
+  },
+  "reprovado": []
+}

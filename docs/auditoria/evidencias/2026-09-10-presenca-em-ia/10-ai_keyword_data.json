@@ -1,0 +1,363 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.4298 sec.",
+  "cost": 0.021,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110301-2319-0619-0000-f50c12e09ead",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.3788 sec.",
+      "cost": 0.021,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "ai_keyword_data",
+        "keywords_search_volume",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "keywords_search_volume",
+        "keywords": [
+          "busca organica",
+          "busca orgânica",
+          "primeira pagina do google",
+          "banheiro químicos",
+          "consultoria de seo",
+          "pallets de paulla",
+          "sanitarios",
+          "google primeira pagina",
+          "sav furacão",
+          "banheiro quimico preço",
+          "banheiro quimico comprar",
+          "benficar distribuidora de auto peças eletricas",
+          "banheiros químicos comprar",
+          "banheiro quimico valor",
+          "produtos para banheiro quimico",
+          "sondarello",
+          "martinrea honsel brasil",
+          "o'que e sondagem",
+          "o'que é sondagem",
+          "omr componentes automotivos",
+          "orgânica digital",
+          "bom negócio atividades de internet ltda",
+          "grupo setta",
+          "eletrofase",
+          "jocami",
+          "tecnobanho",
+          "banheiro quimico quanto custa",
+          "catacliente",
+          "inserts metálicos",
+          "martinrea honsel",
+          "martinrea-honsel",
+          "mercado eletrônico novo hamburgo",
+          "pallets descartáveis",
+          "sitec assistência técnica multimarcas",
+          "busca clientes",
+          "banheiro quimico usado preço",
+          "banheiro químico usado preço",
+          "cryovac jaguariuna",
+          "inserto metalico",
+          "inserto metálico",
+          "marketing organico",
+          "o'que e divulgar",
+          "o'que é divulgar",
+          "organick",
+          "empresa de sondagem",
+          "microestaca",
+          "banheiro químico com chuveiro",
+          "compra de paletes perto de mim",
+          "crescimento organico",
+          "crescimento orgânico",
+          "fabrica de pallets",
+          "fossa banheiro",
+          "fábrica de pallets",
+          "banheiro quimico por dentro",
+          "banheiro quimico usado",
+          "banheiro químico por dentro",
+          "banheiro químico usado",
+          "caixa glt",
+          "caixas glt",
+          "como fazer meu site aparecer no google",
+          "marketing industrial",
+          "o que é chapatex",
+          "o'que é chapatex",
+          "sonda rotativa",
+          "engenheiro geotécnico",
+          "banheiro químico direto da fabrica",
+          "banheiro químico direto da fábrica",
+          "locação de banheiros quimicos",
+          "locação de banheiros químicos",
+          "loja da usinagem",
+          "seo técnico",
+          "tokyo pallets",
+          "usinagem empresas",
+          "usinagem pesada",
+          "aluguel de banheiros quimicos",
+          "buscasys",
+          "ciclo verde embalagens",
+          "criar site empresa",
+          "limpadora paraibana",
+          "marcatti prevenção de incêndios",
+          "pallets chiaradia",
+          "pallets da amazonia",
+          "pallets perto de mim",
+          "poliban",
+          "seo rio de janeiro",
+          "sorenge",
+          "usinagem paulista",
+          "usinagem raniowski",
+          "sondagem do terreno",
+          "abraão pallets",
+          "citrolima e pacheco",
+          "engenheiro civil geotecnico",
+          "fornecedor de paletes",
+          "fornecedores de paletes",
+          "lastro pallet",
+          "maquinas de sondagem",
+          "mini limpa fossa",
+          "o que é sondagem de solo",
+          "paletes fechados",
+          "pallet box",
+          "qual o valor de um banheiro químico",
+          "relatorio de sondagem",
+          "sondagem o'que e",
+          "sondagem terreno",
+          "steel usinagem",
+          "target comunica",
+          "venda de banheiro químico",
+          "marketing curitiba",
+          "pallets one way",
+          "via dutra pallets"
+        ],
+        "location_name": "Brazil",
+        "language_code": "pt"
+      },
+      "result": [
+        {
+          "location_code": 2076,
+          "language_code": "pt",
+          "items_count": 110,
+          "items": [
+            {
+              "keyword": "busca organica",
+              "ai_search_volume": 6,
+              "ai_monthly_searches": [
+                {
+                  "year": 2026,
+                  "month": 8,
+                  "ai_search_volume": 6
+                },
+                {
+                  "year": 2026,
+                  "month": 7,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2026,
+                  "month": 6,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2026,
+                  "month": 5,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2026,
+                  "month": 4,
+                  "ai_search_volume": 3
+                },
+                {
+                  "year": 2026,
+                  "month": 3,
+                  "ai_search_volume": 6
+                },
+                {
+                  "year": 2026,
+                  "month": 2,
+                  "ai_search_volume": 4
+                },
+                {
+                  "year": 2026,
+                  "month": 1,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2025,
+                  "month": 12,
+                  "ai_search_volume": 3
+                },
+                {
+                  "year": 2025,
+                  "month": 11,
+                  "ai_search_volume": 7
+                },
+                {
+                  "year": 2025,
+                  "month": 10,
+                  "ai_search_volume": 6
+                },
+                {
+                  "year": 2025,
+                  "month": 9,
+                  "ai_search_volume": 9
+                }
+              ]
+            },
+            {
+              "keyword": "busca orgânica",
+              "ai_search_volume": 6,
+              "ai_monthly_searches": [
+                {
+                  "year": 2026,
+                  "month": 8,
+                  "ai_search_volume": 6
+                },
+                {
+                  "year": 2026,
+                  "month": 7,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2026,
+                  "month": 6,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2026,
+                  "month": 5,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2026,
+                  "month": 4,
+                  "ai_search_volume": 3
+                },
+                {
+                  "year": 2026,
+                  "month": 3,
+                  "ai_search_volume": 6
+                },
+                {
+                  "year": 2026,
+                  "month": 2,
+                  "ai_search_volume": 4
+                },
+                {
+                  "year": 2026,
+                  "month": 1,
+                  "ai_search_volume": 5
+                },
+                {
+                  "year": 2025,
+                  "month": 12,
+                  "ai_search_volume": 3
+                },
+                {
+                  "year": 2025,
+                  "month": 11,
+                  "ai_search_volume": 7
+                },
+                {
+                  "year": 2025,
+                  "month": 10,
+                  "ai_search_volume": 6
+                },
+                {
+                  "year": 2025,
+                  "month": 9,
+                  "ai_search_volume": 9
+                }
+              ]
+            },
+            {
+              "keyword": "primeira pagina do google",
+              "ai_search_volume": 10,
+              "ai_monthly_searches": [
+                {
+                  "year": 2026,
+                  "month": 8,
+                  "ai_search_volume": 10
+                },
+                {
+                  "year": 2026,
+                  "month": 7,
+                  "ai_search_volume": 8
+                },
+                {
+                  "year": 2026,
+                  "month": 6,
+                  "ai_search_volume": 10
+                },
+                {
+                  "year": 2026,
+                  "month": 5,
+                  "ai_search_volume": 12
+                },
+                {
+                  "year": 2026,
+                  "month": 4,
+                  "ai_search_volume": 14
+                },
+                {
+                  "year": 2026,
+                  "month": 3,
+                  "ai_search_volume": 10
+                },
+                {
+                  "year": 2026,
+                  "month": 2,
+                  "ai_search_volume": 10
+                },
+                {
+                  "year": 2026,
+                  "month": 1,
+                  "ai_search_volume": 17
+                },
+                {
+                  "year": 2025,
+                  "month": 12,
+                  "ai_search_volume": 14
+                },
+                {
+                  "year": 2025,
+                  "month": 11,
+                  "ai_search_volume": 12
+                },
+                {
+                  "year": 2025,
+                  "month": 10,
+                  "ai_search_volume": 1
+                },
+                {
+                  "year": 2025,
+                  "month": 9,
+                  "ai_search_volume": 3
+                }
+              ]
+            }
+          ],
+          "_items_original_length": 110
+        }
+      ]
+    }
+  ],
+  "_cortado": {
+    "em": "2026-09-11T03:16:02.365Z",
+    "nota": "listas truncadas para os primeiros 3 itens; `_<lista>_original_length` guarda o tamanho real. Regenere o cru com probe.mjs / probe-pago.mjs / probe-pago-2.mjs.",
+    "cortes": [
+      {
+        "caminho": "tasks.0.result.0.items",
+        "de": 110,
+        "para": 3
+      }
+    ]
+  }
+}

@@ -116,6 +116,17 @@ export type VisibilityKeywordRow = {
   itemType: VisibilityItemType
   /** `keyword_properties.is_another_language`: o detector errou o idioma. */
   languageMismatch: boolean
+  /**
+   * `serp_item.text` — o trecho que a SERP de fato mostrou.
+   *
+   * Em `ai_overview_reference` é **a frase que a visão geral de IA citou do
+   * site**, e é o campo de maior valor comercial da linha: o lead reconhece a
+   * própria frase. Vinha pago e era descartado.
+   *
+   * `null` significa **não coletado**: snapshot anterior a 2026-09-11 não tem
+   * o campo, e ausência aqui não é "a SERP não mostrou texto".
+   */
+  citedText: string | null
 }
 
 /**
@@ -528,6 +539,7 @@ function readKeywordRow(value: unknown): VisibilityKeywordRow | null {
     serpFeatures: readStringList(row.serpFeatures),
     itemType: readItemType(row.itemType),
     languageMismatch: row.languageMismatch === true,
+    citedText: asString(row.citedText),
   }
 }
 

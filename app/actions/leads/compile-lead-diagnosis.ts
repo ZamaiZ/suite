@@ -42,8 +42,11 @@ export type CompileLeadDiagnosisState =
   | { status: "error"; message: string }
 
 const FAILED = "Não foi possível montar o diagnóstico. Tente novamente."
+// As CINCO etapas do gate, e `!geoAudit` é uma delas desde que a Presença em
+// IA passou a destravar o diagnóstico. Omitir a quinta faz quem só deve ela
+// ler quatro etapas já concluídas e não descobrir o que falta.
 const INCOMPLETE =
-  "Conclua Perfil no Google, Website, Presença digital e Visibilidade antes do diagnóstico."
+  "Conclua Perfil no Google, Website, Presença digital, Visibilidade e Presença em IA antes do diagnóstico."
 
 export async function compileLeadDiagnosis(
   formData: FormData,

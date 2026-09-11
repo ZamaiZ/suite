@@ -1,0 +1,1524 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.1980 sec.",
+  "cost": 0,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110259-2319-0639-0000-da83ec302862",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.1547 sec.",
+      "cost": 0,
+      "result_count": 94,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "llm_mentions",
+        "locations_and_languages"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "locations_and_languages"
+      },
+      "result": [
+        {
+          "location_code": 2008,
+          "location_name": "Albania",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Albanian",
+              "language_code": "sq",
+              "responses_count": 81124
+            }
+          ]
+        },
+        {
+          "location_code": 2012,
+          "location_name": "Algeria",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 716033
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 576846
+            }
+          ]
+        },
+        {
+          "location_code": 2024,
+          "location_name": "Angola",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Portuguese",
+              "language_code": "pt",
+              "responses_count": 871551
+            }
+          ]
+        },
+        {
+          "location_code": 2031,
+          "location_name": "Azerbaijan",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Azeri",
+              "language_code": "az",
+              "responses_count": 141558
+            }
+          ]
+        },
+        {
+          "location_code": 2032,
+          "location_name": "Argentina",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 1899314
+            }
+          ]
+        },
+        {
+          "location_code": 2036,
+          "location_name": "Australia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 10600141
+            }
+          ]
+        },
+        {
+          "location_code": 2040,
+          "location_name": "Austria",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "German",
+              "language_code": "de",
+              "responses_count": 1001762
+            }
+          ]
+        },
+        {
+          "location_code": 2048,
+          "location_name": "Bahrain",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 271263
+            }
+          ]
+        },
+        {
+          "location_code": 2050,
+          "location_name": "Bangladesh",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Bengali",
+              "language_code": "bn",
+              "responses_count": 1280404
+            }
+          ]
+        },
+        {
+          "location_code": 2051,
+          "location_name": "Armenia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Armenian",
+              "language_code": "hy",
+              "responses_count": 61422
+            }
+          ]
+        },
+        {
+          "location_code": 2056,
+          "location_name": "Belgium",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 65232
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Dutch",
+              "language_code": "nl",
+              "responses_count": 1062256
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "German",
+              "language_code": "de",
+              "responses_count": 192195
+            }
+          ]
+        },
+        {
+          "location_code": 2068,
+          "location_name": "Bolivia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 163505
+            }
+          ]
+        },
+        {
+          "location_code": 2070,
+          "location_name": "Bosnia and Herzegovina",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Bosnian",
+              "language_code": "bs",
+              "responses_count": 77487
+            }
+          ]
+        },
+        {
+          "location_code": 2076,
+          "location_name": "Brazil",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Portuguese",
+              "language_code": "pt",
+              "responses_count": 7672935
+            }
+          ]
+        },
+        {
+          "location_code": 2100,
+          "location_name": "Bulgaria",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Bulgarian",
+              "language_code": "bg",
+              "responses_count": 126389
+            }
+          ]
+        },
+        {
+          "location_code": 2104,
+          "location_name": "Myanmar (Burma)",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 403289
+            }
+          ]
+        },
+        {
+          "location_code": 2116,
+          "location_name": "Cambodia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 364037
+            }
+          ]
+        },
+        {
+          "location_code": 2120,
+          "location_name": "Cameroon",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 243798
+            }
+          ]
+        },
+        {
+          "location_code": 2124,
+          "location_name": "Canada",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 10928301
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 5223773
+            }
+          ]
+        },
+        {
+          "location_code": 2144,
+          "location_name": "Sri Lanka",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 348737
+            }
+          ]
+        },
+        {
+          "location_code": 2152,
+          "location_name": "Chile",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 998089
+            }
+          ]
+        },
+        {
+          "location_code": 2158,
+          "location_name": "Taiwan",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Chinese (Traditional)",
+              "language_code": "zh-TW",
+              "responses_count": 2272118
+            }
+          ]
+        },
+        {
+          "location_code": 2170,
+          "location_name": "Colombia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 1237577
+            }
+          ]
+        },
+        {
+          "location_code": 2188,
+          "location_name": "Costa Rica",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 256521
+            }
+          ]
+        },
+        {
+          "location_code": 2191,
+          "location_name": "Croatia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Croatian",
+              "language_code": "hr",
+              "responses_count": 130463
+            }
+          ]
+        },
+        {
+          "location_code": 2196,
+          "location_name": "Cyprus",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Greek",
+              "language_code": "el",
+              "responses_count": 117370
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 111409
+            }
+          ]
+        },
+        {
+          "location_code": 2203,
+          "location_name": "Czechia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Czech",
+              "language_code": "cs",
+              "responses_count": 690088
+            }
+          ]
+        },
+        {
+          "location_code": 2208,
+          "location_name": "Denmark",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Danish",
+              "language_code": "da",
+              "responses_count": 963683
+            }
+          ]
+        },
+        {
+          "location_code": 2218,
+          "location_name": "Ecuador",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 467752
+            }
+          ]
+        },
+        {
+          "location_code": 2222,
+          "location_name": "El Salvador",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 123233
+            }
+          ]
+        },
+        {
+          "location_code": 2233,
+          "location_name": "Estonia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Estonian",
+              "language_code": "et",
+              "responses_count": 40073
+            }
+          ]
+        },
+        {
+          "location_code": 2246,
+          "location_name": "Finland",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Finnish",
+              "language_code": "fi",
+              "responses_count": 755074
+            }
+          ]
+        },
+        {
+          "location_code": 2250,
+          "location_name": "France",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 4116408
+            }
+          ]
+        },
+        {
+          "location_code": 2276,
+          "location_name": "Germany",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "German",
+              "language_code": "de",
+              "responses_count": 11537142
+            }
+          ]
+        },
+        {
+          "location_code": 2288,
+          "location_name": "Ghana",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 427713
+            }
+          ]
+        },
+        {
+          "location_code": 2300,
+          "location_name": "Greece",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Greek",
+              "language_code": "el",
+              "responses_count": 520878
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 197506
+            }
+          ]
+        },
+        {
+          "location_code": 2320,
+          "location_name": "Guatemala",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 362576
+            }
+          ]
+        },
+        {
+          "location_code": 2344,
+          "location_name": "Hong Kong",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 714400
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Chinese (Traditional)",
+              "language_code": "zh-TW",
+              "responses_count": 1915057
+            }
+          ]
+        },
+        {
+          "location_code": 2348,
+          "location_name": "Hungary",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Hungarian",
+              "language_code": "hu",
+              "responses_count": 325285
+            }
+          ]
+        },
+        {
+          "location_code": 2356,
+          "location_name": "India",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 10689311
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Hindi",
+              "language_code": "hi",
+              "responses_count": 8865323
+            }
+          ]
+        },
+        {
+          "location_code": 2360,
+          "location_name": "Indonesia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 2957629
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Indonesian",
+              "language_code": "id",
+              "responses_count": 4476782
+            }
+          ]
+        },
+        {
+          "location_code": 2372,
+          "location_name": "Ireland",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 926896
+            }
+          ]
+        },
+        {
+          "location_code": 2376,
+          "location_name": "Israel",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Hebrew",
+              "language_code": "he",
+              "responses_count": 959790
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 344322
+            }
+          ]
+        },
+        {
+          "location_code": 2380,
+          "location_name": "Italy",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Italian",
+              "language_code": "it",
+              "responses_count": 4611584
+            }
+          ]
+        },
+        {
+          "location_code": 2384,
+          "location_name": "Cote d'Ivoire",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 400522
+            }
+          ]
+        },
+        {
+          "location_code": 2392,
+          "location_name": "Japan",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Japanese",
+              "language_code": "ja",
+              "responses_count": 9550780
+            }
+          ]
+        },
+        {
+          "location_code": 2398,
+          "location_name": "Kazakhstan",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Russian",
+              "language_code": "ru",
+              "responses_count": 459153
+            }
+          ]
+        },
+        {
+          "location_code": 2400,
+          "location_name": "Jordan",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 302786
+            }
+          ]
+        },
+        {
+          "location_code": 2404,
+          "location_name": "Kenya",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 859824
+            }
+          ]
+        },
+        {
+          "location_code": 2410,
+          "location_name": "South Korea",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Korean",
+              "language_code": "ko",
+              "responses_count": 5347311
+            }
+          ]
+        },
+        {
+          "location_code": 2428,
+          "location_name": "Latvia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Latvian",
+              "language_code": "lv",
+              "responses_count": 125205
+            }
+          ]
+        },
+        {
+          "location_code": 2440,
+          "location_name": "Lithuania",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Lithuanian",
+              "language_code": "lt",
+              "responses_count": 172727
+            }
+          ]
+        },
+        {
+          "location_code": 2458,
+          "location_name": "Malaysia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 1131153
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Malay",
+              "language_code": "ms",
+              "responses_count": 1608412
+            }
+          ]
+        },
+        {
+          "location_code": 2470,
+          "location_name": "Malta",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 19004
+            }
+          ]
+        },
+        {
+          "location_code": 2484,
+          "location_name": "Mexico",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 3732240
+            }
+          ]
+        },
+        {
+          "location_code": 2492,
+          "location_name": "Monaco",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 74798
+            }
+          ]
+        },
+        {
+          "location_code": 2498,
+          "location_name": "Moldova",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Romanian",
+              "language_code": "ro",
+              "responses_count": 68676
+            }
+          ]
+        },
+        {
+          "location_code": 2504,
+          "location_name": "Morocco",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 504340
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 321929
+            }
+          ]
+        },
+        {
+          "location_code": 2528,
+          "location_name": "Netherlands",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Dutch",
+              "language_code": "nl",
+              "responses_count": 2782004
+            }
+          ]
+        },
+        {
+          "location_code": 2554,
+          "location_name": "New Zealand",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 742681
+            }
+          ]
+        },
+        {
+          "location_code": 2558,
+          "location_name": "Nicaragua",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 92572
+            }
+          ]
+        },
+        {
+          "location_code": 2566,
+          "location_name": "Nigeria",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 763073
+            }
+          ]
+        },
+        {
+          "location_code": 2578,
+          "location_name": "Norway",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Norwegian (Bokmål)",
+              "language_code": "nb",
+              "responses_count": 1159918
+            }
+          ]
+        },
+        {
+          "location_code": 2586,
+          "location_name": "Pakistan",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 808771
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Urdu",
+              "language_code": "ur",
+              "responses_count": 207564
+            }
+          ]
+        },
+        {
+          "location_code": 2591,
+          "location_name": "Panama",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 372150
+            }
+          ]
+        },
+        {
+          "location_code": 2600,
+          "location_name": "Paraguay",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 128882
+            }
+          ]
+        },
+        {
+          "location_code": 2604,
+          "location_name": "Peru",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 846418
+            }
+          ]
+        },
+        {
+          "location_code": 2608,
+          "location_name": "Philippines",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 1348232
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Tagalog",
+              "language_code": "tl",
+              "responses_count": 1318015
+            }
+          ]
+        },
+        {
+          "location_code": 2616,
+          "location_name": "Poland",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Polish",
+              "language_code": "pl",
+              "responses_count": 1178361
+            }
+          ]
+        },
+        {
+          "location_code": 2620,
+          "location_name": "Portugal",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Portuguese",
+              "language_code": "pt",
+              "responses_count": 638283
+            }
+          ]
+        },
+        {
+          "location_code": 2642,
+          "location_name": "Romania",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Romanian",
+              "language_code": "ro",
+              "responses_count": 505645
+            }
+          ]
+        },
+        {
+          "location_code": 2682,
+          "location_name": "Saudi Arabia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 2290575
+            }
+          ]
+        },
+        {
+          "location_code": 2686,
+          "location_name": "Senegal",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 165588
+            }
+          ]
+        },
+        {
+          "location_code": 2688,
+          "location_name": "Serbia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Serbian",
+              "language_code": "sr",
+              "responses_count": 105642
+            }
+          ]
+        },
+        {
+          "location_code": 2702,
+          "location_name": "Singapore",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 1504573
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Chinese (Simplified)",
+              "language_code": "zh-CN",
+              "responses_count": 378019
+            }
+          ]
+        },
+        {
+          "location_code": 2703,
+          "location_name": "Slovakia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Slovak",
+              "language_code": "sk",
+              "responses_count": 220745
+            }
+          ]
+        },
+        {
+          "location_code": 2704,
+          "location_name": "Vietnam",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 383474
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Vietnamese",
+              "language_code": "vi",
+              "responses_count": 981427
+            }
+          ]
+        },
+        {
+          "location_code": 2705,
+          "location_name": "Slovenia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Slovenian",
+              "language_code": "sl",
+              "responses_count": 82215
+            }
+          ]
+        },
+        {
+          "location_code": 2710,
+          "location_name": "South Africa",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 1553004
+            }
+          ]
+        },
+        {
+          "location_code": 2724,
+          "location_name": "Spain",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 3547573
+            }
+          ]
+        },
+        {
+          "location_code": 2752,
+          "location_name": "Sweden",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Swedish",
+              "language_code": "sv",
+              "responses_count": 1476307
+            }
+          ]
+        },
+        {
+          "location_code": 2756,
+          "location_name": "Switzerland",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "German",
+              "language_code": "de",
+              "responses_count": 1044816
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 533881
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Italian",
+              "language_code": "it",
+              "responses_count": 179906
+            }
+          ]
+        },
+        {
+          "location_code": 2764,
+          "location_name": "Thailand",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Thai",
+              "language_code": "th",
+              "responses_count": 2040457
+            }
+          ]
+        },
+        {
+          "location_code": 2784,
+          "location_name": "United Arab Emirates",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 743995
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 727337
+            }
+          ]
+        },
+        {
+          "location_code": 2788,
+          "location_name": "Tunisia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 211496
+            }
+          ]
+        },
+        {
+          "location_code": 2792,
+          "location_name": "Turkiye",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Turkish",
+              "language_code": "tr",
+              "responses_count": 1722435
+            }
+          ]
+        },
+        {
+          "location_code": 2804,
+          "location_name": "Ukraine",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Ukrainian",
+              "language_code": "uk",
+              "responses_count": 6103725
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Russian",
+              "language_code": "ru",
+              "responses_count": 2399416
+            }
+          ]
+        },
+        {
+          "location_code": 2807,
+          "location_name": "North Macedonia",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Macedonian",
+              "language_code": "mk",
+              "responses_count": 56076
+            }
+          ]
+        },
+        {
+          "location_code": 2818,
+          "location_name": "Egypt",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Arabic",
+              "language_code": "ar",
+              "responses_count": 1495995
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 547178
+            }
+          ]
+        },
+        {
+          "location_code": 2826,
+          "location_name": "United Kingdom",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 20063154
+            }
+          ]
+        },
+        {
+          "location_code": 2840,
+          "location_name": "United States",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google",
+                "chat_gpt"
+              ],
+              "language_name": "English",
+              "language_code": "en",
+              "responses_count": 159198648
+            },
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 3131409
+            }
+          ]
+        },
+        {
+          "location_code": 2854,
+          "location_name": "Burkina Faso",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "French",
+              "language_code": "fr",
+              "responses_count": 192608
+            }
+          ]
+        },
+        {
+          "location_code": 2858,
+          "location_name": "Uruguay",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 208602
+            }
+          ]
+        },
+        {
+          "location_code": 2862,
+          "location_name": "Venezuela",
+          "available_languages": [
+            {
+              "available_platforms": [
+                "google"
+              ],
+              "language_name": "Spanish",
+              "language_code": "es",
+              "responses_count": 1621007
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

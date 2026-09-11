@@ -311,6 +311,30 @@ function geoMetrics(audit: LeadGeoAudit): DiagnosisKeyMetric[] {
           : "Ausente"
         : "—",
     ),
+    // Os três abaixo são das coletas pagas. `null` vira `—` — "não coletado",
+    // que num documento comercial é diferente de zero: ausência de medição
+    // nossa não é fraqueza do lead.
+    metric(
+      "ai_demand",
+      "Buscas em IA no mercado",
+      snap.aiDemand === null || snap.aiDemand.totalAiSearchVolume === null
+        ? "—"
+        : snap.aiDemand.totalAiSearchVolume.toLocaleString("pt-BR"),
+    ),
+    metric(
+      "ai_mentions",
+      "Respostas de IA que citam",
+      snap.citations === null ? "—" : String(snap.citations.mentions),
+    ),
+    metric(
+      "ai_prompt_rate",
+      "Perguntas em que a marca aparece",
+      // Denominador são as execuções `ok`: contar a que o provedor recusou
+      // derrubaria a taxa por um motivo que não é do lead.
+      snap.promptVisibility === null
+        ? "—"
+        : `${Math.round(snap.promptVisibility.metrics.mentionRate * 100)}%`,
+    ),
   ]
 }
 

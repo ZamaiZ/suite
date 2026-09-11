@@ -229,8 +229,8 @@ export function LeadDiagnosisPanel({
       {!unlocked ? (
         <StepCard title="Etapa bloqueada">
           <p className="text-xs/relaxed text-muted-foreground">
-            Conclua Perfil no Google, Website, Presença digital e Visibilidade
-            para liberar o diagnóstico.
+            Conclua Perfil no Google, Website, Presença digital, Visibilidade e
+            Presença em IA para liberar o diagnóstico.
           </p>
         </StepCard>
       ) : !draft ? (

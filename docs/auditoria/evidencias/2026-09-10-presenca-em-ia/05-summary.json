@@ -1,0 +1,585 @@
+{
+  "at": "2026-09-11T02:59:42.618Z",
+  "gratuito": true,
+  "traces": {
+    "user_data": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    },
+    "llm_mentions_locations": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    },
+    "ai_keyword_data_locations": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    },
+    "models_chat_gpt": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    },
+    "models_claude": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    },
+    "models_gemini": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    },
+    "models_perplexity": {
+      "http": 200,
+      "error": null,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0
+    }
+  },
+  "veredito": {
+    "p1_ai_optimization_liberada": true,
+    "p1_secao_presente_sem_preco": false,
+    "p1_precos": [
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/locations",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/languages",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/live/html",
+        "cost_type": "per_request",
+        "cost": 0.004
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/live/advanced",
+        "cost_type": "per_request",
+        "cost": 0.004
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/task_post",
+        "cost_type": "per_request",
+        "cost": 0.0012
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/task_get/advanced",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/task_get/html",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_scraper/tasks_ready",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/aggregated_metrics/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/aggregated_metrics/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/available_filters",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/cross_aggregated_metrics/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/cross_aggregated_metrics/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/historical/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/historical/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/locations_and_languages",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/multi_target_metrics/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/multi_target_metrics/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/search/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/search/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/search_mentions/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/search_mentions/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/target_metrics/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/target_metrics/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/target_metrics_lite/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/target_metrics_lite/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/timeseries_delta/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/timeseries_delta/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/timeseries_new_lost/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/timeseries_new_lost/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_domains/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_domains/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brand_categories/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brand_categories/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brand_categories_lite/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brand_categories_lite/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brands/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brands/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brands_lite/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_brands_lite/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_domains/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_domains/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_domains_lite/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_domains_lite/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_pages/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_pages/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_pages_lite/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_mentioned_pages_lite/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_pages/live",
+        "cost_type": "per_result",
+        "cost": 0.001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_mentions/top_pages/live",
+        "cost_type": "per_request",
+        "cost": 0.1
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "ai_keyword_data/available_filters",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "ai_keyword_data/keywords_search_volume/live",
+        "cost_type": "per_result",
+        "cost": 0.0001
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "ai_keyword_data/keywords_search_volume/live",
+        "cost_type": "per_request",
+        "cost": 0.01
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "ai_keyword_data/locations_and_languages",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "errors",
+        "cost_type": "per_result",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "id_list",
+        "cost_type": "per_result",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_responses/live",
+        "cost_type": "per_request",
+        "cost": 0.0006
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_responses/models",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_responses/task_get",
+        "cost_type": "per_request",
+        "cost": 0
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_responses/task_post",
+        "cost_type": "per_request",
+        "cost": 0.0002
+      },
+      {
+        "api": "ai_optimization",
+        "fn": "llm_responses/tasks_ready",
+        "cost_type": "per_request",
+        "cost": 0
+      }
+    ],
+    "p1_baliza_labs": [
+      {
+        "api": "dataforseo_labs",
+        "fn": "ranked_keywords/live",
+        "cost_type": "per_result",
+        "cost": 0.00012
+      },
+      {
+        "api": "dataforseo_labs",
+        "fn": "ranked_keywords/live",
+        "cost_type": "per_request",
+        "cost": 0.012
+      }
+    ],
+    "p2_llm_mentions": {
+      "locations_total": 94,
+      "caminhos": [
+        ""
+      ],
+      "brasil_encontrado": true,
+      "brasil": [
+        {
+          "trail": "",
+          "location_code": 2076,
+          "location_name": "Brazil",
+          "languages": [
+            "pt"
+          ]
+        }
+      ],
+      "pt_no_brasil": true,
+      "amostra_sem_brasil": null
+    },
+    "p3_ai_keyword_data": {
+      "locations_total": 94,
+      "caminhos": [
+        ""
+      ],
+      "brasil_encontrado": true,
+      "brasil": [
+        {
+          "trail": "",
+          "location_code": 2076,
+          "location_name": "Brazil",
+          "languages": [
+            "pt"
+          ]
+        }
+      ],
+      "pt_no_brasil": true,
+      "amostra_sem_brasil": null
+    },
+    "p4_modelos": {
+      "chat_gpt": [
+        "o4-mini",
+        "o4-mini-2025-04-16",
+        "o3-mini",
+        "o3-mini-2025-01-31",
+        "o1",
+        "o1-2024-12-17",
+        "gpt-5.6-terra",
+        "gpt-5.6-sol",
+        "gpt-5.6-luna",
+        "gpt-5.5",
+        "gpt-5.5-2026-04-23",
+        "gpt-5.4-nano",
+        "gpt-5.4-nano-2026-03-17",
+        "gpt-5.4-mini",
+        "gpt-5.4-mini-2026-03-17",
+        "gpt-5.4",
+        "gpt-5.4-2026-03-05",
+        "gpt-5.2",
+        "gpt-5.2-2025-12-11",
+        "gpt-5.1",
+        "gpt-5.1-2025-11-13",
+        "gpt-5-nano",
+        "gpt-5-nano-2025-08-07",
+        "gpt-5-mini",
+        "gpt-5-mini-2025-08-07",
+        "gpt-5",
+        "gpt-5-2025-08-07",
+        "gpt-4o-mini",
+        "gpt-4o-mini-2024-07-18",
+        "gpt-4o",
+        "gpt-4o-2024-05-13",
+        "gpt-4o-2024-08-06",
+        "gpt-4o-2024-11-20",
+        "gpt-4.1-nano",
+        "gpt-4.1-nano-2025-04-14",
+        "gpt-4.1-mini",
+        "gpt-4.1-mini-2025-04-14",
+        "gpt-4.1",
+        "gpt-4.1-2025-04-14",
+        "gpt-4-turbo",
+        "gpt-4-turbo-2024-04-09",
+        "gpt-4",
+        "gpt-4-0613",
+        "gpt-3.5-turbo",
+        "gpt-3.5-turbo-0125",
+        "gpt-3.5-turbo-1106"
+      ],
+      "claude": [
+        "claude-sonnet-5",
+        "claude-sonnet-4-6",
+        "claude-sonnet-4-5",
+        "claude-sonnet-4-5-20250929",
+        "claude-opus-5",
+        "claude-opus-4-8",
+        "claude-opus-4-7",
+        "claude-opus-4-6",
+        "claude-opus-4-5",
+        "claude-opus-4-5-20251101",
+        "claude-haiku-4-5",
+        "claude-haiku-4-5-20251001",
+        "claude-fable-5-1",
+        "claude-fable-5"
+      ],
+      "gemini": [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-3.6-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
+        "gemini-3.1-pro-preview",
+        "gemini-3.1-flash-lite",
+        "gemini-3-flash-preview",
+        "gemini-2.5-pro",
+        "gemini-2.5-flash-lite",
+        "gemini-2.5-flash"
+      ],
+      "perplexity": [
+        "sonar-reasoning-pro",
+        "sonar-pro",
+        "sonar"
+      ]
+    }
+  },
+  "balance": 48.523318,
+  "secoes_na_conta": [
+    "ai_optimization",
+    "app_data",
+    "appendix",
+    "backlinks",
+    "business_data",
+    "content_analysis",
+    "dataforseo_labs",
+    "domain_analytics",
+    "keywords_data",
+    "merchant",
+    "on_page",
+    "serp"
+  ],
+  "assinaturas": {
+    "backlinks": "2050-01-01 00:00:00 +00:00",
+    "llm_mentions": "2050-01-01 00:00:00 +00:00"
+  },
+  "reprovado": [],
+  "custo_total": 0
+}

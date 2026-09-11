@@ -74,22 +74,138 @@ export type GeoContent = {
 
 export type GeoCitationSource = {
   domain: string
-  links: number
-  firstUrl: string | null
+  mentions: number
+  aiSearchVolume: number | null
+  /** Está em `GEO_AUTHORITY_DOMAINS` — Wikipédia, Reddit ou YouTube. */
+  isAuthority: boolean
 }
 
+export type GeoCitationPrompt = {
+  question: string
+  aiSearchVolume: number | null
+  /** `last_response_at`: quando a IA respondeu isso pela última vez. */
+  at: string | null
+  sources: Array<{
+    domain: string
+    url: string | null
+    title: string | null
+    rank: number | null
+  }>
+  /** O domínio do lead está entre as fontes desta resposta. */
+  leadCited: boolean
+}
+
+/**
+ * Citações em IA, lidas de `llm_mentions` com `platform: google`.
+ *
+ * **Trocou de via em 2026-09-11.** Antes eram domínios de um catálogo casados
+ * por backlink; a onda 0 reprovou aquela via com controle positivo — três
+ * formas de filtro, zero nas três, contra um domínio com dez links provados em
+ * Reddit e YouTube. O índice de backlinks funciona e simplesmente não tem essas
+ * fontes.
+ *
+ * Trocar a forma foi seguro porque `citations` nunca foi gravada diferente de
+ * `null`: a coleta base não coleta este campo.
+ */
 export type GeoCitations = {
-  catalogVersion: number
+  /**
+   * Procedência fixada no próprio dado.
+   *
+   * Um segundo valor vindo de outra via não pode ser comparado com este sem a
+   * tela dizer que o método mudou — é a lição do `maps-task.ts`, onde métodos
+   * divergentes na mesma série temporal produziram número sem significado.
+   */
+  source: "llm_mentions_google"
+  /** `total.mentions` do alvo: em quantas respostas de IA o lead aparece. */
+  mentions: number
+  aiSearchVolume: number | null
+  /**
+   * Os domínios que a IA cita **nas respostas em que o lead aparece**.
+   *
+   * Não é "quem linka para o lead". É o que a IA lê quando fala do espaço dele
+   * — e a tela precisa dizer isso com essas palavras, porque as duas leituras
+   * levam a ações opostas.
+   */
   sources: GeoCitationSource[]
+  /** O domínio do lead aparece entre as fontes que a IA citou. */
+  domainCitedAsSource: boolean
+  /**
+   * `null` = **não pedido**. A leitura por pergunta é uma segunda chamada paga
+   * e só roda quando `mentions > 0` — lead sem menção não paga US$ 0,107 por
+   * uma chamada que não pode trazer nada.
+   */
+  prompts: GeoCitationPrompt[] | null
   truncated: boolean
+}
+
+/**
+ * Por qual critério o alvo foi medido.
+ *
+ * As duas listas de concorrentes que já pagamos são complementares e nenhuma
+ * está completa: `/backlinks/competitors/live` traz **domínio sem nome**, e os
+ * concorrentes da malha trazem **nome sem domínio**. Derivar o nome do domínio
+ * funciona em `conversion.com.br` → "Conversion" e falha em
+ * `agenciamestre.com` → "agenciamestre", que não casa com "Agência Mestre".
+ *
+ * Medir alvos por critérios diferentes sem dizer qual **distorce a comparação
+ * para o lado do lead**, que é o único com nome garantido. Então o critério
+ * vai gravado, e a tela marca quem foi medido só pelo domínio.
+ */
+export type GeoMentionMeasuredBy = "brand_and_domain" | "domain"
+
+export type GeoMentionTarget = {
+  key: string
+  label: string
+  isLead: boolean
+  measuredBy: GeoMentionMeasuredBy
+  mentions: number
+  aiSearchVolume: number | null
+}
+
+/**
+ * Concorrência em IA — a tabela de dominância, por `multi_target_metrics`.
+ *
+ * Viável para o Brasil por **casamento de nome na resposta**, não pelo dataset
+ * `brand_entities`: medido em 2026-09-11, `brand_entities_title` e
+ * `search_results_domain` vêm como array **vazio** em `platform: google`, nos
+ * dois mercados testados.
+ */
+export type GeoAiMentions = {
+  source: "llm_mentions_google"
+  targets: GeoMentionTarget[]
+  /**
+   * Menções do lead ÷ menções de todos os alvos medidos.
+   *
+   * **Sobre os alvos medidos, não sobre o mercado.** E não é taxa de citação:
+   * medido em 2026-09-11, a SERVPRO tem 11× as menções da PuroClean e 1,2× a
+   * taxa de citação do relatório de referência. Uma conta o dataset inteiro, a
+   * outra a fração de prompts — rotular uma com o nome da outra compara coisas
+   * diferentes com a mesma palavra.
+   */
+  share: number | null
 }
 
 export type GeoAiOverviewKeyword = {
   keyword: string
   url: string | null
+  /**
+   * Posição **entre as fontes citadas** pela visão geral de IA — `rank_group`.
+   *
+   * Não é `rank_absolute`: medido em 2026-09-11 contra 100 linhas reais,
+   * `rank_absolute` vale 1 em 93 delas porque é a posição do bloco na SERP, e
+   * o bloco é quase sempre o primeiro elemento da página. Ver
+   * `docs/auditoria/evidencias/2026-09-10-presenca-em-ia/23-rank-group-vs-absolute.json`.
+   */
   position: number | null
   volume: number | null
   etv: number | null
+  /**
+   * A frase que a visão geral de IA citou do site.
+   *
+   * `null` significa **não coletado** — snapshot de visibilidade anterior a
+   * 2026-09-11 não tem o campo. Nunca "a IA citou sem texto".
+   */
+  citedText: string | null
 }
 
 export type GeoAiOverview = {
@@ -109,17 +225,46 @@ export type GeoAiOverview = {
 export type GeoAiDemand = {
   keywords: Array<{ keyword: string; aiSearchVolume: number | null }>
   totalAiSearchVolume: number | null
+  /**
+   * Soma mensal de todas as keywords, doze meses, do mais recente ao mais
+   * antigo.
+   *
+   * Guarda o agregado e **não** a série por keyword: 110 keywords × 12 meses
+   * engordariam o snapshot para responder uma pergunta que ninguém faz por
+   * keyword. A pergunta que importa é do mercado — a busca em IA está
+   * crescendo neste nicho? —, e ela cabe em doze números.
+   */
+  monthlyTotals: Array<{ year: number; month: number; volume: number }>
   locationLabel: string
   languageCode: string
 }
 
 export type GeoPromptFamily = "discovery" | "problem" | "comparison" | "brand"
 
+/**
+ * O que aconteceu com uma execução da sondagem.
+ *
+ * **`provider_unavailable` não é `mentioned: false`.** Medido em 2026-09-11:
+ * os modelos `gemini-3.x` devolveram `50301 rate_limit_exceeded` em três
+ * tentativas seguidas, **com custo zero**, do lado do provider. Gravar isso
+ * como não-menção **inventa ausência** — é o que `fetchBacklinkSchemeLive`
+ * recusa ao não devolver leitura zerada quando a chamada não trouxe nada.
+ *
+ * `rejected` é `40501 Invalid Field`: bug nosso de corpo, não ausência de
+ * dado. Também não cobra, e por isso também some do custo se ninguém marcar.
+ *
+ * Só `ok` entra no denominador da taxa de menção.
+ */
+export type GeoPromptRunStatus = "ok" | "provider_unavailable" | "rejected"
+
 export type GeoPromptRun = {
   promptId: string
   provider: string
   modelName: string | null
   at: string
+  status: GeoPromptRunStatus
+  /** O motivo, quando `status` não é `ok`. Vai para a tela, não para o log. */
+  statusMessage: string | null
   mentioned: boolean
   /**
    * Ordem da primeira ocorrência entre as marcas detectadas na resposta.
@@ -181,6 +326,8 @@ export type GeoSnapshot = {
   content: GeoContent
   /** `null` = onda 2 não rodou neste lead. Lista vazia seria afirmação. */
   citations: GeoCitations | null
+  /** `null` = a comparação com concorrentes não foi coletada neste lead. */
+  aiMentions: GeoAiMentions | null
   aiOverview: GeoAiOverview | null
   aiDemand: GeoAiDemand | null
   /** `null` = **não sondado**. Os três gaps de sondagem não existem. */
@@ -222,7 +369,7 @@ export const GEO_GAP_LABELS: Record<GeoGapId, string> = {
   no_identity_schema: "Sem schema que identifique a empresa",
   no_freshness_signals: "Sem sinal de conteúdo atualizado",
   no_machine_readable_contact: "Contato não legível por máquina",
-  no_authority_citations: "Sem citação em fontes que a IA consulta",
+  no_authority_citations: "A IA fala do seu mercado sem citar seu site",
   brand_unknown_to_llms: "As IAs não reconhecem a marca",
   absent_from_discovery_prompts: "Ausente quando pedem recomendação",
   outranked_by_competitors: "Citada depois dos concorrentes",
@@ -260,7 +407,9 @@ function readGeoCitations(value: unknown): GeoCitations | null {
   const row = asRecord(value)
   if (!row) return null
   return {
-    catalogVersion: asFinite(row.catalogVersion) ?? 1,
+    source: "llm_mentions_google",
+    mentions: asFinite(row.mentions) ?? 0,
+    aiSearchVolume: asFinite(row.aiSearchVolume),
     sources: Array.isArray(row.sources)
       ? row.sources.flatMap((entry) => {
           const item = asRecord(entry)
@@ -269,13 +418,75 @@ function readGeoCitations(value: unknown): GeoCitations | null {
           return [
             {
               domain,
-              links: asFinite(item?.links) ?? 0,
-              firstUrl: asString(item?.firstUrl),
+              mentions: asFinite(item?.mentions) ?? 0,
+              aiSearchVolume: asFinite(item?.aiSearchVolume),
+              isAuthority: asBool(item?.isAuthority),
             },
           ]
         })
       : [],
+    domainCitedAsSource: asBool(row.domainCitedAsSource),
+    // `null` é "não pedido"; `[]` é "pedido e vazio". A leitura por pergunta é
+    // uma segunda chamada paga, e um lead sem menção nunca a dispara.
+    prompts: Array.isArray(row.prompts)
+      ? row.prompts.flatMap((entry) => {
+          const item = asRecord(entry)
+          const question = asString(item?.question)
+          if (!question) return []
+          return [
+            {
+              question,
+              aiSearchVolume: asFinite(item?.aiSearchVolume),
+              at: asString(item?.at),
+              sources: Array.isArray(item?.sources)
+                ? item.sources.flatMap((sourceEntry) => {
+                    const source = asRecord(sourceEntry)
+                    const domain = asString(source?.domain)
+                    if (!domain) return []
+                    return [
+                      {
+                        domain,
+                        url: asString(source?.url),
+                        title: asString(source?.title),
+                        rank: asFinite(source?.rank),
+                      },
+                    ]
+                  })
+                : [],
+              leadCited: asBool(item?.leadCited),
+            },
+          ]
+        })
+      : null,
     truncated: asBool(row.truncated),
+  }
+}
+
+function readGeoAiMentions(value: unknown): GeoAiMentions | null {
+  const row = asRecord(value)
+  if (!row) return null
+  return {
+    source: "llm_mentions_google",
+    targets: Array.isArray(row.targets)
+      ? row.targets.flatMap((entry) => {
+          const item = asRecord(entry)
+          const key = asString(item?.key)
+          const label = asString(item?.label)
+          if (!key || !label) return []
+          return [
+            {
+              key,
+              label,
+              isLead: asBool(item?.isLead),
+              measuredBy:
+                item?.measuredBy === "domain" ? "domain" : "brand_and_domain",
+              mentions: asFinite(item?.mentions) ?? 0,
+              aiSearchVolume: asFinite(item?.aiSearchVolume),
+            },
+          ]
+        })
+      : [],
+    share: asFinite(row.share),
   }
 }
 
@@ -295,6 +506,9 @@ function readGeoAiOverview(value: unknown): GeoAiOverview | null {
               position: asFinite(item?.position),
               volume: asFinite(item?.volume),
               etv: asFinite(item?.etv),
+              // Snapshot anterior a 2026-09-11 não tem o campo: `null` é não
+              // coletado, e a tela mostra `—`, nunca "citada sem texto".
+              citedText: asString(item?.citedText),
             },
           ]
         })
@@ -318,9 +532,25 @@ function readGeoAiDemand(value: unknown): GeoAiDemand | null {
         })
       : [],
     totalAiSearchVolume: asFinite(row.totalAiSearchVolume),
+    monthlyTotals: Array.isArray(row.monthlyTotals)
+      ? row.monthlyTotals.flatMap((entry) => {
+          const item = asRecord(entry)
+          const year = asFinite(item?.year)
+          const month = asFinite(item?.month)
+          const volume = asFinite(item?.volume)
+          if (year === null || month === null || volume === null) return []
+          return [{ year, month, volume }]
+        })
+      : [],
     locationLabel: asString(row.locationLabel) ?? "",
     languageCode: asString(row.languageCode) ?? "",
   }
+}
+
+function readGeoPromptRunStatus(value: unknown): GeoPromptRunStatus {
+  return value === "provider_unavailable" || value === "rejected"
+    ? value
+    : "ok"
 }
 
 function readGeoPromptVisibility(value: unknown): GeoPromptVisibility | null {
@@ -342,6 +572,10 @@ function readGeoPromptVisibility(value: unknown): GeoPromptVisibility | null {
               provider,
               modelName: asString(item?.modelName),
               at,
+              // Execução gravada antes deste campo existir só podia ser `ok`:
+              // a sondagem ainda não distinguia falha de ausência.
+              status: readGeoPromptRunStatus(item?.status),
+              statusMessage: asString(item?.statusMessage),
               mentioned: asBool(item?.mentioned),
               position: asFinite(item?.position),
               domainCited: asBool(item?.domainCited),
@@ -481,6 +715,7 @@ export function readGeoSnapshot(value: unknown): GeoSnapshot | null {
     // Os quatro abaixo continuam `null` na onda 1. `null` é "não coletado";
     // objeto vazio seria "coletado e vazio", e a tela diria coisas opostas.
     citations: readGeoCitations(row.citations),
+    aiMentions: readGeoAiMentions(row.aiMentions),
     aiOverview: readGeoAiOverview(row.aiOverview),
     aiDemand: readGeoAiDemand(row.aiDemand),
     promptVisibility: readGeoPromptVisibility(row.promptVisibility),
@@ -560,8 +795,19 @@ export function geoGapsForSnapshot(input: {
     gaps.push("no_ai_overview_presence")
   }
 
-  // `null` é "onda 2 não rodou". Só lista vazia é afirmação de ausência.
-  if (citations !== null && citations.sources.length === 0) {
+  // `null` é "não coletado". Só dado presente afirma.
+  //
+  // A regra mede **menção sem citação**: a IA fala do espaço do lead e nunca
+  // usa o site dele como fonte. Não dispara quando `mentions === 0`, e isso é
+  // deliberado — ausência total já é `no_ai_overview_presence`, lida do
+  // `ranked_keywords`, e acusar aqui seria a segunda cobrança pela mesma
+  // causa. É a mesma regra que faz `no_ai_overview_presence` exigir footprint
+  // orgânico.
+  if (
+    citations !== null &&
+    citations.mentions > 0 &&
+    !citations.domainCitedAsSource
+  ) {
     gaps.push("no_authority_citations")
   }
 

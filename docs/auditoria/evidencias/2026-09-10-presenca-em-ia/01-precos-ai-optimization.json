@@ -1,0 +1,1478 @@
+{
+  "raw": {
+    "llm_scraper": {
+      "locations": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "languages": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "live": {
+        "html": {
+          "priority_low": [
+            {
+              "cost_type": "per_request",
+              "cost": 0.004
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_request",
+              "cost": 0.004
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_request",
+              "cost": 0.004
+            }
+          ]
+        },
+        "advanced": {
+          "priority_low": [
+            {
+              "cost_type": "per_request",
+              "cost": 0.004
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_request",
+              "cost": 0.004
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_request",
+              "cost": 0.004
+            }
+          ]
+        }
+      },
+      "task_post": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0012
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0012
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0024
+          }
+        ]
+      },
+      "task_get": {
+        "advanced": {
+          "priority_low": [
+            {
+              "cost_type": "per_request",
+              "cost": 0
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_request",
+              "cost": 0
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_request",
+              "cost": 0
+            }
+          ]
+        },
+        "html": {
+          "priority_low": [
+            {
+              "cost_type": "per_request",
+              "cost": 0
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_request",
+              "cost": 0
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_request",
+              "cost": 0
+            }
+          ]
+        }
+      },
+      "tasks_ready": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      }
+    },
+    "llm_mentions": {
+      "aggregated_metrics": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "available_filters": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "cross_aggregated_metrics": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "historical": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "locations_and_languages": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "multi_target_metrics": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "search": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "search_mentions": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "target_metrics": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "target_metrics_lite": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "timeseries_delta": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "timeseries_new_lost": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_domains": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_brand_categories": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_brand_categories_lite": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_brands": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_brands_lite": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_domains": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_domains_lite": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_pages": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_mentioned_pages_lite": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      },
+      "top_pages": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.1
+            }
+          ]
+        }
+      }
+    },
+    "ai_keyword_data": {
+      "available_filters": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "keywords_search_volume": {
+        "live": {
+          "priority_low": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.0001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.01
+            }
+          ],
+          "priority_normal": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.0001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.01
+            }
+          ],
+          "priority_high": [
+            {
+              "cost_type": "per_result",
+              "cost": 0.0001
+            },
+            {
+              "cost_type": "per_request",
+              "cost": 0.01
+            }
+          ]
+        }
+      },
+      "locations_and_languages": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      }
+    },
+    "errors": {
+      "priority_low": [
+        {
+          "cost_type": "per_result",
+          "cost": 0
+        }
+      ],
+      "priority_normal": [
+        {
+          "cost_type": "per_result",
+          "cost": 0
+        }
+      ],
+      "priority_high": [
+        {
+          "cost_type": "per_result",
+          "cost": 0
+        }
+      ]
+    },
+    "id_list": {
+      "priority_low": [
+        {
+          "cost_type": "per_result",
+          "cost": 0
+        }
+      ],
+      "priority_normal": [
+        {
+          "cost_type": "per_result",
+          "cost": 0
+        }
+      ],
+      "priority_high": [
+        {
+          "cost_type": "per_result",
+          "cost": 0
+        }
+      ]
+    },
+    "llm_responses": {
+      "live": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0006
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0006
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0006
+          }
+        ]
+      },
+      "models": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "task_get": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      },
+      "task_post": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0002
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0002
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0.0002
+          }
+        ]
+      },
+      "tasks_ready": {
+        "priority_low": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_normal": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ],
+        "priority_high": [
+          {
+            "cost_type": "per_request",
+            "cost": 0
+          }
+        ]
+      }
+    }
+  },
+  "flat": [
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/locations",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/languages",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/live/html",
+      "cost_type": "per_request",
+      "cost": 0.004
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/live/advanced",
+      "cost_type": "per_request",
+      "cost": 0.004
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/task_post",
+      "cost_type": "per_request",
+      "cost": 0.0012
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/task_get/advanced",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/task_get/html",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_scraper/tasks_ready",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/aggregated_metrics/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/aggregated_metrics/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/available_filters",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/cross_aggregated_metrics/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/cross_aggregated_metrics/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/historical/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/historical/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/locations_and_languages",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/multi_target_metrics/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/multi_target_metrics/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/search/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/search/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/search_mentions/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/search_mentions/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/target_metrics/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/target_metrics/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/target_metrics_lite/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/target_metrics_lite/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/timeseries_delta/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/timeseries_delta/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/timeseries_new_lost/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/timeseries_new_lost/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_domains/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_domains/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brand_categories/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brand_categories/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brand_categories_lite/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brand_categories_lite/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brands/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brands/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brands_lite/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_brands_lite/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_domains/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_domains/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_domains_lite/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_domains_lite/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_pages/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_pages/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_pages_lite/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_mentioned_pages_lite/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_pages/live",
+      "cost_type": "per_result",
+      "cost": 0.001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_mentions/top_pages/live",
+      "cost_type": "per_request",
+      "cost": 0.1
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "ai_keyword_data/available_filters",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "ai_keyword_data/keywords_search_volume/live",
+      "cost_type": "per_result",
+      "cost": 0.0001
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "ai_keyword_data/keywords_search_volume/live",
+      "cost_type": "per_request",
+      "cost": 0.01
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "ai_keyword_data/locations_and_languages",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "errors",
+      "cost_type": "per_result",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "id_list",
+      "cost_type": "per_result",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_responses/live",
+      "cost_type": "per_request",
+      "cost": 0.0006
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_responses/models",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_responses/task_get",
+      "cost_type": "per_request",
+      "cost": 0
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_responses/task_post",
+      "cost_type": "per_request",
+      "cost": 0.0002
+    },
+    {
+      "api": "ai_optimization",
+      "fn": "llm_responses/tasks_ready",
+      "cost_type": "per_request",
+      "cost": 0
+    }
+  ]
+}
