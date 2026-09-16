@@ -1,0 +1,201 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "5.3017 sec.",
+  "cost": 0.006035,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110553-2319-0612-0000-0ca76a075418",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "5.2751 sec.",
+      "cost": 0.006035,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "perplexity",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "perplexity",
+        "user_prompt": "Quais são as melhores empresas de SEO em Guarulhos?",
+        "model_name": "sonar",
+        "web_search": true,
+        "web_search_country_iso_code": "BR",
+        "max_output_tokens": 800
+      },
+      "result": [
+        {
+          "model_name": "sonar",
+          "input_tokens": 20,
+          "output_tokens": 415,
+          "reasoning_tokens": 0,
+          "web_search": true,
+          "money_spent": 0.005435,
+          "datetime": "2026-09-11 05:53:20 +00:00",
+          "items": [
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Algumas das **melhores opções de empresas/agências de SEO em Guarulhos** que aparecem nos resultados são a **Webclick**, a **RTAG**, a **Agência SCG**, a **MZclick**, a **DIVIA Marketing Digital** e a **Agência 4UP**. Essas empresas se destacam nos resultados por se apresentarem como especializadas em SEO em Guarulhos ou na região, com foco em SEO local, técnico e de conteúdo.[3][5][6][8][4][17]\n\nPara ajudar na escolha, vale observar o posicionamento de cada uma:\n\n| Empresa | Destaque nos resultados |\n|---|---|\n| **Webclick** | Foco em **SEO técnico e de conteúdo**, com atuação em Guarulhos.[5] |\n| **RTAG** | Mais de **10 anos de mercado** e metodologia aplicada a negócios em Guarulhos.[6] |\n| **Agência SCG** | Se apresenta como **especializada em SEO Guarulhos SP**.[3] |\n| **MZclick** | Diz atuar diretamente em Guarulhos para ajudar empresas a ganhar destaque.[8] |\n| **DIVIA Marketing Digital** | Se apresenta como opção para **consultoria de SEO em Guarulhos** e como agência reconhecida.[4] |\n| **Agência 4UP** | Informa endereço em Guarulhos e atendimento focado em SEO/SEO local.[17] |\n\nSe você quiser, eu também posso montar uma **lista mais prática com ranking por custo-benefício, porte da empresa e tipo de serviço** — por exemplo, “melhor para SEO local”, “melhor para e-commerce” ou “melhor para empresas pequenas”.",
+                  "annotations": [
+                    {
+                      "title": "As 10 melhores empresas de SEO e Marketing ...",
+                      "url": "https://b2bfy.com.br/10-melhores-empresas-seo-marketing-conteudo-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos -SP | (11) 97559-6711",
+                      "url": "https://www.fernandocoutinho.com/agencia-de-seo-em-guarulhos-sp",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência SCG - Agência Especializada em SEO Guarulhos SP",
+                      "url": "https://agenciascg.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Consultoria de SEO em Guarulhos - SP",
+                      "url": "https://www.divia.com.br/consultoria-de-seo-em-guarulhos-sp",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO, GEO e AEO em Guarulhos, SP - Webclick",
+                      "url": "https://webclik.com.br/sobre",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos | RTAG",
+                      "url": "https://rtag.com.br/agencia-de-seo-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Empresa de SEO e GEO em Guarulhos, SP | srvs",
+                      "url": "https://srvs.com.br/seo-e-geo/guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos",
+                      "url": "https://www.mzclick.com.br/agencia-de-seo-em-guarulhos/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência Especializada em SEO em Guarulhos",
+                      "url": "https://activadigital.com.br/marketing/agencia-especializada-em-seo-em-guarulhos/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Como uma agência de SEO em Guarulhos pode multiplicar seu ...",
+                      "url": "https://www.rfcdigital.com.br/agencia-de-seo-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos | Resultados com a Digitall Evolution",
+                      "url": "https://www.digitallevolution.com.br/agencia-de-seo-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência Especializada Em SEO Guarulhos SP - Essiouzeiros",
+                      "url": "https://analistasdeseo.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos: Resultados Visíveis. - Origyn Digital",
+                      "url": "https://www.origyndigital.com.br/blog/agencia-de-seo-em-guarulhos/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos | HELPU",
+                      "url": "https://agenciahelpu.com/agencia-de-seo-guarulhos/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de Marketing Guarulhos",
+                      "url": "https://www.digitallevolution.com.br/agencia-marketing-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Max Rank",
+                      "url": "https://maxrank.com.br/artigos/agencia-especializada-em-seo-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO Guarulhos",
+                      "url": "https://agencia4up.com.br/informacoes/agencia-de-seo-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Melhores empresas de Marketing Digital em Guarulhos",
+                      "url": "https://www.ohub.com.br/empresas/marketing-digital/sp/guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência de SEO em Guarulhos - Integração Digital",
+                      "url": "https://www.integracaodigital.com.br/agencia-de-seo-em-guarulhos.php",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    },
+                    {
+                      "title": "Agência 4UP",
+                      "url": "https://agencia4up.com.br/informacoes/agencia-de-busca-organica-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": null
+        }
+      ]
+    }
+  ]
+}

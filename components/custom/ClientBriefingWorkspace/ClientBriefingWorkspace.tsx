@@ -30,7 +30,7 @@ import { Stepper } from "@/components/custom/Stepper"
 import {
   companyAddressFingerprint,
   companyFormattedAddress,
-} from "@/lib/briefing/geocode-address"
+} from "@/lib/briefing/address-fingerprint"
 import { deriveBriefingListStatus } from "@/lib/briefing/status"
 import { BRIEFING_STEPS } from "@/lib/briefing/steps"
 import type {
@@ -659,7 +659,6 @@ export function ClientBriefingWorkspace({
                 >
                   <ClientBriefingCompanyForm
                     initialPayload={loadState.company.payload}
-                    sourceSnapshot={loadState.company.sourceSnapshot}
                     initialUpdatedAt={loadState.company.updatedAt}
                     initialCompletedAt={loadState.company.completedAt}
                     onContinue={(completedAt) => {

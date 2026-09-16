@@ -2,7 +2,6 @@
 
 import { useCallback, useMemo, useState, useTransition } from "react"
 import {
-  applyBriefingPlace,
   completeBriefingCompany,
   lookupBriefingPostalCode,
   saveBriefingCompany,
@@ -52,6 +51,7 @@ import {
   type BriefingCompanyPayload,
 } from "@/lib/briefing/company"
 import { BR_STATES } from "@/lib/br-locations"
+import type { BriefingAddressCandidate } from "@/lib/locationiq"
 import {
   digitsOnly,
   formatCnpj,
@@ -113,7 +113,6 @@ function isSocialChannelType(value: string): value is SocialChannelType {
 
 export function ClientBriefingCompanyForm({
   initialPayload,
-  sourceSnapshot,
   initialUpdatedAt,
   initialCompletedAt,
   variant = "portal",
@@ -226,43 +225,39 @@ export function ClientBriefingCompanyForm({
     })
   }
 
-  async function handlePlacePick(placeId: string, sessionToken: string) {
-    const result = await applyBriefingPlace({
-      placeId,
-      sessionToken,
-      currentHours: payload.hoursLines,
-      snapshotHours: sourceSnapshot.hoursLines,
-      clientId: writerClientId ?? undefined,
-    })
-    if (result.status === "unauthenticated") {
-      setError("Sessão expirada. Atualize a página.")
-      return
+  /**
+   * Síncrona: não há mais chamada.
+   *
+   * O `applyBriefingPlace` existia para buscar os detalhes do Places depois da
+   * sugestão. O autocomplete do LocationIQ já traz o endereço estruturado, e o
+   * candidato escolhido carrega tudo que o formulário precisa.
+   *
+   * **O horário não entra mais.** O LocationIQ não devolve horário de
+   * funcionamento; com perfil do Google vinculado ele continua vindo do
+   * snapshot, que é a fonte melhor, e sem perfil fica para o cliente preencher.
+   */
+  function handlePlacePick(candidate: BriefingAddressCandidate) {
+    const { address } = candidate
+    // O LocationIQ devolve o estado por extenso ("São Paulo"), e o formulário
+    // grava a sigla. `sensitivity: "base"` casa com e sem acento.
+    const stateCode =
+      BR_STATES.find(
+        (state) =>
+          state.name.localeCompare(address.stateName, "pt-BR", {
+            sensitivity: "base",
+          }) === 0,
+      )?.code ?? ""
+
+    const next = {
+      street: address.street || payload.street,
+      number: address.number || payload.number,
+      complement: payload.complement,
+      neighborhood: address.neighborhood || payload.neighborhood,
+      city: address.city || payload.city,
+      stateCode: stateCode || payload.stateCode,
+      postalCode: address.postalCode || payload.postalCode,
     }
-    if (result.status === "error") {
-      setError(result.message)
-      return
-    }
-    patch({
-      street: result.street,
-      number: result.number || payload.number,
-      complement: result.complement || payload.complement,
-      neighborhood: result.neighborhood || payload.neighborhood,
-      city: result.city || payload.city,
-      stateCode: result.stateCode || payload.stateCode,
-      postalCode: result.postalCode || payload.postalCode,
-      formattedAddress:
-        result.formattedAddress ||
-        joinBrazilianAddress({
-          street: result.street,
-          number: result.number || payload.number,
-          complement: result.complement || payload.complement,
-          neighborhood: result.neighborhood || payload.neighborhood,
-          city: result.city || payload.city,
-          stateCode: result.stateCode || payload.stateCode,
-          postalCode: result.postalCode || payload.postalCode,
-        }),
-      ...(result.hoursLines ? { hoursLines: result.hoursLines } : {}),
-    })
+    patch({ ...next, formattedAddress: joinBrazilianAddress(next) })
   }
 
   function updateChannel(index: number, next: BriefingCompanyChannel) {
@@ -445,9 +440,7 @@ export function ClientBriefingCompanyForm({
             id="briefing-street-search"
             value={payload.street}
             onValueChange={(street) => patchAddress({ street })}
-            onPick={(item, sessionToken) => {
-              void handlePlacePick(item.placeId, sessionToken)
-            }}
+            onPick={handlePlacePick}
           />
         </div>
         <div className="grid gap-3 sm:grid-cols-[8rem_1fr]">

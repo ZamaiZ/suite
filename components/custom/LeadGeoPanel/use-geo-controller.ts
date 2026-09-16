@@ -24,6 +24,7 @@ import {
   geoReviewDraft,
   geoReviewProgress,
   serializeGeoReviewDraft,
+  type GeoPromptSet,
   type GeoReview,
 } from "@/lib/leads/geo-review"
 import { deriveGeoPromptSet } from "@/lib/leads/geo-prompts"
@@ -67,6 +68,13 @@ export type GeoController = {
   handleProbe: () => void
   /** Quantas execuções a próxima sondagem vai disparar. */
   probeRuns: number
+  /**
+   * O conjunto de prompts fixado — ou o derivado, quando ainda não há sondagem.
+   *
+   * A matriz precisa do **texto** da pergunta, e ele só existe aqui: o snapshot
+   * guarda `promptId`, não o enunciado.
+   */
+  promptSet: GeoPromptSet
 
   // derivados
   gaps: GeoGapId[]
@@ -359,6 +367,9 @@ export function useGeoController({
     probeError,
     handleProbe,
     probeRuns,
+    // A matriz precisa do texto da pergunta, e ele só existe aqui: o snapshot
+    // guarda `promptId`, não o enunciado.
+    promptSet,
 
     gaps,
     opportunities,

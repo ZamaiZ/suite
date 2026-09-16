@@ -47,7 +47,7 @@ import {
 import {
   companyAddressFingerprint,
   companyFormattedAddress,
-} from "@/lib/briefing/geocode-address"
+} from "@/lib/briefing/address-fingerprint"
 import { emptyCompanyPayload } from "@/lib/briefing/company"
 import { briefingStepsToInvalidateAfterStaffEdit } from "@/lib/briefing/staff-step-cache"
 import type { BriefingStepId } from "@/lib/briefing/steps"
@@ -88,6 +88,7 @@ export function ClientBriefingReviewDialog({
   onClose,
   clientId,
   companyName,
+  portalSnapshot,
   readOnly = false,
 }: ClientBriefingReviewDialogProps) {
   const reduced = !!useReducedMotion()
@@ -289,6 +290,8 @@ export function ClientBriefingReviewDialog({
         </DialogHeader>
         <ClientBriefingDialogHeader
           companyName={title}
+          clientId={clientId}
+          portalSnapshot={portalSnapshot}
           statusLabel={overview?.statusLabel}
           statusTone={statusTone}
           completedCount={overview?.completedCount}
@@ -524,7 +527,6 @@ function StepBody({
         return (
           <ClientBriefingCompanyForm
             initialPayload={data.payload}
-            sourceSnapshot={data.sourceSnapshot}
             initialUpdatedAt={data.meta.updatedAt}
             initialCompletedAt={data.meta.completedAt}
             variant="staff"

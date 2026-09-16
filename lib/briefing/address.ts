@@ -13,12 +13,6 @@ export type ParsedBrazilianAddress = {
   formattedAddress: string
 }
 
-export type PlaceAddressComponentLike = {
-  longText: string
-  shortText: string
-  types: string[]
-}
-
 const POSTAL_AT_END = /,?\s*(\d{5}-?\d{3})\s*$/
 const STATE_AT_END = /\s*[-–—]\s*([A-Za-z]{2})\s*$/
 const FULL_ADDRESS_POSTAL = /\d{5}-?\d{3}/
@@ -122,33 +116,6 @@ export function parseBrazilianAddress(input: string): ParsedBrazilianAddress {
   return result
 }
 
-export function addressFromPlaceComponents(
-  components: PlaceAddressComponentLike[],
-): ParsedBrazilianAddress {
-  const result = emptyParsedAddress()
-  result.street = componentText(components, ["route"])
-  result.number = componentText(components, ["street_number"])
-  result.complement = componentText(components, ["subpremise", "premise"])
-  result.neighborhood = componentText(components, [
-    "sublocality",
-    "sublocality_level_1",
-    "neighborhood",
-  ])
-  result.city = componentText(components, [
-    "administrative_area_level_2",
-    "locality",
-  ])
-  const state = componentText(
-    components,
-    ["administrative_area_level_1"],
-    true,
-  ).toUpperCase()
-  result.stateCode = isBrazilStateCode(state) ? state : ""
-  result.postalCode = digitsOnly(componentText(components, ["postal_code"]))
-  result.formattedAddress = joinBrazilianAddress(result)
-  return result
-}
-
 export function mergeAddress(
   base: ParsedBrazilianAddress,
   overlay: Partial<ParsedBrazilianAddress>,
@@ -236,17 +203,4 @@ function applyStreetAndNumber(segment: string, result: ParsedBrazilianAddress) {
     return
   }
   result.street = segment.trim()
-}
-
-function componentText(
-  components: PlaceAddressComponentLike[],
-  types: string[],
-  preferShort = false,
-): string {
-  const found = components.find((component) =>
-    types.some((type) => component.types.includes(type)),
-  )
-  if (!found) return ""
-  const preferred = preferShort ? found.shortText : found.longText
-  return (preferred || found.longText || found.shortText).trim()
 }

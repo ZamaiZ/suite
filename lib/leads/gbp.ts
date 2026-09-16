@@ -42,7 +42,6 @@ import {
   pickPreviousGbpSnapshotRow,
   type LeadGbpSnapshot,
 } from "@/lib/leads/gbp-snapshot"
-import { normalizeWebsiteDomain } from "@/lib/leads/website"
 import type { LeadLocation } from "@/lib/leads/resolve-location"
 import { segmentCategoryVerdict } from "@/lib/leads/segment-categories"
 import {
@@ -51,7 +50,6 @@ import {
   termSetIsEmpty,
   type TermCoverage,
 } from "@/lib/leads/term-coverage"
-import type { PlacesPlace } from "@/lib/places"
 
 export type { GbpEnrichment }
 
@@ -59,6 +57,15 @@ export const GBP_NOTES_MAX = 2000
 export const GBP_LOW_RATING = 4
 export const GBP_FEW_REVIEWS = 10
 export const GBP_PHOTO_API_MAX = 10
+
+/**
+ * Mínimo para disparar uma busca de estabelecimento.
+ *
+ * Veio de `lib/places`, onde era regra de cobrança do autocomplete do Google.
+ * Aqui é o que evita gastar US$ 0,002 numa sílaba: cada busca é uma requisição
+ * paga ao DataForSEO, e não mais uma tecla.
+ */
+export const GBP_SEARCH_MIN_CHARS = 3
 
 /** Fração da amostra em poucos dias a partir da qual o achado existe. */
 export const GBP_REVIEW_BURST_GAP_SHARE = 0.3
@@ -120,7 +127,7 @@ export const GBP_GAP_LABELS: Record<GbpGapId, string> = {
   missing_website: "Perfil sem site",
   website_unmatched: "Site do perfil não está no cadastro",
   missing_hours: "Horário não informado",
-  no_photos: "Sem fotos na API",
+  no_photos: "Sem fotos no perfil",
   low_rating: "Nota abaixo de 4",
   few_reviews: "Menos de 10 avaliações",
   closed: "Marcado como fechado",
@@ -250,31 +257,6 @@ export function matchWebsiteKey(
   return websiteKeys.includes(websiteDomain) ? websiteDomain : null
 }
 
-export function snapshotFromPlace(place: PlacesPlace): GbpSnapshot {
-  return {
-    placeId: place.id,
-    displayName: place.displayName,
-    formattedAddress: place.formattedAddress,
-    primaryType: place.primaryType,
-    primaryTypeDisplayName: place.primaryTypeDisplayName,
-    types: place.types,
-    businessStatus: place.businessStatus,
-    googleMapsUri: place.googleMapsUri,
-    nationalPhoneNumber: place.nationalPhoneNumber,
-    websiteUri: place.websiteUri,
-    websiteDomain: place.websiteUri
-      ? normalizeWebsiteDomain(place.websiteUri)
-      : null,
-    weekdayDescriptions: place.weekdayDescriptions,
-    rating: place.rating,
-    userRatingCount: place.userRatingCount,
-    photoCount: place.photoNames.length,
-    photoNames: place.photoNames.slice(0, GBP_PHOTO_API_MAX),
-    latitude: place.latitude,
-    longitude: place.longitude,
-  }
-}
-
 export function hasGbpCoordinates(snapshot: GbpSnapshot): boolean {
   return snapshot.latitude !== null && snapshot.longitude !== null
 }
@@ -376,7 +358,10 @@ export function gbpGapsForProfile(
   if (!snapshot.websiteUri) gaps.push("missing_website")
   else if (!matchedWebsiteKey) gaps.push("website_unmatched")
   if (snapshot.weekdayDescriptions.length === 0) gaps.push("missing_hours")
-  if (!enrichment && snapshot.photoCount === 0) gaps.push("no_photos")
+  // `totalPhotos` é o total do perfil. A regra antiga dependia de NÃO haver
+  // enrichment — condição que deixou de existir quando vínculo e coleta viraram
+  // a mesma etapa, e que teria silenciado o achado para sempre.
+  if (enrichment?.totalPhotos === 0) gaps.push("no_photos")
   if (snapshot.rating !== null && snapshot.rating < GBP_LOW_RATING) {
     gaps.push("low_rating")
   }
@@ -423,7 +408,10 @@ export function gbpGapsForProfile(
       if (coverage.region.measured && coverage.region.present.length === 0) {
         gaps.push("description_missing_region")
       }
-      if (coverage.category.measured && coverage.category.present.length === 0) {
+      if (
+        coverage.category.measured &&
+        coverage.category.present.length === 0
+      ) {
         gaps.push("description_missing_category")
       }
     }
@@ -522,10 +510,7 @@ export function gbpGapsForProfile(
     }
   }
 
-  if (
-    audit?.reviewsDelta.status === "ok" &&
-    audit.reviewsDelta.removed > 0
-  ) {
+  if (audit?.reviewsDelta.status === "ok" && audit.reviewsDelta.removed > 0) {
     gaps.push("reviews_removed")
   }
 

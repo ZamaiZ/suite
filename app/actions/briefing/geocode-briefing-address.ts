@@ -2,10 +2,8 @@
 
 import { hydrateStructuredAddress } from "@/lib/briefing/address"
 import { parseCompanyPayload } from "@/lib/briefing/company"
-import {
-  companyFormattedAddress,
-  resolveAudienceMapCoordinates,
-} from "@/lib/briefing/geocode-address"
+import { companyFormattedAddress } from "@/lib/briefing/address-fingerprint"
+import { resolveAudienceMapCoordinates } from "@/lib/briefing/geocode-address"
 import { BRIEFING_STEP_COMPANY } from "@/lib/briefing/steps"
 import { requireBriefingWriter } from "@/lib/briefing/writer"
 import { readGbpSnapshot } from "@/lib/leads/gbp"
@@ -17,7 +15,7 @@ export type GeocodeBriefingAddressState =
       longitude: number
       addressKey: string
       formattedAddress: string
-      source: "gbp" | "places"
+      source: "gbp" | "geocode"
     }
   | { status: "error"; message: string }
   | { status: "unauthenticated" }

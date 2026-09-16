@@ -36,6 +36,10 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon\\.ico|sitemap\\.xml|robots\\.txt|sw\\.js|manifest\\.webmanifest|icon-192\\.png|icon-512\\.png|icon-512-maskable\\.png|icon\\.svg).*)",
+    // `maplibre` fica de fora porque é o worker do mapa, servido de `public/`.
+    // Sem a exceção, um visitante sem sessão no portal do cliente recebia o
+    // redirecionamento para /login no lugar do módulo — e o worker morre em
+    // silêncio, deixando o mapa em carregamento eterno.
+    "/((?!_next/static|_next/image|maplibre|favicon\\.ico|sitemap\\.xml|robots\\.txt|sw\\.js|manifest\\.webmanifest|icon-192\\.png|icon-512\\.png|icon-512-maskable\\.png|icon\\.svg).*)",
   ],
 }

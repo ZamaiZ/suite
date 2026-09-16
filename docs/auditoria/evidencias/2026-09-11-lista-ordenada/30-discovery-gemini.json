@@ -1,0 +1,163 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "5.6046 sec.",
+  "cost": 0.037547,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110553-2319-0612-0000-6f061860d540",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "5.5719 sec.",
+      "cost": 0.037547,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "gemini",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "gemini",
+        "user_prompt": "Quais são as melhores empresas de SEO em Guarulhos?",
+        "model_name": "gemini-2.5-flash",
+        "web_search": true,
+        "max_output_tokens": 800
+      },
+      "result": [
+        {
+          "model_name": "gemini-2.5-flash",
+          "input_tokens": 99,
+          "output_tokens": 767,
+          "reasoning_tokens": 0,
+          "web_search": true,
+          "money_spent": 0.0369472,
+          "datetime": "2026-09-11 05:53:15 +00:00",
+          "items": [
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Ao buscar as melhores empresas de SEO em Guarulhos, é importante considerar aquelas que oferecem estratégias completas e personalizadas para o seu negócio, com foco em resultados.\n\nAlgumas das empresas e agências de marketing digital em Guarulhos que oferecem serviços de SEO incluem:\n\n*   **Publinet Marketing Digital:** Especialistas em marketing digital com foco em SEO, oferecem gestão completa de redes sociais, Google e Meta Ads, e gestão do Google Meu Negócio, com o objetivo de colocar o site do cliente na primeira página do Google.\n*   **Leggoo:** Trabalham com foco em criação de sites otimizados com SEO, gestão estratégica do Google Meu Negócio e social media profissional. O objetivo é posicionar a empresa do cliente no Google, atrair clientes qualificados e fortalecer a presença online.\n*   **North Star Growth:** Agência de marketing digital em Guarulhos focada em impulsionar negócios através de estratégias de SEO, tráfego pago e consultoria de vendas. Possuem certificação Google Partner.\n*   **MDEL Soluções:** Atua como consultor de SEO em Guarulhos, com foco em otimizar resultados locais e ajudar empresas a aparecerem nas primeiras posições para buscas na região.\n*   **Agência SCG Marketing Digital:** Oferece consultoria de SEO em Guarulhos, abrangendo pesquisa de palavras-chave, criação de conteúdo, análise de concorrentes e relatórios de dados para aumentar a receita do negócio.\n*   **Web One:** Oferece consultoria de SEO em Guarulhos, com estratégias personalizadas para elevar o site no Google e atrair mais clientes.\n*   **DIVIA Marketing Digital:** Agência com foco em consultoria de SEO em Guarulhos, reconhecida pela expertise em otimização de sites e por ter um grande número de cases de sucesso documentados.\n*   **Agencia 4UP:** Utiliza um conjunto de técnicas de otimização de sites, blogs e páginas na web para alcançar rankings orgânicos, gerar tráfego e maior visibilidade.\n*   **SinalizeWeb:** Oferece serviços de SEO com foco em aumento de branding, sustentação digital, geração de tráfego e aumento de vendas em e-commerce, com relatórios detalhados de desempenho.\n*   **Doutor Octopus:** Desenvolve sites profissionais e é especializada em SEO, hospedagem, Google Ads, tráfego pago, Google Meu Negócio, identidade visual e materiais gráficos.\n*   **MZclick:** Agência de marketing em Guarulhos que atua com SEO, auxiliando empresas da região a ganharem destaque no Google e aumentarem suas vendas.\n\nAo escolher uma empresa de SEO, é importante considerar:\n\n*   **Experiência e Adaptabilidade:** O SEO está em constante evolução, e agências que se mantêm atualizadas com as mudanças nos algoritmos são essenciais.\n*   **Transparência e Comunicação:** As melhores agências fornecem atualizações regulares e são transparentes sobre seus métodos e o raciocínio por trás de suas recomendações.\n*   **Foco em Resultados:** Verifique se a empresa demonstra foco em resultados como taxa de conversão em vendas, faturamento gerado e ROI das campanhas.\n*   **SEO Local:** Para empresas em Guarulhos, o SEO local é crucial",
+                  "annotations": [
+                    {
+                      "title": "ohub.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaFhVbY164nir-BO4zsHi45VyQKgXI0G_o3oLBijYkozYP4VUNOvbmtn4OKv9eSJqm7A-MOG1r2gyeycbiejx7EEeVePyqr4v60B4MxGoBc-2P6PBH8T5gxVF42abnNv49bRw1tsm7k5m-6vlsqu7gGGIlhy1HpynfLg==",
+                      "start_index": 291,
+                      "end_index": 550,
+                      "text": "*   **Publinet Marketing Digital:** Especialistas em marketing digital com foco em SEO, oferecem gestão completa de redes sociais, Google e Meta Ads, e gestão do Google Meu Negócio, com o objetivo de colocar o site do cliente na primeira página do Google."
+                    },
+                    {
+                      "title": "leggoo.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGszx45I5slvGDUw-zyfDe0QHfR13_S4OA9oZtARYF0xhrGA33tis-K7Gozs_1xgTLN0yGXXEdWw6PrjiuSO6_-yU3tHK2F2_meAGN-DCx-gNHF5SHU0SBuYhi4ntNGb0Pu5ptd1K2atiE_-0KAgKfYrIOqNOhgVhwyUhc=",
+                      "start_index": 701,
+                      "end_index": 819,
+                      "text": "O objetivo é posicionar a empresa do cliente no Google, atrair clientes qualificados e fortalecer a presença online."
+                    },
+                    {
+                      "title": "northstargrowth.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH0X6cwKLElquiHWlASXmUk_VDXGNNd9PFDftWsfv18MstrPSJO7dMWltSkkMi34bDAQSXk9mbd9gS1wfYcr8NNYwzU3aN_SUnLPpgEvGAdTWWN3iNSDHPgwKKKEe-VbjvqJQAost2hxYMdzzkz1LeTPeXYCxZmXm4bNLhVDf024ElZujA=",
+                      "start_index": 994,
+                      "end_index": 1032,
+                      "text": "Possuem certificação Google Partner."
+                    },
+                    {
+                      "title": "mdel.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHBrd2-SuIDT-i7LM1LFT9MqB-ON8NNCAlMkVgYbBXc84YiPDrSJIcueUeeH3vemsFwG2ZGfL1FTHJKgXtF56HLkpJIY8WtDmAFdNNPtx6w7puAFeadXXbMwLI88p-lnzMHCSrG3xXaFk5l",
+                      "start_index": 1033,
+                      "end_index": 1217,
+                      "text": "*   **MDEL Soluções:** Atua como consultor de SEO em Guarulhos, com foco em otimizar resultados locais e ajudar empresas a aparecerem nas primeiras posições para buscas na região."
+                    },
+                    {
+                      "title": "agenciascg.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEybk5Oe58VmRMvkvGiKZesS9pRN37yFMsRSgyGanrJxwrN5ax3yW2HkqKmnol1Rj_ueJRCajKofq0FSXfE5JS1OpNdd3aHStgq5ZVbn7suvO_lBAUCLaEBJaN0Vdog-zRbji2vpgHYEFsczAQQkwjloiCqyqZmmxrt",
+                      "start_index": 1218,
+                      "end_index": 1446,
+                      "text": "*   **Agência SCG Marketing Digital:** Oferece consultoria de SEO em Guarulhos, abrangendo pesquisa de palavras-chave, criação de conteúdo, análise de concorrentes e relatórios de dados para aumentar a receita do negócio."
+                    },
+                    {
+                      "title": "webone.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEzhKkOHnVQFuIyNUEheSwefRxUocb4ZZRw1cC-a2UdNfnQBNyHz7G-G_YbvP3iuE-JrkRvMoaxGevjcrYFO7cyUeYbwiD4d4WYXBgY6G_ZnLj6ebyqNqOPFgxLF8pOf5hhDjPNO7PFbxyfVuH0RbpWZQQXx0cy2kAm83Y_185bnA==",
+                      "start_index": 1447,
+                      "end_index": 1589,
+                      "text": "*   **Web One:** Oferece consultoria de SEO em Guarulhos, com estratégias personalizadas para elevar o site no Google e atrair mais clientes."
+                    },
+                    {
+                      "title": "divia.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFun7KqIsjkLGo4FW5daMgkDnJWuP_XLYcxDyEj7fB56kh1VM2NtivHYCTNeSyZAENdRlKWIlYWhAqiXlK1X0UCox065EUH_6RpgJuXyh8mbCFgG4MmlfVqRWTCiXpeRlLgUeYX-CImcpJU9vPKM5hvgCcb9a6v",
+                      "start_index": 1590,
+                      "end_index": 1790,
+                      "text": "*   **DIVIA Marketing Digital:** Agência com foco em consultoria de SEO em Guarulhos, reconhecida pela expertise em otimização de sites e por ter um grande número de cases de sucesso documentados."
+                    },
+                    {
+                      "title": "agencia4up.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEmgn3w8t2OsDR9Wk_5hJSwSQlGO-MbZINdF7_gdobZWK20OETE20995Z3rgoHjsFx9lx1tdYcVRNoQ8opahWEP2WDBJyK5E39OFxGhxFz9Q0ryZCe-__QdVEY-AfmaS_USI20AohN8T2VygkANjpPH4qSStbd8qyBp",
+                      "start_index": 1791,
+                      "end_index": 1967,
+                      "text": "*   **Agencia 4UP:** Utiliza um conjunto de técnicas de otimização de sites, blogs e páginas na web para alcançar rankings orgânicos, gerar tráfego e maior visibilidade."
+                    },
+                    {
+                      "title": "sinalizeweb.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE88ZQIj11wC3VVcku_nOjpl1ImU1Wp5rDBfSISz47Wa1EcopBoDkd7jB5Q6SphL-0-2ErGxl1YKd18Cp2hoTfQe_w2_V5ikN19r1MKqo1LLIMmAXOZ6QYRnpU=",
+                      "start_index": 1968,
+                      "end_index": 2168,
+                      "text": "*   **SinalizeWeb:** Oferece serviços de SEO com foco em aumento de branding, sustentação digital, geração de tráfego e aumento de vendas em e-commerce, com relatórios detalhados de desempenho."
+                    },
+                    {
+                      "title": "designrush.com",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHlnHNLQJejzcnVP5K3NjgDJFG8SuwEupa4F62D7t_aRvZ4VSbOv5s15xOYU5NFiDc0KfBYb4585oDcourasdYZV6r7DB2u9K9z8X0dtZ6uPDlAEX3TWHA78qJBu_aUkKDekGgRMDYDjdL6z8q6rZqpPoptsNq0uGzauA==",
+                      "start_index": 2169,
+                      "end_index": 2351,
+                      "text": "*   **Doutor Octopus:** Desenvolve sites profissionais e é especializada em SEO, hospedagem, Google Ads, tráfego pago, Google Meu Negócio, identidade visual e materiais gráficos."
+                    },
+                    {
+                      "title": "mzclick.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGS_twL8jpfaHbgzmHf6FDXNO7CHIngacWfsuLik920zNTEQn03XI4NuNEj4vhk6m1y5tp_oqv6GFwikLnsTTwVq5quqRLKPWTg4r0qyPKQdA2Nnv0dDhu9P9ijo4Av4NMB7IckNCb1VFfX1JqadV_a2VA=",
+                      "start_index": 2352,
+                      "end_index": 2508,
+                      "text": "*   **MZclick:** Agência de marketing em Guarulhos que atua com SEO, auxiliando empresas da região a ganharem destaque no Google e aumentarem suas vendas."
+                    },
+                    {
+                      "title": "aamax.co",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAyb-Jp83QiZKZtQfYONjhN_99-yMLFyBsOgrzfpROztSP4_yn9u7C_lTc-Fh5YQFw9fROu--AEjnZZ-g1N1XyPVphlH2DEag3IT4dNutI7KCByRamLtOKcbT_riTqgm0XBNdzjCiCHlCkCnNlmtaxK9jRg1_XUQ==",
+                      "start_index": 2569,
+                      "end_index": 2732,
+                      "text": "*   **Experiência e Adaptabilidade:** O SEO está em constante evolução, e agências que se mantêm atualizadas com as mudanças nos algoritmos são essenciais."
+                    },
+                    {
+                      "title": "aamax.co",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAyb-Jp83QiZKZtQfYONjhN_99-yMLFyBsOgrzfpROztSP4_yn9u7C_lTc-Fh5YQFw9fROu--AEjnZZ-g1N1XyPVphlH2DEag3IT4dNutI7KCByRamLtOKcbT_riTqgm0XBNdzjCiCHlCkCnNlmtaxK9jRg1_XUQ==",
+                      "start_index": 2733,
+                      "end_index": 2920,
+                      "text": "*   **Transparência e Comunicação:** As melhores agências fornecem atualizações regulares e são transparentes sobre seus métodos e o raciocínio por trás de suas recomendações."
+                    },
+                    {
+                      "title": "ohub.com.br",
+                      "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaFhVbY164nir-BO4zsHi45VyQKgXI0G_o3oLBijYkozYP4VUNOvbmtn4OKv9eSJqm7A-MOG1r2gyeycbiejx7EEeVePyqr4v60B4MxGoBc-2P6PBH8T5gxVF42abnNv49bRw1tsm7k5m-6vlsqu7gGGIlhy1HpynfLg==",
+                      "start_index": 2921,
+                      "end_index": 3075,
+                      "text": "*   **Foco em Resultados:** Verifique se a empresa demonstra foco em resultados como taxa de conversão em vendas, faturamento gerado e ROI das campanhas."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": [
+            "melhores empresas de SEO Guarulhos",
+            "empresas de SEO em Guarulhos com bom ranqueamento",
+            "empresas de SEO Guarulhos avaliação",
+            "empresas de marketing digital Guarulhos SEO"
+          ]
+        }
+      ]
+    }
+  ]
+}

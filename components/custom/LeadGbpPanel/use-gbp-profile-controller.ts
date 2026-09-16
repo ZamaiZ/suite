@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState } from "react"
 import {
   checkLeadGbpRanking,
-  enrichLeadGbpProfile,
   pollLeadGbpJobs,
-  refreshLeadGbpProfile,
+  recollectLeadGbpProfile,
   removeLeadGbpProfile,
   updateLeadGbpAnalystReview,
   updateLeadGbpProfile,
@@ -21,10 +20,7 @@ import {
   type GbpOpportunityItem,
 } from "@/lib/leads/gbp-opportunities"
 import { latestGbpCollectedAt } from "@/lib/leads/gbp-presenters"
-import {
-  gbpReputation,
-  type GbpReputation,
-} from "@/lib/leads/gbp-reputation"
+import { gbpReputation, type GbpReputation } from "@/lib/leads/gbp-reputation"
 import type { LeadLocation } from "@/lib/leads/resolve-location"
 import type { StepNotesStatus } from "@/components/custom/LeadStepShell"
 
@@ -67,8 +63,7 @@ export type GbpProfileController = {
   notesStatus: StepNotesStatus
   savingReplyTime: boolean
   onSelectProfile: (profileId: string) => void
-  handleRefresh: () => void
-  handleEnrich: () => void
+  handleRecollect: () => void
   handlePrimary: () => void
   handleRemove: () => void
   handleSaveRankKeywords: (keywords: string[]) => Promise<void>
@@ -331,24 +326,16 @@ export function useGbpProfileController({
     }
   }
 
-  function handleRefresh() {
+  /**
+   * Um caminho só. `handleRefresh` relia o Places e `handleEnrich` chamava o
+   * DataForSEO; com a ficha e o enrichment vindo da mesma resposta, a diferença
+   * entre os dois deixou de existir — e ela era invisível na tela.
+   */
+  function handleRecollect() {
     void run(async () => {
       const formData = new FormData()
       formData.set("profile_id", profile.id)
-      const result = await refreshLeadGbpProfile(formData)
-      if (result.status === "error") {
-        setError(result.message)
-        return
-      }
-      onUpdated(result.profile)
-    })
-  }
-
-  function handleEnrich() {
-    void run(async () => {
-      const formData = new FormData()
-      formData.set("profile_id", profile.id)
-      const result = await enrichLeadGbpProfile(formData)
+      const result = await recollectLeadGbpProfile(formData)
       if (result.status === "error") {
         setError(result.message)
         return
@@ -438,8 +425,7 @@ export function useGbpProfileController({
     notesStatus,
     savingReplyTime,
     onSelectProfile,
-    handleRefresh,
-    handleEnrich,
+    handleRecollect,
     handlePrimary,
     handleRemove,
     handleSaveRankKeywords,

@@ -1,55 +1,32 @@
+import "server-only"
+
+/**
+ * Coordenada do mapa de raio: do perfil do Google quando o endereço bate, do
+ * geocoder quando não bate.
+ *
+ * `server-only` de propósito. As três funções puras que o cliente usa moram em
+ * `address-fingerprint.ts`, e a separação existe para que importá-las não
+ * arraste o geocoder — com a chave de API junto — para o bundle do navegador.
+ *
+ * O import é do módulo específico, e **não** do barril `@/lib/locationiq`: o
+ * barril reexporta `cityCenter`, que também é `server-only`, e isso volta a
+ * envenenar qualquer cadeia que o cliente toque.
+ */
+
 import {
-  joinBrazilianAddress,
-  type ParsedBrazilianAddress,
-} from "@/lib/briefing/address"
+  companyAddressFingerprint,
+  companyFormattedAddress,
+  normalizeAddressFingerprint,
+} from "@/lib/briefing/address-fingerprint"
 import type { BriefingCompanyPayload } from "@/lib/briefing/company"
 import { hasGbpCoordinates, type GbpSnapshot } from "@/lib/leads/gbp"
-import { geocodeAddressText } from "@/lib/places/geocode"
+import { geocodeAddressText } from "@/lib/locationiq/client"
 
 export type ResolvedMapCoordinates = {
   latitude: number
   longitude: number
   addressKey: string
-  source: "gbp" | "places"
-}
-
-export function normalizeAddressFingerprint(value: string): string {
-  return value.trim().toLowerCase().replace(/\s+/g, " ")
-}
-
-export function companyAddressFingerprint(
-  payload: BriefingCompanyPayload,
-): string {
-  const formatted = payload.formattedAddress.trim()
-  if (formatted) return normalizeAddressFingerprint(formatted)
-
-  const parts: ParsedBrazilianAddress = {
-    street: payload.street,
-    number: payload.number,
-    complement: payload.complement,
-    neighborhood: payload.neighborhood,
-    city: payload.city,
-    stateCode: payload.stateCode,
-    postalCode: payload.postalCode,
-    formattedAddress: "",
-  }
-  return normalizeAddressFingerprint(joinBrazilianAddress(parts))
-}
-
-export function companyFormattedAddress(
-  payload: BriefingCompanyPayload,
-): string {
-  const formatted = payload.formattedAddress.trim()
-  if (formatted) return formatted
-  return joinBrazilianAddress({
-    street: payload.street,
-    number: payload.number,
-    complement: payload.complement,
-    neighborhood: payload.neighborhood,
-    city: payload.city,
-    stateCode: payload.stateCode,
-    postalCode: payload.postalCode,
-  })
+  source: "gbp" | "geocode"
 }
 
 export async function resolveAudienceMapCoordinates(input: {
@@ -95,7 +72,7 @@ export async function resolveAudienceMapCoordinates(input: {
       latitude: geocoded.data.latitude,
       longitude: geocoded.data.longitude,
       addressKey,
-      source: "places",
+      source: "geocode",
     },
   }
 }

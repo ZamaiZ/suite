@@ -1,4 +1,4 @@
-import { GBP_PHOTO_API_MAX, type LeadGbpProfile } from "@/lib/leads/gbp"
+import type { LeadGbpProfile } from "@/lib/leads/gbp"
 import type { GbpRankCheck } from "@/lib/leads/gbp-audit"
 import type {
   GbpReputationHistoryBlock,
@@ -107,7 +107,7 @@ export function gbpPhotosLabel(profile: LeadGbpProfile): {
   }
   return {
     value: profile.payload.photoCount.toLocaleString("pt-BR"),
-    complement: `na API (máx. ${GBP_PHOTO_API_MAX})`,
+    complement: "no perfil",
   }
 }
 
@@ -166,9 +166,7 @@ export function gbpReplyRateLabel(rate: number | null): string | null {
  * perfil pode ter nota alta e ritmo aparentemente saudável com quase tudo
  * concentrado em dois dias.
  */
-export function gbpBurstLabel(
-  sample: GbpReputationSample,
-): string | null {
+export function gbpBurstLabel(sample: GbpReputationSample): string | null {
   const burst = sample.burst
   if (!burst) return null
   const dias = burst.days.length
@@ -180,9 +178,7 @@ export function gbpBurstLabel(
   )
 }
 
-export function gbpFrequencyLabel(
-  sample: GbpReputationSample,
-): string | null {
+export function gbpFrequencyLabel(sample: GbpReputationSample): string | null {
   const parts: string[] = []
   if (sample.perMonth !== null) {
     parts.push(
@@ -220,9 +216,7 @@ export function gbpReplyByBandLabel(
   )
 }
 
-export function gbpAuthorsLabel(
-  sample: GbpReputationSample,
-): string | null {
+export function gbpAuthorsLabel(sample: GbpReputationSample): string | null {
   const pct = (value: number | null) =>
     value === null ? null : `${Math.round(value * 100)}%`
   const parts: string[] = []

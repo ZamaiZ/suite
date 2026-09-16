@@ -5,26 +5,29 @@ import {
 } from "@/lib/leads/gbp-audit"
 import { GBP_NOTES_MAX } from "@/lib/leads/gbp"
 import { GBP_REPLY_TIME_BANDS } from "@/lib/leads/gbp-analyst-review"
-import { PLACES_SUGGEST_MIN_CHARS } from "@/lib/places"
+import { GBP_SEARCH_MIN_CHARS } from "@/lib/leads/gbp"
 
 function formText(formData: FormData, key: string): string {
   const value = formData.get(key)
   return typeof value === "string" ? value : ""
 }
 
-export const suggestPlacesSchema = z.object({
+/**
+ * O `session_token` saiu: era conceito de cobrança do Places — uma sessão de
+ * autocomplete cobrada como unidade — e não significa nada no DataForSEO, onde
+ * cada busca é uma requisição avulsa. O `lead_id` entrou porque é dele que saem
+ * a cidade e a UF que centram a busca.
+ */
+export const searchPlacesSchema = z.object({
+  lead_id: z.uuid("Lead inválido."),
   query: z
     .string()
     .trim()
-    .min(PLACES_SUGGEST_MIN_CHARS, "Digite pelo menos 3 caracteres.")
+    .min(
+      GBP_SEARCH_MIN_CHARS,
+      `Digite pelo menos ${GBP_SEARCH_MIN_CHARS} caracteres.`,
+    )
     .max(200, "Busca deve ter no máximo 200 caracteres."),
-  session_token: z.uuid("Sessão inválida."),
-  location_hint: z
-    .string()
-    .trim()
-    .max(200, "Localização inválida.")
-    .transform((value) => (value.length === 0 ? null : value))
-    .optional(),
 })
 
 export const linkLeadGbpSchema = z.object({
@@ -34,14 +37,14 @@ export const linkLeadGbpSchema = z.object({
     .trim()
     .min(10, "Estabelecimento inválido.")
     .max(500, "Estabelecimento inválido."),
-  session_token: z
-    .string()
-    .trim()
-    .refine(
-      (value) => value.length === 0 || z.uuid().safeParse(value).success,
-      "Sessão inválida.",
-    )
-    .transform((value) => (value.length === 0 ? null : value)),
+  /**
+   * Coordenada do candidato escolhido. Só acelera a coleta — o
+   * `my_business_info` devolve a dele, e medido em 2026-09-15 ele funciona sem
+   * nenhuma. Ausente, vazia ou fora de faixa não é erro: cai para o código do
+   * país, e por isso o `catch(null)`.
+   */
+  latitude: z.coerce.number().min(-90).max(90).nullable().catch(null),
+  longitude: z.coerce.number().min(-180).max(180).nullable().catch(null),
 })
 
 export const gbpProfileIdSchema = z.object({
@@ -123,19 +126,21 @@ export const updateGbpRankKeywordsSchema = z.object({
     }),
 })
 
-export function readSuggestPlacesFields(formData: FormData) {
+export function readSearchPlacesFields(formData: FormData) {
   return {
+    lead_id: formText(formData, "lead_id"),
     query: formText(formData, "query"),
-    session_token: formText(formData, "session_token"),
-    location_hint: formText(formData, "location_hint"),
   }
 }
 
 export function readLinkLeadGbpFields(formData: FormData) {
+  const latitude = formText(formData, "latitude")
+  const longitude = formText(formData, "longitude")
   return {
     lead_id: formText(formData, "lead_id"),
     place_id: formText(formData, "place_id"),
-    session_token: formText(formData, "session_token"),
+    latitude: latitude === "" ? null : latitude,
+    longitude: longitude === "" ? null : longitude,
   }
 }
 

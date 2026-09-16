@@ -205,14 +205,19 @@ lib/dataforseo/ai-optimization.ts   server-only — via postDataForSeo + envelop
 lib/leads/geo-audit.ts              tipos, versão, leitura tolerante ao passado
 lib/leads/geo-accessibility.ts      puro — as sete regras de acesso
 lib/leads/geo-content.ts            puro — os cinco checks determinísticos
-lib/leads/geo-citations.ts          puro — leitura de llm_mentions (↻ onda 0)
-lib/leads/geo-mentions.ts           puro — comparação com concorrentes (↻ onda 0)
+lib/leads/geo-mentions.ts           puro — citações E comparação (↻ onda 2b)
+lib/leads/geo-demand.ts             puro — volume de busca em IA (↻ onda 2a)
+lib/leads/geo-narrative.ts          puro — a prosa do pilar (↻ onda 4)
 lib/leads/geo-prompts.ts            puro — derivação e fixação do prompt set
 lib/leads/geo-prompt-visibility.ts  puro — leitura das respostas
 lib/leads/geo-review.ts             puro — os três campos do analista
 lib/leads/geo-opportunities.ts      gaps → oportunidades
 lib/leads/geo-step-tabs.ts          abas da etapa
 ```
+
+`geo-citations.ts` **não nasceu**: quem lê a citação e quem conta a
+concorrência leem o mesmo payload de `search_mentions`, e separá-los obrigaria
+os dois a reinterpretar as mesmas fontes. Estão juntos em `geo-mentions.ts`.
 
 **Fronteira `server-only`, respeitada por construção.** Só
 `ai-optimization.ts` a cruza. Os tetos e a contagem de prompts vão para
@@ -228,7 +233,8 @@ nada.
 app/actions/leads/geo-access.ts           guard, espelhando visibility-access.ts
 app/actions/leads/analyze-geo.ts          a coleta base
 app/actions/leads/probe-geo-prompts.ts    a sondagem em LLM
-app/actions/leads/update-geo-review.ts    julgamento do analista + prompt set
+app/actions/leads/collect-geo-mentions.ts  o botão pago das menções
+app/actions/leads/upsert-geo-review.ts    julgamento do analista + prompt set
 ```
 
 ### Trilha e destravamento
@@ -709,10 +715,29 @@ diferente e botão diferente.
 |---|---|---|---|
 | **0** | As nove perguntas, com evidência versionada | US$ 0,51 uma vez | ✅ **feita** |
 | **1** | A etapa inteira determinística: tabelas, trilha, painel, as dezenove regras, os três do analista, **o pilar, o `measured` e o destravamento** | **zero** | ✅ **feita** |
-| **2a** | Demanda em IA — `ai_keyword_data` | US$ 0,021 | a fazer |
-| **2b** | Citações e concorrência — `llm_mentions`, botão pago próprio | ≈ US$ 0,22 | a fazer |
-| **3** | A sondagem em LLM: prompt set fixado, corpo por plataforma, botão separado com custo visível | ≈ US$ 0,65 | a fazer |
-| **4** | Narrativa do pilar e seção no PDF | zero | a fazer |
+| **2a** | Demanda em IA — `ai_keyword_data` | **US$ 0,0133** medido | ✅ **feita** |
+| **2b** | Citações e concorrência — `llm_mentions`, botão pago próprio | **US$ 0,107** medido | ✅ **feita** |
+| **3** | A sondagem em LLM: prompt set fixado, corpo por plataforma, botão separado com custo visível | **≈ US$ 0,63** medido | ✅ **feita** |
+| **4** | Narrativa do pilar e seção no PDF | zero | ✅ **feita** |
+| **5** | ↻ O que só o documento gerado mostrou: contradição da visão geral de IA, quatro limitações condicionais, prosa semeada que envelhece | zero | ✅ **feita** |
+
+**A onda 5 não estava prevista, e ela é a parte que mais valeu.** As quatro
+primeiras foram verificadas por teste e por payload; a quinta saiu de ler o PDF
+que o lead receberia. Três defeitos estavam lá, nenhum alcançável por teste
+unitário, porque os três eram **contradições entre seções** — cada número certo
+sozinho, errado ao lado do vizinho:
+
+1. O documento dizia "não é citado em nenhuma visão geral de IA" em quatro
+   lugares e "aparece em sete respostas de IA" logo abaixo. Dois índices, dois
+   recortes, ambos certos — e o lead sem como desfazer. Regra que ficou:
+   **medição positiva cala a negativa vinda de um índice mais grosso.**
+2. O aviso de concentração de prompts existia só na tela do analista. O PDF
+   saía com a amostra enviesada e sem a ressalva. Agora `buildLimitations` tem
+   as quatro linhas condicionais de IA, e `GEO_PROMPT_CONCENTRATION_MIN` é uma
+   constante só, lida por painel, PDF e limitações.
+3. O gancho comercial é uma cópia dos três primeiros itens do roteiro, fica
+   salvo no rascunho, e sobreviveu a uma coleta que tirou do roteiro o item que
+   ele anunciava. Ver **Prosa semeada envelhece** abaixo.
 
 **A 2a entra junto da coleta base, a 2b não.** US$ 0,021 é ruído ao lado do que
 a auditoria já gasta por lead; US$ 0,22 não é. Separá-las é o que mantém o
@@ -727,6 +752,43 @@ acabou de virar pré-requisito.
 existem, então rodar a etapa num lead antigo devolve resultado real, não vazio.
 As exceções são `freshness`, que depende da extensão do parser, e
 `contentRequiresJs`, que depende de `wordCount` da home ter sido gravado.
+
+## Prosa semeada envelhece — ↻ onda 5
+
+O diagnóstico semeia texto a partir dos fatos e deixa o analista editar. A
+recompilação preservava **tudo** que estivesse salvo, e com razão: apagar o que
+ele escreveu não tem desfazer.
+
+O preço disso apareceu no PDF. O gancho comercial é literalmente
+`facts.roadmap.slice(0, 3)` costurado numa frase. Uma coleta nova tirou
+"Conquistar citação na visão geral de IA" do roteiro; o gancho, salvo e
+intocado, continuou anunciando o item na primeira linha que o closer lê — com o
+roteiro logo abaixo já sem ele.
+
+Preservar era a regra certa aplicada ao caso errado. O que faltava não era
+política, era **informação**: ninguém sabia se aquele texto era dele ou nosso.
+
+**Decisão.** O documento passa a guardar `proseSeed` — a prosa semeada da última
+compilação — ao lado da prosa viva. Com as duas, `keepOrReseed` responde a
+pergunta:
+
+| Salvo | Semente anterior | Resultado |
+|---|---|---|
+| vazio | qualquer | semente nova |
+| igual à semente | registrada | **semente nova** — ninguém tocou |
+| diferente | registrada | preserva — é dele |
+| qualquer | **ausente** | preserva — não dá para distinguir |
+
+A última linha é a que importa: documento salvo antes do campo não tem semente,
+e o lado seguro do erro é manter uma frase velha, não apagar texto que não
+volta. Por isso o conserto **não é retroativo** — a primeira recompilação grava
+a semente e preserva; da segunda em diante o campo se conserta sozinho.
+
+Para o acervo que já existe, o painel ganha **"Texto sugerido"** embaixo de cada
+campo, visível só quando há semente e ela diverge do que está escrito. Um clique
+devolve a versão semeada. Automatizar a troca exigiria decidir por ele qual
+texto é dele; o botão devolve a decisão a quem escreveu, e — mais importante —
+**mostra que existe outra versão**, que era a informação que faltava na tela.
 
 ## Arquivos previstos
 
@@ -746,8 +808,12 @@ lib/dataforseo/ai-optimization.ts
 lib/leads/geo-audit.ts
 lib/leads/geo-accessibility.ts
 lib/leads/geo-content.ts
-lib/leads/geo-citations.ts
-lib/leads/geo-mentions.ts            ↻ onda 0 — concorrência em IA
+lib/leads/geo-mentions.ts            ↻ onda 0 — concorrência em IA, e as
+                                     citações: `geo-citations.ts` não nasceu
+                                     separado, porque quem lê a citação e quem
+                                     conta a concorrência leem o mesmo payload
+lib/leads/geo-demand.ts              ↻ onda 2a — volume de busca em IA
+lib/leads/geo-narrative.ts           ↻ onda 4 — a prosa do pilar, determinística
 lib/leads/geo-prompts.ts
 lib/leads/geo-prompt-visibility.ts
 lib/leads/geo-review.ts
@@ -758,7 +824,8 @@ app/actions/leads/geo-access.ts
 app/actions/leads/analyze-geo.ts
 app/actions/leads/collect-geo-mentions.ts   ↻ onda 0 — o botão pago da 2b
 app/actions/leads/probe-geo-prompts.ts
-app/actions/leads/update-geo-review.ts
+app/actions/leads/upsert-geo-review.ts   — `upsert`, não `update`: a
+                                     primeira gravação cria a linha
 components/custom/LeadGeoPanel/LeadGeoPanel.tsx
 components/custom/LeadGeoPanel/LeadGeoPanel.types.ts
 components/custom/LeadGeoPanel/LeadGeoView.tsx
@@ -774,8 +841,11 @@ components/custom/LeadGeoPanel/index.ts
 
 ```
 lib/leads/gbp-audit-rail.ts          sexta etapa, destravamento, progresso
-lib/leads/diagnosis-document.ts      pilar geo, measured, leitura tolerante
-lib/leads/diagnosis-compile.ts       pilar geo no scorecard e no roadmap
+lib/leads/diagnosis-document.ts      pilar geo, measured, leitura tolerante,
+                                     `proseSeed` e `keepOrReseed`   ↻ onda 5
+lib/leads/diagnosis-compile.ts       pilar geo no scorecard e no roadmap,
+                                     limitações de IA, prosa que re-semeia ↻ 5
+lib/leads/diagnosis-prose.test.mjs   a regra de quem é dono do texto  ↻ onda 5
 lib/leads/diagnosis-themes.ts        temas que cruzam geo com website
 lib/leads/diagnosis-pdf.tsx          seção do pilar, sondagem omitida se ausente
 lib/dataforseo/limits.ts             tetos de prompt e catálogo de citações
@@ -794,9 +864,12 @@ components/custom/LeadDetailDialog/LeadDetailDialog.types.ts   tipos do detalhe
    e Diagnóstico.
 2. Um lead com auditoria completa mas sem Presença em IA mostra o Diagnóstico
    **trancado**, com o motivo na trilha.
-3. Rodar a coleta base num lead auditado antes desta spec devolve as dezenove
-   regras preenchidas a partir dos snapshots existentes, **sem nenhuma chamada
-   paga**.
+3. ↻ **onda 2a** — Rodar a coleta base num lead auditado antes desta spec
+   devolve as dezenove regras preenchidas a partir dos snapshots existentes.
+   O critério original dizia "sem nenhuma chamada paga", e a onda 2a o venceu:
+   a demanda em IA entra na coleta base por decisão registrada em **Ondas**.
+   O que sobrevive do critério é o teto — a coleta base custa **US$ 0,0133
+   medidos**, e as duas coletas caras continuam em botão próprio.
 4. Os checks que já geram gap no pilar `website` aparecem na tela da nova etapa
    e **não** aparecem na lista de oportunidades dela.
 5. Abrir um lead com snapshot de website anterior à extensão do parser mostra
@@ -805,11 +878,19 @@ components/custom/LeadDetailDialog/LeadDetailDialog.types.ts   tipos do detalhe
    existem**, e a seção some do PDF.
 7. Após a primeira sondagem, `lead_geo_reviews.prompt_set` está gravado, e a
    segunda sondagem **reusa** o mesmo conjunto.
-8. O custo real de cada sondagem aparece na linha, somado de `money_spent`.
+8. ↻ **onda 3** — O custo real de cada sondagem aparece na linha, somado do
+   `cost` do envelope — **não** de `money_spent`. Os dois existem e medem coisas
+   diferentes: `money_spent` é o gasto de tokens do provedor de LLM, `cost` é o
+   que o DataForSEO cobra. É o segundo que bate com o saldo, e foi o segundo que
+   fechou contra três sondagens medidas.
 9. Um documento de diagnóstico salvo antes desta spec **abre sem erro**, com o
    pilar `geo` lido como não medido.
 10. Nenhum módulo `server-only` é alcançável a partir de componente de cliente
-    — verificado **transitivamente**, não pelos imports diretos.
+    — verificado **transitivamente**, não pelos imports diretos. ✅ Medido em
+    2026-09-11: 206 componentes de cliente, 32 módulos `server-only`, zero
+    alcançáveis. A travessia **para em `"use server"`**, que é fronteira de RPC
+    e não passagem — sem essa regra o checker acusa como vazamento todo client
+    component que importa uma action, que é o padrão correto.
 
 ## O que continua não medido
 

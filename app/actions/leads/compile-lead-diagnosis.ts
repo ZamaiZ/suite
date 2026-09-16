@@ -238,6 +238,7 @@ export async function compileLeadDiagnosis(
     backlinkSnapshot: backlinkAudit?.snapshot ?? null,
     generatedAt,
     previousProse: loaded.draft?.document.prose ?? null,
+    previousSeed: loaded.draft?.document.proseSeed ?? null,
     leadCity: loaded.lead.city,
     leadStateCode: loaded.lead.state_code,
     segmentName: loaded.lead.segment?.name ?? null,

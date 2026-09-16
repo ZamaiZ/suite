@@ -114,15 +114,22 @@ async function timedFetch(
  * Endpoint `live`: a resposta já traz o resultado. Tem o mesmo formato de um
  * `task_get` pronto, então usa o mesmo leitor — resultado ausente vira `null`,
  * como antes.
+ *
+ * `timeoutMs` existe porque nem todo `live` leva o mesmo tempo: uma busca no
+ * Maps volta em segundos e uma execução de Lighthouse não. Sem o parâmetro, o
+ * teto de 20s abortaria a segunda **sempre**, e o erro chegaria como falha de
+ * rede — indistinguível de instabilidade do fornecedor.
  */
 export async function postDataForSeo<T>(
   path: string,
   task: Record<string, unknown>,
+  timeoutMs = REQUEST_TIMEOUT_MS,
 ): Promise<DataForSeoResult<T | null>> {
   const fetched = await timedFetch(
     `${DATAFORSEO_BASE}${path}`,
     { method: "POST", body: JSON.stringify([task]) },
     DATAFORSEO_VENDOR_ERROR,
+    timeoutMs,
   )
   if (fetched.status === "error") return fetched
 

@@ -1,210 +1,86 @@
 "use client"
 
-import { useState, useTransition } from "react"
-import {
-  RiCheckLine,
-  RiFileCopyLine,
-  RiKey2Line,
-  RiMore2Line,
-  RiRefreshLine,
-} from "react-icons/ri"
-import {
-  getClient,
-  issuePortalAccess,
-  rotatePortalAccess,
-} from "@/app/actions/clients"
+import { RiArrowRightSLine } from "react-icons/ri"
 import { ClientPortalCodeReveal } from "@/components/custom/ClientPortalCodeReveal"
-import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { ClientPortalMenuItems } from "./ClientPortalMenuItems"
+import { useClientPortalActions } from "./use-client-portal-actions"
 import type { ClientCardMenuProps } from "./ClientCardMenu.types"
 
-type PortalState = {
-  hasPortalAccess: boolean
-  portalUrl: string | null
-}
-
-type Reveal = { code: string; url: string }
-
-export function ClientCardMenu({ clientId }: ClientCardMenuProps) {
-  const [portal, setPortal] = useState<PortalState | null>(null)
-  const [loadError, setLoadError] = useState<string | null>(null)
-  const [actionError, setActionError] = useState<string | null>(null)
-  const [confirmRotate, setConfirmRotate] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [reveal, setReveal] = useState<Reveal | null>(null)
-  const [isPending, startTransition] = useTransition()
-  const [loadingDetail, setLoadingDetail] = useState(false)
-
-  async function ensurePortal(): Promise<PortalState | null> {
-    if (portal) return portal
-    setLoadingDetail(true)
-    setLoadError(null)
-    const result = await getClient(clientId)
-    setLoadingDetail(false)
-    if (result.status === "error") {
-      setLoadError(result.message)
-      return null
-    }
-    if (!result.client.canManagePortal) {
-      setLoadError("Você não pode gerenciar o acesso deste cliente.")
-      return null
-    }
-    const next: PortalState = {
-      hasPortalAccess: result.client.hasPortalAccess,
-      portalUrl: result.client.portalUrl,
-    }
-    setPortal(next)
-    return next
-  }
-
-  function onOpenChange(open: boolean) {
-    if (!open) {
-      setConfirmRotate(false)
-      setActionError(null)
-      return
-    }
-    void ensurePortal()
-  }
-
-  function runIssue() {
-    setActionError(null)
-    const formData = new FormData()
-    formData.set("client_id", clientId)
-    startTransition(async () => {
-      const result = await issuePortalAccess(formData)
-      if (result.status === "error") {
-        setActionError(result.message)
-        return
-      }
-      setReveal({ code: result.code, url: result.url })
-      setPortal({ hasPortalAccess: true, portalUrl: result.url })
-    })
-  }
-
-  function runRotate() {
-    setActionError(null)
-    const formData = new FormData()
-    formData.set("client_id", clientId)
-    startTransition(async () => {
-      const result = await rotatePortalAccess(formData)
-      if (result.status === "error") {
-        setActionError(result.message)
-        return
-      }
-      setConfirmRotate(false)
-      setReveal({ code: result.code, url: result.url })
-      setPortal({ hasPortalAccess: true, portalUrl: result.url })
-    })
-  }
-
-  async function copyLink() {
-    const current = await ensurePortal()
-    if (!current?.portalUrl) {
-      setActionError("Link indisponível.")
-      return
-    }
-    try {
-      await navigator.clipboard.writeText(current.portalUrl)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1600)
-    } catch {
-      setActionError("Não foi possível copiar o link.")
-    }
-  }
+/**
+ * A linha do card com as duas formas de abrir o mesmo menu.
+ *
+ * **Dois primitives, de propósito.** A primeira tentativa forçou o
+ * `DropdownMenu` a abrir por clique direito, controlando o `open` de fora — e
+ * não abria nada: `Menu` não tem noção de origem no ponteiro, e o Base UI
+ * publica um `ContextMenu` separado justamente porque abrir no cursor exige
+ * gatilho e descarte próprios.
+ *
+ * O corpo do menu continua sendo um só: `ContextMenu.Item` e `Menu.Item` são o
+ * mesmo componente, então `ClientPortalMenuItems` serve os dois. E as duas
+ * raízes compartilham **uma** instância das ações, então abrir por um caminho
+ * ou por outro carrega o portal uma vez e mostra o mesmo estado.
+ */
+export function ClientCardMenu({
+  clientId,
+  snapshot,
+  className,
+  children,
+}: ClientCardMenuProps) {
+  const actions = useClientPortalActions(clientId, snapshot)
 
   return (
     <>
-      <DropdownMenu onOpenChange={onOpenChange}>
-        <DropdownMenuTrigger
-          render={<Button variant="ghost" size="icon" />}
-          aria-label="Ações do portal"
-          onClick={(event) => event.stopPropagation()}
-          onPointerDown={(event) => event.stopPropagation()}
-        >
-          <RiMore2Line size={16} aria-hidden />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="min-w-44">
-          {loadingDetail && !portal ? (
-            <div className="flex items-center gap-2 px-2 py-1.5 text-xs/relaxed text-muted-foreground">
-              <Spinner aria-hidden className="size-4" />
-              Carregando…
-            </div>
-          ) : null}
-          {loadError ? (
-            <p
-              role="alert"
-              className="px-2 py-1.5 text-xs/relaxed text-destructive"
+      <ContextMenu onOpenChange={actions.handleOpenChange}>
+        {/* O gatilho já rende uma `div` por padrão — conferido no Base UI. */}
+        <ContextMenuTrigger className={className}>
+          {children}
+          <DropdownMenu onOpenChange={actions.handleOpenChange}>
+            {/*
+              `stopPropagation` fica porque o corpo da linha abre o cliente —
+              sem ele, abrir o menu abriria a ficha junto.
+            */}
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon" />}
+              aria-label="Ações do cliente"
+              onClick={(event) => event.stopPropagation()}
+              onPointerDown={(event) => event.stopPropagation()}
             >
-              {loadError}
-            </p>
-          ) : null}
-          {portal && !portal.hasPortalAccess ? (
-            <DropdownMenuItem disabled={isPending} onClick={runIssue}>
-              <RiKey2Line size={16} aria-hidden />
-              {isPending ? "Gerando…" : "Gerar acesso"}
-            </DropdownMenuItem>
-          ) : null}
-          {portal?.hasPortalAccess ? (
-            <>
-              <DropdownMenuItem
-                disabled={isPending || !portal.portalUrl}
-                onClick={() => void copyLink()}
-              >
-                {copied ? (
-                  <RiCheckLine size={16} aria-hidden />
-                ) : (
-                  <RiFileCopyLine size={16} aria-hidden />
-                )}
-                {copied ? "Link copiado" : "Copiar link"}
-              </DropdownMenuItem>
-              {confirmRotate ? (
-                <DropdownMenuItem
-                  disabled={isPending}
-                  onClick={runRotate}
-                  variant="destructive"
-                >
-                  <RiRefreshLine size={16} aria-hidden />
-                  {isPending ? "Rotacionando…" : "Confirmar rotação"}
-                </DropdownMenuItem>
-              ) : (
-                <DropdownMenuItem
-                  closeOnClick={false}
-                  disabled={isPending}
-                  onClick={() => setConfirmRotate(true)}
-                >
-                  <RiRefreshLine size={16} aria-hidden />
-                  Rotacionar código
-                </DropdownMenuItem>
-              )}
-            </>
-          ) : null}
-          {confirmRotate ? (
-            <p className="px-2 py-1 text-xs/relaxed text-warning">
-              Invalida o código e a sessão atuais.
-            </p>
-          ) : null}
-          {actionError ? (
-            <p
-              role="alert"
-              className="px-2 py-1.5 text-xs/relaxed text-destructive"
-            >
-              {actionError}
-            </p>
-          ) : null}
-        </DropdownMenuContent>
-      </DropdownMenu>
+              {/*
+                `size-5` mantém os 20px que a setinha já tinha: o `size` do
+                Button governa a altura do controle, e o ícone entraria a 14px
+                por padrão — encolhimento que esta mudança não deveria causar.
+              */}
+              <RiArrowRightSLine
+                aria-hidden
+                className="size-5 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="min-w-44">
+              <ClientPortalMenuItems actions={actions} />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </ContextMenuTrigger>
+        <ContextMenuContent className="min-w-44">
+          <ClientPortalMenuItems actions={actions} />
+        </ContextMenuContent>
+      </ContextMenu>
 
       <ClientPortalCodeReveal
-        open={reveal !== null}
-        onClose={() => setReveal(null)}
-        code={reveal?.code ?? ""}
-        url={reveal?.url ?? ""}
+        open={actions.reveal !== null}
+        onClose={actions.closeReveal}
+        code={actions.reveal?.code ?? ""}
+        url={actions.reveal?.url ?? ""}
       />
     </>
   )

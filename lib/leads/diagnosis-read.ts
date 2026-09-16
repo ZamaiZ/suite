@@ -297,6 +297,13 @@ export function readDiagnosisDocument(
     meta,
     facts,
     prose: readProse(row.prose),
+    // Ausente **fica ausente**: `readProse` devolveria prosa vazia, e prosa
+    // vazia como semente diria "o analista apagou tudo" para todo documento
+    // salvo antes do campo. `undefined` é o que a recompilação lê como "não
+    // sei se é dele — preserva".
+    ...(objectRecord(row.proseSeed)
+      ? { proseSeed: readProse(row.proseSeed) }
+      : {}),
     limitations,
   }
 }

@@ -287,55 +287,52 @@ function screenshotData(audits: Record<string, unknown> | null): string | null {
   return `data:image/jpeg;base64,${data}`
 }
 
-function fieldPercentile(
-  experience: Record<string, unknown> | null,
-  metricId: string,
-): number | null {
-  if (!experience) return null
-  const metrics = objectRecord(experience.metrics)
-  const metric = objectRecord(metrics?.[metricId])
-  return asNullableMetric(metric?.percentile)
-}
-
-function fieldCls(experience: Record<string, unknown> | null): number | null {
-  const raw = fieldPercentile(experience, "CUMULATIVE_LAYOUT_SHIFT_SCORE")
-  if (raw === null) return null
-  // O CrUX sempre entrega o percentil de CLS multiplicado por cem. A condicao
-  // anterior (`raw > 1`) fazia um CLS real de 0,01 chegar como 1 e ser lido
-  // como 1,0, gerando poor_cwv falso — e contaminando o baseline.
-  return raw / 100
-}
-
+/**
+ * Resposta de Lighthouse → estratégia.
+ *
+ * Aceita as duas formas: o Lighthouse cru, que é o que o DataForSEO devolve, e
+ * o `lighthouseResult` que o PSI envolvia — payload gravado antes da virada
+ * ainda precisa abrir.
+ *
+ * **`loadingExperience` deixou de ser lido em 2026-09-15.** Era campo do Chrome
+ * UX Report, e não há fonte para ele fora do Google. Os três campos continuam
+ * no tipo, sempre nulos em coleta nova, porque linhas antigas os têm e apagar o
+ * leitor apagaria dado gravado.
+ */
 export function extractWebsitePsiStrategy(
   payload: unknown,
 ): WebsitePsiStrategy | null {
   const root = objectRecord(payload)
   if (!root) return null
-  const lighthouse = objectRecord(root.lighthouseResult)
-  if (!lighthouse) return null
+  const lighthouse = objectRecord(root.lighthouseResult) ?? root
   if (objectRecord(lighthouse.runtimeError)) return null
   const categories = objectRecord(lighthouse.categories)
   const audits = objectRecord(lighthouse.audits)
   const performance = categoryScore(categories, "performance")
   const accessibility = categoryScore(categories, "accessibility")
   if (performance === null || accessibility === null) return null
-  const experience = objectRecord(root.loadingExperience)
-  const inpMs =
-    auditNumeric(audits, "interaction-to-next-paint") ??
-    auditNumeric(audits, "experimental-interaction-to-next-paint")
-  const fieldInpMs =
-    fieldPercentile(experience, "INTERACTION_TO_NEXT_PAINT") ??
-    fieldPercentile(experience, "EXPERIMENTAL_INTERACTION_TO_NEXT_PAINT")
   return {
     performance,
     accessibility,
     lcpMs: auditNumeric(audits, "largest-contentful-paint"),
-    inpMs,
+    // O Lighthouse padrão não emite INP: é métrica de campo por natureza.
+    // Medido em 2026-09-15 — ausente nos dois nomes. Fica a tentativa, e `null`
+    // quando não vier, porque zero passaria em qualquer limiar.
+    inpMs:
+      auditNumeric(audits, "interaction-to-next-paint") ??
+      auditNumeric(audits, "experimental-interaction-to-next-paint"),
     cls: auditNumeric(audits, "cumulative-layout-shift"),
-    fieldLcpMs: fieldPercentile(experience, "LARGEST_CONTENTFUL_PAINT_MS"),
-    fieldInpMs,
-    fieldCls: fieldCls(experience),
-    viewportOk: auditScoreOne(audits, "viewport"),
+    fieldLcpMs: null,
+    fieldInpMs: null,
+    fieldCls: null,
+    // `meta-viewport` primeiro: o audit foi renomeado, e no Lighthouse 13.4.0
+    // que o DataForSEO roda o nome antigo não existe. Como `auditScoreOne`
+    // devolve `true` para audit ausente, ler só o antigo faria `viewportOk`
+    // passar sempre, sem medir nada.
+    viewportOk:
+      audits && "meta-viewport" in audits
+        ? auditScoreOne(audits, "meta-viewport")
+        : auditScoreOne(audits, "viewport"),
     contrastFails: contrastFailCount(audits),
     httpsOk: auditScoreOne(audits, "is-on-https"),
     indexable: auditScoreOne(audits, "is-crawlable"),

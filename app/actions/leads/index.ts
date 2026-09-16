@@ -15,16 +15,13 @@ export {
   type LeadDiagnosisDraft,
   type LeadDiagnosisExport,
 } from "./get-lead"
-export { suggestPlaces, type SuggestPlacesState } from "./suggest-places"
+export { searchPlaces, type SearchPlacesState } from "./search-places"
 export { linkLeadGbpProfile, type LinkLeadGbpState } from "./link-gbp-profile"
 export {
-  refreshLeadGbpProfile,
-  type RefreshLeadGbpState,
-} from "./refresh-gbp-profile"
-export {
-  enrichLeadGbpProfile,
-  type EnrichLeadGbpState,
-} from "./enrich-gbp-profile"
+  recollectLeadGbpProfile,
+  recollectGbpProfileById,
+  type RecollectLeadGbpState,
+} from "./recollect-gbp-profile"
 export { pollLeadGbpJobs, type PollLeadGbpJobsState } from "./poll-gbp-jobs"
 export {
   updateLeadGbpProfile,

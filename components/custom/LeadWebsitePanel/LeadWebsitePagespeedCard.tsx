@@ -105,6 +105,22 @@ export function LeadWebsitePagespeedCard({
         <StepSectionLabel aside="bom · a melhorar · ruim">
           Core Web Vitals
         </StepSectionLabel>
+        {/*
+          A condição testa os três campos, e não a data: um snapshot antigo tem
+          os valores e não deve levar o aviso; um novo não tem nenhum e deve.
+          Assim o card fala a verdade sobre a linha que está exibindo, sem
+          precisar saber quando ela foi colhida.
+        */}
+        {strategy &&
+        strategy.fieldLcpMs === null &&
+        strategy.fieldInpMs === null &&
+        strategy.fieldCls === null ? (
+          <p className="mb-2 text-[11px]/relaxed text-muted-foreground">
+            Sem dado de campo: a coleta passou a usar o Lighthouse em
+            2026-09-15, e medida de usuário real só existe no Google. Os números
+            abaixo são de laboratório.
+          </p>
+        ) : null}
         <div className="flex flex-col gap-3.5">
           <LeadWebsiteVitalGauge
             label="LCP"

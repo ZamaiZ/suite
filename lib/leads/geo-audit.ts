@@ -290,6 +290,31 @@ export type GeoPromptRun = {
   /** Sai de `annotations`, e é determinístico: o domínio aparece ou não. */
   domainCited: boolean
   brands: Array<{ name: string; position: number }>
+  /**
+   * A lista de empresas que o modelo **escreveu**, na ordem em que escreveu.
+   *
+   * Diferente de `brands` em duas coisas, e as duas importam. `brands` só
+   * contém nomes que já estavam na lista de casamento — o lead mais os
+   * concorrentes da checagem do Maps —, então para lead sem aquela checagem ela
+   * tem **um nome só, o dele**. Esta traz o que o modelo respondeu, inclusive
+   * quem ninguém conhecia.
+   *
+   * `null` = sondagem anterior a este campo. Lista vazia seria afirmação.
+   */
+  answerList: Array<{ name: string; rank: number }> | null
+  /**
+   * Onde o lead caiu nessa lista. **Ordem de aparição, não ranking.**
+   *
+   * Medido em 2026-09-11: o ChatGPT declara no próprio texto que a lista dele
+   * está em *"ordem alfabética"*, e está; as outras três não declaram ordem
+   * nenhuma. **Nenhuma das quatro afirma ordenar por qualidade**, então a tela
+   * mostra `6ª de 8` em tom neutro e nunca pinta faixa de cor sobre isto.
+   *
+   * `null` = não está na lista, ou lista não lida. Não é "não citado" — a marca
+   * pode aparecer na prosa sem entrar na lista, e quem responde por menção é
+   * `mentioned`.
+   */
+  listRank: number | null
   costUsd: number | null
 }
 
@@ -604,6 +629,19 @@ function readGeoPromptVisibility(value: unknown): GeoPromptVisibility | null {
                     return [{ name, position: asFinite(brand?.position) ?? 0 }]
                   })
                 : [],
+              // Ausente continua ausente: `[]` aqui diria "o modelo respondeu e
+              // não listou ninguém", que é afirmação sobre uma sondagem que não
+              // chegou a ler lista nenhuma.
+              answerList: Array.isArray(item?.answerList)
+                ? item.answerList.flatMap((answerEntry) => {
+                    const entry = asRecord(answerEntry)
+                    const name = asString(entry?.name)
+                    const rank = asFinite(entry?.rank)
+                    if (!name || rank === null) return []
+                    return [{ name, rank }]
+                  })
+                : null,
+              listRank: asFinite(item?.listRank),
               costUsd: asFinite(item?.costUsd),
             },
           ]

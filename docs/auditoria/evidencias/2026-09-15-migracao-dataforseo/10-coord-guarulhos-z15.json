@@ -1,0 +1,527 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.8851 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09152122-2319-0139-0000-b4010eabbcb4",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.7813 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "maps",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "maps",
+        "language_code": "pt",
+        "se_domain": "google.com.br",
+        "keyword": "Otica Diniz",
+        "depth": 20,
+        "location_coordinate": "-23.4543,-46.5337,15z",
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "Otica Diniz",
+          "type": "maps",
+          "se_domain": "google.com.br",
+          "location_code": 2076,
+          "language_code": "pt",
+          "check_url": "https://google.com.br/maps/search/Otica+Diniz/@-23.4543,-46.5337,15z?hl=pt&gl=BR&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "datetime": "2026-09-15 21:22:50 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "maps_search"
+          ],
+          "se_results_count": 0,
+          "items_count": 4,
+          "items": [
+            {
+              "type": "maps_search",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Óticas Diniz",
+              "original_title": null,
+              "url": "http://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/112970162204892661375",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 2499,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 9,
+                "2": 1,
+                "3": 3,
+                "4": 22,
+                "5": 2464
+              },
+              "snippet": "R. João Gonçalves, 138 - Centro, Guarulhos - SP, 07010-010",
+              "address": "R. João Gonçalves, 138 - Centro, Guarulhos - SP, 07010-010",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. João Gonçalves, 138",
+                "city": "Guarulhos",
+                "zip": "07010-010",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJw-F_7Vn1zpQRYSzKgWZ3ucE",
+              "phone": "+55114574-3603",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkX2CjgFvd8OG4W7RsgE8EKRjI6iYy4tc5YpbiW_gfysDAKvzhGgpOHRJC7-kC8WdFLR6orSZOcg9aGB3f1dxQhQml6UZfs9OkpgirI2BGNU5ddCVYmrB3GRbmFTomScKdBKLOm=w408-h305-k-no",
+              "total_photos": 42,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x94cef559ed7fe1c3:0xc1b9776681ca2c61",
+              "cid": "13959319802159443041",
+              "latitude": -23.4685716,
+              "longitude": -46.526896099999995,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"... de elogiar o excelente atendimento que recebi na Ótica Diniz.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Óticas Diniz - Sete de Setembro",
+              "original_title": null,
+              "url": "https://www.oticasdiniz.com.br/lojas",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/100106248483204252095",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 724,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 6,
+                "2": 0,
+                "3": 0,
+                "4": 3,
+                "5": 715
+              },
+              "snippet": "R. Sete de Setembro, 90 - Centro, Guarulhos - SP, 07011-020",
+              "address": "R. Sete de Setembro, 90 - Centro, Guarulhos - SP, 07011-020",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Sete de Setembro, 90",
+                "city": "Guarulhos",
+                "zip": "07011-020",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJHd4MJMT1zpQRPn3VfKIHJ2k",
+              "phone": "+55112656-1860",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnXOd-4wREvFwMgdFN4ZqXMvu1scqNIZL5lpC0_AmwPlnRTPd55oGm0UOczF6iwOOFs-50VkKoImfnfTGe1A6ii9ayHokpGHGF-9a1fCjShFY5twboGgjFn6SUOAUuj47b1BF7h=w408-h544-k-no",
+              "total_photos": 38,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x94cef5c4240cde1d:0x692707a27cd57d3e",
+              "cid": "7577033292534611262",
+              "latitude": -23.4693483,
+              "longitude": -46.530688999999995,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Ótica maravilhosa tudo em ordem\nKarem e Stephanie são ótimas atendende\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "domain": null,
+              "title": "Óticas Diniz Otávio Braga de Mesquita",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/108351448300884114617",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.9,
+                "votes_count": 113,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 2,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 110
+              },
+              "snippet": "Av. Otávio Braga de Mesquita, 1977 - Vila Barros, Guarulhos - SP, 07191-000",
+              "address": "Av. Otávio Braga de Mesquita, 1977 - Vila Barros, Guarulhos - SP, 07191-000",
+              "address_info": {
+                "borough": "Vila Barros",
+                "address": "Av. Otávio Braga de Mesquita, 1977",
+                "city": "Guarulhos",
+                "zip": "07191-000",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ-ZCkH7WLzpQRPY8zb3XurM8",
+              "phone": "+55112407-3140",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnjHYk6bFKQ5xtJ1lKYes1w7zZ2edrNc5u9fciDHkn90ZNKZnpB04W9p0_ibRQeJUSXwv30lWSO6KAphHVB_vLAapfk3UrTX4B_tg614AXdGXctxttwwq0fjDchLS7uzZj2xkWwk-0bm_k=w408-h473-k-no",
+              "total_photos": 12,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x94ce8bb51fa490f9:0xcfacee756f338f3d",
+              "cid": "14964597849989549885",
+              "latitude": -23.447948,
+              "longitude": -46.5085706,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Para pessoas da região, pode confiar é a melhor ótica da região\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 4,
+              "rank_absolute": 4,
+              "domain": null,
+              "title": "Óticas Diniz Guarulhos IIII",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 3,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 3
+              },
+              "snippet": "R. Luíz Faccini, 172 - Centro, Guarulhos - SP, 07110-000",
+              "address": "R. Luíz Faccini, 172 - Centro, Guarulhos - SP, 07110-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Luíz Faccini, 172",
+                "city": "Guarulhos",
+                "zip": "07110-000",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJKWgUFAD1zpQRjzYL0B8BdEw",
+              "phone": "+55114574-3603",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=uaNcVJn-dkR5XfuA02RPWQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=36.99343&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": null,
+              "feature_id": "0x94cef50014146829:0x4c74011fd00b368f",
+              "cid": "5509029480326968975",
+              "latitude": -23.4683808,
+              "longitude": -46.5265652,
+              "is_claimed": false,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Amo os óculos da Diniz, atendimento incrível da gerente Suzi.\""
+                }
+              ],
+              "is_directory_item": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

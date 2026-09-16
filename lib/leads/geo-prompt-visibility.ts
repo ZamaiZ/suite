@@ -11,6 +11,15 @@ import type {
   GeoPromptRunStatus,
   GeoPromptVisibility,
 } from "./geo-audit.ts"
+// A dobra mora em `geo-answer-list.ts` e é importada daqui, nunca o contrário:
+// duas dobras divergem na primeira mudança, e a importação inversa fecharia um
+// ciclo entre os dois módulos.
+import {
+  fold,
+  rankOfBrand,
+  readAnswerList,
+  readMessageText,
+} from "./geo-answer-list.ts"
 
 function asRecord(value: unknown): Record<string, unknown> | null {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null
@@ -64,28 +73,28 @@ export function readLlmAnnotations(result: unknown): LlmAnnotation[] {
   })
 }
 
-/** O texto corrido da resposta, para casar nomes de marca. */
+/**
+ * O texto corrido da **resposta**, para casar nomes de marca.
+ *
+ * **Antes lia o raciocínio junto, e isso era defeito.** `items[].type` é
+ * `"reasoning"` ou `"message"`, e esta função não filtrava. Medido em
+ * 2026-09-11 no dump de `discovery` do ChatGPT: dos 4.226 caracteres que ela
+ * devolvia, **895 eram raciocínio privado do modelo** — o bloco em que ele
+ * planeja a resposta antes de escrevê-la.
+ *
+ * Consequência: `mentioned`, `position` e `brands` podiam ser decididos por
+ * texto que o modelo **não** respondeu. A família `brand` é onde morde, porque
+ * ali o prompt *é* o nome da empresa, e raciocínio que repete o enunciado
+ * viraria menção sobre uma resposta que nunca citou ninguém.
+ *
+ * Não disparou em nenhuma amostra medida — o raciocínio dos dumps não cita
+ * marca. O caminho, porém, é estrutural.
+ *
+ * Evidência: `docs/auditoria/evidencias/2026-09-11-lista-ordenada/README.md`,
+ * seção 5. Correção forward-only: snapshot já gravado mantém o valor dele.
+ */
 export function readLlmText(result: unknown): string {
-  const row = asRecord(result)
-  const items = Array.isArray(row?.items) ? row.items : []
-  return items
-    .flatMap((item) => {
-      const sections = Array.isArray(asRecord(item)?.sections)
-        ? (asRecord(item)?.sections as unknown[])
-        : []
-      return sections.map((section) => asTrimmed(asRecord(section)?.text) ?? "")
-    })
-    .join(" ")
-}
-
-/** Sem acento e sem caixa: "Agência Mestre" e "agencia mestre" são a mesma. */
-function fold(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/\p{M}/gu, "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim()
+  return readMessageText(result)
 }
 
 export type GeoBrandMatch = { name: string; position: number }
@@ -169,6 +178,10 @@ export function buildGeoPromptRun(input: {
       position: null,
       domainCited: false,
       brands: [],
+      // `null`, e não `[]`, pela mesma razão de `mentioned: false` não valer
+      // aqui: lista vazia diria que o modelo respondeu sem citar ninguém.
+      answerList: null,
+      listRank: null,
       costUsd: input.costUsd,
     }
   }
@@ -180,6 +193,9 @@ export function buildGeoPromptRun(input: {
   const lead = brands.find((brand) =>
     input.leadBrands.some((name) => fold(name) === fold(brand.name)),
   )
+  // `input.provider` é o que escolhe o leitor: são quatro formas de resposta, e
+  // uma delas — a do Perplexity — não é lista, é tabela.
+  const answerList = readAnswerList(input.result, input.provider)
 
   return {
     promptId: input.promptId,
@@ -192,6 +208,10 @@ export function buildGeoPromptRun(input: {
     position: lead?.position ?? null,
     domainCited: domainCitedIn(annotations, input.domain),
     brands,
+    answerList,
+    // Casado contra as variantes do nome do lead, não contra `brands`: a marca
+    // pode estar na lista escrita sem ter entrado no casamento, e vice-versa.
+    listRank: rankOfBrand(answerList, input.leadBrands),
     costUsd: input.costUsd,
   }
 }

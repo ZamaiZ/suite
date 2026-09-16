@@ -128,6 +128,15 @@ export function ClientsList({
         onClose={closeClient}
         clientId={clientId}
         companyName={selected?.company_name}
+        portalSnapshot={
+          selected
+            ? {
+                canManagePortal: selected.canManagePortal,
+                hasPortalAccess: selected.hasPortalAccess,
+                portalUrl: selected.portalUrl,
+              }
+            : undefined
+        }
         readOnly={!selected?.canManagePortal}
       />
     </div>

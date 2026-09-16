@@ -1,0 +1,163 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "8.1458 sec.",
+  "cost": 0.025008,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09110553-2319-0612-0000-abe30e12097b",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "8.0053 sec.",
+      "cost": 0.025008,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "ai_optimization",
+        "claude",
+        "llm_responses",
+        "live"
+      ],
+      "data": {
+        "api": "ai_optimization",
+        "function": "llm_responses",
+        "se": "claude",
+        "user_prompt": "Quais são as melhores empresas de SEO em Guarulhos?",
+        "model_name": "claude-haiku-4-5",
+        "web_search": true,
+        "web_search_country_iso_code": "BR",
+        "web_search_city": "Guarulhos",
+        "max_output_tokens": 800
+      },
+      "result": [
+        {
+          "model_name": "claude-haiku-4-5-20251001",
+          "input_tokens": 11383,
+          "output_tokens": 605,
+          "reasoning_tokens": 0,
+          "web_search": true,
+          "money_spent": 0.024408,
+          "datetime": "2026-09-11 05:53:09 +00:00",
+          "items": [
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Vou buscar informações sobre as melhores empresas de SEO em Guarulhos para você.",
+                  "annotations": null
+                }
+              ]
+            },
+            {
+              "type": "message",
+              "sections": [
+                {
+                  "type": "text",
+                  "text": "Com base na busca realizada, existem várias empresas de SEO em Guarulhos que oferecem serviços de otimização para mecanismos de busca. Aqui estão algumas das principais:\n\n## Empresas de SEO em Guarulhos:\n\n1. **SinalizeWeb** - ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "Uma das pioneiras em Guarulhos em marketing digital e consultoria SEO",
+                  "annotations": [
+                    {
+                      "title": "AGENCIA DE MARKETING DIGITAL EM GUARULHOS | Agencia de SEO SinalizeWeb",
+                      "url": "https://sinalizeweb.com.br/agencia-de-marketing-digital-em-guarulhos/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "\n\n2. **Agência 4UP** - ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "Utiliza um conjunto de técnicas de otimização de sites, blogs e páginas na web",
+                  "annotations": [
+                    {
+                      "title": "Agência de SEO Guarulhos - Agência 4UP",
+                      "url": "https://agencia4up.com.br/informacoes/agencia-de-seo-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "\n\n3. **Max Rank** - ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "Uma agência especializada em SEO em Guarulhos que atua com total foco em garantir máxima eficiência em cada estratégia elaborada",
+                  "annotations": [
+                    {
+                      "title": "Agência especializada em SEO em Guarulhos - Max Rank",
+                      "url": "https://maxrank.com.br/artigos/agencia-especializada-em-seo-em-guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "\n\n4. **Busca Local Pro** - ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "Especialistas em SEO local em Guarulhos que fazem seu negócio aparecer no topo do Google",
+                  "annotations": [
+                    {
+                      "title": "Busca Local Pro - Agência de SEO em Guarulhos | Marketing Digital",
+                      "url": "https://buscalocalpro.com.br/",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": "\n\n5. **Go Up Digital** - Oferece consultoria de SEO com planos detalhados para melhorar a presença digital\n\n6. **Agência SCG** - Fornece consultoria de SEO com suporte completo para otimização de sites\n\n## Como escolher:\n\nPara encontrar a melhor empresa para suas necessidades, recomendo:\n- Solicitar orçamentos em plataformas como oHub, Tratativa ou B2Bfy, que listam múltiplas empresas\n- Comparar propostas e valores\n- Verificar referências e resultados anteriores\n- Considerar agências locais, pois entendem melhor as necessidades específicas de empresas em Guarulhos\n\nLembre-se que ",
+                  "annotations": null
+                },
+                {
+                  "type": "text",
+                  "text": "SEO é um serviço bastante técnico que exige conhecimento de profissionais especializados, e os parâmetros estão sempre mudando",
+                  "annotations": [
+                    {
+                      "title": "As melhores Empresas de Otimização de Sites SEO em Guarulhos | Tratativa",
+                      "url": "https://www.tratativa.com.br/amp/design-grafico/otimizacao-de-sites-seo/sp/guarulhos",
+                      "start_index": null,
+                      "end_index": null,
+                      "text": null
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "text": ".",
+                  "annotations": null
+                }
+              ]
+            }
+          ],
+          "fan_out_queries": [
+            "melhores empresas SEO Guarulhos"
+          ]
+        }
+      ]
+    }
+  ]
+}

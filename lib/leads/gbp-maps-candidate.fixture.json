@@ -1,0 +1,146 @@
+{
+  "items": [
+    {
+      "type": "maps_search",
+      "rank_group": 1,
+      "rank_absolute": 1,
+      "domain": "grupofunerariabenttus.com.br",
+      "title": "Funerária Benttus",
+      "original_title": null,
+      "url": "https://grupofunerariabenttus.com.br/",
+      "contact_url": "https://wa.me/5511954547070?text=Ol%C3%A1,+vim+da+Funer%C3%A1ria+Benttus+(Paulista)+e+preciso+de+assist%C3%AAncia!",
+      "contributor_url": "https://maps.google.com/maps/contrib/114273194857961653481",
+      "book_online_url": null,
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4.7,
+        "votes_count": 401,
+        "rating_max": null
+      },
+      "hotel_rating": null,
+      "price_level": null,
+      "rating_distribution": {
+        "1": 25,
+        "2": 0,
+        "3": 2,
+        "4": 2,
+        "5": 372
+      },
+      "snippet": "Av. Paulista, 1079 - 7º e 8º andar - Bela Vista, São Paulo - SP, 01311-200",
+      "address": "Av. Paulista, 1079 - 7º e 8º andar - Bela Vista, São Paulo - SP, 01311-200",
+      "address_info": {
+        "borough": "Bela Vista",
+        "address": "Av. Paulista, 1079 - 7º e 8º andar",
+        "city": "São Paulo",
+        "zip": "01311-200",
+        "region": "São Paulo",
+        "country_code": "BR"
+      },
+      "place_id": "ChIJkchU8A1ZzpQR99LmKcm-kT0",
+      "phone": "+55115198-6979",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmolVcp5IdjFeeRjWN-7MUVFhD_BP1RfqTybyFQnMb1eje9gVpiKxmAC7Ury2SQ88t9ROqRVXp7TcD3iY9-TmZ-2vcYlZQ_FVTS2dmqQi2hRvMhBZdGl3xUCMDO5-b-iFKNAIUyxN8lI1g=w408-h306-k-no",
+      "total_photos": 101,
+      "category": "Casa funerária",
+      "additional_categories": null,
+      "category_ids": [
+        "funeral_home"
+      ],
+      "work_hours": {
+        "timetable": {
+          "sunday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ],
+          "monday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ],
+          "tuesday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ],
+          "wednesday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ],
+          "thursday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ],
+          "friday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ],
+          "saturday": [
+            {
+              "open": {
+                "hour": 0,
+                "minute": 0
+              },
+              "close": {
+                "hour": 24,
+                "minute": 0
+              }
+            }
+          ]
+        },
+        "current_status": "open"
+      },
+      "feature_id": "0x94ce590df054c891:0x3d91bec929e6d2f7",
+      "cid": "4436536879137346295",
+      "latitude": -23.5649348,
+      "longitude": -46.6528995,
+      "is_claimed": true,
+      "local_justifications": null,
+      "is_directory_item": false
+    }
+  ]
+}

@@ -1,0 +1,2397 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "12.0903 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09152121-2319-0139-0000-590f06bf5418",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "11.9170 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "maps",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "maps",
+        "language_code": "pt",
+        "se_domain": "google.com.br",
+        "keyword": "funeraria",
+        "depth": 20,
+        "location_code": 2076,
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "funeraria",
+          "type": "maps",
+          "se_domain": "google.com.br",
+          "location_code": 2076,
+          "language_code": "pt",
+          "check_url": "https://google.com.br/maps/search/funeraria/@-14.235004,-51.92528,3z?hl=pt&gl=BR&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "datetime": "2026-09-15 21:21:19 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "maps_search"
+          ],
+          "se_results_count": 0,
+          "items_count": 20,
+          "items": [
+            {
+              "type": "maps_search",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "domain": null,
+              "title": "Funerária Pax Universo",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/103453435614140859041",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 13,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 13
+              },
+              "snippet": "Rua Varginha - Centro, Correntina - BA, 47650-000",
+              "address": "Rua Varginha - Centro, Correntina - BA, 47650-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Rua Varginha",
+                "city": "Correntina",
+                "zip": "47650-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ40tgrpPrWAcR9TDHNjVA15U",
+              "phone": "+557798888-7575",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmIwaABl_4dbJS35AxDKhABPbF94PeU_O1cU7IKo9vLQUvh5iq2GCVxYALeDPSXe4fEYlOk1dlZp8Et1aO35dJQC9iDLAqw6phGV6xqK4ZqBHC9kaiYZIHoCk_jLMNx77kcsJtkAZiTPBk=w408-h544-k-no",
+              "total_photos": 3,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x758eb93ae604be3:0x95d7403536c730f5",
+              "cid": "10797169228940521717",
+              "latitude": -13.3437421,
+              "longitude": -44.6357907,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"A equipe muito atenciosa, empática e eficiente do início ao fim.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "domain": null,
+              "title": "Funerária Riopirense",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/115618573266784204550",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 2,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 2
+              },
+              "snippet": "R. Manoel Marques de Azevedo - Centro, Rio do Pires - BA, 46550-000",
+              "address": "R. Manoel Marques de Azevedo - Centro, Rio do Pires - BA, 46550-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Manoel Marques de Azevedo",
+                "city": "Rio do Pires",
+                "zip": "46550-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ1-kZGDQ9QwcRazhkaBSxORc",
+              "phone": "+557799200-4423",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmMa30yD1FFf9lgRkjQuhxK6B1bk647J9eEFMNe1EBT8oD0uWkSw9Yl-Uz2O_9qPmHWEcGL7P4eATLFvl2ur7Ni-NReaJwYpGKLgdq7UBqaBFgNW-1XzJKiqrJj7gBv_2jH05Db=w519-h240-k-no",
+              "total_photos": 19,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7433d341819e9d7:0x1739b1146864386b",
+              "cid": "1673563437753710699",
+              "latitude": -13.1277379,
+              "longitude": -42.2924455,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "domain": null,
+              "title": "Funerária em Wagner - PLAFAM",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "Wagner - BA, 46970-000",
+              "address": "Wagner - BA, 46970-000",
+              "address_info": {
+                "borough": null,
+                "address": null,
+                "city": "Wagner",
+                "zip": null,
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJV_pWWHYjagcR5Z49ke54Fzg",
+              "phone": "+557599992-7011",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=2t_Lfm1dLqVkKHcfAsLDJQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=94.34918&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Agente funerário(a)",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_director"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x76a23765856fa57:0x381778ee913d9ee5",
+              "cid": "4041832156622593765",
+              "latitude": -12.280989799999999,
+              "longitude": -41.1720337,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 4,
+              "rank_absolute": 4,
+              "domain": null,
+              "title": "Funerária Paz Eterna",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/100742194275076847573",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 3,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 3
+              },
+              "snippet": "R. Lomanto Jr, Correntina - BA, 47650-000",
+              "address": "R. Lomanto Jr, Correntina - BA, 47650-000",
+              "address_info": {
+                "borough": null,
+                "address": "R. Lomanto Jr",
+                "city": "Correntina",
+                "zip": "47650-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJEUgGYvbrWAcRaE4Z5l08Nkw",
+              "phone": "+557798826-0772",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQQVrmgLrdnZTBuhgfONURBs11b9-7Z50diiePwKrVyls2AaLE9UubvvO0CJWM9RrtiFLXdAmhy8eoBXKi4Kn1YZF0wGoCvwfASC5xodgOCcV0gvMLSiqmGh8dODrz0OjgF3_x=w408-h306-k-no",
+              "total_photos": 9,
+              "category": "Escritório da empresa",
+              "additional_categories": null,
+              "category_ids": [
+                "corporate_office"
+              ],
+              "work_hours": null,
+              "feature_id": "0x758ebf662064811:0x4c363c5de6194e68",
+              "cid": "5491643169614941800",
+              "latitude": -13.3435455,
+              "longitude": -44.634980899999995,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 5,
+              "rank_absolute": 5,
+              "domain": null,
+              "title": "Funerária Botuporã Dika",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/105343776194773581335",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "Próximo ao hospital municipal - Tv. Padre José Maria, Botuporã - BA, 46570-000",
+              "address": "Próximo ao hospital municipal - Tv. Padre José Maria, Botuporã - BA, 46570-000",
+              "address_info": {
+                "borough": null,
+                "address": "Próximo ao hospital municipal - Tv. Padre José Maria",
+                "city": "Botuporã",
+                "zip": "46570-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ9Yej3ZBTQwcRwWKaD0zEsxI",
+              "phone": "+557799105-3762",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmpq1PW4T5cxntkWG5ufCYRKNTeSIEDKRwG319AykE8sAC8KwedzmuEY-tr1JkziTbLLOWIvzKsgR3sL_gNoyf0R8OdeuzhHXPcmXIUfjJSO9elc4vcC_GJ4udCnUj6Clat2twV=w408-h544-k-no",
+              "total_photos": 12,
+              "category": "Agente funerário(a)",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_director"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7435390dda387f5:0x12b3c44c0f9a62c1",
+              "cid": "1347636544472244929",
+              "latitude": -13.380902899999999,
+              "longitude": -42.5256421,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 6,
+              "rank_absolute": 6,
+              "domain": null,
+              "title": "Funerária & Pax Novo Oeste",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "R. Primeiro de Maio - Baianópolis, BA, 47830-000",
+              "address": "R. Primeiro de Maio - Baianópolis, BA, 47830-000",
+              "address_info": {
+                "borough": "Baianópolis",
+                "address": "R. Primeiro de Maio",
+                "city": "Baianópolis",
+                "zip": "47830-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJo3tPTbGwXwcRxzqX7RPfYVs",
+              "phone": "+557799998-9565",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=nMzkN1j0F1z3Zr6UuWoU6Q&cb_client=search.gws-prod.gps&w=408&h=240&yaw=263.64426&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x75fb0b14d4f7ba3:0x5b61df13ed973ac7",
+              "cid": "6584789406875859655",
+              "latitude": -12.304104299999999,
+              "longitude": -44.5361585,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 7,
+              "rank_absolute": 7,
+              "domain": null,
+              "title": "Funerária de Botuporã-24 Horas",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": null,
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": null,
+              "snippet": "R. Brasilino Marques França, 69, Botuporã - BA, 46570-000",
+              "address": "R. Brasilino Marques França, 69, Botuporã - BA, 46570-000",
+              "address_info": {
+                "borough": null,
+                "address": "R. Brasilino Marques França, 69",
+                "city": "Botuporã",
+                "zip": "46570-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJn89NHuZSQwcRRzi1NrrlCYw",
+              "phone": "+55773678-2330",
+              "main_image": null,
+              "total_photos": null,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": null,
+              "feature_id": "0x74352e61e4dcf9f:0x8c09e5ba36b53847",
+              "cid": "10090849028044830791",
+              "latitude": -13.3805438,
+              "longitude": -42.525135399999996,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 8,
+              "rank_absolute": 8,
+              "domain": null,
+              "title": "Funerária Divino Pai Eterno ( Memorial )",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "R. Joaquim Augusta da Silva, Formosa do Rio Preto - BA, 47990-000",
+              "address": "R. Joaquim Augusta da Silva, Formosa do Rio Preto - BA, 47990-000",
+              "address_info": {
+                "borough": null,
+                "address": "R. Joaquim Augusta da Silva",
+                "city": "Formosa do Rio Preto",
+                "zip": null,
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJhVQNYQC5NJMRJMCL9HAcTgQ",
+              "phone": "+557799832-6303",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1sqPNwCZEgG96Z_1PKDrvY4uL2hOIWfm-DHgGPXc3r0JdIrT88zUHAwcTeUk_bxvwf3BpLhyTVCnFsqFk8kLyoPlVKnHitgXI5f2PcaMAAsYMz8Ysnlg8UP_IOpSOWsGI5sbeKT861jHK=w408-h412-k-no",
+              "total_photos": 54,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x9334b900610d5485:0x44e1c70f48bc024",
+              "cid": "310216695799857188",
+              "latitude": -11.025022499999999,
+              "longitude": -45.192397199999995,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 9,
+              "rank_absolute": 9,
+              "domain": null,
+              "title": "Funerária Portal Do Paraiso",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 2,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 2
+              },
+              "snippet": "R. Padre Aldo Lucheta, 199-99, Botuporã - BA, 46570-000",
+              "address": "R. Padre Aldo Lucheta, 199-99, Botuporã - BA, 46570-000",
+              "address_info": {
+                "borough": null,
+                "address": "R. Padre Aldo Lucheta, 199-99",
+                "city": "Botuporã",
+                "zip": "46570-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJuUQuXutTQwcRqdJ7CCtUlC8",
+              "phone": null,
+              "main_image": null,
+              "total_photos": null,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": null,
+              "feature_id": "0x74353eb5e2e44b9:0x2f94542b087bd2a9",
+              "cid": "3428457760138449577",
+              "latitude": -13.3810547,
+              "longitude": -42.525686,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 10,
+              "rank_absolute": 10,
+              "domain": null,
+              "title": "Funeraria Santa Rita e Plano Assistencial Pró Saúde",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 2,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 2
+              },
+              "snippet": "Av. Padre Viêira, 417, Cristópolis - BA, 47950-000",
+              "address": "Av. Padre Viêira, 417, Cristópolis - BA, 47950-000",
+              "address_info": {
+                "borough": null,
+                "address": "Av. Padre Viêira, 417",
+                "city": "Cristópolis",
+                "zip": "47950-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJSbuUwufLXwcRMPZIzqtDbHw",
+              "phone": "+557799921-4139",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=A7_1Mgx4a4kn53vwerqMXA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=172.2173&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    },
+                    {
+                      "open": {
+                        "hour": 14,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    },
+                    {
+                      "open": {
+                        "hour": 14,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    },
+                    {
+                      "open": {
+                        "hour": 14,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    },
+                    {
+                      "open": {
+                        "hour": 14,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    },
+                    {
+                      "open": {
+                        "hour": 14,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": null
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x75fcbe7c294bb49:0x7c6c43abce48f630",
+              "cid": "8965615363367171632",
+              "latitude": -12.234903,
+              "longitude": -44.4136958,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 11,
+              "rank_absolute": 11,
+              "domain": null,
+              "title": "M M Com de Artigos de Funerária",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": null,
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": null,
+              "snippet": "Caetité, BA, 46400-000",
+              "address": "Caetité, BA, 46400-000",
+              "address_info": {
+                "borough": "Caetité",
+                "address": null,
+                "city": "Caetité",
+                "zip": null,
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJK5aSE8jVRAcRYeof0ELfzmA",
+              "phone": "+55773454-1209",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=68vnJQUft0A-Cv6ZvdWFCQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=160.4621&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": null,
+              "feature_id": "0x744d5c81392962b:0x60cedf42d01fea61",
+              "cid": "6975758350896065121",
+              "latitude": -14.0691779,
+              "longitude": -42.4907332,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 12,
+              "rank_absolute": 12,
+              "domain": null,
+              "title": "Renascer Funeraria",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/105468863635958610993",
+              "book_online_url": null,
+              "rating": null,
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": null,
+              "snippet": "praça dois poderes - centro, Canarana - BA, 44890-000",
+              "address": "praça dois poderes - centro, Canarana - BA, 44890-000",
+              "address_info": {
+                "borough": "centro",
+                "address": "praça dois poderes",
+                "city": "Canarana",
+                "zip": "44890-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJoR-PEfgZaQcRlBJlmbACUA4",
+              "phone": "+557499814-2679",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=xGX1F4Xoll5kgkBv6sbwAQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=110.14732&pitch=0&thumbfov=100",
+              "total_photos": 3,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": null,
+              "feature_id": "0x76919f8118f1fa1:0xe5002b099651294",
+              "cid": "1031327272178881172",
+              "latitude": -11.68581,
+              "longitude": -41.769576,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 13,
+              "rank_absolute": 13,
+              "domain": "funerariacaminhodasaudade.com.br",
+              "title": "Funerária Pax Caminho da Saudade - Translado, Coroa de Flores Salvador",
+              "original_title": null,
+              "url": "http://funerariacaminhodasaudade.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/110445719018509249516",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 18,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 1,
+                "3": 0,
+                "4": 0,
+                "5": 17
+              },
+              "snippet": "Av. Fernandes da Cunha, 456 - Mares, Salvador - BA, 41100-200",
+              "address": "Av. Fernandes da Cunha, 456 - Mares, Salvador - BA, 41100-200",
+              "address_info": {
+                "borough": "Mares",
+                "address": "Av. Fernandes da Cunha, 456",
+                "city": "Salvador",
+                "zip": "41100-200",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJw9S9v0IFFgcRT347LmzKYPw",
+              "phone": "+55713313-6104",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmonFOl1TqwBvbsEBv37oUsGRh_EZ4UkfhVYe0P5y_fuJ-IQfiHdM-m4d0uNA9VcI0BjXnf2zUTyLjIrR9rDkRkEamlQfZaM-xlmJlKe-bTAicqt4KIGf_1grsY804Q9pyABp_XGxbg0Jo=w408-h243-k-no",
+              "total_photos": 28,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Entrega de flores"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "flower_delivery"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7160542bfbdd4c3:0xfc60ca6c2e3b7e4f",
+              "cid": "18185757861302992463",
+              "latitude": -12.9393757,
+              "longitude": -38.5032034,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Translado funerário em Salvador total suporte\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 14,
+              "rank_absolute": 14,
+              "domain": "www.funerarialider.com",
+              "title": "Funerária Líder",
+              "original_title": null,
+              "url": "https://www.funerarialider.com/",
+              "contact_url": "https://api.whatsapp.com/send?phone=5571992124335",
+              "contributor_url": "https://maps.google.com/maps/contrib/109601691736807043076",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 62,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 61
+              },
+              "snippet": "Av. Vasco da Gama, 489 - Engenho Velho da Federação, Salvador - BA, 40221-500",
+              "address": "Av. Vasco da Gama, 489 - Engenho Velho da Federação, Salvador - BA, 40221-500",
+              "address_info": {
+                "borough": "Engenho Velho da Federação",
+                "address": "Av. Vasco da Gama, 489",
+                "city": "Salvador",
+                "zip": "40221-500",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJfSpjrK8EFgcRCHw4PE8dqus",
+              "phone": "+557199212-4335",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmB8RMSsO4pNo2HkAr07HDSQPtDMzGduYWcytIrjsDhuXsqfI_SSov4x4PG36bVjLDPk6jiOKbhvL8M_c3y8nWG4PJlKX3VyJL4JbEOfzXNlsaHvLFW04VjK5zC_FYHAmyJxxkj=w408-h306-k-no",
+              "total_photos": 29,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x71604afac632a7d:0xebaa1d4f3c387c08",
+              "cid": "16981417571103833096",
+              "latitude": -12.9975966,
+              "longitude": -38.4929894,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Super recomendo, atendimento humanizado, super atenciosos, Deus abençoe\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 15,
+              "rank_absolute": 15,
+              "domain": null,
+              "title": "Funerária Santa Rita",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": null,
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": null,
+              "snippet": "R. Pantaleão Águiar, 368-478 - Riachão das Neves, BA, 47970-000",
+              "address": "R. Pantaleão Águiar, 368-478 - Riachão das Neves, BA, 47970-000",
+              "address_info": {
+                "borough": "Riachão das Neves",
+                "address": "R. Pantaleão Águiar, 368-478",
+                "city": "Riachão das Neves",
+                "zip": "47970-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJtU8awL4EYAcRG9z-TsCMsW8",
+              "phone": "+55773624-2324",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=aH04bBrBXXcuIwfaVgGipA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=154.3922&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x76004bec01a4fb5:0x6fb18cc04efedc1b",
+              "cid": "8048368766674721819",
+              "latitude": -11.7486778,
+              "longitude": -44.910091,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 16,
+              "rank_absolute": 16,
+              "domain": null,
+              "title": "Funerária São Cristóvão",
+              "original_title": null,
+              "url": null,
+              "contact_url": "https://www.instagram.com/funsaocristovaolemoficial/",
+              "contributor_url": "https://maps.google.com/maps/contrib/100455543691522375894",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "R. Xique-Xique, Qd 02 - Lt 12B N 271 - Santa Cruz, Luís Eduardo Magalhães - BA, 47855-280",
+              "address": "R. Xique-Xique, Qd 02 - Lt 12B N 271 - Santa Cruz, Luís Eduardo Magalhães - BA, 47855-280",
+              "address_info": {
+                "borough": "Santa Cruz",
+                "address": "R. Xique-Xique, Qd 02 - Lt 12B N 271",
+                "city": "Luís Eduardo Magalhães",
+                "zip": "47855-280",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJVfMrw5hxSpMRgIa8TxSYN74",
+              "phone": "+557799809-0617",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWEw41P65ylref1RA6ajShhDn7tRMife2vez2uzowg4gbkMcJWA8fpYbHF5mOIyexXOrjoAfw_rPliaaKll3TwGMlQiYcMlPXaqi_GmOfJoNREoCiyHQB9xFYXYkxogB-NA4Fr8XpuZyY=w426-h240-k-no",
+              "total_photos": 9,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": null,
+              "feature_id": "0x934a7198c32bf355:0xbe3798144fbc8680",
+              "cid": "13706591203929917056",
+              "latitude": -12.093613099999999,
+              "longitude": -45.8025697,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 17,
+              "rank_absolute": 17,
+              "domain": null,
+              "title": "Funerária São Caetano",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/100280405443455555609",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 32,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 32
+              },
+              "snippet": "Estr. de Campinas, 36 - São Caetano, Salvador - BA, 40391-161",
+              "address": "Estr. de Campinas, 36 - São Caetano, Salvador - BA, 40391-161",
+              "address_info": {
+                "borough": "São Caetano",
+                "address": "Estr. de Campinas, 36",
+                "city": "Salvador",
+                "zip": "40391-161",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJC1OOJQgQFgcRDcjlyBliqLM",
+              "phone": "+55713246-2744",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkr07LTdUSRowhYmMj1f8x926lSGa7QNPYjMd7w0ur-aoXhFY6vr3OcsUE3XLalf6xs7E5zON6-9Lwk0IInistQF_mJvUUjsSX9IbQ3GQ0AexqY1Lgbnl4G7zG9qYN1-lCmi0oqvQ=w408-h544-k-no",
+              "total_photos": 129,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7161008258e530b:0xb3a86219c8e5c80d",
+              "cid": "12945704991760697357",
+              "latitude": -12.931453699999999,
+              "longitude": -38.4744047,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Serviço de excelência ,pontualidade e preços excessives.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 18,
+              "rank_absolute": 18,
+              "domain": "funerariafernandez.com.br",
+              "title": "Funerária Campo Santo Fernandez",
+              "original_title": null,
+              "url": "https://funerariafernandez.com.br/",
+              "contact_url": "https://funerariafernandez.com.br/agendamento-cemiterio-funeraria-fernandez",
+              "contributor_url": "https://maps.google.com/maps/contrib/109243958015192374801",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.5,
+                "votes_count": 73,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 9,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 63
+              },
+              "snippet": "Largo do Campo Santo, 01 - Federação, Salvador - BA, 40210-320",
+              "address": "Largo do Campo Santo, 01 - Federação, Salvador - BA, 40210-320",
+              "address_info": {
+                "borough": "Federação",
+                "address": "Largo do Campo Santo, 01",
+                "city": "Salvador",
+                "zip": "40210-320",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJyxmhXpwEFgcRlDQctBJ7Wak",
+              "phone": "+55713235-3951",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlpecIczXTE3AhqHrFTELgMyOcxO_IC1E8mqbOmQ9zblZli2xpmeoG8-Gjm5-UtwuYbiJRdSGr5hPCFSf-36efhIwyHdkoEcUCuVWLstFJ2xye_QCOAI4u8xMCMo9yQaSoanrLjVw=w408-h278-k-no",
+              "total_photos": 72,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x716049c5ea119cb:0xa9597b12b41c3494",
+              "cid": "12202919985598444692",
+              "latitude": -12.9976224,
+              "longitude": -38.5143128,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Parabéns a essa funerária e sua equipe por todo carinho e atenção!!\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 19,
+              "rank_absolute": 19,
+              "domain": null,
+              "title": "Funerária rede cuidar",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/111941640919595915235",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.7,
+                "votes_count": 9,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 1,
+                "3": 0,
+                "4": 0,
+                "5": 8
+              },
+              "snippet": "R. Pará, 225 - Lot. Mimoso Doeste I, Luís Eduardo Magalhães - BA, 47850-000",
+              "address": "R. Pará, 225 - Lot. Mimoso Doeste I, Luís Eduardo Magalhães - BA, 47850-000",
+              "address_info": {
+                "borough": "Loteamento Mimoso Doeste I",
+                "address": "R. Pará, 225",
+                "city": "Luís Eduardo Magalhães",
+                "zip": "47850-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJCeXFaQ9xSpMRemqJ4kULB9c",
+              "phone": "+557799857-5693",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmnewYVeFp_-w3HlOsLDI3dvuumfakdbOB9ZaF6OdvocVvadGUqG_5CNgnX5TTpFdcfNnJHj2g1rStMEKlJXcHPQRIMxSMRalvsXiwZxSPl7036JPAASVDIFEJbmYC9s9c6JSrO=w408-h544-k-no",
+              "total_photos": 3,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x934a710f69c5e509:0xd7070b45e2896a7a",
+              "cid": "15494365437772786298",
+              "latitude": -12.0891571,
+              "longitude": -45.8002439,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Foi ótimo, atendimento de primeiro, muito educados e competente.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 20,
+              "rank_absolute": 20,
+              "domain": "www.planvinanatal.com",
+              "title": "Planvina Funerária",
+              "original_title": null,
+              "url": "http://www.planvinanatal.com/",
+              "contact_url": "https://www.contate.me/planvinanatal",
+              "contributor_url": "https://maps.google.com/maps/contrib/105648854719644557612",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 75,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 1,
+                "3": 2,
+                "4": 2,
+                "5": 69
+              },
+              "snippet": "Av. Bacharel Tomaz Landim, 695 - Igapó, Natal - RN, 59296-802",
+              "address": "Av. Bacharel Tomaz Landim, 695 - Igapó, Natal - RN, 59296-802",
+              "address_info": {
+                "borough": "Igapó",
+                "address": "Av. Bacharel Tomaz Landim, 695",
+                "city": "Natal",
+                "zip": "59296-802",
+                "region": "Rio Grande do Norte",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJO9bUveSqswcRIiPqWNHHPQU",
+              "phone": "+55843214-6840",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdEVaQsyY8Am3yUfBkKf5jITSlcWh7c-Ba9W8WnjlGnht-ohapZ_8fCoyqWOjaAMUORU1Wl63TV76m3bcOJYRITkqGnPzK9xkdDrhQ0BxOyXZvd_HtFsVeYkZn3uvPwOsQ9EZ2XwosTLvF=w426-h240-k-no",
+              "total_photos": 70,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Floricultura"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "florist"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7b3aae4bdd4d63b:0x53dc7d158ea2322",
+              "cid": "377677645722821410",
+              "latitude": -5.7764513,
+              "longitude": -35.252276,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Excelente atendimento, equipe muito prestativa\""
+                }
+              ],
+              "is_directory_item": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

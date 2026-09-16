@@ -58,9 +58,8 @@ export function LeadGbpProfileHeader({
         canEdit={controller.canEdit}
         readingMode={readingMode}
         isPrimary={controller.profile.is_primary}
-        onEnrich={controller.handleEnrich}
+        onRecollect={controller.handleRecollect}
         onPrimary={controller.handlePrimary}
-        onRefresh={controller.handleRefresh}
         onRemove={controller.handleRemove}
         onAddProfile={onAddProfile}
       />
@@ -78,7 +77,9 @@ export function LeadGbpProfileHeader({
           reduced
             ? "transition-none"
             : "transition-[grid-template-rows,opacity] duration-[280ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-          numbersOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
+          numbersOpen
+            ? "grid-rows-[1fr] opacity-100"
+            : "grid-rows-[0fr] opacity-0",
         )}
       >
         <div className="overflow-hidden">

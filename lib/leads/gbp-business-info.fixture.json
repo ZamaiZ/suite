@@ -1,0 +1,235 @@
+{
+  "type": "google_business_info",
+  "rank_group": 1,
+  "rank_absolute": 1,
+  "position": "left",
+  "title": "Funerária Benttus",
+  "original_title": null,
+  "description": "Nós da Funerária Benttus realizamos serviço funerário humanizado e respeitoso, somos uma empresa experiente no ramo, que presta serviços funerários. Ajudamos famílias enlutadas a passar uma fase tão delicada que é a perda de um ente querido, livrando do processo burocrático. Possuímos uma frota nova de carros fúnebres e diversos agentes sociais para prestar assistência funerária, 24 horas por dia. Entre em contato conosco e conheça mais de nossa funerária.\nFunerária Benttus.",
+  "category": "Casa funerária",
+  "category_ids": [
+    "funeral_home"
+  ],
+  "additional_categories": null,
+  "cid": "4436536879137346295",
+  "feature_id": "0x94ce590df054c891:0x3d91bec929e6d2f7",
+  "address": "Av. Paulista, 1079 - 7º e 8º andar - Bela Vista, São Paulo - SP, 01311-200",
+  "address_info": {
+    "borough": "Bela Vista",
+    "address": "Av. Paulista, 1079 - 7º e 8º andar",
+    "city": "São Paulo",
+    "zip": "01311-200",
+    "region": "São Paulo",
+    "country_code": "BR"
+  },
+  "place_id": "ChIJkchU8A1ZzpQR99LmKcm-kT0",
+  "phone": "+55115198-6979",
+  "url": "https://grupofunerariabenttus.com.br/",
+  "contact_url": "https://wa.me/5511954547070?text=Ol%C3%A1,+vim+da+Funer%C3%A1ria+Benttus+(Paulista)+e+preciso+de+assist%C3%AAncia!",
+  "contributor_url": "https://maps.google.com/maps/contrib/114273194857961653481",
+  "book_online_url": null,
+  "domain": "grupofunerariabenttus.com.br",
+  "logo": "https://lh5.googleusercontent.com/-U43ul1OxFE0/AAAAAAAAAAI/AAAAAAAAAAA/AkYqq7vvzyQ/s44-p-k-no-ns-nd/photo.jpg",
+  "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmolVcp5IdjFeeRjWN-7MUVFhD_BP1RfqTybyFQnMb1eje9gVpiKxmAC7Ury2SQ88t9ROqRVXp7TcD3iY9-TmZ-2vcYlZQ_FVTS2dmqQi2hRvMhBZdGl3xUCMDO5-b-iFKNAIUyxN8lI1g=w408-h306-k-no",
+  "total_photos": 101,
+  "snippet": "Av. Paulista, 1079 - 7º e 8º andar - Bela Vista, São Paulo - SP, 01311-200",
+  "latitude": -23.5649348,
+  "longitude": -46.6528995,
+  "is_claimed": true,
+  "questions_and_answers_count": null,
+  "attributes": {
+    "available_attributes": {
+      "accessibility": [
+        "has_wheelchair_accessible_entrance"
+      ],
+      "offerings": [
+        "offers_cremation_service",
+        "offers_burial_service"
+      ],
+      "crowd": [
+        "welcomes_lgbtq",
+        "is_transgender_safespace"
+      ]
+    },
+    "unavailable_attributes": null
+  },
+  "place_topics": {
+    "gratidão": 39,
+    "processo": 16,
+    "empresa": 14,
+    "agilidade": 12,
+    "irmão": 11,
+    "translado": 10,
+    "estado": 8,
+    "paciência": 6,
+    "sofrimento": 5,
+    "ente": 5
+  },
+  "rating": {
+    "rating_type": "Max5",
+    "value": 4.7,
+    "votes_count": 401,
+    "rating_max": null
+  },
+  "hotel_rating": null,
+  "price_level": null,
+  "rating_distribution": {
+    "1": 25,
+    "2": 0,
+    "3": 2,
+    "4": 2,
+    "5": 372
+  },
+  "people_also_search": null,
+  "work_time": {
+    "work_hours": {
+      "timetable": {
+        "sunday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ],
+        "monday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ],
+        "tuesday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ],
+        "wednesday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ],
+        "thursday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ],
+        "friday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ],
+        "saturday": [
+          {
+            "open": {
+              "hour": 0,
+              "minute": 0
+            },
+            "close": {
+              "hour": 24,
+              "minute": 0
+            }
+          }
+        ]
+      },
+      "current_status": "open"
+    }
+  },
+  "popular_times": null,
+  "local_business_links": null,
+  "is_directory_item": false,
+  "directory": null,
+  "services": [
+    {
+      "category": "Casa funerária",
+      "title": "Cremação",
+      "snippet": "Nós realizamos cremação, velório e cerimônia na região da Bela Vista e toda São Paulo",
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Embalsamamento",
+      "snippet": null,
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Planos funerários",
+      "snippet": null,
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Serviços funerários",
+      "snippet": null,
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Transporte funerário",
+      "snippet": null,
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Urnas funerárias",
+      "snippet": null,
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Coroa de Flores",
+      "snippet": "Entregamos Coroa de Flores em todos os cemitérios e velórios de São Paulo, faça seu pedido de homenagem com a Funerária Benttus",
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Funerária 24 Horas",
+      "snippet": "Funerária Benttus 24 horas, resolvemos toda a parte burocrática para sepultamentos, Ligue Para Funerária Benttus",
+      "price": null
+    },
+    {
+      "category": "Casa funerária",
+      "title": "Serviço Funerário",
+      "snippet": "Nós Prestamos serviços funerários na região da Bela Vista e toda São Paulo, atendimento funerário 24 horas. Funerária Benttus",
+      "price": null
+    }
+  ]
+}

@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Worker do MapLibre, copiado minificado pelo `postinstall`. Não é código
+    // nosso e não é editável — lintá-lo rendia mais de mil advertências que
+    // afogavam as reais.
+    "public/maplibre/**",
   ]),
   {
     // `components/ui` é código gerado pelo CLI do shadcn e volta ao original a

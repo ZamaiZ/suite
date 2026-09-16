@@ -17,6 +17,7 @@ import {
   isClientKickoffStage,
 } from "@/lib/clients/kickoff"
 import type { ClientKickoffStage } from "@/lib/clients/types"
+import { portalOrigin, portalUrlFromOrigin } from "@/lib/clients/portal-session"
 import { createClient } from "@/lib/supabase/server"
 import type { ClientsListParams } from "@/lib/clients/href"
 
@@ -32,6 +33,16 @@ export type ClientListItem = {
   briefingStatusLabel: string
   canManagePortal: boolean
   canViewClient: boolean
+  /**
+   * Estado do portal, da mesma linha de `clients` que esta consulta já lê.
+   *
+   * Vem daqui, e não de um `getClient` por abertura de menu: o menu precisa de
+   * dois campos e aquela chamada devolvia vinte, com uma consulta extra ao nome
+   * do closer que esta lista já tem.
+   */
+  hasPortalAccess: boolean
+  /** `null` sem acesso, ou sem permissão de gerenciar o portal. */
+  portalUrl: string | null
   kickoffStage: ClientKickoffStage
   kickoffStageLabel: string
   kickoffMeetingAt: string | null
@@ -87,7 +98,7 @@ export async function listClients(
   let query = supabase
     .from("clients")
     .select(
-      "id, lead_id, company_name, closer_id, converted_at, stage, briefing_finalized_at, briefing_content_updated_at, kickoff_stage, kickoff_meeting_at",
+      "id, lead_id, company_name, closer_id, converted_at, stage, briefing_finalized_at, briefing_content_updated_at, kickoff_stage, kickoff_meeting_at, portal_slug, portal_code_hash",
     )
     .eq("stage", "initial")
     .order("converted_at", { ascending: false })
@@ -149,6 +160,10 @@ export async function listClients(
         domainsByLeadId.set(lead.id, lead.website_domain)
   }
 
+  // Resolvida uma vez para a lista inteira: é leitura de ambiente ou de
+  // cabeçalho, não de banco, e o mapeamento abaixo continua síncrono.
+  const origin = await portalOrigin()
+
   const clients: ClientListItem[] = (data ?? []).flatMap((row) => {
     if (row.stage !== "initial") return []
     const briefingStatus = deriveBriefingListStatus(
@@ -162,6 +177,11 @@ export async function listClients(
     const kickoffStage = isClientKickoffStage(row.kickoff_stage)
       ? row.kickoff_stage
       : "none"
+    const canManagePortal = canManageClientPortal(roles, user.id, row.closer_id)
+    const portalSlug =
+      typeof row.portal_slug === "string" ? row.portal_slug : null
+    // Mesma regra do `getClient`: só há acesso quando o par slug + hash existe.
+    const hasPortalAccess = Boolean(portalSlug && row.portal_code_hash)
     return [
       {
         id: row.id,
@@ -175,8 +195,15 @@ export async function listClients(
         stage: "initial",
         briefingStatus,
         briefingStatusLabel: BRIEFING_LIST_STATUS_LABELS[briefingStatus],
-        canManagePortal: canManageClientPortal(roles, user.id, row.closer_id),
+        canManagePortal,
         canViewClient: canViewClient(roles, user.id, row.closer_id),
+        hasPortalAccess,
+        // O link só sai para quem pode gerenciar o portal — o mesmo portão que
+        // o `getClient` aplica. Sem ele, a lista publicaria N links de acesso.
+        portalUrl:
+          canManagePortal && portalSlug
+            ? portalUrlFromOrigin(origin, portalSlug)
+            : null,
         kickoffStage,
         kickoffStageLabel: CLIENT_KICKOFF_STAGE_LABELS[kickoffStage],
         kickoffMeetingAt:

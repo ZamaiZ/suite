@@ -42,31 +42,3 @@ export function resolveLeadLocation(
     segmentName: lead.segment?.name ?? null,
   }
 }
-
-export function leadLocationSearchHint(
-  lead: LeadLocationInput,
-  companyName: string,
-): string | null {
-  const location = resolveLeadLocation(lead, null)
-  const parts = [companyName.trim()]
-  if (location.city) parts.push(location.city)
-  if (location.stateCode) parts.push(location.stateCode)
-  if (parts.length <= 1) return null
-  return parts.join(" ")
-}
-
-export function applyLocationHintToQuery(
-  query: string,
-  hint: string | null | undefined,
-): string {
-  const trimmed = query.trim()
-  if (!hint) return trimmed
-  const normalizedQuery = trimmed.toLowerCase()
-  const missing = hint
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .filter((part) => !normalizedQuery.includes(part.toLowerCase()))
-  if (missing.length === 0) return trimmed
-  return `${trimmed} ${missing.join(" ")}`.trim()
-}

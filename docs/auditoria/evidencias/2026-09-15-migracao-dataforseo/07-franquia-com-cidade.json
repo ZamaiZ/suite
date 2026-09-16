@@ -1,0 +1,196 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "14.1711 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09152122-2319-0139-0000-d71d36a4214d",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "13.4342 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "maps",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "maps",
+        "language_code": "pt",
+        "se_domain": "google.com.br",
+        "keyword": "Otica Diniz Guarulhos SP",
+        "depth": 20,
+        "location_code": 2076,
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "Otica Diniz Guarulhos SP",
+          "type": "maps",
+          "se_domain": "google.com.br",
+          "location_code": 2076,
+          "language_code": "pt",
+          "check_url": "https://google.com.br/maps/search/Otica+Diniz+Guarulhos+SP/@-14.235004,-51.92528,3z?hl=pt&gl=BR&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "datetime": "2026-09-15 21:22:15 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "maps_search"
+          ],
+          "se_results_count": 0,
+          "items_count": 1,
+          "items": [
+            {
+              "type": "maps_search",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "domain": "unidades.oticasdiniz.com.br",
+              "title": "Óticas Diniz Bonsucesso",
+              "original_title": null,
+              "url": "https://unidades.oticasdiniz.com.br/oticas-diniz-bonsucesso-bonsucesso-rio-de-janeiro-rj",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/117058185251095070418",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1103,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 2,
+                "2": 0,
+                "3": 0,
+                "4": 9,
+                "5": 1092
+              },
+              "snippet": "Rua Cardoso de Morais, 218 - Loja E - Bonsucesso, Rio de Janeiro - RJ, 21032-000",
+              "address": "Rua Cardoso de Morais, 218 - Loja E - Bonsucesso, Rio de Janeiro - RJ, 21032-000",
+              "address_info": {
+                "borough": "Bonsucesso",
+                "address": "Rua Cardoso de Morais, 218 - Loja E",
+                "city": "Rio de Janeiro",
+                "zip": "21032-000",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJGbYygwB8mQAR2NvfdGzoWCU",
+              "phone": "+552198252-0033",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnqxO0Y9HtLKQqfPTYrzBbj-lvoGUuXqQXAXPEFwPqZ_noSLaUHC1CbhFhRBmjRasnph8AaHhHjYRQSvk8MBuVPPHfHeU5SaTvqe4B8lhBEsfuxR3QxA_jiAnNkL3CzTiHk_9KVP09Oi_Nb=w408-h306-k-no",
+              "total_photos": 33,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 13,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x997c008332b619:0x2558e86c74dfdbd8",
+              "cid": "2691156329868811224",
+              "latitude": -22.861599,
+              "longitude": -43.2549402,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Fui a óticas Diniz de Bonsucesso e fui atendido pelo vendedor Leonardo.\""
+                }
+              ],
+              "is_directory_item": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

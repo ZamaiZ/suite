@@ -1,13 +1,34 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import {
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  type GeoJSONSource,
+} from "maplibre-gl"
+import "maplibre-gl/dist/maplibre-gl.css"
+import type { Feature, Polygon } from "geojson"
 import { RiMapPinLine, RiRefreshLine } from "react-icons/ri"
 import { Spinner } from "@/components/ui/spinner"
 import { Button } from "@/components/ui/button"
 import { cn } from "cn"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
-import { GOOGLE_MAPS_DARK_STYLES, loadGoogleMaps } from "@/lib/google-maps"
+import {
+  ensureMapWorker,
+  getMapTilesKey,
+  MAP_STYLE_UNCONFIGURED,
+  mapStyleUrl,
+} from "@/lib/maplibre"
 import type { BriefingServiceRadiusMapProps } from "./BriefingServiceRadiusMap.types"
+
+const SOURCE_ID = "radius"
+const FILL_ID = "radius-fill"
+const LINE_ID = "radius-line"
+
+/** Vértices do círculo. 64 já não mostra canto no zoom que a tela usa. */
+const CIRCLE_VERTICES = 64
+const EARTH_KM = 6371
 
 function readPrimaryColor(): string {
   if (typeof window === "undefined") return SHADCN_PALETTE.light.primary
@@ -21,10 +42,47 @@ function isDarkMode(): boolean {
   return document.documentElement.classList.contains("dark")
 }
 
-function fitCircle(map: google.maps.Map, circle: google.maps.Circle) {
-  const bounds = circle.getBounds()
-  if (!bounds) return
-  map.fitBounds(bounds, 28)
+/**
+ * Círculo geodésico em GeoJSON.
+ *
+ * O `google.maps.Circle` desenhava em metros sobre a projeção; o MapLibre
+ * desenha polígono em graus. Raio constante em graus vira elipse achatada longe
+ * do equador — por isso a longitude é dividida pelo cosseno da latitude, e não
+ * apenas somada. No Brasil a diferença chega a um terço da largura.
+ */
+function circlePolygon(
+  latitude: number,
+  longitude: number,
+  radiusKm: number,
+): Feature<Polygon> {
+  const latDelta = (radiusKm / EARTH_KM) * (180 / Math.PI)
+  const lonDelta = latDelta / Math.cos((latitude * Math.PI) / 180)
+  const ring: [number, number][] = []
+  for (let step = 0; step <= CIRCLE_VERTICES; step += 1) {
+    const angle = (step / CIRCLE_VERTICES) * 2 * Math.PI
+    ring.push([
+      longitude + lonDelta * Math.cos(angle),
+      latitude + latDelta * Math.sin(angle),
+    ])
+  }
+  return {
+    type: "Feature",
+    properties: {},
+    geometry: { type: "Polygon", coordinates: [ring] },
+  }
+}
+
+function circleBounds(
+  latitude: number,
+  longitude: number,
+  radiusKm: number,
+): [[number, number], [number, number]] {
+  const latDelta = (radiusKm / EARTH_KM) * (180 / Math.PI)
+  const lonDelta = latDelta / Math.cos((latitude * Math.PI) / 180)
+  return [
+    [longitude - lonDelta, latitude - latDelta],
+    [longitude + lonDelta, latitude + latDelta],
+  ]
 }
 
 export function BriefingServiceRadiusMapCanvas({
@@ -38,9 +96,8 @@ export function BriefingServiceRadiusMapCanvas({
   className,
 }: BriefingServiceRadiusMapProps) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const mapRef = useRef<google.maps.Map | null>(null)
-  const circleRef = useRef<google.maps.Circle | null>(null)
-  const markerRef = useRef<google.maps.Marker | null>(null)
+  const mapRef = useRef<MapLibreMap | null>(null)
+  const markerRef = useRef<Marker | null>(null)
   const radiusRef = useRef(radiusKm)
   const addressRef = useRef(formattedAddress)
   // Ref de "valor mais recente": a escrita vai para um efeito, nunca no render.
@@ -49,8 +106,14 @@ export function BriefingServiceRadiusMapCanvas({
     addressRef.current = formattedAddress
   })
 
-  const [scriptError, setScriptError] = useState<string | null>(null)
+  const [runtimeError, setRuntimeError] = useState<string | null>(null)
   const [scriptReady, setScriptReady] = useState(false)
+
+  // Derivado no render, não no efeito: a chave vem do ambiente, é embutida na
+  // compilação e não muda. Marcá-la por `setState` dentro do efeito seria uma
+  // renderização em cascata para dizer algo que já se sabia antes de montar.
+  const scriptError =
+    runtimeError ?? (getMapTilesKey() ? null : MAP_STYLE_UNCONFIGURED)
 
   const showMap =
     latitude !== null && longitude !== null && !loading && !scriptError
@@ -58,100 +121,108 @@ export function BriefingServiceRadiusMapCanvas({
   useEffect(() => {
     if (!showMap || !containerRef.current || mapRef.current) return
 
-    let cancelled = false
+    const style = mapStyleUrl(isDarkMode() ? "dark" : "light")
+    if (!style) return
 
-    void loadGoogleMaps().then((result) => {
-      if (cancelled || !containerRef.current || mapRef.current) return
+    // Antes de qualquer `new Map`: sem isto o worker não carrega e o mapa fica
+    // em carregamento eterno, sem erro nenhum.
+    ensureMapWorker()
 
-      if (result.status === "error") {
-        setScriptError(result.message)
-        setScriptReady(false)
+    const center: [number, number] = [longitude as number, latitude as number]
+    const map = new MapLibreMap({
+      container: containerRef.current,
+      style,
+      center,
+      zoom: 12,
+      attributionControl: { compact: true },
+    })
+    mapRef.current = map
+
+    map.addControl(new NavigationControl({ showCompass: false }))
+    map.on("error", () => setRuntimeError("Não foi possível carregar o mapa."))
+
+    // Trocar de estilo descarta camadas e fontes, então o desenho do raio mora
+    // numa função que roda no primeiro `load` e a cada troca de tema.
+    function drawRadius() {
+      if (latitude === null || longitude === null) return
+      const accent = readPrimaryColor()
+      const data = circlePolygon(
+        latitude,
+        longitude,
+        Math.max(radiusRef.current, 1),
+      )
+      if (map.getSource(SOURCE_ID)) {
+        ;(map.getSource(SOURCE_ID) as GeoJSONSource).setData(data)
         return
       }
+      map.addSource(SOURCE_ID, { type: "geojson", data })
+      map.addLayer({
+        id: FILL_ID,
+        type: "fill",
+        source: SOURCE_ID,
+        paint: { "fill-color": accent, "fill-opacity": 0.16 },
+      })
+      map.addLayer({
+        id: LINE_ID,
+        type: "line",
+        source: SOURCE_ID,
+        paint: { "line-color": accent, "line-width": 2 },
+      })
+    }
 
-      setScriptError(null)
+    map.on("load", () => {
+      setRuntimeError(null)
       setScriptReady(true)
+      drawRadius()
+      markerRef.current = new Marker({ color: readPrimaryColor() })
+        .setLngLat(center)
+        .addTo(map)
+      map.fitBounds(
+        circleBounds(
+          latitude as number,
+          longitude as number,
+          Math.max(radiusRef.current, 1),
+        ),
+        { padding: 28, animate: false },
+      )
+    })
 
-      const { Map } = result.maps
-      const center = {
-        lat: latitude as number,
-        lng: longitude as number,
-      }
-      const accent = readPrimaryColor()
-
-      const map = new Map(containerRef.current, {
-        center,
-        zoom: 12,
-        disableDefaultUI: true,
-        zoomControl: true,
-        gestureHandling: "cooperative",
-        clickableIcons: false,
-        styles: isDarkMode() ? GOOGLE_MAPS_DARK_STYLES : [],
-      })
-
-      const marker = new google.maps.Marker({
-        map,
-        position: center,
-        title: addressRef.current || undefined,
-      })
-
-      const circle = new google.maps.Circle({
-        map,
-        center,
-        radius: Math.max(radiusRef.current, 1) * 1000,
-        strokeColor: accent,
-        strokeOpacity: 1,
-        strokeWeight: 2,
-        fillColor: accent,
-        fillOpacity: 0.16,
-        clickable: false,
-      })
-
-      fitCircle(map, circle)
-
-      mapRef.current = map
-      markerRef.current = marker
-      circleRef.current = circle
+    // `styledata` dispara depois de cada `setStyle`; sem isto o raio some ao
+    // alternar claro e escuro.
+    map.on("styledata", () => {
+      if (map.isStyleLoaded()) drawRadius()
     })
 
     return () => {
-      cancelled = true
-      circleRef.current?.setMap(null)
-      markerRef.current?.setMap(null)
-      circleRef.current = null
+      markerRef.current?.remove()
       markerRef.current = null
+      map.remove()
       mapRef.current = null
       setScriptReady(false)
     }
   }, [latitude, longitude, showMap])
 
   useEffect(() => {
-    if (
-      latitude === null ||
-      longitude === null ||
-      !mapRef.current ||
-      !circleRef.current ||
-      !markerRef.current
-    ) {
-      return
-    }
+    const map = mapRef.current
+    if (latitude === null || longitude === null || !map || !scriptReady) return
 
-    const center = { lat: latitude, lng: longitude }
-    markerRef.current.setPosition(center)
-    markerRef.current.setTitle(formattedAddress || "")
-    circleRef.current.setCenter(center)
-    circleRef.current.setRadius(Math.max(radiusKm, 1) * 1000)
-    fitCircle(mapRef.current, circleRef.current)
-  }, [latitude, longitude, radiusKm, formattedAddress])
+    const center: [number, number] = [longitude, latitude]
+    markerRef.current?.setLngLat(center)
+    const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
+    source?.setData(circlePolygon(latitude, longitude, Math.max(radiusKm, 1)))
+    map.fitBounds(circleBounds(latitude, longitude, Math.max(radiusKm, 1)), {
+      padding: 28,
+    })
+  }, [latitude, longitude, radiusKm, scriptReady])
 
   useEffect(() => {
     if (!showMap || !scriptReady) return
 
     const observer = new MutationObserver(() => {
-      if (!mapRef.current) return
-      mapRef.current.setOptions({
-        styles: isDarkMode() ? GOOGLE_MAPS_DARK_STYLES : [],
-      })
+      const map = mapRef.current
+      if (!map) return
+      const next = mapStyleUrl(isDarkMode() ? "dark" : "light")
+      if (next) map.setStyle(next)
     })
 
     observer.observe(document.documentElement, {

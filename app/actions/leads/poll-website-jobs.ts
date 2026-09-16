@@ -10,7 +10,7 @@ import {
   psiKindToStrategy,
   websitePsiJobsActive,
 } from "@/lib/leads/website-pagespeed"
-import { fetchPagespeedStrategy } from "@/lib/pagespeed/client"
+import { fetchPagespeedStrategy } from "@/lib/dataforseo/lighthouse"
 import {
   pollWebsiteJobsSchema,
   readPollWebsiteJobsFields,

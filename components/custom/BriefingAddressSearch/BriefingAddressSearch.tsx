@@ -16,14 +16,13 @@ import {
   ComboboxList,
 } from "@/components/ui/combobox"
 import { InputGroupAddon } from "@/components/ui/input-group"
-import { PLACES_SUGGEST_MIN_CHARS, type PlaceSuggestion } from "@/lib/places"
+import {
+  LOCATIONIQ_SUGGEST_MIN_CHARS,
+  type BriefingAddressCandidate,
+} from "@/lib/locationiq"
 import type { BriefingAddressSearchProps } from "./BriefingAddressSearch.types"
 
 const DEBOUNCE_MS = 300
-
-function newSessionToken() {
-  return crypto.randomUUID()
-}
 
 export function BriefingAddressSearch({
   id,
@@ -34,17 +33,16 @@ export function BriefingAddressSearch({
   error,
 }: BriefingAddressSearchProps) {
   const writerClientId = useBriefingWriterClientId()
-  const sessionTokenRef = useRef(newSessionToken())
   const requestIdRef = useRef(0)
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [lookupError, setLookupError] = useState<string | null>(null)
-  const [items, setItems] = useState<PlaceSuggestion[]>([])
+  const [items, setItems] = useState<BriefingAddressCandidate[]>([])
 
   // O reset e o flag de carregamento são derivados da busca no render; o efeito
   // fica só com a parte assíncrona.
   const trimmedValue = value.trim()
-  const canSearch = trimmedValue.length >= PLACES_SUGGEST_MIN_CHARS
+  const canSearch = trimmedValue.length >= LOCATIONIQ_SUGGEST_MIN_CHARS
   const [syncedValue, setSyncedValue] = useState(trimmedValue)
   if (syncedValue !== trimmedValue) {
     setSyncedValue(trimmedValue)
@@ -64,7 +62,6 @@ export function BriefingAddressSearch({
     const timer = window.setTimeout(() => {
       void suggestBriefingAddresses({
         query: trimmed,
-        sessionToken: sessionTokenRef.current,
         clientId: writerClientId ?? undefined,
       }).then((result) => {
         if (requestId !== requestIdRef.current) return
@@ -80,20 +77,18 @@ export function BriefingAddressSearch({
           return
         }
         setLookupError(null)
-        setItems(result.suggestions)
+        setItems(result.candidates)
       })
     }, DEBOUNCE_MS)
 
     return () => window.clearTimeout(timer)
   }, [trimmedValue, canSearch, writerClientId])
 
-  function handlePick(item: PlaceSuggestion | null) {
+  function handlePick(item: BriefingAddressCandidate | null) {
     if (!item) return
-    const token = sessionTokenRef.current
-    sessionTokenRef.current = newSessionToken()
     setItems([])
     setOpen(false)
-    onPick(item, token)
+    onPick(item)
   }
 
   const errorId = `${id}-error`
@@ -101,15 +96,15 @@ export function BriefingAddressSearch({
 
   return (
     <div className="flex w-full flex-col gap-1.5">
-      <Combobox<PlaceSuggestion>
+      <Combobox<BriefingAddressCandidate>
         items={items}
         value={null}
         onValueChange={(next) => handlePick(next)}
         isItemEqualToValue={(left, right) =>
-          Boolean(left && right && left.placeId === right.placeId)
+          Boolean(left && right && left.id === right.id)
         }
         itemToStringLabel={(item) =>
-          item.address ? `${item.name} ${item.address}` : item.name
+          item.secondary ? `${item.label} ${item.secondary}` : item.label
         }
         filter={null}
         disabled={disabled}
@@ -166,12 +161,12 @@ export function BriefingAddressSearch({
                 <ComboboxEmpty className="px-2 py-2.5 text-xs/relaxed text-muted-foreground">
                   {canSearch
                     ? "Nenhum endereço encontrado"
-                    : `Digite pelo menos ${PLACES_SUGGEST_MIN_CHARS} caracteres`}
+                    : `Digite pelo menos ${LOCATIONIQ_SUGGEST_MIN_CHARS} caracteres`}
                 </ComboboxEmpty>
                 <ComboboxList>
-                  {(item: PlaceSuggestion) => (
+                  {(item: BriefingAddressCandidate) => (
                     <ComboboxItem
-                      key={item.placeId}
+                      key={item.id}
                       value={item}
                       className={cn(
                         "flex min-h-10 cursor-pointer flex-col justify-center rounded-md px-2 py-1.5",
@@ -179,10 +174,10 @@ export function BriefingAddressSearch({
                         "data-highlighted:bg-accent",
                       )}
                     >
-                      <span className="truncate">{item.name}</span>
-                      {item.address ? (
+                      <span className="truncate">{item.label}</span>
+                      {item.secondary ? (
                         <span className="truncate text-xs/relaxed text-muted-foreground">
-                          {item.address}
+                          {item.secondary}
                         </span>
                       ) : null}
                     </ComboboxItem>

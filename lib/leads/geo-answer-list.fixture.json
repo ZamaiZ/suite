@@ -1,0 +1,336 @@
+{
+  "_origem": "Recortado dos payloads reais de docs/auditoria/evidencias/2026-09-11-lista-ordenada/, medidos em 2026-09-11 com probe-lista.mjs. Prompt: \"Quais sao as melhores empresas de SEO em Guarulhos?\" (familia discovery). Regenere com o probe de la.",
+  "_prompt": "Quais são as melhores empresas de SEO em Guarulhos?",
+  "chat_gpt": {
+    "items": [
+      {
+        "type": "reasoning",
+        "sections": [
+          {
+            "type": "summary_text",
+            "text": "**Searching for SEO companies**\n\nThe user is asking in Portuguese for the best SEO companies in Guarulhos. I’ll need to be careful with my recommendations since they could influence spending time and money. I’ll use the web tool to find relevant information and gather data. It’s important to identify and include up to five key statements that provide solid support for my recommendations. Let’s search for SEO options in Guarulhos!",
+            "annotations": []
+          }
+        ]
+      },
+      {
+        "type": "reasoning",
+        "sections": [
+          {
+            "type": "summary_text",
+            "text": "**Compiling agency recommendations**\n\nI need to compile a concise list of recommended local agencies in Guarulhos, which should include brief notes and citations for each agency. I’ll also want to offer guidance on how to choose an agency and outline the next steps. It’s crucial to cite the most important statements, referring to their respective pages. I think I should aim for 6-8 suggestions while keeping the information in Portuguese. Let’s get started!",
+            "annotations": []
+          }
+        ]
+      },
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Posso ajudar — abaixo listo agências de SEO/marketing digital que atuam em Guarulhos (com base em pesquisas recentes), um breve comentário sobre cada uma e critérios para escolher a melhor para o seu caso. Quer que eu pesquise avaliações reais (Google Reviews) ou compare preços e pacotes de 3–4 dessas agências?  \n\nAgências / consultorias encontradas em Guarulhos (ordem alfabética, com link de referência):\n- Agencia Green Digital — oferece SEO local, criação de sites e diagnóstico gratuito para empresas em Guarulhos; foca SEO regional e Google Business Profile. ([agenciagreendigital.com.br](https://agenciagreendigital.com.br/guarulhos?utm_source=openai))  \n- Buscalocal Pro — agência especializada em SEO local para Guarulhos e região metropolitana. ([buscalocalpro.com.br](https://buscalocalpro.com.br/?utm_source=openai))  \n- DIVIA Marketing Digital — agência localizada em Guarulhos que lista otimização de SEO entre seus serviços. ([divia.com.br](https://www.divia.com.br/marketing-digital-guarulhos-sp?utm_source=openai))  \n- Hammer Web — agência que combina SEO local, tráfego pago e desenvolvimento de sites com foco em Guarulhos. ([hammerweb.com.br](https://hammerweb.com.br/seo/agencia-de-marketing-digital-guarulhos?utm_source=openai))  \n- Marketing Central — agência em Guarulhos com serviços de SEO, Google Ads e Google Meu Negócio. ([marketingcentral.com.br](https://www.marketingcentral.com.br/?utm_source=openai))  \n- Maxi Results — agência que atende Guarulhos e Grande SP, com serviços de SEO e marketing digital. ([maxiresults.com.br](https://maxiresults.com.br/?utm_source=openai))  \n- PUBLIMARK / Publimark Digital — consultoria em marketing digital em Guarulhos que lista SEO e Google Meu Negócio entre os serviços. ([publimarkdigital.com.br](https://www.publimarkdigital.com.br/?utm_source=openai))  \n- Zuiqe Digital — agência que declara especialização em SEO e marketing digital com atuação em Guarulhos. ([zuiqedigital.com.br](https://zuiqedigital.com.br/?utm_source=openai))\n\nComo escolher a melhor agência para você\n- Resultados comprovados: peça cases ou exemplos de clientes locais (preferencialmente em Guarulhos) com métricas (aumento de tráfego orgânico, posições ou leads).  \n- Serviços incluídos: verifique se oferecem auditoria técnica, SEO on‑page, SEO local (Google Business Profile), produção de conteúdo e link building.  \n- Transparência e relatórios: exija acesso a relatórios (posições, tráfego, conversões) e reuniões periódicas.  \n- Contrato, prazos e metas: combine entregáveis claros (ex.: número de páginas otimizadas, prazo para auditoria, KPIs).  \n- Avaliações e referências: confira Google Reviews, depoimentos e, se possível, fale com clientes atuais. (Posso checar avaliações específicas para as agências que você preferir.)  \n- Orçamento vs ROI: preço baixo nem sempre é bom; priorize retorno esperado (leads/cliente) e não só posição no Google.\n\nPosso fazer um próximo passo prático:\n- comparar 3–4 agências (preços/pacotes) que você escolher; ou  \n- verificar as avaliações do Google e redes sociais de até 5 agências e trazer média das notas e comentários recentes; ou  \n- montar uma lista de perguntas (brief) para enviar às agências e conseguir orçamentos comparáveis.\n\nQual dessas opções prefere? Ou quer que eu já traga as avaliações do Google para essas agências?",
+            "annotations": [
+              {
+                "title": "Agência de Marketing Digital em Guarulhos | SEO e Sites",
+                "url": "https://agenciagreendigital.com.br/guarulhos?utm_source=openai"
+              },
+              {
+                "title": "Busca Local Pro - Agência de SEO em Guarulhos | Marketing Digital",
+                "url": "https://buscalocalpro.com.br/?utm_source=openai"
+              },
+              {
+                "title": "Agência de Marketing Digital em Guarulhos - SP - DIVIA Marketing Digital",
+                "url": "https://www.divia.com.br/marketing-digital-guarulhos-sp?utm_source=openai"
+              },
+              {
+                "title": "Agência de Marketing Digital em Guarulhos | Google Ads, SEO e Sites — Hammer Web",
+                "url": "https://hammerweb.com.br/seo/agencia-de-marketing-digital-guarulhos?utm_source=openai"
+              },
+              {
+                "title": "Marketing Central - Marketing Central",
+                "url": "https://www.marketingcentral.com.br/?utm_source=openai"
+              },
+              {
+                "title": "Agência de Marketing Digital em Guarulhos | Maxi Results",
+                "url": "https://maxiresults.com.br/?utm_source=openai"
+              },
+              {
+                "title": "PUBLIMARK - CONSULTÓRIA EM MARKETING DIGITAL | TRÁFEGO PAGO EM GUARULHOS E SP | GOOGLE MEU NEGÓCIO",
+                "url": "https://www.publimarkdigital.com.br/?utm_source=openai"
+              },
+              {
+                "title": "Zuiqe Digital | Agência SEO e Marketing Digital em Guarulhos",
+                "url": "https://zuiqedigital.com.br/?utm_source=openai"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "claude": {
+    "items": [
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Vou buscar informações sobre as melhores empresas de SEO em Guarulhos para você.",
+            "annotations": []
+          }
+        ]
+      },
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Com base na busca realizada, existem várias empresas de SEO em Guarulhos que oferecem serviços de otimização para mecanismos de busca. Aqui estão algumas das principais:\n\n## Empresas de SEO em Guarulhos:\n\n1. **SinalizeWeb** - ",
+            "annotations": []
+          },
+          {
+            "type": "text",
+            "text": "Uma das pioneiras em Guarulhos em marketing digital e consultoria SEO",
+            "annotations": [
+              {
+                "title": "AGENCIA DE MARKETING DIGITAL EM GUARULHOS | Agencia de SEO SinalizeWeb",
+                "url": "https://sinalizeweb.com.br/agencia-de-marketing-digital-em-guarulhos/"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "\n\n2. **Agência 4UP** - ",
+            "annotations": []
+          },
+          {
+            "type": "text",
+            "text": "Utiliza um conjunto de técnicas de otimização de sites, blogs e páginas na web",
+            "annotations": [
+              {
+                "title": "Agência de SEO Guarulhos - Agência 4UP",
+                "url": "https://agencia4up.com.br/informacoes/agencia-de-seo-guarulhos"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "\n\n3. **Max Rank** - ",
+            "annotations": []
+          },
+          {
+            "type": "text",
+            "text": "Uma agência especializada em SEO em Guarulhos que atua com total foco em garantir máxima eficiência em cada estratégia elaborada",
+            "annotations": [
+              {
+                "title": "Agência especializada em SEO em Guarulhos - Max Rank",
+                "url": "https://maxrank.com.br/artigos/agencia-especializada-em-seo-em-guarulhos"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "\n\n4. **Busca Local Pro** - ",
+            "annotations": []
+          },
+          {
+            "type": "text",
+            "text": "Especialistas em SEO local em Guarulhos que fazem seu negócio aparecer no topo do Google",
+            "annotations": [
+              {
+                "title": "Busca Local Pro - Agência de SEO em Guarulhos | Marketing Digital",
+                "url": "https://buscalocalpro.com.br/"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "\n\n5. **Go Up Digital** - Oferece consultoria de SEO com planos detalhados para melhorar a presença digital\n\n6. **Agência SCG** - Fornece consultoria de SEO com suporte completo para otimização de sites\n\n## Como escolher:\n\nPara encontrar a melhor empresa para suas necessidades, recomendo:\n- Solicitar orçamentos em plataformas como oHub, Tratativa ou B2Bfy, que listam múltiplas empresas\n- Comparar propostas e valores\n- Verificar referências e resultados anteriores\n- Considerar agências locais, pois entendem melhor as necessidades específicas de empresas em Guarulhos\n\nLembre-se que ",
+            "annotations": []
+          },
+          {
+            "type": "text",
+            "text": "SEO é um serviço bastante técnico que exige conhecimento de profissionais especializados, e os parâmetros estão sempre mudando",
+            "annotations": [
+              {
+                "title": "As melhores Empresas de Otimização de Sites SEO em Guarulhos | Tratativa",
+                "url": "https://www.tratativa.com.br/amp/design-grafico/otimizacao-de-sites-seo/sp/guarulhos"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": ".",
+            "annotations": []
+          }
+        ]
+      }
+    ]
+  },
+  "gemini": {
+    "items": [
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Ao buscar as melhores empresas de SEO em Guarulhos, é importante considerar aquelas que oferecem estratégias completas e personalizadas para o seu negócio, com foco em resultados.\n\nAlgumas das empresas e agências de marketing digital em Guarulhos que oferecem serviços de SEO incluem:\n\n*   **Publinet Marketing Digital:** Especialistas em marketing digital com foco em SEO, oferecem gestão completa de redes sociais, Google e Meta Ads, e gestão do Google Meu Negócio, com o objetivo de colocar o site do cliente na primeira página do Google.\n*   **Leggoo:** Trabalham com foco em criação de sites otimizados com SEO, gestão estratégica do Google Meu Negócio e social media profissional. O objetivo é posicionar a empresa do cliente no Google, atrair clientes qualificados e fortalecer a presença online.\n*   **North Star Growth:** Agência de marketing digital em Guarulhos focada em impulsionar negócios através de estratégias de SEO, tráfego pago e consultoria de vendas. Possuem certificação Google Partner.\n*   **MDEL Soluções:** Atua como consultor de SEO em Guarulhos, com foco em otimizar resultados locais e ajudar empresas a aparecerem nas primeiras posições para buscas na região.\n*   **Agência SCG Marketing Digital:** Oferece consultoria de SEO em Guarulhos, abrangendo pesquisa de palavras-chave, criação de conteúdo, análise de concorrentes e relatórios de dados para aumentar a receita do negócio.\n*   **Web One:** Oferece consultoria de SEO em Guarulhos, com estratégias personalizadas para elevar o site no Google e atrair mais clientes.\n*   **DIVIA Marketing Digital:** Agência com foco em consultoria de SEO em Guarulhos, reconhecida pela expertise em otimização de sites e por ter um grande número de cases de sucesso documentados.\n*   **Agencia 4UP:** Utiliza um conjunto de técnicas de otimização de sites, blogs e páginas na web para alcançar rankings orgânicos, gerar tráfego e maior visibilidade.\n*   **SinalizeWeb:** Oferece serviços de SEO com foco em aumento de branding, sustentação digital, geração de tráfego e aumento de vendas em e-commerce, com relatórios detalhados de desempenho.\n*   **Doutor Octopus:** Desenvolve sites profissionais e é especializada em SEO, hospedagem, Google Ads, tráfego pago, Google Meu Negócio, identidade visual e materiais gráficos.\n*   **MZclick:** Agência de marketing em Guarulhos que atua com SEO, auxiliando empresas da região a ganharem destaque no Google e aumentarem suas vendas.\n\nAo escolher uma empresa de SEO, é importante considerar:\n\n*   **Experiência e Adaptabilidade:** O SEO está em constante evolução, e agências que se mantêm atualizadas com as mudanças nos algoritmos são essenciais.\n*   **Transparência e Comunicação:** As melhores agências fornecem atualizações regulares e são transparentes sobre seus métodos e o raciocínio por trás de suas recomendações.\n*   **Foco em Resultados:** Verifique se a empresa demonstra foco em resultados como taxa de conversão em vendas, faturamento gerado e ROI das campanhas.\n*   **SEO Local:** Para empresas em Guarulhos, o SEO local é crucial",
+            "annotations": [
+              {
+                "title": "ohub.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaFhVbY164nir-BO4zsHi45VyQKgXI0G_o3oLBijYkozYP4VUNOvbmtn4OKv9eSJqm7A-MOG1r2gyeycbiejx7EEeVePyqr4v60B4MxGoBc-2P6PBH8T5gxVF42abnNv49bRw1tsm7k5m-6vlsqu7gGGIlhy1HpynfLg=="
+              },
+              {
+                "title": "leggoo.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGszx45I5slvGDUw-zyfDe0QHfR13_S4OA9oZtARYF0xhrGA33tis-K7Gozs_1xgTLN0yGXXEdWw6PrjiuSO6_-yU3tHK2F2_meAGN-DCx-gNHF5SHU0SBuYhi4ntNGb0Pu5ptd1K2atiE_-0KAgKfYrIOqNOhgVhwyUhc="
+              },
+              {
+                "title": "northstargrowth.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH0X6cwKLElquiHWlASXmUk_VDXGNNd9PFDftWsfv18MstrPSJO7dMWltSkkMi34bDAQSXk9mbd9gS1wfYcr8NNYwzU3aN_SUnLPpgEvGAdTWWN3iNSDHPgwKKKEe-VbjvqJQAost2hxYMdzzkz1LeTPeXYCxZmXm4bNLhVDf024ElZujA="
+              },
+              {
+                "title": "mdel.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHBrd2-SuIDT-i7LM1LFT9MqB-ON8NNCAlMkVgYbBXc84YiPDrSJIcueUeeH3vemsFwG2ZGfL1FTHJKgXtF56HLkpJIY8WtDmAFdNNPtx6w7puAFeadXXbMwLI88p-lnzMHCSrG3xXaFk5l"
+              },
+              {
+                "title": "agenciascg.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEybk5Oe58VmRMvkvGiKZesS9pRN37yFMsRSgyGanrJxwrN5ax3yW2HkqKmnol1Rj_ueJRCajKofq0FSXfE5JS1OpNdd3aHStgq5ZVbn7suvO_lBAUCLaEBJaN0Vdog-zRbji2vpgHYEFsczAQQkwjloiCqyqZmmxrt"
+              },
+              {
+                "title": "webone.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEzhKkOHnVQFuIyNUEheSwefRxUocb4ZZRw1cC-a2UdNfnQBNyHz7G-G_YbvP3iuE-JrkRvMoaxGevjcrYFO7cyUeYbwiD4d4WYXBgY6G_ZnLj6ebyqNqOPFgxLF8pOf5hhDjPNO7PFbxyfVuH0RbpWZQQXx0cy2kAm83Y_185bnA=="
+              },
+              {
+                "title": "divia.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFun7KqIsjkLGo4FW5daMgkDnJWuP_XLYcxDyEj7fB56kh1VM2NtivHYCTNeSyZAENdRlKWIlYWhAqiXlK1X0UCox065EUH_6RpgJuXyh8mbCFgG4MmlfVqRWTCiXpeRlLgUeYX-CImcpJU9vPKM5hvgCcb9a6v"
+              },
+              {
+                "title": "agencia4up.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEmgn3w8t2OsDR9Wk_5hJSwSQlGO-MbZINdF7_gdobZWK20OETE20995Z3rgoHjsFx9lx1tdYcVRNoQ8opahWEP2WDBJyK5E39OFxGhxFz9Q0ryZCe-__QdVEY-AfmaS_USI20AohN8T2VygkANjpPH4qSStbd8qyBp"
+              },
+              {
+                "title": "sinalizeweb.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE88ZQIj11wC3VVcku_nOjpl1ImU1Wp5rDBfSISz47Wa1EcopBoDkd7jB5Q6SphL-0-2ErGxl1YKd18Cp2hoTfQe_w2_V5ikN19r1MKqo1LLIMmAXOZ6QYRnpU="
+              },
+              {
+                "title": "designrush.com",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHlnHNLQJejzcnVP5K3NjgDJFG8SuwEupa4F62D7t_aRvZ4VSbOv5s15xOYU5NFiDc0KfBYb4585oDcourasdYZV6r7DB2u9K9z8X0dtZ6uPDlAEX3TWHA78qJBu_aUkKDekGgRMDYDjdL6z8q6rZqpPoptsNq0uGzauA=="
+              },
+              {
+                "title": "mzclick.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGS_twL8jpfaHbgzmHf6FDXNO7CHIngacWfsuLik920zNTEQn03XI4NuNEj4vhk6m1y5tp_oqv6GFwikLnsTTwVq5quqRLKPWTg4r0qyPKQdA2Nnv0dDhu9P9ijo4Av4NMB7IckNCb1VFfX1JqadV_a2VA="
+              },
+              {
+                "title": "aamax.co",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAyb-Jp83QiZKZtQfYONjhN_99-yMLFyBsOgrzfpROztSP4_yn9u7C_lTc-Fh5YQFw9fROu--AEjnZZ-g1N1XyPVphlH2DEag3IT4dNutI7KCByRamLtOKcbT_riTqgm0XBNdzjCiCHlCkCnNlmtaxK9jRg1_XUQ=="
+              },
+              {
+                "title": "aamax.co",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAyb-Jp83QiZKZtQfYONjhN_99-yMLFyBsOgrzfpROztSP4_yn9u7C_lTc-Fh5YQFw9fROu--AEjnZZ-g1N1XyPVphlH2DEag3IT4dNutI7KCByRamLtOKcbT_riTqgm0XBNdzjCiCHlCkCnNlmtaxK9jRg1_XUQ=="
+              },
+              {
+                "title": "ohub.com.br",
+                "url": "https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHaFhVbY164nir-BO4zsHi45VyQKgXI0G_o3oLBijYkozYP4VUNOvbmtn4OKv9eSJqm7A-MOG1r2gyeycbiejx7EEeVePyqr4v60B4MxGoBc-2P6PBH8T5gxVF42abnNv49bRw1tsm7k5m-6vlsqu7gGGIlhy1HpynfLg=="
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "perplexity": {
+    "items": [
+      {
+        "type": "message",
+        "sections": [
+          {
+            "type": "text",
+            "text": "Algumas das **melhores opções de empresas/agências de SEO em Guarulhos** que aparecem nos resultados são a **Webclick**, a **RTAG**, a **Agência SCG**, a **MZclick**, a **DIVIA Marketing Digital** e a **Agência 4UP**. Essas empresas se destacam nos resultados por se apresentarem como especializadas em SEO em Guarulhos ou na região, com foco em SEO local, técnico e de conteúdo.[3][5][6][8][4][17]\n\nPara ajudar na escolha, vale observar o posicionamento de cada uma:\n\n| Empresa | Destaque nos resultados |\n|---|---|\n| **Webclick** | Foco em **SEO técnico e de conteúdo**, com atuação em Guarulhos.[5] |\n| **RTAG** | Mais de **10 anos de mercado** e metodologia aplicada a negócios em Guarulhos.[6] |\n| **Agência SCG** | Se apresenta como **especializada em SEO Guarulhos SP**.[3] |\n| **MZclick** | Diz atuar diretamente em Guarulhos para ajudar empresas a ganhar destaque.[8] |\n| **DIVIA Marketing Digital** | Se apresenta como opção para **consultoria de SEO em Guarulhos** e como agência reconhecida.[4] |\n| **Agência 4UP** | Informa endereço em Guarulhos e atendimento focado em SEO/SEO local.[17] |\n\nSe você quiser, eu também posso montar uma **lista mais prática com ranking por custo-benefício, porte da empresa e tipo de serviço** — por exemplo, “melhor para SEO local”, “melhor para e-commerce” ou “melhor para empresas pequenas”.",
+            "annotations": [
+              {
+                "title": "As 10 melhores empresas de SEO e Marketing ...",
+                "url": "https://b2bfy.com.br/10-melhores-empresas-seo-marketing-conteudo-em-guarulhos"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos -SP | (11) 97559-6711",
+                "url": "https://www.fernandocoutinho.com/agencia-de-seo-em-guarulhos-sp"
+              },
+              {
+                "title": "Agência SCG - Agência Especializada em SEO Guarulhos SP",
+                "url": "https://agenciascg.com.br/"
+              },
+              {
+                "title": "Consultoria de SEO em Guarulhos - SP",
+                "url": "https://www.divia.com.br/consultoria-de-seo-em-guarulhos-sp"
+              },
+              {
+                "title": "Agência de SEO, GEO e AEO em Guarulhos, SP - Webclick",
+                "url": "https://webclik.com.br/sobre"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos | RTAG",
+                "url": "https://rtag.com.br/agencia-de-seo-em-guarulhos"
+              },
+              {
+                "title": "Empresa de SEO e GEO em Guarulhos, SP | srvs",
+                "url": "https://srvs.com.br/seo-e-geo/guarulhos"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos",
+                "url": "https://www.mzclick.com.br/agencia-de-seo-em-guarulhos/"
+              },
+              {
+                "title": "Agência Especializada em SEO em Guarulhos",
+                "url": "https://activadigital.com.br/marketing/agencia-especializada-em-seo-em-guarulhos/"
+              },
+              {
+                "title": "Como uma agência de SEO em Guarulhos pode multiplicar seu ...",
+                "url": "https://www.rfcdigital.com.br/agencia-de-seo-em-guarulhos"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos | Resultados com a Digitall Evolution",
+                "url": "https://www.digitallevolution.com.br/agencia-de-seo-em-guarulhos"
+              },
+              {
+                "title": "Agência Especializada Em SEO Guarulhos SP - Essiouzeiros",
+                "url": "https://analistasdeseo.com.br/"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos: Resultados Visíveis. - Origyn Digital",
+                "url": "https://www.origyndigital.com.br/blog/agencia-de-seo-em-guarulhos/"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos | HELPU",
+                "url": "https://agenciahelpu.com/agencia-de-seo-guarulhos/"
+              },
+              {
+                "title": "Agência de Marketing Guarulhos",
+                "url": "https://www.digitallevolution.com.br/agencia-marketing-em-guarulhos"
+              },
+              {
+                "title": "Max Rank",
+                "url": "https://maxrank.com.br/artigos/agencia-especializada-em-seo-em-guarulhos"
+              },
+              {
+                "title": "Agência de SEO Guarulhos",
+                "url": "https://agencia4up.com.br/informacoes/agencia-de-seo-guarulhos"
+              },
+              {
+                "title": "Melhores empresas de Marketing Digital em Guarulhos",
+                "url": "https://www.ohub.com.br/empresas/marketing-digital/sp/guarulhos"
+              },
+              {
+                "title": "Agência de SEO em Guarulhos - Integração Digital",
+                "url": "https://www.integracaodigital.com.br/agencia-de-seo-em-guarulhos.php"
+              },
+              {
+                "title": "Agência 4UP",
+                "url": "https://agencia4up.com.br/informacoes/agencia-de-busca-organica-guarulhos"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -148,6 +148,25 @@ export type DiagnosisDocument = {
   meta: DiagnosisMeta
   facts: DiagnosisFacts
   prose: DiagnosisProse
+  /**
+   * A prosa **semeada** na última compilação, guardada ao lado da prosa viva.
+   *
+   * Existe para uma pergunta que nenhum dos dois campos responde sozinho: o
+   * analista escreveu isto, ou foi a semente que ficou? A resposta muda o que
+   * a recompilação pode fazer. Texto dele tem que sobreviver; semente que
+   * virou mentira tem que sair.
+   *
+   * O caso que obrigou o campo: o gancho comercial é uma cópia dos três
+   * primeiros itens do roteiro. Uma coleta nova tirou "Conquistar citação na
+   * visão geral de IA" do roteiro, e o gancho — salvo, intocado — continuou
+   * anunciando o item no topo do PDF do cliente. O documento se contradizia
+   * na primeira linha que o closer lê.
+   *
+   * Opcional na leitura: rascunho salvo antes deste campo não tem semente
+   * registrada, e sem ela a recompilação **preserva tudo**, como sempre fez.
+   * O default é conservar o que pode ser dele.
+   */
+  proseSeed?: DiagnosisProse
   limitations: string[]
 }
 
@@ -191,6 +210,34 @@ export function emptyPillarScore(): DiagnosisPillarScore {
 
 export function emptyPillarFacts(): DiagnosisPillarFacts {
   return { opportunities: [], keyMetrics: [] }
+}
+
+/**
+ * Decide o destino de um campo de prosa numa recompilação.
+ *
+ * Três entradas: o texto salvo, a semente que a compilação anterior gerou, e a
+ * semente nova. A pergunta é uma só — **o analista escreveu isto?**
+ *
+ * - Salvo vazio → semente nova. O analista apagou ou nunca houve texto.
+ * - Salvo igual à semente anterior → ninguém tocou. Vale a semente nova.
+ * - Salvo diferente → é dele. Preserva, mesmo que os fatos tenham mudado.
+ * - **Sem semente anterior registrada → preserva.** Documento antigo não tem o
+ *   campo, e sem ele não dá para distinguir; o erro de apagar texto do analista
+ *   é pior que o de manter uma frase velha, porque o texto não volta.
+ *
+ * A comparação é por `trim()` porque é assim que o texto chega da tela: o
+ * `update-lead-diagnosis-draft` apara antes de gravar, e um espaço a mais
+ * transformaria "intocado" em "editado" sem que ninguém tivesse digitado nada.
+ */
+export function keepOrReseed(
+  saved: string,
+  previousSeed: string | undefined,
+  nextSeed: string,
+): string {
+  const texto = saved.trim()
+  if (!texto) return nextSeed
+  if (previousSeed === undefined) return texto
+  return texto === previousSeed.trim() ? nextSeed : texto
 }
 
 export function emptyDiagnosisProse(): DiagnosisProse {

@@ -28,9 +28,8 @@ export function LeadGbpStepHeader({
   canEdit,
   readingMode,
   isPrimary,
-  onEnrich,
+  onRecollect,
   onPrimary,
-  onRefresh,
   onRemove,
   onAddProfile,
 }: {
@@ -41,9 +40,8 @@ export function LeadGbpStepHeader({
   /** Modo reunião: esconde edição. Nunca habilita nada. */
   readingMode: boolean
   isPrimary: boolean
-  onEnrich: () => void
+  onRecollect: () => void
   onPrimary: () => void
-  onRefresh: () => void
   onRemove: () => void
   onAddProfile: () => void
 }) {
@@ -74,7 +72,7 @@ export function LeadGbpStepHeader({
             type="button"
             variant="secondary"
             disabled={collecting}
-            onClick={onEnrich}
+            onClick={onRecollect}
           >
             {collecting ? (
               <Spinner
@@ -85,7 +83,7 @@ export function LeadGbpStepHeader({
             ) : (
               <RiRefreshLine data-icon="inline-start" aria-hidden />
             )}
-            Atualizar coleta
+            Recoletar
           </Button>
         ) : null}
         {mapsHref && !readingMode ? (
@@ -113,10 +111,6 @@ export function LeadGbpStepHeader({
               <DropdownMenuItem disabled={isPrimary} onClick={onPrimary}>
                 <RiStarLine size={16} aria-hidden />
                 Definir como principal
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={onRefresh}>
-                <RiRefreshLine size={16} aria-hidden />
-                Atualizar dados do Places
               </DropdownMenuItem>
               <DropdownMenuItem onClick={onAddProfile}>
                 <RiAddLine size={16} aria-hidden />

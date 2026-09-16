@@ -1,0 +1,175 @@
+{
+  "at": "2026-09-11T05:52:45.620Z",
+  "prompt": "Quais são as melhores empresas de SEO em Guarulhos?",
+  "teto_usd": 0.15,
+  "traces": {
+    "chat_gpt": {
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.01459,
+      "gasto_acumulado": 0.01459
+    },
+    "claude": {
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.025008,
+      "gasto_acumulado": 0.039598
+    },
+    "gemini": {
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.037547,
+      "gasto_acumulado": 0.077145
+    },
+    "perplexity": {
+      "http": 200,
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.006035,
+      "gasto_acumulado": 0.08318
+    }
+  },
+  "gasto": 0.08318,
+  "veredito": {
+    "chat_gpt": {
+      "respondeu": true,
+      "chars": 4226,
+      "linhas": 32,
+      "linhas_numeradas": 0,
+      "linhas_bullet": 17,
+      "titulos_markdown": 0,
+      "trechos_em_negrito": 2,
+      "tem_marcador_colchete": false,
+      "tem_fonte_parentese": true,
+      "primeiras_numeradas": [],
+      "primeiros_bullets": [
+        "- Agencia Green Digital — oferece SEO local, criação de sites e diagnóstico gratuito para empresas em Guarulhos; foca SEO regional e Google Business Profile. ([agenciagreendigital.com.br](https://agenciagreendigital.com.br/guarulhos?utm_source=openai))",
+        "- Buscalocal Pro — agência especializada em SEO local para Guarulhos e região metropolitana. ([buscalocalpro.com.br](https://buscalocalpro.com.br/?utm_source=openai))",
+        "- DIVIA Marketing Digital — agência localizada em Guarulhos que lista otimização de SEO entre seus serviços. ([divia.com.br](https://www.divia.com.br/marketing-digital-guarulhos-sp?utm_source=openai))",
+        "- Hammer Web — agência que combina SEO local, tráfego pago e desenvolvimento de sites com foco em Guarulhos. ([hammerweb.com.br](https://hammerweb.com.br/seo/agencia-de-marketing-digital-guarulhos?utm_source=openai))",
+        "- Marketing Central — agência em Guarulhos com serviços de SEO, Google Ads e Google Meu Negócio. ([marketingcentral.com.br](https://www.marketingcentral.com.br/?utm_source=openai))",
+        "- Maxi Results — agência que atende Guarulhos e Grande SP, com serviços de SEO e marketing digital. ([maxiresults.com.br](https://maxiresults.com.br/?utm_source=openai))",
+        "- PUBLIMARK / Publimark Digital — consultoria em marketing digital em Guarulhos que lista SEO e Google Meu Negócio entre os serviços. ([publimarkdigital.com.br](https://www.publimarkdigital.com.br/?utm_source=openai))",
+        "- Zuiqe Digital — agência que declara especialização em SEO e marketing digital com atuação em Guarulhos. ([zuiqedigital.com.br](https://zuiqedigital.com.br/?utm_source=openai))",
+        "- Resultados comprovados: peça cases ou exemplos de clientes locais (preferencialmente em Guarulhos) com métricas (aumento de tráfego orgânico, posições ou leads).",
+        "- Serviços incluídos: verifique se oferecem auditoria técnica, SEO on‑page, SEO local (Google Business Profile), produção de conteúdo e link building.",
+        "- Transparência e relatórios: exija acesso a relatórios (posições, tráfego, conversões) e reuniões periódicas.",
+        "- Contrato, prazos e metas: combine entregáveis claros (ex.: número de páginas otimizadas, prazo para auditoria, KPIs)."
+      ],
+      "primeiros_negritos": [
+        "Searching for SEO companies",
+        "Compiling agency recommendations"
+      ],
+      "primeiros_titulos": []
+    },
+    "claude": {
+      "respondeu": true,
+      "chars": 1463,
+      "linhas": 36,
+      "linhas_numeradas": 6,
+      "linhas_bullet": 4,
+      "titulos_markdown": 2,
+      "trechos_em_negrito": 6,
+      "tem_marcador_colchete": false,
+      "tem_fonte_parentese": false,
+      "primeiras_numeradas": [
+        "1. **SinalizeWeb** -",
+        "2. **Agência 4UP** -",
+        "3. **Max Rank** -",
+        "4. **Busca Local Pro** -",
+        "5. **Go Up Digital** - Oferece consultoria de SEO com planos detalhados para melhorar a presença digital",
+        "6. **Agência SCG** - Fornece consultoria de SEO com suporte completo para otimização de sites"
+      ],
+      "primeiros_bullets": [
+        "- Solicitar orçamentos em plataformas como oHub, Tratativa ou B2Bfy, que listam múltiplas empresas",
+        "- Comparar propostas e valores",
+        "- Verificar referências e resultados anteriores",
+        "- Considerar agências locais, pois entendem melhor as necessidades específicas de empresas em Guarulhos"
+      ],
+      "primeiros_negritos": [
+        "SinalizeWeb",
+        "Agência 4UP",
+        "Max Rank",
+        "Busca Local Pro",
+        "Go Up Digital",
+        "Agência SCG"
+      ],
+      "primeiros_titulos": [
+        "## Empresas de SEO em Guarulhos:",
+        "## Como escolher:"
+      ]
+    },
+    "gemini": {
+      "respondeu": true,
+      "chars": 3062,
+      "linhas": 22,
+      "linhas_numeradas": 0,
+      "linhas_bullet": 15,
+      "titulos_markdown": 0,
+      "trechos_em_negrito": 15,
+      "tem_marcador_colchete": false,
+      "tem_fonte_parentese": false,
+      "primeiras_numeradas": [],
+      "primeiros_bullets": [
+        "*   **Publinet Marketing Digital:** Especialistas em marketing digital com foco em SEO, oferecem gestão completa de redes sociais, Google e Meta Ads, e gestão do Google Meu Negócio, com o objetivo de colocar o site do cliente na primeira página do Google.",
+        "*   **Leggoo:** Trabalham com foco em criação de sites otimizados com SEO, gestão estratégica do Google Meu Negócio e social media profissional. O objetivo é posicionar a empresa do cliente no Google, atrair clientes qualificados e fortalecer a presença online.",
+        "*   **North Star Growth:** Agência de marketing digital em Guarulhos focada em impulsionar negócios através de estratégias de SEO, tráfego pago e consultoria de vendas. Possuem certificação Google Partner.",
+        "*   **MDEL Soluções:** Atua como consultor de SEO em Guarulhos, com foco em otimizar resultados locais e ajudar empresas a aparecerem nas primeiras posições para buscas na região.",
+        "*   **Agência SCG Marketing Digital:** Oferece consultoria de SEO em Guarulhos, abrangendo pesquisa de palavras-chave, criação de conteúdo, análise de concorrentes e relatórios de dados para aumentar a receita do negócio.",
+        "*   **Web One:** Oferece consultoria de SEO em Guarulhos, com estratégias personalizadas para elevar o site no Google e atrair mais clientes.",
+        "*   **DIVIA Marketing Digital:** Agência com foco em consultoria de SEO em Guarulhos, reconhecida pela expertise em otimização de sites e por ter um grande número de cases de sucesso documentados.",
+        "*   **Agencia 4UP:** Utiliza um conjunto de técnicas de otimização de sites, blogs e páginas na web para alcançar rankings orgânicos, gerar tráfego e maior visibilidade.",
+        "*   **SinalizeWeb:** Oferece serviços de SEO com foco em aumento de branding, sustentação digital, geração de tráfego e aumento de vendas em e-commerce, com relatórios detalhados de desempenho.",
+        "*   **Doutor Octopus:** Desenvolve sites profissionais e é especializada em SEO, hospedagem, Google Ads, tráfego pago, Google Meu Negócio, identidade visual e materiais gráficos.",
+        "*   **MZclick:** Agência de marketing em Guarulhos que atua com SEO, auxiliando empresas da região a ganharem destaque no Google e aumentarem suas vendas.",
+        "*   **Experiência e Adaptabilidade:** O SEO está em constante evolução, e agências que se mantêm atualizadas com as mudanças nos algoritmos são essenciais."
+      ],
+      "primeiros_negritos": [
+        "Publinet Marketing Digital:",
+        "Leggoo:",
+        "North Star Growth:",
+        "MDEL Soluções:",
+        "Agência SCG Marketing Digital:",
+        "Web One:",
+        "DIVIA Marketing Digital:",
+        "Agencia 4UP:",
+        "SinalizeWeb:",
+        "Doutor Octopus:",
+        "MZclick:",
+        "Experiência e Adaptabilidade:"
+      ],
+      "primeiros_titulos": []
+    },
+    "perplexity": {
+      "respondeu": true,
+      "chars": 1339,
+      "linhas": 14,
+      "linhas_numeradas": 0,
+      "linhas_bullet": 0,
+      "titulos_markdown": 0,
+      "trechos_em_negrito": 17,
+      "tem_marcador_colchete": true,
+      "tem_fonte_parentese": false,
+      "primeiras_numeradas": [],
+      "primeiros_bullets": [],
+      "primeiros_negritos": [
+        "melhores opções de empresas/agências de SEO em Guarulhos",
+        "Webclick",
+        "RTAG",
+        "Agência SCG",
+        "MZclick",
+        "DIVIA Marketing Digital",
+        "Agência 4UP",
+        "Webclick",
+        "SEO técnico e de conteúdo",
+        "RTAG",
+        "10 anos de mercado",
+        "Agência SCG"
+      ],
+      "primeiros_titulos": []
+    }
+  }
+}

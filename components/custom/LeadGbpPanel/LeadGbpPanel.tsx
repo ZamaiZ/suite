@@ -50,13 +50,11 @@ import {
 } from "@/lib/leads/digital-presence"
 import { emptyDigitalPresenceReview } from "@/lib/leads/digital-presence-review"
 import { mergeDigitalPresenceOpportunities } from "@/lib/leads/digital-presence-opportunities"
-import {
-  leadLocationSearchHint,
-  resolveLeadLocation,
-} from "@/lib/leads/resolve-location"
+import { resolveLeadLocation } from "@/lib/leads/resolve-location"
 import { visibilityGapsForSnapshot } from "@/lib/leads/visibility-audit"
 import { mergeGeoOpportunities } from "@/lib/leads/geo-opportunities"
 import { LeadGbpAuditRail } from "./LeadGbpAuditRail"
+import type { GbpPlaceCandidate } from "@/lib/leads/gbp-maps-candidate"
 import { LeadGbpPlacePicker } from "./LeadGbpPlacePicker"
 import { LeadGbpProfileView } from "./LeadGbpProfileView"
 import type { LeadGbpPanelProps } from "./LeadGbpPanel.types"
@@ -318,14 +316,6 @@ export function LeadGbpPanel({
       : null,
   )
   const visibilityCity = visibilityLocation.city
-  const gbpLocationHint = leadLocationSearchHint(
-    {
-      city: detail.lead.city,
-      state_code: detail.lead.state_code,
-      segment: detail.lead.segment,
-    },
-    detail.lead.company_name,
-  )
   const visibilityAlertCount = detail.visibilityAudit
     ? visibilityGapsForSnapshot({
         snapshot: detail.visibilityAudit.snapshot,
@@ -403,7 +393,7 @@ export function LeadGbpPanel({
     )
   }
 
-  function handlePick(placeId: string, sessionToken: string) {
+  function handlePick(candidate: GbpPlaceCandidate) {
     if (!detail || linking) return
     const leadId = detail.lead.id
     setLinking(true)
@@ -412,8 +402,11 @@ export function LeadGbpPanel({
     setExistingLeadId(null)
     const formData = new FormData()
     formData.set("lead_id", leadId)
-    formData.set("place_id", placeId)
-    formData.set("session_token", sessionToken)
+    formData.set("place_id", candidate.placeId)
+    // Coordenada do candidato: só acelera. O `my_business_info` devolve a dele,
+    // e funciona sem nenhuma — medido em 2026-09-15.
+    formData.set("latitude", candidate.latitude?.toString() ?? "")
+    formData.set("longitude", candidate.longitude?.toString() ?? "")
     void linkLeadGbpProfile(formData).then((result) => {
       if (leadIdRef.current !== leadId) {
         onPendingChange(false)
@@ -460,7 +453,11 @@ export function LeadGbpPanel({
       <div className="mt-3 flex flex-col gap-2">
         {uncoveredCount > 0 ? (
           <div className="flex flex-wrap items-center gap-3 rounded-lg border border-warning/25 bg-warning/10 px-3 py-2">
-            <RiAlertLine size={16} aria-hidden className="shrink-0 text-warning" />
+            <RiAlertLine
+              size={16}
+              aria-hidden
+              className="shrink-0 text-warning"
+            />
             <p className="min-w-0 flex-1 text-xs/relaxed text-warning">
               {uncoveredCount === 1
                 ? "1 site sem perfil vinculado"
@@ -481,8 +478,8 @@ export function LeadGbpPanel({
         {showPicker ? (
           <LeadGbpPlacePicker
             id="lead-gbp-place"
+            leadId={detail.lead.id}
             disabled={linking}
-            locationHint={gbpLocationHint}
             onPick={handlePick}
           />
         ) : null}
@@ -570,9 +567,7 @@ export function LeadGbpPanel({
           // A etapa do Perfil no Google monta o próprio shell de tela cheia:
           // cabeçalho fixo, abas e coluna. Padding e scroll aqui brigariam com
           // ele. As outras quatro etapas seguem como estavam.
-          fullBleed
-            ? "min-w-0"
-            : "overflow-y-auto px-3 py-3 sm:px-4 sm:py-4",
+          fullBleed ? "min-w-0" : "overflow-y-auto px-3 py-3 sm:px-4 sm:py-4",
         )}
       >
         {selectedStep === "website" ? (

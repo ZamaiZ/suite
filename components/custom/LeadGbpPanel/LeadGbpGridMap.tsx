@@ -1,9 +1,23 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import {
+  LngLatBounds,
+  Map as MapLibreMap,
+  Marker,
+  NavigationControl,
+  type GeoJSONSource,
+} from "maplibre-gl"
+import "maplibre-gl/dist/maplibre-gl.css"
+import type { FeatureCollection, Point } from "geojson"
 import { RiMapPinLine } from "react-icons/ri"
 import { cn } from "cn"
-import { GOOGLE_MAPS_DARK_STYLES, loadGoogleMaps } from "@/lib/google-maps"
+import {
+  ensureMapWorker,
+  getMapTilesKey,
+  MAP_STYLE_UNCONFIGURED,
+  mapStyleUrl,
+} from "@/lib/maplibre"
 import type { GbpGridPoint } from "@/lib/leads/gbp-grid"
 import { SHADCN_PALETTE } from "@/lib/theme/shadcn-palette"
 import { Spinner } from "@/components/ui/spinner"
@@ -97,6 +111,44 @@ function isDarkMode(): boolean {
   return document.documentElement.classList.contains("dark")
 }
 
+const SOURCE_ID = "grid"
+const CIRCLE_ID = "grid-circles"
+const LABEL_ID = "grid-labels"
+
+/**
+ * Uma camada, e não um marcador por ponto.
+ *
+ * A malha vai a 121 pontos; com marcador isso é 121 nós no DOM, cada um com o
+ * seu rótulo. Como camada é um desenho só, e a cor de cada ponto viaja como
+ * propriedade da feature — as faixas continuam sendo a única fonte da cor.
+ */
+function pointsToGeoJson(
+  points: readonly GbpGridPoint[],
+): FeatureCollection<Point> {
+  return {
+    type: "FeatureCollection",
+    features: points.map((point) => ({
+      type: "Feature",
+      properties: {
+        color: pointColor(point),
+        label: pointLabel(point),
+        title: pointTitle(point),
+        // Ponto ainda não coletado fica translúcido, como no mapa anterior.
+        opacity:
+          point.status === "done" || point.status === "failed" ? 0.95 : 0.45,
+      },
+      geometry: { type: "Point", coordinates: [point.lng, point.lat] },
+    })),
+  }
+}
+
+function boundsOf(points: readonly GbpGridPoint[]): LngLatBounds | null {
+  if (points.length === 0) return null
+  const bounds = new LngLatBounds()
+  for (const point of points) bounds.extend([point.lng, point.lat])
+  return bounds
+}
+
 export function LeadGbpGridMap({
   centerLat,
   centerLng,
@@ -109,48 +161,105 @@ export function LeadGbpGridMap({
   className?: string
 }) {
   const containerRef = useRef<HTMLDivElement | null>(null)
-  const mapRef = useRef<google.maps.Map | null>(null)
-  const centerMarkerRef = useRef<google.maps.Marker | null>(null)
-  const markersRef = useRef<google.maps.Marker[]>([])
-  const [scriptError, setScriptError] = useState<string | null>(null)
+  const mapRef = useRef<MapLibreMap | null>(null)
+  const centerMarkerRef = useRef<Marker | null>(null)
+  const pointsRef = useRef(points)
+  useEffect(() => {
+    pointsRef.current = points
+  })
+  const [runtimeError, setRuntimeError] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
+
+  // Derivado no render, não no efeito: a chave vem do ambiente e é constante.
+  const scriptError =
+    runtimeError ?? (getMapTilesKey() ? null : MAP_STYLE_UNCONFIGURED)
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) return
-    let cancelled = false
 
-    void loadGoogleMaps().then((result) => {
-      if (cancelled || !containerRef.current || mapRef.current) return
-      if (result.status === "error") {
-        setScriptError(result.message)
+    const style = mapStyleUrl(isDarkMode() ? "dark" : "light")
+    if (!style) return
+
+    // Antes de qualquer `new Map`: sem isto o worker não carrega e o mapa fica
+    // em carregamento eterno, sem erro nenhum.
+    ensureMapWorker()
+
+    const center: [number, number] = [centerLng, centerLat]
+    const map = new MapLibreMap({
+      container: containerRef.current,
+      style,
+      center,
+      zoom: 12,
+      attributionControl: { compact: true },
+    })
+    mapRef.current = map
+
+    map.addControl(new NavigationControl({ showCompass: false }))
+    map.on("error", () => setRuntimeError("Não foi possível carregar o mapa."))
+
+    // Trocar de estilo descarta camadas; o desenho mora numa função que roda no
+    // primeiro `load` e a cada troca de tema.
+    function drawGrid() {
+      const data = pointsToGeoJson(pointsRef.current)
+      const existing = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
+      if (existing) {
+        existing.setData(data)
         return
       }
-      setScriptError(null)
-
-      const { Map } = result.maps
-      const center = { lat: centerLat, lng: centerLng }
-      const map = new Map(containerRef.current, {
-        center,
-        zoom: 12,
-        disableDefaultUI: true,
-        zoomControl: true,
-        gestureHandling: "cooperative",
-        clickableIcons: false,
-        styles: isDarkMode() ? GOOGLE_MAPS_DARK_STYLES : [],
+      map.addSource(SOURCE_ID, { type: "geojson", data })
+      map.addLayer({
+        id: CIRCLE_ID,
+        type: "circle",
+        source: SOURCE_ID,
+        paint: {
+          "circle-radius": 13,
+          "circle-color": ["get", "color"],
+          "circle-opacity": ["get", "opacity"],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": SHADCN_PALETTE.light.primaryForeground,
+        },
       })
-
-      centerMarkerRef.current = new google.maps.Marker({
-        map,
-        position: center,
-        zIndex: 1000,
+      map.addLayer({
+        id: LABEL_ID,
+        type: "symbol",
+        source: SOURCE_ID,
+        layout: {
+          "text-field": ["get", "label"],
+          // Stack que o próprio estilo do LocationIQ usa — conferido nas 96
+          // camadas dele. Omitir cai na fonte padrão da especificação, que o
+          // servidor de glyphs não serve, e o rótulo somia com erro no console.
+          "text-font": [
+            "Montserrat Regular",
+            "Open Sans Regular",
+            "Noto Sans Regular",
+          ],
+          "text-size": 11,
+          "text-allow-overlap": true,
+          "text-ignore-placement": true,
+        },
+        paint: { "text-color": SHADCN_PALETTE.light.primaryForeground },
       })
+    }
 
-      mapRef.current = map
+    map.on("load", () => {
+      setRuntimeError(null)
       setReady(true)
+      drawGrid()
+      centerMarkerRef.current = new Marker().setLngLat(center).addTo(map)
+      const bounds = boundsOf(pointsRef.current)
+      if (bounds) map.fitBounds(bounds, { padding: 32, animate: false })
+    })
+
+    map.on("styledata", () => {
+      if (map.isStyleLoaded()) drawGrid()
     })
 
     return () => {
-      cancelled = true
+      centerMarkerRef.current?.remove()
+      centerMarkerRef.current = null
+      map.remove()
+      mapRef.current = null
+      setReady(false)
     }
   }, [centerLat, centerLng])
 
@@ -159,49 +268,27 @@ export function LeadGbpGridMap({
   useEffect(() => {
     const map = mapRef.current
     if (!map || !ready) return
-
-    for (const marker of markersRef.current) marker.setMap(null)
-    markersRef.current = []
-
-    const bounds = new google.maps.LatLngBounds()
-    for (const point of points) {
-      const position = { lat: point.lat, lng: point.lng }
-      bounds.extend(position)
-      const collected = point.status === "done" || point.status === "failed"
-      const marker = new google.maps.Marker({
-        map,
-        position,
-        title: pointTitle(point),
-        label: {
-          text: pointLabel(point),
-          color: SHADCN_PALETTE.light.primaryForeground,
-          fontSize: "11px",
-          fontWeight: "600",
-        },
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 12,
-          fillColor: pointColor(point),
-          fillOpacity: collected ? 0.95 : 0.45,
-          strokeColor: SHADCN_PALETTE.light.primaryForeground,
-          strokeWeight: 1.5,
-        },
-      })
-      markersRef.current.push(marker)
-    }
-
-    if (!bounds.isEmpty()) map.fitBounds(bounds, 32)
+    const source = map.getSource(SOURCE_ID) as GeoJSONSource | undefined
+    if (!source) return
+    source.setData(pointsToGeoJson(points))
+    const bounds = boundsOf(points)
+    if (bounds) map.fitBounds(bounds, { padding: 32 })
   }, [points, ready])
 
   useEffect(() => {
-    return () => {
-      for (const marker of markersRef.current) marker.setMap(null)
-      markersRef.current = []
-      centerMarkerRef.current?.setMap(null)
-      centerMarkerRef.current = null
-      mapRef.current = null
-    }
-  }, [])
+    if (!ready) return
+    const observer = new MutationObserver(() => {
+      const map = mapRef.current
+      if (!map) return
+      const next = mapStyleUrl(isDarkMode() ? "dark" : "light")
+      if (next) map.setStyle(next)
+    })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    })
+    return () => observer.disconnect()
+  }, [ready])
 
   if (scriptError) {
     return (

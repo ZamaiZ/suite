@@ -5,6 +5,7 @@ import { useReducedMotion } from "motion/react"
 import * as m from "motion/react-m"
 import {
   RiAlertLine,
+  RiArrowGoBackLine,
   RiCheckLine,
   RiLightbulbLine,
   RiSaveLine,
@@ -36,6 +37,58 @@ import type { LeadDiagnosisPanelProps } from "./LeadDiagnosisPanel.types"
 const EASE = [0.23, 1, 0.32, 1] as const
 
 const TEXTAREA = "min-h-0 resize-y"
+
+/**
+ * A linha embaixo de cada campo de texto: contador à direita, e à esquerda a
+ * volta para o texto sugerido — quando ele existe e diverge do que está escrito.
+ *
+ * A recompilação preserva o que o analista escreveu, e é isso que se quer. O
+ * efeito colateral é que uma frase montada a partir de fatos que mudaram fica
+ * de pé sozinha: o gancho comercial copia os três primeiros itens do roteiro, e
+ * já saiu no PDF anunciando um item que a coleta seguinte tinha removido.
+ *
+ * Automatizar a troca exigiria decidir por ele qual texto é dele. Este botão
+ * devolve a decisão a quem escreveu, e mostra que há outra versão disponível —
+ * que é a informação que faltava.
+ */
+function ProseFooter({
+  length,
+  max,
+  seed,
+  current,
+  disabled,
+  onReset,
+}: {
+  length: number
+  max: number
+  seed: string | undefined
+  current: string
+  disabled: boolean
+  onReset: () => void
+}) {
+  const divergente = Boolean(seed) && seed?.trim() !== current.trim()
+  return (
+    <div className="mt-1 flex items-center justify-between gap-2">
+      {divergente ? (
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          disabled={disabled}
+          onClick={onReset}
+        >
+          <RiArrowGoBackLine data-icon="inline-start" />
+          Texto sugerido
+        </Button>
+      ) : (
+        <span />
+      )}
+      <span className="text-xs/relaxed tabular-nums text-muted-foreground">
+        {length}/{max}
+      </span>
+    </div>
+  )
+}
 
 /**
  * O que o PDF do cliente vai mostrar de Presença em IA, visível antes de gerar.
@@ -322,9 +375,18 @@ export function LeadDiagnosisPanel({
                     onChange={(event) => setCommercialHook(event.target.value)}
                     className={TEXTAREA}
                   />
-                  <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
-                    {commercialHook.length}/{DIAGNOSIS_HOOK_MAX}
-                  </p>
+                  <ProseFooter
+                    length={commercialHook.length}
+                    max={DIAGNOSIS_HOOK_MAX}
+                    seed={draft.document.proseSeed?.commercialHook}
+                    current={commercialHook}
+                    disabled={compiling}
+                    onReset={() =>
+                      setCommercialHook(
+                        draft.document.proseSeed?.commercialHook ?? "",
+                      )
+                    }
+                  />
                 </>
               ) : (
                 <p className="text-xs/relaxed text-foreground">
@@ -346,9 +408,18 @@ export function LeadDiagnosisPanel({
                   onChange={(event) => setExecutiveSummary(event.target.value)}
                   className={TEXTAREA}
                 />
-                <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
-                  {executiveSummary.length}/{DIAGNOSIS_PROSE_MAX}
-                </p>
+                <ProseFooter
+                  length={executiveSummary.length}
+                  max={DIAGNOSIS_PROSE_MAX}
+                  seed={draft.document.proseSeed?.executiveSummary}
+                  current={executiveSummary}
+                  disabled={compiling}
+                  onReset={() =>
+                    setExecutiveSummary(
+                      draft.document.proseSeed?.executiveSummary ?? "",
+                    )
+                  }
+                />
               </>
             ) : (
               <p className="whitespace-pre-wrap text-xs/relaxed text-foreground">
@@ -460,9 +531,21 @@ export function LeadDiagnosisPanel({
                     }
                     className={TEXTAREA}
                   />
-                  <p className="mt-1 text-right text-xs/relaxed tabular-nums text-muted-foreground">
-                    {narratives[pillar].length}/{DIAGNOSIS_PROSE_MAX}
-                  </p>
+                  <ProseFooter
+                    length={narratives[pillar].length}
+                    max={DIAGNOSIS_PROSE_MAX}
+                    seed={draft.document.proseSeed?.pillarNarratives[pillar]}
+                    current={narratives[pillar]}
+                    disabled={compiling}
+                    onReset={() =>
+                      setNarratives((prev) => ({
+                        ...prev,
+                        [pillar]:
+                          draft.document.proseSeed?.pillarNarratives[pillar] ??
+                          "",
+                      }))
+                    }
+                  />
                 </>
               ) : (
                 <p className="text-xs/relaxed text-foreground">

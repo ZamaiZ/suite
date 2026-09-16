@@ -1,0 +1,2867 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "11.5889 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09152121-2319-0139-0000-cddaefbb69eb",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "11.4739 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "maps",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "maps",
+        "language_code": "pt",
+        "se_domain": "google.com.br",
+        "keyword": "funeraria",
+        "depth": 20,
+        "location_code": 1001773,
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "funeraria",
+          "type": "maps",
+          "se_domain": "google.com.br",
+          "location_code": 1001773,
+          "language_code": "pt",
+          "check_url": "https://google.com.br/maps/search/funeraria/@-21.2922457,-50.3428431,6z?hl=pt&gl=BR&uule=w+CAIQIFISCdFhpIOBRM6UEa5bM_8IS6mb",
+          "datetime": "2026-09-15 21:21:30 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "maps_search"
+          ],
+          "se_results_count": 0,
+          "items_count": 20,
+          "items": [
+            {
+              "type": "maps_search",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "domain": "funerariasaojudastadeu.amplepresence.com",
+              "title": "Funerária São Judas Tadeu",
+              "original_title": null,
+              "url": "https://funerariasaojudastadeu.amplepresence.com/",
+              "contact_url": "https://funerariasaojudastadeu.amplepresence.com/",
+              "contributor_url": "https://maps.google.com/maps/contrib/115188202431909292348",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.3,
+                "votes_count": 35,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 4,
+                "2": 2,
+                "3": 1,
+                "4": 0,
+                "5": 28
+              },
+              "snippet": "Av. Gov. Pedro de Toledo, 221 - Centro, Birigui - SP, 16200-045",
+              "address": "Av. Gov. Pedro de Toledo, 221 - Centro, Birigui - SP, 16200-045",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Av. Gov. Pedro de Toledo, 221",
+                "city": "Birigui",
+                "zip": "16200-045",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJXbJgydcUlpQRcfAVAZiw_7M",
+              "phone": "+55183641-2600",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlj-cpsOP2dqczniP086qkJOvQVgXdYfJiqky2fsMaOi4mvcbOPduGcA8QYgo3av0bjaQMMtjfr8aPsWK_kexavF-yt-skIa67eJ6-0eXIdjZJcSqNqpcudjYtYXvvItJC5qjZ2cgEJ3AI=w408-h272-k-no",
+              "total_photos": 24,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Agente funerário(a)"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "funeral_director"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x949614d7c960b25d:0xb3ffb0980115f071",
+              "cid": "12970279618750050417",
+              "latitude": -21.287707899999997,
+              "longitude": -50.340086899999996,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Quando precisei fui muito bem atendida\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "domain": "mechameaqui.com.br",
+              "title": "Memorial São Judas Tadeu",
+              "original_title": null,
+              "url": "https://mechameaqui.com.br/v2/memorial-sao-judas-tadeu-birigui-sp",
+              "contact_url": "https://mechameaqui.com.br/v2/memorial-sao-judas-tadeu-birigui-sp",
+              "contributor_url": "https://maps.google.com/maps/contrib/112428791759043785404",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 20,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 20
+              },
+              "snippet": "R. Ribeiro de Barros, 52 - Centro, Birigui - SP, 16200-071",
+              "address": "R. Ribeiro de Barros, 52 - Centro, Birigui - SP, 16200-071",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Ribeiro de Barros, 52",
+                "city": "Birigui",
+                "zip": "16200-071",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJKYZBw9AUlpQRFS9PnXPNyuc",
+              "phone": "+551899706-9696",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmTF1t_rzVawZkcFcgwkT8CHdN-NKQ-gTALRdKd5Pa2DiaB-egbXvJvoDr9iuJHqgZGJ8kd8Z6oIaDbkv_Vw_jxvW2tc9NmI81bmSRJDIxbasRUXJ2dkYhPK8MVw1MawlBlGSIwmMwVFB8=w408-h306-k-no",
+              "total_photos": 36,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x949614d0c3418629:0xe7cacd739d4f2f15",
+              "cid": "16702388064501051157",
+              "latitude": -21.2925754,
+              "longitude": -50.3395419,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Agradeço a todos pelo cuidado, pela dedicação e pelo apoio prestado.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "domain": "bomplanobompastor.com.br",
+              "title": "Funerária Bom Pastor/Bomplano e Capela Bom Pastor",
+              "original_title": null,
+              "url": "http://bomplanobompastor.com.br/site-home",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/109320435239816292504",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 3.4,
+                "votes_count": 13,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 4,
+                "2": 1,
+                "3": 0,
+                "4": 2,
+                "5": 6
+              },
+              "snippet": "Rua Saudades, 622, R. Francisco Galindo de Castro, 931 - Centro, Birigui - SP, 16200-006",
+              "address": "Rua Saudades, 622, R. Francisco Galindo de Castro, 931 - Centro, Birigui - SP, 16200-006",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Rua Saudades, 622, R. Francisco Galindo de Castro, 931",
+                "city": "Birigui",
+                "zip": "16200-006",
+                "region": "SP",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJmXDTp9YUlpQRAuqYhuc7DSk",
+              "phone": "+55183642-3814",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmJbV3aW49ahvLQCw5LWqQmVxgbwpRFHn54W3JVYIu5POyVsnRUpOA0yJqI3jXVzcts-20UVCVvgnG63kLcdmml8maKp7szHRFq_hQlrGdPMQ7JtN9Jdx5jCOIdjf96IruWSK-OamomZ_Qs=w426-h240-k-no",
+              "total_photos": 3,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x949614d6a7d37099:0x290d3be78698ea02",
+              "cid": "2958086395833936386",
+              "latitude": -21.296704899999998,
+              "longitude": -50.3417682,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 4,
+              "rank_absolute": 4,
+              "domain": "www.cardassi.com.br",
+              "title": "Funerária Cardassi Birigui",
+              "original_title": null,
+              "url": "http://www.cardassi.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/117627659737748354769",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4,
+                "votes_count": 9,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 2,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 6
+              },
+              "snippet": "R. Anhanguera, 38 - Vila Guanabara, Birigui - SP, 16200-153",
+              "address": "R. Anhanguera, 38 - Vila Guanabara, Birigui - SP, 16200-153",
+              "address_info": {
+                "borough": "Vila Guanabara",
+                "address": "R. Anhanguera, 38",
+                "city": "Birigui",
+                "zip": "16200-153",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJNRcU_QsVlpQResBORSlHy1U",
+              "phone": "+55183642-6301",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmn5ev7f_5YZ__GDXnt6turBUPdAVzgUwC6VQEVXovNzUaPWaRBTtSTBobf9e_N5TMil26ZRrML_pb-lMqg4PRRGvnri3MjOo815IZNc3SOLzUIZb_EylxxLNOcjdtfGiAmfcLE=w408-h544-k-no",
+              "total_photos": 3,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x9496150bfd141735:0x55cb4729454ec07a",
+              "cid": "6182113156078157946",
+              "latitude": -21.2944788,
+              "longitude": -50.3372543,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Meu avô teve um velório e sepultamento digno de rei.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 5,
+              "rank_absolute": 5,
+              "domain": null,
+              "title": "Cemitério da Saudades",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 2.3,
+                "votes_count": 3,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 1,
+                "3": 0,
+                "4": 1,
+                "5": 0
+              },
+              "snippet": "R. Saudades, 929-1093 - Centro, Birigui - SP",
+              "address": "R. Saudades, 929-1093 - Centro, Birigui - SP",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Saudades, 929-1093",
+                "city": "Birigui",
+                "zip": null,
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ5x1gltEUlpQRK_wb5Ili94g",
+              "phone": null,
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkSBEV6-EBv_pNBeBq6Y0zO9sQsA4PMWhQzVbbcyLkzMYbkBAGSMmGsHt3JsgTQlMwqHqY1BHyFiNz7fckETcg1r-Srz1ggBwuv14UCoxiM_HD7RuWNsR1_PIGKFIF6DtUR1EEUOw=w408-h306-k-no",
+              "total_photos": 89,
+              "category": "Cemitério",
+              "additional_categories": null,
+              "category_ids": [
+                "cemetery"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 15,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x949614d196601de7:0x88f76289e41bfc2b",
+              "cid": "9869465452782812203",
+              "latitude": -21.2955744,
+              "longitude": -50.3418935,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 6,
+              "rank_absolute": 6,
+              "domain": "www.cardassi.com.br",
+              "title": "Funerária Cardassi Araçatuba",
+              "original_title": null,
+              "url": "http://www.cardassi.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/117075602639795565825",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 3.9,
+                "votes_count": 27,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 7,
+                "2": 0,
+                "3": 1,
+                "4": 0,
+                "5": 19
+              },
+              "snippet": "R. Tiradentes, 1208 - Vila Mendonca, Araçatuba - SP, 16015-020",
+              "address": "R. Tiradentes, 1208 - Vila Mendonca, Araçatuba - SP, 16015-020",
+              "address_info": {
+                "borough": "Vila Mendonca",
+                "address": "R. Tiradentes, 1208",
+                "city": "Araçatuba",
+                "zip": "16015-020",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJoZP521hBlpQRUfWmJ6Fzijw",
+              "phone": "+55183624-3900",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkA2yFAz-4_f9xa_vyb1ncJuAQMQGhgDh8ax78D-_gtUbdxIyMN4Hf7QRLDtdp_1_z9fDlX8RHfp78GSO1kqsylWlWwLy2NdHE4wkbiwPTV_ecF3AgnpnWcBOo1VYwQji4NFJM=w408-h408-k-no",
+              "total_photos": 17,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94964158dbf993a1:0x3c8a73a127a6f551",
+              "cid": "4362426325053928785",
+              "latitude": -21.2068585,
+              "longitude": -50.428651699999996,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Muito bom.o atendimento excelente.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 7,
+              "rank_absolute": 7,
+              "domain": null,
+              "title": "Funerária e Capela Municipal de Araçatuba",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "R. José Rico Belda, 74 - Planalto, Araçatuba - SP, 16075-003",
+              "address": "R. José Rico Belda, 74 - Planalto, Araçatuba - SP, 16075-003",
+              "address_info": {
+                "borough": "Planalto",
+                "address": "R. José Rico Belda, 74",
+                "city": "Araçatuba",
+                "zip": "16075-003",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJK-tp9HFElpQRI7RhjCNeMko",
+              "phone": "+55183623-4552",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmeKkSPwBCrNblahWZnTehPCMAMlG2ndmMHgD9N6wApzg_FNNbK3iRKR4AgbdJjPsH-MNakvzQcmsmraK5FF166oOI-qjk5UKBvemgAUJhzuIrKFQWL6Ehildv1kFQcJKHqwKiM=w520-h240-k-no",
+              "total_photos": 11,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94964471f469eb2b:0x4a325e238c61b423",
+              "cid": "5346439214414279715",
+              "latitude": -21.1918983,
+              "longitude": -50.456848099999995,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 8,
+              "rank_absolute": 8,
+              "domain": "mechameaqui.com.br",
+              "title": "Clínica São Judas",
+              "original_title": null,
+              "url": "https://mechameaqui.com.br/v2/clinica-sao-judas-birigui-sp",
+              "contact_url": "https://www.funerariasaojudastadeu.com.br/",
+              "contributor_url": "https://maps.google.com/maps/contrib/113324367009280591040",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 2.7,
+                "votes_count": 26,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 12,
+                "2": 3,
+                "3": 1,
+                "4": 0,
+                "5": 10
+              },
+              "snippet": "R. São José, 270 - Centro, Birigui - SP, 16200-103",
+              "address": "R. São José, 270 - Centro, Birigui - SP, 16200-103",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. São José, 270",
+                "city": "Birigui",
+                "zip": "16200-103",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ66CNVl0VlpQRKQxfLb8QHqI",
+              "phone": "+55183641-2600",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKgmpYd48Il_k50bctBbs270zRmaDd0ume1od1OCsYrQ0Yv_N6G4uxWWha_BzAprHl7Lz7-nGhEoKFA7wD6RtmNCIh2JXsquxwXUfWuVdUsz3wNBjLRz1OiL8LHD1G3_jWaMIE=w408-h262-k-no",
+              "total_photos": 20,
+              "category": "Centro médico",
+              "additional_categories": null,
+              "category_ids": [
+                "medical_center"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x9496155d568da0eb:0xa21e10bf2d5f0c29",
+              "cid": "11681792896731647017",
+              "latitude": -21.2927941,
+              "longitude": -50.3397772,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Ambiente acolhedor, recepcionistas super educadas e atenciosas.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 9,
+              "rank_absolute": 9,
+              "domain": "www.grupolaluce.com.br",
+              "title": "Grupo Laluce",
+              "original_title": null,
+              "url": "http://www.grupolaluce.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/114652351741967356384",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 3.8,
+                "votes_count": 10,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 3,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 7
+              },
+              "snippet": "Praça Dr. Jaime de Oliveira, 905 - Vila Mendonca, Araçatuba - SP, 16015-153",
+              "address": "Praça Dr. Jaime de Oliveira, 905 - Vila Mendonca, Araçatuba - SP, 16015-153",
+              "address_info": {
+                "borough": "Vila Mendonca",
+                "address": "Praça Dr. Jaime de Oliveira, 905",
+                "city": "Araçatuba",
+                "zip": "16015-153",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJx3BmZVhBlpQRijaqOpC3XVk",
+              "phone": "+55183117-3333",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=USKrrL8u2NLyxCjBM6WdxA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=52.99755&pitch=0&thumbfov=100",
+              "total_photos": 2,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94964158656670c7:0x595db7903aaa368a",
+              "cid": "6439504872297084554",
+              "latitude": -21.204894,
+              "longitude": -50.429579,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"É um serviço sério, organizado e que transmite confiança.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 10,
+              "rank_absolute": 10,
+              "domain": null,
+              "title": "Capela Funerária Laluce",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "R. Ghandi - Morumbi, Araçatuba - SP, 16020-110",
+              "address": "R. Ghandi - Morumbi, Araçatuba - SP, 16020-110",
+              "address_info": {
+                "borough": "Morumbi",
+                "address": "R. Ghandi",
+                "city": "Araçatuba",
+                "zip": "16020-110",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJh4FS58FDlpQRpz17swE7FII",
+              "phone": null,
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=pxZW-jI-JGOl3nmDl2qJGw&cb_client=search.gws-prod.gps&w=408&h=240&yaw=85.62885&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Instituição religiosa",
+              "additional_categories": null,
+              "category_ids": [
+                "religious_institution"
+              ],
+              "work_hours": null,
+              "feature_id": "0x949643c1e7528187:0x82143b01b37b3da7",
+              "cid": "9373181602957049255",
+              "latitude": -21.218152099999998,
+              "longitude": -50.4474865,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 11,
+              "rank_absolute": 11,
+              "domain": null,
+              "title": "Funerária Ferreira / Plano Social Familiar",
+              "original_title": null,
+              "url": null,
+              "contact_url": "https://api.whatsapp.com/send?phone=5518991379203&app=facebook&entry_point=page_cta",
+              "contributor_url": "https://maps.google.com/maps/contrib/111130956312627857082",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 3.7,
+                "votes_count": 3,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 2
+              },
+              "snippet": "Av. Mal. Floriano, 774 - Centro, Guararapes - SP, 16700-013",
+              "address": "Av. Mal. Floriano, 774 - Centro, Guararapes - SP, 16700-013",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Av. Mal. Floriano, 774",
+                "city": "Guararapes",
+                "zip": "16700-013",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ83gCEy1flpQRbpkju2PiaAU",
+              "phone": "+55183606-1452",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmMllU6Im_mCXAeUiJbk9rIs0v0xVhw4MIUBUtbLOGKWUPD0OFgY7fFShAuf6s3eQxL7UeEo8UT9fuI7fpmsHlLQIv-zbJT3Mkz7iTGjSbXSUzP45g9IoHLVEaB9KjhICLkdpFHkw=w408-h403-k-no",
+              "total_photos": 5,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Organização de serviço social"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "social_services_organization"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94965f2d130278f3:0x568e263bb23996e",
+              "cid": "389810285736860014",
+              "latitude": -21.2542284,
+              "longitude": -50.6420525,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 12,
+              "rank_absolute": 12,
+              "domain": "www.grupolaluce.com.br",
+              "title": "Cemitério Vertical e Crematório Memorial Laluce",
+              "original_title": null,
+              "url": "http://www.grupolaluce.com.br/",
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 4,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 3
+              },
+              "snippet": "R. Itapura, 21 - Jardim Brasilia, Araçatuba - SP, 16020-180",
+              "address": "R. Itapura, 21 - Jardim Brasilia, Araçatuba - SP, 16020-180",
+              "address_info": {
+                "borough": "Jardim Brasilia",
+                "address": "R. Itapura, 21",
+                "city": "Araçatuba",
+                "zip": "16020-180",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ2ybw4sFDlpQR_yGKrby_vqc",
+              "phone": "+55183623-4141",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=4WNvFKZ9v4B1tcE6t0eRMg&cb_client=search.gws-prod.gps&w=408&h=240&yaw=258.49646&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Cemitério",
+              "additional_categories": null,
+              "category_ids": [
+                "cemetery"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 7,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x949643c1e2f026db:0xa7bebfbcad8a21ff",
+              "cid": "12087309266995257855",
+              "latitude": -21.2179322,
+              "longitude": -50.447434,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 13,
+              "rank_absolute": 13,
+              "domain": "www.cardassi.com.br",
+              "title": "Capela Cardassi Saudade",
+              "original_title": null,
+              "url": "http://www.cardassi.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/114309576119600931683",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.6,
+                "votes_count": 22,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 1,
+                "4": 6,
+                "5": 15
+              },
+              "snippet": "Av. da Saudade, 701 - Vila Estadio, Araçatuba - SP, 16020-070",
+              "address": "Av. da Saudade, 701 - Vila Estadio, Araçatuba - SP, 16020-070",
+              "address_info": {
+                "borough": "Vila Estadio",
+                "address": "Av. da Saudade, 701",
+                "city": "Araçatuba",
+                "zip": "16020-070",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJSQMMSMJDlpQRRFOoas-XPhg",
+              "phone": "+55183623-2424",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn04GLlCOjnN3rZprfIhITPiD-CQjyFrDdSiu_xbf53ef9lafKxXLVShGeD7ro83E8o5OTl88sbn_0rUqHPxtFKqMm52SUubjA26uKy-a4ttgeL4uCy3jFuhb-d9xrvmtEESnQp=w408-h306-k-no",
+              "total_photos": 43,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x949643c2480c0349:0x183e97cf6aa85344",
+              "cid": "1747000622569771844",
+              "latitude": -21.218885,
+              "longitude": -50.4447872,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Ótimo ambiente e confortável e tudo limpo e organizado\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 14,
+              "rank_absolute": 14,
+              "domain": "www.bompastorfuneraria.com",
+              "title": "Bom Pastor Funerária - Sistema Prever - Rede Unividas",
+              "original_title": null,
+              "url": "http://www.bompastorfuneraria.com/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/111826717797729914421",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.6,
+                "votes_count": 17,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 0,
+                "3": 1,
+                "4": 1,
+                "5": 14
+              },
+              "snippet": "Av. Santa Casa, 307 - Centro, Penápolis - SP, 16300-027",
+              "address": "Av. Santa Casa, 307 - Centro, Penápolis - SP, 16300-027",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Av. Santa Casa, 307",
+                "city": "Penápolis",
+                "zip": "16300-027",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJL9A6FGwBlpQRQco6PHLmw7A",
+              "phone": "+55183652-4500",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWlXwQcOs_A4TZpYWD6p8o8foULoV9Oj3gCX3Nf4nQ5hMcfFNPlIal0n3VCgr2Gt0sMKuT3Hen50AhjCGE7Q3EUGhcoeyJy_xznoe9-CkMF0kt6p_lMdVNRaNI0_vkcgLxB6fpMg=w408-h252-k-no",
+              "total_photos": 22,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Crematório",
+                "Memorial"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "cremation_service",
+                "memorial"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x9496016c143ad02f:0xb0c3e6723c3aca41",
+              "cid": "12737277549445040705",
+              "latitude": -21.4246139,
+              "longitude": -50.0741934,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\".num momento de muita dor ,recebi todo o carinho possivel , parabrns !!\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 15,
+              "rank_absolute": 15,
+              "domain": "paxvidatreslagoas.com.br",
+              "title": "Funerária Pax Vida",
+              "original_title": null,
+              "url": "https://paxvidatreslagoas.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/106485515933533715226",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 24,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 22
+              },
+              "snippet": "Av. Rosário Congro, 81 - Centro, Três Lagoas - MS, 79600-030",
+              "address": "Av. Rosário Congro, 81 - Centro, Três Lagoas - MS, 79600-030",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Av. Rosário Congro, 81",
+                "city": "Três Lagoas",
+                "zip": "79600-030",
+                "region": "Mato Grosso do Sul",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ_8gNk2mYkJQRkvs8woU5JTI",
+              "phone": "+556799245-4721",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWle1COggGWO8KaNasMGeBT92F-nLhAs79h-IgFiqMHk6Gawa0iS7V-24NS5FrgScIfl-GWC2n0ruBJ8VHycWVT20Xz4Hq7bY2tc1aTfpASQsEi1eVzoEx6jNMn7n4KTD1YTk3ibSdAwuLU=w425-h240-k-no",
+              "total_photos": 20,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94909869930dc8ff:0x32253985c23cfb92",
+              "cid": "3613357522686901138",
+              "latitude": -20.789132799999997,
+              "longitude": -51.7125172,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Tive um atendimento muito bem Funerária desde o início super atenciso.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 16,
+              "rank_absolute": 16,
+              "domain": "www.cardassi.com.br",
+              "title": "Capela Cardassi Prestes Maia",
+              "original_title": null,
+              "url": "http://www.cardassi.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/102110717987190667030",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 3.6,
+                "votes_count": 12,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 4,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 7
+              },
+              "snippet": "Av. Prestes Maia, 32 - Jardim Brasil, Araçatuba - SP, 16075-051",
+              "address": "Av. Prestes Maia, 32 - Jardim Brasil, Araçatuba - SP, 16075-051",
+              "address_info": {
+                "borough": "Jardim Brasil",
+                "address": "Av. Prestes Maia, 32",
+                "city": "Araçatuba",
+                "zip": "16075-051",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJrVOKJHFElpQRql8zaC5hP0U",
+              "phone": "+55183621-6005",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMNyVmOGNxyaGnb2Q3HPD4xLU8M2ZUG0wy9W_beICxpjwjmodtD9GpYVRMB5-bWasmCRR0oh3bFBVj9DOMkaBoGlgofieF1soDmizNCl3EGrwpNxenWQ8B5wQpW094yC5cq6c=w408-h271-k-no",
+              "total_photos": 12,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94964471248a53ad:0x453f612e68335faa",
+              "cid": "4989813764094386090",
+              "latitude": -21.1954566,
+              "longitude": -50.4586779,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Tudo muito limpo e funcionário educado\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 17,
+              "rank_absolute": 17,
+              "domain": "funerariasaocarlos.com.br",
+              "title": "Funerária São Carlos – Plano Ouro São Carlos",
+              "original_title": null,
+              "url": "http://funerariasaocarlos.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/111606226211479375509",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 3.2,
+                "votes_count": 5,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 1,
+                "3": 1,
+                "4": 0,
+                "5": 2
+              },
+              "snippet": "R. Guilherme Guerbas, 346 - Centro, Buritama - SP, 15290-000",
+              "address": "R. Guilherme Guerbas, 346 - Centro, Buritama - SP, 15290-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Guilherme Guerbas, 346",
+                "city": "Buritama",
+                "zip": "15290-000",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ__9zfAQllpQR8q2obMbBPis",
+              "phone": "+55183691-1130",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkbDlg5b2is6p_XDj3_-jKWzqVdJ1AkwO-nyTR0-aFBaaNXm7kAgpdpdg9Upz0iYCtkwKfQcBtboLmgi0S_iPyN-knG1FBGR9bPqud1OTBobSXzc1IDkhmhDoYQ_RzULlwGj3Gs=w408-h374-k-no",
+              "total_photos": 3,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x949625047c73ffff:0x2b3ec1c66ca8adf2",
+              "cid": "3116141050157641202",
+              "latitude": -21.069972,
+              "longitude": -50.1495028,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 18,
+              "rank_absolute": 18,
+              "domain": "www.planofortaleza.com.br",
+              "title": "Funerária | Capelas | Velório - Fortaleza",
+              "original_title": null,
+              "url": "http://www.planofortaleza.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/115316306879312360855",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 48,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 47
+              },
+              "snippet": "R. Santa Cruz, 2060 - Centro, Mirassol - SP, 15130-000",
+              "address": "R. Santa Cruz, 2060 - Centro, Mirassol - SP, 15130-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Santa Cruz, 2060",
+                "city": "Mirassol",
+                "zip": "15130-000",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJq1uo_HSvvZQRnce2BhBpdYE",
+              "phone": "+55173253-2840",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlq5kJ9FkGPaHO6gD0LmltH0dcrUOzFsnkmpn_PZm975bZjgImTVMAsYg4Ud_RVDyf9oNVL01xp8Zd-pONPLUB2g9emft2SfDooyHObehIHHG3uVRZiQHerrcX5aZVk50u93p_S9JdKC7tI=w426-h240-k-no",
+              "total_photos": 16,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Capela"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "chapel"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94bdaf74fca85bab:0x8175691006b6c79d",
+              "cid": "9328477720720885661",
+              "latitude": -20.8192536,
+              "longitude": -49.5051069,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Estive no Local, fui muito bem atendido... Josiane super atenciosa.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 19,
+              "rank_absolute": 19,
+              "domain": "www.lifeasssistencial.com.br",
+              "title": "LIFE FUNERÁRIA SISTÊMICA",
+              "original_title": null,
+              "url": "https://www.lifeasssistencial.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/110613720627462946233",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 25,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 24
+              },
+              "snippet": "R. Mario de Andrade, 575 - Centro, Rubinéia - SP, 15798-000",
+              "address": "R. Mario de Andrade, 575 - Centro, Rubinéia - SP, 15798-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Mario de Andrade, 575",
+                "city": "Rubinéia",
+                "zip": "15798-000",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ81cfhOrBmZQRWOW6lQbzVxE",
+              "phone": "+558002570000",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=BGPejKdnaZ-6ADkTgSBppA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=297.97495&pitch=0&thumbfov=100",
+              "total_photos": 8,
+              "category": "Casa funerária",
+              "additional_categories": null,
+              "category_ids": [
+                "funeral_home"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x9499c1ea841f57f3:0x1157f30695bae558",
+              "cid": "1249734631226008920",
+              "latitude": -20.1716491,
+              "longitude": -51.0014549,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"recomendo demais, profissionalismo impecável 🙏🏻\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 20,
+              "rank_absolute": 20,
+              "domain": "funerariasantacruzconvenio.com.br",
+              "title": "Funeraria Santa Cruz",
+              "original_title": null,
+              "url": "https://funerariasantacruzconvenio.com.br/notas.php",
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 4,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 4
+              },
+              "snippet": "R. Quintino Bocaiúva, 256 - Centro, Santa Cruz do Rio Pardo - SP, 18900-000",
+              "address": "R. Quintino Bocaiúva, 256 - Centro, Santa Cruz do Rio Pardo - SP, 18900-000",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Quintino Bocaiúva, 256",
+                "city": "Santa Cruz do Rio Pardo",
+                "zip": "18900-000",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJyRmMrTdqwJQRS0XkD0Y_3q8",
+              "phone": "+55143373-1699",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmKYyIdFWD1-c_xbQ0_750Wg8dSKxak-Qq6MrZu4uGW8GkmjtIxlLrBTfyrz42l9QtS7DVjHeEXSnxykFYIMMSm_4i1bQexfNj-4ltsMk2LTcSqozU9E9B-kHGLq5Q4xlU8Y3k=w481-h240-k-no",
+              "total_photos": 18,
+              "category": "Casa funerária",
+              "additional_categories": [
+                "Cemitério"
+              ],
+              "category_ids": [
+                "funeral_home",
+                "cemetery"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 0,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 24,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x94c06a37ad8c19c9:0xafde3f460fe4454b",
+              "cid": "12672635971614033227",
+              "latitude": -22.9015558,
+              "longitude": -49.627736399999996,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

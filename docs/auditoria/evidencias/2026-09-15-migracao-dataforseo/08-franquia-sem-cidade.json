@@ -1,0 +1,2397 @@
+{
+  "version": "0.1.20260902",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.7100 sec.",
+  "cost": 0.002,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09152122-2319-0139-0000-62ec2bf7418b",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.9729 sec.",
+      "cost": 0.002,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "serp",
+        "google",
+        "maps",
+        "live",
+        "advanced"
+      ],
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "maps",
+        "language_code": "pt",
+        "se_domain": "google.com.br",
+        "keyword": "Otica Diniz",
+        "depth": 20,
+        "location_code": 2076,
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "Otica Diniz",
+          "type": "maps",
+          "se_domain": "google.com.br",
+          "location_code": 2076,
+          "language_code": "pt",
+          "check_url": "https://google.com.br/maps/search/Otica+Diniz/@-14.235004,-51.92528,3z?hl=pt&gl=BR&uule=w+CAIQIFISCc8ozOvHWZwAEWM-KfIGFVop",
+          "datetime": "2026-09-15 21:22:17 +00:00",
+          "spell": null,
+          "refinement_chips": null,
+          "item_types": [
+            "maps_search"
+          ],
+          "se_results_count": 0,
+          "items_count": 20,
+          "items": [
+            {
+              "type": "maps_search",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Óticas Diniz",
+              "original_title": null,
+              "url": "http://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/108970927551425590325",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 17,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 16
+              },
+              "snippet": "R. Dr. Abílio Farias, 296 - Centro, Barreiras - BA, 47800-030",
+              "address": "R. Dr. Abílio Farias, 296 - Centro, Barreiras - BA, 47800-030",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Dr. Abílio Farias, 296",
+                "city": "Barreiras",
+                "zip": "47800-030",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJy-Ms3aCKXwcRjNG3ZCOo1E4",
+              "phone": "+55773613-4400",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnOa8FnCkFJ9oCOKvf91G7cJeKFgBqsTJJDhslvrGoM0881MSMXbIbVhebpizcYQk7gkbJi_x1zIiVVi7Y3cT0geNkraa3atUAqAYjn0AI8h8G9p6dHhHdAgXl4VEm6ov4Pn38a_A=w408-h306-k-no",
+              "total_photos": 2,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": null,
+              "feature_id": "0x75f8aa0dd2ce3cb:0x4ed4a82364b7d18c",
+              "cid": "5680349899988128140",
+              "latitude": -12.148139299999999,
+              "longitude": -44.998214999999995,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "domain": null,
+              "title": "Ótica Diniz - Golden Shopping",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/102052735868605303283",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 26,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 26
+              },
+              "snippet": "Golden Shopping Calhau - Av. dos Holandeses, 200 - Calhau, São Luís - MA, 65071-380",
+              "address": "Golden Shopping Calhau - Av. dos Holandeses, 200 - Calhau, São Luís - MA, 65071-380",
+              "address_info": {
+                "borough": "Calhau",
+                "address": "Golden Shopping Calhau - Av. dos Holandeses, 200",
+                "city": "São Luís",
+                "zip": "65071-380",
+                "region": "Maranhão",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJZ4X3pH6N9gcRw9Mya-P3uto",
+              "phone": "+559898482-0147",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk5gq0oQOQ9NIiZDhsXt8XloXi52lwYR73vfb7nL80LcBK5G7oomGlNOwF_mHfUlxeevpiXTHxBfFoam21B6Fr3svlHtQuc4X4qCMRix2bwOom3xIVUwibOvWetIMKKlclYrL-yLg=w408-h612-k-no",
+              "total_photos": 23,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 13,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7f68d7ea4f78567:0xdabaf7e36b32d3c3",
+              "cid": "15761182402064602051",
+              "latitude": -2.4903472,
+              "longitude": -44.2635949,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"E estávamos mesmo precisando de uma ótica no Golden Shopping Calhau.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "domain": "bit.ly",
+              "title": "Ótica Diniz Liberdade",
+              "original_title": null,
+              "url": "http://bit.ly/%C3%93ticadinizliberdade",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/104074415050388270974",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 153,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 153
+              },
+              "snippet": "Estr. da Liberdade, 298C - Liberdade, Salvador - BA, 40375-016",
+              "address": "Estr. da Liberdade, 298C - Liberdade, Salvador - BA, 40375-016",
+              "address_info": {
+                "borough": "Liberdade",
+                "address": "Estr. da Liberdade, 298C",
+                "city": "Salvador",
+                "zip": "40375-016",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJewrb0eoFFgcR9n2FdmpNdro",
+              "phone": "+55713190-3760",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkeSflScD__hT_u_Af2LAMIP_QiDDRLm0CcLSBfxWGkWNsch_CCtK3sLMRF_nWhqkX6S_FxyuPMg7AEZG6GC3V0Mp2LU2xwVAJ9rx2EEBcNNZAyP00sPxf7SbwLOFHY16CVibZDfg=w426-h240-k-no",
+              "total_photos": 15,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 30
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 30
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 30
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 30
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 30
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 30
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 30
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 30
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 30
+                      },
+                      "close": {
+                        "hour": 17,
+                        "minute": 30
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 30
+                      },
+                      "close": {
+                        "hour": 15,
+                        "minute": 30
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x71605ead1db0a7b:0xba764d6a76857df6",
+              "cid": "13436011657956785654",
+              "latitude": -12.9476476,
+              "longitude": -38.4934107,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Super recomendo,atenciosos demais🥰❤️A melhor ótica de todas ☺️❤️\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 4,
+              "rank_absolute": 4,
+              "domain": "bio.site",
+              "title": "ÓTICA DINIZ (GAVIÃO PEIXOTO)",
+              "original_title": null,
+              "url": "https://bio.site/dinizapniteroi?fbclid=PAZXh0bgNhZW0CMTEAAafqBUjEC_fbI8dCWdKfTyw0cKLMfdkAblpgHRrcpGVLOYUHVGgCVRMV1I3-rw_aem_ae8nZTY7SutdReAKe4D-Qw",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/101589103371251206784",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 751,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 1,
+                "3": 0,
+                "4": 1,
+                "5": 749
+              },
+              "snippet": "R. Gavião Peixoto, 194 - loja 103A/103B - Icaraí, Niterói - RJ, 24230-102",
+              "address": "R. Gavião Peixoto, 194 - loja 103A/103B - Icaraí, Niterói - RJ, 24230-102",
+              "address_info": {
+                "borough": "Icaraí",
+                "address": "R. Gavião Peixoto, 194 - loja 103A/103B",
+                "city": "Niterói",
+                "zip": "24230-102",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJobImAveDmQARRG3Nk6SLBy0",
+              "phone": "+552197904-0050",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlznts2xGsLCONEP-hwNM-gBLB__Cv9DPfAaSKKnoDnLs848D0wjlyrlaX8DOAWW1XP3xl6My_7R9d4ESV6BvqIGsRen6AhanvPxeULtTY3RBF1XRrgF6ZGTCqw1Ty-j1eo4d-V48A12Dtn=w426-h240-k-no",
+              "total_photos": 51,
+              "category": "Loja",
+              "additional_categories": null,
+              "category_ids": [
+                "store"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 14,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x9983f70226b2a1:0x2d078ba493cd6d44",
+              "cid": "3244715595514342724",
+              "latitude": -22.9048151,
+              "longitude": -43.109072,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"A oticas diniz esta de parabéns pela excelente funcionária!\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 5,
+              "rank_absolute": 5,
+              "domain": null,
+              "title": "oticas diniz partage shopping",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/102804421305111935717",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 261,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 2,
+                "2": 0,
+                "3": 0,
+                "4": 2,
+                "5": 257
+              },
+              "snippet": "Av. Pref. Severino Bezerra Cabral, 1050 - Catolé, Campina Grande - PB, 58410-900",
+              "address": "Av. Pref. Severino Bezerra Cabral, 1050 - Catolé, Campina Grande - PB, 58410-900",
+              "address_info": {
+                "borough": "Catolé",
+                "address": "Av. Pref. Severino Bezerra Cabral, 1050",
+                "city": "Campina Grande",
+                "zip": "58410-900",
+                "region": "Paraíba",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJVaERwsAfrAcRkoTsEYgQ9Ds",
+              "phone": "+55833337-1200",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnYetwDZ2vmjDQvGmA1fUPBtVKFdb7Z42gNNsgDHrUJ1sPQwoz3MNopbDlVupOKcB3D__a33cXCf_UKtXcLKD7akxGGY8Y1YM41DvFo450zFBPO1czcxyM8B4dImxbPLLgjjOGgeg=w408-h544-k-no",
+              "total_photos": 14,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 14,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 20,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7ac1fc0c211a155:0x3bf4108811ec8492",
+              "cid": "4320096119157458066",
+              "latitude": -7.2351513,
+              "longitude": -35.8702342,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"o atendimento da ótica Dinis no shopping Partage foi maravilhoso.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 6,
+              "rank_absolute": 6,
+              "domain": null,
+              "title": "Óticas Diniz Pátio Alcântara",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/115030818032748260680",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 449,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 449
+              },
+              "snippet": "Praça Carlos Gianelli - Alcantara, São Gonçalo - RJ, 24710-465",
+              "address": "Praça Carlos Gianelli - Alcantara, São Gonçalo - RJ, 24710-465",
+              "address_info": {
+                "borough": "Alcantara",
+                "address": "Praça Carlos Gianelli",
+                "city": "São Gonçalo",
+                "zip": "24710-465",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ989_8CuRmQAR6VzOQebgx9Y",
+              "phone": "+552196907-8416",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkFf0b3y2xNbFvVmbD8dovjr6Lt0dj94gataAwjMMXrLkeb2jszlCeXfVNtBiKoyOiOf4LJwYeNxIUAZWXGHD7Uqw2bMgQkCP082Y-xjwjEKMrm5L7A1rZMY-TVNfGVDO-c8Y-0xl6SFPYQ=w408-h306-k-no",
+              "total_photos": 25,
+              "category": "Atacadista de equipamentos ópticos",
+              "additional_categories": null,
+              "category_ids": [
+                "optical_wholesaler"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x99912bf07fcff7:0xd6c7e0e641ce5ce9",
+              "cid": "15476585924033141993",
+              "latitude": -22.8201754,
+              "longitude": -43.0029952,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"A Ótica Diniz do Pátio Alcântara é maravilhosa, as atendentes nota 1000!\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 7,
+              "rank_absolute": 7,
+              "domain": "wa.me",
+              "title": "Otica Diniz Tijuca",
+              "original_title": null,
+              "url": "https://wa.me/message/R472O4XGLJ3HM1",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/103058907029177258555",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.9,
+                "votes_count": 253,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 3,
+                "2": 1,
+                "3": 0,
+                "4": 0,
+                "5": 249
+              },
+              "snippet": "R. Santo Afonso, 230 - Lj B - Tijuca, Rio de Janeiro - RJ, 20511-170",
+              "address": "R. Santo Afonso, 230 - Lj B - Tijuca, Rio de Janeiro - RJ, 20511-170",
+              "address_info": {
+                "borough": "Tijuca",
+                "address": "R. Santo Afonso, 230 - Lj B",
+                "city": "Rio de Janeiro",
+                "zip": "20511-170",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJAaJzfGp-mQARbCOHb4laGBs",
+              "phone": "+552199879-1079",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWluSSfT3R0qEMeJaRlRJcvdDayYUkHBndlxgejtGvupY0zG7DpvpvuurMRz9xJZNavGAIRsk-CBLtbVywtc7H0BUL2Vbi6Wv7u2Uxqop15g30oNAavaimagsHAMAz6dnSPPguY=w408-h272-k-no",
+              "total_photos": 158,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 14,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x997e6a7c73a201:0x1b185a896f87236c",
+              "cid": "1952409984793256812",
+              "latitude": -22.9232355,
+              "longitude": -43.233351299999995,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Foi minha primeira compra na ótica Diniz, e tive uma ótima experiência.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 8,
+              "rank_absolute": 8,
+              "domain": "www.shoppingrecife.com.br",
+              "title": "Ótica Diniz Prime",
+              "original_title": null,
+              "url": "http://www.shoppingrecife.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/103526982275544540462",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 4,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 4
+              },
+              "snippet": "R. Padre Carapuceiro, 777 - Boa Viagem, Recife - PE, 51020-900",
+              "address": "R. Padre Carapuceiro, 777 - Boa Viagem, Recife - PE, 51020-900",
+              "address_info": {
+                "borough": "Boa Viagem",
+                "address": "R. Padre Carapuceiro, 777",
+                "city": "Recife",
+                "zip": "51020-900",
+                "region": "Pernambuco",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ9z1NlmYfqwcRBQqG7gI9F9E",
+              "phone": null,
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnIG2jS-yiIQHJ2d_TI0jGbcQMQ6ZQ1WDdybY_3gYVK1tn_37Zm62w8wZss1n2_kVwd5Dcx4O2u_oI3kxzZZAhnQgERD90_kCK6NwZ8EbpWHy0NeEIn7xaN7KSHihXZkk0JTug-=w408-h725-k-no",
+              "total_photos": null,
+              "category": "Shopping center",
+              "additional_categories": null,
+              "category_ids": [
+                "shopping_center"
+              ],
+              "work_hours": null,
+              "feature_id": "0x7ab1f66964d3df7:0xd1173d02ee860a05",
+              "cid": "15066578161192274437",
+              "latitude": -8.118945499999999,
+              "longitude": -34.904827399999995,
+              "is_claimed": true,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 9,
+              "rank_absolute": 9,
+              "domain": null,
+              "title": "Ótica Diniz largo da batalha",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/111584975164107537634",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 55,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 55
+              },
+              "snippet": "Estr. Caetano Monteiro, 779 - parte 01 - Largo da Batalha, Niterói - RJ, 24320-570",
+              "address": "Estr. Caetano Monteiro, 779 - parte 01 - Largo da Batalha, Niterói - RJ, 24320-570",
+              "address_info": {
+                "borough": "Largo da Batalha",
+                "address": "Estr. Caetano Monteiro, 779 - parte 01",
+                "city": "Niterói",
+                "zip": "24320-570",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJMeD22mCFmQARALD1olLgjqY",
+              "phone": "+552199542-5032",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmRBe1ti98rQ3JHQPcryP3ORKcIra0uHn1zOLvCfcioCtkAO_eOuTV5vwlJU2kJDn4uuYL019dOe2-9FLWkOupKpex5mUDillzVyTiKitJKgthhVll7rNzlKpdQ4UljC-vtQsMWpEnAfc4=w408-h544-k-no",
+              "total_photos": 26,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 13,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x998560daf6e031:0xa68ee052a2f5b000",
+              "cid": "12001776702514900992",
+              "latitude": -22.9068115,
+              "longitude": -43.0666714,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Excelente atendimento e ótimo preço, prazo de entrega exata !\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 10,
+              "rank_absolute": 10,
+              "domain": null,
+              "title": "OTICAS DINIZ PATIO NORTE SHOPPING",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/110142882548952168676",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 95,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 2,
+                "5": 93
+              },
+              "snippet": "Estr. de Ribamar, 1000 - Pindaí, Paço do Lumiar - MA, 65110-000",
+              "address": "Estr. de Ribamar, 1000 - Pindaí, Paço do Lumiar - MA, 65110-000",
+              "address_info": {
+                "borough": "Pindaí",
+                "address": "Estr. de Ribamar, 1000",
+                "city": "Paço do Lumiar",
+                "zip": "65110-000",
+                "region": "Maranhão",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJYRlg2sWX9gcRKFY2GwiHnrM",
+              "phone": "+559898880-6236",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkWSZQTAzFxm-zzjkMu_NVqGoc3hO6W2iMw9UUiDXO45UYK-BeYEEY6BSl8CvzGomARvmfvY5uAXQsFgIq2qWrcfHLQwte4eHIvjiFneTqPT0QfrCRZaclOPrh4P-1h_OjSrX8akA=w408-h725-k-no",
+              "total_photos": 19,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": [
+                    {
+                      "open": {
+                        "hour": 13,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 21,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 10,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 22,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "open"
+              },
+              "feature_id": "0x7f697c5da601961:0xb39e87081b365628",
+              "cid": "12942930847995418152",
+              "latitude": -2.5518137,
+              "longitude": -44.1548614,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Sem dúvidas é a melhor ótica de São José de Ribamar.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 11,
+              "rank_absolute": 11,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Oticas Diniz",
+              "original_title": null,
+              "url": "https://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/112947862194972266934",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 672,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 1,
+                "4": 9,
+                "5": 662
+              },
+              "snippet": "Av. Professor Gomes de Matos, 1286 - MATRIZ - Montese, Fortaleza - CE, 60420-432",
+              "address": "Av. Professor Gomes de Matos, 1286 - MATRIZ - Montese, Fortaleza - CE, 60420-432",
+              "address_info": {
+                "borough": "Montese",
+                "address": "Av. Professor Gomes de Matos, 1286 - MATRIZ",
+                "city": "Fortaleza",
+                "zip": "60420-432",
+                "region": "Ceará",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJa5tZgTVJxwcR1-hbsMaY158",
+              "phone": "+55853512-0990",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdKFPiNGtYGNMQ6jlhf-gyXDHSYGKYcV1U4seA1iqkzHcL21genpoQuXtgy1BN1ZW9HhvRBJiSBQlCju9vMc-HbYP3spZ6s-IC88Ck95-uqhYIrlGuRiZ3zKoWfr9re1VegjlG=w408-h408-k-no",
+              "total_photos": 29,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 13,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x7c7493581599b6b:0x9fd798c6b05be8d7",
+              "cid": "11517842551153092823",
+              "latitude": -3.7634219,
+              "longitude": -38.547795799999996,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Recomendo a ótica Diniz da Gomes de Matos.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 12,
+              "rank_absolute": 12,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Oticas Diniz",
+              "original_title": null,
+              "url": "https://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/109481316404562511966",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 81,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 81
+              },
+              "snippet": "Edifício - Praça Largo da Encruzilhada, 57 - Lj 1 - Encruzilhada, Recife - PE, 52041-180",
+              "address": "Edifício - Praça Largo da Encruzilhada, 57 - Lj 1 - Encruzilhada, Recife - PE, 52041-180",
+              "address_info": {
+                "borough": "Encruzilhada",
+                "address": "Edifício - Praça Largo da Encruzilhada, 57 - Lj 1",
+                "city": "Recife",
+                "zip": "52041-180",
+                "region": "Pernambuco",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJeyFKHLMZqwcR7wvVkfQMU9Q",
+              "phone": "+55813103-1273",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=dE5V3FwgEMiAgveMLL3NcQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=216.54071&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 15,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x7ab19b31c4a217b:0xd4530cf491d50bef",
+              "cid": "15299586603665918959",
+              "latitude": -8.0376057,
+              "longitude": -34.8919984,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Ótica Diniz Encruzilhada\nÓtimo atendimento\nVendedoras super simpáticas\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 13,
+              "rank_absolute": 13,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Oticas Diniz",
+              "original_title": null,
+              "url": "https://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/109475150094211338042",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.8,
+                "votes_count": 58,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 1,
+                "2": 0,
+                "3": 2,
+                "4": 3,
+                "5": 52
+              },
+              "snippet": "EDIF HARMONY MED CENTER - Av. Dom Luís, 1233 - Lj 07 - Meireles, Fortaleza - CE, 60160-230",
+              "address": "EDIF HARMONY MED CENTER - Av. Dom Luís, 1233 - Lj 07 - Meireles, Fortaleza - CE, 60160-230",
+              "address_info": {
+                "borough": "Meireles",
+                "address": "EDIF HARMONY MED CENTER - Av. Dom Luís, 1233 - Lj 07",
+                "city": "Fortaleza",
+                "zip": "60160-230",
+                "region": "Ceará",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJPbK5Dn5IxwcRi5GT1RZLz50",
+              "phone": "+55853122-9931",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl0NsXIhc-CL1DJdO3WfhBQDYxJE-Y7dbNPGyo3QFepou14XPwYXngfIeoO2jvaUvTZTX5QLM0CwAneQBgvXyYhUeVc2Y_coV9L8mnMeGTLcwFQA4PqNUmFMWvoiFWI6QbNNc_W=w408-h476-k-no",
+              "total_photos": 10,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 12,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x7c7487e0eb9b23d:0x9dcf4b16d593918b",
+              "cid": "11371390145578373515",
+              "latitude": -3.7350228999999997,
+              "longitude": -38.4896914,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Muito boa o atendimento óticas Diniz meninas muito atenciosas com a gente\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 14,
+              "rank_absolute": 14,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Óticas Diniz",
+              "original_title": null,
+              "url": "https://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/103508745487378692548",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 2,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 2
+              },
+              "snippet": "R MARIA PAIXA PINTO, 180 - UIBIS, Jaguaquara - BA, 45345-000",
+              "address": "R MARIA PAIXA PINTO, 180 - UIBIS, Jaguaquara - BA, 45345-000",
+              "address_info": {
+                "borough": "UIBIS",
+                "address": "R MARIA PAIXA PINTO, 180",
+                "city": "Jaguaquara",
+                "zip": "45345-000",
+                "region": "Bahia",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJd8YWdpiDQAcRDO6hgkcqejc",
+              "phone": "+557398843-7769",
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=_OlRMIzaTbo91NgktZSzUA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=87.80847&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": null,
+              "feature_id": "0x74083987616c677:0x377a2a4782a1ee0c",
+              "cid": "3997554105867431436",
+              "latitude": -13.512863,
+              "longitude": -40.054773499999996,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Uma óticas de excelência.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 15,
+              "rank_absolute": 15,
+              "domain": "www.oticasdiniz.com.br",
+              "title": "Oticas Diniz",
+              "original_title": null,
+              "url": "https://www.oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/105517648572483852460",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 257,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 1,
+                "3": 0,
+                "4": 1,
+                "5": 255
+              },
+              "snippet": "R. Floriano Peixoto, 621 - 621 - Centro, Fortaleza - CE, 60025-130",
+              "address": "R. Floriano Peixoto, 621 - 621 - Centro, Fortaleza - CE, 60025-130",
+              "address_info": {
+                "borough": "Centro",
+                "address": "R. Floriano Peixoto, 621 - 621",
+                "city": "Fortaleza",
+                "zip": "60025-130",
+                "region": "Ceará",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJZ3xOKq1JxwcR19kTF-0lnB4",
+              "phone": "+55853513-0635",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnSoUouZRliyeLIhgTvXs7cEc6ez_Wxo_VR36ug84eJTxSE5oVWAhDUe3hx1SWyNO3M9WOf89kH74rIfCUKeC7_s46-nZLCPBLXcCAPa4XR7Ww6Z51zNGc4ZMyIQUKR4opLS-s3Ow=w408-h408-k-no",
+              "total_photos": 15,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 8,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 14,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x7c749ad2a4e7c67:0x1e9c25ed1713d9d7",
+              "cid": "2205679617729354199",
+              "latitude": -3.7280832999999998,
+              "longitude": -38.5272211,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Ótica Diniz Praça do Ferreira excelente atendimento pela atendente Diana.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 16,
+              "rank_absolute": 16,
+              "domain": "www.instagram.com",
+              "title": "Óticas Diniz Vila da Penha RJ",
+              "original_title": null,
+              "url": "https://www.instagram.com/oticasdinizviladapenha/",
+              "contact_url": "https://wa.me/5521975829333",
+              "contributor_url": "https://maps.google.com/maps/contrib/108228946062390839829",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 862,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 3,
+                "2": 0,
+                "3": 1,
+                "4": 7,
+                "5": 851
+              },
+              "snippet": "Av. Meriti, 2198 - Vila da Penha, Rio de Janeiro - RJ, 21211-006",
+              "address": "Av. Meriti, 2198 - Vila da Penha, Rio de Janeiro - RJ, 21211-006",
+              "address_info": {
+                "borough": "Vila da Penha",
+                "address": "Av. Meriti, 2198",
+                "city": "Rio de Janeiro",
+                "zip": "21211-006",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJayCL_fN7mQAR2afPjyAbo10",
+              "phone": "+552197582-9333",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1v7l4auu62IG_T1GrJHjt5Fhucf3_0B0SfxQYFxd75IOMM-9JQ0jzCwLxWZwNr_VYgz3X6p33dg7ESrrdocbQ-k35hMFkI6zPX2ALytivvYf-NqIIKDXuzZpaKyed6v8yNMre2cXgz_k2=w408-h544-k-no",
+              "total_photos": 45,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 13,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x997bf3fd8b206b:0x5da31b208fcfa7d9",
+              "cid": "6747266493396789209",
+              "latitude": -22.8402688,
+              "longitude": -43.312256999999995,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"Ótica Diniz um ótimo atendimento, atendente Ingrid um amor\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 17,
+              "rank_absolute": 17,
+              "domain": null,
+              "title": "Otica Diniz",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": null,
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": null,
+              "snippet": "Olinda Nova do Maranhão - MA",
+              "address": "Olinda Nova do Maranhão - MA",
+              "address_info": {
+                "borough": null,
+                "address": null,
+                "city": "Olinda Nova do Maranhão",
+                "zip": "014",
+                "region": "Maranhão",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJ_y61HACJ9QcRi9G1d7ohy00",
+              "phone": null,
+              "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=jM5uK9KcIOQJp6dM1FI-LA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=175.69972&pitch=0&thumbfov=100",
+              "total_photos": 1,
+              "category": "Loja de Conveniência",
+              "additional_categories": null,
+              "category_ids": [
+                "convenience_store"
+              ],
+              "work_hours": null,
+              "feature_id": "0x7f589001cb52eff:0x4dcb21ba77b5d18b",
+              "cid": "5605611245948752267",
+              "latitude": -2.9940058,
+              "longitude": -44.9905305,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 18,
+              "rank_absolute": 18,
+              "domain": null,
+              "title": "OTICAS DINIZ",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 1,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 0,
+                "5": 1
+              },
+              "snippet": "Lago da Pedra - MA, 65715-000",
+              "address": "Lago da Pedra - MA, 65715-000",
+              "address_info": {
+                "borough": null,
+                "address": null,
+                "city": "Lago da Pedra",
+                "zip": null,
+                "region": "Maranhão",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJx4IoMGiozJIR6wwLQbmWwRY",
+              "phone": "+559998176-6120",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhsPLBi93p4iDdwqZ0LrFRNOik3qY5z05vI7whpyU9XFr4FxPdbXyefpyA9wx6jSkzUF6HatSiLjYtWRbkH1qE5TO8Cf0JCEWaz4cgpVFlmaxJu_bpHqhpKkEQYoMMZrG4SloyX9dE50Q=w408-h306-k-no",
+              "total_photos": 5,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": null,
+              "feature_id": "0x92cca868302882c7:0x16c196b9410b0ceb",
+              "cid": "1639757461743930603",
+              "latitude": -4.572036499999999,
+              "longitude": -45.1313384,
+              "is_claimed": false,
+              "local_justifications": null,
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 19,
+              "rank_absolute": 19,
+              "domain": "oticasdiniz.com.br",
+              "title": "Oticas Diniz Cruzeiro",
+              "original_title": null,
+              "url": "https://oticasdiniz.com.br/",
+              "contact_url": null,
+              "contributor_url": "https://maps.google.com/maps/contrib/114223288919839794733",
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.9,
+                "votes_count": 412,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 5,
+                "2": 0,
+                "3": 0,
+                "4": 5,
+                "5": 402
+              },
+              "snippet": "Av. Jorge Tibiriçá, 586 - Centro, Cruzeiro - SP, 12701-020",
+              "address": "Av. Jorge Tibiriçá, 586 - Centro, Cruzeiro - SP, 12701-020",
+              "address_info": {
+                "borough": "Centro",
+                "address": "Av. Jorge Tibiriçá, 586",
+                "city": "Cruzeiro",
+                "zip": "12701-020",
+                "region": "São Paulo",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJDbSwFHz1nQAR6d9d_MUYkko",
+              "phone": "+551299606-1429",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWng_QWrFDG8HxLUqgJUTpLUolmsFU6rMC2gFfElhPcnI7Xed5o4RYgKim7Vrz7i3_OSOzhSzmD1A0WnbeX7Rrrb3lQVpEGadqb4kfN0DrA8vYhbh1hrlC8O3X1gZlArK6yQsLmf9w=w408-h883-k-no",
+              "total_photos": 40,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 18,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 13,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x9df57c14b0b40d:0x4a9218c5fc5ddfe9",
+              "cid": "5373384544028057577",
+              "latitude": -22.5778632,
+              "longitude": -44.9587097,
+              "is_claimed": true,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"... no serviço e atendimento fazem com que eu recomende a ótica.\""
+                }
+              ],
+              "is_directory_item": false
+            },
+            {
+              "type": "maps_search",
+              "rank_group": 20,
+              "rank_absolute": 20,
+              "domain": null,
+              "title": "Ótica Diniz Resende - Loja 02",
+              "original_title": null,
+              "url": null,
+              "contact_url": null,
+              "contributor_url": null,
+              "book_online_url": null,
+              "rating": {
+                "rating_type": "Max5",
+                "value": 5,
+                "votes_count": 23,
+                "rating_max": null
+              },
+              "hotel_rating": null,
+              "price_level": null,
+              "rating_distribution": {
+                "1": 0,
+                "2": 0,
+                "3": 0,
+                "4": 1,
+                "5": 22
+              },
+              "snippet": "R. Albino de Almeida, 138 - Campos Elíseos, Resende - RJ, 27542-080",
+              "address": "R. Albino de Almeida, 138 - Campos Elíseos, Resende - RJ, 27542-080",
+              "address_info": {
+                "borough": "Campos Elíseos",
+                "address": "R. Albino de Almeida, 138",
+                "city": "Resende",
+                "zip": "27542-080",
+                "region": "Rio de Janeiro",
+                "country_code": "BR"
+              },
+              "place_id": "ChIJJWGVCnZ_ngARw8RN6ANNjT0",
+              "phone": "+552499841-0144",
+              "main_image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlyv-jv429wj-YoFzYBog2_rPpqJqL9UmZIceaJSL7rhXqn-uzWnOaXwdBt0_-oKDNcCKlb5D4dpa_JdgN_sijxq8Q1GXTKJfHpPeRECtJbn0TkVMoYjqJwfa75qUUwzHocW5jq=w408-h493-k-no",
+              "total_photos": 5,
+              "category": "Ótica",
+              "additional_categories": null,
+              "category_ids": [
+                "optician"
+              ],
+              "work_hours": {
+                "timetable": {
+                  "sunday": null,
+                  "monday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "tuesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "wednesday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "thursday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "friday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 19,
+                        "minute": 0
+                      }
+                    }
+                  ],
+                  "saturday": [
+                    {
+                      "open": {
+                        "hour": 9,
+                        "minute": 0
+                      },
+                      "close": {
+                        "hour": 14,
+                        "minute": 0
+                      }
+                    }
+                  ]
+                },
+                "current_status": "close"
+              },
+              "feature_id": "0x9e7f760a956125:0x3d8d4d03e84dc4c3",
+              "cid": "4435285887207457987",
+              "latitude": -22.4647127,
+              "longitude": -44.447642599999995,
+              "is_claimed": false,
+              "local_justifications": [
+                {
+                  "type": "user_review",
+                  "text": "\"... de compra maravilhosa, super recomendo as óticas Diniz\""
+                }
+              ],
+              "is_directory_item": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

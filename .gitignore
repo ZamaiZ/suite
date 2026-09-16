@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Gerado pelo postinstall (scripts/copy-maplibre-worker.mjs).
+# Versionar a cópia a faria envelhecer em silêncio numa atualização do maplibre.
+public/maplibre/

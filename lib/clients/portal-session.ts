@@ -110,16 +110,36 @@ export async function requirePortalClient(): Promise<
   return { status: "ok", context: { client, admin } }
 }
 
-export async function buildPortalUrl(slug: string): Promise<string> {
+/**
+ * A origem do portal, resolvida uma vez.
+ *
+ * Existe separada de `buildPortalUrl` porque a lista de clientes monta N links
+ * no mesmo render: resolver a origem por link faria N leituras de `headers()`
+ * dentro de um `map` que precisaria virar assíncrono sem ganho nenhum.
+ *
+ * `null` quando não há host conhecido — aí o link sai relativo.
+ */
+export async function portalOrigin(): Promise<string | null> {
   const configured = process.env.NEXT_PUBLIC_APP_URL?.trim()
-  if (configured) {
-    return new URL(`/b/${slug}`, configured).toString()
-  }
+  if (configured) return configured
 
   const headerStore = await headers()
   const host =
     headerStore.get("x-forwarded-host") ?? headerStore.get("host") ?? null
+  if (!host) return null
   const proto = headerStore.get("x-forwarded-proto") ?? "http"
-  if (!host) return `/b/${slug}`
-  return `${proto}://${host}/b/${slug}`
+  return `${proto}://${host}`
+}
+
+/** Monta o link do portal a partir de uma origem já resolvida. */
+export function portalUrlFromOrigin(
+  origin: string | null,
+  slug: string,
+): string {
+  if (!origin) return `/b/${slug}`
+  return new URL(`/b/${slug}`, origin).toString()
+}
+
+export async function buildPortalUrl(slug: string): Promise<string> {
+  return portalUrlFromOrigin(await portalOrigin(), slug)
 }

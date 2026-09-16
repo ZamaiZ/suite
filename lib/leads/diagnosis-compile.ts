@@ -1,8 +1,10 @@
 import type { BrazilStateCode } from "@/lib/br-locations"
 import {
   DIAGNOSIS_PILLAR_LABELS,
+  DIAGNOSIS_PILLARS,
   DIAGNOSIS_ROADMAP_CAP,
   emptyDiagnosisProse,
+  keepOrReseed,
   emptyPillarScore,
   scorePillarOpportunities,
   type DiagnosisDocument,
@@ -100,6 +102,11 @@ export type DiagnosisCompileInput = {
   backlinkSnapshot?: BacklinkSnapshot | null
   generatedAt: string
   previousProse?: DiagnosisProse | null
+  /**
+   * A semente da compilação anterior. Sem ela não dá para saber se o texto
+   * salvo é do analista ou nosso — e na dúvida se preserva.
+   */
+  previousSeed?: DiagnosisProse | null
   leadCity: string | null
   leadStateCode: BrazilStateCode | null
   segmentName: string | null
@@ -692,30 +699,29 @@ export function compileDiagnosisDocument(
   })
   const prose: DiagnosisProse = input.previousProse
     ? {
-        executiveSummary:
-          input.previousProse.executiveSummary.trim() ||
+        executiveSummary: keepOrReseed(
+          input.previousProse.executiveSummary,
+          input.previousSeed?.executiveSummary,
           seeded.executiveSummary,
-        commercialHook:
-          input.previousProse.commercialHook.trim() || seeded.commercialHook,
-        pillarNarratives: {
-          google:
-            input.previousProse.pillarNarratives.google.trim() ||
-            seeded.pillarNarratives.google,
-          website:
-            input.previousProse.pillarNarratives.website.trim() ||
-            seeded.pillarNarratives.website,
-          presence:
-            input.previousProse.pillarNarratives.presence.trim() ||
-            seeded.pillarNarratives.presence,
-          visibility:
-            input.previousProse.pillarNarratives.visibility.trim() ||
-            seeded.pillarNarratives.visibility,
-          // Rascunho salvo antes do pilar nao tem a chave. `?? ""` deixa a
-          // semente entrar, em vez de quebrar o `.trim()` num `undefined`.
-          geo:
-            (input.previousProse.pillarNarratives.geo ?? "").trim() ||
-            seeded.pillarNarratives.geo,
-        },
+        ),
+        commercialHook: keepOrReseed(
+          input.previousProse.commercialHook,
+          input.previousSeed?.commercialHook,
+          seeded.commercialHook,
+        ),
+        pillarNarratives: Object.fromEntries(
+          DIAGNOSIS_PILLARS.map((pillar) => [
+            pillar,
+            keepOrReseed(
+              // Rascunho salvo antes do pilar `geo` nao tem a chave. `?? ""`
+              // deixa a semente entrar, em vez de quebrar o `.trim()` num
+              // `undefined`.
+              input.previousProse?.pillarNarratives[pillar] ?? "",
+              input.previousSeed?.pillarNarratives?.[pillar],
+              seeded.pillarNarratives[pillar],
+            ),
+          ]),
+        ) as Record<DiagnosisPillar, string>,
       }
     : seeded
 
@@ -724,6 +730,7 @@ export function compileDiagnosisDocument(
     meta,
     facts,
     prose: prose.executiveSummary ? prose : seeded,
+    proseSeed: seeded,
     limitations: buildLimitations(input),
   }
 }

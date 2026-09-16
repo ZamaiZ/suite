@@ -2,9 +2,8 @@
 
 import {
   RiCheckboxCircleLine,
-  RiChatQuoteLine,
+  RiQuestionAnswerLine,
   RiRobot2Line,
-  RiSearchEyeLine,
   RiSparkling2Line,
 } from "react-icons/ri"
 import type { IconType } from "react-icons"
@@ -15,15 +14,23 @@ import {
   type StepTone,
 } from "@/components/custom/LeadStepShell"
 import { GEO_STEP_TABS, type GeoStepTabId } from "@/lib/leads/geo-step-tabs"
+import { pct } from "./geo-format"
 import type { GeoController } from "./use-geo-controller"
 
 /**
- * Cada big number é a manchete de uma aba, e clicar nele leva até lá.
+ * Cada big number é a manchete de **uma** aba, e clicar nele leva até lá.
  *
- * Duas células **não** ganham trilha, e não por esquecimento. Citações em AI
+ * São quatro abas, então são quatro células — o mesmo número de Website,
+ * Visibilidade e Presença digital, e o que o grid `repeat(4)` do cabeçalho
+ * comporta sem quebrar linha. Antes eram cinco: `citacoes` e `conteudo` tinham
+ * duas manchetes cada, `sondagem` não tinha nenhuma — justamente a coleta mais
+ * cara da etapa —, e a quinta célula caía sozinha numa segunda linha. Demanda
+ * em IA e menções em IA continuam inteiras dentro das abas delas.
+ *
+ * **Uma célula não ganha trilha, e não por esquecimento.** Citações em AI
  * Overview não têm denominador — não existe "de quantas seria possível" —, e
- * trilha sem escala mente pior que trilha ausente. A de robôs tem: o
- * denominador é quantos agentes o robots.txt declara.
+ * trilha sem escala mente pior que trilha ausente. As outras três têm: agentes
+ * declarados no robots, execuções `ok` da sondagem, e critérios do analista.
  */
 const TAB_LABEL: Record<GeoStepTabId, string> = Object.fromEntries(
   GEO_STEP_TABS.map((item) => [item.id, item.label]),
@@ -90,8 +97,8 @@ export function LeadGeoMetricCells({
   const allowed = declared - blocked
 
   const aiOverview = snapshot?.aiOverview ?? null
-  const citations = snapshot?.citations ?? null
-  const demand = snapshot?.aiDemand ?? null
+  const probe = snapshot?.promptVisibility ?? null
+  const okRuns = probe?.runs.filter((run) => run.status === "ok").length ?? 0
 
   return (
     <>
@@ -155,65 +162,26 @@ export function LeadGeoMetricCells({
         share={null}
       />
       {/*
-        `null` é onda 2 não rodada, e a célula diz "não coletado" em vez de
-        "nenhuma" — a diferença entre não olhar e olhar e não achar.
+        Fração legítima: "cheio é bom" — toda resposta lida citando a marca é o
+        melhor resultado possível. O denominador é o das execuções `ok`, igual
+        ao de `mentionRate`: contar as que o provedor recusou derrubaria a taxa
+        por um motivo que não tem nada a ver com o lead.
       */}
       <Cell
-        tab="citacoes"
+        tab="sondagem"
         onSelectTab={onSelectTab}
-        icon={RiChatQuoteLine}
-        label="MENÇÕES EM IA"
-        value={citations === null ? "—" : String(citations.mentions)}
+        icon={RiQuestionAnswerLine}
+        label="SONDAGEM EM IA"
+        value={probe === null ? "—" : pct(probe.metrics.mentionRate)}
         unit={
-          citations === null
-            ? "não coletado"
-            : citations.mentions === 0
-              ? "respostas de IA citam o negócio"
-              : citations.domainCitedAsSource
-                ? "respostas · o site é fonte"
-                : "respostas · o site não é fonte"
+          probe === null
+            ? "não sondado"
+            : `de ${okRuns} ${okRuns === 1 ? "resposta lida" : "respostas lidas"}`
         }
         tone={
-          citations === null
-            ? "neutral"
-            : citations.mentions === 0
-              ? "warning"
-              : citations.domainCitedAsSource
-                ? "success"
-                : "warning"
+          probe === null ? "neutral" : stepShareTone(probe.metrics.mentionRate)
         }
-        share={null}
-      />
-      {/*
-        Sem trilha, e nunca como percentual do volume orgânico: medido em
-        2026-09-11, uma keyword teve 12.559 buscas em IA contra 5.400 no Google
-        e outra teve 234 contra 18.100. Não há razão constante entre os dois.
-      */}
-      <Cell
-        tab="conteudo"
-        onSelectTab={onSelectTab}
-        icon={RiSearchEyeLine}
-        label="DEMANDA EM IA"
-        value={
-          demand === null || demand.totalAiSearchVolume === null
-            ? "—"
-            : demand.totalAiSearchVolume.toLocaleString("pt-BR")
-        }
-        unit={
-          demand === null
-            ? "não coletado"
-            : demand.totalAiSearchVolume === null
-              ? "sem keyword medida"
-              : "buscas/mês nas keywords do lead"
-        }
-        tone={
-          demand === null || demand.totalAiSearchVolume === null
-            ? "neutral"
-            : demand.totalAiSearchVolume > 0
-              ? "success"
-              : "warning"
-        }
-        share={null}
+        share={probe === null ? null : probe.metrics.mentionRate}
       />
       <Cell
         tab="conteudo"

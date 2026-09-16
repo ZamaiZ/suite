@@ -94,9 +94,7 @@ export {
 } from "./lookup-postal-code"
 export {
   suggestBriefingAddresses,
-  applyBriefingPlace,
   type SuggestBriefingAddressesState,
-  type ApplyBriefingPlaceState,
 } from "./suggest-addresses"
 export {
   loadStaffBriefingOverview,

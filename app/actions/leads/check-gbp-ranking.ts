@@ -7,12 +7,7 @@ import {
   isDataForSeoConfigured,
 } from "@/lib/dataforseo/configured"
 import { fetchGoogleMapsRank } from "@/lib/dataforseo/google-maps"
-import {
-  hasGbpCoordinates,
-  snapshotFromPlace,
-  type LeadGbpProfile,
-} from "@/lib/leads/gbp"
-import { fetchPlaceDetails } from "@/lib/places"
+import { hasGbpCoordinates, type LeadGbpProfile } from "@/lib/leads/gbp"
 import {
   gbpProfileIdSchema,
   readGbpProfileIdFields,
@@ -22,7 +17,6 @@ import {
   denyGbpEdit,
   GBP_SELECT,
   loadGbpProfileRow,
-  matchedKeyForSnapshot,
   rowToGbpProfile,
   insertGbpRankCheck,
 } from "./gbp-access"
@@ -63,27 +57,17 @@ export async function checkLeadGbpRanking(
     return { status: "error", message: DATAFORSEO_NOT_CONFIGURED }
   }
 
-  let snapshot = loaded.profile.payload
-  const payloadPatch: Record<string, unknown> = {}
-
+  // Sem coordenada, a checagem para e diz o que fazer.
+  //
+  // Antes havia um fallback que consultava o Places por dentro. Trocar por uma
+  // chamada ao DataForSEO seria cobrar o usuário por uma coleta que ele não
+  // pediu, no meio de outra operação — e a recoleta agora é um clique.
+  const snapshot = loaded.profile.payload
   if (!hasGbpCoordinates(snapshot)) {
-    const details = await fetchPlaceDetails(loaded.profile.place_id)
-    if (details.status === "error") {
-      return { status: "error", message: details.message }
+    return {
+      status: "error",
+      message: "Recolete o perfil antes de checar o ranking.",
     }
-    snapshot = snapshotFromPlace(details.data)
-    if (!hasGbpCoordinates(snapshot)) {
-      return { status: "error", message: RANK_FAILED }
-    }
-    payloadPatch.place_id = snapshot.placeId
-    payloadPatch.google_maps_uri = snapshot.googleMapsUri
-    payloadPatch.fetched_at = new Date().toISOString()
-    payloadPatch.fetched_by = user.id
-    payloadPatch.payload = snapshot
-    payloadPatch.matched_website_key = matchedKeyForSnapshot(
-      snapshot.websiteDomain,
-      loaded.lead.websiteKeys,
-    )
   }
 
   const latitude = snapshot.latitude
@@ -110,16 +94,6 @@ export async function checkLeadGbpRanking(
   for (const result of results) {
     if (result.status === "error") {
       if (result.message === DATAFORSEO_UNCONFIGURED) return result
-      return { status: "error", message: RANK_FAILED }
-    }
-  }
-
-  if (Object.keys(payloadPatch).length > 0) {
-    const { error: patchError } = await supabase
-      .from("lead_gbp_profiles")
-      .update(payloadPatch)
-      .eq("id", parsed.data.profile_id)
-    if (patchError) {
       return { status: "error", message: RANK_FAILED }
     }
   }

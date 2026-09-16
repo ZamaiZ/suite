@@ -1,6 +1,10 @@
 "use client"
 
 import { RiCloseLine } from "react-icons/ri"
+import {
+  ClientPortalMenu,
+  type ClientPortalSnapshot,
+} from "@/components/custom/ClientCardMenu"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { Button } from "@/components/ui/button"
 import { cn } from "cn"
@@ -13,6 +17,8 @@ const TONE_CLASS = {
 
 export function ClientBriefingDialogHeader({
   companyName,
+  clientId,
+  portalSnapshot,
   statusLabel,
   statusTone,
   completedCount,
@@ -20,6 +26,12 @@ export function ClientBriefingDialogHeader({
   onClose,
 }: {
   companyName: string
+  /**
+   * Sem cliente identificado não há menu: o diálogo abre em transição com
+   * `clientId` nulo, e um menu que não sabe de quem é não tem o que fazer.
+   */
+  clientId?: string | null
+  portalSnapshot?: ClientPortalSnapshot
   statusLabel?: string
   statusTone: keyof typeof TONE_CLASS
   completedCount?: number
@@ -60,6 +72,9 @@ export function ClientBriefingDialogHeader({
           <span className="inline-flex rounded-md bg-background px-2 py-0.5 text-xs/relaxed font-medium tabular-nums text-muted-foreground">
             {completedCount}/8
           </span>
+        ) : null}
+        {clientId ? (
+          <ClientPortalMenu clientId={clientId} snapshot={portalSnapshot} />
         ) : null}
         <Button
           type="button"
