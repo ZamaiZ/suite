@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/tooltip"
 import { NAV_ITEMS } from "@/components/custom/navigation"
 import { NavTree } from "@/components/custom/NavTree"
+import { CommandPaletteTrigger } from "@/components/custom/CommandPalette"
 
 const EXPANDED_W = 260
 const COLLAPSED_W = 64
@@ -177,7 +178,11 @@ export function Sidebar() {
         </m.span>
       </div>
 
-      <nav className="flex-1 overflow-visible px-2 py-3">
+      <div className="shrink-0 px-2 pt-3">
+        <CommandPaletteTrigger collapsed={!expanded} />
+      </div>
+
+      <nav className="flex-1 overflow-visible px-2 pt-2 pb-3">
         <NavTree
           items={NAV_ITEMS}
           pathname={pathname}

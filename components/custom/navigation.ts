@@ -1,9 +1,16 @@
 import {
   RiBriefcaseLine,
+  RiChat3Line,
+  RiFileList3Line,
   RiGroupLine,
   RiHomeLine,
+  RiLayoutGridLine,
+  RiMouseLine,
+  RiRouteLine,
   RiSettings3Line,
   RiShapesLine,
+  RiSparklingLine,
+  RiStackLine,
   RiStore2Line,
   RiToolsLine,
   RiUserSearchLine,
@@ -29,27 +36,6 @@ export const NAV_ITEMS: NavItem[] = [
     href: "/",
     icon: RiHomeLine,
     description: "Visão geral e atividade recente",
-  },
-  {
-    kind: "group",
-    id: "showcase",
-    label: "Showcase",
-    icon: RiShapesLine,
-    description: "Catálogo de componentes",
-    children: [
-      {
-        kind: "leaf",
-        label: "Visão geral",
-        href: "/showcase",
-        description: "Inventário shadcn",
-      },
-      { kind: "leaf", label: "Ações e feedback", href: "/showcase/actions" },
-      { kind: "leaf", label: "Formulários", href: "/showcase/forms" },
-      { kind: "leaf", label: "Navegação", href: "/showcase/navigation" },
-      { kind: "leaf", label: "Camadas", href: "/showcase/overlays" },
-      { kind: "leaf", label: "Conteúdo e dados", href: "/showcase/content" },
-      { kind: "leaf", label: "Conversas", href: "/showcase/messaging" },
-    ],
   },
   {
     kind: "group",
@@ -94,6 +80,70 @@ export const NAV_ITEMS: NavItem[] = [
         href: "/settings/tools",
         icon: RiToolsLine,
         description: "Fontes de dados da análise",
+      },
+    ],
+  },
+  {
+    kind: "group",
+    id: "showcase",
+    label: "Showcase",
+    icon: RiShapesLine,
+    description: "Catálogo de componentes",
+    // Os ícones de categoria são os mesmos de `SHOWCASE_CATEGORIES`, repetidos
+    // aqui de propósito: este arquivo é a fonte da navegação e não deve
+    // depender da pasta de um módulo de tela.
+    //
+    // Na paleta entra só a visão geral: as categorias são catálogo para
+    // consultar, e sete linhas delas afogariam Leads, Clientes e Equipe.
+    children: [
+      {
+        kind: "leaf",
+        label: "Visão geral",
+        href: "/showcase",
+        icon: RiStackLine,
+        description: "Inventário shadcn",
+      },
+      {
+        kind: "leaf",
+        label: "Ações e feedback",
+        href: "/showcase/actions",
+        icon: RiSparklingLine,
+        hiddenInPalette: true,
+      },
+      {
+        kind: "leaf",
+        label: "Formulários",
+        href: "/showcase/forms",
+        icon: RiFileList3Line,
+        hiddenInPalette: true,
+      },
+      {
+        kind: "leaf",
+        label: "Navegação",
+        href: "/showcase/navigation",
+        icon: RiRouteLine,
+        hiddenInPalette: true,
+      },
+      {
+        kind: "leaf",
+        label: "Camadas",
+        href: "/showcase/overlays",
+        icon: RiMouseLine,
+        hiddenInPalette: true,
+      },
+      {
+        kind: "leaf",
+        label: "Conteúdo e dados",
+        href: "/showcase/content",
+        icon: RiLayoutGridLine,
+        hiddenInPalette: true,
+      },
+      {
+        kind: "leaf",
+        label: "Conversas",
+        href: "/showcase/messaging",
+        icon: RiChat3Line,
+        hiddenInPalette: true,
       },
     ],
   },

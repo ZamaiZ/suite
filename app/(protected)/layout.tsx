@@ -1,6 +1,7 @@
 import { requireCommercialMember } from "@/lib/auth/session"
 import { Sidebar } from "@/components/custom/Sidebar"
 import { MobileNavigation } from "@/components/custom/MobileNavigation"
+import { CommandPalette } from "@/components/custom/CommandPalette"
 
 export default async function ProtectedLayout({
   children,
@@ -20,6 +21,9 @@ export default async function ProtectedLayout({
       <div className="md:hidden">
         <MobileNavigation />
       </div>
+      {/* Uma instância só, fora dos wrappers de breakpoint: o atalho é global
+          e o diálogo precisa existir nos dois tamanhos. */}
+      <CommandPalette />
     </div>
   )
 }

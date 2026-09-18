@@ -94,8 +94,8 @@ Conteúdo que continua montado mas saiu de vista — a coluna recolhida, o paine
 
 ## Atalho de teclado desta tela vence o do app
 
-`Ctrl/⌘ + B` e `Ctrl/⌘ + Shift + E` já pertencem ao `Sidebar` e ao `MobileNavigation`, que escutam `window` na fase de **bubble**. Uma tela que quer o mesmo atalho registra em `window` na fase de **captura**, com `preventDefault()` e `stopPropagation()` — a captura roda antes do bubble, então os donos originais não reagem junto. Fechada a tela, nada fica registrado e o atalho volta a ser deles.
+`Ctrl/⌘ + B` e `Ctrl/⌘ + Shift + E` já pertencem ao `Sidebar` e ao `MobileNavigation`, que escutam `window` na fase de **bubble**; `Ctrl/⌘ + K` pertence à `CommandPalette`, que já escuta em captura. Uma tela que quer o mesmo atalho registra em `window` na fase de **captura**, com `preventDefault()` e `stopPropagation()` — a captura roda antes do bubble, então os donos originais não reagem junto. Fechada a tela, nada fica registrado e o atalho volta a ser deles.
 
 Case por `e.code` (código físico), não por `e.key`: é o que os dois handlers do app testam, e casar por `key` faz os três discordarem em layouts de teclado diferentes.
 
-`useCaptureShortcut` em `components/custom/LeadStepShell` já faz tudo isso. `allowInFields` é o que distingue um atalho de "sair daqui" — que precisa funcionar com o cursor dentro do textarea — de um de "abrir aquilo", que não.
+`useCaptureShortcut` em `hooks/use-capture-shortcut.ts` já faz tudo isso (o barril de `LeadStepShell` continua reexportando). `allowInFields` é o que distingue um atalho de "sair daqui" — que precisa funcionar com o cursor dentro do textarea — de um de "abrir aquilo", que não.

@@ -20,9 +20,9 @@ export {
   type StepOpportunity,
 } from "./StepOpportunityItem"
 export { StepOpportunitiesRail } from "./StepOpportunitiesRail"
-export {
-  useCaptureShortcut,
-  useCollapsibleRail,
-  useWideViewport,
-} from "./use-collapsible-rail"
+export { useCollapsibleRail, useWideViewport } from "./use-collapsible-rail"
+// Reexportado do lugar novo: o hook saiu daqui para `hooks/` quando a paleta
+// de comandos passou a precisar dele sem arrastar este barril inteiro para o
+// bundle de toda página.
+export { useCaptureShortcut } from "@/hooks/use-capture-shortcut"
 export { StepNotesField, type StepNotesStatus } from "./StepNotesField"

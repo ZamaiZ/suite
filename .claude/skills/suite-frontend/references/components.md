@@ -50,7 +50,7 @@ sed -i 's#from "@remixicon/react"#from "react-icons/ri"#' components/ui/*.tsx
 
 Não existem em `components/ui`: `hover-card` e `resizable`. Existem no registry e podem ser instalados pelo CLI quando a tarefa pedir.
 
-`sidebar` é caso à parte: **existe no registry e não é para ser instalado.** A navegação deste app é `components/custom/Sidebar` + `NavTree`, que consomem os tokens `--color-sidebar-*` de `globals.css` e são donos do `Ctrl/⌘ B`. Instalar o primitive do registry criaria uma segunda navegação com outro contrato de estado e outro atalho.
+`sidebar` é caso à parte: **existe no registry e não é para ser instalado.** A navegação deste app é `components/custom/Sidebar` + `NavTree`, que consomem os tokens `--color-sidebar-*` de `globals.css` e são donos do `Ctrl/⌘ B` — e, junto com `CommandPalette`, do `Ctrl/⌘ K`. Instalar o primitive do registry criaria uma segunda navegação com outro contrato de estado e outro atalho.
 
 Quando a tarefa pedir um primitive que falta: componha com o que existe, ou instale pelo CLI. **Nunca escreva um primitive à mão** — ele nasce fora do contrato de tokens e do vocabulário de foco, e vira o próximo realinhamento. Instalado, ele passa pelo passo do ícone acima e ganha uma entrada aqui **no mesmo commit**.
 
@@ -214,11 +214,14 @@ Paleta de comandos e busca com teclado.
 Exporta: `Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandSeparator`, `CommandItem`, `CommandShortcut`
 Composição: `CommandDialog` → `Command` → `CommandInput` + `CommandList` → `CommandGroup` → `CommandItem`. `CommandEmpty` dentro de `CommandList`.
 ⚠ É para comandos, não para escolher valor de campo — isso é `Combobox`.
+⚠ **A paleta do app já existe:** `components/custom/CommandPalette`, montada uma vez no layout protegido, dona do `Ctrl/⌘ K` e montada a partir de `NAV_ITEMS`. Item novo na paleta é item novo na navegação — não se monta um segundo `CommandDialog`.
+⚠ O filtro padrão (`command-score`) **não normaliza diacrítico**. Em pt-BR isso significa que "configuracao" não acha "Configuração": passe um `filter` próprio que normalize NFD dos dois lados, como o da paleta.
+⚠ `CommandItem` já desenha um check no fim da linha, escondido até `data-checked="true"` e suprimido quando há `CommandShortcut`. Use-o antes de inventar marcador de "atual".
 
 #### Kbd
 Tecla ou atalho no texto.
 Exporta: `Kbd`, `KbdGroup`
-⚠ Atalho documentado na interface só vale se estiver realmente ligado. `Ctrl+B` e `Ctrl+E` existem no painel GBP.
+⚠ Atalho documentado na interface só vale se estiver realmente ligado. `Ctrl+B` e `Ctrl+E` existem no painel GBP; `Ctrl+K` abre a paleta em qualquer tela.
 
 #### Accordion
 Seções que abrem e fecham numa lista, uma ou várias por vez.
@@ -375,6 +378,7 @@ Encapsulam regra de negócio e têm API pública estável.
 | `ThemeToggle` | sistema/claro/escuro por `DropdownMenuRadioGroup` |
 | `Stepper` | progresso de fluxo longo |
 | `NavTree` | hierarquia de navegação com colapso |
+| `CommandPalette` | paleta `Ctrl/⌘ K` derivada de `NAV_ITEMS`; store de módulo, busca sem acento, `Ctrl+Enter` abre em nova aba. Página que não é destino de navegação sai pelo `hiddenInPalette` da folha, nunca por uma lista de ids dentro da paleta |
 | `AuthPageShell` | moldura das telas de sessão |
 | `LeadIconWell` | poço de ícone das linhas de lead (`size-7`, `bg-accent`, `text-primary`) |
 | `LeadGbpCard` | cartão de bloco das etapas de auditoria — `Card size="sm"` com título `h3` |
@@ -392,7 +396,8 @@ Compartilhado por **Perfil no Google**, **Website**, **Presença digital** e **V
 | `StepTabs` | barra de abas da etapa, genérica no id, com contador por aba |
 | `StepOpportunitiesRail` · `StepOpportunityItem` | coluna colapsável de oportunidades e a linha dela |
 | `StepNotesField` | campo livre com autosave, contador e estados de salvamento |
-| `useCollapsibleRail` · `useWideViewport` · `useCaptureShortcut` | colapso, preferência por etapa e `Ctrl/⌘ + tecla` em fase de captura |
+| `useCollapsibleRail` · `useWideViewport` | colapso e preferência por etapa |
+| `useCaptureShortcut` | **mora em `hooks/use-capture-shortcut.ts`**, reexportado por este barril. Saiu daqui quando a paleta passou a precisar dele: importá-lo do barril arrastaria as etapas inteiras para o bundle de toda página |
 | `STEP_TONE_FILL` · `_TEXT` · `_CHIP` · `_RING` | os quatro mapas de `StepTone` para classe |
 | `stepShareTone` · `stepScoreTone` | faixa de tom de uma fração (0,8 / 0,5) e de uma pontuação (limiares por parâmetro) |
 
