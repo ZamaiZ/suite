@@ -376,7 +376,7 @@ export function ClientBriefingFinanceForm({
       ) : null}
 
       {completed ? (
-        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success">
+        <div className="rounded-xl border border-success/25 bg-success/10 px-4 py-3 text-xs/relaxed text-success mb-15">
           Etapa concluída. Você pode continuar editando; as alterações seguem
           sendo salvas.
         </div>
