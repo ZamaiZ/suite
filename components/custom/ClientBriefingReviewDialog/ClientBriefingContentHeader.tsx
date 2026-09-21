@@ -12,6 +12,33 @@ const STATE_LABEL: Record<string, string> = {
   completed: "Concluído",
 }
 
+/**
+ * Um mapa exaustivo sobre a união, e não encadeamento de ternário: área nova
+ * sem texto não compila, em vez de cair no `else` do briefing e mostrar o
+ * cabeçalho errado.
+ */
+const AREA_COPY: Record<
+  ClientBriefingArea,
+  { eyebrow: string; title: string; description: string }
+> = {
+  briefing: {
+    eyebrow: "Briefing",
+    title: "Acompanhamento do briefing",
+    description: "Etapas, respostas e materiais registrados pelo cliente.",
+  },
+  contact: {
+    eyebrow: "Contato e kickoff",
+    title: "Gestão do kickoff",
+    description: "Histórico, agenda e próximos passos do cliente.",
+  },
+  research: {
+    eyebrow: "Pesquisa",
+    title: "Mercado e busca",
+    description:
+      "Temas, concorrentes e um veredito por palavra-chave do briefing.",
+  },
+}
+
 export function ClientBriefingContentHeader({
   area,
   step,
@@ -65,17 +92,13 @@ export function ClientBriefingContentHeader({
         ) : (
           <>
             <p className="text-xs/relaxed font-medium tracking-wide text-muted-foreground uppercase">
-              {area === "contact" ? "Contato e kickoff" : "Briefing"}
+              {AREA_COPY[area].eyebrow}
             </p>
             <h3 className="font-heading text-xl font-semibold text-foreground">
-              {area === "contact"
-                ? "Gestão do kickoff"
-                : "Acompanhamento do briefing"}
+              {AREA_COPY[area].title}
             </h3>
             <p className="mt-1 text-xs/relaxed text-muted-foreground">
-              {area === "contact"
-                ? "Histórico, agenda e próximos passos do cliente."
-                : "Etapas, respostas e materiais registrados pelo cliente."}
+              {AREA_COPY[area].description}
             </p>
           </>
         )}

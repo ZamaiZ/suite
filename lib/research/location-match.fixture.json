@@ -1,0 +1,68 @@
+{
+  "_nota": "Recorte de serp/google/locations/BR (gratuito), medido 2026-09-18. Inclui homonimo entre UFs de proposito.",
+  "result": [
+    {
+      "location_code": 1031728,
+      "location_name": "Itu,State of Sao Paulo,Brazil",
+      "location_code_parent": 20106,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    },
+    {
+      "location_code": 1031984,
+      "location_name": "Salto,State of Sao Paulo,Brazil",
+      "location_code_parent": 20106,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    },
+    {
+      "location_code": 1001776,
+      "location_name": "Sorocaba,State of Sao Paulo,Brazil",
+      "location_code_parent": 20106,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    },
+    {
+      "location_code": 1001511,
+      "location_name": "Manaus,State of Amazonas,Brazil",
+      "location_code_parent": 20087,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    },
+    {
+      "location_code": 9199073,
+      "location_name": "Manaus,Manaus,State of Amazonas,Brazil",
+      "location_code_parent": 20087,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    },
+    {
+      "location_code": 1001773,
+      "location_name": "Sao Paulo,State of Sao Paulo,Brazil",
+      "location_code_parent": 20106,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    },
+    {
+      "location_code": 20106,
+      "location_name": "State of Sao Paulo,Brazil",
+      "location_code_parent": 2076,
+      "country_iso_code": "BR",
+      "location_type": "State"
+    },
+    {
+      "location_code": 9225215,
+      "location_name": "Parque dos Pinheiros,State of Sao Paulo,Brazil",
+      "location_code_parent": 20106,
+      "country_iso_code": "BR",
+      "location_type": "Neighborhood"
+    },
+    {
+      "location_code": 1001736,
+      "location_name": "Guarulhos,State of Sao Paulo,Brazil",
+      "location_code_parent": 20106,
+      "country_iso_code": "BR",
+      "location_type": "City"
+    }
+  ]
+}

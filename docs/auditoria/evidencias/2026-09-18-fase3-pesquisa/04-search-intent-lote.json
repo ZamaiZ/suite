@@ -1,0 +1,270 @@
+{
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.0767 sec.",
+  "cost": 0.0144,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09181835-2319-0541-0000-ebee7831ef8d",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.0668 sec.",
+      "cost": 0.0144,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "dataforseo_labs",
+        "google",
+        "search_intent",
+        "live"
+      ],
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "search_intent",
+        "se_type": "google",
+        "keywords": [
+          "loja de tintas",
+          "tinta emborrachada",
+          "tinta acrilica",
+          "casa das tintas",
+          "massa acrilica",
+          "tinta emborrachada para parede",
+          "tinta borracha liquida",
+          "casa de tintas",
+          "casa de tinta",
+          "tinta emborrachada para piso",
+          "tinta acrilica branca",
+          "massa corrida acrilica",
+          "seladora para parede",
+          "massa acrílica",
+          "tinta acrílica",
+          "tinta emborrachada para telhado",
+          "tinta emborrachada decor colors",
+          "tinta borracha liquida decor colors",
+          "tinta branco neve",
+          "loja de tintas perto de mim"
+        ],
+        "language_code": "pt"
+      },
+      "result": [
+        {
+          "language_code": "pt",
+          "items_count": 20,
+          "items": [
+            {
+              "keyword": "loja de tintas",
+              "keyword_intent": {
+                "label": "navigational",
+                "probability": 0.3927
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "transactional",
+                  "probability": 0.3184
+                },
+                {
+                  "label": "commercial",
+                  "probability": 0.2644
+                }
+              ]
+            },
+            {
+              "keyword": "tinta emborrachada",
+              "keyword_intent": {
+                "label": "informational",
+                "probability": 0.7318
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "tinta acrilica",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.5813
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "casa das tintas",
+              "keyword_intent": {
+                "label": "informational",
+                "probability": 0.4323
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "navigational",
+                  "probability": 0.2644
+                }
+              ]
+            },
+            {
+              "keyword": "massa acrilica",
+              "keyword_intent": {
+                "label": "informational",
+                "probability": 0.5018
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "transactional",
+                  "probability": 0.3813
+                }
+              ]
+            },
+            {
+              "keyword": "tinta emborrachada para parede",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.9633
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "tinta borracha liquida",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.5536
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "informational",
+                  "probability": 0.3126
+                }
+              ]
+            },
+            {
+              "keyword": "casa de tintas",
+              "keyword_intent": {
+                "label": "informational",
+                "probability": 0.3629
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "commercial",
+                  "probability": 0.2603
+                },
+                {
+                  "label": "navigational",
+                  "probability": 0.2082
+                }
+              ]
+            },
+            {
+              "keyword": "casa de tinta",
+              "keyword_intent": {
+                "label": "informational",
+                "probability": 0.4937
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "navigational",
+                  "probability": 0.2638
+                }
+              ]
+            },
+            {
+              "keyword": "tinta emborrachada para piso",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.9265
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "tinta acrilica branca",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.7668
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "massa corrida acrilica",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.9063
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "seladora para parede",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.9073
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "massa acrílica",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.4687
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "informational",
+                  "probability": 0.3261
+                }
+              ]
+            },
+            {
+              "keyword": "tinta acrílica",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.5756
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "tinta emborrachada para telhado",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.9919
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "tinta emborrachada decor colors",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.7022
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "tinta borracha liquida decor colors",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.5091
+              },
+              "secondary_keyword_intents": [
+                {
+                  "label": "navigational",
+                  "probability": 0.2822
+                }
+              ]
+            },
+            {
+              "keyword": "tinta branco neve",
+              "keyword_intent": {
+                "label": "informational",
+                "probability": 0.6423
+              },
+              "secondary_keyword_intents": null
+            },
+            {
+              "keyword": "loja de tintas perto de mim",
+              "keyword_intent": {
+                "label": "transactional",
+                "probability": 0.7116
+              },
+              "secondary_keyword_intents": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

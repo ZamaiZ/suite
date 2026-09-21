@@ -12,13 +12,21 @@ import {
   RiMoneyDollarCircleLine,
   RiPaletteLine,
   RiQuillPenLine,
+  RiSearchEyeLine,
 } from "react-icons/ri"
 import type { StaffBriefingOverview } from "@/app/actions/briefing"
 import { getLeadInitials } from "@/components/custom/LeadBoard/LeadBoardCardFace"
 import { cn } from "cn"
 import type { BriefingStepId } from "@/lib/briefing/steps"
 
-export type ClientBriefingArea = "briefing" | "contact"
+/**
+ * As áreas do cliente. `research` entrou com a Fase 3.
+ *
+ * É área e não etapa do briefing de propósito: as etapas são as oito respostas
+ * que o cliente preencheu, e a pesquisa não é resposta dele — é trabalho feito
+ * sobre elas.
+ */
+export type ClientBriefingArea = "briefing" | "contact" | "research"
 
 const STEP_ICONS: Record<
   BriefingStepId,
@@ -47,6 +55,8 @@ export function ClientBriefingNavigationRail({
   activeStep,
   steps,
   contactEnabled,
+  researchEnabled,
+  researchDetail,
   disabled,
   onAreaChange,
   onStepSelect,
@@ -57,6 +67,9 @@ export function ClientBriefingNavigationRail({
   activeStep: BriefingStepId | null
   steps: StaffBriefingOverview["steps"]
   contactEnabled: boolean
+  researchEnabled: boolean
+  /** O que já existe de pesquisa, ou o convite para fazer a primeira. */
+  researchDetail: string
   disabled: boolean
   onAreaChange: (area: ClientBriefingArea) => void
   onStepSelect: (stepId: BriefingStepId) => void
@@ -108,6 +121,18 @@ export function ClientBriefingNavigationRail({
               : "Disponível após envio"
           }
           disabled={disabled || !contactEnabled}
+        />
+        <RailButton
+          selected={area === "research"}
+          onClick={() => onAreaChange("research")}
+          icon={RiSearchEyeLine}
+          label="Pesquisa"
+          detail={
+            researchEnabled
+              ? researchDetail
+              : "Disponível após o briefing ser enviado"
+          }
+          disabled={disabled || !researchEnabled}
         />
 
         {area === "briefing" ? (

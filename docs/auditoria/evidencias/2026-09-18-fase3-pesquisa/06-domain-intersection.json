@@ -1,0 +1,2135 @@
+{
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "2.6762 sec.",
+  "cost": 0.0132,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09181836-2319-0389-0000-b2f50a638e40",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.9662 sec.",
+      "cost": 0.0132,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "dataforseo_labs",
+        "google",
+        "domain_intersection",
+        "live"
+      ],
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "domain_intersection",
+        "se_type": "google",
+        "target1": "leotintas.com.br",
+        "target2": "instagram.com",
+        "location_code": 2076,
+        "language_code": "pt",
+        "intersections": true,
+        "limit": 20
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target1": "leotintas.com.br",
+          "target2": "instagram.com",
+          "location_code": 2076,
+          "language_code": "pt",
+          "total_count": 12,
+          "items_count": 10,
+          "items": [
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "léo tintas",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-17 12:29:28 +00:00",
+                  "competition": 0.25999999046325684,
+                  "competition_level": "LOW",
+                  "cpc": 0.4000000059604645,
+                  "search_volume": 590,
+                  "low_top_of_page_bid": 0.09000000357627869,
+                  "high_top_of_page_bid": 0.3400000035762787,
+                  "categories": [
+                    10013,
+                    13388,
+                    13595
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 590
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 0,
+                    "quarterly": 0,
+                    "yearly": -19
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": null,
+                  "keyword_difficulty": 0,
+                  "detected_language": "es",
+                  "is_another_language": true
+                },
+                "serp_info": null,
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 0.699999988079071,
+                  "dofollow": 0.30000001192092896,
+                  "referring_pages": 0.5,
+                  "referring_domains": 0.4000000059604645,
+                  "referring_main_domains": 0.4000000059604645,
+                  "rank": 5.599999904632568,
+                  "main_domain_rank": 612.7999877929688,
+                  "last_updated_time": "2026-08-03 00:04:20 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "transactional",
+                  "foreign_intent": [
+                    "informational"
+                  ],
+                  "last_updated_time": "2026-04-29 13:59:13 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 32,
+                "rank_absolute": 40,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Leo Tintas: Home - Itu",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Tintas para Ambientes · Cores personalizadas. Laboratório próprio de pigmentação com mais de 50 mil fórmulas para encontrar a cor ideal para o seu projeto.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas para Ambientes"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 1.2389999628067017,
+                "estimated_paid_traffic_cost": 0.49559998512268066,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 8,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 1,
+                "rank_absolute": 4,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Leo Tintas (@leonardoarrudaofc)",
+                "url": "https://www.instagram.com/leonardoarrudaofc/",
+                "breadcrumb": "Mais de 3,8 mi seguidores",
+                "website_name": "Instagram · leonardoarrudaofc",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Do sonho a realização, da realização ao novo sonho Construindo o próximo capítulo Tintas Orçamento de tintas ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas",
+                  "tintas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leonardoarrudaofc/",
+                "etv": 179.36000061035156,
+                "estimated_paid_traffic_cost": 71.74400329589844,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 4,
+                  "referring_main_domains": 4,
+                  "referring_pages": 5,
+                  "dofollow": 3,
+                  "backlinks": 6,
+                  "time_update": "2026-09-01 05:23:31 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 56,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "leo tintas itu",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-25 16:02:38 +00:00",
+                  "competition": 0.4399999976158142,
+                  "competition_level": "MEDIUM",
+                  "cpc": 0.4000000059604645,
+                  "search_volume": 480,
+                  "low_top_of_page_bid": 0.14000000059604645,
+                  "high_top_of_page_bid": 0.4099999964237213,
+                  "categories": [
+                    10108,
+                    13691
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 720
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 590
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 480
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 590
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 51,
+                    "quarterly": 51,
+                    "yearly": 0
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "id",
+                  "is_another_language": true
+                },
+                "serp_info": null,
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 4.699999809265137,
+                  "dofollow": 2.9000000953674316,
+                  "referring_pages": 4.599999904632568,
+                  "referring_domains": 3.9000000953674316,
+                  "referring_main_domains": 3.4000000953674316,
+                  "rank": 0.800000011920929,
+                  "main_domain_rank": 569.7999877929688,
+                  "last_updated_time": "2026-07-31 12:27:17 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": [
+                    "transactional"
+                  ],
+                  "last_updated_time": "2026-04-29 18:14:27 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 5,
+                "rank_absolute": 6,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[14]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Leo Tintas: Home",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Tintas para Ambientes · Cores personalizadas. Laboratório próprio de pigmentação com mais de 50 mil fórmulas para encontrar a cor ideal para o seu projeto.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 22.511999130249023,
+                "estimated_paid_traffic_cost": 9.004799842834473,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 8,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 2,
+                "rank_absolute": 2,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[10]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Léo Tintas Itu (@leo_tintas_itu)",
+                "url": "https://www.instagram.com/leo_tintas_itu/",
+                "breadcrumb": "Mais de 4,1 mil seguidores",
+                "website_name": "Instagram · leo_tintas_itu",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Contate um de nossos vendedores. Alexandre - (11) 99914-2540. Marcos - (11) 99889-1141. Trabalho realizado por nosso cliente @archijanderson Cimento ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": null,
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leo_tintas_itu/",
+                "etv": 77.76000213623047,
+                "estimated_paid_traffic_cost": 31.104000091552734,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": 2,
+                  "is_new": false,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "leão tintas barretos",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-26 03:32:03 +00:00",
+                  "competition": 0.15000000596046448,
+                  "competition_level": "LOW",
+                  "cpc": 0.41999998688697815,
+                  "search_volume": 320,
+                  "low_top_of_page_bid": 0.23000000417232513,
+                  "high_top_of_page_bid": 0.5400000214576721,
+                  "categories": [
+                    10015,
+                    10130,
+                    13878
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 320
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 320
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 320
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 390
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 260
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 86,
+                    "quarterly": 22,
+                    "yearly": 50
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "pt",
+                  "is_another_language": false
+                },
+                "serp_info": null,
+                "avg_backlinks_info": null,
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": [
+                    "transactional"
+                  ],
+                  "last_updated_time": "2026-04-29 18:17:55 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 38,
+                "rank_absolute": 44,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[9]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Leo Tintas: Home",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Tintas para Ambientes · Cores personalizadas. Laboratório próprio de pigmentação com mais de 50 mil fórmulas para encontrar a cor ideal para o seu projeto.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 0.671999990940094,
+                "estimated_paid_traffic_cost": 0.28224000334739685,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 8,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 2,
+                "rank_absolute": 4,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Leão Tintas (@leaotintasbarretos) · Barretos, SP",
+                "url": "https://www.instagram.com/leaotintasbarretos/",
+                "breadcrumb": "Mais de 1,1 mil seguidores",
+                "website_name": "Instagram · leaotintasbarretos",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "É assim que se pinta! 17 3324-6006 - 99250-1273 ... Vem pra Leão Tintas. LEAO TINTAS, É ASSIM QUE SE PINTA. Mais uma promoção, TOPPLAST Grafite Base D' ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "17 3324-6006 - 99250-1273"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leaotintasbarretos/",
+                "etv": 51.84000015258789,
+                "estimated_paid_traffic_cost": 21.77280044555664,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": 4,
+                  "is_new": false,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "leao das tintas",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-28 03:47:46 +00:00",
+                  "competition": 0.07999999821186066,
+                  "competition_level": "LOW",
+                  "cpc": 0.6700000166893005,
+                  "search_volume": 210,
+                  "low_top_of_page_bid": 0.23999999463558197,
+                  "high_top_of_page_bid": 0.9300000071525574,
+                  "categories": [
+                    10004,
+                    11250,
+                    12558,
+                    13491
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 260
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 0,
+                    "quarterly": 0,
+                    "yearly": -58
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": "keyword_metrics",
+                  "keyword_difficulty": 0,
+                  "detected_language": "de",
+                  "is_another_language": true
+                },
+                "serp_info": null,
+                "avg_backlinks_info": null,
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-28 12:59:41 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 72,
+                "rank_absolute": 84,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[6]/div[1]/div[1]",
+                "domain": "loja.leotintas.com.br",
+                "title": "leo tintas - Léo Tintas",
+                "url": "https://loja.leotintas.com.br/",
+                "breadcrumb": "https://loja.leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Estamos desenvolvendo nossa loja em parceria com a ZAAZ! Aguarde que em breve traremos novidades. Senha de acesso. Destravar. LEO TINTAS.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "TINTAS"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 0.4410000145435333,
+                "estimated_paid_traffic_cost": 0.2954699993133545,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 1,
+                "rank_absolute": 1,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[7]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Leão das Tintas 🦁 (@leaodastintasijui) · Ijuí, RS",
+                "url": "https://www.instagram.com/leaodastintasijui/",
+                "breadcrumb": "Mais de 810 seguidores",
+                "website_name": "Instagram · leaodastintasijui",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "812 followers · 106 posts · Leão das Tintas A n°1 em tintas Grupo Incores Pedidos e orçamentos no Whatsapp.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Leão das Tintas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leaodastintasijui/",
+                "etv": 63.84000015258789,
+                "estimated_paid_traffic_cost": 42.77280044555664,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": 1,
+                  "is_new": false,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "loja de tintas indaiatuba",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-25 08:10:42 +00:00",
+                  "competition": 0.8399999737739563,
+                  "competition_level": "HIGH",
+                  "cpc": 0.7400000095367432,
+                  "search_volume": 210,
+                  "low_top_of_page_bid": 0.33000001311302185,
+                  "high_top_of_page_bid": 0.9900000095367432,
+                  "categories": [
+                    10004,
+                    11250,
+                    12558,
+                    13491
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 260
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 320
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 210
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 50,
+                    "quarterly": 24,
+                    "yearly": -19
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "pt",
+                  "is_another_language": false
+                },
+                "serp_info": null,
+                "avg_backlinks_info": null,
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "commercial",
+                  "foreign_intent": [
+                    "navigational",
+                    "transactional"
+                  ],
+                  "last_updated_time": "2026-04-28 12:46:39 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 20,
+                "rank_absolute": 26,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Loja de Tintas em Indaiatuba - Léo Tintas",
+                "url": "https://leotintas.com.br/loja-de-tintas-indaiatuba/",
+                "breadcrumb": "https://leotintas.com.br › loja-de-tintas-indaiatuba",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Tintas, impermeabilizantes e acessórios de pintura com entrega em Salto. Atendimento técnico da Léo Tintas, referência em Itu desde 2010.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas",
+                  "impermeabilizantes e acessórios de pintura"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/loja-de-tintas-indaiatuba/",
+                "etv": 0.5040000081062317,
+                "estimated_paid_traffic_cost": 0.37296000123023987,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 1,
+                "rank_absolute": 4,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Sua Loja de Tintas de Indaiatuba (@kjctintas.indaiatuba)",
+                "url": "https://www.instagram.com/kjctintas.indaiatuba/",
+                "breadcrumb": "Mais de 3,2 mil seguidores",
+                "website_name": "Instagram · kjctintas.indaiatuba",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Vem pra Kjc tintas em Indaiatuba! Antônio Cantelli, 1472 JD Morada do Sol - Indaiatuba SP : 19 99998-0369 #moradadosol #indaiatuba #kjctintas #tintas # ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Antônio Cantelli",
+                  "1472 JD Morada do Sol - Indaiatuba SP"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/kjctintas.indaiatuba/",
+                "etv": 63.84000015258789,
+                "estimated_paid_traffic_cost": 47.241600036621094,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "casa de tintas em itu",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-21 07:02:36 +00:00",
+                  "competition": 0.550000011920929,
+                  "competition_level": "MEDIUM",
+                  "cpc": 0.3199999928474426,
+                  "search_volume": 170,
+                  "low_top_of_page_bid": 0.15000000596046448,
+                  "high_top_of_page_bid": 0.4699999988079071,
+                  "categories": [
+                    10004,
+                    11250,
+                    12558,
+                    13491
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 210
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 21,
+                    "quarterly": 21,
+                    "yearly": -19
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": "casa de tintas itu",
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "pt",
+                  "is_another_language": false
+                },
+                "serp_info": null,
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 5.800000190734863,
+                  "dofollow": 3.799999952316284,
+                  "referring_pages": 5.699999809265137,
+                  "referring_domains": 4.800000190734863,
+                  "referring_main_domains": 4.300000190734863,
+                  "rank": 16,
+                  "main_domain_rank": 324.5,
+                  "last_updated_time": "2026-09-01 01:53:08 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "navigational",
+                  "foreign_intent": [
+                    "commercial"
+                  ],
+                  "last_updated_time": "2026-04-26 15:39:55 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 7,
+                "rank_absolute": 10,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[14]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Léo Tintas | A Maior Loja de Tintas em Itu - São Paulo",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Loja de tintas em Itu desde 2012. Tintas, texturas, impermeabilizantes e acessórios com atendimento técnico e entrega em Itu, Salto, Indaiatuba e Sorocaba.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "tintas em Itu",
+                  "Tintas",
+                  "Itu"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 4.3520002365112305,
+                "estimated_paid_traffic_cost": 1.3926399946212769,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 8,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 2,
+                "rank_absolute": 5,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Itumix Tintas | Loja de tintas em Itu (@itumixtintas)",
+                "url": "https://www.instagram.com/itumixtintas/",
+                "breadcrumb": "Mais de 9,6 mil seguidores",
+                "website_name": "Instagram · itumixtintas",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Tintas e acessórios para pinturas residenciais, industriais e decorativas Receba orientações técnicas +17 anos no mercado ⬇Faça seu pedido! Follow.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas e acessórios para pinturas residenciais",
+                  "industriais e decorativas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/itumixtintas/",
+                "etv": 27.540000915527344,
+                "estimated_paid_traffic_cost": 8.812800407409668,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "leão tintas franca",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-23 21:11:05 +00:00",
+                  "competition": 0.1599999964237213,
+                  "competition_level": "LOW",
+                  "cpc": 0.4699999988079071,
+                  "search_volume": 170,
+                  "low_top_of_page_bid": 0.20000000298023224,
+                  "high_top_of_page_bid": 0.4000000059604645,
+                  "categories": [
+                    10004,
+                    11250,
+                    12558,
+                    13491
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 110
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": -19,
+                    "quarterly": 0,
+                    "yearly": 21
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "pt",
+                  "is_another_language": false
+                },
+                "serp_info": null,
+                "avg_backlinks_info": null,
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-28 14:25:41 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 42,
+                "rank_absolute": 48,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[3]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Leo Tintas",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Maintenance mode is on. Site will be available soon. Thank you for your patience! © Leo Tintas 2026.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 0.3569999933242798,
+                "estimated_paid_traffic_cost": 0.1677899956703186,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 44,
+                  "main_domain_rank": 30
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 1,
+                "rank_absolute": 3,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Leão Tintas - Estação Franca SP (@leaotintasestacao)",
+                "url": "https://www.instagram.com/leaotintasestacao/",
+                "breadcrumb": "Mais de 2 mil seguidores",
+                "website_name": "Instagram · leaotintasestacao",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Rua Voluntários da Franca n 390 Estação Franca SP ☎️ 3722 4455 16 99192-4651. Entregamos em Franca e Região. Leão Tintas · Disque Tintas. ☎️3722 44 55 ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Rua Voluntários da Franca n 390 Estação Franca SP"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leaotintasestacao/",
+                "etv": 51.68000030517578,
+                "estimated_paid_traffic_cost": 24.289600372314453,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "leao tintas franca",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-26 18:44:56 +00:00",
+                  "competition": 0.1599999964237213,
+                  "competition_level": "LOW",
+                  "cpc": 0.4699999988079071,
+                  "search_volume": 170,
+                  "low_top_of_page_bid": 0.20000000298023224,
+                  "high_top_of_page_bid": 0.4000000059604645,
+                  "categories": [
+                    10008
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 110
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": -19,
+                    "quarterly": 0,
+                    "yearly": 21
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": null,
+                  "synonym_clustering_algorithm": "keyword_metrics",
+                  "keyword_difficulty": 0,
+                  "detected_language": "eo",
+                  "is_another_language": true
+                },
+                "serp_info": null,
+                "avg_backlinks_info": null,
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "informational",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-29 14:07:21 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 48,
+                "rank_absolute": 58,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Leo Tintas",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Maintenance mode is on. Site will be available soon. Thank you for your patience! © Leo Tintas 2026.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 0.3569999933242798,
+                "estimated_paid_traffic_cost": 0.1677899956703186,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 44,
+                  "main_domain_rank": 30
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 1,
+                "rank_absolute": 3,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[12]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Leão Tintas - Estação Franca SP (@leaotintasestacao)",
+                "url": "https://www.instagram.com/leaotintasestacao/",
+                "breadcrumb": "Mais de 2 mil seguidores",
+                "website_name": "Instagram · leaotintasestacao",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Rua Voluntários da Franca n 390 Estação Franca SP ☎️ 3722 4455 16 99192-4651. Entregamos em Franca e Região. Leão Tintas · Disque Tintas. ☎️3722 44 55 ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Rua Voluntários da Franca n 390 Estação Franca SP"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leaotintasestacao/",
+                "etv": 51.68000030517578,
+                "estimated_paid_traffic_cost": 24.289600372314453,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "loja de tintas em itu",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-27 03:06:03 +00:00",
+                  "competition": 0.5099999904632568,
+                  "competition_level": "MEDIUM",
+                  "cpc": 0.3199999928474426,
+                  "search_volume": 170,
+                  "low_top_of_page_bid": 0.18000000715255737,
+                  "high_top_of_page_bid": 0.5199999809265137,
+                  "categories": [
+                    10004,
+                    11250,
+                    12558,
+                    13491
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 170
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 55,
+                    "quarterly": 0,
+                    "yearly": 0
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": "loja de tintas itu",
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "pt",
+                  "is_another_language": false
+                },
+                "serp_info": null,
+                "avg_backlinks_info": {
+                  "se_type": "google",
+                  "backlinks": 5,
+                  "dofollow": 3.0999999046325684,
+                  "referring_pages": 4.900000095367432,
+                  "referring_domains": 4.099999904632568,
+                  "referring_main_domains": 3.5999999046325684,
+                  "rank": 10.100000381469727,
+                  "main_domain_rank": 227.60000610351562,
+                  "last_updated_time": "2026-08-30 05:31:16 +00:00"
+                },
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "commercial",
+                  "foreign_intent": [
+                    "navigational",
+                    "transactional"
+                  ],
+                  "last_updated_time": "2026-04-28 14:08:39 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 5,
+                "rank_absolute": 8,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[10]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Léo Tintas | A Maior Loja de Tintas em Itu - São Paulo",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Loja de tintas em Itu desde 2012. Tintas, texturas, impermeabilizantes e acessórios com atendimento técnico e entrega em Itu, Salto, Indaiatuba e Sorocaba.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Loja de tintas em Itu"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 7.9730000495910645,
+                "estimated_paid_traffic_cost": 2.5513601303100586,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 8,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 1,
+                "rank_absolute": 4,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Itumix Tintas | Loja de tintas em Itu (@itumixtintas)",
+                "url": "https://www.instagram.com/itumixtintas/",
+                "breadcrumb": "Mais de 9,6 mil seguidores",
+                "website_name": "Instagram · itumixtintas",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Tintas e acessórios para pinturas residenciais, industriais e decorativas Receba orientações técnicas +17 anos no mercado ⬇Faça seu pedido! Follow.",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Tintas e acessórios para pinturas residenciais",
+                  "industriais e decorativas"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/itumixtintas/",
+                "etv": 51.68000030517578,
+                "estimated_paid_traffic_cost": 16.537599563598633,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "se_type": "google",
+                "keyword": "tintas leolac",
+                "location_code": 2076,
+                "language_code": "pt",
+                "keyword_info": {
+                  "se_type": "google",
+                  "last_updated_time": "2026-08-18 11:59:02 +00:00",
+                  "competition": 0.8899999856948853,
+                  "competition_level": "HIGH",
+                  "cpc": 0.05999999865889549,
+                  "search_volume": 140,
+                  "low_top_of_page_bid": 0.019999999552965164,
+                  "high_top_of_page_bid": 0.10999999940395355,
+                  "categories": [
+                    10004,
+                    11250,
+                    12558,
+                    13491
+                  ],
+                  "monthly_searches": [
+                    {
+                      "year": 2026,
+                      "month": 7,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2026,
+                      "month": 6,
+                      "search_volume": 90
+                    },
+                    {
+                      "year": 2026,
+                      "month": 5,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 4,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 3,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 2,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2026,
+                      "month": 1,
+                      "search_volume": 110
+                    },
+                    {
+                      "year": 2025,
+                      "month": 12,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 11,
+                      "search_volume": 210
+                    },
+                    {
+                      "year": 2025,
+                      "month": 10,
+                      "search_volume": 170
+                    },
+                    {
+                      "year": 2025,
+                      "month": 9,
+                      "search_volume": 140
+                    },
+                    {
+                      "year": 2025,
+                      "month": 8,
+                      "search_volume": 140
+                    }
+                  ],
+                  "search_volume_trend": {
+                    "monthly": 133,
+                    "quarterly": 91,
+                    "yearly": 24
+                  }
+                },
+                "keyword_info_normalized_with_bing": null,
+                "keyword_info_normalized_with_clickstream": null,
+                "clickstream_keyword_info": null,
+                "keyword_properties": {
+                  "se_type": "google",
+                  "core_keyword": "tinta leolac",
+                  "synonym_clustering_algorithm": "text_processing",
+                  "keyword_difficulty": 0,
+                  "detected_language": "es",
+                  "is_another_language": true
+                },
+                "serp_info": null,
+                "avg_backlinks_info": null,
+                "search_intent_info": {
+                  "se_type": "google",
+                  "main_intent": "transactional",
+                  "foreign_intent": null,
+                  "last_updated_time": "2026-04-29 21:55:17 +00:00"
+                }
+              },
+              "first_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 49,
+                "rank_absolute": 60,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[1]/div[2]/div[2]/div[1]/div[1]/div[4]/div[1]/div[1]",
+                "domain": "leotintas.com.br",
+                "title": "Léo Tintas | A Maior Loja de Tintas em Itu - São Paulo",
+                "url": "https://leotintas.com.br/",
+                "breadcrumb": "https://leotintas.com.br",
+                "website_name": "leotintas.com.br",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": "Nossa equipe oferece atendimento especializado para entender as necessidades do seu projeto e indicar a tinta, o acabamento e os produtos mais adequados. Assim, ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "tinta"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "leotintas.com.br",
+                "relative_url": "/",
+                "etv": 0.2939999997615814,
+                "estimated_paid_traffic_cost": 0.017640000209212303,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": null,
+                  "is_new": true,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": {
+                  "referring_domains": 47,
+                  "referring_main_domains": 42,
+                  "referring_pages": 56,
+                  "dofollow": 37,
+                  "backlinks": 57,
+                  "time_update": "2026-09-01 04:39:41 +00:00"
+                },
+                "rank_info": {
+                  "page_rank": 8,
+                  "main_domain_rank": 19
+                }
+              },
+              "second_domain_serp_element": {
+                "se_type": "google",
+                "type": "organic",
+                "rank_group": 3,
+                "rank_absolute": 5,
+                "position": "left",
+                "xpath": "/html[1]/body[1]/div[3]/div[1]/div[13]/div[2]/div[1]/div[2]/div[1]/div[1]/div[8]/div[1]/div[1]",
+                "domain": "www.instagram.com",
+                "title": "Leolac Tintas (@leolactintas) · Rio de Janeiro, RJ",
+                "url": "https://www.instagram.com/leolactintas/",
+                "breadcrumb": "Mais de 1,1 mil seguidores",
+                "website_name": "Instagram · leolactintas",
+                "is_image": false,
+                "is_video": false,
+                "is_featured_snippet": false,
+                "is_malicious": false,
+                "description": ". A Leolac é especialista em produtos de qualidade para deixar qualquer imóvel mais bonito! Com alta tecnologia em ...",
+                "pre_snippet": null,
+                "extended_snippet": null,
+                "amp_version": false,
+                "rating": null,
+                "highlighted": [
+                  "Leolac"
+                ],
+                "links": null,
+                "about_this_result": null,
+                "main_domain": "instagram.com",
+                "relative_url": "/leolactintas/",
+                "etv": 13.621999740600586,
+                "estimated_paid_traffic_cost": 0.8173199892044067,
+                "clickstream_etv": null,
+                "rank_changes": {
+                  "previous_rank_absolute": 5,
+                  "is_new": false,
+                  "is_up": false,
+                  "is_down": false
+                },
+                "backlinks_info": null,
+                "rank_info": {
+                  "page_rank": 0,
+                  "main_domain_rank": 1000
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

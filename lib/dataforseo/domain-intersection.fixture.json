@@ -1,0 +1,168 @@
+{
+  "_nota": "Recorte de 06-domain-intersection.json. target1 leotintas.com.br x target2 instagram.com, par a par.",
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "cost": 0.0132,
+  "tasks": [
+    {
+      "id": "09181836-2319-0389-0000-b2f50a638e40",
+      "status_code": 20000,
+      "cost": 0.0132,
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "domain_intersection",
+        "se_type": "google",
+        "target1": "leotintas.com.br",
+        "target2": "instagram.com",
+        "location_code": 2076,
+        "language_code": "pt",
+        "intersections": true,
+        "limit": 20
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target1": "leotintas.com.br",
+          "target2": "instagram.com",
+          "location_code": 2076,
+          "total_count": 12,
+          "items_count": 6,
+          "items": [
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "keyword": "léo tintas",
+                "location_code": 2076,
+                "keyword_info": {
+                  "search_volume": 590,
+                  "competition_level": "LOW",
+                  "cpc": 0.4000000059604645
+                }
+              },
+              "first_domain_serp_element": {
+                "domain": "leotintas.com.br",
+                "url": "https://leotintas.com.br/",
+                "rank_absolute": 40
+              },
+              "second_domain_serp_element": {
+                "domain": "www.instagram.com",
+                "url": "https://www.instagram.com/leonardoarrudaofc/",
+                "rank_absolute": 4
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "keyword": "leo tintas itu",
+                "location_code": 2076,
+                "keyword_info": {
+                  "search_volume": 480,
+                  "competition_level": "MEDIUM",
+                  "cpc": 0.4000000059604645
+                }
+              },
+              "first_domain_serp_element": {
+                "domain": "leotintas.com.br",
+                "url": "https://leotintas.com.br/",
+                "rank_absolute": 6
+              },
+              "second_domain_serp_element": {
+                "domain": "www.instagram.com",
+                "url": "https://www.instagram.com/leo_tintas_itu/",
+                "rank_absolute": 2
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "keyword": "leão tintas barretos",
+                "location_code": 2076,
+                "keyword_info": {
+                  "search_volume": 320,
+                  "competition_level": "LOW",
+                  "cpc": 0.41999998688697815
+                }
+              },
+              "first_domain_serp_element": {
+                "domain": "leotintas.com.br",
+                "url": "https://leotintas.com.br/",
+                "rank_absolute": 44
+              },
+              "second_domain_serp_element": {
+                "domain": "www.instagram.com",
+                "url": "https://www.instagram.com/leaotintasbarretos/",
+                "rank_absolute": 4
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "keyword": "leao das tintas",
+                "location_code": 2076,
+                "keyword_info": {
+                  "search_volume": 210,
+                  "competition_level": "LOW",
+                  "cpc": 0.6700000166893005
+                }
+              },
+              "first_domain_serp_element": {
+                "domain": "loja.leotintas.com.br",
+                "url": "https://loja.leotintas.com.br/",
+                "rank_absolute": 84
+              },
+              "second_domain_serp_element": {
+                "domain": "www.instagram.com",
+                "url": "https://www.instagram.com/leaodastintasijui/",
+                "rank_absolute": 1
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "keyword": "loja de tintas indaiatuba",
+                "location_code": 2076,
+                "keyword_info": {
+                  "search_volume": 210,
+                  "competition_level": "HIGH",
+                  "cpc": 0.7400000095367432
+                }
+              },
+              "first_domain_serp_element": {
+                "domain": "leotintas.com.br",
+                "url": "https://leotintas.com.br/loja-de-tintas-indaiatuba/",
+                "rank_absolute": 26
+              },
+              "second_domain_serp_element": {
+                "domain": "www.instagram.com",
+                "url": "https://www.instagram.com/kjctintas.indaiatuba/",
+                "rank_absolute": 4
+              }
+            },
+            {
+              "se_type": "google",
+              "keyword_data": {
+                "keyword": "casa de tintas em itu",
+                "location_code": 2076,
+                "keyword_info": {
+                  "search_volume": 170,
+                  "competition_level": "MEDIUM",
+                  "cpc": 0.3199999928474426
+                }
+              },
+              "first_domain_serp_element": {
+                "domain": "leotintas.com.br",
+                "url": "https://leotintas.com.br/",
+                "rank_absolute": 10
+              },
+              "second_domain_serp_element": {
+                "domain": "www.instagram.com",
+                "url": "https://www.instagram.com/itumixtintas/",
+                "rank_absolute": 5
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

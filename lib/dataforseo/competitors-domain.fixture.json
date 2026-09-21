@@ -1,0 +1,194 @@
+{
+  "_nota": "Recorte de 05-competitors-domain.json. target leotintas.com.br, location_code 2076 (pais, porque o Labs nao aceita cidade). Note que o proprio alvo aparece na lista.",
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "cost": 0.0132,
+  "tasks": [
+    {
+      "id": "09181836-2319-0386-0000-516f58a84e39",
+      "status_code": 20000,
+      "cost": 0.0132,
+      "data": {
+        "api": "dataforseo_labs",
+        "function": "competitors_domain",
+        "se_type": "google",
+        "target": "leotintas.com.br",
+        "location_code": 2076,
+        "language_code": "pt",
+        "limit": 10
+      },
+      "result": [
+        {
+          "se_type": "google",
+          "target": "leotintas.com.br",
+          "location_code": 2076,
+          "language_code": "pt",
+          "total_count": 151,
+          "items_count": 10,
+          "items": [
+            {
+              "se_type": "google",
+              "domain": "instagram.com",
+              "avg_position": 1.5,
+              "sum_position": 18,
+              "intersections": 12,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 4,
+                  "etv": 43.493999630212784,
+                  "count": 12
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "facebook.com",
+              "avg_position": 9,
+              "sum_position": 108,
+              "intersections": 12,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 4,
+                  "etv": 43.493999630212784,
+                  "count": 12
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "leotintas.com.br",
+              "avg_position": 33.166666666666664,
+              "sum_position": 398,
+              "intersections": 12,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 4,
+                  "etv": 43.493999630212784,
+                  "count": 12
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "leotintas.com",
+              "avg_position": 40.7,
+              "sum_position": 407,
+              "intersections": 10,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 3,
+                  "etv": 38.63799938559532,
+                  "count": 10
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "listamais.com.br",
+              "avg_position": 22.77777777777778,
+              "sum_position": 205,
+              "intersections": 9,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 3,
+                  "etv": 19.449000537395477,
+                  "count": 9
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "solutudo.com.br",
+              "avg_position": 32.888888888888886,
+              "sum_position": 296,
+              "intersections": 9,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 4,
+                  "etv": 41.28899967670441,
+                  "count": 9
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "youtube.com",
+              "avg_position": 35.5,
+              "sum_position": 284,
+              "intersections": 8,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 4,
+                  "etv": 41.6039996445179,
+                  "count": 8
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "serasaexperian.com.br",
+              "avg_position": 11.875,
+              "sum_position": 95,
+              "intersections": 8,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 1,
+                  "etv": 26.312999099493027,
+                  "count": 8
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "econodata.com.br",
+              "avg_position": 11.625,
+              "sum_position": 93,
+              "intersections": 8,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 1,
+                  "etv": 26.312999099493027,
+                  "count": 8
+                }
+              }
+            },
+            {
+              "se_type": "google",
+              "domain": "cnpj.biz",
+              "avg_position": 21.75,
+              "sum_position": 174,
+              "intersections": 8,
+              "metrics": {
+                "organic": {
+                  "pos_1": 0,
+                  "pos_2_3": 0,
+                  "pos_4_10": 1,
+                  "etv": 26.312999099493027,
+                  "count": 8
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

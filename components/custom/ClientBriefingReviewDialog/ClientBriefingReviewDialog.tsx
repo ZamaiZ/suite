@@ -33,6 +33,11 @@ import { ClientBriefingFinanceForm } from "@/components/custom/ClientBriefingFin
 import { ClientBriefingHistoryForm } from "@/components/custom/ClientBriefingHistoryForm"
 import { ClientBriefingWebsiteForm } from "@/components/custom/ClientBriefingWebsiteForm"
 import { ClientKickoffPanel } from "@/components/custom/ClientKickoffPanel"
+import { ClientResearchPanel } from "@/components/custom/ClientResearchPanel"
+import {
+  loadClientResearch,
+  type ClientResearchView,
+} from "@/app/actions/clients/load-client-research"
 import { Empty, EmptyDescription, EmptyHeader } from "@/components/ui/empty"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
@@ -49,6 +54,7 @@ import {
   companyFormattedAddress,
 } from "@/lib/briefing/address-fingerprint"
 import { emptyCompanyPayload } from "@/lib/briefing/company"
+import { formatDateTimeShort } from "@/lib/date-time"
 import { briefingStepsToInvalidateAfterStaffEdit } from "@/lib/briefing/staff-step-cache"
 import type { BriefingStepId } from "@/lib/briefing/steps"
 import { ClientBriefingContentHeader } from "./ClientBriefingContentHeader"
@@ -105,6 +111,7 @@ export function ClientBriefingReviewDialog({
   const [editing, setEditing] = useState(false)
   const [isFinishingEdit, setIsFinishingEdit] = useState(false)
   const [area, setArea] = useState<ClientBriefingArea>("briefing")
+  const [research, setResearch] = useState<ClientResearchView | null>(null)
 
   const reset = useCallback(() => {
     setOverviewState({ status: "idle" })
@@ -248,9 +255,17 @@ export function ClientBriefingReviewDialog({
       return
     }
     setArea(next)
-    if (next === "contact") {
+    if (next !== "briefing") {
       setActiveStep(null)
       setStepLoad({ status: "idle" })
+    }
+    // Carrega uma vez, ao entrar. A pesquisa é append-only e não muda sozinha
+    // enquanto o diálogo está aberto — recarregar a cada troca de área seria
+    // consulta sem fato novo.
+    if (next === "research" && !research && clientId) {
+      void loadClientResearch({ clientId }).then((resultado) => {
+        if (resultado.status === "success") setResearch(resultado.view)
+      })
     }
   }
 
@@ -264,6 +279,16 @@ export function ClientBriefingReviewDialog({
     (overview?.status === "finalized" ||
       overview?.status === "edited_after_submit")
   const canUseContact = true
+  /**
+   * A pesquisa parte das palavras-chave e das cidades do briefing. Antes de o
+   * cliente enviar, esses campos ainda mudam, e uma pesquisa feita sobre
+   * rascunho nasceria defasada no primeiro salvamento.
+   */
+  const canUseResearch =
+    overview?.status === "finalized" || overview?.status === "edited_after_submit"
+  const researchDetail = research?.fetchedAt
+    ? `Última: ${formatDateTimeShort(research.fetchedAt)}`
+    : "Nenhuma pesquisa ainda"
   const statusTone =
     overview?.status === "finalized"
       ? "success"
@@ -307,6 +332,8 @@ export function ClientBriefingReviewDialog({
               activeStep={activeStep}
               steps={overview?.steps ?? []}
               contactEnabled={canUseContact}
+              researchEnabled={canUseResearch}
+              researchDetail={researchDetail}
               disabled={editing || isFinishingEdit}
               onAreaChange={selectArea}
               onStepSelect={openStep}
@@ -327,7 +354,15 @@ export function ClientBriefingReviewDialog({
                 }}
               />
               <div className="relative min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-5">
-                {area === "contact" ? (
+                {area === "research" ? (
+                  <ClientResearchPanel
+                    clientId={clientId!}
+                    companyName={title}
+                    selfDomain={research?.selfDomain ?? ""}
+                    snapshot={research?.snapshot ?? null}
+                    currentFingerprint={research?.currentFingerprint ?? null}
+                  />
+                ) : area === "contact" ? (
                   <div className="mx-auto w-full max-w-3xl">
                     <ClientKickoffPanel clientId={clientId!} />
                   </div>

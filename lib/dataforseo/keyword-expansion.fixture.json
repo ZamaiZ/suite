@@ -1,0 +1,582 @@
+{
+  "_nota": "Recorte de 02-keywords-for-keywords.json, medido em 2026-09-18 contra leotintas.com.br / Itu. Os numeros nao foram escolhidos: sao o que a API devolveu.",
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "cost": 0.09,
+  "tasks": [
+    {
+      "id": "09181831-2319-0368-0000-f5c190267c33",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "cost": 0.09,
+      "result_count": 7,
+      "path": [
+        "v3",
+        "keywords_data",
+        "google_ads",
+        "keywords_for_keywords",
+        "live"
+      ],
+      "data": {
+        "api": "keywords_data",
+        "function": "keywords_for_keywords",
+        "se": "google_ads",
+        "keywords": [
+          "loja de tintas",
+          "tinta emborrachada",
+          "tinta acrilica"
+        ],
+        "location_code": 1031728,
+        "language_code": "pt"
+      },
+      "result": [
+        {
+          "keyword": "tinta emborrachada",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": "HIGH",
+          "competition_index": 100,
+          "search_volume": 170,
+          "low_top_of_page_bid": 0.07,
+          "high_top_of_page_bid": 0.36,
+          "cpc": 0.18,
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 8,
+              "search_volume": 210
+            },
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 210
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 170
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 140
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 140
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 140
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 170
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 140
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 170
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 140
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 110
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 110
+            }
+          ],
+          "keyword_annotations": {
+            "concepts": null
+          }
+        },
+        {
+          "keyword": "loja de tintas",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": "MEDIUM",
+          "competition_index": 38,
+          "search_volume": 20,
+          "low_top_of_page_bid": 0.17,
+          "high_top_of_page_bid": 0.43,
+          "cpc": 1.69,
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 8,
+              "search_volume": 20
+            },
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 20
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 20
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 20
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 20
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 20
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 20
+            }
+          ],
+          "keyword_annotations": {
+            "concepts": null
+          }
+        },
+        {
+          "keyword": "loja de tintas porto alegre",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": null,
+          "competition_index": null,
+          "search_volume": null,
+          "low_top_of_page_bid": null,
+          "high_top_of_page_bid": null,
+          "cpc": null,
+          "monthly_searches": null,
+          "keyword_annotations": {
+            "concepts": [
+              {
+                "name": "Non-Brands",
+                "concept_group": {
+                  "name": "Não-Marcas",
+                  "type": "NON_BRAND"
+                }
+              },
+              {
+                "name": "loja",
+                "concept_group": {
+                  "name": "Localização",
+                  "type": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "keyword": "tinta acrilica semi brilho 18 litros preço",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": null,
+          "competition_index": null,
+          "search_volume": 0,
+          "low_top_of_page_bid": null,
+          "high_top_of_page_bid": null,
+          "cpc": null,
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 8,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 0
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 0
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 0
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 0
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 0
+            }
+          ],
+          "keyword_annotations": {
+            "concepts": [
+              {
+                "name": "Non-Brands",
+                "concept_group": {
+                  "name": "Não-Marcas",
+                  "type": "NON_BRAND"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "keyword": "tinta borracha liquida decor colors",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": null,
+          "competition_index": null,
+          "search_volume": 10,
+          "low_top_of_page_bid": null,
+          "high_top_of_page_bid": null,
+          "cpc": null,
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 8,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 0
+            }
+          ],
+          "keyword_annotations": {
+            "concepts": [
+              {
+                "name": "decor colors",
+                "concept_group": {
+                  "name": "Outras Marcas",
+                  "type": "OTHER_BRANDS"
+                }
+              },
+              {
+                "name": "borracha",
+                "concept_group": {
+                  "name": "Outros",
+                  "type": null
+                }
+              },
+              {
+                "name": "tinta decor",
+                "concept_group": {
+                  "name": "Outros",
+                  "type": null
+                }
+              }
+            ]
+          }
+        },
+        {
+          "keyword": "massa acrílica",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": "HIGH",
+          "competition_index": 100,
+          "search_volume": 70,
+          "low_top_of_page_bid": 0.04,
+          "high_top_of_page_bid": 0.13,
+          "cpc": 0.07,
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 8,
+              "search_volume": 90
+            },
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 90
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 50
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 50
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 70
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 50
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 50
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 70
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 70
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 50
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 50
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 50
+            }
+          ],
+          "keyword_annotations": {
+            "concepts": [
+              {
+                "name": "Non-Brands",
+                "concept_group": {
+                  "name": "Não-Marcas",
+                  "type": "NON_BRAND"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "keyword": "casa das tintas",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "search_partners": false,
+          "competition": "MEDIUM",
+          "competition_index": 43,
+          "search_volume": 10,
+          "low_top_of_page_bid": null,
+          "high_top_of_page_bid": null,
+          "cpc": null,
+          "monthly_searches": [
+            {
+              "year": 2026,
+              "month": 8,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 7,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 6,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 5,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 4,
+              "search_volume": 0
+            },
+            {
+              "year": 2026,
+              "month": 3,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 2,
+              "search_volume": 10
+            },
+            {
+              "year": 2026,
+              "month": 1,
+              "search_volume": 0
+            },
+            {
+              "year": 2025,
+              "month": 12,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 11,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 10,
+              "search_volume": 10
+            },
+            {
+              "year": 2025,
+              "month": 9,
+              "search_volume": 10
+            }
+          ],
+          "keyword_annotations": {
+            "concepts": [
+              {
+                "name": "Non-Brands",
+                "concept_group": {
+                  "name": "Não-Marcas",
+                  "type": "NON_BRAND"
+                }
+              },
+              {
+                "name": "loja",
+                "concept_group": {
+                  "name": "Localização",
+                  "type": null
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

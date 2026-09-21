@@ -1,7 +1,9 @@
 import "server-only"
 
 import {
+  DATAFORSEO_OK,
   DATAFORSEO_TASKS_PER_POST,
+  dataForSeoEnvelopeCost,
   readTaskGetEnvelope,
   readTaskPostEnvelope,
   readTasksReadyEnvelope,
@@ -319,5 +321,44 @@ export async function getDataForSeoTasksReady(
     return { status: "ok", data: read.tasks }
   } catch {
     return { status: "error", message: DATAFORSEO_COLLECT_ERROR }
+  }
+}
+
+/**
+ * GET cujo `result` é a **lista inteira**, e não um resultado único.
+ *
+ * Existe para `/serp/google/locations/BR`, que devolve as 5.311 localidades
+ * dentro de `tasks[0].result`. `getDataForSeo` passa por `readTaskGetEnvelope`,
+ * que lê `result[0]` — usá-lo aqui devolveria uma localidade só, em silêncio, e
+ * a cidade do cliente nunca casaria.
+ */
+export async function getDataForSeoList<T>(
+  path: string,
+  errorMessage = DATAFORSEO_VENDOR_ERROR,
+): Promise<DataForSeoResult<T[]>> {
+  const fetched = await timedFetch(
+    `${DATAFORSEO_BASE}${path}`,
+    { method: "GET" },
+    errorMessage,
+    BATCH_TIMEOUT_MS,
+  )
+  if (fetched.status === "error") return fetched
+
+  try {
+    const body = (await fetched.data.json()) as DataForSeoEnvelope<T>
+    if (body.status_code !== DATAFORSEO_OK) {
+      return { status: "error", message: errorMessage }
+    }
+    const row = body.tasks?.[0]
+    if (!row || row.status_code !== DATAFORSEO_OK) {
+      return { status: "error", message: errorMessage }
+    }
+    return {
+      status: "ok",
+      data: Array.isArray(row.result) ? row.result : [],
+      cost: dataForSeoEnvelopeCost(body),
+    }
+  } catch {
+    return { status: "error", message: errorMessage }
   }
 }

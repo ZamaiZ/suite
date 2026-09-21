@@ -1,0 +1,290 @@
+{
+  "_nota": "Recorte de 01-serp-organic-cidade.json. keyword \"loja de tintas em itu\", location_code 1031728 (Itu/SP), medido 2026-09-18.",
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "cost": 0.004,
+  "tasks": [
+    {
+      "id": "09181831-2319-0139-0000-14cf6122333b",
+      "status_code": 20000,
+      "cost": 0.004,
+      "data": {
+        "api": "serp",
+        "function": "live",
+        "se": "google",
+        "se_type": "organic",
+        "keyword": "loja de tintas em itu",
+        "location_code": 1031728,
+        "language_code": "pt",
+        "depth": 20,
+        "device": "desktop",
+        "os": "windows"
+      },
+      "result": [
+        {
+          "keyword": "loja de tintas em itu",
+          "location_code": 1031728,
+          "language_code": "pt",
+          "check_url": "https://www.google.com/search?q=loja%20de%20tintas%20em%20itu&hl=pt&gl=BR&ie=UTF-8&uule=w+CAIQIFISCS3GgrE8Rc-UEQSWiZtQwLhw",
+          "se_results_count": 122,
+          "items_count": 23,
+          "items": [
+            {
+              "type": "local_pack",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Itu Tintas",
+              "domain": "www.itutintas.com.br",
+              "url": "http://www.itutintas.com.br/",
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.7,
+                "votes_count": 184,
+                "rating_max": 5
+              }
+            },
+            {
+              "type": "local_pack",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "title": "Léo Tintas - Loja de Tintas em Itu",
+              "domain": "leotintas.com.br",
+              "url": "https://leotintas.com.br/",
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.7,
+                "votes_count": 562,
+                "rating_max": 5
+              }
+            },
+            {
+              "type": "local_pack",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "title": "Mazzo Tintas e Acessórios - Caetano",
+              "domain": "linktr.ee",
+              "url": "http://linktr.ee/mazzo_tintas",
+              "rating": {
+                "rating_type": "Max5",
+                "value": 4.7,
+                "votes_count": 145,
+                "rating_max": 5
+              }
+            },
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 4,
+              "position": "left",
+              "domain": "leotintas.com.br",
+              "title": "Léo Tintas | A Maior Loja de Tintas em Itu - São Paulo",
+              "url": "https://leotintas.com.br/",
+              "breadcrumb": "https://leotintas.com.br"
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 5,
+              "position": "left",
+              "domain": "www.instagram.com",
+              "title": "Itumix Tintas | Loja de tintas em Itu (@itumixtintas)",
+              "url": "https://www.instagram.com/itumixtintas/",
+              "breadcrumb": "Mais de 9,6 mil seguidores"
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "position": "left",
+              "domain": "segtintas.com.br",
+              "title": "SegTintas – A SEG TINTAS Tintas nasceu no ano 2018 com o ...",
+              "url": "https://segtintas.com.br/",
+              "breadcrumb": "https://segtintas.com.br"
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "position": "left",
+              "domain": "www.itutintas.com.br",
+              "title": "Itu Tintas",
+              "url": "https://www.itutintas.com.br/",
+              "breadcrumb": "https://www.itutintas.com.br"
+            },
+            {
+              "type": "people_also_ask",
+              "items": [
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Onde posso encontrar as tintas mais baratas?"
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Qual é o telefone da Léo tintas Itu?"
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Qual é a marca de tinta boa e barata?"
+                },
+                {
+                  "type": "people_also_ask_element",
+                  "title": "Quais são as 3 melhores marcas de tintas?"
+                }
+              ]
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "position": "left",
+              "domain": "decorcolors.com.br",
+              "title": "Decor Colors Itu - Léo Tintas",
+              "url": "https://decorcolors.com.br/franquias/decor-colors-itu-leo-tintas/",
+              "breadcrumb": "https://decorcolors.com.br › Franquias"
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "position": "left",
+              "domain": "www.instagram.com",
+              "title": "𝙈𝘼𝙕𝙕𝙊 𝙏𝙄𝙉𝙏𝘼𝙎 | LOJA DE TINTAS (@mazzotintas)",
+              "url": "https://www.instagram.com/mazzotintas/",
+              "breadcrumb": "Mais de 7,1 mil seguidores"
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "position": "left",
+              "domain": "www.grupoitutintas.com.br",
+              "title": "Loja de Tintas Sorocaba Loja de Tintas ITU Tinta",
+              "url": "https://www.grupoitutintas.com.br/",
+              "breadcrumb": "https://www.grupoitutintas.com.br"
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 12,
+              "position": "left",
+              "domain": "www.grupoitutintas.com.br",
+              "title": "Tintas Mega - Rafard",
+              "url": "https://www.grupoitutintas.com.br/tintas-mega/rafard",
+              "breadcrumb": "https://www.grupoitutintas.com.br › tintas-mega › rafard"
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 13,
+              "position": "left",
+              "domain": "www.grupoitutintas.com.br",
+              "title": "Itu Tintas",
+              "url": "https://www.grupoitutintas.com.br/videos/itu-tintas",
+              "breadcrumb": "https://www.grupoitutintas.com.br · 30 de mar. de 2017"
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 16,
+              "position": "left",
+              "domain": "www.listamais.com.br",
+              "title": "Loja de tintas em Itu - SP: encontre empresas e profissionais",
+              "url": "https://www.listamais.com.br/categoria/BDD9-710/loja-de-tintas-em-itu-sp",
+              "breadcrumb": "https://www.listamais.com.br › categoria › BDD9-710"
+            },
+            {
+              "type": "organic",
+              "rank_group": 11,
+              "rank_absolute": 17,
+              "position": "left",
+              "domain": "www.facebook.com",
+              "title": "Itumix Tintas | Itu SP",
+              "url": "https://www.facebook.com/lojaitumixtintas/",
+              "breadcrumb": "Mais de 600 seguidores"
+            },
+            {
+              "type": "organic",
+              "rank_group": 12,
+              "rank_absolute": 18,
+              "position": "left",
+              "domain": "www.instagram.com",
+              "title": "MAZZO TINTAS | LOJA DE TINTAS on Instagram: \"Conheça a ...",
+              "url": "https://www.instagram.com/reel/DAJUseAOkC0/",
+              "breadcrumb": "Mais de 20 marcações \"Gostei\"  ·  há 1 ano"
+            },
+            {
+              "type": "organic",
+              "rank_group": 13,
+              "rank_absolute": 19,
+              "position": "left",
+              "domain": "segtintas.com.br",
+              "title": "Nossas Lojas – SegTintas",
+              "url": "https://segtintas.com.br/nossas-lojas/",
+              "breadcrumb": "https://segtintas.com.br › nossas-lojas"
+            },
+            {
+              "type": "organic",
+              "rank_group": 14,
+              "rank_absolute": 20,
+              "position": "left",
+              "domain": "www.sitedacidade.com.br",
+              "title": "Lojas de Tintas na Vila Nova em Itu, SP | Site da Cidade",
+              "url": "https://www.sitedacidade.com.br/encontrei-no-bairro/lojas-de-tintas/vila-nova/itu/sp",
+              "breadcrumb": "https://www.sitedacidade.com.br › Itu, SP"
+            },
+            {
+              "type": "organic",
+              "rank_group": 15,
+              "rank_absolute": 21,
+              "position": "left",
+              "domain": "www.itutintas.com.br",
+              "title": "Quem Somos",
+              "url": "https://www.itutintas.com.br/pagina/quem-somos.html",
+              "breadcrumb": "https://www.itutintas.com.br › pagina › quem-somos"
+            },
+            {
+              "type": "organic",
+              "rank_group": 16,
+              "rank_absolute": 22,
+              "position": "left",
+              "domain": "www.instagram.com",
+              "title": "Conexão Tintas - Loja de Tintas em Itu (@conexaotintasitu)",
+              "url": "https://www.instagram.com/conexaotintasitu/",
+              "breadcrumb": "Mais de 8,1 mil seguidores"
+            },
+            {
+              "type": "organic",
+              "rank_group": 17,
+              "rank_absolute": 23,
+              "position": "left",
+              "domain": "leotintas.com.br",
+              "title": "Contato e Endereço | Léo Tintas Itu",
+              "url": "https://leotintas.com.br/contato/",
+              "breadcrumb": "https://leotintas.com.br › contato"
+            },
+            {
+              "type": "organic",
+              "rank_group": 18,
+              "rank_absolute": 24,
+              "position": "left",
+              "domain": "www.grupoitutintas.com.br",
+              "title": "Diversos - Votorantim - Itu Tintas",
+              "url": "https://www.grupoitutintas.com.br/diversos/votorantim",
+              "breadcrumb": "https://www.grupoitutintas.com.br › diversos › votorant..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 19,
+              "rank_absolute": 25,
+              "position": "left",
+              "domain": "www.telelistas.net",
+              "title": "As melhores 5 empresas de Tintas - Lojas em Itú - SP",
+              "url": "https://www.telelistas.net/sp/itu/tintas+lojas",
+              "breadcrumb": "https://www.telelistas.net › itu › tintas+lojas"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
