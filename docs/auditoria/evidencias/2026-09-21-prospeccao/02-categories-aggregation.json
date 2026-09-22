@@ -1,0 +1,4932 @@
+{
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "1.5306 sec.",
+  "cost": 0.048,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09220004-2319-0545-0000-e3d42d74cee5",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "1.4650 sec.",
+      "cost": 0.048,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "business_data",
+        "business_listings",
+        "categories_aggregation",
+        "live"
+      ],
+      "data": {
+        "api": "business_data",
+        "function": "categories_aggregation",
+        "location_coordinate": "-23.4628,-46.5333,10",
+        "limit": 100
+      },
+      "result": [
+        {
+          "total_count": 3195,
+          "count": 100,
+          "offset": null,
+          "offset_token": null,
+          "items": [
+            {
+              "type": "business_category",
+              "categories": [
+                "beauty_salon"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "beauty_salon": 7034,
+                  "nail_salon": 538,
+                  "eyebrow_bar": 277,
+                  "hair_salon": 251,
+                  "unisex_hairdresser": 242,
+                  "beautician": 218,
+                  "health_and_beauty_shop": 166,
+                  "eyelash_salon": 118,
+                  "hair_removal_service": 112,
+                  "barber_shop": 105
+                },
+                "top_countries": {
+                  "BR": 7021
+                },
+                "websites_count": 432,
+                "count": 7033,
+                "top_attributes": {
+                  "pay_debit_card": 6308,
+                  "pay_credit_card": 6187,
+                  "has_restroom": 6169,
+                  "recommends_appointment": 5641,
+                  "pay_mobile_nfc": 4504,
+                  "requires_appointments": 1433,
+                  "is_owned_by_women": 1400,
+                  "welcomes_lgbtq": 1256,
+                  "is_transgender_safespace": 1162,
+                  "has_wheelchair_accessible_entrance": 674
+                },
+                "top_place_topics": {
+                  "professionals": 884,
+                  "manicure": 396,
+                  "cozy place": 380,
+                  "environment": 375,
+                  "impeccable work": 335,
+                  "attentive": 314,
+                  "work": 311,
+                  "haircut": 269,
+                  "eyebrows": 247,
+                  "cozy space": 232
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "bus_stop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "bus_stop": 6248,
+                  "transit_stop": 43,
+                  "trolleybus_stop": 43
+                },
+                "top_countries": {
+                  "BR": 6196
+                },
+                "websites_count": 2,
+                "count": 6248,
+                "top_attributes": {
+                  "has_transit_24_hours": 2926,
+                  "pay_debit_card": 50,
+                  "pay_credit_card": 36,
+                  "has_wheelchair_accessible_entrance": 24,
+                  "has_wheelchair_accessible_restroom": 8,
+                  "has_restroom": 4,
+                  "has_wheelchair_accessible_parking": 1
+                },
+                "top_place_topics": {
+                  "cleanliness": 6,
+                  "avenue": 4,
+                  "bus stop": 4,
+                  "safety": 4,
+                  "square": 4,
+                  "transit": 4,
+                  "location": 3,
+                  "accessibility": 2,
+                  "bus lines": 2,
+                  "east": 2
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "restaurant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "restaurant": 4791,
+                  "bar": 329,
+                  "snack_bar": 225,
+                  "hamburger_restaurant": 210,
+                  "meal_delivery": 202,
+                  "fast_food_restaurant": 180,
+                  "pizza_restaurant": 159,
+                  "cocktail_bar": 113,
+                  "brazilian_restaurant": 100,
+                  "barbecue_restaurant": 62
+                },
+                "top_countries": {
+                  "BR": 4791
+                },
+                "websites_count": 404,
+                "count": 4791,
+                "top_attributes": {
+                  "serves_dine_in": 4479,
+                  "pay_debit_card": 4176,
+                  "pay_credit_card": 3918,
+                  "pay_mobile_nfc": 3908,
+                  "feels_quiet": 3716,
+                  "suitable_for_solo_dining": 3503,
+                  "has_restroom": 3330,
+                  "has_delivery": 3127,
+                  "feels_casual": 3071,
+                  "has_takeout": 3064
+                },
+                "top_place_topics": {
+                  "food": 727,
+                  "feijoada": 563,
+                  "homemade food": 391,
+                  "environment": 367,
+                  "tasty food": 255,
+                  "cozy place": 247,
+                  "cold beer": 224,
+                  "family atmosphere": 171,
+                  "cleanliness": 165,
+                  "atmosphere": 151
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "clothing_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "clothing_store": 4017,
+                  "womens_clothing_store": 220,
+                  "mens_clothing_store": 133,
+                  "fashion_accessories_store": 91,
+                  "childrens_clothing_store": 83,
+                  "store": 83,
+                  "shoe_store": 67,
+                  "youth_clothing_store": 47,
+                  "beach_clothing_store": 45,
+                  "sportswear_store": 33
+                },
+                "top_countries": {
+                  "BR": 4011
+                },
+                "websites_count": 512,
+                "count": 4016,
+                "top_attributes": {
+                  "pay_debit_card": 3267,
+                  "pay_credit_card": 3142,
+                  "quick_visit": 2705,
+                  "pay_mobile_nfc": 2576,
+                  "has_delivery": 984,
+                  "has_in_store_pickup": 655,
+                  "has_wheelchair_accessible_entrance": 598,
+                  "has_in_store_shopping": 556,
+                  "has_restroom": 508,
+                  "is_owned_by_women": 334
+                },
+                "top_place_topics": {
+                  "quality clothes": 166,
+                  "variety of products": 151,
+                  "clothes": 149,
+                  "product quality": 135,
+                  "salesperson": 84,
+                  "variety of clothes": 60,
+                  "products": 53,
+                  "variety": 47,
+                  "notice": 45,
+                  "attention": 40
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "bar"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "bar": 2822,
+                  "restaurant": 329,
+                  "snack_bar": 120,
+                  "cocktail_bar": 42,
+                  "fast_food_restaurant": 27,
+                  "diner": 26,
+                  "pub": 24,
+                  "wine_storage_facility": 22,
+                  "bar_and_grill": 21,
+                  "gastropub": 21
+                },
+                "top_countries": {
+                  "BR": 2822
+                },
+                "websites_count": 113,
+                "count": 2822,
+                "top_attributes": {
+                  "has_restroom": 2752,
+                  "serves_alcohol": 2746,
+                  "serves_dine_in": 2537,
+                  "pay_debit_card": 2445,
+                  "serves_beer": 2433,
+                  "serves_food": 2377,
+                  "serves_liquor": 2246,
+                  "feels_quiet": 2204,
+                  "suitable_for_groups": 2061,
+                  "pay_mobile_nfc": 1968
+                },
+                "top_place_topics": {
+                  "cold beer": 323,
+                  "feijoada": 210,
+                  "environment": 182,
+                  "food": 175,
+                  "atmosphere": 124,
+                  "family atmosphere": 89,
+                  "familiar": 77,
+                  "live music": 75,
+                  "cozy place": 69,
+                  "samba": 53
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "auto_repair_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "auto_repair_shop": 2727,
+                  "car_repair": 212,
+                  "mechanic": 113,
+                  "oil_change_service": 82,
+                  "wheel_alignment_service": 74,
+                  "auto_spring_shop": 62,
+                  "auto_electrical_service": 53,
+                  "brake_shop": 45,
+                  "auto_tune_up_service": 41,
+                  "tire_shop": 41
+                },
+                "top_countries": {
+                  "BR": 2727
+                },
+                "websites_count": 323,
+                "count": 2727,
+                "top_attributes": {
+                  "pay_debit_card": 2468,
+                  "pay_credit_card": 2423,
+                  "has_mechanic": 2275,
+                  "has_restroom": 2273,
+                  "pay_mobile_nfc": 1947,
+                  "has_wheelchair_accessible_entrance": 1643,
+                  "recommends_appointment": 1109,
+                  "has_wheelchair_accessible_parking": 755,
+                  "has_oil_change": 287,
+                  "is_transgender_safespace": 179
+                },
+                "top_place_topics": {
+                  "professionals": 359,
+                  "honesty": 318,
+                  "trust": 230,
+                  "honest": 179,
+                  "mechanic": 175,
+                  "problem solving": 154,
+                  "workshop": 127,
+                  "budget": 122,
+                  "team": 116,
+                  "attentive": 108
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "store": 2674,
+                  "clothing_store": 86,
+                  "furniture_store": 27,
+                  "electronics_store": 25,
+                  "womens_clothing_store": 25,
+                  "fashion_accessories_store": 24,
+                  "shoe_store": 21,
+                  "appliance_store": 18,
+                  "car_dealer": 16,
+                  "building_materials_store": 13
+                },
+                "top_countries": {
+                  "BR": 2670
+                },
+                "websites_count": 605,
+                "count": 2674,
+                "top_attributes": {
+                  "pay_debit_card": 2000,
+                  "pay_credit_card": 1831,
+                  "pay_mobile_nfc": 1540,
+                  "quick_visit": 1235,
+                  "has_delivery": 728,
+                  "has_wheelchair_accessible_entrance": 471,
+                  "has_in_store_pickup": 347,
+                  "has_in_store_shopping": 312,
+                  "has_wheelchair_accessible_parking": 276,
+                  "is_owned_by_women": 222
+                },
+                "top_place_topics": {
+                  "variety of products": 124,
+                  "product quality": 116,
+                  "notice": 66,
+                  "products": 51,
+                  "clothes": 39,
+                  "attention": 35,
+                  "attentive": 32,
+                  "quality products": 31,
+                  "enterprise": 26,
+                  "budget": 20
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "barber_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "barber_shop": 2601,
+                  "beauty_salon": 105,
+                  "unisex_hairdresser": 90,
+                  "hair_salon": 85,
+                  "nail_salon": 36,
+                  "tattoo_shop": 22,
+                  "eyebrow_bar": 17,
+                  "barber_supply_store": 13,
+                  "barber_school": 11,
+                  "hair_removal_service": 10
+                },
+                "top_countries": {
+                  "BR": 2600
+                },
+                "websites_count": 172,
+                "count": 2601,
+                "top_attributes": {
+                  "pay_debit_card": 2291,
+                  "has_restroom": 2282,
+                  "pay_credit_card": 2265,
+                  "pay_mobile_nfc": 2223,
+                  "welcomes_children": 2221,
+                  "recommends_appointment": 1068,
+                  "has_wheelchair_accessible_entrance": 446,
+                  "welcomes_lgbtq": 390,
+                  "is_transgender_safespace": 364,
+                  "requires_appointments": 362
+                },
+                "top_place_topics": {
+                  "professionals": 424,
+                  "haircut": 421,
+                  "court": 373,
+                  "environment": 275,
+                  "barbershop": 191,
+                  "atmosphere": 170,
+                  "corte de cabelo": 152,
+                  "region": 152,
+                  "notice": 133,
+                  "beard": 116
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "dentist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dentist": 2401,
+                  "dental_clinic": 509,
+                  "oral_surgeon": 401,
+                  "orthodontist": 309,
+                  "dental_implants_provider": 232,
+                  "dental_implants_periodontist": 205,
+                  "endodontist": 168,
+                  "pediatric_dentist": 154,
+                  "cosmetic_dentist": 143,
+                  "periodontist": 120
+                },
+                "top_countries": {
+                  "BR": 2398
+                },
+                "websites_count": 519,
+                "count": 2401,
+                "top_attributes": {
+                  "has_restroom": 2302,
+                  "pay_debit_card": 2297,
+                  "pay_credit_card": 2289,
+                  "recommends_appointment": 2256,
+                  "pay_mobile_nfc": 2186,
+                  "has_wheelchair_accessible_restroom": 718,
+                  "requires_appointments": 567,
+                  "welcomes_lgbtq": 476,
+                  "is_transgender_safespace": 451,
+                  "has_wheelchair_accessible_entrance": 437
+                },
+                "top_place_topics": {
+                  "professionals": 249,
+                  "attentive": 230,
+                  "attention": 228,
+                  "cleanliness": 133,
+                  "environment": 120,
+                  "reception": 119,
+                  "competence": 85,
+                  "punctuality": 79,
+                  "treatment": 78,
+                  "cozy place": 77
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "corporate_office"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "corporate_office": 2061,
+                  "manufacturer": 13,
+                  "accounting_firm": 11,
+                  "construction_company": 9,
+                  "business_administration_service": 8,
+                  "customs_broker": 8,
+                  "real_estate_agency": 8,
+                  "accountant": 7,
+                  "law_firm": 7,
+                  "logistics_service": 7
+                },
+                "top_countries": {
+                  "BR": 2058
+                },
+                "websites_count": 927,
+                "count": 2061,
+                "top_attributes": {
+                  "has_restroom": 1640,
+                  "has_wheelchair_accessible_entrance": 480,
+                  "has_wheelchair_accessible_parking": 289,
+                  "is_owned_by_women": 104,
+                  "has_wheelchair_accessible_restroom": 96,
+                  "welcomes_lgbtq": 87,
+                  "is_transgender_safespace": 85,
+                  "has_onsite_services": 50,
+                  "has_restroom_unisex": 46,
+                  "has_wheelchair_accessible_seating": 41
+                },
+                "top_place_topics": {
+                  "professionals": 39,
+                  "products": 37,
+                  "team": 29,
+                  "efficient": 28,
+                  "attention": 27,
+                  "company": 21,
+                  "customer": 21,
+                  "notice": 17,
+                  "process": 14,
+                  "attentive": 13
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "psychologist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "psychologist": 2047,
+                  "child_psychologist": 177,
+                  "psychotherapist": 148,
+                  "neuropsychologist": 146,
+                  "psychoanalyst": 100,
+                  "mental_health_service": 98,
+                  "mental_health_clinic": 79,
+                  "psychopedagogy_clinic": 74,
+                  "marriage_counselor": 62,
+                  "nutritionist": 54
+                },
+                "top_countries": {
+                  "BR": 2041
+                },
+                "websites_count": 828,
+                "count": 2047,
+                "top_attributes": {
+                  "has_restroom": 1960,
+                  "recommends_appointment": 1945,
+                  "requires_appointments": 690,
+                  "welcomes_lgbtq": 646,
+                  "is_transgender_safespace": 630,
+                  "has_wheelchair_accessible_entrance": 594,
+                  "has_wheelchair_accessible_parking": 510,
+                  "is_owned_by_women": 475,
+                  "has_wheelchair_accessible_restroom": 282,
+                  "has_restroom_unisex": 224
+                },
+                "top_place_topics": {
+                  "welcoming": 22,
+                  "attention": 15,
+                  "acupuncture": 11,
+                  "dedication": 10,
+                  "empathy": 10,
+                  "human": 10,
+                  "professionals": 10,
+                  "punctuality": 10,
+                  "attentive": 9,
+                  "competence": 9
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "real_estate_agency"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "real_estate_agency": 2037,
+                  "apartment_rental_agency": 100,
+                  "real_estate_agents": 93,
+                  "real_estate_rental_agency": 53,
+                  "condominium_rental_agency": 47,
+                  "real_estate_consultant": 46,
+                  "apartment_building": 35,
+                  "real_estate_appraiser": 32,
+                  "home_builder": 21,
+                  "construction_company": 20
+                },
+                "top_countries": {
+                  "BR": 2031
+                },
+                "websites_count": 1106,
+                "count": 2037,
+                "top_attributes": {
+                  "has_onsite_services": 369,
+                  "offers_online_appointments": 364,
+                  "has_wheelchair_accessible_entrance": 361,
+                  "has_wheelchair_accessible_parking": 262,
+                  "is_owned_by_women": 201,
+                  "welcomes_lgbtq": 196,
+                  "is_transgender_safespace": 189,
+                  "requires_appointments": 163,
+                  "has_wheelchair_accessible_seating": 93,
+                  "has_restroom_unisex": 91
+                },
+                "top_place_topics": {
+                  "professionals": 110,
+                  "attentive": 86,
+                  "attention": 82,
+                  "clarification of doubts": 79,
+                  "helpfulness": 72,
+                  "enterprise": 71,
+                  "transparency": 67,
+                  "location": 66,
+                  "broker": 62,
+                  "contract": 59
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "health_and_beauty_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "health_and_beauty_shop": 1962,
+                  "beautician": 271,
+                  "beauty_salon": 166,
+                  "specialized_clinic": 141,
+                  "eyebrow_bar": 87,
+                  "facial_spa": 79,
+                  "laser_hair_removal_service": 63,
+                  "nail_salon": 61,
+                  "hair_removal_service": 58,
+                  "massage_therapist": 56
+                },
+                "top_countries": {
+                  "BR": 1953
+                },
+                "websites_count": 394,
+                "count": 1962,
+                "top_attributes": {
+                  "pay_debit_card": 1804,
+                  "pay_credit_card": 1756,
+                  "pay_mobile_nfc": 1588,
+                  "requires_appointments": 812,
+                  "is_owned_by_women": 776,
+                  "welcomes_lgbtq": 691,
+                  "is_transgender_safespace": 645,
+                  "has_wi_fi": 498,
+                  "has_restroom_unisex": 375,
+                  "has_wheelchair_accessible_entrance": 375
+                },
+                "top_place_topics": {
+                  "cozy place": 220,
+                  "professionals": 202,
+                  "environment": 153,
+                  "attentive": 145,
+                  "botox": 144,
+                  "attention": 141,
+                  "cozy space": 106,
+                  "deep cleansing facial": 85,
+                  "procedures": 81,
+                  "facial cleansing": 77
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "condominium_complex"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "condominium_complex": 1892,
+                  "apartment_complex": 18,
+                  "business_administration_service": 10,
+                  "condominium_rental_agency": 7,
+                  "townhouse_complex": 7,
+                  "apartment_building": 6,
+                  "accounting_firm": 3,
+                  "business_center": 3,
+                  "real_estate_agency": 3,
+                  "security_system_supplier": 3
+                },
+                "top_countries": {
+                  "BR": 1891
+                },
+                "websites_count": 175,
+                "count": 1892,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 1234,
+                  "has_wheelchair_accessible_parking": 897,
+                  "has_swimming_pool": 349,
+                  "welcomes_dogs": 314,
+                  "has_basketball_court": 168,
+                  "has_dog_park": 75,
+                  "welcomes_lgbtq": 18,
+                  "has_wheelchair_accessible_restroom": 16,
+                  "is_transgender_safespace": 15,
+                  "has_wheelchair_accessible_seating": 12
+                },
+                "top_place_topics": {
+                  "location": 244,
+                  "cleanliness": 104,
+                  "place to live": 104,
+                  "security": 80,
+                  "organization": 63,
+                  "concierge": 45,
+                  "safety": 36,
+                  "gatehouse": 35,
+                  "leisure": 34,
+                  "party room": 33
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "nail_salon"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "nail_salon": 1881,
+                  "beauty_salon": 538,
+                  "eyebrow_bar": 210,
+                  "unisex_hairdresser": 158,
+                  "hair_salon": 149,
+                  "hair_removal_service": 134,
+                  "beautician": 128,
+                  "eyelash_salon": 80,
+                  "podiatrist": 66,
+                  "health_and_beauty_shop": 64
+                },
+                "top_countries": {
+                  "BR": 1878
+                },
+                "websites_count": 172,
+                "count": 1881,
+                "top_attributes": {
+                  "pay_debit_card": 1726,
+                  "pay_credit_card": 1707,
+                  "has_restroom": 1663,
+                  "recommends_appointment": 1601,
+                  "pay_mobile_nfc": 1218,
+                  "requires_appointments": 543,
+                  "is_owned_by_women": 532,
+                  "welcomes_lgbtq": 483,
+                  "is_transgender_safespace": 443,
+                  "has_wi_fi": 266
+                },
+                "top_place_topics": {
+                  "professionals": 225,
+                  "nails": 206,
+                  "manicure": 199,
+                  "impeccable work": 179,
+                  "cozy place": 125,
+                  "environment": 123,
+                  "work": 122,
+                  "attentive": 110,
+                  "cozy space": 87,
+                  "perfect nails": 83
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "church"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "church": 1876,
+                  "christian_church": 85,
+                  "place_of_worship": 85,
+                  "evangelical_church": 34,
+                  "gospel_church": 17,
+                  "baptist_church": 16,
+                  "religious_institution": 14,
+                  "catholic_church": 13,
+                  "assemblies_of_god_church": 10,
+                  "pentecostal_church": 7
+                },
+                "top_countries": {
+                  "BR": 1876
+                },
+                "websites_count": 143,
+                "count": 1876,
+                "top_attributes": {
+                  "has_restroom": 1802,
+                  "has_wheelchair_accessible_entrance": 1026,
+                  "has_wheelchair_accessible_parking": 330,
+                  "has_wheelchair_accessible_restroom": 242,
+                  "has_recycling_clothing": 173,
+                  "has_wheelchair_accessible_seating": 23,
+                  "has_parking_street_free": 20,
+                  "has_parking_lot_free": 17,
+                  "has_onsite_parking": 16,
+                  "welcomes_lgbtq": 11
+                },
+                "top_place_topics": {
+                  "bless": 3,
+                  "adoration": 2,
+                  "word": 2,
+                  "words": 2,
+                  "blessed place": 1,
+                  "blessing": 1,
+                  "change": 1,
+                  "cozy": 1,
+                  "gift": 1,
+                  "good energy": 1
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "transportation_service"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "transportation_service": 1824,
+                  "trucking_company": 74,
+                  "logistics_service": 42,
+                  "shipping_service": 31,
+                  "courier_service": 29,
+                  "transportation_escort_service": 29,
+                  "moving_company": 23,
+                  "moving_and_storage_service": 16,
+                  "shipping_company": 16,
+                  "shipping_and_mailing_service": 14
+                },
+                "top_countries": {
+                  "BR": 1820
+                },
+                "websites_count": 605,
+                "count": 1824,
+                "top_attributes": {
+                  "has_restroom": 1030,
+                  "has_wheelchair_accessible_entrance": 327,
+                  "has_wheelchair_accessible_parking": 223,
+                  "is_owned_by_women": 95,
+                  "has_onsite_services": 74,
+                  "welcomes_lgbtq": 73,
+                  "is_transgender_safespace": 69,
+                  "has_wheelchair_accessible_restroom": 54,
+                  "has_parking_lot_free": 43,
+                  "has_restroom_unisex": 28
+                },
+                "top_place_topics": {
+                  "enterprise": 109,
+                  "punctuality": 84,
+                  "speed": 46,
+                  "efficient": 44,
+                  "carrier": 41,
+                  "driver": 37,
+                  "notice": 33,
+                  "customer": 32,
+                  "merchandise": 29,
+                  "company": 28
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "manufacturer"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "manufacturer": 1803,
+                  "metallurgy_company": 28,
+                  "industrial_equipment_supplier": 16,
+                  "packaging_company": 16,
+                  "machine_maintenance": 15,
+                  "store": 15,
+                  "corporate_office": 13,
+                  "wholesaler": 12,
+                  "distribution_service": 11,
+                  "commercial_printer": 10
+                },
+                "top_countries": {
+                  "BR": 1802
+                },
+                "websites_count": 1133,
+                "count": 1803,
+                "top_attributes": {
+                  "pay_debit_card": 680,
+                  "pay_credit_card": 513,
+                  "has_wheelchair_accessible_entrance": 409,
+                  "has_wheelchair_accessible_parking": 253,
+                  "is_owned_by_women": 162,
+                  "welcomes_lgbtq": 107,
+                  "is_transgender_safespace": 102,
+                  "pay_mobile_nfc": 81,
+                  "has_delivery": 72,
+                  "has_onsite_services": 68
+                },
+                "top_place_topics": {
+                  "product quality": 132,
+                  "products": 129,
+                  "enterprise": 113,
+                  "product": 28,
+                  "notice": 27,
+                  "company": 26,
+                  "business": 23,
+                  "finish": 23,
+                  "customer": 22,
+                  "attention": 17
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "dental_clinic"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dental_clinic": 1768,
+                  "dentist": 509,
+                  "oral_surgeon": 321,
+                  "orthodontist": 273,
+                  "dental_implants_provider": 209,
+                  "dental_implants_periodontist": 186,
+                  "endodontist": 157,
+                  "pediatric_dentist": 151,
+                  "cosmetic_dentist": 124,
+                  "periodontist": 111
+                },
+                "top_countries": {
+                  "BR": 1767
+                },
+                "websites_count": 533,
+                "count": 1768,
+                "top_attributes": {
+                  "has_restroom": 1680,
+                  "pay_debit_card": 1667,
+                  "pay_credit_card": 1663,
+                  "recommends_appointment": 1640,
+                  "pay_mobile_nfc": 1615,
+                  "has_wheelchair_accessible_restroom": 682,
+                  "requires_appointments": 533,
+                  "is_transgender_safespace": 493,
+                  "welcomes_lgbtq": 493,
+                  "has_wheelchair_accessible_entrance": 469
+                },
+                "top_place_topics": {
+                  "professionals": 274,
+                  "attentive": 188,
+                  "attention": 171,
+                  "environment": 141,
+                  "cleanliness": 136,
+                  "reception": 112,
+                  "treatment": 85,
+                  "punctuality": 80,
+                  "Dr.": 78,
+                  "safety": 76
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "religious_institution"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "religious_institution": 1762,
+                  "catholic_church": 30,
+                  "religious_organization": 16,
+                  "place_of_worship": 15,
+                  "church": 14,
+                  "spiritist_center": 14,
+                  "christian_church": 9,
+                  "evangelical_church": 8,
+                  "non_profit_organization": 5,
+                  "religious_school": 5
+                },
+                "top_countries": {
+                  "BR": 1760
+                },
+                "websites_count": 82,
+                "count": 1762,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 661,
+                  "has_recycling_clothing": 81,
+                  "has_wheelchair_accessible_parking": 76,
+                  "welcomes_lgbtq": 47,
+                  "is_transgender_safespace": 46,
+                  "has_restroom": 44,
+                  "has_wheelchair_accessible_restroom": 32,
+                  "has_restroom_unisex": 19,
+                  "has_onsite_services": 14,
+                  "has_wheelchair_accessible_seating": 14
+                },
+                "top_place_topics": {
+                  "cozy": 2,
+                  "apprenticeship": 1,
+                  "blessed place": 1,
+                  "children": 1,
+                  "classes": 1,
+                  "cleanliness": 1,
+                  "court": 1,
+                  "environment": 1,
+                  "family": 1,
+                  "good energy": 1
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "snack_bar"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "snack_bar": 1687,
+                  "restaurant": 226,
+                  "bar": 120,
+                  "fast_food_restaurant": 111,
+                  "hamburger_restaurant": 110,
+                  "brazilian_pastelaria": 49,
+                  "meal_delivery": 47,
+                  "pizza_restaurant": 46,
+                  "sandwich_shop": 39,
+                  "sfiha_restaurant": 37
+                },
+                "top_countries": {
+                  "BR": 1687
+                },
+                "websites_count": 125,
+                "count": 1687,
+                "top_attributes": {
+                  "pay_debit_card": 1520,
+                  "pay_mobile_nfc": 1453,
+                  "has_takeout": 1447,
+                  "pay_credit_card": 1435,
+                  "feels_quiet": 1385,
+                  "suitable_for_solo_dining": 1367,
+                  "quick_bite": 1301,
+                  "feels_casual": 1226,
+                  "serves_dine_in": 1223,
+                  "welcomes_children": 1212
+                },
+                "top_place_topics": {
+                  "food": 181,
+                  "savory snacks": 132,
+                  "snacks": 118,
+                  "feijoada": 90,
+                  "region": 81,
+                  "environment": 78,
+                  "atmosphere": 71,
+                  "cleanliness": 68,
+                  "savory": 49,
+                  "cold beer": 40
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "car_wash"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "car_wash": 1623,
+                  "parking_lot": 119,
+                  "convenience_store": 86,
+                  "gas_station": 86,
+                  "oil_change_service": 85,
+                  "car_detailing_service": 46,
+                  "brazilian_restaurant": 43,
+                  "bike_wash": 35,
+                  "restaurant": 35,
+                  "parking_garage": 27
+                },
+                "top_countries": {
+                  "BR": 1622
+                },
+                "websites_count": 94,
+                "count": 1623,
+                "top_attributes": {
+                  "pay_debit_card": 1393,
+                  "pay_credit_card": 1365,
+                  "pay_mobile_nfc": 1219,
+                  "has_restroom": 1049,
+                  "has_wheelchair_accessible_entrance": 215,
+                  "has_wheelchair_accessible_parking": 160,
+                  "is_transgender_safespace": 141,
+                  "welcomes_lgbtq": 138,
+                  "has_onsite_services": 127,
+                  "is_owned_by_women": 111
+                },
+                "top_place_topics": {
+                  "washing": 88,
+                  "notice": 49,
+                  "car cleaning": 47,
+                  "car care": 46,
+                  "professionals": 43,
+                  "team": 43,
+                  "work": 42,
+                  "attention": 39,
+                  "convenience store": 34,
+                  "region": 32
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "car_repair"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "car_repair": 1554,
+                  "auto_repair_shop": 212,
+                  "mechanic": 121,
+                  "oil_change_service": 88,
+                  "wheel_alignment_service": 71,
+                  "auto_electrical_service": 54,
+                  "auto_spring_shop": 50,
+                  "brake_shop": 44,
+                  "tire_shop": 40,
+                  "auto_tune_up_service": 35
+                },
+                "top_countries": {
+                  "BR": 1553
+                },
+                "websites_count": 241,
+                "count": 1554,
+                "top_attributes": {
+                  "pay_debit_card": 1435,
+                  "pay_credit_card": 1407,
+                  "pay_mobile_nfc": 1281,
+                  "has_wheelchair_accessible_entrance": 1039,
+                  "has_wheelchair_accessible_parking": 504,
+                  "has_oil_change": 213,
+                  "has_restroom": 160,
+                  "has_mechanic": 155,
+                  "welcomes_lgbtq": 149,
+                  "is_transgender_safespace": 147
+                },
+                "top_place_topics": {
+                  "professionals": 259,
+                  "honesty": 201,
+                  "trust": 197,
+                  "honest": 162,
+                  "workshop": 136,
+                  "problem solving": 108,
+                  "mechanic": 86,
+                  "attentive": 77,
+                  "budget": 73,
+                  "team": 71
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "hair_salon"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "hair_salon": 1547,
+                  "beauty_salon": 251,
+                  "nail_salon": 149,
+                  "barber_shop": 85,
+                  "unisex_hairdresser": 71,
+                  "eyebrow_bar": 49,
+                  "beautician": 34,
+                  "hair_removal_service": 29,
+                  "hair_care": 25,
+                  "health_and_beauty_shop": 19
+                },
+                "top_countries": {
+                  "BR": 1545
+                },
+                "websites_count": 105,
+                "count": 1547,
+                "top_attributes": {
+                  "has_restroom": 1382,
+                  "pay_debit_card": 1361,
+                  "pay_credit_card": 1297,
+                  "recommends_appointment": 1048,
+                  "pay_mobile_nfc": 987,
+                  "welcomes_children": 717,
+                  "requires_appointments": 242,
+                  "welcomes_lgbtq": 222,
+                  "is_owned_by_women": 219,
+                  "has_wheelchair_accessible_entrance": 206
+                },
+                "top_place_topics": {
+                  "professionals": 200,
+                  "haircut": 140,
+                  "hairdresser": 76,
+                  "court": 63,
+                  "cozy place": 59,
+                  "attentive": 58,
+                  "environment": 56,
+                  "corte de cabelo": 51,
+                  "manicure": 47,
+                  "atmosphere": 44
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "pizza_restaurant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "pizza_restaurant": 1511,
+                  "sfiha_restaurant": 245,
+                  "pizza_delivery_service": 201,
+                  "restaurant": 167,
+                  "pizzatakeaway": 93,
+                  "meal_delivery": 53,
+                  "snack_bar": 48,
+                  "hamburger_restaurant": 43,
+                  "fast_food_restaurant": 41,
+                  "bakery": 39
+                },
+                "top_countries": {
+                  "BR": 1511
+                },
+                "websites_count": 253,
+                "count": 1511,
+                "top_attributes": {
+                  "has_delivery": 1416,
+                  "pay_debit_card": 1411,
+                  "pay_credit_card": 1367,
+                  "pay_mobile_nfc": 1353,
+                  "has_takeout": 1348,
+                  "serves_dine_in": 1313,
+                  "feels_quiet": 1254,
+                  "feels_casual": 1172,
+                  "has_no_contact_delivery": 1154,
+                  "welcomes_children": 1053
+                },
+                "top_place_topics": {
+                  "filling": 319,
+                  "region": 296,
+                  "sfiha": 260,
+                  "pizzas": 209,
+                  "esfihas": 173,
+                  "catupiry": 167,
+                  "quality ingredients": 152,
+                  "flavor": 137,
+                  "product quality": 119,
+                  "products": 118
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "beautician"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "beautician": 1487,
+                  "health_and_beauty_shop": 271,
+                  "beauty_salon": 218,
+                  "eyebrow_bar": 155,
+                  "nail_salon": 127,
+                  "massage_therapist": 94,
+                  "lymph_drainage": 86,
+                  "hair_removal_service": 81,
+                  "facial_spa": 79,
+                  "specialized_clinic": 77
+                },
+                "top_countries": {
+                  "BR": 1478
+                },
+                "websites_count": 260,
+                "count": 1487,
+                "top_attributes": {
+                  "pay_debit_card": 1357,
+                  "pay_credit_card": 1344,
+                  "pay_mobile_nfc": 1231,
+                  "is_owned_by_women": 635,
+                  "welcomes_lgbtq": 591,
+                  "is_transgender_safespace": 558,
+                  "has_restroom": 324,
+                  "has_restroom_unisex": 316,
+                  "requires_appointments": 314,
+                  "recommends_appointment": 313
+                },
+                "top_place_topics": {
+                  "cozy place": 162,
+                  "environment": 128,
+                  "attentive": 120,
+                  "professionals": 114,
+                  "attention": 104,
+                  "cozy space": 101,
+                  "eyebrows": 85,
+                  "deep cleansing facial": 82,
+                  "impeccable work": 73,
+                  "cozy atmosphere": 71
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "womens_clothing_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "womens_clothing_store": 1419,
+                  "clothing_store": 220,
+                  "mens_clothing_store": 170,
+                  "fashion_accessories_store": 102,
+                  "childrens_clothing_store": 98,
+                  "shoe_store": 84,
+                  "beach_clothing_store": 48,
+                  "youth_clothing_store": 34,
+                  "sportswear_store": 32,
+                  "store": 32
+                },
+                "top_countries": {
+                  "BR": 1414
+                },
+                "websites_count": 307,
+                "count": 1419,
+                "top_attributes": {
+                  "sells_clothing_for_women": 1326,
+                  "pay_debit_card": 1223,
+                  "pay_credit_card": 1193,
+                  "quick_visit": 1120,
+                  "pay_mobile_nfc": 1100,
+                  "has_delivery": 719,
+                  "has_in_store_pickup": 442,
+                  "has_in_store_shopping": 353,
+                  "has_wheelchair_accessible_entrance": 300,
+                  "has_restroom": 296
+                },
+                "top_place_topics": {
+                  "clothes": 98,
+                  "quality clothes": 73,
+                  "variety of products": 56,
+                  "product quality": 47,
+                  "salesperson": 41,
+                  "beautiful pieces": 28,
+                  "notice": 28,
+                  "beautiful store": 24,
+                  "dress": 20,
+                  "quality of the pieces": 20
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "legal_services"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "legal_services": 1320,
+                  "lawyer": 137,
+                  "civil_law_attorney": 98,
+                  "labor_relations_attorney": 83,
+                  "social_security_attorney": 71,
+                  "family_law_attorney": 53,
+                  "real_estate_attorney": 52,
+                  "criminal_law_attorney": 38,
+                  "law_firm": 37,
+                  "trial_attorney": 33
+                },
+                "top_countries": {
+                  "BR": 1318
+                },
+                "websites_count": 639,
+                "count": 1320,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 332,
+                  "has_wheelchair_accessible_parking": 232,
+                  "welcomes_lgbtq": 221,
+                  "is_owned_by_women": 213,
+                  "is_transgender_safespace": 202,
+                  "has_onsite_services": 133,
+                  "has_wheelchair_accessible_restroom": 116,
+                  "has_restroom_unisex": 111,
+                  "has_wheelchair_accessible_seating": 94,
+                  "has_restroom": 84
+                },
+                "top_place_topics": {
+                  "clarification of doubts": 107,
+                  "attention": 81,
+                  "competence": 81,
+                  "professionals": 78,
+                  "attentive": 76,
+                  "trust": 54,
+                  "attorney": 49,
+                  "dedication": 47,
+                  "efficient": 46,
+                  "desk": 40
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "lawyer"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "lawyer": 1287,
+                  "civil_law_attorney": 140,
+                  "legal_services": 137,
+                  "labor_relations_attorney": 119,
+                  "social_security_attorney": 84,
+                  "real_estate_attorney": 73,
+                  "family_law_attorney": 59,
+                  "trial_attorney": 51,
+                  "criminal_law_attorney": 49,
+                  "law_firm": 40
+                },
+                "top_countries": {
+                  "BR": 1283
+                },
+                "websites_count": 486,
+                "count": 1287,
+                "top_attributes": {
+                  "has_restroom": 934,
+                  "recommends_appointment": 886,
+                  "has_wheelchair_accessible_restroom": 389,
+                  "offers_online_appointments": 280,
+                  "has_onsite_services": 257,
+                  "has_wheelchair_accessible_entrance": 221,
+                  "welcomes_lgbtq": 190,
+                  "requires_appointments": 183,
+                  "is_transgender_safespace": 172,
+                  "is_owned_by_women": 164
+                },
+                "top_place_topics": {
+                  "attention": 79,
+                  "attentive": 69,
+                  "clarification of doubts": 67,
+                  "competence": 61,
+                  "dedication": 57,
+                  "professionals": 53,
+                  "process": 43,
+                  "desk": 41,
+                  "trust": 40,
+                  "efficient": 37
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "parking_lot"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "parking_lot": 1240,
+                  "car_wash": 119,
+                  "parking_garage": 57,
+                  "parking": 8,
+                  "bike_wash": 5,
+                  "parking_lot_for_motorcycle": 5,
+                  "auto_painting": 3,
+                  "automobile_storage_facility": 3,
+                  "car_repair": 3,
+                  "park_and_ride": 3
+                },
+                "top_countries": {
+                  "BR": 1240
+                },
+                "websites_count": 91,
+                "count": 1240,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 1093,
+                  "has_wheelchair_accessible_parking": 1027,
+                  "pay_debit_card": 817,
+                  "pay_credit_card": 732,
+                  "pay_mobile_nfc": 420,
+                  "has_restroom": 227,
+                  "has_wheelchair_accessible_restroom": 68,
+                  "welcomes_lgbtq": 48,
+                  "is_transgender_safespace": 46,
+                  "has_onsite_services": 26
+                },
+                "top_place_topics": {
+                  "location": 30,
+                  "car wash": 28,
+                  "safety": 22,
+                  "security": 21,
+                  "insurance": 20,
+                  "proximity to the airport": 16,
+                  "easy access": 15,
+                  "vehicle": 13,
+                  "washing": 13,
+                  "polite staff": 12
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "bakery"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "bakery": 1232,
+                  "breakfast_restaurant": 89,
+                  "supermarket": 79,
+                  "butcher_shop": 69,
+                  "grocery_store": 69,
+                  "fish_store": 51,
+                  "fruit_and_vegetable_store": 49,
+                  "pastry_shop": 49,
+                  "fresh_food_market": 46,
+                  "organic_food_store": 39
+                },
+                "top_countries": {
+                  "BR": 1232
+                },
+                "websites_count": 113,
+                "count": 1232,
+                "top_attributes": {
+                  "pay_debit_card": 1106,
+                  "pay_credit_card": 1070,
+                  "pay_mobile_nfc": 1070,
+                  "quick_visit": 1019,
+                  "serves_breakfast": 721,
+                  "serves_coffee": 631,
+                  "has_delivery": 523,
+                  "has_restroom": 426,
+                  "has_takeout": 403,
+                  "serves_dine_in": 403
+                },
+                "top_place_topics": {
+                  "savory snacks": 129,
+                  "variety of products": 122,
+                  "fresh bread": 116,
+                  "cleanliness": 111,
+                  "cheese bread": 106,
+                  "variety of breads": 105,
+                  "savory": 104,
+                  "french bread": 103,
+                  "product quality": 80,
+                  "bread": 74
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "hamburger_restaurant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "hamburger_restaurant": 1211,
+                  "restaurant": 210,
+                  "fast_food_restaurant": 162,
+                  "snack_bar": 110,
+                  "meal_delivery": 93,
+                  "sandwich_shop": 64,
+                  "diner": 53,
+                  "american_restaurant": 52,
+                  "family_restaurant": 48,
+                  "pizza_restaurant": 43
+                },
+                "top_countries": {
+                  "BR": 1211
+                },
+                "websites_count": 165,
+                "count": 1211,
+                "top_attributes": {
+                  "serves_dine_in": 1177,
+                  "pay_debit_card": 1107,
+                  "has_delivery": 1094,
+                  "pay_credit_card": 1065,
+                  "welcomes_children": 1053,
+                  "pay_mobile_nfc": 1047,
+                  "feels_casual": 1036,
+                  "has_takeout": 1014,
+                  "suitable_for_solo_dining": 1005,
+                  "suitable_for_groups": 997
+                },
+                "top_place_topics": {
+                  "snacks": 299,
+                  "snack": 102,
+                  "region": 86,
+                  "cozy place": 81,
+                  "cleanliness": 59,
+                  "flavor": 51,
+                  "atmosphere": 49,
+                  "food": 48,
+                  "artisanal burger": 45,
+                  "waiting time": 41
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "building_materials_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "building_materials_store": 1196,
+                  "paint_store": 67,
+                  "electrical_supply_store": 63,
+                  "hydraulic_equipment_supplier": 52,
+                  "tool_store": 51,
+                  "tool_and_die_shop": 43,
+                  "flooring_store": 24,
+                  "hardware_store": 24,
+                  "building_materials_supplier": 22,
+                  "building_materials_market": 18
+                },
+                "top_countries": {
+                  "BR": 1196
+                },
+                "websites_count": 265,
+                "count": 1196,
+                "top_attributes": {
+                  "pay_debit_card": 1044,
+                  "pay_credit_card": 1024,
+                  "has_delivery": 1001,
+                  "pay_mobile_nfc": 949,
+                  "quick_visit": 940,
+                  "has_wheelchair_accessible_entrance": 368,
+                  "has_in_store_pickup": 325,
+                  "has_in_store_shopping": 305,
+                  "has_wheelchair_accessible_parking": 264,
+                  "is_transgender_safespace": 127
+                },
+                "top_place_topics": {
+                  "variety": 111,
+                  "notice": 70,
+                  "product quality": 60,
+                  "region": 56,
+                  "attentive": 44,
+                  "location": 39,
+                  "quality products": 39,
+                  "salesperson": 38,
+                  "polite staff": 35,
+                  "budget": 30
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "apartment_building"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "apartment_building": 1137,
+                  "real_estate_agency": 35,
+                  "apartment_rental_agency": 22,
+                  "apartment_complex": 18,
+                  "real_estate_agents": 16,
+                  "real_estate_consultant": 14,
+                  "condominium_rental_agency": 13,
+                  "real_estate_appraiser": 8,
+                  "real_estate_rental_agency": 7,
+                  "condominium_complex": 6
+                },
+                "top_countries": {
+                  "BR": 1136
+                },
+                "websites_count": 135,
+                "count": 1137,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 434,
+                  "has_wheelchair_accessible_parking": 291,
+                  "has_swimming_pool": 113,
+                  "welcomes_dogs": 68,
+                  "has_dog_park": 39,
+                  "welcomes_lgbtq": 37,
+                  "has_wheelchair_accessible_restroom": 36,
+                  "is_transgender_safespace": 35,
+                  "has_wheelchair_accessible_seating": 32,
+                  "has_onsite_services": 30
+                },
+                "top_place_topics": {
+                  "location": 43,
+                  "condominium": 21,
+                  "construction company": 16,
+                  "undertaking": 15,
+                  "enterprise": 12,
+                  "place to live": 9,
+                  "clarification of doubts": 7,
+                  "project": 7,
+                  "attentive": 6,
+                  "building manager": 6
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "pet_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "pet_store": 1118,
+                  "pet_groomer": 101,
+                  "veterinarian": 70,
+                  "pet_supply_store": 33,
+                  "veterinary_pharmacy": 19,
+                  "feed_store": 18,
+                  "reptile_store": 17,
+                  "animal_hospital": 9,
+                  "pet_boarding_service": 9,
+                  "dog_day_care_center": 5
+                },
+                "top_countries": {
+                  "BR": 1117
+                },
+                "websites_count": 127,
+                "count": 1118,
+                "top_attributes": {
+                  "pay_debit_card": 958,
+                  "pay_credit_card": 923,
+                  "pay_mobile_nfc": 917,
+                  "quick_visit": 777,
+                  "has_delivery": 775,
+                  "has_in_store_shopping": 255,
+                  "has_in_store_pickup": 247,
+                  "has_wheelchair_accessible_entrance": 238,
+                  "has_wheelchair_accessible_parking": 155,
+                  "welcomes_lgbtq": 110
+                },
+                "top_place_topics": {
+                  "bath and grooming": 170,
+                  "variety of products": 136,
+                  "animal care": 109,
+                  "bath": 95,
+                  "grooming": 75,
+                  "attentive": 65,
+                  "pet care": 54,
+                  "attention": 48,
+                  "kindness": 46,
+                  "pet food": 42
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "construction_company"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "construction_company": 1106,
+                  "remodeler": 58,
+                  "civil_engineering_company": 36,
+                  "civil_engineer": 33,
+                  "general_contractor": 30,
+                  "real_estate_agency": 20,
+                  "architect": 19,
+                  "bricklayer": 15,
+                  "masonry_contractor": 15,
+                  "home_builder": 14
+                },
+                "top_countries": {
+                  "BR": 1103
+                },
+                "websites_count": 392,
+                "count": 1106,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 130,
+                  "has_wheelchair_accessible_parking": 102,
+                  "offers_online_estimates": 81,
+                  "has_onsite_services": 69,
+                  "is_owned_by_women": 61,
+                  "welcomes_lgbtq": 58,
+                  "is_transgender_safespace": 51,
+                  "has_wheelchair_accessible_seating": 25,
+                  "has_wheelchair_accessible_restroom": 20,
+                  "has_restroom_unisex": 19
+                },
+                "top_place_topics": {
+                  "professionals": 30,
+                  "enterprise": 20,
+                  "work": 16,
+                  "apartment": 10,
+                  "commitment": 10,
+                  "notice": 10,
+                  "trust": 10,
+                  "attention": 9,
+                  "contract": 9,
+                  "team": 9
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "market"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "market": 1106,
+                  "convenience_store": 60,
+                  "supermarket": 47,
+                  "liquor_store": 44,
+                  "toiletries_store": 37,
+                  "bakery": 32,
+                  "grocery_store": 19,
+                  "fruit_and_vegetable_store": 16,
+                  "cold_cut_store": 15,
+                  "wine_store": 9
+                },
+                "top_countries": {
+                  "BR": 1106
+                },
+                "websites_count": 72,
+                "count": 1106,
+                "top_attributes": {
+                  "pay_debit_card": 978,
+                  "pay_mobile_nfc": 964,
+                  "pay_credit_card": 954,
+                  "has_wheelchair_accessible_entrance": 276,
+                  "has_restroom": 136,
+                  "has_wheelchair_accessible_parking": 127,
+                  "has_in_store_shopping": 111,
+                  "quick_visit": 81,
+                  "is_transgender_safespace": 73,
+                  "welcomes_lgbtq": 70
+                },
+                "top_place_topics": {
+                  "variety of products": 188,
+                  "cleanliness": 59,
+                  "bread": 51,
+                  "bakery": 50,
+                  "neighborhood market": 46,
+                  "butcher shop": 43,
+                  "location": 33,
+                  "product quality": 29,
+                  "variety": 29,
+                  "neighborhood": 27
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "insurance_agency"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "insurance_agency": 1085,
+                  "insurance_broker": 92,
+                  "auto_insurance_agency": 44,
+                  "life_insurance_agency": 44,
+                  "home_insurance_agency": 32,
+                  "dental_insurance_agency": 25,
+                  "motorcycle_insurance_agency": 24,
+                  "health_consultant": 20,
+                  "insurance_company": 19,
+                  "business_broker": 15
+                },
+                "top_countries": {
+                  "BR": 1084
+                },
+                "websites_count": 658,
+                "count": 1085,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 166,
+                  "offers_online_appointments": 117,
+                  "has_wheelchair_accessible_parking": 94,
+                  "has_onsite_services": 90,
+                  "is_owned_by_women": 70,
+                  "welcomes_lgbtq": 58,
+                  "requires_appointments": 57,
+                  "is_transgender_safespace": 54,
+                  "has_wheelchair_accessible_seating": 28,
+                  "has_onsite_parking": 21
+                },
+                "top_place_topics": {
+                  "clarification of doubts": 56,
+                  "helpfulness": 35,
+                  "attentive": 34,
+                  "attention": 29,
+                  "brokerage": 29,
+                  "professionals": 29,
+                  "efficient": 24,
+                  "broker": 22,
+                  "enterprise": 21,
+                  "team": 18
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "internet_marketing_service"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "internet_marketing_service": 1043,
+                  "marketing_agency": 148,
+                  "marketing_consultant": 112,
+                  "website_designer": 98,
+                  "advertising_agency": 92,
+                  "graphic_designer": 59,
+                  "design_agency": 25,
+                  "business_management_consultant": 21,
+                  "software_company": 15,
+                  "web_hosting_service": 15
+                },
+                "top_countries": {
+                  "BR": 1038
+                },
+                "websites_count": 464,
+                "count": 1043,
+                "top_attributes": {
+                  "offers_online_appointments": 272,
+                  "requires_appointments": 177,
+                  "is_owned_by_women": 176,
+                  "welcomes_lgbtq": 164,
+                  "is_transgender_safespace": 136,
+                  "has_onsite_services": 115,
+                  "has_restroom_unisex": 47,
+                  "has_wheelchair_accessible_entrance": 41,
+                  "has_parking_street_free": 32,
+                  "has_wheelchair_accessible_restroom": 31
+                },
+                "top_place_topics": {
+                  "professionals": 31,
+                  "attentive": 19,
+                  "work": 18,
+                  "attention": 15,
+                  "enterprise": 15,
+                  "commitment": 13,
+                  "dedication": 13,
+                  "team": 12,
+                  "notice": 11,
+                  "results": 11
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "auto_parts_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "auto_parts_store": 999,
+                  "auto_repair_shop": 37,
+                  "car_repair": 29,
+                  "car_accessories_store": 25,
+                  "used_auto_parts_store": 16,
+                  "oil_change_service": 14,
+                  "truck_parts_supplier": 14,
+                  "car_battery_store": 12,
+                  "store": 12,
+                  "auto_spring_shop": 11
+                },
+                "top_countries": {
+                  "BR": 999
+                },
+                "websites_count": 337,
+                "count": 999,
+                "top_attributes": {
+                  "pay_debit_card": 890,
+                  "pay_credit_card": 879,
+                  "pay_mobile_nfc": 791,
+                  "quick_visit": 630,
+                  "has_delivery": 567,
+                  "has_wheelchair_accessible_entrance": 326,
+                  "has_in_store_pickup": 259,
+                  "has_wheelchair_accessible_parking": 226,
+                  "has_in_store_shopping": 193,
+                  "has_wi_fi": 99
+                },
+                "top_place_topics": {
+                  "variety of products": 89,
+                  "notice": 64,
+                  "quality parts": 54,
+                  "enterprise": 48,
+                  "variety of parts": 39,
+                  "attentive": 36,
+                  "professionals": 35,
+                  "honesty": 33,
+                  "product quality": 31,
+                  "attention": 29
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "supermarket"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "supermarket": 996,
+                  "bakery": 80,
+                  "grocery_store": 69,
+                  "butcher_shop": 56,
+                  "market": 47,
+                  "fresh_food_market": 46,
+                  "fish_store": 45,
+                  "convenience_store": 44,
+                  "atm": 40,
+                  "hypermarket": 37
+                },
+                "top_countries": {
+                  "BR": 996
+                },
+                "websites_count": 90,
+                "count": 996,
+                "top_attributes": {
+                  "pay_debit_card": 877,
+                  "pay_credit_card": 844,
+                  "pay_mobile_nfc": 840,
+                  "has_produce_notable": 812,
+                  "quick_visit": 805,
+                  "has_delivery": 460,
+                  "has_wheelchair_accessible_entrance": 406,
+                  "has_wheelchair_accessible_parking": 276,
+                  "accepts_sodexo_meal_voucher": 249,
+                  "has_in_store_shopping": 197
+                },
+                "top_place_topics": {
+                  "variety of products": 279,
+                  "bakery": 179,
+                  "butcher shop": 124,
+                  "neighborhood market": 105,
+                  "promotion": 84,
+                  "cleanliness": 68,
+                  "promotions": 61,
+                  "cold cuts": 60,
+                  "bread": 57,
+                  "butcher": 56
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "accounting_firm"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "accounting_firm": 977,
+                  "accountant": 149,
+                  "business_management_consultant": 61,
+                  "chartered_accountant": 41,
+                  "tax_consultant": 39,
+                  "certified_public_accountant": 38,
+                  "human_ressource_consulting": 33,
+                  "cost_accounting_service": 29,
+                  "tax_preparation": 29,
+                  "tax_assessor": 23
+                },
+                "top_countries": {
+                  "BR": 974
+                },
+                "websites_count": 613,
+                "count": 977,
+                "top_attributes": {
+                  "is_owned_by_women": 174,
+                  "welcomes_lgbtq": 127,
+                  "is_transgender_safespace": 125,
+                  "has_onsite_services": 104,
+                  "has_wheelchair_accessible_entrance": 82,
+                  "has_restroom_unisex": 64,
+                  "has_wheelchair_accessible_parking": 53,
+                  "has_wheelchair_accessible_restroom": 48,
+                  "has_wheelchair_accessible_seating": 48,
+                  "recommends_appointment": 42
+                },
+                "top_place_topics": {
+                  "professionals": 60,
+                  "clarification of doubts": 49,
+                  "trust": 43,
+                  "efficient": 34,
+                  "competence": 32,
+                  "attentive team": 30,
+                  "attention": 29,
+                  "efficiency": 27,
+                  "attentive": 24,
+                  "helpfulness": 22
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "computer_repair_service"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "computer_repair_service": 976,
+                  "mobile_phone_repair_shop": 113,
+                  "computer_store": 106,
+                  "cell_phone_store": 95,
+                  "computer_support_and_services": 95,
+                  "computer_service": 72,
+                  "computer_consultant": 64,
+                  "phone_repair_service": 51,
+                  "electronics_store": 49,
+                  "printer_repair_service": 41
+                },
+                "top_countries": {
+                  "BR": 972
+                },
+                "websites_count": 287,
+                "count": 976,
+                "top_attributes": {
+                  "pay_debit_card": 762,
+                  "pay_credit_card": 755,
+                  "has_service_repair": 730,
+                  "pay_mobile_nfc": 715,
+                  "has_onsite_services": 248,
+                  "offers_online_appointments": 172,
+                  "has_recycling_electronics": 156,
+                  "is_owned_by_women": 137,
+                  "welcomes_lgbtq": 136,
+                  "is_transgender_safespace": 132
+                },
+                "top_place_topics": {
+                  "speed": 59,
+                  "cell phone repair": 58,
+                  "notebook repair": 57,
+                  "honesty": 50,
+                  "budget": 43,
+                  "attentive": 41,
+                  "problem solving": 40,
+                  "technical assistance": 40,
+                  "efficient": 33,
+                  "efficiency": 31
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "ice_cream_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "ice_cream_shop": 964,
+                  "acai_shop": 50,
+                  "sundae_restaurant": 31,
+                  "snack_bar": 28,
+                  "restaurant": 27,
+                  "dessert_shop": 26,
+                  "candy_store": 17,
+                  "coffee_shop": 16,
+                  "hamburger_restaurant": 16,
+                  "fast_food_restaurant": 10
+                },
+                "top_countries": {
+                  "BR": 964
+                },
+                "websites_count": 98,
+                "count": 964,
+                "top_attributes": {
+                  "pay_debit_card": 878,
+                  "welcomes_children": 823,
+                  "pay_credit_card": 822,
+                  "pay_mobile_nfc": 819,
+                  "feels_quiet": 793,
+                  "feels_casual": 790,
+                  "quick_visit": 736,
+                  "feels_hip": 718,
+                  "suitable_for_solo_dining": 666,
+                  "has_delivery": 526
+                },
+                "top_place_topics": {
+                  "açaí": 154,
+                  "acai": 90,
+                  "popsicles": 81,
+                  "environment": 77,
+                  "product quality": 71,
+                  "cleanliness": 65,
+                  "variety of flavors": 59,
+                  "cozy place": 57,
+                  "region": 54,
+                  "variety of ice creams": 51
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "accountant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "accountant": 918,
+                  "accounting_firm": 149,
+                  "business_management_consultant": 49,
+                  "certified_public_accountant": 33,
+                  "tax_assessor": 32,
+                  "human_ressource_consulting": 30,
+                  "tax_consultant": 29,
+                  "chartered_accountant": 27,
+                  "cost_accounting_service": 20,
+                  "business_administration_service": 19
+                },
+                "top_countries": {
+                  "BR": 917
+                },
+                "websites_count": 526,
+                "count": 918,
+                "top_attributes": {
+                  "recommends_appointment": 493,
+                  "has_onsite_services": 148,
+                  "offers_online_appointments": 103,
+                  "is_owned_by_women": 92,
+                  "has_wheelchair_accessible_entrance": 90,
+                  "is_transgender_safespace": 74,
+                  "welcomes_lgbtq": 74,
+                  "requires_appointments": 66,
+                  "has_wheelchair_accessible_parking": 45,
+                  "has_restroom_unisex": 43
+                },
+                "top_place_topics": {
+                  "professionals": 49,
+                  "trust": 27,
+                  "team": 25,
+                  "attention": 24,
+                  "competence": 24,
+                  "efficiency": 21,
+                  "accounting": 20,
+                  "efficient": 20,
+                  "agility": 19,
+                  "attentive": 18
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "oral_surgeon"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "oral_surgeon": 918,
+                  "dentist": 401,
+                  "dental_clinic": 321,
+                  "orthodontist": 239,
+                  "dental_implants_provider": 186,
+                  "dental_implants_periodontist": 164,
+                  "endodontist": 153,
+                  "pediatric_dentist": 128,
+                  "cosmetic_dentist": 123,
+                  "periodontist": 98
+                },
+                "top_countries": {
+                  "BR": 917
+                },
+                "websites_count": 274,
+                "count": 918,
+                "top_attributes": {
+                  "pay_debit_card": 890,
+                  "pay_credit_card": 889,
+                  "has_restroom": 885,
+                  "pay_mobile_nfc": 880,
+                  "recommends_appointment": 864,
+                  "has_wheelchair_accessible_restroom": 391,
+                  "requires_appointments": 345,
+                  "is_transgender_safespace": 273,
+                  "welcomes_lgbtq": 271,
+                  "has_wheelchair_accessible_entrance": 268
+                },
+                "top_place_topics": {
+                  "attentive": 101,
+                  "attention": 95,
+                  "professionals": 81,
+                  "cleanliness": 76,
+                  "environment": 61,
+                  "competence": 47,
+                  "reception": 46,
+                  "punctuality": 43,
+                  "safety": 42,
+                  "attentiveness": 41
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "furniture_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "furniture_store": 912,
+                  "kitchen_furniture_store": 82,
+                  "furniture_maker": 64,
+                  "office_furniture_store": 55,
+                  "millwork_shop": 46,
+                  "sofa_store": 43,
+                  "mattress_store": 37,
+                  "woodworker": 30,
+                  "store": 27,
+                  "fitted_furniture_supplier": 24
+                },
+                "top_countries": {
+                  "BR": 912
+                },
+                "websites_count": 276,
+                "count": 912,
+                "top_attributes": {
+                  "pay_debit_card": 717,
+                  "pay_credit_card": 681,
+                  "has_delivery": 627,
+                  "pay_mobile_nfc": 523,
+                  "has_wheelchair_accessible_entrance": 322,
+                  "has_in_store_shopping": 236,
+                  "has_wheelchair_accessible_parking": 222,
+                  "has_in_store_pickup": 193,
+                  "quick_visit": 169,
+                  "has_service_assembly": 146
+                },
+                "top_place_topics": {
+                  "product quality": 94,
+                  "custom furniture": 76,
+                  "quality furniture": 61,
+                  "assembly": 49,
+                  "salesperson": 49,
+                  "editing": 48,
+                  "sofa": 47,
+                  "budget": 43,
+                  "attention to detail": 36,
+                  "project": 28
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "gas_station"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "gas_station": 909,
+                  "convenience_store": 145,
+                  "oil_change_service": 123,
+                  "car_wash": 86,
+                  "brazilian_restaurant": 43,
+                  "restaurant": 35,
+                  "atm": 28,
+                  "juice_shop": 28,
+                  "sandwich_shop": 28,
+                  "wi_fi_spot": 28
+                },
+                "top_countries": {
+                  "BR": 909
+                },
+                "websites_count": 41,
+                "count": 909,
+                "top_attributes": {
+                  "has_restroom": 814,
+                  "pay_debit_card": 810,
+                  "pay_mobile_nfc": 808,
+                  "pay_credit_card": 802,
+                  "sells_gas_diesel": 773,
+                  "has_car_wash": 717,
+                  "has_air_pump": 632,
+                  "has_wheelchair_accessible_restroom": 455,
+                  "has_propane_exchange": 169,
+                  "has_onsite_convenience_store": 146
+                },
+                "top_place_topics": {
+                  "convenience store": 180,
+                  "quality fuel": 168,
+                  "ethanol": 145,
+                  "fuel": 116,
+                  "car wash": 80,
+                  "fuel quality": 78,
+                  "polite staff": 78,
+                  "gasoline": 68,
+                  "region": 60,
+                  "refueling": 56
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "business_management_consultant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "business_management_consultant": 885,
+                  "accounting_firm": 61,
+                  "accountant": 49,
+                  "consultant": 46,
+                  "human_ressource_consulting": 32,
+                  "financial_consultant": 25,
+                  "tax_consultant": 23,
+                  "internet_marketing_service": 21,
+                  "business_administration_service": 20,
+                  "training_center": 20
+                },
+                "top_countries": {
+                  "BR": 883
+                },
+                "websites_count": 497,
+                "count": 885,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 160,
+                  "is_owned_by_women": 134,
+                  "has_wheelchair_accessible_parking": 133,
+                  "offers_online_appointments": 127,
+                  "has_onsite_services": 102,
+                  "requires_appointments": 100,
+                  "welcomes_lgbtq": 99,
+                  "is_transgender_safespace": 83,
+                  "recommends_appointment": 45,
+                  "has_restroom_unisex": 43
+                },
+                "top_place_topics": {
+                  "professionals": 23,
+                  "clarification of doubts": 22,
+                  "team": 18,
+                  "efficient": 17,
+                  "efficiency": 12,
+                  "attention": 11,
+                  "competence": 11,
+                  "enterprise": 11,
+                  "competent": 10,
+                  "dedication": 10
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "optician"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "optician": 863,
+                  "sunglasses_store": 85,
+                  "contact_lenses_supplier": 29,
+                  "optometrist": 25,
+                  "glasses_repair_service": 19,
+                  "watch_store": 19,
+                  "ophthalmologist": 9,
+                  "store": 8,
+                  "fashion_accessories_store": 6,
+                  "jewelry_store": 6
+                },
+                "top_countries": {
+                  "BR": 863
+                },
+                "websites_count": 170,
+                "count": 863,
+                "top_attributes": {
+                  "pay_debit_card": 822,
+                  "pay_credit_card": 800,
+                  "pay_mobile_nfc": 797,
+                  "quick_visit": 623,
+                  "has_restroom": 546,
+                  "has_wheelchair_accessible_entrance": 321,
+                  "has_in_store_shopping": 268,
+                  "has_delivery": 231,
+                  "has_in_store_pickup": 214,
+                  "welcomes_lgbtq": 176
+                },
+                "top_place_topics": {
+                  "clarification of doubts": 80,
+                  "great optician": 74,
+                  "glasses": 68,
+                  "variety of frames": 66,
+                  "product quality": 65,
+                  "eye exam": 64,
+                  "quality of glasses": 64,
+                  "attentive": 59,
+                  "attention": 54,
+                  "call center": 43
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "pharmacy"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "pharmacy": 856,
+                  "drugstore": 392,
+                  "pharmaceutical_company": 70,
+                  "perfume_store": 57,
+                  "homeopathic_pharmacy": 17,
+                  "beauty_supply_store": 12,
+                  "organic_drug_store": 11,
+                  "health_food_store": 10,
+                  "vitamin_and_supplements_store": 10,
+                  "cosmetics_store": 9
+                },
+                "top_countries": {
+                  "BR": 856
+                },
+                "websites_count": 140,
+                "count": 856,
+                "top_attributes": {
+                  "pay_debit_card": 803,
+                  "pay_credit_card": 790,
+                  "pay_mobile_nfc": 786,
+                  "has_delivery": 705,
+                  "quick_visit": 701,
+                  "has_wheelchair_accessible_entrance": 624,
+                  "has_wheelchair_accessible_parking": 354,
+                  "has_in_store_shopping": 168,
+                  "has_in_store_pickup": 160,
+                  "is_transgender_safespace": 108
+                },
+                "top_place_topics": {
+                  "variety of products": 103,
+                  "attention": 63,
+                  "remedy": 60,
+                  "attentive": 47,
+                  "polite staff": 43,
+                  "location": 41,
+                  "call center": 39,
+                  "discounts": 39,
+                  "attendant": 37,
+                  "educated": 36
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "nutritionist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "nutritionist": 812,
+                  "psychologist": 53,
+                  "weight_loss_service": 48,
+                  "physiotherapist": 32,
+                  "specialized_clinic": 27,
+                  "health_and_beauty_shop": 26,
+                  "speech_pathologist": 25,
+                  "beautician": 24,
+                  "child_psychologist": 22,
+                  "pilates_studio": 22
+                },
+                "top_countries": {
+                  "BR": 811
+                },
+                "websites_count": 288,
+                "count": 812,
+                "top_attributes": {
+                  "has_restroom": 756,
+                  "pay_debit_card": 739,
+                  "pay_credit_card": 728,
+                  "recommends_appointment": 718,
+                  "pay_mobile_nfc": 613,
+                  "has_wheelchair_accessible_entrance": 350,
+                  "requires_appointments": 319,
+                  "has_wheelchair_accessible_restroom": 282,
+                  "has_wheelchair_accessible_parking": 249,
+                  "welcomes_lgbtq": 245
+                },
+                "top_place_topics": {
+                  "attentive": 119,
+                  "attention": 76,
+                  "personalized diet": 70,
+                  "dedication": 63,
+                  "weight loss": 57,
+                  "welcoming": 55,
+                  "clarification of doubts": 46,
+                  "follow-up": 44,
+                  "nutritionist": 41,
+                  "consultation": 40
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "commercial_printer"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "commercial_printer": 811,
+                  "digital_printer": 105,
+                  "custom_label_printer": 98,
+                  "graphic_designer": 93,
+                  "print_shop": 77,
+                  "fingerprinting_service": 53,
+                  "vinyl_sign_shop": 51,
+                  "copy_shop": 35,
+                  "corporate_gift_supplier": 35,
+                  "custom_t_shirt_store": 34
+                },
+                "top_countries": {
+                  "BR": 810
+                },
+                "websites_count": 365,
+                "count": 811,
+                "top_attributes": {
+                  "has_onsite_services": 191,
+                  "offers_online_appointments": 148,
+                  "is_owned_by_women": 128,
+                  "welcomes_lgbtq": 121,
+                  "is_transgender_safespace": 119,
+                  "requires_appointments": 70,
+                  "pay_debit_card": 65,
+                  "pay_credit_card": 61,
+                  "has_wheelchair_accessible_entrance": 58,
+                  "pay_mobile_nfc": 54
+                },
+                "top_place_topics": {
+                  "product quality": 66,
+                  "speed": 46,
+                  "products": 40,
+                  "enterprise": 38,
+                  "work": 36,
+                  "print quality": 32,
+                  "notice": 30,
+                  "material quality": 26,
+                  "printing company": 24,
+                  "attentive": 21
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "consultant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "consultant": 803,
+                  "business_management_consultant": 46,
+                  "accounting_firm": 21,
+                  "business_administration_service": 19,
+                  "accountant": 18,
+                  "human_ressource_consulting": 15,
+                  "lawyer": 12,
+                  "training_center": 11,
+                  "computer_consultant": 10,
+                  "financial_consultant": 10
+                },
+                "top_countries": {
+                  "BR": 797
+                },
+                "websites_count": 358,
+                "count": 803,
+                "top_attributes": {
+                  "is_owned_by_women": 113,
+                  "welcomes_lgbtq": 102,
+                  "has_wheelchair_accessible_entrance": 99,
+                  "is_transgender_safespace": 92,
+                  "has_onsite_services": 71,
+                  "has_restroom_unisex": 45,
+                  "requires_appointments": 45,
+                  "has_wheelchair_accessible_parking": 43,
+                  "has_wheelchair_accessible_seating": 42,
+                  "offers_online_appointments": 42
+                },
+                "top_place_topics": {
+                  "enterprise": 30,
+                  "attention": 25,
+                  "attentive": 19,
+                  "clarification of doubts": 19,
+                  "problem solving": 17,
+                  "professionals": 17,
+                  "team": 17,
+                  "competence": 15,
+                  "efficiency": 15,
+                  "helpfulness": 13
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "unisex_hairdresser"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "unisex_hairdresser": 789,
+                  "beauty_salon": 242,
+                  "nail_salon": 158,
+                  "barber_shop": 89,
+                  "eyebrow_bar": 72,
+                  "hair_salon": 70,
+                  "beautician": 55,
+                  "hair_removal_service": 46,
+                  "makeup_artist": 33,
+                  "health_and_beauty_shop": 25
+                },
+                "top_countries": {
+                  "BR": 787
+                },
+                "websites_count": 114,
+                "count": 789,
+                "top_attributes": {
+                  "pay_debit_card": 726,
+                  "has_restroom": 711,
+                  "pay_credit_card": 707,
+                  "pay_mobile_nfc": 600,
+                  "recommends_appointment": 585,
+                  "welcomes_children": 388,
+                  "welcomes_lgbtq": 237,
+                  "requires_appointments": 236,
+                  "is_transgender_safespace": 225,
+                  "is_owned_by_women": 216
+                },
+                "top_place_topics": {
+                  "professionals": 167,
+                  "haircut": 94,
+                  "environment": 57,
+                  "manicure": 57,
+                  "court": 50,
+                  "attentive": 48,
+                  "cozy place": 48,
+                  "corte de cabelo": 44,
+                  "atmosphere": 41,
+                  "impeccable work": 28
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "shoe_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "shoe_store": 782,
+                  "womens_clothing_store": 84,
+                  "clothing_store": 70,
+                  "mens_clothing_store": 58,
+                  "fashion_accessories_store": 53,
+                  "childrens_clothing_store": 36,
+                  "store": 25,
+                  "sportswear_store": 20,
+                  "youth_clothing_store": 16,
+                  "sporting_goods_store": 14
+                },
+                "top_countries": {
+                  "BR": 780
+                },
+                "websites_count": 168,
+                "count": 782,
+                "top_attributes": {
+                  "pay_debit_card": 677,
+                  "pay_credit_card": 664,
+                  "quick_visit": 626,
+                  "pay_mobile_nfc": 603,
+                  "has_wheelchair_accessible_entrance": 319,
+                  "has_delivery": 227,
+                  "has_in_store_pickup": 195,
+                  "has_in_store_shopping": 186,
+                  "has_wheelchair_accessible_parking": 180,
+                  "welcomes_lgbtq": 96
+                },
+                "top_place_topics": {
+                  "variety of products": 60,
+                  "salesperson": 51,
+                  "product quality": 46,
+                  "products": 33,
+                  "promotions": 28,
+                  "tennis": 28,
+                  "shoes": 27,
+                  "organized store": 26,
+                  "notice": 23,
+                  "attention": 21
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "place_of_worship"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "place_of_worship": 773,
+                  "church": 85,
+                  "baptist_church": 24,
+                  "evangelical_church": 21,
+                  "catholic_church": 15,
+                  "religious_institution": 15,
+                  "christian_church": 14,
+                  "religious_organization": 10,
+                  "spiritist_center": 10,
+                  "gospel_church": 9
+                },
+                "top_countries": {
+                  "BR": 773
+                },
+                "websites_count": 106,
+                "count": 773,
+                "top_attributes": {
+                  "has_restroom": 731,
+                  "has_wheelchair_accessible_entrance": 365,
+                  "has_wheelchair_accessible_parking": 138,
+                  "has_wheelchair_accessible_restroom": 113,
+                  "has_recycling_clothing": 86,
+                  "is_transgender_safespace": 25,
+                  "welcomes_lgbtq": 25,
+                  "has_parking_lot_free": 12,
+                  "has_parking_street_free": 11,
+                  "has_onsite_services": 9
+                },
+                "top_place_topics": {
+                  "peaceful": 2,
+                  "space": 2,
+                  "teachers": 2,
+                  "aunts": 1,
+                  "axé": 1,
+                  "bless": 1,
+                  "car": 1,
+                  "care and affection": 1,
+                  "children": 1,
+                  "communion": 1
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "perfume_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "perfume_store": 748,
+                  "cosmetics_store": 134,
+                  "beauty_supply_store": 97,
+                  "drugstore": 93,
+                  "pharmacy": 57,
+                  "gift_shop": 43,
+                  "beauty_product_supplier": 35,
+                  "pharmaceutical_company": 29,
+                  "toiletries_store": 18,
+                  "novelty_store": 15
+                },
+                "top_countries": {
+                  "BR": 747
+                },
+                "websites_count": 134,
+                "count": 748,
+                "top_attributes": {
+                  "pay_debit_card": 690,
+                  "pay_credit_card": 678,
+                  "pay_mobile_nfc": 660,
+                  "quick_visit": 634,
+                  "has_delivery": 348,
+                  "has_in_store_pickup": 255,
+                  "has_wheelchair_accessible_entrance": 249,
+                  "has_in_store_shopping": 210,
+                  "welcomes_lgbtq": 146,
+                  "is_transgender_safespace": 144
+                },
+                "top_place_topics": {
+                  "variety of products": 162,
+                  "perfumery": 51,
+                  "polite staff": 30,
+                  "location": 29,
+                  "products": 29,
+                  "attention": 28,
+                  "attentive": 25,
+                  "product quality": 24,
+                  "call center": 22,
+                  "notice": 22
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "trucking_company"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "trucking_company": 722,
+                  "transportation_service": 73,
+                  "transportation_escort_service": 53,
+                  "logistics_service": 41,
+                  "moving_and_storage_service": 24,
+                  "shipping_service": 20,
+                  "courier_service": 16,
+                  "shipping_company": 15,
+                  "moving_company": 14,
+                  "warehouse_club": 11
+                },
+                "top_countries": {
+                  "BR": 719
+                },
+                "websites_count": 408,
+                "count": 722,
+                "top_attributes": {
+                  "has_restroom": 584,
+                  "has_wheelchair_accessible_entrance": 213,
+                  "has_wheelchair_accessible_parking": 178,
+                  "has_onsite_services": 66,
+                  "offers_online_appointments": 57,
+                  "pay_debit_card": 48,
+                  "is_owned_by_women": 40,
+                  "is_transgender_safespace": 37,
+                  "welcomes_lgbtq": 35,
+                  "offers_online_estimates": 34
+                },
+                "top_place_topics": {
+                  "merchandise": 44,
+                  "carrier": 43,
+                  "shipping company": 40,
+                  "speed": 33,
+                  "notice": 26,
+                  "punctuality": 26,
+                  "telephone": 24,
+                  "driver": 21,
+                  "agility": 20,
+                  "efficient": 19
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "meal_delivery"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "meal_delivery": 719,
+                  "restaurant": 203,
+                  "hamburger_restaurant": 93,
+                  "fast_food_restaurant": 68,
+                  "delivery_service": 65,
+                  "pizza_restaurant": 52,
+                  "snack_bar": 46,
+                  "pizza_delivery_service": 40,
+                  "meal_takeaway": 36,
+                  "sfiha_restaurant": 22
+                },
+                "top_countries": {
+                  "BR": 713
+                },
+                "websites_count": 146,
+                "count": 719,
+                "top_attributes": {
+                  "has_delivery": 681,
+                  "pay_debit_card": 649,
+                  "pay_credit_card": 626,
+                  "pay_mobile_nfc": 613,
+                  "has_takeout": 474,
+                  "has_no_contact_delivery": 374,
+                  "serves_dine_in": 304,
+                  "feels_casual": 274,
+                  "suitable_for_solo_dining": 244,
+                  "feels_quiet": 241
+                },
+                "top_place_topics": {
+                  "flavor": 50,
+                  "feijoada": 46,
+                  "food": 46,
+                  "cleanliness": 39,
+                  "snacks": 37,
+                  "cozy place": 31,
+                  "region": 29,
+                  "condiments": 27,
+                  "environment": 27,
+                  "tasty food": 27
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "eyebrow_bar"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "eyebrow_bar": 708,
+                  "beauty_salon": 273,
+                  "nail_salon": 207,
+                  "eyelash_salon": 170,
+                  "beautician": 155,
+                  "hair_removal_service": 98,
+                  "health_and_beauty_shop": 87,
+                  "unisex_hairdresser": 69,
+                  "makeup_artist": 56,
+                  "hair_salon": 49
+                },
+                "top_countries": {
+                  "BR": 705
+                },
+                "websites_count": 105,
+                "count": 708,
+                "top_attributes": {
+                  "pay_debit_card": 674,
+                  "pay_credit_card": 667,
+                  "has_restroom": 600,
+                  "recommends_appointment": 575,
+                  "pay_mobile_nfc": 566,
+                  "is_owned_by_women": 361,
+                  "requires_appointments": 340,
+                  "welcomes_lgbtq": 305,
+                  "is_transgender_safespace": 282,
+                  "has_onsite_services": 162
+                },
+                "top_place_topics": {
+                  "cozy place": 91,
+                  "impeccable work": 87,
+                  "eyebrows": 82,
+                  "environment": 73,
+                  "professionals": 72,
+                  "attentive": 68,
+                  "attention": 57,
+                  "cozy space": 55,
+                  "cozy atmosphere": 50,
+                  "eyelashes": 42
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "drugstore"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "drugstore": 703,
+                  "pharmacy": 386,
+                  "perfume_store": 90,
+                  "pharmaceutical_company": 59,
+                  "beauty_supply_store": 12,
+                  "cosmetics_store": 8,
+                  "courier_service": 8,
+                  "toiletries_store": 8,
+                  "vitamin_and_supplements_store": 8,
+                  "convenience_store": 5
+                },
+                "top_countries": {
+                  "BR": 703
+                },
+                "websites_count": 82,
+                "count": 703,
+                "top_attributes": {
+                  "pay_debit_card": 664,
+                  "pay_mobile_nfc": 659,
+                  "pay_credit_card": 657,
+                  "has_delivery": 630,
+                  "quick_visit": 612,
+                  "has_wheelchair_accessible_entrance": 538,
+                  "has_wheelchair_accessible_parking": 286,
+                  "has_in_store_shopping": 171,
+                  "has_in_store_pickup": 168,
+                  "is_transgender_safespace": 83
+                },
+                "top_place_topics": {
+                  "variety of products": 94,
+                  "remedy": 74,
+                  "attention": 46,
+                  "discounts": 43,
+                  "pharmacy": 36,
+                  "location": 35,
+                  "attendant": 34,
+                  "education": 34,
+                  "attentive": 33,
+                  "educated": 33
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "electronics_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "electronics_store": 700,
+                  "cell_phone_store": 86,
+                  "computer_store": 54,
+                  "computer_repair_service": 49,
+                  "appliance_store": 43,
+                  "mobile_phone_repair_shop": 42,
+                  "computer_accessories_store": 37,
+                  "store": 24,
+                  "cell_phone_accessory_store": 23,
+                  "car_accessories_store": 21
+                },
+                "top_countries": {
+                  "BR": 698
+                },
+                "websites_count": 176,
+                "count": 700,
+                "top_attributes": {
+                  "pay_debit_card": 569,
+                  "pay_credit_card": 529,
+                  "pay_mobile_nfc": 475,
+                  "quick_visit": 343,
+                  "has_delivery": 214,
+                  "has_in_store_pickup": 164,
+                  "has_wheelchair_accessible_entrance": 140,
+                  "has_in_store_shopping": 139,
+                  "has_service_repair": 94,
+                  "has_wheelchair_accessible_parking": 83
+                },
+                "top_place_topics": {
+                  "variety of products": 62,
+                  "product quality": 35,
+                  "cell phone": 22,
+                  "discount": 19,
+                  "attentive": 18,
+                  "quality products": 18,
+                  "salesperson": 18,
+                  "cell phone repair": 17,
+                  "accessories": 16,
+                  "call center": 15
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "psychotherapist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "psychotherapist": 693,
+                  "psychologist": 147,
+                  "psychoanalyst": 66,
+                  "reiki_therapist": 64,
+                  "marriage_counselor": 47,
+                  "child_psychologist": 43,
+                  "massage_therapist": 42,
+                  "mental_health_service": 41,
+                  "mental_health_clinic": 33,
+                  "hypnotherapy_service": 27
+                },
+                "top_countries": {
+                  "BR": 689
+                },
+                "websites_count": 254,
+                "count": 693,
+                "top_attributes": {
+                  "has_restroom": 590,
+                  "recommends_appointment": 581,
+                  "requires_appointments": 248,
+                  "welcomes_lgbtq": 228,
+                  "is_transgender_safespace": 224,
+                  "is_owned_by_women": 215,
+                  "has_wheelchair_accessible_entrance": 122,
+                  "pay_debit_card": 100,
+                  "pay_credit_card": 97,
+                  "has_restroom_unisex": 93
+                },
+                "top_place_topics": {
+                  "attention": 13,
+                  "environment": 12,
+                  "pain relief": 11,
+                  "attentive": 9,
+                  "cozy place": 9,
+                  "dedication": 9,
+                  "welcoming": 9,
+                  "professionals": 8,
+                  "competence": 7,
+                  "cozy space": 7
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "car_dealer"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "car_dealer": 691,
+                  "used_car_dealer": 108,
+                  "motor_vehicle_dealer": 33,
+                  "auto_broker": 23,
+                  "store": 16,
+                  "auto_repair_shop": 10,
+                  "chevrolet_dealer": 7,
+                  "ford_dealer": 6,
+                  "van_rental_agency": 6,
+                  "volkswagen_dealer": 6
+                },
+                "top_countries": {
+                  "BR": 691
+                },
+                "websites_count": 223,
+                "count": 691,
+                "top_attributes": {
+                  "pay_debit_card": 565,
+                  "pay_credit_card": 489,
+                  "has_wheelchair_accessible_entrance": 471,
+                  "pay_mobile_nfc": 416,
+                  "has_wheelchair_accessible_parking": 264,
+                  "has_in_store_shopping": 121,
+                  "sells_goods_used": 102,
+                  "welcomes_lgbtq": 79,
+                  "is_transgender_safespace": 77,
+                  "has_delivery": 65
+                },
+                "top_place_topics": {
+                  "attention": 53,
+                  "business": 49,
+                  "after-sales": 46,
+                  "car purchase": 46,
+                  "attentive salesperson": 43,
+                  "honesty": 39,
+                  "trust": 39,
+                  "transparency": 32,
+                  "car quality": 28,
+                  "car trade-in": 25
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "doctor"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "doctor": 687,
+                  "specialized_clinic": 34,
+                  "medical_center": 30,
+                  "medical_office": 20,
+                  "medical_clinic": 17,
+                  "dermatologist": 16,
+                  "cardiologist": 13,
+                  "gynecologist": 12,
+                  "gynecologist_only": 12,
+                  "nutritionist": 12
+                },
+                "top_countries": {
+                  "BR": 687
+                },
+                "websites_count": 241,
+                "count": 687,
+                "top_attributes": {
+                  "has_restroom": 655,
+                  "recommends_appointment": 572,
+                  "pay_debit_card": 500,
+                  "has_wheelchair_accessible_restroom": 465,
+                  "pay_credit_card": 464,
+                  "has_wheelchair_accessible_entrance": 459,
+                  "pay_mobile_nfc": 343,
+                  "has_wheelchair_accessible_parking": 232,
+                  "requires_appointments": 110,
+                  "is_transgender_safespace": 95
+                },
+                "top_place_topics": {
+                  "attentive": 70,
+                  "attention": 43,
+                  "clarification of doubts": 33,
+                  "competence": 29,
+                  "waiting time": 27,
+                  "welcoming": 23,
+                  "attentive doctor": 21,
+                  "empathy": 21,
+                  "attentiveness": 18,
+                  "dedication": 17
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "cell_phone_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "cell_phone_store": 680,
+                  "mobile_phone_repair_shop": 138,
+                  "computer_repair_service": 94,
+                  "electronics_store": 86,
+                  "computer_accessories_store": 52,
+                  "phone_repair_service": 46,
+                  "cell_phone_accessory_store": 44,
+                  "computer_store": 44,
+                  "appliance_store": 25,
+                  "beauty_supply_store": 22
+                },
+                "top_countries": {
+                  "BR": 678
+                },
+                "websites_count": 119,
+                "count": 680,
+                "top_attributes": {
+                  "pay_debit_card": 598,
+                  "pay_credit_card": 589,
+                  "pay_mobile_nfc": 579,
+                  "quick_visit": 472,
+                  "has_delivery": 186,
+                  "has_wheelchair_accessible_entrance": 174,
+                  "has_in_store_pickup": 173,
+                  "has_in_store_shopping": 169,
+                  "has_service_repair": 165,
+                  "welcomes_lgbtq": 125
+                },
+                "top_place_topics": {
+                  "cell phone repair": 67,
+                  "variety of products": 51,
+                  "product quality": 50,
+                  "quality products": 39,
+                  "attentive": 33,
+                  "call center": 33,
+                  "attention": 30,
+                  "honesty": 30,
+                  "screen replacement": 30,
+                  "technical assistance": 28
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "candy_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "candy_store": 673,
+                  "cake_shop": 58,
+                  "confectionery": 37,
+                  "dessert_shop": 25,
+                  "bakery": 19,
+                  "ice_cream_shop": 17,
+                  "coffee_shop": 16,
+                  "pastry_shop": 12,
+                  "meal_delivery": 11,
+                  "restaurant": 10
+                },
+                "top_countries": {
+                  "BR": 667
+                },
+                "websites_count": 85,
+                "count": 673,
+                "top_attributes": {
+                  "pay_debit_card": 534,
+                  "pay_credit_card": 461,
+                  "pay_mobile_nfc": 422,
+                  "quick_visit": 410,
+                  "has_delivery": 339,
+                  "has_in_store_pickup": 163,
+                  "has_wheelchair_accessible_entrance": 109,
+                  "has_in_store_shopping": 105,
+                  "is_owned_by_women": 86,
+                  "has_wheelchair_accessible_parking": 70
+                },
+                "top_place_topics": {
+                  "sweets": 55,
+                  "savory snacks": 34,
+                  "product quality": 27,
+                  "cakes": 25,
+                  "variety of products": 23,
+                  "flavor": 22,
+                  "cozy place": 18,
+                  "brigadeiro": 17,
+                  "savory": 17,
+                  "cake": 16
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "fast_food_restaurant"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "fast_food_restaurant": 668,
+                  "restaurant": 179,
+                  "hamburger_restaurant": 161,
+                  "snack_bar": 109,
+                  "meal_delivery": 68,
+                  "sandwich_shop": 54,
+                  "breakfast_restaurant": 46,
+                  "family_restaurant": 46,
+                  "sfiha_restaurant": 46,
+                  "pizza_restaurant": 41
+                },
+                "top_countries": {
+                  "BR": 668
+                },
+                "websites_count": 124,
+                "count": 668,
+                "top_attributes": {
+                  "serves_dine_in": 634,
+                  "pay_debit_card": 606,
+                  "pay_credit_card": 584,
+                  "pay_mobile_nfc": 577,
+                  "welcomes_children": 577,
+                  "has_takeout": 560,
+                  "feels_casual": 558,
+                  "suitable_for_solo_dining": 554,
+                  "has_delivery": 545,
+                  "quick_bite": 536
+                },
+                "top_place_topics": {
+                  "cleanliness": 82,
+                  "waiting time": 64,
+                  "snacks": 53,
+                  "beirute": 36,
+                  "cozy place": 35,
+                  "coxinha": 32,
+                  "drive thru": 31,
+                  "attendant": 28,
+                  "savory snacks": 28,
+                  "atmosphere": 24
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "marketing_agency"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "marketing_agency": 668,
+                  "internet_marketing_service": 145,
+                  "advertising_agency": 84,
+                  "marketing_consultant": 79,
+                  "website_designer": 62,
+                  "graphic_designer": 45,
+                  "design_agency": 21,
+                  "commercial_printer": 12,
+                  "web_hosting_service": 9,
+                  "branding_agency": 8
+                },
+                "top_countries": {
+                  "BR": 665
+                },
+                "websites_count": 328,
+                "count": 668,
+                "top_attributes": {
+                  "offers_online_appointments": 148,
+                  "is_owned_by_women": 108,
+                  "requires_appointments": 100,
+                  "welcomes_lgbtq": 95,
+                  "is_transgender_safespace": 76,
+                  "has_onsite_services": 74,
+                  "has_wheelchair_accessible_entrance": 51,
+                  "has_restroom_unisex": 30,
+                  "has_wheelchair_accessible_parking": 29,
+                  "has_wheelchair_accessible_seating": 25
+                },
+                "top_place_topics": {
+                  "professionals": 27,
+                  "attention": 13,
+                  "attentive": 12,
+                  "dedication": 12,
+                  "enterprise": 10,
+                  "work": 10,
+                  "notice": 8,
+                  "web design": 8,
+                  "impeccable work": 7,
+                  "competence": 6
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "electrician"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "electrician": 663,
+                  "electrical_installation_service": 50,
+                  "remodeler": 35,
+                  "electrical_engineer": 32,
+                  "plumber": 31,
+                  "painting": 29,
+                  "masonry_contractor": 27,
+                  "bricklayer": 25,
+                  "property_maintenance": 23,
+                  "dry_wall_contractor": 21
+                },
+                "top_countries": {
+                  "BR": 652
+                },
+                "websites_count": 142,
+                "count": 663,
+                "top_attributes": {
+                  "offers_online_estimates": 156,
+                  "has_onsite_services": 113,
+                  "is_owned_by_women": 109,
+                  "welcomes_lgbtq": 98,
+                  "is_transgender_safespace": 84,
+                  "pay_credit_card": 44,
+                  "has_wheelchair_accessible_entrance": 37,
+                  "pay_debit_card": 37,
+                  "pay_mobile_nfc": 35,
+                  "has_restroom_unisex": 26
+                },
+                "top_place_topics": {
+                  "punctuality": 72,
+                  "attentive": 36,
+                  "professionals": 31,
+                  "efficient": 30,
+                  "politeness": 26,
+                  "work": 24,
+                  "helpfulness": 22,
+                  "speed": 21,
+                  "education": 20,
+                  "problem solving": 20
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "cosmetics_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "cosmetics_store": 661,
+                  "perfume_store": 134,
+                  "beauty_supply_store": 85,
+                  "gift_shop": 30,
+                  "beauty_product_supplier": 25,
+                  "clothing_store": 19,
+                  "beauty_salon": 15,
+                  "womens_clothing_store": 14,
+                  "fashion_accessories_store": 13,
+                  "childrens_clothing_store": 11
+                },
+                "top_countries": {
+                  "BR": 659
+                },
+                "websites_count": 173,
+                "count": 661,
+                "top_attributes": {
+                  "pay_debit_card": 550,
+                  "pay_credit_card": 529,
+                  "pay_mobile_nfc": 494,
+                  "quick_visit": 465,
+                  "has_delivery": 278,
+                  "has_wheelchair_accessible_entrance": 206,
+                  "has_in_store_pickup": 180,
+                  "has_in_store_shopping": 137,
+                  "has_wheelchair_accessible_parking": 111,
+                  "is_owned_by_women": 110
+                },
+                "top_place_topics": {
+                  "variety of products": 96,
+                  "products": 52,
+                  "product quality": 40,
+                  "perfume": 34,
+                  "salesperson": 34,
+                  "organized store": 26,
+                  "attention": 22,
+                  "perfumery": 22,
+                  "perfumes": 19,
+                  "promotions": 19
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "tattoo_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "tattoo_shop": 654,
+                  "tattoo_and_piercing_shop": 42,
+                  "tattoo_artist": 37,
+                  "body_piercing_shop": 24,
+                  "barber_shop": 22,
+                  "ear_piercing_service": 18,
+                  "beauty_salon": 14,
+                  "eyebrow_bar": 9,
+                  "nail_salon": 7,
+                  "artist": 6
+                },
+                "top_countries": {
+                  "BR": 652
+                },
+                "websites_count": 76,
+                "count": 654,
+                "top_attributes": {
+                  "pay_debit_card": 580,
+                  "pay_credit_card": 577,
+                  "pay_mobile_nfc": 547,
+                  "welcomes_lgbtq": 169,
+                  "requires_appointments": 164,
+                  "is_transgender_safespace": 158,
+                  "has_wi_fi": 147,
+                  "has_restroom_unisex": 111,
+                  "is_owned_by_women": 103,
+                  "has_wheelchair_accessible_entrance": 60
+                },
+                "top_place_topics": {
+                  "tattoo artist": 67,
+                  "professionals": 50,
+                  "environment": 41,
+                  "attentive": 37,
+                  "hygiene": 34,
+                  "cozy place": 33,
+                  "light hand": 33,
+                  "first tattoo": 29,
+                  "atmosphere": 25,
+                  "cleanliness": 25
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "metalwork"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "metalwork": 652,
+                  "glass_and_mirror_shop": 27,
+                  "garage_door_supplier": 17,
+                  "aluminum_frames_supplier": 16,
+                  "aluminum_window": 10,
+                  "glazier": 10,
+                  "manufacturer": 10,
+                  "metallurgy_company": 10,
+                  "door_supplier": 9,
+                  "welder": 9
+                },
+                "top_countries": {
+                  "BR": 651
+                },
+                "websites_count": 130,
+                "count": 652,
+                "top_attributes": {
+                  "pay_debit_card": 469,
+                  "pay_credit_card": 455,
+                  "is_owned_by_women": 66,
+                  "has_wheelchair_accessible_entrance": 56,
+                  "is_transgender_safespace": 52,
+                  "welcomes_lgbtq": 50,
+                  "has_onsite_services": 47,
+                  "has_wheelchair_accessible_parking": 29,
+                  "has_wheelchair_accessible_seating": 23,
+                  "has_restroom_unisex": 22
+                },
+                "top_place_topics": {
+                  "gate": 39,
+                  "punctuality": 35,
+                  "locksmith": 26,
+                  "budget": 23,
+                  "professionals": 23,
+                  "enterprise": 18,
+                  "notice": 17,
+                  "finish": 15,
+                  "attention": 13,
+                  "attentive": 13
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "transportation_escort_service"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "transportation_escort_service": 637,
+                  "trucking_company": 54,
+                  "transportation_service": 28,
+                  "logistics_service": 22,
+                  "moving_company": 18,
+                  "moving_and_storage_service": 17,
+                  "shipping_service": 15,
+                  "courier_service": 14,
+                  "shipping_and_mailing_service": 11,
+                  "shipping_company": 10
+                },
+                "top_countries": {
+                  "BR": 636
+                },
+                "websites_count": 321,
+                "count": 637,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 208,
+                  "has_wheelchair_accessible_parking": 137,
+                  "offers_online_appointments": 91,
+                  "has_onsite_services": 90,
+                  "pay_debit_card": 88,
+                  "pay_credit_card": 56,
+                  "has_restroom": 44,
+                  "requires_appointments": 42,
+                  "pay_mobile_nfc": 41,
+                  "is_owned_by_women": 36
+                },
+                "top_place_topics": {
+                  "enterprise": 69,
+                  "punctuality": 50,
+                  "merchandise": 28,
+                  "carrier": 27,
+                  "shipping company": 24,
+                  "notice": 22,
+                  "speed": 21,
+                  "company": 20,
+                  "efficiency": 20,
+                  "professionals": 20
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "gym"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "gym": 630,
+                  "fitness_center": 40,
+                  "physical_fitness_program": 34,
+                  "pilates_studio": 23,
+                  "training_center": 23,
+                  "personal_trainer": 21,
+                  "womens_personal_trainer": 12,
+                  "martial_arts_school": 11,
+                  "gymnastics_club": 10,
+                  "muay_thai_boxing_gym": 10
+                },
+                "top_countries": {
+                  "BR": 630
+                },
+                "websites_count": 149,
+                "count": 630,
+                "top_attributes": {
+                  "has_restroom": 555,
+                  "pay_debit_card": 537,
+                  "pay_credit_card": 521,
+                  "pay_mobile_nfc": 467,
+                  "has_wheelchair_accessible_entrance": 245,
+                  "has_wheelchair_accessible_parking": 197,
+                  "has_wheelchair_accessible_restroom": 149,
+                  "has_onsite_services": 117,
+                  "welcomes_lgbtq": 94,
+                  "is_transgender_safespace": 93
+                },
+                "top_place_topics": {
+                  "teachers": 85,
+                  "attentive teachers": 83,
+                  "weight training": 80,
+                  "equipment": 61,
+                  "professionals": 56,
+                  "family atmosphere": 55,
+                  "air conditioning": 50,
+                  "modern equipment": 49,
+                  "atmosphere": 47,
+                  "cleanliness": 45
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "graphic_designer"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "graphic_designer": 620,
+                  "commercial_printer": 92,
+                  "website_designer": 62,
+                  "internet_marketing_service": 58,
+                  "digital_printer": 50,
+                  "marketing_agency": 46,
+                  "advertising_agency": 42,
+                  "custom_label_printer": 35,
+                  "print_shop": 31,
+                  "vinyl_sign_shop": 31
+                },
+                "top_countries": {
+                  "BR": 618
+                },
+                "websites_count": 225,
+                "count": 620,
+                "top_attributes": {
+                  "offers_online_appointments": 113,
+                  "is_owned_by_women": 90,
+                  "welcomes_lgbtq": 80,
+                  "has_onsite_services": 74,
+                  "is_transgender_safespace": 71,
+                  "requires_appointments": 69,
+                  "has_wheelchair_accessible_entrance": 54,
+                  "pay_debit_card": 37,
+                  "pay_credit_card": 34,
+                  "pay_mobile_nfc": 27
+                },
+                "top_place_topics": {
+                  "work": 22,
+                  "product quality": 21,
+                  "professionals": 20,
+                  "notice": 18,
+                  "attentive": 16,
+                  "attention": 15,
+                  "speed": 15,
+                  "enterprise": 13,
+                  "punctuality": 13,
+                  "products": 12
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "pet_groomer"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "pet_groomer": 618,
+                  "reptile_store": 169,
+                  "veterinarian": 137,
+                  "pet_store": 98,
+                  "veterinary_pharmacy": 44,
+                  "pet_supply_store": 43,
+                  "pet_boarding_service": 39,
+                  "feed_store": 32,
+                  "dog_day_care_center": 17,
+                  "animal_hospital": 16
+                },
+                "top_countries": {
+                  "BR": 614
+                },
+                "websites_count": 125,
+                "count": 618,
+                "top_attributes": {
+                  "pay_debit_card": 497,
+                  "pay_credit_card": 490,
+                  "pay_mobile_nfc": 474,
+                  "welcomes_lgbtq": 193,
+                  "is_owned_by_women": 183,
+                  "is_transgender_safespace": 177,
+                  "has_wheelchair_accessible_entrance": 167,
+                  "quick_visit": 143,
+                  "has_delivery": 142,
+                  "has_in_store_shopping": 104
+                },
+                "top_place_topics": {
+                  "bath and grooming": 127,
+                  "animal care": 99,
+                  "attentive": 70,
+                  "attention": 58,
+                  "pet care": 55,
+                  "affection for animals": 51,
+                  "bath": 48,
+                  "kindness": 46,
+                  "professionals": 46,
+                  "cleanliness": 42
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "mechanic"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "mechanic": 614,
+                  "car_repair": 116,
+                  "auto_repair_shop": 106,
+                  "oil_change_service": 47,
+                  "wheel_alignment_service": 33,
+                  "auto_spring_shop": 29,
+                  "brake_shop": 25,
+                  "auto_tune_up_service": 22,
+                  "car_battery_store": 21,
+                  "auto_electrical_service": 17
+                },
+                "top_countries": {
+                  "BR": 613
+                },
+                "websites_count": 89,
+                "count": 614,
+                "top_attributes": {
+                  "pay_debit_card": 567,
+                  "pay_credit_card": 562,
+                  "pay_mobile_nfc": 469,
+                  "has_wheelchair_accessible_entrance": 409,
+                  "has_wheelchair_accessible_parking": 187,
+                  "has_oil_change": 103,
+                  "has_mechanic": 77,
+                  "has_restroom": 75,
+                  "welcomes_lgbtq": 73,
+                  "is_transgender_safespace": 70
+                },
+                "top_place_topics": {
+                  "honesty": 80,
+                  "professionals": 72,
+                  "honest": 61,
+                  "trust": 59,
+                  "workshop": 35,
+                  "notice": 34,
+                  "attentive": 33,
+                  "problem solving": 30,
+                  "mechanics": 29,
+                  "attention": 22
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "specialized_clinic"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "specialized_clinic": 610,
+                  "health_and_beauty_shop": 136,
+                  "beautician": 84,
+                  "facial_spa": 36,
+                  "doctor": 34,
+                  "weight_loss_service": 31,
+                  "dental_clinic": 29,
+                  "laser_hair_removal_service": 26,
+                  "nutritionist": 24,
+                  "beauty_salon": 23
+                },
+                "top_countries": {
+                  "BR": 608
+                },
+                "websites_count": 292,
+                "count": 610,
+                "top_attributes": {
+                  "pay_debit_card": 549,
+                  "pay_credit_card": 544,
+                  "pay_mobile_nfc": 517,
+                  "has_restroom": 497,
+                  "recommends_appointment": 479,
+                  "has_wheelchair_accessible_entrance": 329,
+                  "has_wheelchair_accessible_restroom": 325,
+                  "welcomes_lgbtq": 245,
+                  "requires_appointments": 243,
+                  "is_owned_by_women": 241
+                },
+                "top_place_topics": {
+                  "attentive": 57,
+                  "attention": 55,
+                  "professionals": 54,
+                  "cozy place": 51,
+                  "environment": 49,
+                  "botox": 48,
+                  "clarification of doubts": 39,
+                  "welcoming": 35,
+                  "competence": 29,
+                  "deep cleansing facial": 26
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "dessert_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dessert_shop": 603,
+                  "cake_shop": 75,
+                  "pastry_shop": 75,
+                  "bakery": 34,
+                  "coffee_shop": 28,
+                  "candy_store": 25,
+                  "ice_cream_shop": 24,
+                  "snack_bar": 21,
+                  "dessert_buffet": 18,
+                  "espresso_bar": 18
+                },
+                "top_countries": {
+                  "BR": 599
+                },
+                "websites_count": 106,
+                "count": 603,
+                "top_attributes": {
+                  "pay_debit_card": 529,
+                  "pay_credit_card": 468,
+                  "pay_mobile_nfc": 436,
+                  "quick_visit": 373,
+                  "has_delivery": 286,
+                  "has_takeout": 163,
+                  "is_owned_by_women": 133,
+                  "has_in_store_pickup": 124,
+                  "has_restroom": 111,
+                  "welcomes_lgbtq": 108
+                },
+                "top_place_topics": {
+                  "sweets": 52,
+                  "cakes": 34,
+                  "flavor": 34,
+                  "jam": 25,
+                  "product quality": 25,
+                  "savory snacks": 22,
+                  "brigadeiro": 21,
+                  "candy": 20,
+                  "savory": 20,
+                  "cozy place": 19
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "educational_institution"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "educational_institution": 601,
+                  "private_school": 31,
+                  "preschool": 15,
+                  "head_start_center": 11,
+                  "learning_center": 11,
+                  "primary_school": 10,
+                  "language_school": 9,
+                  "association_or_organization": 8,
+                  "computer_training_school": 8,
+                  "english_language_school": 8
+                },
+                "top_countries": {
+                  "BR": 599
+                },
+                "websites_count": 180,
+                "count": 601,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 363,
+                  "has_wheelchair_accessible_parking": 116,
+                  "welcomes_lgbtq": 34,
+                  "is_owned_by_women": 33,
+                  "is_transgender_safespace": 32,
+                  "has_wheelchair_accessible_restroom": 28,
+                  "has_onsite_services": 25,
+                  "has_wheelchair_accessible_seating": 19,
+                  "has_restroom_unisex": 18,
+                  "has_onsite_parking": 11
+                },
+                "top_place_topics": {
+                  "son": 47,
+                  "teachers": 45,
+                  "school": 43,
+                  "daycare": 26,
+                  "professionals": 22,
+                  "childcare": 20,
+                  "cleanliness": 16,
+                  "teaching": 16,
+                  "environment": 13,
+                  "course": 12
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "insurance_broker"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "insurance_broker": 601,
+                  "insurance_agency": 90,
+                  "auto_insurance_agency": 35,
+                  "life_insurance_agency": 33,
+                  "home_insurance_agency": 22,
+                  "motorcycle_insurance_agency": 22,
+                  "business_broker": 20,
+                  "dental_insurance_agency": 20,
+                  "health_consultant": 19,
+                  "insurance_company": 16
+                },
+                "top_countries": {
+                  "BR": 600
+                },
+                "websites_count": 414,
+                "count": 601,
+                "top_attributes": {
+                  "offers_online_appointments": 184,
+                  "has_onsite_services": 135,
+                  "is_owned_by_women": 115,
+                  "requires_appointments": 99,
+                  "welcomes_lgbtq": 94,
+                  "has_wheelchair_accessible_entrance": 91,
+                  "is_transgender_safespace": 86,
+                  "has_wheelchair_accessible_parking": 58,
+                  "has_wheelchair_accessible_seating": 33,
+                  "has_restroom_unisex": 31
+                },
+                "top_place_topics": {
+                  "clarification of doubts": 62,
+                  "attention": 45,
+                  "attentive": 33,
+                  "helpfulness": 29,
+                  "professionals": 27,
+                  "enterprise": 24,
+                  "team": 22,
+                  "trust": 22,
+                  "brokerage": 20,
+                  "speed": 20
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "fashion_accessories_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "fashion_accessories_store": 598,
+                  "womens_clothing_store": 98,
+                  "clothing_store": 88,
+                  "shoe_store": 50,
+                  "mens_clothing_store": 42,
+                  "store": 25,
+                  "childrens_clothing_store": 20,
+                  "handbags_shop": 19,
+                  "jewelry_store": 16,
+                  "dress_shop": 14
+                },
+                "top_countries": {
+                  "BR": 597
+                },
+                "websites_count": 162,
+                "count": 598,
+                "top_attributes": {
+                  "pay_debit_card": 494,
+                  "pay_credit_card": 493,
+                  "quick_visit": 452,
+                  "pay_mobile_nfc": 426,
+                  "has_delivery": 225,
+                  "has_in_store_pickup": 161,
+                  "has_wheelchair_accessible_entrance": 158,
+                  "has_in_store_shopping": 153,
+                  "is_owned_by_women": 135,
+                  "has_wheelchair_accessible_parking": 96
+                },
+                "top_place_topics": {
+                  "product quality": 36,
+                  "variety of products": 30,
+                  "products": 23,
+                  "notice": 19,
+                  "clothes": 18,
+                  "salesperson": 17,
+                  "beautiful pieces": 16,
+                  "parts": 12,
+                  "attentive": 10,
+                  "models": 10
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "massage_therapist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "massage_therapist": 593,
+                  "beautician": 91,
+                  "lymph_drainage": 73,
+                  "acupuncturist": 67,
+                  "massage_spa": 64,
+                  "health_and_beauty_shop": 51,
+                  "psychotherapist": 41,
+                  "reiki_therapist": 41,
+                  "sports_massage_therapist": 38,
+                  "chiropractor": 36
+                },
+                "top_countries": {
+                  "BR": 590
+                },
+                "websites_count": 141,
+                "count": 593,
+                "top_attributes": {
+                  "pay_debit_card": 534,
+                  "pay_credit_card": 523,
+                  "pay_mobile_nfc": 361,
+                  "requires_appointments": 270,
+                  "welcomes_lgbtq": 239,
+                  "is_transgender_safespace": 231,
+                  "is_owned_by_women": 230,
+                  "has_restroom_unisex": 144,
+                  "has_restroom": 143,
+                  "recommends_appointment": 138
+                },
+                "top_place_topics": {
+                  "environment": 72,
+                  "cozy place": 68,
+                  "relaxing massage": 54,
+                  "pain relief": 51,
+                  "cozy space": 46,
+                  "attention": 42,
+                  "attentive": 41,
+                  "fairy hands": 38,
+                  "professionals": 35,
+                  "massage": 31
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "veterinarian"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "veterinarian": 560,
+                  "pet_groomer": 137,
+                  "reptile_store": 100,
+                  "pet_store": 65,
+                  "veterinary_pharmacy": 65,
+                  "animal_hospital": 63,
+                  "emergency_veterinarian_service": 51,
+                  "pet_supply_store": 22,
+                  "pet_boarding_service": 15,
+                  "feed_store": 11
+                },
+                "top_countries": {
+                  "BR": 560
+                },
+                "websites_count": 207,
+                "count": 560,
+                "top_attributes": {
+                  "has_restroom": 433,
+                  "recommends_appointment": 391,
+                  "has_wheelchair_accessible_entrance": 256,
+                  "has_wheelchair_accessible_parking": 194,
+                  "welcomes_lgbtq": 163,
+                  "is_owned_by_women": 155,
+                  "is_transgender_safespace": 151,
+                  "has_wheelchair_accessible_restroom": 116,
+                  "requires_appointments": 114,
+                  "has_onsite_services": 106
+                },
+                "top_place_topics": {
+                  "bath and grooming": 82,
+                  "attentive": 77,
+                  "animal care": 56,
+                  "professionals": 55,
+                  "attention": 49,
+                  "grooming": 47,
+                  "attentive team": 46,
+                  "affection for animals": 38,
+                  "clarification of doubts": 34,
+                  "love for animals": 32
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "association_or_organization"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "association_or_organization": 557,
+                  "educational_institution": 9,
+                  "non_profit_organization": 6,
+                  "social_services_organization": 6,
+                  "catholic_church": 5,
+                  "community_center": 4,
+                  "general_education_school": 4,
+                  "lawyer": 4,
+                  "place_of_worship": 4,
+                  "school": 4
+                },
+                "top_countries": {
+                  "BR": 557
+                },
+                "websites_count": 222,
+                "count": 557,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 249,
+                  "has_wheelchair_accessible_parking": 93,
+                  "has_recycling_clothing": 38,
+                  "welcomes_lgbtq": 27,
+                  "is_transgender_safespace": 26,
+                  "has_restroom": 21,
+                  "is_owned_by_women": 16,
+                  "has_wheelchair_accessible_restroom": 14,
+                  "has_parking_lot_free": 11,
+                  "has_wheelchair_accessible_seating": 11
+                },
+                "top_place_topics": {
+                  "location": 16,
+                  "professionals": 16,
+                  "cozy place": 12,
+                  "reception": 12,
+                  "team": 10,
+                  "cleanliness": 9,
+                  "family atmosphere": 9,
+                  "children": 8,
+                  "course": 8,
+                  "enterprise": 8
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "stationery_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "stationery_store": 553,
+                  "novelty_store": 53,
+                  "toy_store": 39,
+                  "copy_shop": 34,
+                  "print_shop": 31,
+                  "copying_supply_store": 26,
+                  "bazar": 25,
+                  "commercial_printer": 20,
+                  "photo_lab": 17,
+                  "store": 17
+                },
+                "top_countries": {
+                  "BR": 550
+                },
+                "websites_count": 116,
+                "count": 553,
+                "top_attributes": {
+                  "pay_debit_card": 493,
+                  "pay_credit_card": 474,
+                  "pay_mobile_nfc": 443,
+                  "quick_visit": 434,
+                  "has_in_store_pickup": 138,
+                  "has_in_store_shopping": 134,
+                  "has_delivery": 127,
+                  "has_wheelchair_accessible_entrance": 95,
+                  "is_owned_by_women": 89,
+                  "welcomes_lgbtq": 76
+                },
+                "top_place_topics": {
+                  "variety of products": 135,
+                  "school supplies": 51,
+                  "product quality": 25,
+                  "location": 21,
+                  "attentive": 20,
+                  "notice": 20,
+                  "printing": 18,
+                  "variety": 16,
+                  "attention": 13,
+                  "attendant": 12
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "pastry_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "pastry_shop": 547,
+                  "dessert_shop": 73,
+                  "cake_shop": 52,
+                  "bakery": 47,
+                  "coffee_shop": 18,
+                  "dessert_buffet": 17,
+                  "meal_delivery": 13,
+                  "wedding_bakery": 12,
+                  "breakfast_restaurant": 11,
+                  "candy_store": 11
+                },
+                "top_countries": {
+                  "BR": 543
+                },
+                "websites_count": 84,
+                "count": 547,
+                "top_attributes": {
+                  "pay_debit_card": 499,
+                  "pay_credit_card": 472,
+                  "pay_mobile_nfc": 435,
+                  "serves_dessert": 430,
+                  "quick_visit": 370,
+                  "has_delivery": 305,
+                  "has_takeout": 183,
+                  "is_owned_by_women": 153,
+                  "has_in_store_pickup": 144,
+                  "welcomes_lgbtq": 105
+                },
+                "top_place_topics": {
+                  "sweets": 76,
+                  "cakes": 60,
+                  "jam": 47,
+                  "flavor": 41,
+                  "cake": 32,
+                  "savory snacks": 32,
+                  "product quality": 27,
+                  "brigadeiro": 26,
+                  "candy": 25,
+                  "savory": 25
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "wine_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "wine_store": 547,
+                  "liquor_store": 46,
+                  "tobacco_shop": 45,
+                  "state_liquor_store": 28,
+                  "cocktail_bar": 20,
+                  "bakery": 18,
+                  "beverage_supplier": 18,
+                  "grocery_store": 18,
+                  "fruit_and_vegetable_store": 12,
+                  "soft_drinks_shop": 12
+                },
+                "top_countries": {
+                  "BR": 546
+                },
+                "websites_count": 46,
+                "count": 547,
+                "top_attributes": {
+                  "pay_debit_card": 493,
+                  "pay_credit_card": 484,
+                  "pay_mobile_nfc": 472,
+                  "quick_visit": 430,
+                  "has_delivery": 269,
+                  "has_in_store_shopping": 124,
+                  "has_in_store_pickup": 115,
+                  "welcomes_lgbtq": 85,
+                  "is_transgender_safespace": 81,
+                  "has_wi_fi": 71
+                },
+                "top_place_topics": {
+                  "cold beer": 35,
+                  "variety of products": 34,
+                  "region": 26,
+                  "wine cellar": 25,
+                  "drinks": 20,
+                  "environment": 20,
+                  "winery": 19,
+                  "atmosphere": 16,
+                  "variety": 15,
+                  "cleanliness": 14
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "liquor_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "liquor_store": 543,
+                  "convenience_store": 45,
+                  "wine_store": 45,
+                  "market": 43,
+                  "toiletries_store": 35,
+                  "tobacco_shop": 34,
+                  "beverage_supplier": 33,
+                  "state_liquor_store": 31,
+                  "wine_storage_facility": 31,
+                  "supermarket": 18
+                },
+                "top_countries": {
+                  "BR": 542
+                },
+                "websites_count": 66,
+                "count": 543,
+                "top_attributes": {
+                  "pay_debit_card": 448,
+                  "pay_credit_card": 434,
+                  "pay_mobile_nfc": 431,
+                  "quick_visit": 349,
+                  "has_delivery": 236,
+                  "has_wheelchair_accessible_entrance": 100,
+                  "has_in_store_shopping": 96,
+                  "has_in_store_pickup": 87,
+                  "has_no_contact_delivery": 75,
+                  "has_restroom": 59
+                },
+                "top_place_topics": {
+                  "variety of products": 35,
+                  "cold beer": 19,
+                  "wine cellar": 19,
+                  "cleanliness": 16,
+                  "beer": 15,
+                  "drinks": 15,
+                  "environment": 15,
+                  "variety of drinks": 15,
+                  "atmosphere": 14,
+                  "region": 13
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "variety_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "variety_store": 535,
+                  "home_goods_store": 22,
+                  "novelty_store": 21,
+                  "kitchen_supply_store": 20,
+                  "toy_store": 17,
+                  "stationery_store": 13,
+                  "electronics_store": 12,
+                  "clothing_store": 8,
+                  "childrens_clothing_store": 7,
+                  "copying_supply_store": 7
+                },
+                "top_countries": {
+                  "BR": 535
+                },
+                "websites_count": 89,
+                "count": 535,
+                "top_attributes": {
+                  "pay_debit_card": 449,
+                  "pay_credit_card": 444,
+                  "quick_visit": 429,
+                  "pay_mobile_nfc": 422,
+                  "has_delivery": 83,
+                  "has_in_store_shopping": 78,
+                  "has_in_store_pickup": 71,
+                  "has_wheelchair_accessible_entrance": 64,
+                  "is_owned_by_women": 44,
+                  "welcomes_lgbtq": 36
+                },
+                "top_place_topics": {
+                  "variety of products": 64,
+                  "product quality": 21,
+                  "products": 14,
+                  "polite staff": 13,
+                  "organized store": 11,
+                  "quality products": 11,
+                  "location": 10,
+                  "notice": 9,
+                  "utensils": 9,
+                  "salesperson": 8
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "butcher_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "butcher_shop": 526,
+                  "grocery_store": 83,
+                  "bakery": 63,
+                  "supermarket": 51,
+                  "fish_store": 42,
+                  "butcher_shop_deli": 39,
+                  "seafood_market": 36,
+                  "fresh_food_market": 35,
+                  "organic_food_store": 35,
+                  "convenience_store": 32
+                },
+                "top_countries": {
+                  "BR": 526
+                },
+                "websites_count": 34,
+                "count": 526,
+                "top_attributes": {
+                  "pay_debit_card": 480,
+                  "pay_credit_card": 475,
+                  "pay_mobile_nfc": 474,
+                  "quick_visit": 459,
+                  "has_delivery": 250,
+                  "has_wheelchair_accessible_entrance": 175,
+                  "accepts_sodexo_meal_voucher": 133,
+                  "has_wheelchair_accessible_parking": 133,
+                  "has_in_store_shopping": 106,
+                  "has_in_store_pickup": 86
+                },
+                "top_place_topics": {
+                  "product quality": 71,
+                  "cleanliness": 48,
+                  "variety of products": 32,
+                  "fresh meats": 30,
+                  "bakery": 28,
+                  "butcher shop": 28,
+                  "meat": 25,
+                  "meats": 25,
+                  "quality meat": 24,
+                  "promotion": 22
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "software_company"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "software_company": 522,
+                  "computer_consultant": 24,
+                  "computer_service": 24,
+                  "automation_company": 18,
+                  "website_designer": 14,
+                  "internet_marketing_service": 13,
+                  "business_management_consultant": 11,
+                  "web_hosting_service": 11,
+                  "computer_store": 10,
+                  "computer_support_and_services": 9
+                },
+                "top_countries": {
+                  "BR": 521
+                },
+                "websites_count": 378,
+                "count": 522,
+                "top_attributes": {
+                  "has_wheelchair_accessible_entrance": 71,
+                  "has_wheelchair_accessible_parking": 59,
+                  "offers_online_appointments": 57,
+                  "requires_appointments": 48,
+                  "is_owned_by_women": 40,
+                  "welcomes_lgbtq": 39,
+                  "is_transgender_safespace": 34,
+                  "has_onsite_services": 32,
+                  "pay_debit_card": 15,
+                  "pay_credit_card": 13
+                },
+                "top_place_topics": {
+                  "system": 12,
+                  "professionals": 10,
+                  "support": 10,
+                  "efficient": 7,
+                  "technical support": 5,
+                  "consulting": 4,
+                  "project": 4,
+                  "agility": 3,
+                  "ease of use": 3,
+                  "efficiency": 3
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "convenience_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "convenience_store": 519,
+                  "gas_station": 138,
+                  "oil_change_service": 109,
+                  "car_wash": 81,
+                  "market": 55,
+                  "liquor_store": 43,
+                  "supermarket": 40,
+                  "brazilian_restaurant": 39,
+                  "bakery": 37,
+                  "restaurant": 37
+                },
+                "top_countries": {
+                  "BR": 519
+                },
+                "websites_count": 50,
+                "count": 519,
+                "top_attributes": {
+                  "pay_debit_card": 461,
+                  "pay_credit_card": 460,
+                  "pay_mobile_nfc": 453,
+                  "quick_visit": 312,
+                  "has_restroom": 252,
+                  "has_wheelchair_accessible_entrance": 240,
+                  "has_wheelchair_accessible_parking": 162,
+                  "has_wheelchair_accessible_restroom": 143,
+                  "has_delivery": 114,
+                  "has_onsite_convenience_store": 100
+                },
+                "top_place_topics": {
+                  "convenience store": 45,
+                  "variety of products": 44,
+                  "polite staff": 36,
+                  "quality fuel": 35,
+                  "fuel": 33,
+                  "ethanol": 31,
+                  "region": 27,
+                  "cleanliness": 24,
+                  "product quality": 19,
+                  "coffee": 18
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "pilates_studio"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "pilates_studio": 516,
+                  "physiotherapy_center": 95,
+                  "physiotherapist": 65,
+                  "acupuncture_clinic": 29,
+                  "gym": 24,
+                  "nutritionist": 22,
+                  "personal_trainer": 22,
+                  "acupuncturist": 21,
+                  "massage_therapist": 19,
+                  "lymph_drainage": 17
+                },
+                "top_countries": {
+                  "BR": 516
+                },
+                "websites_count": 152,
+                "count": 516,
+                "top_attributes": {
+                  "has_restroom": 478,
+                  "pay_debit_card": 454,
+                  "recommends_appointment": 451,
+                  "pay_credit_card": 430,
+                  "pay_mobile_nfc": 295,
+                  "requires_appointments": 216,
+                  "has_onsite_services": 179,
+                  "has_wheelchair_accessible_entrance": 163,
+                  "is_owned_by_women": 137,
+                  "welcomes_lgbtq": 135
+                },
+                "top_place_topics": {
+                  "professionals": 90,
+                  "cozy place": 60,
+                  "attention": 48,
+                  "pain relief": 44,
+                  "classes": 41,
+                  "attentive teacher": 40,
+                  "pilates": 40,
+                  "attentive teachers": 37,
+                  "equipment": 37,
+                  "attentive": 31
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "handicraft"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "handicraft": 513,
+                  "novelty_store": 16,
+                  "store": 13,
+                  "art_studio": 11,
+                  "dressmaker": 10,
+                  "stationery_store": 9,
+                  "wedding_souvenir_shop": 9,
+                  "corporate_gift_supplier": 8,
+                  "copying_supply_store": 7,
+                  "gift_shop": 7
+                },
+                "top_countries": {
+                  "BR": 509
+                },
+                "websites_count": 101,
+                "count": 513,
+                "top_attributes": {
+                  "pay_debit_card": 355,
+                  "pay_credit_card": 332,
+                  "pay_mobile_nfc": 265,
+                  "is_owned_by_women": 130,
+                  "welcomes_lgbtq": 72,
+                  "is_transgender_safespace": 63,
+                  "quick_visit": 42,
+                  "has_delivery": 34,
+                  "has_in_store_pickup": 31,
+                  "has_wheelchair_accessible_entrance": 25
+                },
+                "top_place_topics": {
+                  "products": 41,
+                  "product quality": 28,
+                  "variety of products": 16,
+                  "meticulousness": 11,
+                  "quality products": 10,
+                  "care": 9,
+                  "packaging": 9,
+                  "attentive": 8,
+                  "finish": 8,
+                  "kindness": 8
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "novelty_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "novelty_store": 513,
+                  "stationery_store": 43,
+                  "gift_basket_store": 37,
+                  "custom_t_shirt_store": 34,
+                  "corporate_gift_supplier": 24,
+                  "copying_supply_store": 21,
+                  "toy_store": 20,
+                  "florist": 17,
+                  "home_goods_store": 17,
+                  "variety_store": 17
+                },
+                "top_countries": {
+                  "BR": 509
+                },
+                "websites_count": 166,
+                "count": 513,
+                "top_attributes": {
+                  "pay_debit_card": 439,
+                  "pay_credit_card": 432,
+                  "pay_mobile_nfc": 396,
+                  "quick_visit": 380,
+                  "has_delivery": 241,
+                  "has_in_store_pickup": 194,
+                  "is_owned_by_women": 163,
+                  "has_in_store_shopping": 152,
+                  "welcomes_lgbtq": 126,
+                  "is_transgender_safespace": 114
+                },
+                "top_place_topics": {
+                  "product quality": 54,
+                  "variety of products": 53,
+                  "products": 30,
+                  "quality products": 24,
+                  "attention": 19,
+                  "attentive": 17,
+                  "notice": 17,
+                  "gifts": 16,
+                  "care": 15,
+                  "attention to detail": 12
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "mobile_phone_repair_shop"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "mobile_phone_repair_shop": 510,
+                  "cell_phone_store": 131,
+                  "computer_repair_service": 105,
+                  "cell_phone_accessory_store": 47,
+                  "phone_repair_service": 46,
+                  "electronics_store": 43,
+                  "computer_accessories_store": 29,
+                  "computer_support_and_services": 26,
+                  "computer_store": 23,
+                  "computer_service": 12
+                },
+                "top_countries": {
+                  "BR": 509
+                },
+                "websites_count": 96,
+                "count": 510,
+                "top_attributes": {
+                  "pay_debit_card": 449,
+                  "pay_credit_card": 444,
+                  "pay_mobile_nfc": 444,
+                  "has_recycling_batteries": 159,
+                  "has_service_repair": 154,
+                  "is_owned_by_women": 107,
+                  "is_transgender_safespace": 103,
+                  "welcomes_lgbtq": 102,
+                  "has_onsite_services": 92,
+                  "has_recycling_electronics": 90
+                },
+                "top_place_topics": {
+                  "cell phone repair": 65,
+                  "screen replacement": 44,
+                  "products": 42,
+                  "speed": 34,
+                  "honesty": 33,
+                  "attention": 30,
+                  "attentive": 30,
+                  "quality products": 30,
+                  "technical assistance": 24,
+                  "notice": 21
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "home_goods_store"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "home_goods_store": 503,
+                  "kitchen_supply_store": 33,
+                  "department_store": 19,
+                  "novelty_store": 19,
+                  "gift_shop": 18,
+                  "variety_store": 18,
+                  "beauty_supply_store": 16,
+                  "electronics_store": 16,
+                  "appliance_store": 15,
+                  "car_accessories_store": 15
+                },
+                "top_countries": {
+                  "BR": 501
+                },
+                "websites_count": 123,
+                "count": 503,
+                "top_attributes": {
+                  "pay_debit_card": 401,
+                  "pay_credit_card": 372,
+                  "pay_mobile_nfc": 315,
+                  "quick_visit": 265,
+                  "has_delivery": 171,
+                  "has_wheelchair_accessible_entrance": 133,
+                  "has_in_store_shopping": 84,
+                  "has_in_store_pickup": 83,
+                  "has_wheelchair_accessible_parking": 73,
+                  "is_owned_by_women": 30
+                },
+                "top_place_topics": {
+                  "variety of products": 68,
+                  "product quality": 25,
+                  "products": 17,
+                  "organized store": 15,
+                  "variety": 15,
+                  "price": 14,
+                  "chocolate": 11,
+                  "notice": 9,
+                  "organized": 9,
+                  "promotion": 9
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

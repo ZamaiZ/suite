@@ -6,6 +6,7 @@ import {
   RiHomeLine,
   RiLayoutGridLine,
   RiMouseLine,
+  RiRadarLine,
   RiRouteLine,
   RiSettings3Line,
   RiShapesLine,
@@ -44,6 +45,13 @@ export const NAV_ITEMS: NavItem[] = [
     icon: RiBriefcaseLine,
     description: "Leads e clientes",
     children: [
+      {
+        kind: "leaf",
+        label: "Prospecção",
+        href: "/prospeccao",
+        icon: RiRadarLine,
+        description: "Listas por segmento e região",
+      },
       {
         kind: "leaf",
         label: "Leads",

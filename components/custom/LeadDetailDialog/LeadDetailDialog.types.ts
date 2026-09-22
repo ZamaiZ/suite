@@ -5,7 +5,7 @@ export type LeadDetailTab = "activity" | "record" | "opportunity"
 
 export type LeadDetailPreview = {
   company_name: string
-  website_domain: string
+  website_domain: string | null
   status: LeadStatus
   next_follow_up_at: string | null
   activity_count: number

@@ -1,0 +1,290 @@
+{
+  "version": "0.1.20260917",
+  "status_code": 20000,
+  "status_message": "Ok.",
+  "time": "0.4984 sec.",
+  "cost": 0.0138,
+  "tasks_count": 1,
+  "tasks_error": 0,
+  "tasks": [
+    {
+      "id": "09220006-2319-0545-0000-11057b88a1ca",
+      "status_code": 20000,
+      "status_message": "Ok.",
+      "time": "0.4898 sec.",
+      "cost": 0.0138,
+      "result_count": 1,
+      "path": [
+        "v3",
+        "business_data",
+        "business_listings",
+        "categories_aggregation",
+        "live"
+      ],
+      "data": {
+        "api": "business_data",
+        "function": "categories_aggregation",
+        "categories": [
+          "dentist"
+        ],
+        "location_coordinate": "-23.4628,-46.5333,10",
+        "limit": 5
+      },
+      "result": [
+        {
+          "total_count": 89,
+          "count": 5,
+          "offset": null,
+          "offset_token": null,
+          "items": [
+            {
+              "type": "business_category",
+              "categories": [
+                "dentist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dentist": 2401,
+                  "dental_clinic": 509,
+                  "oral_surgeon": 401,
+                  "orthodontist": 309,
+                  "dental_implants_provider": 232,
+                  "dental_implants_periodontist": 205,
+                  "endodontist": 168,
+                  "pediatric_dentist": 154,
+                  "cosmetic_dentist": 143,
+                  "periodontist": 120
+                },
+                "top_countries": {
+                  "BR": 2398
+                },
+                "websites_count": 519,
+                "count": 2401,
+                "top_attributes": {
+                  "has_restroom": 2302,
+                  "pay_debit_card": 2297,
+                  "pay_credit_card": 2289,
+                  "recommends_appointment": 2256,
+                  "pay_mobile_nfc": 2186,
+                  "has_wheelchair_accessible_restroom": 718,
+                  "requires_appointments": 567,
+                  "welcomes_lgbtq": 476,
+                  "is_transgender_safespace": 451,
+                  "has_wheelchair_accessible_entrance": 437
+                },
+                "top_place_topics": {
+                  "professionals": 249,
+                  "attentive": 230,
+                  "attention": 228,
+                  "cleanliness": 133,
+                  "environment": 120,
+                  "reception": 119,
+                  "competence": 85,
+                  "punctuality": 79,
+                  "treatment": 78,
+                  "cozy place": 77
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "dental_clinic"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dental_clinic": 509,
+                  "dentist": 509,
+                  "oral_surgeon": 271,
+                  "orthodontist": 230,
+                  "dental_implants_provider": 181,
+                  "dental_implants_periodontist": 164,
+                  "endodontist": 131,
+                  "pediatric_dentist": 129,
+                  "cosmetic_dentist": 114,
+                  "periodontist": 105
+                },
+                "top_countries": {
+                  "BR": 509
+                },
+                "websites_count": 248,
+                "count": 509,
+                "top_attributes": {
+                  "pay_debit_card": 488,
+                  "has_restroom": 486,
+                  "pay_credit_card": 486,
+                  "pay_mobile_nfc": 484,
+                  "recommends_appointment": 472,
+                  "has_wheelchair_accessible_restroom": 277,
+                  "requires_appointments": 242,
+                  "is_transgender_safespace": 241,
+                  "welcomes_lgbtq": 241,
+                  "is_owned_by_women": 203
+                },
+                "top_place_topics": {
+                  "professionals": 81,
+                  "attention": 75,
+                  "cleanliness": 65,
+                  "attentive": 64,
+                  "environment": 59,
+                  "reception": 39,
+                  "welcoming": 39,
+                  "cozy place": 33,
+                  "punctuality": 33,
+                  "clarification of doubts": 31
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "oral_surgeon"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dentist": 401,
+                  "oral_surgeon": 401,
+                  "dental_clinic": 271,
+                  "orthodontist": 200,
+                  "dental_implants_provider": 160,
+                  "dental_implants_periodontist": 142,
+                  "endodontist": 126,
+                  "cosmetic_dentist": 113,
+                  "pediatric_dentist": 110,
+                  "periodontist": 92
+                },
+                "top_countries": {
+                  "BR": 401
+                },
+                "websites_count": 189,
+                "count": 401,
+                "top_attributes": {
+                  "pay_debit_card": 392,
+                  "pay_credit_card": 391,
+                  "pay_mobile_nfc": 387,
+                  "has_restroom": 384,
+                  "recommends_appointment": 374,
+                  "has_wheelchair_accessible_restroom": 214,
+                  "requires_appointments": 195,
+                  "welcomes_lgbtq": 180,
+                  "is_transgender_safespace": 177,
+                  "has_wheelchair_accessible_entrance": 163
+                },
+                "top_place_topics": {
+                  "attention": 58,
+                  "cleanliness": 58,
+                  "attentive": 52,
+                  "environment": 50,
+                  "professionals": 49,
+                  "safety": 32,
+                  "competence": 30,
+                  "cozy place": 27,
+                  "welcoming": 25,
+                  "punctuality": 23
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "orthodontist"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dentist": 309,
+                  "orthodontist": 309,
+                  "dental_clinic": 230,
+                  "oral_surgeon": 200,
+                  "dental_implants_provider": 156,
+                  "dental_implants_periodontist": 136,
+                  "endodontist": 136,
+                  "pediatric_dentist": 124,
+                  "periodontist": 99,
+                  "cosmetic_dentist": 97
+                },
+                "top_countries": {
+                  "BR": 308
+                },
+                "websites_count": 169,
+                "count": 309,
+                "top_attributes": {
+                  "pay_debit_card": 299,
+                  "pay_credit_card": 298,
+                  "has_restroom": 297,
+                  "pay_mobile_nfc": 294,
+                  "recommends_appointment": 290,
+                  "has_wheelchair_accessible_restroom": 167,
+                  "requires_appointments": 156,
+                  "welcomes_lgbtq": 140,
+                  "is_transgender_safespace": 136,
+                  "has_wheelchair_accessible_entrance": 129
+                },
+                "top_place_topics": {
+                  "attention": 46,
+                  "cleanliness": 40,
+                  "attentive": 39,
+                  "environment": 37,
+                  "professionals": 35,
+                  "cozy place": 30,
+                  "clarification of doubts": 24,
+                  "punctuality": 23,
+                  "cozy atmosphere": 22,
+                  "explanation of procedures": 22
+                }
+              }
+            },
+            {
+              "type": "business_category",
+              "categories": [
+                "dental_implants_provider"
+              ],
+              "aggregation": {
+                "top_categories": {
+                  "dental_implants_provider": 232,
+                  "dentist": 232,
+                  "dental_clinic": 181,
+                  "oral_surgeon": 160,
+                  "orthodontist": 156,
+                  "endodontist": 100,
+                  "dental_implants_periodontist": 95,
+                  "periodontist": 85,
+                  "cosmetic_dentist": 78,
+                  "pediatric_dentist": 74
+                },
+                "top_countries": {
+                  "BR": 231
+                },
+                "websites_count": 136,
+                "count": 232,
+                "top_attributes": {
+                  "pay_debit_card": 224,
+                  "pay_credit_card": 223,
+                  "pay_mobile_nfc": 218,
+                  "has_restroom": 210,
+                  "recommends_appointment": 202,
+                  "has_wheelchair_accessible_restroom": 142,
+                  "welcomes_lgbtq": 118,
+                  "is_transgender_safespace": 114,
+                  "requires_appointments": 113,
+                  "has_wheelchair_accessible_entrance": 107
+                },
+                "top_place_topics": {
+                  "environment": 33,
+                  "attentive": 32,
+                  "attention": 28,
+                  "professionals": 28,
+                  "cleanliness": 26,
+                  "cozy place": 23,
+                  "explanation of procedures": 21,
+                  "clarification of doubts": 20,
+                  "implant": 20,
+                  "cozy atmosphere": 19
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

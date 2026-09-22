@@ -11,6 +11,18 @@ import { isPrivateIp, parseHttpUrl, resolveRedirectUrl } from "./ssrf.ts"
 const USER_AGENT =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
 
+/**
+ * Identificação honesta, para quando o site não é de um cliente.
+ *
+ * Auditar o site de quem contratou a agência com um user agent de Chrome é
+ * defensável: é uma pessoa pedindo a análise do próprio site. Varrer o site de
+ * mil desconhecidos na prospecção é outra coisa — ali o dono merece saber quem
+ * bateu na porta, e um agente identificável é o que separa coleta legítima de
+ * raspagem disfarçada. Também é o que evita IP bloqueado e reclamação.
+ */
+export const PROSPECT_USER_AGENT =
+  "RankupSuiteBot/1.0 (+prospeccao; contato pelo site da empresa)"
+
 export const WEBSITE_FETCH_FAILED =
   "Não foi possível acessar o site. Tente novamente."
 
@@ -60,7 +72,9 @@ async function readBody(response: Response): Promise<string | null> {
 export async function safeFetch(
   input: string,
   method: "GET" | "HEAD" = "GET",
+  options: { userAgent?: string } = {},
 ): Promise<SafeFetchResult> {
+  const userAgent = options.userAgent ?? USER_AGENT
   let current = parseHttpUrl(input)
   if (!current) return { status: "error", message: WEBSITE_FETCH_FAILED }
   const redirects: WebsiteRedirectHop[] = []
@@ -80,7 +94,7 @@ export async function safeFetch(
           Accept:
             "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
           "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
-          "User-Agent": USER_AGENT,
+          "User-Agent": userAgent,
         },
         signal: controller.signal,
       })

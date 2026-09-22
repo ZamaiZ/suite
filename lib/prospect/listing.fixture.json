@@ -1,0 +1,715 @@
+{
+  "capturadoEm": "2026-09-21",
+  "origem": "business_data/business_listings/search/live - dentist, Guarulhos/SP, raio 10 km",
+  "items": [
+    {
+      "type": "business_listing",
+      "title": "Dr. Negreiros Odontologia",
+      "original_title": null,
+      "description": "Realizamos todos os procedimentos.\n- Clinico Geral\n- Implantes\n- Tratamentos endodôntico\n- Facetas em Resina",
+      "category": "Dentist",
+      "category_ids": [
+        "dentist"
+      ],
+      "additional_categories": null,
+      "cid": "10011251620038817247",
+      "feature_id": "0x94ce8ae1ef277be5:0x8aef1c4e7977b5df",
+      "address": "Rua Jamil João Zarif, 1203 - Jardim Santa Vicencia, Guarulhos - SP, 07143-000",
+      "address_info": {
+        "borough": "Jardim Santa Vicencia",
+        "address": "Rua Jamil João Zarif, 1203",
+        "city": "Guarulhos",
+        "zip": "07143-000",
+        "region": "São Paulo",
+        "country_code": "BR"
+      },
+      "place_id": "ChIJ5Xsn7-GKzpQR37V3eU4c74o",
+      "phone": "+551199215-4880",
+      "url": "https://instagram.com/dr_rafaelnegreiro?igshid=MzRlODBiNWFlZA==",
+      "domain": "instagram.com",
+      "logo": "https://lh3.googleusercontent.com/-dE-RAWoW8Wk/AAAAAAAAAAI/AAAAAAAAAAA/IGJnXYuXN8s/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=A1jbdQR2qyt_WmbZl0a1OQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=328.0689&pitch=0&thumbfov=100",
+      "total_photos": 4,
+      "snippet": "Rua Jamil João Zarif, 1203 - Jardim Santa Vicencia, Guarulhos - SP, 07143-000",
+      "latitude": -23.423822899999998,
+      "longitude": -46.4930598,
+      "is_claimed": true,
+      "attributes": {
+        "available_attributes": {
+          "amenities": [
+            "has_restroom"
+          ],
+          "planning": [
+            "recommends_appointment"
+          ],
+          "payments": [
+            "pay_credit_card",
+            "pay_debit_card",
+            "pay_mobile_nfc"
+          ]
+        },
+        "unavailable_attributes": {
+          "accessibility": [
+            "has_wheelchair_accessible_seating"
+          ]
+        }
+      },
+      "place_topics": {
+        "attentiveness": 2,
+        "punctuality": 2,
+        "atmosphere": 3,
+        "professionals": 8,
+        "quality work": 2,
+        "team": 2,
+        "trust": 3,
+        "treatment": 2,
+        "notice": 2,
+        "clinical medicine": 2
+      },
+      "rating": {
+        "rating_type": "Max5",
+        "value": 4.8,
+        "votes_count": 34,
+        "rating_max": null
+      },
+      "hotel_rating": null,
+      "price_level": null,
+      "rating_distribution": {
+        "1": 2,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 32
+      },
+      "people_also_search": [
+        {
+          "cid": "14475728520088395395",
+          "feature_id": "0x0:0xc8e41e64b0dc1e83",
+          "title": "Odonto Clean",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.5,
+            "votes_count": 114,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "5677349052558362350",
+          "feature_id": "0x0:0x4ec9fee227a446ee",
+          "title": "Dental Unit Guarulhos Carmela",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.8,
+            "votes_count": 19,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "8268746931433090232",
+          "feature_id": "0x0:0x72c07d8641abacb8",
+          "title": "Consultório em Guarulhos - Dra. Cristiane",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.9,
+            "votes_count": 7,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "9908967930904510972",
+          "feature_id": "0x0:0x8983b9d54c4d01fc",
+          "title": "Consultório odontológico Grazziele Rodrigues",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.8,
+            "votes_count": 42,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "7364495124419012029",
+          "feature_id": "0x0:0x6633f14c011765bd",
+          "title": "Odontonutti | Implante Dentário | Dentista | Jardim Soinco | Guarulhos - SP",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 721,
+            "rating_max": null
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": null,
+            "monday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 30
+                },
+                "close": {
+                  "hour": 17,
+                  "minute": 0
+                }
+              }
+            ]
+          },
+          "current_status": "close"
+        }
+      },
+      "popular_times": null,
+      "local_business_links": null,
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+5511992154880",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=10011251620038817247&hl=en&gl=BR",
+      "last_updated_time": "2026-09-10 11:23:41 +00:00",
+      "first_seen": "2024-07-21 00:26:01 +00:00",
+      "services": null
+    },
+    {
+      "type": "business_listing",
+      "title": "Você Sorrindo",
+      "original_title": null,
+      "description": "Se você está ou conhece alguém que esteja com algum problema bucal e está a procura de um dentista em Vila Maria, de qualidade e com condições de início imediato, a Você Sorrindo é a sua melhor opção. Nossos maiores diferenciais são o laboratório próprio, acompanhamento pré, durante e após o tratamento e 100% de garantia de resultado. Somos referência em implantes dentários e atendemos todos os tratamentos como: aparelho, dor de dente, extração, prótese, facetas em resina e muito mais! Já são milhares de pacientes atendidos e satisfeitos, queremos ver \"Você Sorrindo\". Atendimento somente particular. RT Dr. Renato Francisco CROSP 158294",
+      "category": "Dentist",
+      "category_ids": [
+        "dentist"
+      ],
+      "additional_categories": null,
+      "cid": "10015940472255650185",
+      "feature_id": "0x94ce5feb9a6a08d9:0x8affc4caf4419989",
+      "address": "Av. Guilherme Cotching, 1251 - Vila Maria, São Paulo - SP, 02113-013",
+      "address_info": {
+        "borough": "Vila Maria",
+        "address": "Av. Guilherme Cotching, 1251",
+        "city": "São Paulo",
+        "zip": "02113-013",
+        "region": "State of São Paulo",
+        "country_code": "BR"
+      },
+      "place_id": "ChIJ2QhqmutfzpQRiZlB9MrE_4o",
+      "phone": "+551199438-1289",
+      "url": null,
+      "domain": null,
+      "logo": "https://lh3.googleusercontent.com/-5ou0nF175rQ/AAAAAAAAAAI/AAAAAAAAAAA/CKxb7l2OcQY/s44-p-k-no-ns-nd/photo.jpg",
+      "main_image": "https://lh3.googleusercontent.com/gps-cs-s/APNQkAE_PQFqfSDpYHehGLDON9ByeUsVpQa-isRxIuPbMbH-Mj4M_VtIHieY7N1oI5bFN2KbR1qPHjK4viPn4I3hvf1Q_OM_sgltyR3mVAvdSE46J2pU6VQUYWizrxeiEIGgHYanZtxEZ2OHQT31=w425-h240-k-no",
+      "total_photos": 3,
+      "snippet": "Av. Guilherme Cotching, 1251 - Vila Maria, São Paulo - SP, 02113-013",
+      "latitude": -23.518132599999998,
+      "longitude": -46.5899297,
+      "is_claimed": true,
+      "attributes": {
+        "available_attributes": {
+          "from_the_business": [
+            "is_owned_by_women"
+          ],
+          "service_options": [
+            "has_onsite_services"
+          ],
+          "accessibility": [
+            "has_wheelchair_accessible_entrance",
+            "has_wheelchair_accessible_seating",
+            "has_wheelchair_accessible_restroom"
+          ],
+          "offerings": [
+            "offers_cosmetic_dentistry",
+            "offers_emergency_service",
+            "offers_pediatric_care",
+            "offers_sedation_dentistry"
+          ],
+          "amenities": [
+            "has_restroom_unisex",
+            "has_restroom"
+          ],
+          "crowd": [
+            "welcomes_lgbtq",
+            "is_transgender_safespace"
+          ],
+          "planning": [
+            "recommends_appointment"
+          ],
+          "payments": [
+            "pay_credit_card",
+            "pay_debit_card",
+            "pay_mobile_nfc"
+          ],
+          "parking": [
+            "has_parking_street_free",
+            "has_parking_street_paid"
+          ]
+        },
+        "unavailable_attributes": {
+          "accessibility": [
+            "has_hearing_loop",
+            "has_wheelchair_accessible_parking"
+          ]
+        }
+      },
+      "place_topics": null,
+      "rating": {
+        "rating_type": "Max5",
+        "value": 5,
+        "votes_count": 9,
+        "rating_max": null
+      },
+      "hotel_rating": null,
+      "price_level": null,
+      "rating_distribution": {
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 9
+      },
+      "people_also_search": null,
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": null,
+            "monday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "wednesday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "thursday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "saturday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 16,
+                  "minute": 0
+                }
+              }
+            ]
+          },
+          "current_status": "close"
+        }
+      },
+      "popular_times": null,
+      "local_business_links": null,
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+5511994381289",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=10015940472255650185&hl=en&gl=BR",
+      "last_updated_time": "2026-04-27 10:52:32 +00:00",
+      "first_seen": "2026-04-27 10:52:32 +00:00",
+      "services": null
+    },
+    {
+      "type": "business_listing",
+      "title": "Dentista Daniela R. Pavan",
+      "original_title": null,
+      "description": null,
+      "category": "Dentist",
+      "category_ids": [
+        "dentist"
+      ],
+      "additional_categories": null,
+      "cid": "10037848284658306294",
+      "feature_id": "0x94ce61a2a555c02f:0x8b4d99d504528cf6",
+      "address": "Av. Boturussu, 112 - Parque Boturussu, São Paulo - SP, 03802-010",
+      "address_info": {
+        "borough": "Parque Boturussu",
+        "address": "Av. Boturussu, 112",
+        "city": "São Paulo",
+        "zip": "03802-010",
+        "region": "State of São Paulo",
+        "country_code": "BR"
+      },
+      "place_id": "ChIJL8BVpaJhzpQR9oxSBNWZTYs",
+      "phone": null,
+      "url": null,
+      "domain": null,
+      "logo": null,
+      "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=tQylppeKm3QY4m3VkltinA&cb_client=search.gws-prod.gps&w=408&h=240&yaw=89.135574&pitch=0&thumbfov=100",
+      "total_photos": 1,
+      "snippet": "Av. Boturussu, 112 - Parque Boturussu, São Paulo - SP, 03802-010",
+      "latitude": -23.5064262,
+      "longitude": -46.4884044,
+      "is_claimed": false,
+      "attributes": {
+        "available_attributes": {
+          "amenities": [
+            "has_restroom"
+          ],
+          "planning": [
+            "recommends_appointment"
+          ],
+          "payments": [
+            "pay_credit_card",
+            "pay_debit_card",
+            "pay_mobile_nfc"
+          ]
+        },
+        "unavailable_attributes": null
+      },
+      "place_topics": null,
+      "rating": null,
+      "hotel_rating": null,
+      "price_level": null,
+      "rating_distribution": null,
+      "people_also_search": [
+        {
+          "cid": "8582165990105012934",
+          "feature_id": "0x0:0x7719fa7f6ba5dac6",
+          "title": "Dentista - GT Odontologia Estética",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 49,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "1935456493443098887",
+          "feature_id": "0x0:0x1adc1f6d21e62907",
+          "title": "Drp odontologia",
+          "rating": {
+            "rating_type": "Max5",
+            "value": null,
+            "votes_count": null,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "5728908756123640017",
+          "feature_id": "0x0:0x4f812c291f5fe0d1",
+          "title": "Ebert Odontologia",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.8,
+            "votes_count": 17,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "11722546718078333554",
+          "feature_id": "0x0:0xa2aeda21a1faf272",
+          "title": "Consultorio Odontologico",
+          "rating": {
+            "rating_type": "Max5",
+            "value": null,
+            "votes_count": null,
+            "rating_max": null
+          }
+        }
+      ],
+      "work_time": null,
+      "popular_times": null,
+      "local_business_links": null,
+      "contact_info": null,
+      "check_url": "https://www.google.com/maps?cid=10037848284658306294&hl=en&gl=BR",
+      "last_updated_time": "2026-06-26 23:07:46 +00:00",
+      "first_seen": "2024-05-06 07:23:41 +00:00",
+      "services": null
+    },
+    {
+      "type": "business_listing",
+      "title": "Divya Implantes",
+      "original_title": null,
+      "description": null,
+      "category": "Dentist",
+      "category_ids": [
+        "dentist"
+      ],
+      "additional_categories": null,
+      "cid": "10059464641384769082",
+      "feature_id": "0x94cef55f6ca0898f:0x8b9a65cb4457663a",
+      "address": "R. Barão de Mauá, 305 - Centro, Guarulhos - SP, 07012-040",
+      "address_info": {
+        "borough": "Centro",
+        "address": "R. Barão de Mauá, 305",
+        "city": "Guarulhos",
+        "zip": "07012-040",
+        "region": "State of São Paulo",
+        "country_code": "BR"
+      },
+      "place_id": "ChIJj4mgbF_1zpQROmZXRMtlmos",
+      "phone": "+55112461-2334",
+      "url": null,
+      "domain": null,
+      "logo": null,
+      "main_image": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=DGVHRqEgacOZ-8P-yfIvxQ&cb_client=search.gws-prod.gps&w=408&h=240&yaw=331.76813&pitch=0&thumbfov=100",
+      "total_photos": 1,
+      "snippet": "R. Barão de Mauá, 305 - Centro, Guarulhos - SP, 07012-040",
+      "latitude": -23.4733965,
+      "longitude": -46.5319691,
+      "is_claimed": false,
+      "attributes": {
+        "available_attributes": {
+          "amenities": [
+            "has_restroom"
+          ],
+          "planning": [
+            "recommends_appointment"
+          ],
+          "payments": [
+            "pay_credit_card",
+            "pay_debit_card"
+          ]
+        },
+        "unavailable_attributes": null
+      },
+      "place_topics": null,
+      "rating": null,
+      "hotel_rating": null,
+      "price_level": null,
+      "rating_distribution": null,
+      "people_also_search": [
+        {
+          "cid": "12193218242352048214",
+          "feature_id": "0x0:0xa93703639434e856",
+          "title": "Dentista Iarossi | Clínica de Odontologia",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 4.3,
+            "votes_count": 245,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "18329928514383685266",
+          "feature_id": "0x0:0xfe60fcde2224a692",
+          "title": "SP Implantes",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 3.4,
+            "votes_count": 76,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "14134198629179504158",
+          "feature_id": "0x0:0xc426c2c45d0eb61e",
+          "title": "Dr. Ana Paula Barriani Reis",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 36,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "14957521410717816929",
+          "feature_id": "0x0:0xcf93ca7986229861",
+          "title": "Smile Gallery",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 8,
+            "rating_max": null
+          }
+        },
+        {
+          "cid": "1799548114023206360",
+          "feature_id": "0x0:0x18f94779ac93cdd8",
+          "title": "Dra. Maira Bechelli - Cirurgiã Dentista Guarulhos",
+          "rating": {
+            "rating_type": "Max5",
+            "value": 5,
+            "votes_count": 2,
+            "rating_max": null
+          }
+        }
+      ],
+      "work_time": {
+        "work_hours": {
+          "timetable": {
+            "sunday": null,
+            "monday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "tuesday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "wednesday": null,
+            "thursday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "friday": [
+              {
+                "open": {
+                  "hour": 9,
+                  "minute": 0
+                },
+                "close": {
+                  "hour": 19,
+                  "minute": 0
+                }
+              }
+            ],
+            "saturday": null
+          },
+          "current_status": "close"
+        }
+      },
+      "popular_times": null,
+      "local_business_links": null,
+      "contact_info": [
+        {
+          "type": "telephone",
+          "value": "+551124612334",
+          "source": "google_business"
+        }
+      ],
+      "check_url": "https://www.google.com/maps?cid=10059464641384769082&hl=en&gl=BR",
+      "last_updated_time": "2026-04-28 06:35:37 +00:00",
+      "first_seen": "2024-08-04 15:22:39 +00:00",
+      "services": null
+    }
+  ]
+}

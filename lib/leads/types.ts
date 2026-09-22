@@ -10,8 +10,8 @@ import type { BrazilStateCode } from "@/lib/br-locations"
 export type LeadRecord = {
   id: string
   company_name: string
-  website: string
-  website_domain: string
+  website: string | null
+  website_domain: string | null
   contact_name: string | null
   phone: string | null
   email: string | null
@@ -69,8 +69,8 @@ export type LeadDetailActivity = {
 
 export type LeadWritePayload = {
   company_name: string
-  website: string
-  website_domain: string
+  website: string | null
+  website_domain: string | null
   channels: LeadDigitalChannelWrite[]
   contact_name: string | null
   phone: string | null
@@ -90,7 +90,13 @@ export type SpreadsheetIssue = {
   message: string
 }
 
-export type SpreadsheetRawValues = Record<DigitalChannelType, string> & {
+// `google_business` fica de fora: o perfil no Google é identificado por
+// `place_id`, que ninguém digita numa planilha, e a coluna nova invalidaria
+// todo modelo já baixado.
+export type SpreadsheetRawValues = Record<
+  Exclude<DigitalChannelType, "google_business">,
+  string
+> & {
   company_name: string
   segment: string
   state_code: string

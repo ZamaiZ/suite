@@ -53,7 +53,7 @@ export type LeadDropRequest = {
   kind: LeadDropKind
   leadId: string
   companyName: string
-  websiteDomain: string
+  websiteDomain: string | null
 }
 
 export type LeadDropCommit = {

@@ -9,6 +9,19 @@ export const DIGITAL_CHANNEL_TYPES = [
   "tiktok",
   "pinterest",
   "twitter",
+  /**
+   * O perfil no Google, identificado pelo `place_id`.
+   *
+   * Entrou com a prospecção. É o canal primário do lead que **não tem site** —
+   * medido em 2026-09-21, entre 60% e 79% das empresas de um segmento local
+   * não têm. Sem ele, esse lead não teria chave de dedupe nenhuma, e a mesma
+   * empresa entraria no board a cada campanha.
+   *
+   * Fica fora da planilha de importação: ninguém digita um `place_id` à mão, e
+   * acrescentar a coluna invalidaria todo modelo já baixado — o parser confere
+   * o cabeçalho inteiro contra o modelo oficial.
+   */
+  "google_business",
 ] as const
 
 export type DigitalChannelType = (typeof DIGITAL_CHANNEL_TYPES)[number]
@@ -34,6 +47,35 @@ export function isSocialChannelType(
   )
 }
 
+/**
+ * Os canais que cabem numa planilha.
+ *
+ * `google_business` fica de fora porque o valor dele é um `place_id`, que
+ * ninguém digita à mão — e porque `parseLeadSpreadsheet` confere o cabeçalho
+ * inteiro contra o modelo oficial e recusa o arquivo se divergir. Acrescentar
+ * a coluna invalidaria todo modelo já baixado, e o erro que o usuário veria
+ * seria "o cabeçalho não confere", sem dizer o porquê.
+ *
+ * Constante própria, e não `DIGITAL_CHANNEL_TYPES.filter(...)` repetido em
+ * cada lugar: o filtro solto em quatro arquivos é como um canal novo entra na
+ * planilha sem ninguém decidir.
+ */
+export const SPREADSHEET_CHANNEL_TYPES = DIGITAL_CHANNEL_TYPES.filter(
+  (type): type is Exclude<DigitalChannelType, "google_business"> =>
+    type !== "google_business",
+)
+
+export type SpreadsheetChannelType = (typeof SPREADSHEET_CHANNEL_TYPES)[number]
+
+export function isSpreadsheetChannelType(
+  value: unknown,
+): value is SpreadsheetChannelType {
+  return (
+    typeof value === "string" &&
+    (SPREADSHEET_CHANNEL_TYPES as readonly string[]).includes(value)
+  )
+}
+
 export const DIGITAL_CHANNELS_MAX = 10
 export const DIGITAL_CHANNEL_LIST_SEPARATOR = ";"
 export const DIGITAL_CHANNEL_VALUE_MAX = 500
@@ -47,6 +89,7 @@ export const DIGITAL_CHANNEL_LABELS: Record<DigitalChannelType, string> = {
   tiktok: "TikTok",
   pinterest: "Pinterest",
   twitter: "X (Twitter)",
+  google_business: "Perfil no Google",
 }
 
 export const DIGITAL_CHANNEL_PLACEHOLDERS: Record<DigitalChannelType, string> =
@@ -59,6 +102,7 @@ export const DIGITAL_CHANNEL_PLACEHOLDERS: Record<DigitalChannelType, string> =
     tiktok: "@empresa",
     pinterest: "pinterest.com/empresa",
     twitter: "@empresa",
+    google_business: "ChIJN3bzGnv1zpQRGr0c2XjxPZo",
   }
 
 export const DIGITAL_CHANNEL_INVALID_MESSAGE: Record<
@@ -73,6 +117,7 @@ export const DIGITAL_CHANNEL_INVALID_MESSAGE: Record<
   tiktok: "TikTok inválido.",
   pinterest: "Pinterest inválido.",
   twitter: "X (Twitter) inválido.",
+  google_business: "Perfil no Google inválido.",
 }
 
 export const DIGITAL_CHANNEL_DUPLICATE_MESSAGE: Record<
@@ -87,6 +132,7 @@ export const DIGITAL_CHANNEL_DUPLICATE_MESSAGE: Record<
   tiktok: "TikTok repetido.",
   pinterest: "Pinterest repetido.",
   twitter: "X (Twitter) repetido.",
+  google_business: "Perfil no Google repetido.",
 }
 
 export const DIGITAL_CHANNEL_TAKEN_MESSAGE: Record<DigitalChannelType, string> =
@@ -99,6 +145,7 @@ export const DIGITAL_CHANNEL_TAKEN_MESSAGE: Record<DigitalChannelType, string> =
     tiktok: "Este TikTok já está cadastrado.",
     pinterest: "Este Pinterest já está cadastrado.",
     twitter: "Este X (Twitter) já está cadastrado.",
+    google_business: "Este perfil do Google já está cadastrado.",
   }
 
 export const SPREADSHEET_FIELD_BY_TYPE = Object.fromEntries(
@@ -279,6 +326,8 @@ export function normalizeDigitalChannel(
       return normalizePinterest(trimmed)
     case "twitter":
       return normalizeTwitter(trimmed)
+    case "google_business":
+      return normalizeGoogleBusiness(trimmed)
   }
 }
 
@@ -316,10 +365,30 @@ export function digitalChannelDisplay(
   }
 }
 
-export function normalizeDigitalChannelList(drafts: DigitalChannelDraft[]): {
+export type NormalizeChannelListOptions = {
+  /**
+   * Exigir um canal `website`.
+   *
+   * Padrão `true`, e de propósito: o cadastro manual e a planilha continuam
+   * com exatamente o comportamento que tinham, e o diff da mudança fica
+   * contido em quem escolhe passar `false`.
+   *
+   * A prospecção passa `false`, porque a medição de 2026-09-21 mostrou que
+   * entre 60% e 79% das empresas de um segmento local não têm site — e, para
+   * uma agência de SEO, é justamente esse o lead mais quente. Nesses casos o
+   * canal primário é o perfil no Google.
+   */
+  requireWebsite?: boolean
+}
+
+export function normalizeDigitalChannelList(
+  drafts: DigitalChannelDraft[],
+  options: NormalizeChannelListOptions = {},
+): {
   channels: LeadDigitalChannelWrite[]
   issues: DigitalChannelIssue[]
 } {
+  const requireWebsite = options.requireWebsite ?? true
   const issues: DigitalChannelIssue[] = []
   if (drafts.length > DIGITAL_CHANNELS_MAX) {
     issues.push({
@@ -389,7 +458,7 @@ export function normalizeDigitalChannelList(drafts: DigitalChannelDraft[]): {
     sort_order,
   }))
 
-  if (!channels.some((channel) => channel.type === "website")) {
+  if (requireWebsite && !channels.some((channel) => channel.type === "website")) {
     issues.push({
       index: 0,
       type: "website",
@@ -397,14 +466,25 @@ export function normalizeDigitalChannelList(drafts: DigitalChannelDraft[]): {
     })
   }
 
+  // Sem site, o lead ainda precisa de ao menos um canal: é o canal que dá a
+  // chave de dedupe global. Um lead sem nenhum canal entraria de novo a cada
+  // campanha, e nada acusaria.
+  if (!requireWebsite && channels.length === 0) {
+    issues.push({
+      index: 0,
+      type: null,
+      message: "Informe ao menos um canal.",
+    })
+  }
+
   return { channels, issues }
 }
 
 export function channelsFromSpreadsheetCells(
-  values: Record<DigitalChannelType, string>,
+  values: Record<SpreadsheetChannelType, string>,
 ): DigitalChannelDraft[] {
   const channels: DigitalChannelDraft[] = []
-  for (const type of DIGITAL_CHANNEL_TYPES) {
+  for (const type of SPREADSHEET_CHANNEL_TYPES) {
     const tokens = parseChannelListCell(values[type])
     tokens.forEach((token, index) => {
       channels.push({
@@ -419,8 +499,8 @@ export function channelsFromSpreadsheetCells(
 
 export function spreadsheetCellsFromChannels(
   channels: LeadDigitalChannelWrite[],
-): Record<DigitalChannelType, string> {
-  function cell(type: DigitalChannelType): string {
+): Record<SpreadsheetChannelType, string> {
+  function cell(type: SpreadsheetChannelType): string {
     const items = channels
       .filter((channel) => channel.type === type)
       .slice()
@@ -431,8 +511,8 @@ export function spreadsheetCellsFromChannels(
     return formatChannelListCell(items.map((item) => item.value))
   }
 
-  const cells = {} as Record<DigitalChannelType, string>
-  for (const type of DIGITAL_CHANNEL_TYPES) {
+  const cells = {} as Record<SpreadsheetChannelType, string>
+  for (const type of SPREADSHEET_CHANNEL_TYPES) {
     cells[type] = cell(type)
   }
   return cells
@@ -778,6 +858,44 @@ function pinterestFromUser(
   if (!/[a-z0-9]/.test(normalized)) return null
   const normalized_key = `pinterest.com/${normalized}`
   return { value: `https://${normalized_key}`, normalized_key }
+}
+
+/**
+ * Perfil no Google: o identificador é o `place_id`.
+ *
+ * Aceita o `place_id` cru ou uma URL do Maps que o carregue em `place_id=` ou
+ * `q=place_id:`. O valor guardado é a URL canônica do Maps, porque é o que o
+ * SDR precisa abrir; a chave é o identificador puro, porque é ele que dedupa
+ * contra `lead_gbp_profiles.place_id`, que já é único global.
+ *
+ * O formato não é validável além do alfabeto: o Google não documenta tamanho
+ * nem prefixo, e a amostra de 2026-09-21 trouxe identificadores de comprimento
+ * diferente. Recusar por tamanho rejeitaria perfil legítimo — o teto de 200
+ * existe só para barrar texto colado por engano.
+ */
+function normalizeGoogleBusiness(
+  input: string,
+): { value: string; normalized_key: string } | null {
+  let placeId = input.trim()
+
+  if (/^https?:\/\//i.test(placeId)) {
+    const url = parseHttpUrl(placeId)
+    if (!url) return null
+    const direct = url.searchParams.get("place_id")
+    const query = url.searchParams.get("q")
+    const fromQuery = query?.startsWith("place_id:")
+      ? query.slice("place_id:".length)
+      : null
+    const found = direct ?? fromQuery
+    if (!found) return null
+    placeId = found.trim()
+  }
+
+  if (!/^[A-Za-z0-9_-]{8,200}$/.test(placeId)) return null
+  return {
+    value: `https://www.google.com/maps/place/?q=place_id:${placeId}`,
+    normalized_key: placeId,
+  }
 }
 
 function normalizeTwitter(

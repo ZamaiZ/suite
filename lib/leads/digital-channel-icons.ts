@@ -2,6 +2,7 @@ import type { IconType } from "react-icons"
 import {
   RiFacebookCircleLine,
   RiGlobalLine,
+  RiGoogleLine,
   RiInstagramLine,
   RiLinkedinBoxLine,
   RiPinterestLine,
@@ -20,4 +21,5 @@ export const CHANNEL_ICONS: Record<DigitalChannelType, IconType> = {
   tiktok: RiTiktokLine,
   pinterest: RiPinterestLine,
   twitter: RiTwitterXLine,
+  google_business: RiGoogleLine,
 }

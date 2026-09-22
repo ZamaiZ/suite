@@ -1,5 +1,6 @@
 "use server"
 
+import { randomUUID } from "node:crypto"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { requireCommercialMember } from "@/lib/auth/session"
@@ -71,8 +72,12 @@ const importChannelSchema = z.object({
 
 const importPayloadSchema = z.object({
   company_name: z.string().min(2).max(200),
-  website: z.string().min(1).max(500),
-  website_domain: z.string().min(1),
+  // Anuláveis porque `LeadWritePayload` passou a ser, não porque a planilha
+  // deixou de exigir site. A garantia continua existindo e é mais forte do que
+  // seria aqui: `importLeads` reavalia toda linha com `validateRawRows`, que
+  // usa o `leadFieldsSchema` — e esse exige o canal `website`.
+  website: z.string().max(500).nullable(),
+  website_domain: z.string().nullable(),
   channels: z.array(importChannelSchema).min(1),
   contact_name: z.string().nullable(),
   phone: z.string().nullable(),
@@ -274,9 +279,10 @@ export async function importLeads(
 
     const supabase = await createClient()
     const inserts: Array<{
+      id: string
       company_name: string
-      website: string
-      website_domain: string
+      website: string | null
+      website_domain: string | null
       contact_name: string | null
       phone: string | null
       email: string | null
@@ -313,6 +319,15 @@ export async function importLeads(
         }
       }
       inserts.push({
+        // O id nasce aqui, e não no banco.
+        //
+        // A correlação com os canais era feita por `website_domain`, e isso
+        // quebraria em silêncio no dia em que a coluna virou anulável: dois
+        // leads sem site colapsam na mesma chave do `Map` e os canais de um
+        // vão para o outro. Corrigir "pela posição" trocaria um bug mudo por
+        // outro — a ordem de retorno de um insert de várias linhas não é
+        // garantida pelo Postgres.
+        id: randomUUID(),
         company_name: row.payload.company_name,
         website: row.payload.website,
         website_domain: row.payload.website_domain,
@@ -330,10 +345,7 @@ export async function importLeads(
       importRows.push(source)
     }
 
-    const { data: inserted, error } = await supabase
-      .from("leads")
-      .insert(inserts)
-      .select("id, website_domain")
+    const { error } = await supabase.from("leads").insert(inserts).select("id")
 
     if (error) {
       if (error.code === "23505") {
@@ -349,14 +361,13 @@ export async function importLeads(
       }
     }
 
-    const idByDomain = new Map(
-      (inserted ?? []).map((row) => [
-        row.website_domain as string,
-        row.id as string,
-      ]),
-    )
-    const channelRows = parsed.data.flatMap((payload) => {
-      const leadId = idByDomain.get(payload.website_domain)
+    // `inserts[i]` e `importRows[i]` nascem na mesma iteração do laço acima, e
+    // é essa a garantia de alinhamento. Não se lê a resposta do insert para
+    // correlacionar: além de a ordem não ser garantida, a chave que se usava
+    // para isso — `website_domain` — pode ser nula em mais de uma linha desde
+    // que o site deixou de ser obrigatório.
+    const channelRows = importRows.flatMap((payload, index) => {
+      const leadId = inserts[index]?.id
       if (!leadId) return []
       return payload.channels.map((channel) => ({
         lead_id: leadId,
@@ -387,8 +398,8 @@ export async function importLeads(
       }
     }
 
-    for (const payload of parsed.data) {
-      const leadId = idByDomain.get(payload.website_domain)
+    for (const [index, payload] of importRows.entries()) {
+      const leadId = inserts[index]?.id
       if (!leadId) continue
       if (payload.tags.length > 0) {
         const tags = await syncLeadTags(supabase, leadId, payload.tags)

@@ -5,7 +5,7 @@ import {
   DIGITAL_CHANNEL_LABELS,
   DIGITAL_CHANNEL_TYPES,
   digitalChannelConflictKey,
-  isDigitalChannelType,
+  isSpreadsheetChannelType,
   normalizeDigitalChannelList,
   SPREADSHEET_FIELD_BY_TYPE,
   spreadsheetCellsFromChannels,
@@ -28,9 +28,15 @@ export const SPREADSHEET_VALUE_KEYS = [
   "contact_name",
   "phone",
   "email",
+  // `website` sai porque já tem coluna própria acima. `google_business` sai
+  // porque ninguém digita um `place_id` numa planilha — e acrescentar a coluna
+  // invalidaria todo modelo já baixado, já que `parseLeadSpreadsheet` confere o
+  // cabeçalho inteiro contra o oficial e recusa o arquivo se divergir.
   ...DIGITAL_CHANNEL_TYPES.filter(
-    (type): type is Exclude<DigitalChannelType, "website"> =>
-      type !== "website",
+    (
+      type,
+    ): type is Exclude<DigitalChannelType, "website" | "google_business"> =>
+      type !== "website" && type !== "google_business",
   ),
 ] as const
 
@@ -69,7 +75,7 @@ export const LEAD_SPREADSHEET_ACCEPT =
   ".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
 export const SPREADSHEET_CHANNEL_HEADER_NOTES: Record<
-  DigitalChannelType,
+  Exclude<DigitalChannelType, "google_business">,
   string
 > = {
   website:
@@ -372,7 +378,7 @@ export function preserveExternalConflicts(
         sessionPrefixes.some((prefix) => issue.message.startsWith(prefix))
       if (!isTracked) return false
       const field = issue.field
-      if (isDigitalChannelType(field)) {
+      if (isSpreadsheetChannelType(field)) {
         return old.values[field] === row.values[field]
       }
       return old.values.website === row.values.website

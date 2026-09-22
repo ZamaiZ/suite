@@ -1,0 +1,36 @@
+{
+  "medidoEm": "2026-09-22T00:04:14.099Z",
+  "centro": {
+    "lat": -23.4628,
+    "lng": -46.5333,
+    "nome": "Guarulhos/SP"
+  },
+  "raioKm": 10,
+  "categoriaAmostrada": "restaurant",
+  "catalogoCategorias": 5318,
+  "areaTotalCount": 3195,
+  "amostra": {
+    "devolvidos": 100,
+    "totalCount": 4791,
+    "offsetToken": true,
+    "comPlaceId": 100,
+    "comCid": 100,
+    "comTelefone": 88,
+    "comSite": 90,
+    "comDominio": 90,
+    "comCep": 100,
+    "comNota": 100,
+    "claimedPreenchido": 100,
+    "naoReivindicado": 2,
+    "comContactInfo": 88,
+    "semSite": 10,
+    "semSiteComTelefone": 9,
+    "notaBaixa": 17
+  },
+  "custo": {
+    "searchMedido": 0.048,
+    "searchTabela": 0.048,
+    "aggregationMedido": 0.048,
+    "sondagemTotal": 0.096
+  }
+}

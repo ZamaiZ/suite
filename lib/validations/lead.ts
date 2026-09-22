@@ -125,8 +125,9 @@ const leadCoreObjectSchema = z.object({
 function refineDigitalChannels(
   data: { channels: DigitalChannelDraft[] },
   ctx: z.RefinementCtx,
+  requireWebsite = true,
 ) {
-  const result = normalizeDigitalChannelList(data.channels)
+  const result = normalizeDigitalChannelList(data.channels, { requireWebsite })
   if (result.issues.length === 0) return
   ctx.addIssue({
     code: "custom",
@@ -152,15 +153,19 @@ function refineLeadLocation(
 
 function toLeadWritePayload(
   data: z.infer<typeof leadCoreObjectSchema>,
+  requireWebsite = true,
 ): LeadWritePayload {
-  const result = normalizeDigitalChannelList(data.channels)
+  const result = normalizeDigitalChannelList(data.channels, { requireWebsite })
   const primary = primaryWebsiteChannel(result.channels)
   const stateCode = data.state_code as NonNullable<typeof data.state_code>
   const city = normalizeCityMatch(stateCode, data.city) ?? data.city.trim()
   return {
     company_name: data.company_name,
-    website: primary?.value ?? "",
-    website_domain: primary?.normalized_key ?? "",
+    // `null`, e nunca `""`. Com a coluna anulável, dois leads sem site
+    // colidiriam na string vazia e o segundo cairia com 23505 — um erro de
+    // duplicidade que não descreve nada do que aconteceu.
+    website: primary?.value ?? null,
+    website_domain: primary?.normalized_key ?? null,
     channels: result.channels,
     contact_name: data.contact_name,
     phone: data.phone,
@@ -177,7 +182,26 @@ export const leadFieldsSchema = leadCoreObjectSchema
     refineDigitalChannels(data, ctx)
     refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
   })
-  .transform(toLeadWritePayload)
+  .transform((data) => toLeadWritePayload(data))
+
+/**
+ * O mesmo lead, sem exigir site.
+ *
+ * Existe só para a promoção de um prospect: a medição de 2026-09-21 mostrou
+ * que entre 60% e 79% das empresas de um segmento local não têm site, e para
+ * uma agência de SEO essa é a lista que interessa. O canal primário desses
+ * leads é o perfil no Google.
+ *
+ * Schema separado, e não uma flag no `leadFieldsSchema`, porque o caminho
+ * humano — formulário e planilha — deve continuar recusando lead sem site. É
+ * ali que a ausência costuma ser esquecimento de digitação, não fato.
+ */
+export const leadFromProspectSchema = leadCoreObjectSchema
+  .superRefine((data, ctx) => {
+    refineDigitalChannels(data, ctx, false)
+    refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
+  })
+  .transform((data) => toLeadWritePayload(data, false))
 
 export const leadFormObjectSchema = leadCoreObjectSchema
   .extend({

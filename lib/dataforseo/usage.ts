@@ -308,6 +308,8 @@ export type DataForSeoOperationId =
   | "backlink_summary"
   | "backlink_competitors"
   | "backlink_scheme"
+  | "prospect_discovery"
+  | "prospect_estimate"
 
 export type DataForSeoOperation = {
   id: DataForSeoOperationId
@@ -374,6 +376,32 @@ const GRID_OPERATIONS: readonly DataForSeoOperation[] = GBP_GRID_SIZES.map(
 
 export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
   ...GRID_OPERATIONS,
+  {
+    id: "prospect_discovery",
+    label: "Descoberta de empresas",
+    api: "business_data",
+    fnSuffix: "business_listings/search/live",
+    requests: 1,
+    // A parcela por item domina: 100 itens são 0,036 contra 0,012 da chamada.
+    results: 100,
+    detail: "Até 100 empresas por página",
+    // Sem ressalva, e de propósito. Medido em 2026-09-21: o `search` com 100
+    // itens custou US$ 0,048 contra os mesmos US$ 0,048 de tabela — exato.
+    // Aqui a conta fecha, ao contrário da seção `serp` logo acima.
+  },
+  {
+    id: "prospect_estimate",
+    label: "Estimativa da campanha",
+    api: "business_data",
+    fnSuffix: "business_listings/categories_aggregation/live",
+    requests: 1,
+    results: 100,
+    detail: "Densidade por categoria na área",
+    caveat:
+      "Medido em US$ 0,048 com limite 5 e com limite 100: o agregado cobra " +
+      "como uma busca, e o limite não barateia. Por isso a estimativa é " +
+      "guardada na campanha e não refeita a cada abertura da tela.",
+  },
   {
     id: "gbp_enrichment",
     label: "Enriquecimento do perfil",

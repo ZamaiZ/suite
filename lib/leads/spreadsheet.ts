@@ -8,7 +8,7 @@ import {
 import { BR_STATES } from "@/lib/br-locations"
 import {
   DIGITAL_CHANNEL_LABELS,
-  DIGITAL_CHANNEL_TYPES,
+  SPREADSHEET_CHANNEL_TYPES,
 } from "@/lib/leads/digital-channels"
 import {
   isEmptyRawValues,
@@ -122,7 +122,7 @@ export async function buildLeadTemplateBuffer(
     }
   }
 
-  for (const type of DIGITAL_CHANNEL_TYPES) {
+  for (const type of SPREADSHEET_CHANNEL_TYPES) {
     const index = SPREADSHEET_VALUE_KEYS.findIndex((key) => key === type)
     if (index < 0) continue
     sheet.getRow(1).getCell(index + 1).note =

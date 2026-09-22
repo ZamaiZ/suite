@@ -1,0 +1,77 @@
+{
+  "medidoEm": "2026-09-22T00:06:14.777Z",
+  "cenarios": [
+    {
+      "cenario": "restaurante · Guarulhos/SP",
+      "totalCount": 4791,
+      "n": 100,
+      "site": 21,
+      "telefone": 71,
+      "cep": 95,
+      "claimed": 50,
+      "naoClaimed": 50,
+      "claimedNulo": 0,
+      "nota": 83,
+      "notaBaixa": 10,
+      "semAvaliacao": 17,
+      "semSiteComTel": 51,
+      "custo": 0.048
+    },
+    {
+      "cenario": "salao de beleza · Guarulhos/SP",
+      "totalCount": 7034,
+      "n": 100,
+      "site": 29,
+      "telefone": 85,
+      "cep": 98,
+      "claimed": 68,
+      "naoClaimed": 32,
+      "claimedNulo": 0,
+      "nota": 77,
+      "notaBaixa": 3,
+      "semAvaliacao": 23,
+      "semSiteComTel": 57,
+      "custo": 0.048
+    },
+    {
+      "cenario": "dentista · Guarulhos/SP",
+      "totalCount": 2401,
+      "n": 100,
+      "site": 40,
+      "telefone": 83,
+      "cep": 95,
+      "claimed": 64,
+      "naoClaimed": 36,
+      "claimedNulo": 0,
+      "nota": 77,
+      "notaBaixa": 6,
+      "semAvaliacao": 23,
+      "semSiteComTel": 45,
+      "custo": 0.048
+    },
+    {
+      "cenario": "dentista · Londrina/PR",
+      "totalCount": 705,
+      "n": 100,
+      "site": 25,
+      "telefone": 84,
+      "cep": 99,
+      "claimed": 48,
+      "naoClaimed": 52,
+      "claimedNulo": 0,
+      "nota": 69,
+      "notaBaixa": 9,
+      "semAvaliacao": 31,
+      "semSiteComTel": 60,
+      "custo": 0.048
+    }
+  ],
+  "aggregationDentist": {
+    "count": 2401,
+    "websitesCount": 519
+  },
+  "naoReivindicados": {
+    "totalCount": 916
+  },
+  "custoTotal": 0.225
+}
