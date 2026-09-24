@@ -172,7 +172,7 @@ export function LeadGeoHeader({
 
           {!domain ? (
             <p className="text-xs/relaxed text-muted-foreground">
-              Cadastre um site no lead para analisar a presença em IA.
+              Este lead não possui site para esta análise.
             </p>
           ) : null}
           {domain && !hasWebsiteAudit ? (

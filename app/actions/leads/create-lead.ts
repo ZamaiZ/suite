@@ -89,7 +89,7 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
     .single()
 
   if (error) {
-    if (error.code === "23505") {
+    if (error.code === "23505" && payload.website_domain) {
       const { data: existing } = await supabase
         .from("leads")
         .select("id")

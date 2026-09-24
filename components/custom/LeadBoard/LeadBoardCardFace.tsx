@@ -118,7 +118,7 @@ export function LeadBoardCardFace({
           {lead.company_name}
         </p>
         <p className="truncate text-xs/relaxed text-muted-foreground">
-          {lead.website_domain}
+          {lead.website_domain ?? "—"}
         </p>
         {lead.segment?.name || (lead.city && lead.state_code) ? (
           <p className="truncate text-xs/relaxed text-muted-foreground">

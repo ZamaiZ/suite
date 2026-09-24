@@ -1,0 +1,101 @@
+{
+    "captured_at":  "2026-09-22T20:10:37.7099818+00:00",
+    "envelope":  {
+                     "version":  "0.1.20260917",
+                     "status_code":  20000,
+                     "status_message":  "Ok.",
+                     "cost":  0.01272,
+                     "tasks_count":  1,
+                     "tasks_error":  0
+                 },
+    "task":  {
+                 "id":  "09222010-2319-0544-0000-719749f1ada2",
+                 "status_code":  20000,
+                 "status_message":  "Ok.",
+                 "cost":  0.01272,
+                 "path":  [
+                              "v3",
+                              "business_data",
+                              "business_listings",
+                              "search",
+                              "live"
+                          ]
+             },
+    "page":  {
+                 "total_count":  323,
+                 "count":  2,
+                 "items_count":  null,
+                 "offset":  0,
+                 "offset_token":  "eyJDdXJyZW50T2Zmc2V0IjoyLCJSZXF1ZXN0RGF0YSI6eyJuYW1lIjpudWxsLCJkZXNjcmlwdGlvbiI6bnVsbCwiY2F0ZWdvcmllcyI6WyJkZW1vbGl0aW9uX2NvbnRyYWN0b3IiXSwiY291bnRyeV9jb2RlIjpudWxsLCJjaXR5IjpudWxsLCJpc19jbGFpbWVkIjpudWxsLCJvbmx5X2dvb2dsZV9idXNpbmVzcyI6ZmFsc2UsImdlbyI6eyJsb25naXR1ZGUiOi00Ni42MzMzMDgsImxhdGl0dWRlIjotMjMuNTUwNTIsInJhZGl1cyI6NDUuMH0sInNlYXJjaF9hZnRlcl90b2tlbiI6bnVsbCwib3JkZXJfYnkiOm51bGwsImxpbWl0IjoyLCJvZmZzZXQiOm51bGx9LCJSYXdRdWVyeSI6bnVsbCwiU2VhcmNoQWZ0ZXJEYXRhIjpbIjEwMTIwMDQwOTI4NzMyNTIzMTYxIl19",
+                 "items":  [
+                               {
+                                   "type":  "business_listing",
+                                   "place_id":  "ChIJxXM0E9B6zpQRPriOTYwtY4w",
+                                   "cid":  "10115979268624136254",
+                                   "feature_id":  "0x94ce7ad0133473c5:0x8c632d8c4d8eb83e",
+                                   "title":  "Demolidora Romano",
+                                   "category":  "Demolition contractor",
+                                   "category_ids":  [
+                                                        "demolition_contractor"
+                                                    ],
+                                   "additional_categories":  [
+                                                                 null
+                                                             ],
+                                   "address":  "Av. Lucas Nogueira Garcez, 801 - Jardim Estela, PoÃ¡ - SP, 08563-115",
+                                   "address_info":  {
+                                                        "borough":  "Jardim Estela",
+                                                        "address":  "Av. Lucas Nogueira Garcez, 801",
+                                                        "city":  "PoÃ¡",
+                                                        "zip":  "08563-115",
+                                                        "region":  "SÃ£o Paulo",
+                                                        "country_code":  "BR"
+                                                    },
+                                   "phone":  "+55114636-5869",
+                                   "url":  null,
+                                   "latitude":  -23.5350665,
+                                   "longitude":  -46.353679799999995,
+                                   "rating":  {
+                                                  "value":  2.8,
+                                                  "votes_count":  5
+                                              },
+                                   "current_status":  null,
+                                   "check_url":  "https://www.google.com/maps?cid=10115979268624136254\u0026hl=en\u0026gl=BR",
+                                   "last_updated_time":  "2026-09-12 09:33:24 +00:00"
+                               },
+                               {
+                                   "type":  "business_listing",
+                                   "place_id":  "ChIJhZy9JlLjzpQRmSqEPZubcYw",
+                                   "cid":  "10120040928732523161",
+                                   "feature_id":  "0x94cee35226bd9c85:0x8c719b9b3d842a99",
+                                   "title":  "GL Demolidora e Prestadora de ServiÃ§os",
+                                   "category":  "Demolition contractor",
+                                   "category_ids":  [
+                                                        "demolition_contractor"
+                                                    ],
+                                   "additional_categories":  [
+                                                                 null
+                                                             ],
+                                   "address":  "R. Raimundo dos RÃ©is - Vera Tereza, Caieiras - SP, 07700-000",
+                                   "address_info":  {
+                                                        "borough":  "Vera Tereza",
+                                                        "address":  "R. Raimundo dos RÃ©is",
+                                                        "city":  "Caieiras",
+                                                        "zip":  "07700-000",
+                                                        "region":  "SÃ£o Paulo",
+                                                        "country_code":  "BR"
+                                                    },
+                                   "phone":  "+55114445-2320",
+                                   "url":  "https://gl-demolidora-e-prestadora-de-servicos.ueniweb.com/?utm_campaign=gmb",
+                                   "latitude":  -23.3369477,
+                                   "longitude":  -46.756670299999996,
+                                   "rating":  {
+                                                  "value":  3,
+                                                  "votes_count":  1
+                                              },
+                                   "current_status":  null,
+                                   "check_url":  "https://www.google.com/maps?cid=10120040928732523161\u0026hl=en\u0026gl=BR",
+                                   "last_updated_time":  "2026-09-10 22:33:37 +00:00"
+                               }
+                           ]
+             }
+}

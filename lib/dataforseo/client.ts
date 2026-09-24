@@ -58,6 +58,16 @@ export type DataForSeoTaskGetResult<T> =
   | { status: "pending" }
   | { status: "error"; message: string }
 
+export type DataForSeoDetailedLiveResult<T> =
+  | { status: "ok"; data: T | null; cost: number }
+  | {
+      status: "rejected"
+      code: number | null
+      vendorMessage: string | null
+      cost: number
+    }
+  | { status: "unknown"; message: string }
+
 function credentials(): { login: string; password: string } | null {
   const login = process.env.DATAFORSEO_LOGIN?.trim()
   const password = process.env.DATAFORSEO_PASSWORD?.trim()
@@ -154,6 +164,90 @@ export async function postDataForSeo<T>(
     }
   } catch {
     return { status: "error", message: DATAFORSEO_VENDOR_ERROR }
+  }
+}
+
+/**
+ * Variante para operações pagas cujo recibo precisa distinguir rejeição
+ * confirmada de conexão encerrada sem envelope. O chamador nunca recebe o
+ * payload inteiro: somente o primeiro result, custo e status sanitizado.
+ */
+export async function postDataForSeoLiveDetailed<T>(
+  path: string,
+  task: Record<string, unknown>,
+  timeoutMs = REQUEST_TIMEOUT_MS,
+): Promise<DataForSeoDetailedLiveResult<T>> {
+  const auth = credentials()
+  if (!auth) {
+    return {
+      status: "rejected",
+      code: null,
+      vendorMessage: null,
+      cost: 0,
+    }
+  }
+
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), timeoutMs)
+  let response: Response
+  try {
+    response = await fetch(`${DATAFORSEO_BASE}${path}`, {
+      method: "POST",
+      cache: "no-store",
+      headers: {
+        Authorization: authHeader(auth.login, auth.password),
+        "Content-Type": "application/json; charset=utf-8",
+      },
+      body: JSON.stringify([task]),
+      signal: controller.signal,
+    })
+  } catch {
+    return { status: "unknown", message: DATAFORSEO_VENDOR_ERROR }
+  } finally {
+    clearTimeout(timer)
+  }
+
+  let body: DataForSeoEnvelope<T>
+  try {
+    body = (await response.json()) as DataForSeoEnvelope<T>
+  } catch {
+    return { status: "unknown", message: DATAFORSEO_VENDOR_ERROR }
+  }
+
+  const read = readTaskGetEnvelope<T>(body, DATAFORSEO_VENDOR_ERROR)
+  if (!response.ok || read.status === "error") {
+    const row = body.tasks?.[0]
+    return {
+      status: "rejected",
+      code:
+        read.status === "error"
+          ? read.code
+          : typeof row?.status_code === "number"
+            ? row.status_code
+            : typeof body.status_code === "number"
+              ? body.status_code
+              : null,
+      vendorMessage:
+        read.status === "error"
+          ? read.message
+          : typeof row?.status_message === "string"
+            ? row.status_message
+            : null,
+      cost: dataForSeoEnvelopeCost(body) ?? 0,
+    }
+  }
+  if (read.status === "pending") {
+    return {
+      status: "rejected",
+      code: null,
+      vendorMessage: "Resposta live permaneceu pendente.",
+      cost: dataForSeoEnvelopeCost(body) ?? 0,
+    }
+  }
+  return {
+    status: "ok",
+    data: read.status === "empty" ? null : read.data,
+    cost: read.cost,
   }
 }
 

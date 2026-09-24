@@ -135,6 +135,19 @@ function refineDigitalChannels(
   })
 }
 
+function refineContactAvailability(
+  data: { channels: DigitalChannelDraft[]; phone: string | null },
+  ctx: z.RefinementCtx,
+) {
+  const channels = normalizeDigitalChannelList(data.channels)
+  if (primaryWebsiteChannel(channels.channels) || data.phone) return
+  ctx.addIssue({
+    code: "custom",
+    path: ["channels"],
+    message: "Informe um site ou telefone.",
+  })
+}
+
 function refineLeadLocation(
   data: { state_code: string | null; city: string },
   ctx: z.RefinementCtx,
@@ -159,8 +172,8 @@ function toLeadWritePayload(
   const city = normalizeCityMatch(stateCode, data.city) ?? data.city.trim()
   return {
     company_name: data.company_name,
-    website: primary?.value ?? "",
-    website_domain: primary?.normalized_key ?? "",
+    website: primary?.value ?? null,
+    website_domain: primary?.normalized_key ?? null,
     channels: result.channels,
     contact_name: data.contact_name,
     phone: data.phone,
@@ -175,6 +188,7 @@ function toLeadWritePayload(
 export const leadFieldsSchema = leadCoreObjectSchema
   .superRefine((data, ctx) => {
     refineDigitalChannels(data, ctx)
+    refineContactAvailability(data, ctx)
     refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
   })
   .transform(toLeadWritePayload)
@@ -190,6 +204,7 @@ export const leadFormObjectSchema = leadCoreObjectSchema
 
 export const leadFormSchema = leadFormObjectSchema.superRefine((data, ctx) => {
   refineDigitalChannels(data, ctx)
+  refineContactAvailability(data, ctx)
   refineLeadLocation({ state_code: data.state_code, city: data.city }, ctx)
 })
 

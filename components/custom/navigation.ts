@@ -7,6 +7,7 @@ import {
   RiLayoutGridLine,
   RiMouseLine,
   RiRouteLine,
+  RiSearchEyeLine,
   RiSettings3Line,
   RiShapesLine,
   RiSparklingLine,
@@ -50,6 +51,13 @@ export const NAV_ITEMS: NavItem[] = [
         href: "/leads",
         icon: RiUserSearchLine,
         description: "Cadastro, fila e primeiro contato",
+      },
+      {
+        kind: "leaf",
+        label: "Prospecção",
+        href: "/prospecting",
+        icon: RiSearchEyeLine,
+        description: "Pesquisa por segmento e cidade",
       },
       {
         kind: "leaf",

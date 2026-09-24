@@ -1,0 +1,95 @@
+{
+    "captured_at":  "2026-09-22T20:10:38.5382272+00:00",
+    "envelope":  {
+                     "version":  "0.1.20260917",
+                     "status_code":  20000,
+                     "status_message":  "Ok.",
+                     "cost":  0.01272,
+                     "tasks_count":  1,
+                     "tasks_error":  0
+                 },
+    "task":  {
+                 "id":  "09222010-2319-0544-0000-4b4708ff1f6b",
+                 "status_code":  20000,
+                 "status_message":  "Ok.",
+                 "cost":  0.01272,
+                 "path":  [
+                              "v3",
+                              "business_data",
+                              "business_listings",
+                              "search",
+                              "live"
+                          ]
+             },
+    "page":  {
+                 "total_count":  323,
+                 "count":  2,
+                 "items_count":  null,
+                 "offset":  2,
+                 "offset_token":  "eyJDdXJyZW50T2Zmc2V0Ijo0LCJSZXF1ZXN0RGF0YSI6eyJuYW1lIjpudWxsLCJkZXNjcmlwdGlvbiI6bnVsbCwiY2F0ZWdvcmllcyI6WyJkZW1vbGl0aW9uX2NvbnRyYWN0b3IiXSwiY291bnRyeV9jb2RlIjpudWxsLCJjaXR5IjpudWxsLCJpc19jbGFpbWVkIjpudWxsLCJvbmx5X2dvb2dsZV9idXNpbmVzcyI6ZmFsc2UsImdlbyI6eyJsb25naXR1ZGUiOi00Ni42MzMzMDgsImxhdGl0dWRlIjotMjMuNTUwNTIsInJhZGl1cyI6NDUuMH0sInNlYXJjaF9hZnRlcl90b2tlbiI6bnVsbCwib3JkZXJfYnkiOm51bGwsImxpbWl0IjoyLCJvZmZzZXQiOm51bGx9LCJSYXdRdWVyeSI6bnVsbCwiU2VhcmNoQWZ0ZXJEYXRhIjpbIjEwMjA3NzE1MDQ3MzM1NDQ1MzY3Il19",
+                 "items":  [
+                               {
+                                   "type":  "business_listing",
+                                   "place_id":  "ChIJbX4td2lfzpQRwPGdTuMV_Iw",
+                                   "cid":  "10159018925461729728",
+                                   "feature_id":  "0x94ce5f69772d7e6d:0x8cfc15e34e9df1c0",
+                                   "title":  "Demolidora na Zona Leste e Terraplanagem zona leste",
+                                   "category":  "Demolition contractor",
+                                   "category_ids":  [
+                                                        "demolition_contractor"
+                                                    ],
+                                   "additional_categories":  [
+                                                                 null
+                                                             ],
+                                   "address":  "R. Acanuera, 277 - ChÃ¡cara CalifÃ³rnia, SÃ£o Paulo - SP, 03405-080",
+                                   "address_info":  {
+                                                        "borough":  "ChÃ¡cara CalifÃ³rnia",
+                                                        "address":  "R. Acanuera, 277",
+                                                        "city":  "SÃ£o Paulo",
+                                                        "zip":  "03405-080",
+                                                        "region":  "SÃ£o Paulo",
+                                                        "country_code":  "BR"
+                                                    },
+                                   "phone":  "+551198431-2949",
+                                   "url":  null,
+                                   "latitude":  -23.537366,
+                                   "longitude":  -46.5495866,
+                                   "rating":  null,
+                                   "current_status":  null,
+                                   "check_url":  "https://www.google.com/maps?cid=10159018925461729728\u0026hl=en\u0026gl=BR",
+                                   "last_updated_time":  "2026-09-12 08:11:33 +00:00"
+                               },
+                               {
+                                   "type":  "business_listing",
+                                   "place_id":  "ChIJOU2ksk9ZzpQRd8PWtMAWqY0",
+                                   "cid":  "10207715047335445367",
+                                   "feature_id":  "0x94ce594fb2a44d39:0x8da916c0b4d6c377",
+                                   "title":  "Demolidora Santos",
+                                   "category":  "Demolition contractor",
+                                   "category_ids":  [
+                                                        "demolition_contractor"
+                                                    ],
+                                   "additional_categories":  [
+                                                                 null
+                                                             ],
+                                   "address":  "R. BarÃ£o de IjuÃ­, 451 - Liberdade, SÃ£o Paulo - SP, 01502-010",
+                                   "address_info":  {
+                                                        "borough":  "Liberdade",
+                                                        "address":  "R. BarÃ£o de IjuÃ­, 451",
+                                                        "city":  "SÃ£o Paulo",
+                                                        "zip":  "01502-010",
+                                                        "region":  "State of SÃ£o Paulo",
+                                                        "country_code":  "BR"
+                                                    },
+                                   "phone":  "+551193907-0366",
+                                   "url":  "https://www.demolidorasantos.com.br/",
+                                   "latitude":  -23.5623518,
+                                   "longitude":  -46.6396148,
+                                   "rating":  null,
+                                   "current_status":  null,
+                                   "check_url":  "https://www.google.com/maps?cid=10207715047335445367\u0026hl=en\u0026gl=BR",
+                                   "last_updated_time":  "2026-08-26 21:11:17 +00:00"
+                               }
+                           ]
+             }
+}

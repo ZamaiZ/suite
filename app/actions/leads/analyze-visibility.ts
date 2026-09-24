@@ -28,7 +28,7 @@ export type AnalyzeLeadVisibilityState =
 
 const ANALYZE_FAILED =
   "Não foi possível analisar a visibilidade. Tente novamente."
-const NO_WEBSITE = "Cadastre um site no lead para analisar a visibilidade."
+const NO_WEBSITE = "Este lead não possui site para esta análise."
 
 export async function analyzeLeadVisibility(
   formData: FormData,

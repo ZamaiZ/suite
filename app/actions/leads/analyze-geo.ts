@@ -26,7 +26,7 @@ export type AnalyzeLeadGeoState =
   | { status: "error"; message: string }
 
 const FAILED = "Não foi possível analisar a presença em IA. Tente novamente."
-const NO_WEBSITE = "Cadastre um site no lead para analisar a presença em IA."
+const NO_WEBSITE = "Este lead não possui site para esta análise."
 const NO_CRAWL =
   "Rode a análise de Website antes: a presença em IA lê aquela coleta."
 

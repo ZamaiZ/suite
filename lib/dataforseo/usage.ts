@@ -299,6 +299,7 @@ export type DataForSeoOperationId =
   | "grid_5"
   | "grid_7"
   | "grid_11"
+  | "business_listings"
   | "gbp_enrichment"
   | "gbp_reviews"
   | "gbp_qna"
@@ -374,6 +375,16 @@ const GRID_OPERATIONS: readonly DataForSeoOperation[] = GBP_GRID_SIZES.map(
 
 export const DATAFORSEO_OPERATIONS: readonly DataForSeoOperation[] = [
   ...GRID_OPERATIONS,
+  {
+    id: "business_listings",
+    label: "Prospecção por segmento e cidade",
+    api: "business_data",
+    fnSuffix: "business_listings/search/live",
+    requests: 1,
+    results: 1000,
+    detail: "Uma página de até 1.000 estabelecimentos",
+    caveat: RESULT_CAVEAT,
+  },
   {
     id: "gbp_enrichment",
     label: "Enriquecimento do perfil",

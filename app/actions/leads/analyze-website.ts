@@ -25,6 +25,7 @@ export type AnalyzeLeadWebsiteState =
   | { status: "error"; message: string }
 
 const ANALYZE_FAILED = "Não foi possível analisar o site. Tente novamente."
+const NO_WEBSITE = "Este lead não possui site para esta análise."
 
 export async function analyzeLeadWebsite(
   formData: FormData,
@@ -43,7 +44,7 @@ export async function analyzeLeadWebsite(
     return { status: "error", message: ANALYZE_FAILED }
   }
   if (loaded.status === "not_found") {
-    return { status: "error", message: "Site não encontrado." }
+    return { status: "error", message: NO_WEBSITE }
   }
 
   const denied = denyWebsiteEdit(loaded.lead, user.id, roles)

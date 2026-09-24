@@ -136,7 +136,7 @@ export function LeadVisibilityHeader({
           ) : null}
           {!domain ? (
             <p className="text-xs/relaxed text-muted-foreground">
-              Cadastre um site no lead para analisar a visibilidade.
+              Este lead não possui site para esta análise.
             </p>
           ) : null}
           {intentMissing ? (

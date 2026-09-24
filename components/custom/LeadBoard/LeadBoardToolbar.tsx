@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState, useTransition } from "react"
 import {
   RiChat3Line,
   RiPriceTag3Line,
+  RiSearchEyeLine,
   RiSearchLine,
   RiStore2Line,
   RiTimeLine,
@@ -162,7 +163,7 @@ export function LeadBoardToolbar({
             name="q"
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
-            placeholder="Empresa ou site"
+            placeholder="Empresa, site ou telefone"
             aria-label="Buscar"
             aria-busy={isPending}
           />
@@ -212,7 +213,16 @@ export function LeadBoardToolbar({
             onClick={() => replaceParams({ pending: !listParams.pending })}
           />
         </div>
-        <div className="ml-auto shrink-0">
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => startTransition(() => router.push("/prospecting"))}
+            disabled={isPending}
+          >
+            <RiSearchEyeLine aria-hidden />
+            Prospectar
+          </Button>
           <LeadImport />
         </div>
       </div>

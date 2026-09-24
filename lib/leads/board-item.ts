@@ -10,8 +10,8 @@ export type { LeadChannelCounts, LeadTag, LeadSegment }
 export type LeadBoardItem = {
   id: string
   company_name: string
-  website: string
-  website_domain: string
+  website: string | null
+  website_domain: string | null
   status: LeadStatus
   next_follow_up_at: string | null
   created_at: string
@@ -38,8 +38,8 @@ export type LeadBoardItem = {
 export type LeadBoardRow = {
   id: string
   company_name: string
-  website: string
-  website_domain: string
+  website: string | null
+  website_domain: string | null
   status: string
   next_follow_up_at: string | null
   created_at: string

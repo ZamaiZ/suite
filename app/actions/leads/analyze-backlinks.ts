@@ -32,7 +32,7 @@ export type AnalyzeLeadBacklinksState =
 
 const ANALYZE_FAILED =
   "Não foi possível analisar os backlinks. Tente novamente."
-const NO_WEBSITE = "Cadastre um site no lead para analisar os backlinks."
+const NO_WEBSITE = "Este lead não possui site para esta análise."
 
 export async function analyzeLeadBacklinks(
   formData: FormData,

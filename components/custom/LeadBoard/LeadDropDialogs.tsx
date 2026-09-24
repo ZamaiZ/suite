@@ -53,7 +53,7 @@ export type LeadDropRequest = {
   kind: LeadDropKind
   leadId: string
   companyName: string
-  websiteDomain: string
+  websiteDomain: string | null
 }
 
 export type LeadDropCommit = {
@@ -324,7 +324,7 @@ export function LeadDropDialogs({
           wellClassName={config.wellClassName}
           title={config.title}
           companyName={request?.companyName ?? ""}
-          websiteDomain={request?.websiteDomain ?? ""}
+          websiteDomain={request?.websiteDomain ?? null}
           onClose={handleClose}
         />
         <div className="p-4">

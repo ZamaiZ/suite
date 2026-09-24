@@ -1,0 +1,22 @@
+{
+    "captured_at":  "2026-09-22T20:10:36.7930601+00:00",
+    "envelope":  {
+                     "version":  "0.1.20260917",
+                     "status_code":  20000,
+                     "status_message":  "Ok.",
+                     "cost":  0,
+                     "tasks_count":  1,
+                     "tasks_error":  0
+                 },
+    "task":  {
+                 "status_code":  20000,
+                 "status_message":  "Ok.",
+                 "cost":  0
+             },
+    "matches":  [
+                    {
+                        "category_name":  "demolition_contractor",
+                        "business_count":  51411
+                    }
+                ]
+}

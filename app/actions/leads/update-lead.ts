@@ -115,7 +115,7 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
     .eq("id", leadId)
 
   if (error) {
-    if (error.code === "23505") {
+    if (error.code === "23505" && payload.website_domain) {
       const { data: existing } = await supabase
         .from("leads")
         .select("id")

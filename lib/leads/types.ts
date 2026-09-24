@@ -10,8 +10,8 @@ import type { BrazilStateCode } from "@/lib/br-locations"
 export type LeadRecord = {
   id: string
   company_name: string
-  website: string
-  website_domain: string
+  website: string | null
+  website_domain: string | null
   contact_name: string | null
   phone: string | null
   email: string | null
@@ -69,8 +69,8 @@ export type LeadDetailActivity = {
 
 export type LeadWritePayload = {
   company_name: string
-  website: string
-  website_domain: string
+  website: string | null
+  website_domain: string | null
   channels: LeadDigitalChannelWrite[]
   contact_name: string | null
   phone: string | null
@@ -104,8 +104,13 @@ export type SpreadsheetRawValues = Record<DigitalChannelType, string> & {
 export type SpreadsheetEvaluatedRow = {
   row: number
   values: SpreadsheetRawValues
-  payload: LeadWritePayload | null
+  payload: SpreadsheetLeadWritePayload | null
   issues: SpreadsheetIssue[]
+}
+
+export type SpreadsheetLeadWritePayload = LeadWritePayload & {
+  website: string
+  website_domain: string
 }
 
 export type { DigitalChannelDraft, LeadDigitalChannel, LeadDigitalChannelWrite }

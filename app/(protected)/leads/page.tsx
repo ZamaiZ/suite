@@ -190,7 +190,7 @@ export default async function LeadsPage({ searchParams }: PageProps<"/leads">) {
         channelMatchIds.length > 0
           ? `,id.in.(${channelMatchIds.join(",")})`
           : ""
-      const searchScope = `or(company_name.ilike.%${query}%,website_domain.ilike.%${query}%${channelFilter})`
+      const searchScope = `or(company_name.ilike.%${query}%,website_domain.ilike.%${query}%,phone.ilike.%${query}%${channelFilter})`
       listQuery = scope
         ? listQuery.or(`and(or(${scope}),${searchScope})`)
         : listQuery.or(searchScope.slice(3, -1))

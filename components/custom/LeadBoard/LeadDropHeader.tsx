@@ -17,7 +17,7 @@ export function LeadDropHeader({
   wellClassName: string
   title: string
   companyName: string
-  websiteDomain: string
+  websiteDomain: string | null
   onClose: () => void
 }) {
   const subtitle = websiteDomain

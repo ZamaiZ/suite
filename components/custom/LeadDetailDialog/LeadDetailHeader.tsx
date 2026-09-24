@@ -61,7 +61,7 @@ export function LeadDetailHeader({
   showReadingMode: boolean
   onReadingModeChange: (next: boolean) => void
   companyName: string
-  domain?: string
+  domain?: string | null
   status: LeadStatus | null
   closingStage: ClosingStage | null
   activityCount: number

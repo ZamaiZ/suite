@@ -15,6 +15,7 @@ import {
 import type {
   SpreadsheetEvaluatedRow,
   SpreadsheetIssue,
+  SpreadsheetLeadWritePayload,
   SpreadsheetRawValues,
 } from "@/lib/leads/types"
 
@@ -185,7 +186,24 @@ export function validateRawRows(
       observations: "",
     })
 
-    let payload = parsed.success ? parsed.data : null
+    // O cadastro manual aceita lead só com telefone — a prospecção importa
+    // perfis do Google sem site. A planilha não: ela continua exigindo o site,
+    // e essa é a única regra que ela não divide com o schema compartilhado.
+    const fields = parsed.success ? parsed.data : null
+    let payload: SpreadsheetLeadWritePayload | null = null
+    if (fields) {
+      const { website, website_domain: websiteDomain } = fields
+      if (website && websiteDomain) {
+        payload = { ...fields, website, website_domain: websiteDomain }
+      } else {
+        issues.push({
+          row: item.row,
+          field: "website",
+          kind: "problem",
+          message: "Informe o site da empresa.",
+        })
+      }
+    }
     if (!parsed.success) {
       for (const issue of parsed.error.issues) {
         const path0 = issue.path[0]
@@ -223,7 +241,7 @@ export function validateRawRows(
       }
     }
 
-    const channels = payload?.channels ?? []
+    const channels = fields?.channels ?? []
     for (const channel of channels) {
       const key = digitalChannelConflictKey(
         channel.type,
