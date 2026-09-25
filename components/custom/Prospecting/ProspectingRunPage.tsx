@@ -13,7 +13,6 @@ import {
   RiArrowLeftLine,
   RiArrowLeftSLine,
   RiArrowRightSLine,
-  RiBuilding2Line,
   RiCloseCircleLine,
   RiPauseLine,
   RiPlayLine,
@@ -27,9 +26,6 @@ import {
   pauseProspectingRunAction,
   resumeProspectingRunAction,
   startProspectingRunAction,
-  advanceProspectingCnpjBatchAction,
-  getActiveProspectingCnpjBatchAction,
-  startProspectingCnpjBatchAction,
 } from "@/app/actions/prospecting"
 import type { ImportCandidateResult } from "@/app/actions/prospecting"
 import {
@@ -37,6 +33,8 @@ import {
   isProspectingCandidateSelectable,
 } from "./ProspectingCandidateTable"
 import { ProspectingImportDialog } from "./ProspectingImportDialog"
+import { ProspectingCnpjFileTools } from "./ProspectingCnpjFileTools"
+import { ProspectingCnpjLocalTools } from "./ProspectingCnpjLocalTools"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -70,7 +68,6 @@ import type {
   ProspectingRunDetail,
 } from "@/lib/prospecting/reads"
 import type { ProspectingRunStatus } from "@/lib/prospecting/types"
-import type { ProspectingCnpjBatchProgress } from "@/lib/prospecting/reads"
 
 export type ProspectingCandidateFilters = {
   q: string
@@ -159,11 +156,6 @@ export function ProspectingRunPage({
   >(null)
   const [routePending, startRouteTransition] = useTransition()
   const [commandPending, startCommandTransition] = useTransition()
-  const [cnpjBatch, setCnpjBatch] = useState<ProspectingCnpjBatchProgress | null>(null)
-  const [cnpjMessage, setCnpjMessage] = useState("")
-  const [cnpjRunning, setCnpjRunning] = useState(false)
-  const [cnpjPending, setCnpjPending] = useState(false)
-  const [cnpjActiveLoading, setCnpjActiveLoading] = useState(true)
 
   const [syncedRunStamp, setSyncedRunStamp] = useState(initialRun.updatedAt)
   if (syncedRunStamp !== initialRun.updatedAt) {
@@ -181,82 +173,6 @@ export function ProspectingRunPage({
   if (syncedQuery !== filters.q) {
     setSyncedQuery(filters.q)
     setQuery(filters.q)
-  }
-
-  useEffect(() => {
-    let cancelled = false
-    void getActiveProspectingCnpjBatchAction({ runId: run.id })
-      .then((active) => { if (!cancelled) setCnpjBatch(active) })
-      .catch(() => { if (!cancelled) setCnpjMessage("Não foi possível verificar se há um lote CNPJ em andamento.") })
-      .finally(() => { if (!cancelled) setCnpjActiveLoading(false) })
-    return () => { cancelled = true }
-  }, [run.id])
-
-  useEffect(() => {
-    if (!cnpjRunning || !cnpjBatch) return
-    let cancelled = false
-    let timer: number | undefined
-    async function tick() {
-      if (cancelled || !cnpjBatch) return
-      let result: Awaited<ReturnType<typeof advanceProspectingCnpjBatchAction>>
-      try {
-        result = await advanceProspectingCnpjBatchAction({ batchId: cnpjBatch.batchId })
-      } catch {
-        if (!cancelled) {
-          setCnpjMessage("A pesquisa não pôde avançar. Você pode retomá-la explicitamente.")
-          setCnpjRunning(false)
-        }
-        return
-      }
-      if (cancelled) return
-      if (result.status !== "success" || !result.progress) {
-        setCnpjMessage(result.status === "success" ? "O lote não retornou progresso." : result.message)
-        setCnpjRunning(false)
-        return
-      }
-      setCnpjBatch(result.progress)
-      if (["completed", "source_limited", "source_unavailable"].includes(result.progress.status)) {
-        setCnpjRunning(false)
-        if (result.progress.status === "source_limited") setCnpjMessage("O limite gratuito ou a quota do BigQuery foi atingido. Nenhum CNPJ foi confirmado automaticamente.")
-        else if (result.progress.status === "source_unavailable") setCnpjMessage("A fonte não respondeu. Você pode iniciar uma nova tentativa depois.")
-        else setCnpjMessage("Pesquisa concluída. Revise as sugestões de CNPJ na tabela.")
-        const fresh = await listProspectingCandidatesAction({ runId: run.id, query: filters.q, filter: filters.filter, page: filters.page, pageSize: candidates.pageSize })
-        if (!cancelled && fresh.status === "success") setCandidates(fresh.result)
-        if (!cancelled) router.refresh()
-        return
-      }
-      timer = window.setTimeout(() => void tick(), 1500)
-    }
-    timer = window.setTimeout(() => void tick(), 0)
-    return () => { cancelled = true; if (timer !== undefined) window.clearTimeout(timer) }
-  }, [candidates.pageSize, cnpjBatch, cnpjRunning, filters.filter, filters.page, filters.q, router, run.id])
-
-  async function startCnpjSearch() {
-    if (cnpjPending) return
-    setCnpjPending(true)
-    setCnpjMessage("")
-    let result: Awaited<ReturnType<typeof startProspectingCnpjBatchAction>>
-    try {
-      result = await startProspectingCnpjBatchAction({ runId: run.id, candidateIds: [...selectedIds] })
-    } catch {
-      setCnpjPending(false)
-      setCnpjMessage("Não foi possível iniciar a pesquisa CNPJ.")
-      return
-    }
-    setCnpjPending(false)
-    if (result.status !== "success" || !result.batchId || !result.progress) {
-      setCnpjMessage(result.status === "success" ? "Não foi possível preparar o lote." : result.message)
-      return
-    }
-    setCnpjBatch(result.progress)
-    setCnpjRunning(true)
-    setSelectedIds(new Set())
-  }
-
-  function resumeCnpjSearch() {
-    if (!cnpjBatch || cnpjPending) return
-    setCnpjMessage("")
-    setCnpjRunning(true)
   }
 
   function handleCnpjConfirmed(candidateId: string, cnpj: string) {
@@ -714,17 +630,6 @@ export function ProspectingRunPage({
               onResult={handleImportResult}
               onFinished={() => void syncAfterImport()}
             />
-            {cnpjBatch && (cnpjBatch.status === "queued" || cnpjBatch.status === "processing") ? (
-              <Button variant="outline" onClick={resumeCnpjSearch} disabled={cnpjRunning || cnpjPending || cnpjActiveLoading}>
-                {cnpjRunning ? <Spinner className="size-3" /> : <RiBuilding2Line aria-hidden />}
-                {cnpjRunning ? `Pesquisando ${cnpjBatch.processedCount}/${cnpjBatch.totalCount}` : "Retomar pesquisa CNPJ"}
-              </Button>
-            ) : (
-              <Button variant="outline" onClick={() => void startCnpjSearch()} disabled={selectedIds.size === 0 || selectedIds.size > 50 || cnpjPending || cnpjRunning || cnpjActiveLoading}>
-                {cnpjPending || cnpjRunning ? <Spinner className="size-3" /> : <RiBuilding2Line aria-hidden />}
-                {cnpjPending ? "Preparando pesquisa" : cnpjRunning ? "Pesquisando CNPJ" : `Pesquisar CNPJ${selectedIds.size ? ` (${selectedIds.size})` : ""}`}
-              </Button>
-            )}
             <span className="text-xs text-muted-foreground tabular-nums sm:ml-auto">
               {selectedIds.size > 0
                 ? `${selectedIds.size} selecionado${selectedIds.size === 1 ? "" : "s"} · `
@@ -733,9 +638,8 @@ export function ProspectingRunPage({
             </span>
           </div>
 
-          {cnpjMessage ? (
-            <div role="status" className="rounded-lg border border-border bg-muted/30 px-3 py-2 text-xs text-muted-foreground">{cnpjMessage}</div>
-          ) : null}
+          <ProspectingCnpjLocalTools runId={run.id} onImported={() => router.refresh()} />
+          <ProspectingCnpjFileTools runId={run.id} onImported={() => router.refresh()} />
 
           <div className="min-h-0 flex-1 overflow-y-auto">
             {candidateError ? (

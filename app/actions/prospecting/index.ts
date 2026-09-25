@@ -28,14 +28,29 @@ export {
 export { setProspectingCandidateReviewAction } from "./review"
 
 export {
-  advanceProspectingCnpjBatchAction,
+  abortProspectingCnpjFileImportAction,
+  commitProspectingCnpjFileImportAction,
   confirmProspectingCandidateCnpjAction,
-  getActiveProspectingCnpjBatchAction,
   listProspectingCnpjMatchesAction,
-  startProspectingCnpjBatchAction,
-  type ProspectingCnpjActionState,
+  stageProspectingCnpjFileChunkAction,
+  startProspectingCnpjFileImportAction,
+  type ProspectingCnpjFileActionState,
   type ProspectingCnpjMatchesState,
 } from "./cnpj"
+
+export {
+  cancelLocalCnpjScanAction,
+  clearLocalCnpjScanArtifactsAction,
+  commitLocalCnpjScanAction,
+  deleteLocalCnpjResultsAction,
+  getActiveLocalCnpjScanStateAction,
+  getLocalCnpjScanEventsAction,
+  getLocalCnpjScanStateAction,
+  inspectLocalCnpjSourceAction,
+  previewLocalCnpjCleanupAction,
+  stageNextLocalCnpjScanChunkAction,
+  startLocalCnpjScanAction,
+} from "./cnpj-local-scan"
 
 export {
   importProspectingCandidateAction,

@@ -5,7 +5,7 @@ import {
   confirmProspectingCandidateCnpjAction,
   listProspectingCnpjMatchesAction,
 } from "@/app/actions/prospecting"
-import type { CnpjProviderMatch } from "@/lib/prospecting/cnpj-provider"
+import type { CnpjResearchMatch } from "@/lib/prospecting/cnpj-files"
 import type { ProspectingCandidateListItem } from "@/lib/prospecting/reads"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -22,13 +22,10 @@ import { Spinner } from "@/components/ui/spinner"
 function statusLabel(status: ProspectingCandidateListItem["cnpjStatus"]) {
   const labels: Record<ProspectingCandidateListItem["cnpjStatus"], string> = {
     not_searched: "Não pesquisado",
-    searching: "Pesquisando",
     suggestion: "Sugestão",
     needs_review: "Revisar",
     confirmed: "Confirmado",
     not_found: "Não encontrado",
-    source_limited: "Limite atingido",
-    source_unavailable: "Fonte indisponível",
   }
   return labels[status]
 }
@@ -50,7 +47,7 @@ export function ProspectingCnpjReviewDialog({
   onOpenChange: (open: boolean) => void
   onConfirmed: (candidateId: string, cnpj: string) => void
 }) {
-  const [matches, setMatches] = useState<CnpjProviderMatch[]>([])
+  const [matches, setMatches] = useState<CnpjResearchMatch[]>([])
   const [loading, setLoading] = useState(false)
   const [pendingId, setPendingId] = useState<string | null>(null)
   const [message, setMessage] = useState("")
@@ -78,7 +75,7 @@ export function ProspectingCnpjReviewDialog({
     }
   }, [candidate.id, open, runId])
 
-  async function confirm(match: CnpjProviderMatch) {
+  async function confirm(match: CnpjResearchMatch) {
     setPendingId(match.id)
     setMessage("")
     let result: Awaited<ReturnType<typeof confirmProspectingCandidateCnpjAction>>
@@ -125,7 +122,11 @@ export function ProspectingCnpjReviewDialog({
         {loading ? (
           <div className="flex items-center gap-2 py-5 text-muted-foreground"><Spinner className="size-4" />Carregando resultados…</div>
         ) : matches.length === 0 ? (
-          <p className="rounded-lg border border-border px-3 py-4 text-muted-foreground">Nenhuma correspondência válida foi encontrada para revisão.</p>
+          <p className="rounded-lg border border-border px-3 py-4 text-muted-foreground">
+            {candidate.cnpjStatus === "needs_review"
+              ? "A pesquisa ficou ambígua e não gerou uma sugestão de CNPJ. Confira os dados do estabelecimento antes de pesquisar novamente."
+              : "Nenhuma correspondência válida foi encontrada para revisão."}
+          </p>
         ) : (
           <ul className="grid gap-2">
             {matches.map((match) => (
@@ -138,7 +139,7 @@ export function ProspectingCnpjReviewDialog({
                   <p className="text-muted-foreground">Nome fantasia: {match.tradeName ?? "—"}</p>
                   <p className="font-mono text-foreground">{match.cnpj}</p>
                   <p className="text-muted-foreground">{[match.city, match.stateCode].filter(Boolean).join(" / ") || "Localização não informada"}{match.primaryCnae ? ` · CNAE ${match.primaryCnae}` : ""}</p>
-                  <a className="text-primary underline underline-offset-2" href={match.sourceUrl} target="_blank" rel="noreferrer noopener">Fonte OpenCNPJ{match.sourceUpdatedAt ? ` · atualização ${new Date(match.sourceUpdatedAt).toLocaleDateString("pt-BR")}` : ""}</a>
+                  <a className="text-primary underline underline-offset-2" href={match.sourceUrl} target="_blank" rel="noreferrer noopener">{match.source === "ai_research" ? "Fonte da pesquisa" : match.source === "receita_local_index" ? `Dados abertos da Receita${match.datasetVersion ? ` · ${match.datasetVersion}` : ""}` : "Fonte OpenCNPJ (histórico)"}{match.sourceCheckedAt ? ` · consulta ${new Date(match.sourceCheckedAt).toLocaleDateString("pt-BR")}` : ""}</a>
                 </div>
                 <Button onClick={() => void confirm(match)} disabled={pendingId !== null}>
                   {pendingId === match.id ? <Spinner className="size-3" /> : null}

@@ -167,6 +167,7 @@ function SidebarLabel({
 }) {
   return (
     <m.span
+      initial={false}
       className="overflow-hidden whitespace-nowrap leading-none"
       animate={{ maxWidth: expanded ? 200 : 0, opacity: expanded ? 1 : 0 }}
       transition={animate ? LABEL_T(delay) : INSTANT}

@@ -32,24 +32,24 @@ This would keep the generated data outside the prospecting workflow and would no
 
 - Export scope is the full run, not the visible page, filters, or selected candidate IDs.
 - The export is always one Markdown file per run, even when the run contains more than 50 candidates. Export queries read the full run in bounded database pages.
-- The Markdown contains the run ID, export timestamp, a concise task description, detailed per-company research instructions, the CSV schema, and every candidate's available input fields.
+- The Markdown contains the run ID, export timestamp, a concise task description, detailed per-company research instructions, the CSV schema, and every candidate's available input fields in one fenced JSON payload.
 - Candidate rows carry stable `run_id` and `candidate_id` identifiers. Candidate ID is the only association key used on import; names, domains, and addresses are never used to guess an association.
 - Candidate input data includes company name, primary category, address, phone, website, website domain, city, state, and any already recorded CNPJ.
 - Instructions require individual research for each candidate, comparison of company name and location, preference for authoritative or primary sources, source URL and research date for each found match, no inference from a similar name, and blank CNPJ fields when the match is unverified.
-- The model must preserve identifiers and input columns, return one data row per candidate, use UTF-8 and standard comma-separated CSV quoting, and return only the CSV content/file.
+- JSON represents the input records so commas, quotes, newlines, nulls, and identifiers remain unambiguous. The model must preserve identifiers and input columns, return one data row per candidate, use UTF-8 and standard comma-separated CSV quoting, and return only the CSV content/file.
 
 ## CSV return contract
 
 The CSV has an exact ordered header:
 
 ```text
-run_id,candidate_id,company_name,primary_category,address,phone,website,website_domain,city,state_code,existing_cnpj,research_status,cnpj,legal_name,trade_name,registration_status,primary_cnae,source_url,source_checked_at
+run_id,candidate_id,company_name,primary_category,address,phone,website,website_domain,city,state_code,existing_cnpj,research_status,cnpj,legal_name,trade_name,registration_status,matched_city,matched_state_code,primary_cnae,source_url,source_checked_at
 ```
 
 - `run_id`, `candidate_id`, and the original candidate fields are copied from the Markdown export and are immutable input context.
 - The CSV has exactly one row for every candidate included in the Markdown export. Import checks complete candidate coverage against the run; an incomplete AI response is rejected without applying business data.
 - `research_status` is one of `found`, `not_found`, or `ambiguous`.
-- A `found` row requires a structurally valid CNPJ, source URL, and parseable source date. Legal name, trade name, registration status, and primary CNAE are optional.
+- A `found` row requires a structurally valid CNPJ, source URL, and parseable source date. Legal name, trade name, registration status, matched registration city/state, and primary CNAE are optional. `matched_city` and `matched_state_code` describe the researched registration record; `city` and `state_code` remain the immutable location context of the prospecting candidate.
 - `not_found` and `ambiguous` rows have an empty CNPJ and do not create a match. Supporting source fields may be empty.
 - Import rejects a malformed header, missing/extra columns, invalid encoding/content, duplicate candidate IDs, unknown candidate IDs, run-ID mismatch, missing candidates, invalid status/CNPJ, or invalid required source fields. The error identifies the row or column when possible.
 - The complete CSV is parsed and validated before business data is changed. Large files are uploaded as bounded chunks into isolated temporary staging records. Staged rows are not visible as CNPJ suggestions and do not change candidates. A final authenticated operation verifies complete run coverage and applies every row in one database transaction. Interrupted uploads expire and are cleaned up without changing business data.

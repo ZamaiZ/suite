@@ -25,13 +25,10 @@ function cnpjLabel(candidate: ProspectingCandidateListItem) {
   if (candidate.cnpjStatus === "confirmed" && candidate.cnpj) return formatCnpj(candidate.cnpj)
   const labels = {
     not_searched: "Não pesquisado",
-    searching: "Pesquisando",
     suggestion: "Sugestão disponível",
     needs_review: "Revisar resultado",
     confirmed: "Confirmado",
     not_found: "Não encontrado",
-    source_limited: "Limite atingido",
-    source_unavailable: "Fonte indisponível",
   }
   return labels[candidate.cnpjStatus]
 }

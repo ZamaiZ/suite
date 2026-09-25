@@ -158,6 +158,7 @@ export function Sidebar() {
         className="relative flex h-14 shrink-0 items-center overflow-hidden border-b border-sidebar-border px-3"
       >
         <m.span
+          initial={false}
           aria-hidden
           className="overflow-hidden whitespace-nowrap font-heading text-xs/relaxed font-semibold tracking-widest text-muted-foreground uppercase select-none leading-none"
           animate={{
@@ -231,6 +232,7 @@ export function Sidebar() {
               <RiLogoutBoxLine size={18} aria-hidden />
               <FormPendingSurface>
                 <m.span
+                  initial={false}
                   className="overflow-hidden whitespace-nowrap leading-none"
                   animate={{
                     maxWidth: expanded ? 200 : 0,

@@ -3,472 +3,261 @@
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 import { requireCommercialMember } from "@/lib/auth/session"
-import { createAdminClient } from "@/lib/supabase/admin"
 import { createClient } from "@/lib/supabase/server"
 import { isValidCnpj, normalizeCnpj } from "@/lib/prospecting/cnpj"
 import {
-  getCnpjProviderConfig,
-  readCnpjBigQueryJob,
-  startCnpjBigQueryJob,
-} from "@/lib/prospecting/cnpj-provider-adapter"
-import type {
-  CnpjProviderCandidate,
-  CnpjProviderMatch,
-} from "@/lib/prospecting/cnpj-provider"
-import {
-  isProspectingCnpjBatchStatus,
-  type ProspectingCnpjBatchProgress,
-} from "@/lib/prospecting/reads"
+  CnpjCsvError,
+  type CnpjCsvRow,
+  type CnpjResearchMatch,
+  validateCnpjCsvRow,
+} from "@/lib/prospecting/cnpj-files"
 
-const startSchema = z
-  .object({
-    runId: z.uuid(),
-    candidateIds: z.array(z.uuid()).min(1).max(50),
-  })
-  .strict()
-  .superRefine((value, ctx) => {
-    if (new Set(value.candidateIds).size !== value.candidateIds.length) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["candidateIds"],
-        message: "A seleção contém candidatos repetidos.",
-      })
-    }
-  })
+const uuidSchema = z.uuid()
+const startFileSchema = z.object({ runId: uuidSchema }).strict()
+const stageFileSchema = z.object({
+  importId: uuidSchema,
+  chunkIndex: z.number().int().min(0).max(2000),
+  rows: z.array(z.object({
+    run_id: z.string().uuid(), candidate_id: z.string().uuid(),
+    company_name: z.string().max(300), primary_category: z.string().max(300), address: z.string().max(1000),
+    phone: z.string().max(100), website: z.string().max(2048), website_domain: z.string().max(253),
+    city: z.string().max(160), state_code: z.string().max(2), existing_cnpj: z.string().max(14),
+    research_status: z.string().max(20), cnpj: z.string().max(30), legal_name: z.string().max(300),
+    trade_name: z.string().max(300), registration_status: z.string().max(80), matched_city: z.string().max(160),
+    matched_state_code: z.string().max(2), primary_cnae: z.string().max(100), source_url: z.string().max(500),
+    source_checked_at: z.string().max(50), source_row_number: z.number().int().min(2),
+  }).strict()).min(1).max(50),
+}).strict()
+const importIdSchema = z.object({ importId: uuidSchema }).strict()
+const candidateMatchSchema = z.object({ runId: uuidSchema, candidateId: uuidSchema }).strict()
+const confirmSchema = z.object({ runId: uuidSchema, candidateId: uuidSchema, matchId: uuidSchema }).strict()
 
-const batchSchema = z.object({ batchId: z.uuid() }).strict()
-const candidateMatchSchema = z
-  .object({ runId: z.uuid(), candidateId: z.uuid() })
-  .strict()
-const confirmSchema = z
-  .object({ runId: z.uuid(), candidateId: z.uuid(), matchId: z.uuid() })
-  .strict()
+function isSafeHttpsUrl(value: string) {
+  try {
+    const url = new URL(value)
+    return url.protocol === "https:" && Boolean(url.hostname) && !url.username && !url.password
+  } catch {
+    return false
+  }
+}
 
-export type ProspectingCnpjActionState =
-  | { status: "success"; batchId?: string; progress?: ProspectingCnpjBatchProgress }
-  | {
-      status:
-        | "source_not_configured"
-        | "source_limited"
-        | "source_unavailable"
-        | "error"
-      message: string
-    }
-
-export type ProspectingCnpjMatchesState =
-  | { status: "success"; candidateId: string; matches: CnpjProviderMatch[] }
+export type ProspectingCnpjFileActionState =
+  | { status: "success"; importId?: string; summary?: { suggestions: number; notFound: number; ambiguous: number; skipped: number } }
   | { status: "error"; message: string }
 
-type BatchRow = {
-  id: string
-  run_id: string
-  actor_id: string
-  provider_job_id: string
-  provider_started_at: string | null
-  status: string
-  processed_count: number
-  total_count: number
-}
+export type ProspectingCnpjMatchesState =
+  | { status: "success"; candidateId: string; matches: CnpjResearchMatch[] }
+  | { status: "error"; message: string }
 
-function progressFromRow(row: BatchRow): ProspectingCnpjBatchProgress | null {
-  if (!isProspectingCnpjBatchStatus(row.status)) return null
-  if (
-    !Number.isInteger(row.processed_count) ||
-    !Number.isInteger(row.total_count) ||
-    row.processed_count < 0 ||
-    row.total_count < 1 ||
-    row.processed_count > row.total_count
-  ) {
-    return null
-  }
-  return {
-    batchId: row.id,
-    status: row.status,
-    processedCount: row.processed_count,
-    totalCount: row.total_count,
-  }
-}
-
-function publicError(status: "source_limited" | "source_unavailable") {
-  return status === "source_limited"
-    ? "A consulta excedeu o limite gratuito configurado ou a quota do BigQuery."
-    : "O BigQuery não respondeu. A tentativa ficou registrada para retomada explícita."
-}
-
-async function recordBatch(input: {
-  batchId: string
-  actorId: string
-  status: "completed" | "source_limited" | "source_unavailable"
-  bytesProcessed: string | null
-  sourceUpdatedAt: string | null
-  matches: CnpjProviderMatch[]
-}) {
-  const { data, error } = await createAdminClient().rpc(
-    "record_prospecting_cnpj_batch",
-    {
-      p_batch_id: input.batchId,
-      p_actor_id: input.actorId,
-      p_status: input.status,
-      p_bytes_processed: input.bytesProcessed,
-      p_source_updated_at: input.sourceUpdatedAt,
-      p_matches: input.matches.map((match) => ({
-        candidate_id: match.candidateId,
-        cnpj: match.cnpj,
-        legal_name: match.legalName,
-        trade_name: match.tradeName,
-        registration_status: match.registrationStatus,
-        city: match.city,
-        state_code: match.stateCode,
-        primary_cnae: match.primaryCnae,
-        source_updated_at: match.sourceUpdatedAt,
-        source_url: match.sourceUrl,
-        structurally_valid: match.structurallyValid,
-      })),
-    },
-  )
-  if (error) throw new Error("Unable to record CNPJ batch.", { cause: error })
-  return data as { status?: unknown; processedCount?: unknown; totalCount?: unknown }
-}
-
-export async function startProspectingCnpjBatchAction(
-  input: unknown,
-): Promise<ProspectingCnpjActionState> {
+export async function startProspectingCnpjFileImportAction(input: unknown): Promise<ProspectingCnpjFileActionState> {
   const { user } = await requireCommercialMember()
-  const parsed = startSchema.safeParse(input)
-  if (!parsed.success) {
-    return { status: "error", message: "Selecione entre 1 e 50 candidatos válidos." }
-  }
-  if (getCnpjProviderConfig().status !== "configured") {
-    return {
-      status: "source_not_configured",
-      message: "Configure o projeto e a credencial do BigQuery no servidor para pesquisar CNPJs.",
-    }
-  }
-
+  const parsed = startFileSchema.safeParse(input)
+  if (!parsed.success) return { status: "error", message: "Execução de prospecção inválida." }
   const supabase = await createClient()
-  const { data, error } = await supabase.rpc("create_prospecting_cnpj_batch", {
+  const { data, error } = await supabase.rpc("create_prospecting_cnpj_file_import", {
     p_run_id: parsed.data.runId,
-    p_candidate_ids: parsed.data.candidateIds,
     p_actor_id: user.id,
   })
   if (error || typeof data !== "string") {
-    return {
-      status: "error",
-      message: "Não foi possível iniciar a pesquisa. Confira se os candidatos ainda estão disponíveis.",
-    }
+    return { status: "error", message: "Não foi possível iniciar a importação. Confira se a execução está disponível." }
   }
-  revalidatePath(`/prospecting/${parsed.data.runId}`)
-  return {
-    status: "success",
-    batchId: data,
-    progress: {
-      batchId: data,
-      status: "queued",
-      processedCount: 0,
-      totalCount: parsed.data.candidateIds.length,
-    },
-  }
+  return { status: "success", importId: data }
 }
 
-export async function getActiveProspectingCnpjBatchAction(input: {
-  runId: string
-}): Promise<ProspectingCnpjBatchProgress | null> {
+export async function stageProspectingCnpjFileChunkAction(input: unknown): Promise<ProspectingCnpjFileActionState> {
   const { user } = await requireCommercialMember()
-  const parsed = z.object({ runId: z.uuid() }).strict().safeParse(input)
-  if (!parsed.success) return null
+  const parsed = stageFileSchema.safeParse(input)
+  if (!parsed.success) return { status: "error", message: "O bloco contém dados inválidos ou excede o limite de 50 linhas." }
   const supabase = await createClient()
-  const { data, error } = await supabase
-    .from("prospecting_cnpj_batches")
-    .select("id, run_id, actor_id, provider_job_id, provider_started_at, status, processed_count, total_count")
-    .eq("run_id", parsed.data.runId)
-    .eq("actor_id", user.id)
-    .in("status", ["queued", "processing"])
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle()
-  if (error || !data) return null
-  return progressFromRow(data as BatchRow)
-}
-
-export async function advanceProspectingCnpjBatchAction(
-  input: unknown,
-): Promise<ProspectingCnpjActionState> {
-  const { user } = await requireCommercialMember()
-  const parsed = batchSchema.safeParse(input)
-  if (!parsed.success) return { status: "error", message: "Lote CNPJ inválido." }
-  const config = getCnpjProviderConfig()
-  if (config.status !== "configured") {
-    return {
-      status: "source_not_configured",
-      message: "Configure o projeto e a credencial do BigQuery no servidor para continuar.",
-    }
+  const runId = parsed.data.rows[0]?.run_id
+  if (!runId || parsed.data.rows.some((row) => row.run_id !== runId)) {
+    return { status: "error", message: "O bloco contém linhas de execuções diferentes." }
   }
-
-  const supabase = await createClient()
-  const { data: claimed, error: claimError } = await supabase.rpc(
-    "claim_prospecting_cnpj_batch",
-    { p_batch_id: parsed.data.batchId, p_actor_id: user.id },
-  )
-  if (claimError || !claimed || typeof claimed !== "object") {
-    return { status: "error", message: "Não foi possível retomar este lote." }
-  }
-  const claim = claimed as Record<string, unknown>
-  if (!isProspectingCnpjBatchStatus(claim.status)) {
-    return { status: "error", message: "O lote retornou um estado inválido." }
-  }
-  if (claim.status !== "processing") {
-    const { data: terminal } = await supabase
-      .from("prospecting_cnpj_batches")
-      .select("id, run_id, actor_id, provider_job_id, provider_started_at, status, processed_count, total_count")
-      .eq("id", parsed.data.batchId)
-      .maybeSingle()
-    const progress = terminal
-      ? progressFromRow(terminal as BatchRow)
-      : null
-    return progress
-      ? { status: "success", batchId: progress.batchId, progress }
-      : { status: "error", message: "O lote não está disponível." }
-  }
-
-  const { data: batchData, error: batchError } = await supabase
-    .from("prospecting_cnpj_batches")
-    .select("id, run_id, actor_id, provider_job_id, provider_started_at, status, processed_count, total_count")
-    .eq("id", parsed.data.batchId)
-    .maybeSingle()
-  if (batchError || !batchData) {
-    return { status: "error", message: "Não foi possível ler o lote." }
-  }
-  const batch = batchData as BatchRow
-  const progress = progressFromRow(batch)
-  if (!progress || batch.actor_id !== user.id) {
-    return { status: "error", message: "O lote não está disponível para esta pessoa." }
-  }
-
-  if (!batch.provider_started_at) {
-    const [runResult, batchCandidatesResult] = await Promise.all([
-      supabase
-        .from("prospecting_runs")
-        .select("city, state_code")
-        .eq("id", batch.run_id)
-        .maybeSingle(),
-      supabase
-        .from("prospecting_cnpj_batch_candidates")
-        .select("candidate_id")
-        .eq("batch_id", batch.id)
-        .order("position", { ascending: true }),
-    ])
-    const candidateIds = (batchCandidatesResult.data ?? []).flatMap((row) =>
-      typeof row.candidate_id === "string" ? [row.candidate_id] : [],
-    )
-    const { data: candidateRows, error: candidateError } = candidateIds.length
-      ? await supabase
-          .from("prospecting_candidates")
-          .select("id, company_name")
-          .in("id", candidateIds)
-      : { data: [], error: null }
-    if (
-      runResult.error ||
-      batchCandidatesResult.error ||
-      candidateError ||
-      !runResult.data ||
-      candidateIds.length !== batch.total_count
-    ) {
-      return { status: "error", message: "Não foi possível preparar os candidatos para a pesquisa." }
-    }
-    const byId = new Map(
-      (candidateRows ?? []).map((row) => [row.id, row.company_name]),
-    )
-    const candidates: CnpjProviderCandidate[] = candidateIds.flatMap((id) => {
-      const companyName = byId.get(id)
-      return typeof companyName === "string" && companyName.trim()
-        ? [{ id, companyName }]
-        : []
-    })
-    if (candidates.length !== batch.total_count) {
-      return { status: "error", message: "Um ou mais candidatos não têm nome pesquisável." }
-    }
-    const started = await startCnpjBigQueryJob({
-      batchId: batch.id,
-      candidates,
-      city: runResult.data.city,
-      stateCode: runResult.data.state_code,
-    })
-    if (started.status === "source_not_configured") {
-      return {
-        status: "source_not_configured",
-        message: "Configure o projeto e a credencial do BigQuery no servidor para pesquisar CNPJs.",
-      }
-    }
-    if (started.status === "source_limited" || started.status === "source_unavailable") {
-      try {
-        const recorded = await recordBatch({
-          batchId: batch.id,
-          actorId: user.id,
-          status: started.status,
-          bytesProcessed: null,
-          sourceUpdatedAt: null,
-          matches: [],
-        })
-        revalidatePath(`/prospecting/${batch.run_id}`)
-        return {
-          status: "success",
-          batchId: batch.id,
-          progress: {
-            batchId: batch.id,
-            status: started.status,
-            processedCount: Number(recorded.processedCount ?? 0),
-            totalCount: Number(recorded.totalCount ?? batch.total_count),
-          },
-        }
-      } catch {
-        return { status: "error", message: "Não foi possível registrar o limite/falha do provedor." }
-      }
-    }
-    const { error: markError } = await createAdminClient().rpc(
-      "mark_prospecting_cnpj_job_started",
-      { p_batch_id: batch.id, p_actor_id: user.id },
-    )
-    if (markError) {
-      return { status: "error", message: "A consulta iniciou, mas não foi possível salvar o estado do lote." }
-    }
-    return {
-      status: "success",
-      batchId: batch.id,
-      progress: { ...progress, status: "processing" },
-    }
-  }
-
-  const jobState = await readCnpjBigQueryJob({
-    batchId: batch.id,
-    jobId: batch.provider_job_id,
-  })
-  if (jobState.status === "processing") {
-    return {
-      status: "success",
-      batchId: batch.id,
-      progress: { ...progress, status: "processing" },
-    }
-  }
-
+  const ids = parsed.data.rows.map((row) => row.candidate_id)
+  let validatedRows: Array<{ validated: ReturnType<typeof validateCnpjCsvRow>; row: (typeof parsed.data.rows)[number] }>
   try {
-    const result = await recordBatch({
-      batchId: batch.id,
-      actorId: user.id,
-      status: jobState.status,
-      bytesProcessed:
-        jobState.status === "completed" ? jobState.bytesProcessed : null,
-      sourceUpdatedAt:
-        jobState.status === "completed" ? jobState.sourceUpdatedAt : null,
-      matches: jobState.status === "completed" ? jobState.matches : [],
-    })
-    revalidatePath(`/prospecting/${batch.run_id}`)
-    const recordedStatus = isProspectingCnpjBatchStatus(result.status)
-      ? result.status
-      : jobState.status
-    const nextProgress: ProspectingCnpjBatchProgress = {
-      batchId: batch.id,
-      status: recordedStatus,
-      processedCount: Number(result.processedCount ?? batch.total_count),
-      totalCount: Number(result.totalCount ?? batch.total_count),
+    validatedRows = parsed.data.rows.map((row) => ({
+      validated: validateCnpjCsvRow(row as CnpjCsvRow, row.source_row_number),
+      row,
+    }))
+  } catch (cause) {
+    if (cause instanceof CnpjCsvError) {
+      return { status: "error", message: `Linha ${cause.rowNumber ?? "?"}${cause.column ? ` · ${cause.column}` : ""}: ${cause.message}` }
     }
-    return { status: "success", batchId: batch.id, progress: nextProgress }
-  } catch {
-    return { status: "error", message: "Não foi possível salvar os resultados da pesquisa." }
+    return { status: "error", message: "O bloco contém uma linha CSV inválida." }
   }
+  const [{ data: run, error: runError }, { data: candidates, error: candidatesError }] = await Promise.all([
+    supabase.from("prospecting_runs").select("city, state_code").eq("id", runId).maybeSingle(),
+    supabase.from("prospecting_run_candidates")
+      .select("candidate_id, prospecting_candidates(company_name, primary_category, address, phone, website, website_domain, cnpj)")
+      .eq("run_id", runId)
+      .in("candidate_id", ids),
+  ])
+  if (runError || candidatesError || !run || candidates?.length !== ids.length) {
+    return { status: "error", message: "Não foi possível conferir todas as empresas deste bloco." }
+  }
+  type CandidateContext = {
+    company_name: string | null
+    primary_category: string | null
+    address: string | null
+    phone: string | null
+    website: string | null
+    website_domain: string | null
+    cnpj: string | null
+  }
+  const contextById = new Map<string, CandidateContext>()
+  for (const relation of candidates) {
+    const candidate = Array.isArray(relation.prospecting_candidates)
+      ? relation.prospecting_candidates[0]
+      : relation.prospecting_candidates
+    if (candidate) contextById.set(relation.candidate_id, candidate)
+  }
+  const contextColumns = [
+    ["company_name", "company_name"],
+    ["primary_category", "primary_category"],
+    ["address", "address"],
+    ["phone", "phone"],
+    ["website", "website"],
+    ["website_domain", "website_domain"],
+  ] as const
+  for (const { row, validated } of validatedRows) {
+    if (validated.run_id !== runId || row.city !== run.city || row.state_code !== run.state_code) {
+      return { status: "error", message: `Linha ${row.source_row_number}: o contexto da execução foi alterado.` }
+    }
+    const candidate = contextById.get(validated.candidate_id)
+    if (!candidate) return { status: "error", message: `Linha ${row.source_row_number}: o candidato não pertence a esta execução.` }
+    for (const [csvColumn, candidateColumn] of contextColumns) {
+      if (row[csvColumn] !== (candidate[candidateColumn] ?? "")) {
+        return { status: "error", message: `Linha ${row.source_row_number} · ${csvColumn}: o contexto da empresa foi alterado.` }
+      }
+    }
+    if (!candidate.cnpj && row.existing_cnpj !== "") {
+      return { status: "error", message: `Linha ${row.source_row_number} · existing_cnpj: o contexto da empresa foi alterado.` }
+    }
+  }
+  const { error } = await supabase.rpc("stage_prospecting_cnpj_file_chunk", {
+    p_import_id: parsed.data.importId,
+    p_run_id: runId,
+    p_actor_id: user.id,
+    p_chunk_index: parsed.data.chunkIndex,
+    p_rows: validatedRows.map(({ row, validated }) => ({
+      company_name: row.company_name,
+      primary_category: row.primary_category,
+      address: row.address,
+      phone: row.phone,
+      website: row.website,
+      website_domain: row.website_domain,
+      city: row.city,
+      state_code: row.state_code,
+      existing_cnpj: row.existing_cnpj,
+      ...validated,
+      source_row_number: row.source_row_number,
+    })),
+  })
+  if (error) return { status: "error", message: "Não foi possível preparar um bloco do CSV. Nenhum dado parcial foi aplicado." }
+  return { status: "success" }
 }
 
-export async function listProspectingCnpjMatchesAction(
-  input: unknown,
-): Promise<ProspectingCnpjMatchesState> {
+export async function commitProspectingCnpjFileImportAction(input: unknown): Promise<ProspectingCnpjFileActionState> {
+  const { user } = await requireCommercialMember()
+  const parsed = importIdSchema.safeParse(input)
+  if (!parsed.success) return { status: "error", message: "Importação CNPJ inválida." }
+  const supabase = await createClient()
+  const { data, error } = await supabase.rpc("commit_prospecting_cnpj_file_import", {
+    p_import_id: parsed.data.importId,
+    p_actor_id: user.id,
+  })
+  if (error || !data || typeof data !== "object") {
+    return { status: "error", message: "O CSV está incompleto ou mudou desde o download. Nenhum resultado parcial foi aplicado." }
+  }
+  const summary = data as Record<string, unknown>
+  const counts = [summary.suggestions, summary.notFound, summary.ambiguous, summary.skipped]
+  if (!counts.every((value) => Number.isInteger(value) && Number(value) >= 0)) {
+    return { status: "error", message: "A importação foi processada, mas o resumo retornado é inválido. Atualize a página para conferir os dados." }
+  }
+  if (typeof summary.runId === "string") revalidatePath(`/prospecting/${summary.runId}`)
+  return { status: "success", summary: {
+    suggestions: Number(summary.suggestions),
+    notFound: Number(summary.notFound),
+    ambiguous: Number(summary.ambiguous),
+    skipped: Number(summary.skipped),
+  } }
+}
+
+export async function abortProspectingCnpjFileImportAction(input: unknown): Promise<ProspectingCnpjFileActionState> {
+  const { user } = await requireCommercialMember()
+  const parsed = importIdSchema.safeParse(input)
+  if (!parsed.success) return { status: "error", message: "Importação CNPJ inválida." }
+  const supabase = await createClient()
+  const { error } = await supabase.rpc("abort_prospecting_cnpj_file_import", {
+    p_import_id: parsed.data.importId,
+    p_actor_id: user.id,
+  })
+  return error
+    ? { status: "error", message: "Não foi possível encerrar a importação temporária." }
+    : { status: "success" }
+}
+
+export async function listProspectingCnpjMatchesAction(input: unknown): Promise<ProspectingCnpjMatchesState> {
   await requireCommercialMember()
   const parsed = candidateMatchSchema.safeParse(input)
-  if (!parsed.success) {
-    return { status: "error", message: "Candidato CNPJ inválido." }
-  }
+  if (!parsed.success) return { status: "error", message: "Candidato CNPJ inválido." }
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("prospecting_cnpj_matches")
-    .select("id, candidate_id, cnpj, legal_name, trade_name, registration_status, city, state_code, primary_cnae, source, source_updated_at, source_url, structurally_valid")
+    .select("id, candidate_id, cnpj, legal_name, trade_name, registration_status, city, state_code, primary_cnae, source, dataset_version, source_updated_at, source_url, structurally_valid")
     .eq("run_id", parsed.data.runId)
     .eq("candidate_id", parsed.data.candidateId)
     .order("created_at", { ascending: false })
     .limit(100)
-  if (error) {
-    return { status: "error", message: "Não foi possível carregar os resultados CNPJ." }
-  }
-  const matches: CnpjProviderMatch[] = (data ?? []).flatMap((row) => {
+  if (error) return { status: "error", message: "Não foi possível carregar os resultados CNPJ." }
+  const matches: CnpjResearchMatch[] = (data ?? []).flatMap((row) => {
     const cnpj = normalizeCnpj(row.cnpj)
-    if (!cnpj || !isValidCnpj(cnpj) || row.source !== "opencnpj_bigquery") return []
-    if (
-      typeof row.id !== "string" ||
-      typeof row.candidate_id !== "string" ||
-      typeof row.source_url !== "string" ||
-      typeof row.structurally_valid !== "boolean" ||
-      !row.structurally_valid
-    ) {
-      return []
-    }
+    if (!cnpj || !isValidCnpj(cnpj) || (row.source !== "opencnpj_bigquery" && row.source !== "ai_research" && row.source !== "receita_local_index")) return []
+    if (typeof row.id !== "string" || typeof row.candidate_id !== "string" || typeof row.source_url !== "string" || !isSafeHttpsUrl(row.source_url) || !row.structurally_valid) return []
     return [{
       id: row.id,
       candidateId: row.candidate_id,
       cnpj,
-      legalName: typeof row.legal_name === "string" ? row.legal_name : null,
-      tradeName: typeof row.trade_name === "string" ? row.trade_name : null,
-      registrationStatus: typeof row.registration_status === "string" ? row.registration_status : null,
-      city: typeof row.city === "string" ? row.city : null,
-      stateCode: typeof row.state_code === "string" ? row.state_code : null,
-      primaryCnae: typeof row.primary_cnae === "string" ? row.primary_cnae : null,
-      source: "opencnpj_bigquery",
-      sourceUpdatedAt:
-        typeof row.source_updated_at === "string"
-          ? row.source_updated_at
-          : null,
+      legalName: row.legal_name,
+      tradeName: row.trade_name,
+      registrationStatus: row.registration_status,
+      city: row.city,
+      stateCode: row.state_code,
+      primaryCnae: row.primary_cnae,
+      source: row.source,
+      datasetVersion: row.dataset_version,
+      sourceCheckedAt: row.source_updated_at,
       sourceUrl: row.source_url,
-      structurallyValid: row.structurally_valid,
+      structurallyValid: true,
     }]
   })
   return { status: "success", candidateId: parsed.data.candidateId, matches }
 }
 
-export async function confirmProspectingCandidateCnpjAction(
-  input: unknown,
-): Promise<ProspectingCnpjActionState> {
+export async function confirmProspectingCandidateCnpjAction(input: unknown): Promise<ProspectingCnpjFileActionState> {
   const { user } = await requireCommercialMember()
   const parsed = confirmSchema.safeParse(input)
-  if (!parsed.success) {
-    return { status: "error", message: "Escolha um resultado CNPJ válido." }
-  }
+  if (!parsed.success) return { status: "error", message: "Escolha um resultado CNPJ válido." }
   const supabase = await createClient()
   const { data: match, error: matchError } = await supabase
     .from("prospecting_cnpj_matches")
-    .select("cnpj, structurally_valid, source, source_url")
+    .select("cnpj, structurally_valid, source")
     .eq("id", parsed.data.matchId)
     .eq("run_id", parsed.data.runId)
     .eq("candidate_id", parsed.data.candidateId)
     .maybeSingle()
   const cnpj = normalizeCnpj(match?.cnpj)
-  if (
-    matchError ||
-    !match ||
-    match.source !== "opencnpj_bigquery" ||
-    !match.structurally_valid ||
-    !cnpj ||
-    !isValidCnpj(cnpj)
-  ) {
-    return { status: "error", message: "Este resultado não pode ser confirmado. Pesquise novamente." }
+  if (matchError || !match || (match.source !== "ai_research" && match.source !== "opencnpj_bigquery" && match.source !== "receita_local_index") || !match.structurally_valid || !cnpj || !isValidCnpj(cnpj)) {
+    return { status: "error", message: "Este resultado não pode ser confirmado. Revise a fonte e tente novamente." }
   }
-  const { data, error } = await supabase.rpc(
-    "confirm_prospecting_candidate_cnpj",
-    {
-      p_run_id: parsed.data.runId,
-      p_candidate_id: parsed.data.candidateId,
-      p_match_id: parsed.data.matchId,
-      p_actor_id: user.id,
-    },
-  )
-  if (error || !data || typeof data !== "object") {
-    return { status: "error", message: "Não foi possível confirmar o CNPJ." }
-  }
+  const { error } = await supabase.rpc("confirm_prospecting_candidate_cnpj", {
+    p_run_id: parsed.data.runId,
+    p_candidate_id: parsed.data.candidateId,
+    p_match_id: parsed.data.matchId,
+    p_actor_id: user.id,
+  })
+  if (error) return { status: "error", message: "Não foi possível confirmar o CNPJ." }
   revalidatePath(`/prospecting/${parsed.data.runId}`)
   revalidatePath("/leads")
   return { status: "success" }
