@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/input-group"
 import { Textarea } from "@/components/ui/textarea"
 import { formatPhone, toTelHref } from "@/lib/br-documents"
+import { formatCnpj } from "@/lib/prospecting/cnpj"
 import { cn } from "cn"
 import {
   toDigitalChannelDrafts,
@@ -102,6 +103,7 @@ function fillLeadFormData(
   tags: string[],
   overlay: {
     company_name?: string
+    cnpj?: string
     channels?: DigitalChannelDraft[]
     segment?: string
     state_code?: string
@@ -114,6 +116,7 @@ function fillLeadFormData(
 ) {
   formData.set("lead_id", lead.id)
   formData.set("company_name", overlay.company_name ?? lead.company_name)
+  formData.set("cnpj", overlay.cnpj ?? lead.cnpj ?? "")
   formData.set("segment", overlay.segment ?? lead.segment?.name ?? "")
   formData.set("state_code", overlay.state_code ?? lead.state_code ?? "")
   formData.set("city", overlay.city ?? lead.city ?? "")
@@ -285,6 +288,7 @@ function CompanyCard({
     const formData = new FormData()
     fillLeadFormData(formData, lead, values.tags, {
       company_name: values.company_name,
+      cnpj: values.cnpj,
       channels: values.channels,
       segment: values.segment,
       state_code: values.state_code,
@@ -331,6 +335,36 @@ function CompanyCard({
         {editing ? (
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-4">
+              <Controller
+                name="cnpj"
+                control={form.control}
+                render={({ field, fieldState }) => {
+                  const errorId = "lead-record-cnpj-error"
+                  return (
+                    <Field data-invalid={!!fieldState.error}>
+                      <FieldLabel htmlFor="lead-record-cnpj">CNPJ</FieldLabel>
+                      <InputGroup>
+                        <InputGroupInput
+                          id="lead-record-cnpj"
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
+                          disabled={isPending}
+                          autoComplete="off"
+                          maxLength={18}
+                          aria-invalid={!!fieldState.error}
+                          aria-describedby={
+                            fieldState.error ? errorId : undefined
+                          }
+                        />
+                      </InputGroup>
+                      <FieldError id={errorId}>
+                        {fieldState.error?.message}
+                      </FieldError>
+                    </Field>
+                  )
+                }}
+              />
               <Controller
                 name="company_name"
                 control={form.control}
@@ -455,6 +489,11 @@ function CompanyCard({
               icon={RiBuilding4Line}
               label="Nome da empresa"
               value={lead.company_name}
+            />
+            <LeadRecordField
+              icon={RiBuilding4Line}
+              label="CNPJ"
+              value={formatCnpj(lead.cnpj)}
             />
             <LeadDigitalChannelList
               channels={toDigitalChannelDrafts(lead.channels ?? [])}
@@ -871,6 +910,7 @@ function NotesCard({
 function companyDefaults(detail: LeadDetail): CompanyValues {
   return {
     company_name: detail.lead.company_name,
+    cnpj: detail.lead.cnpj ?? "",
     channels: toDigitalChannelDrafts(detail.lead.channels ?? []),
     segment: detail.segment?.name ?? "",
     state_code: detail.lead.state_code ?? "",

@@ -34,6 +34,16 @@ export type ProspectingCandidateFilter =
   | "imported"
   | "ignored"
 
+export type ProspectingCnpjStatus =
+  | "not_searched"
+  | "searching"
+  | "suggestion"
+  | "needs_review"
+  | "confirmed"
+  | "not_found"
+  | "source_limited"
+  | "source_unavailable"
+
 export type ProspectingCandidateListItem = {
   id: string
   placeId: string
@@ -55,6 +65,52 @@ export type ProspectingCandidateListItem = {
   importedLeadId: string | null
   checkUrl: string | null
   discoveryPosition: number
+  cnpj: string | null
+  cnpjStatus: ProspectingCnpjStatus
+  cnpjLastAttemptAt: string | null
+  cnpjConfirmedAt: string | null
+  cnpjSourceUpdatedAt: string | null
+}
+
+export type ProspectingCnpjBatchStatus =
+  | "queued"
+  | "processing"
+  | "completed"
+  | "source_limited"
+  | "source_unavailable"
+
+export type ProspectingCnpjBatchProgress = {
+  batchId: string
+  status: ProspectingCnpjBatchStatus
+  processedCount: number
+  totalCount: number
+}
+
+export function isProspectingCnpjStatus(
+  value: unknown,
+): value is ProspectingCnpjStatus {
+  return (
+    value === "not_searched" ||
+    value === "searching" ||
+    value === "suggestion" ||
+    value === "needs_review" ||
+    value === "confirmed" ||
+    value === "not_found" ||
+    value === "source_limited" ||
+    value === "source_unavailable"
+  )
+}
+
+export function isProspectingCnpjBatchStatus(
+  value: unknown,
+): value is ProspectingCnpjBatchStatus {
+  return (
+    value === "queued" ||
+    value === "processing" ||
+    value === "completed" ||
+    value === "source_limited" ||
+    value === "source_unavailable"
+  )
 }
 
 export type ProspectingCandidatePage = {

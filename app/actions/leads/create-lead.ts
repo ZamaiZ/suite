@@ -71,6 +71,7 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
     .from("leads")
     .insert({
       company_name: payload.company_name,
+      cnpj: payload.cnpj,
       website: payload.website,
       website_domain: payload.website_domain,
       contact_name: payload.contact_name,
@@ -84,7 +85,7 @@ export async function createLead(formData: FormData): Promise<CreateLeadState> {
       created_by: user.id,
     })
     .select(
-      "id, company_name, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, segments(name)",
+      "id, company_name, cnpj, website, website_domain, status, next_follow_up_at, created_at, assigned_sdr_id, assigned_closer_id, closing_meeting_at, closing_stage, state_code, city, segments(name)",
     )
     .single()
 

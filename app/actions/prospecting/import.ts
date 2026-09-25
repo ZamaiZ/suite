@@ -179,7 +179,7 @@ async function persistStale(
   runId: string,
   candidateId: string,
 ): Promise<ImportCandidateResult> {
-  const { data, error } = await supabase.rpc("import_prospecting_candidate", {
+  const { data, error } = await supabase.rpc("import_prospecting_candidate_with_cnpj", {
     p_run_id: runId,
     p_candidate_id: candidateId,
     p_actor_id: actorId,
@@ -352,7 +352,7 @@ async function importOne(
     })
   }
 
-  const { data, error } = await supabase.rpc("import_prospecting_candidate", {
+  const { data, error } = await supabase.rpc("import_prospecting_candidate_with_cnpj", {
     p_run_id: input.runId,
     p_candidate_id: input.candidateId,
     p_actor_id: actorId,

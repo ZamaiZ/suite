@@ -10,6 +10,7 @@ import type { BrazilStateCode } from "@/lib/br-locations"
 export type LeadRecord = {
   id: string
   company_name: string
+  cnpj: string | null
   website: string | null
   website_domain: string | null
   contact_name: string | null
@@ -69,6 +70,7 @@ export type LeadDetailActivity = {
 
 export type LeadWritePayload = {
   company_name: string
+  cnpj: string | null
   website: string | null
   website_domain: string | null
   channels: LeadDigitalChannelWrite[]

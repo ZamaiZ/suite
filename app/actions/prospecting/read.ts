@@ -12,6 +12,7 @@ import type {
   ProspectingRunSummary,
 } from "@/lib/prospecting/reads"
 import {
+  isProspectingCnpjStatus,
   isProspectingPauseReason,
   isProspectingRunStatus,
 } from "@/lib/prospecting/reads"
@@ -106,6 +107,11 @@ type CandidateEmbed = {
   vendor_updated_at: string | null
   imported_lead_id: string | null
   check_url: string | null
+  cnpj: string | null
+  cnpj_status: string
+  cnpj_last_attempt_at: string | null
+  cnpj_confirmed_at: string | null
+  cnpj_source_updated_at: string | null
 }
 
 function candidateFromEmbed(
@@ -371,7 +377,7 @@ export async function listProspectingCandidatesAction(input: {
   let listQuery = supabase
     .from("prospecting_run_candidates")
     .select(
-      "candidate_id, discovery_position, territory_class, category_class, review_state, conflict_kind, conflict_severity, related_lead_id, prospecting_candidates(id, place_id, company_name, primary_category, address, phone, website, website_domain, rating, reviews_count, vendor_updated_at, imported_lead_id, check_url)",
+      "candidate_id, discovery_position, territory_class, category_class, review_state, conflict_kind, conflict_severity, related_lead_id, prospecting_candidates(id, place_id, company_name, primary_category, address, phone, website, website_domain, rating, reviews_count, vendor_updated_at, imported_lead_id, check_url, cnpj, cnpj_status, cnpj_last_attempt_at, cnpj_confirmed_at, cnpj_source_updated_at)",
       { count: "exact" },
     )
     .eq("run_id", parsed.data.runId)
@@ -428,6 +434,13 @@ export async function listProspectingCandidatesAction(input: {
         importedLeadId: candidate.imported_lead_id,
         checkUrl: candidate.check_url,
         discoveryPosition: row.discovery_position,
+        cnpj: candidate.cnpj,
+        cnpjStatus: isProspectingCnpjStatus(candidate.cnpj_status)
+          ? candidate.cnpj_status
+          : "not_searched",
+        cnpjLastAttemptAt: candidate.cnpj_last_attempt_at,
+        cnpjConfirmedAt: candidate.cnpj_confirmed_at,
+        cnpjSourceUpdatedAt: candidate.cnpj_source_updated_at,
       },
     ]
   })

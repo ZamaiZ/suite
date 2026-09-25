@@ -127,6 +127,7 @@ export function LeadForm({
     resolver: zodResolver(leadFormSchema) as Resolver<LeadFormValues>,
     defaultValues: {
       company_name: defaultValues?.company_name ?? lead?.company_name ?? "",
+      cnpj: defaultValues?.cnpj ?? lead?.cnpj ?? "",
       channels:
         defaultValues?.channels ??
         (lead?.channels ? toDigitalChannelDrafts(lead.channels) : []),
@@ -153,6 +154,7 @@ export function LeadForm({
     const formData = new FormData()
     if (mode === "edit" && leadId) formData.set("lead_id", leadId)
     formData.set("company_name", values.company_name)
+    formData.set("cnpj", values.cnpj)
     formData.set("segment", values.segment)
     formData.set("state_code", values.state_code)
     formData.set("city", values.city)
@@ -217,6 +219,34 @@ export function LeadForm({
         subtitle="Informações principais da empresa."
         columns="one"
       >
+        <Controller
+          name="cnpj"
+          control={form.control}
+          render={({ field, fieldState }) => {
+            const errorId = "lead-cnpj-error"
+            return (
+              <Field data-invalid={!!fieldState.error}>
+                <FieldLabel htmlFor="lead-cnpj">CNPJ</FieldLabel>
+                <InputGroup>
+                  <InputGroupInput
+                    id="lead-cnpj"
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    disabled={fieldsDisabled}
+                    autoComplete="off"
+                    maxLength={18}
+                    aria-invalid={!!fieldState.error}
+                    aria-describedby={fieldState.error ? errorId : undefined}
+                  />
+                </InputGroup>
+                <FieldError id={errorId}>
+                  {fieldState.error?.message}
+                </FieldError>
+              </Field>
+            )
+          }}
+        />
         <Controller
           name="company_name"
           control={form.control}

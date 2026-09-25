@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import {
   RiExternalLinkLine,
   RiPhoneLine,
@@ -16,6 +17,24 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import type { ProspectingCandidateListItem } from "@/lib/prospecting/reads"
+import { ProspectingCnpjReviewDialog } from "./ProspectingCnpjReviewDialog"
+import { Button } from "@/components/ui/button"
+import { formatCnpj } from "@/lib/prospecting/cnpj"
+
+function cnpjLabel(candidate: ProspectingCandidateListItem) {
+  if (candidate.cnpjStatus === "confirmed" && candidate.cnpj) return formatCnpj(candidate.cnpj)
+  const labels = {
+    not_searched: "Não pesquisado",
+    searching: "Pesquisando",
+    suggestion: "Sugestão disponível",
+    needs_review: "Revisar resultado",
+    confirmed: "Confirmado",
+    not_found: "Não encontrado",
+    source_limited: "Limite atingido",
+    source_unavailable: "Fonte indisponível",
+  }
+  return labels[candidate.cnpjStatus]
+}
 
 export function isProspectingCandidateSelectable(
   candidate: ProspectingCandidateListItem,
@@ -94,11 +113,20 @@ export function ProspectingCandidateTable({
   candidates,
   selectedIds,
   onSelectedIdsChange,
+  runId,
+  city,
+  stateCode,
+  onCnpjConfirmed,
 }: {
   candidates: ProspectingCandidateListItem[]
   selectedIds: Set<string>
   onSelectedIdsChange: (ids: Set<string>) => void
+  runId: string
+  city: string
+  stateCode: string
+  onCnpjConfirmed: (candidateId: string, cnpj: string) => void
 }) {
+  const [reviewing, setReviewing] = useState<ProspectingCandidateListItem | null>(null)
   if (candidates.length === 0) {
     return (
       <div className="flex min-h-48 items-center justify-center rounded-lg border border-border bg-card px-6 text-center text-sm text-muted-foreground">
@@ -145,6 +173,7 @@ export function ProspectingCandidateTable({
             <TableHead>Site</TableHead>
             <TableHead>Nota/avaliações</TableHead>
             <TableHead>Atualização</TableHead>
+            <TableHead>CNPJ</TableHead>
             <TableHead>Território</TableHead>
             <TableHead>Conflito/importação</TableHead>
           </TableRow>
@@ -238,6 +267,16 @@ export function ProspectingCandidateTable({
                 <TableCell className="text-muted-foreground">
                   {date(candidate.vendorUpdatedAt)}
                 </TableCell>
+                <TableCell className="min-w-40">
+                  <div className="flex flex-col items-start gap-1">
+                    <span className="font-mono text-[11px]">{cnpjLabel(candidate)}</span>
+                    {candidate.cnpjStatus === "suggestion" || candidate.cnpjStatus === "needs_review" || candidate.cnpjStatus === "confirmed" ? (
+                      <Button size="xs" variant="outline" onClick={() => setReviewing(candidate)}>
+                        {candidate.cnpjStatus === "confirmed" ? "Ver confirmação" : "Revisar correspondência"}
+                      </Button>
+                    ) : null}
+                  </div>
+                </TableCell>
                 <TableCell>
                   <div className="flex flex-col items-start gap-1">
                     {territoryBadge(candidate)}
@@ -250,6 +289,17 @@ export function ProspectingCandidateTable({
           })}
         </TableBody>
       </Table>
+      {reviewing ? (
+        <ProspectingCnpjReviewDialog
+          runId={runId}
+          candidate={reviewing}
+          city={city}
+          stateCode={stateCode}
+          open
+          onOpenChange={(open) => { if (!open) setReviewing(null) }}
+          onConfirmed={onCnpjConfirmed}
+        />
+      ) : null}
     </div>
   )
 }

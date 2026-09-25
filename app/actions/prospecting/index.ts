@@ -28,6 +28,16 @@ export {
 export { setProspectingCandidateReviewAction } from "./review"
 
 export {
+  advanceProspectingCnpjBatchAction,
+  confirmProspectingCandidateCnpjAction,
+  getActiveProspectingCnpjBatchAction,
+  listProspectingCnpjMatchesAction,
+  startProspectingCnpjBatchAction,
+  type ProspectingCnpjActionState,
+  type ProspectingCnpjMatchesState,
+} from "./cnpj"
+
+export {
   importProspectingCandidateAction,
   importProspectingCandidatesAction,
   type ImportBatchState,

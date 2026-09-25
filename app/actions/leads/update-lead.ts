@@ -101,6 +101,7 @@ export async function updateLead(formData: FormData): Promise<UpdateLeadState> {
     .from("leads")
     .update({
       company_name: payload.company_name,
+      cnpj: payload.cnpj,
       website: payload.website,
       website_domain: payload.website_domain,
       contact_name: payload.contact_name,

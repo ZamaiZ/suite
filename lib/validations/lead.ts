@@ -5,6 +5,7 @@ import {
   normalizeStateCode,
 } from "@/lib/br-locations"
 import { digitsOnly, isValidBrPhone, toStoredPhone } from "@/lib/br-documents"
+import { isValidCnpj, normalizeCnpj } from "@/lib/prospecting/cnpj"
 import {
   DIGITAL_CHANNEL_TYPES,
   DIGITAL_CHANNELS_MAX,
@@ -79,6 +80,19 @@ function parseFormChannels(formData: FormData): DigitalChannelDraft[] {
 }
 
 const leadCoreObjectSchema = z.object({
+  cnpj: z
+    .string()
+    .trim()
+    .max(32, "CNPJ inválido.")
+    .superRefine((value, ctx) => {
+      if (value.length === 0) return
+      const normalized = normalizeCnpj(value)
+      if (!normalized || !isValidCnpj(normalized)) {
+        ctx.addIssue({ code: "custom", message: "CNPJ inválido." })
+      }
+    })
+    .optional()
+    .default(""),
   company_name: z
     .string()
     .trim()
@@ -172,6 +186,7 @@ function toLeadWritePayload(
   const city = normalizeCityMatch(stateCode, data.city) ?? data.city.trim()
   return {
     company_name: data.company_name,
+    cnpj: normalizeCnpj(data.cnpj) ?? null,
     website: primary?.value ?? null,
     website_domain: primary?.normalized_key ?? null,
     channels: result.channels,
@@ -211,6 +226,7 @@ export const leadFormSchema = leadFormObjectSchema.superRefine((data, ctx) => {
 export const leadCompanyFormSchema = leadFormObjectSchema
   .pick({
     company_name: true,
+    cnpj: true,
     channels: true,
     segment: true,
     state_code: true,
@@ -237,6 +253,7 @@ export type LeadFieldName = keyof LeadWriteFormFields
 export function readLeadFormFields(formData: FormData): LeadWriteFormFields {
   return {
     company_name: formText(formData, "company_name"),
+    cnpj: formText(formData, "cnpj"),
     channels: parseFormChannels(formData),
     segment: formText(formData, "segment"),
     state_code: formText(formData, "state_code"),

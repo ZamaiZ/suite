@@ -275,6 +275,7 @@ export async function importLeads(
     const supabase = await createClient()
     const inserts: Array<{
       company_name: string
+      cnpj: null
       website: string
       website_domain: string
       contact_name: string | null
@@ -314,6 +315,7 @@ export async function importLeads(
       }
       inserts.push({
         company_name: row.payload.company_name,
+        cnpj: null,
         website: row.payload.website,
         website_domain: row.payload.website_domain,
         contact_name: row.payload.contact_name,
